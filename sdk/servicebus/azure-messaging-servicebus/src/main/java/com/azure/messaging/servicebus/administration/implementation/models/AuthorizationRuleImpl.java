@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public final class AuthorizationRuleImpl {
     /*
      * The authorization type.
      */
-    @JacksonXmlProperty(localName = "type", isAttribute = true)
+    @JacksonXmlProperty(localName = "type", namespace = "http://www.w3.org/2001/XMLSchema-instance", isAttribute = true)
     private String type;
 
     /*
@@ -105,6 +106,9 @@ public final class AuthorizationRuleImpl {
             localName = "SecondaryKey",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String secondaryKey;
+
+    /** Creates an instance of AuthorizationRule class. */
+    public AuthorizationRuleImpl() {}
 
     /**
      * Get the type property: The authorization type.

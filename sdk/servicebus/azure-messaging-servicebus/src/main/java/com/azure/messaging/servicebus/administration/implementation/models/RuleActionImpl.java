@@ -24,4 +24,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
         localName = "Action",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Immutable
-public class RuleActionImpl {}
+public class RuleActionImpl {
+
+    /** Creates an instance of RuleAction class. */
+    public RuleActionImpl() {}
+}

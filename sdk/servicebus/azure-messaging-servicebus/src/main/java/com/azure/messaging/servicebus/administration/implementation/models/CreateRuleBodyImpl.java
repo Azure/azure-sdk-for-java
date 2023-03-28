@@ -18,6 +18,9 @@ public final class CreateRuleBodyImpl {
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private CreateRuleBodyContentImpl content;
 
+    /** Creates an instance of CreateRuleBody class. */
+    public CreateRuleBodyImpl() {}
+
     /**
      * Get the content property: RuleDescription for the new Rule.
      *

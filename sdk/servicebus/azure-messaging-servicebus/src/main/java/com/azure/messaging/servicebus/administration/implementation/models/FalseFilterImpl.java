@@ -8,9 +8,43 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.List;
+
 /** The FalseFilter model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FalseFilter")
 @JacksonXmlRootElement(localName = "FalseFilter")
 @Fluent
-public final class FalseFilterImpl extends SqlFilterImpl {}
+public final class FalseFilterImpl extends SqlFilterImpl {
+
+    /** Creates an instance of FalseFilter class. */
+    public FalseFilterImpl() {}
+
+    /** {@inheritDoc} */
+    @Override
+    public FalseFilterImpl setSqlExpression(String sqlExpression) {
+        super.setSqlExpression(sqlExpression);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FalseFilterImpl setCompatibilityLevel(String compatibilityLevel) {
+        super.setCompatibilityLevel(compatibilityLevel);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FalseFilterImpl setParameters(List<KeyValueImpl> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FalseFilterImpl setRequiresPreprocessing(Boolean requiresPreprocessing) {
+        super.setRequiresPreprocessing(requiresPreprocessing);
+        return this;
+    }
+}

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,9 @@ public class SqlFilterImpl extends RuleFilterImpl {
             localName = "RequiresPreprocessing",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean requiresPreprocessing;
+
+    /** Creates an instance of SqlFilter class. */
+    public SqlFilterImpl() {}
 
     /**
      * Get the sqlExpression property: The sqlExpression property.

@@ -30,6 +30,9 @@ public final class KeyValueImpl {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String value;
 
+    /** Creates an instance of KeyValue class. */
+    public KeyValueImpl() {}
+
     /**
      * Get the key property: The key property.
      *

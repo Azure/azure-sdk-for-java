@@ -18,6 +18,9 @@ public final class CreateTopicBodyImpl {
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private CreateTopicBodyContentImpl content;
 
+    /** Creates an instance of CreateTopicBody class. */
+    public CreateTopicBodyImpl() {}
+
     /**
      * Get the content property: TopicDescription for the new topic.
      *

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** QueueDescription for the new queue. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "CreateQueueBodyContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class CreateQueueBodyContentImpl {
 
@@ -25,6 +25,9 @@ public final class CreateQueueBodyContentImpl {
             localName = "QueueDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private QueueDescriptionImpl queueDescription;
+
+    /** Creates an instance of CreateQueueBodyContent class. */
+    public CreateQueueBodyContentImpl() {}
 
     /**
      * Get the type property: MIME type of content.

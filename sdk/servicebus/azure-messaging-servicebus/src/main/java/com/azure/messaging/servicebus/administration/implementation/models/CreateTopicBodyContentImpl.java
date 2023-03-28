@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** TopicDescription for the new topic. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "CreateTopicBodyContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class CreateTopicBodyContentImpl {
 
@@ -25,6 +25,9 @@ public final class CreateTopicBodyContentImpl {
             localName = "TopicDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private TopicDescriptionImpl topicDescription;
+
+    /** Creates an instance of CreateTopicBodyContent class. */
+    public CreateTopicBodyContentImpl() {}
 
     /**
      * Get the type property: MIME type of content.

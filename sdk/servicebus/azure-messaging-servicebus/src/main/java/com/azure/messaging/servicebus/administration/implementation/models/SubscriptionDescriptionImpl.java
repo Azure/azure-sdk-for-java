@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -18,9 +19,8 @@ import java.time.OffsetDateTime;
 public final class SubscriptionDescriptionImpl {
 
     /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
-     * that the message is locked for other receivers. The maximum value for
-     * LockDuration is 5 minutes; the default value is 1 minute.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
+     * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
      */
     @JacksonXmlProperty(
             localName = "LockDuration",
@@ -28,8 +28,7 @@ public final class SubscriptionDescriptionImpl {
     private Duration lockDuration;
 
     /*
-     * A value that indicates whether the subscription supports the concept of
-     * sessions.
+     * A value that indicates whether the subscription supports the concept of sessions.
      */
     @JacksonXmlProperty(
             localName = "RequiresSession",
@@ -37,10 +36,9 @@ public final class SubscriptionDescriptionImpl {
     private Boolean requiresSession;
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent
-     * to Service Bus. This is the default value used when TimeToLive is not
-     * set on a message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
+     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
+     * message itself.
      */
     @JacksonXmlProperty(
             localName = "DefaultMessageTimeToLive",
@@ -48,8 +46,7 @@ public final class SubscriptionDescriptionImpl {
     private Duration defaultMessageTimeToLive;
 
     /*
-     * A value that indicates whether this subscription has dead letter support
-     * when a message expires.
+     * A value that indicates whether this subscription has dead letter support when a message expires.
      */
     @JacksonXmlProperty(
             localName = "DeadLetteringOnMessageExpiration",
@@ -57,13 +54,20 @@ public final class SubscriptionDescriptionImpl {
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * A value that indicates whether this subscription has dead letter support
-     * when a message expires.
+     * A value that indicates whether this subscription has dead letter support when a message expires.
      */
     @JacksonXmlProperty(
             localName = "DeadLetteringOnFilterEvaluationExceptions",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean deadLetteringOnFilterEvaluationExceptions;
+
+    /*
+     * The default rule description.
+     */
+    @JacksonXmlProperty(
+            localName = "RuleDescription",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private RuleDescriptionImpl defaultRuleDescription;
 
     /*
      * The number of messages in the subscription.
@@ -74,8 +78,8 @@ public final class SubscriptionDescriptionImpl {
     private Integer messageCount;
 
     /*
-     * The maximum delivery count. A message is automatically deadlettered
-     * after this number of deliveries. Default value is 10.
+     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
+     * value is 10.
      */
     @JacksonXmlProperty(
             localName = "MaxDeliveryCount",
@@ -99,8 +103,7 @@ public final class SubscriptionDescriptionImpl {
     private EntityStatus status;
 
     /*
-     * The name of the recipient entity to which all the messages sent to the
-     * subscription are forwarded to.
+     * The name of the recipient entity to which all the messages sent to the subscription are forwarded to.
      */
     @JacksonXmlProperty(
             localName = "ForwardTo",
@@ -124,8 +127,7 @@ public final class SubscriptionDescriptionImpl {
     private OffsetDateTime updatedAt;
 
     /*
-     * Last time a message was sent, or the last time there was a receive
-     * request to this subscription.
+     * Last time a message was sent, or the last time there was a receive request to this subscription.
      */
     @JacksonXmlProperty(
             localName = "AccessedAt",
@@ -141,8 +143,7 @@ public final class SubscriptionDescriptionImpl {
     private MessageCountDetailsImpl messageCountDetails;
 
     /*
-     * Metadata associated with the subscription. Maximum number of characters
-     * is 1024.
+     * Metadata associated with the subscription. Maximum number of characters is 1024.
      */
     @JacksonXmlProperty(
             localName = "UserMetadata",
@@ -150,8 +151,7 @@ public final class SubscriptionDescriptionImpl {
     private String userMetadata;
 
     /*
-     * The name of the recipient entity to which all the messages sent to the
-     * subscription are forwarded to.
+     * The name of the recipient entity to which all the messages sent to the subscription are forwarded to.
      */
     @JacksonXmlProperty(
             localName = "ForwardDeadLetteredMessagesTo",
@@ -159,8 +159,8 @@ public final class SubscriptionDescriptionImpl {
     private String forwardDeadLetteredMessagesTo;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the subscription is
-     * automatically deleted. The minimum duration is 5 minutes.
+     * ISO 8601 timeSpan idle interval after which the subscription is automatically deleted. The minimum duration is 5
+     * minutes.
      */
     @JacksonXmlProperty(
             localName = "AutoDeleteOnIdle",
@@ -175,10 +175,8 @@ public final class SubscriptionDescriptionImpl {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
-    @JacksonXmlProperty(
-        localName = "DefaultRuleDescription",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private RuleDescriptionImpl defaultRule;
+    /** Creates an instance of SubscriptionDescription class. */
+    public SubscriptionDescriptionImpl() {}
 
     /**
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
@@ -292,6 +290,26 @@ public final class SubscriptionDescriptionImpl {
     public SubscriptionDescriptionImpl setDeadLetteringOnFilterEvaluationExceptions(
             Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
+        return this;
+    }
+
+    /**
+     * Get the defaultRuleDescription property: The default rule description.
+     *
+     * @return the defaultRuleDescription value.
+     */
+    public RuleDescriptionImpl getDefaultRuleDescription() {
+        return this.defaultRuleDescription;
+    }
+
+    /**
+     * Set the defaultRuleDescription property: The default rule description.
+     *
+     * @param defaultRuleDescription the defaultRuleDescription value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
+        this.defaultRuleDescription = defaultRuleDescription;
         return this;
     }
 
@@ -565,26 +583,6 @@ public final class SubscriptionDescriptionImpl {
     public SubscriptionDescriptionImpl setEntityAvailabilityStatus(
             EntityAvailabilityStatusImpl entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
-        return this;
-    }
-
-    /***
-     * Get the rule that the subscription was created with, if any.
-     *
-     * @return the Rule description
-     */
-    public RuleDescriptionImpl getDefaultRule() {
-        return this.defaultRule;
-    }
-
-    /***
-     * Set the rule that the subscriptions should be created with, if any.
-     *
-     * @param ruleDescription the rule description (name, action, filter)
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescriptionImpl setDefaultRule(RuleDescriptionImpl ruleDescription) {
-        this.defaultRule = ruleDescription;
         return this;
     }
 }

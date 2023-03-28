@@ -18,6 +18,9 @@ public final class CreateSubscriptionBodyImpl {
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private CreateSubscriptionBodyContentImpl content;
 
+    /** Creates an instance of CreateSubscriptionBody class. */
+    public CreateSubscriptionBodyImpl() {}
+
     /**
      * Get the content property: SubscriptionDescription for the new subscription.
      *

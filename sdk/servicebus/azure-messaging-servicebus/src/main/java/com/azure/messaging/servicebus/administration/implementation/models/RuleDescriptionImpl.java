@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
 /** The RuleDescription model. */
@@ -46,6 +47,9 @@ public final class RuleDescriptionImpl {
             localName = "Name",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String name;
+
+    /** Creates an instance of RuleDescription class. */
+    public RuleDescriptionImpl() {}
 
     /**
      * Get the filter property: The filter property.

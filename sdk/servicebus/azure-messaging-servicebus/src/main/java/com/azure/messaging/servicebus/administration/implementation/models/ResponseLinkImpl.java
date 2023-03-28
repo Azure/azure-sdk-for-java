@@ -24,6 +24,9 @@ public final class ResponseLinkImpl {
     @JacksonXmlProperty(localName = "rel", isAttribute = true)
     private String rel;
 
+    /** Creates an instance of ResponseLink class. */
+    public ResponseLinkImpl() {}
+
     /**
      * Get the href property: The URL of the GET request.
      *

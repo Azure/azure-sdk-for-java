@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -21,10 +22,9 @@ import java.util.List;
 public final class TopicDescriptionImpl {
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent
-     * to Service Bus. This is the default value used when TimeToLive is not
-     * set on a message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
+     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
+     * message itself.
      */
     @JacksonXmlProperty(
             localName = "DefaultMessageTimeToLive",
@@ -32,8 +32,7 @@ public final class TopicDescriptionImpl {
     private Duration defaultMessageTimeToLive;
 
     /*
-     * The maximum size of the topic in megabytes, which is the size of memory
-     * allocated for the topic.
+     * The maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
      */
     @JacksonXmlProperty(
             localName = "MaxSizeInMegabytes",
@@ -49,8 +48,8 @@ public final class TopicDescriptionImpl {
     private Boolean requiresDuplicateDetection;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate
-     * detection history. The default value is 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
+     * 10 minutes.
      */
     @JacksonXmlProperty(
             localName = "DuplicateDetectionHistoryTimeWindow",
@@ -82,8 +81,7 @@ public final class TopicDescriptionImpl {
     private Boolean filteringMessagesBeforePublishing;
 
     /*
-     * A value indicating if the resource can be accessed without
-     * authorization.
+     * A value indicating if the resource can be accessed without authorization.
      */
     @JacksonXmlProperty(
             localName = "IsAnonymousAccessible",
@@ -140,8 +138,7 @@ public final class TopicDescriptionImpl {
     private OffsetDateTime updatedAt;
 
     /*
-     * Last time a message was sent, or the last time there was a receive
-     * request to this topic.
+     * Last time a message was sent, or the last time there was a receive request to this topic.
      */
     @JacksonXmlProperty(
             localName = "AccessedAt",
@@ -149,10 +146,9 @@ public final class TopicDescriptionImpl {
     private OffsetDateTime accessedAt;
 
     /*
-     * Indicates if messages are received in the same order they are sent. If
-     * partitioned topics, defaults to false, and setting it to true has no
-     * effect. For unpartitioned topics, setting it to false will improve perf,
-     * but messages may not be received in the order they are sent.
+     * Indicates if messages are received in the same order they are sent. If partitioned topics, defaults to false,
+     * and setting it to true has no effect. For unpartitioned topics, setting it to false will improve perf, but
+     * messages may not be received in the order they are sent.
      */
     @JacksonXmlProperty(
             localName = "SupportOrdering",
@@ -176,8 +172,8 @@ public final class TopicDescriptionImpl {
     private Integer subscriptionCount;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the topic is automatically
-     * deleted. The minimum duration is 5 minutes.
+     * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5
+     * minutes.
      */
     @JacksonXmlProperty(
             localName = "AutoDeleteOnIdle",
@@ -185,8 +181,7 @@ public final class TopicDescriptionImpl {
     private Duration autoDeleteOnIdle;
 
     /*
-     * A value that indicates whether the topic is to be partitioned across
-     * multiple message brokers.
+     * A value that indicates whether the topic is to be partitioned across multiple message brokers.
      */
     @JacksonXmlProperty(
             localName = "EnablePartitioning",
@@ -202,8 +197,7 @@ public final class TopicDescriptionImpl {
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
     /*
-     * A value that indicates whether the topic's subscription is to be
-     * partitioned.
+     * A value that indicates whether the topic's subscription is to be partitioned.
      */
     @JacksonXmlProperty(
             localName = "EnableSubscriptionPartitioning",
@@ -211,9 +205,8 @@ public final class TopicDescriptionImpl {
     private Boolean enableSubscriptionPartitioning;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express
-     * topic holds a message in memory temporarily before writing it to
-     * persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express topic holds a message in memory
+     * temporarily before writing it to persistent storage.
      */
     @JacksonXmlProperty(
             localName = "EnableExpress",
@@ -229,13 +222,15 @@ public final class TopicDescriptionImpl {
     private String userMetadata;
 
     /*
-     * The maximum size in kilobytes of message payload that can be accepted by
-     * the topic.
+     * The maximum size in kilobytes of message payload that can be accepted by the topic.
      */
     @JacksonXmlProperty(
             localName = "MaxMessageSizeInKilobytes",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Long maxMessageSizeInKilobytes;
+
+    /** Creates an instance of TopicDescription class. */
+    public TopicDescriptionImpl() {}
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration

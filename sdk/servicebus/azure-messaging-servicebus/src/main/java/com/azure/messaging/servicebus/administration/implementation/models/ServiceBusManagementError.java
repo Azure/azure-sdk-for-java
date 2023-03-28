@@ -24,6 +24,9 @@ public final class ServiceBusManagementError {
     @JsonProperty(value = "Detail")
     private String detail;
 
+    /** Creates an instance of ServiceBusManagementError class. */
+    public ServiceBusManagementError() {}
+
     /**
      * Get the code property: The service error code.
      *

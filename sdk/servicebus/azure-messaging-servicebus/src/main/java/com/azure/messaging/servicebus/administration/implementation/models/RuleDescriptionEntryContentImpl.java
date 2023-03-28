@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The RuleDescription. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "RuleDescriptionEntryContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class RuleDescriptionEntryContentImpl {
 
@@ -25,6 +25,9 @@ public final class RuleDescriptionEntryContentImpl {
             localName = "RuleDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private RuleDescriptionImpl ruleDescription;
+
+    /** Creates an instance of RuleDescriptionEntryContent class. */
+    public RuleDescriptionEntryContentImpl() {}
 
     /**
      * Get the type property: Type of content in rule response.

@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,9 @@ public final class TopicDescriptionFeedImpl {
      */
     @JsonProperty("entry")
     private List<TopicDescriptionEntryImpl> entry = new ArrayList<>();
+
+    /** Creates an instance of TopicDescriptionFeed class. */
+    public TopicDescriptionFeedImpl() {}
 
     /**
      * Get the id property: URL of the list topics query.

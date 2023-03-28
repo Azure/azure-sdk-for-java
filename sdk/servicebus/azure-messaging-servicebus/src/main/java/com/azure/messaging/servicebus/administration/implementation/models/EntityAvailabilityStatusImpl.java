@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EntityAvailabilityStatus. */
+/** Availability status of the entity. */
 public enum EntityAvailabilityStatusImpl {
 
     /** Enum value Available. */
@@ -35,6 +35,9 @@ public enum EntityAvailabilityStatusImpl {
      */
     @JsonCreator
     public static EntityAvailabilityStatusImpl fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EntityAvailabilityStatusImpl[] items = EntityAvailabilityStatusImpl.values();
         for (EntityAvailabilityStatusImpl item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -44,6 +47,7 @@ public enum EntityAvailabilityStatusImpl {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** SubscriptionDescription for the new subscription. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "CreateSubscriptionBodyContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class CreateSubscriptionBodyContentImpl {
 
@@ -25,6 +25,9 @@ public final class CreateSubscriptionBodyContentImpl {
             localName = "SubscriptionDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private SubscriptionDescriptionImpl subscriptionDescription;
+
+    /** Creates an instance of CreateSubscriptionBodyContent class. */
+    public CreateSubscriptionBodyContentImpl() {}
 
     /**
      * Get the type property: MIME type of content.

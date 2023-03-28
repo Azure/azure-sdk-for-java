@@ -18,6 +18,9 @@ public final class ResponseAuthorImpl {
     @JacksonXmlProperty(localName = "name", namespace = "http://www.w3.org/2005/Atom")
     private String name;
 
+    /** Creates an instance of ResponseAuthor class. */
+    public ResponseAuthorImpl() {}
+
     /**
      * Get the name property: The Service Bus namespace.
      *

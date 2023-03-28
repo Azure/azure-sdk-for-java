@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The TopicDescription. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "TopicDescriptionEntryContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class TopicDescriptionEntryContentImpl {
 
@@ -25,6 +25,9 @@ public final class TopicDescriptionEntryContentImpl {
             localName = "TopicDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private TopicDescriptionImpl topicDescription;
+
+    /** Creates an instance of TopicDescriptionEntryContent class. */
+    public TopicDescriptionEntryContentImpl() {}
 
     /**
      * Get the type property: Type of content in topic response.

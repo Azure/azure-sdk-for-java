@@ -9,7 +9,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Information about the namespace. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "NamespacePropertiesEntryContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class NamespacePropertiesEntryContentImpl {
 
@@ -26,6 +26,9 @@ public final class NamespacePropertiesEntryContentImpl {
             localName = "NamespaceInfo",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private NamespaceProperties namespaceProperties;
+
+    /** Creates an instance of NamespacePropertiesEntryContent class. */
+    public NamespacePropertiesEntryContentImpl() {}
 
     /**
      * Get the type property: Type of content in namespace info response.

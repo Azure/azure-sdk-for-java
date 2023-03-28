@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +108,9 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
             localName = "Properties",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private PropertiesWrapper properties;
+
+    /** Creates an instance of CorrelationFilter class. */
+    public CorrelationFilterImpl() {}
 
     /**
      * Get the correlationId property: The correlationId property.

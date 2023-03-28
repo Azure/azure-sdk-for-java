@@ -18,6 +18,9 @@ public final class CreateQueueBodyImpl {
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private CreateQueueBodyContentImpl content;
 
+    /** Creates an instance of CreateQueueBody class. */
+    public CreateQueueBodyImpl() {}
+
     /**
      * Get the content property: QueueDescription for the new queue.
      *

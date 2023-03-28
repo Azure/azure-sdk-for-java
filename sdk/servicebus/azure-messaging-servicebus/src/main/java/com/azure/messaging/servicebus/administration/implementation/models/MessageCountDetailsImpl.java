@@ -54,6 +54,9 @@ public final class MessageCountDetailsImpl {
             namespace = "http://schemas.microsoft.com/netservices/2011/06/servicebus")
     private Integer transferMessageCount;
 
+    /** Creates an instance of MessageCountDetails class. */
+    public MessageCountDetailsImpl() {}
+
     /**
      * Get the activeMessageCount property: Number of active messages in the queue, topic, or subscription.
      *
