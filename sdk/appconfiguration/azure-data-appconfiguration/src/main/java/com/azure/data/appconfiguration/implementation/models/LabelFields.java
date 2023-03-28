@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for LabelFields. */
@@ -27,7 +26,6 @@ public final class LabelFields extends ExpandableStringEnum<LabelFields> {
      * @param name a name to look for.
      * @return the corresponding LabelFields.
      */
-    @JsonCreator
     public static LabelFields fromString(String name) {
         return fromString(name, LabelFields.class);
     }

@@ -4,46 +4,36 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel()
  * label}. By default, the label is {@code null}. To explicitly reference the default label use {@link #NO_LABEL}.
  */
 @Fluent
-public class ConfigurationSetting {
+public class ConfigurationSetting implements JsonSerializable<ConfigurationSetting> {
     /**
      * The default label for configuration settings is the label, "\0". Users use this value when they want to
      * explicitly reference a configuration setting that has no label. This gets URL encoded as "%00".
      */
     public static final String NO_LABEL = "\0";
 
-    @JsonProperty(value = "key", required = true)
     private String key;
-
-    @JsonProperty(value = "label")
     private String label;
-
-    @JsonProperty(value = "value", required = true)
     private String value;
-
-    @JsonProperty(value = "content_type")
     private String contentType;
-
-    @JsonProperty(value = "etag")
     private String etag;
-
-    @JsonProperty(value = "last_modified")
     private OffsetDateTime lastModified;
-
-    @JsonProperty(value = "locked")
     private boolean readOnly;
-
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     static {
@@ -225,5 +215,61 @@ public class ConfigurationSetting {
             this.label,
             this.value,
             this.etag);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", key);
+        jsonWriter.writeStringField("label", label);
+        jsonWriter.writeStringField("value", value);
+        jsonWriter.writeStringField("content_type", contentType);
+        jsonWriter.writeStringField("etag", etag);
+        jsonWriter.writeStringField("last_modified", Objects.toString(this.lastModified, null));
+        jsonWriter.writeBooleanField("locked", readOnly);
+        jsonWriter.writeMapField("tags", tags, JsonWriter::writeString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationSetting from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationSetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationSetting.
+     */
+    public static ConfigurationSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationSetting setting = new ConfigurationSetting();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = jsonReader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    setting.setKey(reader.getString());
+                } else if ("label".equals(fieldName)) {
+                    setting.setLabel(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    setting.setKey(reader.getString());
+                } else if ("content_type".equals(fieldName)) {
+                    setting.setContentType(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    setting.setETag(reader.getString());
+                } else if ("last_modified".equals(fieldName)) {
+                    setting.setLastModified(reader.getNullable(nonNullReader ->
+                        OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("locked".equals(fieldName)) {
+                    setting.setReadOnly(reader.getBoolean());
+                } else if ("tags".equals(fieldName)) {
+                    setting.setTags(reader.readMap(JsonReader::getString));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return setting;
+        });
     }
 }

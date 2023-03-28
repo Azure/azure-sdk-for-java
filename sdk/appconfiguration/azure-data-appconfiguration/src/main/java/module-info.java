@@ -3,10 +3,11 @@
 
 module com.azure.data.appconfiguration {
     requires transitive com.azure.core;
+    requires com.azure.json;
 
-    opens com.azure.data.appconfiguration.implementation to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.data.appconfiguration.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.data.appconfiguration.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.data.appconfiguration.implementation to com.azure.core;
+    opens com.azure.data.appconfiguration.implementation.models to com.azure.core;
+    opens com.azure.data.appconfiguration.models to com.azure.core;
 
     exports com.azure.data.appconfiguration;
     exports com.azure.data.appconfiguration.models;

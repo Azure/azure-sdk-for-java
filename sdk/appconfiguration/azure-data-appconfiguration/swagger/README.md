@@ -32,4 +32,5 @@ context-client-method-parameter: true
 service-interface-as-public: true
 generic-response-type: true
 default-http-exception-type: com.azure.core.exception.HttpResponseException
+stream-style-serialization: true
 ```

@@ -5,21 +5,23 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Enables filtering of key-values. */
 @Fluent
-public final class KeyValueFilter {
+public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     /*
      * Filters key-values by their key field.
      */
-    @JsonProperty(value = "key", required = true)
     private String key;
 
     /*
      * Filters key-values by their label field.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /** Creates an instance of KeyValueFilter class. */
@@ -63,5 +65,47 @@ public final class KeyValueFilter {
     public KeyValueFilter setLabel(String label) {
         this.label = label;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("label", this.label);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyValueFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyValueFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyValueFilter.
+     */
+    public static KeyValueFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    String key = null;
+                    String label = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                        } else if ("label".equals(fieldName)) {
+                            label = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    KeyValueFilter deserializedValue = new KeyValueFilter();
+                    deserializedValue.key = key;
+                    deserializedValue.label = label;
+
+                    return deserializedValue;
+                });
     }
 }

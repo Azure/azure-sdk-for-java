@@ -9,10 +9,8 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingSerializationHelper.writeFeatureFlagConfigurationSetting;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingSerializationHelper.writeSecretReferenceConfigurationSetting;
@@ -23,29 +21,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class ConfigurationSettingSerializerTest {
     private static final String FEATURE_FLAG_VALUE_JSON =
-        "{\"id\":\"hello\",\"description\":null,\"display_name\":\"Feature Flag X\",\"enabled\":false,"
+        "{\"id\":\"hello\",\"display_name\":\"Feature Flag X\",\"enabled\":false,"
             + "\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":"
             + "{\"Value\":\"30\"}}]}}";
     private static final String SECRET_REFERENCE_VALUE_JSON = "{\"uri\":\"https://localhost\"}";
 
     @Test
     public void writeFeatureFlagConfigurationSettingTest() throws IOException {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("Value", "30");
-        final List<FeatureFlagFilter> filters = new ArrayList<>();
-        filters.add(new FeatureFlagFilter("Microsoft.Percentage")
-                        .setParameters(parameters));
+        List<FeatureFlagFilter> filters = Collections.singletonList(new FeatureFlagFilter("Microsoft.Percentage")
+            .setParameters(Collections.singletonMap("Value", "30")));
         final FeatureFlagConfigurationSetting setting = new FeatureFlagConfigurationSetting("hello", false)
-                   .setDisplayName("Feature Flag X")
-                   .setClientFilters(filters);
+            .setDisplayName("Feature Flag X")
+            .setClientFilters(filters);
         assertEquals(FEATURE_FLAG_VALUE_JSON, writeFeatureFlagConfigurationSetting(setting));
     }
 
     @Test
     public void writeSecretReferenceConfigurationSettingTest() throws IOException {
-        final String uriValue = "https://localhost";
-        final String key = "hello";
-        final SecretReferenceConfigurationSetting setting = new SecretReferenceConfigurationSetting(key, uriValue);
+        SecretReferenceConfigurationSetting setting = new SecretReferenceConfigurationSetting("hello",
+            "https://localhost");
         assertEquals(SECRET_REFERENCE_VALUE_JSON, writeSecretReferenceConfigurationSetting(setting));
     }
 }

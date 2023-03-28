@@ -7,7 +7,6 @@ package com.azure.data.appconfiguration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GetKeyValueHeaders model. */
 @Fluent
@@ -15,13 +14,11 @@ public final class GetKeyValueHeaders {
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The Sync-Token property.
      */
-    @JsonProperty(value = "Sync-Token")
     private String syncToken;
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");

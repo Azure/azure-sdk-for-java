@@ -5,30 +5,32 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** The Snapshot model. */
 @Fluent
-public final class Snapshot {
+public final class Snapshot implements JsonSerializable<Snapshot> {
     /*
      * The name of the snapshot.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The current status of the snapshot.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
-    @JsonProperty(value = "filters", required = true)
     private List<KeyValueFilter> filters;
 
     /*
@@ -36,19 +38,16 @@ public final class Snapshot {
      * includes all key-values. The 'group_by_key' composition type ensures there are no two key-values containing the
      * same key.
      */
-    @JsonProperty(value = "composition_type")
     private CompositionType compositionType;
 
     /*
      * The time that the snapshot was created.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * The time that the snapshot will expire.
      */
-    @JsonProperty(value = "expires", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expires;
 
     /*
@@ -56,31 +55,26 @@ public final class Snapshot {
      * is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value
      * revisions will be used.
      */
-    @JsonProperty(value = "retention_period")
     private Long retentionPeriod;
 
     /*
      * The size in bytes of the snapshot.
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
 
     /*
      * The amount of key-values in the snapshot.
      */
-    @JsonProperty(value = "items_count", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemsCount;
 
     /*
      * The tags of the snapshot.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * A value representing the current state of the snapshot.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /** Creates an instance of Snapshot class. */
@@ -235,5 +229,96 @@ public final class Snapshot {
      */
     public String getEtag() {
         return this.etag;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("composition_type", Objects.toString(this.compositionType, null));
+        jsonWriter.writeStringField("created", Objects.toString(this.created, null));
+        jsonWriter.writeStringField("expires", Objects.toString(this.expires, null));
+        jsonWriter.writeNumberField("retention_period", this.retentionPeriod);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeNumberField("items_count", this.itemsCount);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Snapshot from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Snapshot if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Snapshot.
+     */
+    public static Snapshot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    List<KeyValueFilter> filters = null;
+                    String name = null;
+                    SnapshotStatus status = null;
+                    CompositionType compositionType = null;
+                    OffsetDateTime created = null;
+                    OffsetDateTime expires = null;
+                    Long retentionPeriod = null;
+                    Long size = null;
+                    Long itemsCount = null;
+                    Map<String, String> tags = null;
+                    String etag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("filters".equals(fieldName)) {
+                            filters = reader.readArray(reader1 -> KeyValueFilter.fromJson(reader1));
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("status".equals(fieldName)) {
+                            status = SnapshotStatus.fromString(reader.getString());
+                        } else if ("composition_type".equals(fieldName)) {
+                            compositionType = CompositionType.fromString(reader.getString());
+                        } else if ("created".equals(fieldName)) {
+                            created =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("expires".equals(fieldName)) {
+                            expires =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("retention_period".equals(fieldName)) {
+                            retentionPeriod = reader.getNullable(JsonReader::getLong);
+                        } else if ("size".equals(fieldName)) {
+                            size = reader.getNullable(JsonReader::getLong);
+                        } else if ("items_count".equals(fieldName)) {
+                            itemsCount = reader.getNullable(JsonReader::getLong);
+                        } else if ("tags".equals(fieldName)) {
+                            tags = reader.readMap(reader1 -> reader1.getString());
+                        } else if ("etag".equals(fieldName)) {
+                            etag = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    Snapshot deserializedValue = new Snapshot();
+                    deserializedValue.filters = filters;
+                    deserializedValue.name = name;
+                    deserializedValue.status = status;
+                    deserializedValue.compositionType = compositionType;
+                    deserializedValue.created = created;
+                    deserializedValue.expires = expires;
+                    deserializedValue.retentionPeriod = retentionPeriod;
+                    deserializedValue.size = size;
+                    deserializedValue.itemsCount = itemsCount;
+                    deserializedValue.tags = tags;
+                    deserializedValue.etag = etag;
+
+                    return deserializedValue;
+                });
     }
 }

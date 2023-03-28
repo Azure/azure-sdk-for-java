@@ -7,7 +7,6 @@ package com.azure.data.appconfiguration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GetRevisionsNextHeaders model. */
 @Fluent
@@ -15,7 +14,6 @@ public final class GetRevisionsNextHeaders {
     /*
      * The Sync-Token property.
      */
-    @JsonProperty(value = "Sync-Token")
     private String syncToken;
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
