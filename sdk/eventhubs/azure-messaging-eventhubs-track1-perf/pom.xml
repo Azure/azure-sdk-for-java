@@ -47,7 +47,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.4.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;dependency} -->
                 <include>com.microsoft.azure:azure-eventhubs-eph:[3.3.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;dependency} -->
               </includes>
             </bannedDependencies>
