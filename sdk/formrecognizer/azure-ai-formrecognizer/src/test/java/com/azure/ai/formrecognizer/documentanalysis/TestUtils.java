@@ -61,7 +61,7 @@ public final class TestUtils {
     static final String INSURANCE_PNG = "insurance.png";
     static final String GERMAN_PNG = "read-german.png";
     static final String EXAMPLE_DOCX = "example.docx";
-    static final String EXAMPLE_PPT = "example.pptx";
+    static final String EXAMPLE_PPTX = "example.pptx";
     static final String EXAMPLE_HTML = "example.html";
     static final String EXAMPLE_XLSX = "example.xlsx";
     static final String INVALID_URL = "htttttttps://localhost:8080";

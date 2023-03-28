@@ -44,7 +44,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_GER
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_DOCX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_HTML;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_PPT;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_PPTX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_XLSX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
@@ -1511,7 +1511,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
             Assertions.assertEquals("This is a pptx example.", analyzeResult.getContent());
-        }, EXAMPLE_PPT);
+        }, EXAMPLE_PPTX);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
