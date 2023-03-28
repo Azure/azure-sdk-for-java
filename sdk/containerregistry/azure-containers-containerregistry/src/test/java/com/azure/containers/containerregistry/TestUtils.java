@@ -217,7 +217,7 @@ public class TestUtils {
     private static OciImageManifest createManifest() {
         OciImageManifest manifest = new OciImageManifest()
             .setSchemaVersion(2)
-            .setConfig(new OciDescriptor()
+            .setConfiguration(new OciDescriptor()
                 .setMediaType("application/vnd.acme.rocket.config.v1+json")
                 .setDigest(CONFIG_DIGEST)
                 .setSizeInBytes(171L));

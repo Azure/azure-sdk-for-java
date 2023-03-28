@@ -80,7 +80,7 @@ public final class UtilsImpl {
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    // TODO (limolkova) should we send index and list too so that we won't need to change the default later on?
+
     public static final String SUPPORTED_MANIFEST_TYPES = "*/*"
         + "," + ManifestMediaType.OCI_MANIFEST
         + "," + ManifestMediaType.DOCKER_MANIFEST

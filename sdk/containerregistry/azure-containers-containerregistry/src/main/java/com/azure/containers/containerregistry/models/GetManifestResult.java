@@ -6,7 +6,7 @@ import com.azure.containers.containerregistry.implementation.ConstructorAccessor
 import com.azure.core.util.BinaryData;
 
 /**
- * The result from downloading an OCI manifest from the registry.
+ * The result from downloading a manifest from the registry.
  */
 public final class GetManifestResult {
     static {

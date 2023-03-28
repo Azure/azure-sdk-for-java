@@ -25,9 +25,7 @@ public class UploadImage {
     private static final String REPOSITORY = "hello/world";
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-    private static final String OUT_DIRECTORY = getTempDirectory();
     public static void main(String[] args) {
-
         ContainerRegistryContentClient blobClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
@@ -50,7 +48,7 @@ public class UploadImage {
         System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
 
         OciImageManifest manifest = new OciImageManifest()
-            .setConfig(configDescriptor)
+            .setConfiguration(configDescriptor)
             .setSchemaVersion(2)
             .setLayers(Collections.singletonList(
                 new OciDescriptor()
@@ -116,7 +114,7 @@ public class UploadImage {
         UploadRegistryBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
 
         OciImageManifest manifest = new OciImageManifest()
-            .setConfig(configDescriptor)
+            .setConfiguration(configDescriptor)
             .setSchemaVersion(2)
             .setLayers(Collections.singletonList(
                 new OciDescriptor()

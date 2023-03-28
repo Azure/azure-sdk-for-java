@@ -111,7 +111,7 @@ public final class ContainerRegistryContentAsyncClient {
      * <!-- src_embed com.azure.containers.containerregistry.setManifestAsync -->
      * <pre>
      * OciImageManifest manifest = new OciImageManifest&#40;&#41;
-     *         .setConfig&#40;configDescriptor&#41;
+     *         .setConfiguration&#40;configDescriptor&#41;
      *         .setSchemaVersion&#40;2&#41;
      *         .setLayers&#40;Collections.singletonList&#40;layerDescriptor&#41;&#41;;
      * Mono&lt;SetManifestResult&gt; result = blobClient.setManifest&#40;manifest, &quot;latest&quot;&#41;;

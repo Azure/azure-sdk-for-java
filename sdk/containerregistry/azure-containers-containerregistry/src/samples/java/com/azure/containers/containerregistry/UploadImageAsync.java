@@ -57,7 +57,7 @@ public class UploadImageAsync {
 
         Mono.zip(uploadConfig, uploadLayer)
             .map(tuple -> new OciImageManifest()
-                .setConfig(tuple.getT1())
+                .setConfiguration(tuple.getT1())
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))
             .flatMap(manifest -> blobClient.setManifest(manifest, "latest"))
@@ -118,7 +118,7 @@ public class UploadImageAsync {
                 layer.flatMap(layerDescriptor -> {
                     // BEGIN: com.azure.containers.containerregistry.setManifestAsync
                     OciImageManifest manifest = new OciImageManifest()
-                            .setConfig(configDescriptor)
+                            .setConfiguration(configDescriptor)
                             .setSchemaVersion(2)
                             .setLayers(Collections.singletonList(layerDescriptor));
                     Mono<SetManifestResult> result = blobClient.setManifest(manifest, "latest");

@@ -497,9 +497,9 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     private void validateManifest(OciImageManifest originalManifest, OciImageManifest returnedManifest) {
         assertNotNull(originalManifest);
         assertNotNull(returnedManifest);
-        assertNotNull(returnedManifest.getConfig());
-        assertEquals(originalManifest.getConfig().getMediaType(), returnedManifest.getConfig().getMediaType());
-        assertEquals(originalManifest.getConfig().getSizeInBytes(), returnedManifest.getConfig().getSizeInBytes());
+        assertNotNull(returnedManifest.getConfiguration());
+        assertEquals(originalManifest.getConfiguration().getMediaType(), returnedManifest.getConfiguration().getMediaType());
+        assertEquals(originalManifest.getConfiguration().getSizeInBytes(), returnedManifest.getConfiguration().getSizeInBytes());
         assertNotNull(returnedManifest.getLayers());
         assertEquals(originalManifest.getLayers().size(), returnedManifest.getLayers().size());
         for (int i = 0; i < originalManifest.getLayers().size(); i++) {

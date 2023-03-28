@@ -41,8 +41,8 @@ public class DownloadImage {
         OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
         System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
-        String configFileName = manifest.getConfig().getDigest() + ".json";
-        blobClient.downloadStream(manifest.getConfig().getDigest(), createFileChannel(configFileName));
+        String configFileName = manifest.getConfiguration().getDigest() + ".json";
+        blobClient.downloadStream(manifest.getConfiguration().getDigest(), createFileChannel(configFileName));
         System.out.printf("Got config: %s\n", configFileName);
 
         for (OciDescriptor layer : manifest.getLayers()) {

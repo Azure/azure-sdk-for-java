@@ -44,11 +44,11 @@ public class DownloadImageAsync {
             .map(manifestResult -> manifestResult.getManifest().toObject(OciImageManifest.class))
             .doOnSuccess(manifest -> System.out.printf("Got manifest:\n%s\n", prettyPrint(manifest)))
             .flatMapMany(manifest -> {
-                String configFileName = manifest.getConfig().getDigest() + ".json";
+                String configFileName = manifest.getConfiguration().getDigest() + ".json";
                 FileChannel configChannel = createFileChannel(configFileName);
 
                 Mono<Void> downloadConfig = blobClient
-                        .downloadStream(manifest.getConfig().getDigest())
+                        .downloadStream(manifest.getConfiguration().getDigest())
                         .flatMap(downloadResponse -> FluxUtil.writeToWritableByteChannel(downloadResponse.toFluxByteBuffer(), configChannel))
                         .doOnSuccess(i -> System.out.printf("Got config: %s\n", configFileName))
                         .doFinally(i -> closeStream(configChannel));
