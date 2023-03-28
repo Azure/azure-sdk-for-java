@@ -97,7 +97,7 @@ abstract class AsyncBenchmark<T> {
             ImplementationBridgeHelpers
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
-                .setIoThreadCountPerCoreFactor(directConfig, 8);
+                .setIoThreadCountPerCoreFactor(directConfig, 1);
 
         /*
         directConfig =
