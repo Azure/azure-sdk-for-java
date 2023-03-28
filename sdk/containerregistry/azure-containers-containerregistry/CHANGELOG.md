@@ -15,7 +15,6 @@
   - `downloadManifest` method was renamed to `getManifest`, `downloadManifestWithResponse` renamed to `getManifestWithResponse`, the return type of these methods renamed to `GetManifestResult`.
   - Removed `DownloadBlobAsyncResult` and changes `ContainerRegistryContentAsyncClient.downloadStream` return type to `Mono<BinaryData>`.
   - Removed `Collection<ManifestMediaType> mediaTypes` parameter from `downloadManifestWithResponse` method on blob clients.
-  - Renamed `downloadStream(String, WritableByteChannel, Context`) to `downloadStreamWithResponse`. It also now returns `Response<Void>`.
   - Renamed `ContainerRegistryContentClientBuilder.repository` method to `repositoryName`.
 - Renamed `GetManifestResult.getMediaType` and `UploadManifestOptions.getMediaType` to `getManifestMediaType`.
 - Removed `GetManifestResult.asOciManifest` - use `GetManifestResult.getManifest().toObject(OciImageManifest.class)` instead.

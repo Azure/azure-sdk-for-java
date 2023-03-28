@@ -314,7 +314,7 @@ public final class ContainerRegistryContentClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadStream(String digest, WritableByteChannel channel) {
-        downloadStreamWithResponse(digest, channel, Context.NONE);
+        downloadStream(digest, channel, Context.NONE);
     }
 
     /**
@@ -324,16 +324,13 @@ public final class ContainerRegistryContentClient {
      * @param channel The channel to write content to.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return Response to last request received while downloading the context. Note that downloading content could be done
-     *         over several requests due to downloading in chunks or resuming failed downloads. Use distributed tracing or
-     *         logging to get insights into all requests done within this operation.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code digest} is null.
      * @throws ServiceResponseException thrown if content hash does not match requested digest.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadStreamWithResponse(String digest, WritableByteChannel channel, Context context) {
-        return runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, (span) -> downloadBlobInternal(digest, channel, span), context);
+    public void downloadStream(String digest, WritableByteChannel channel, Context context) {
+        runWithTracing(DOWNLOAD_BLOB_SPAN_NAME, (span) -> downloadBlobInternal(digest, channel, span), context);
     }
 
     /**
@@ -509,18 +506,17 @@ public final class ContainerRegistryContentClient {
         }
     }
 
-    private Response<Void> downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
+    private Context downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         MessageDigest sha256 = createSha256();
-        Response<BinaryData> lastChunk;
         try {
-            lastChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
+            Response<BinaryData> lastChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
             validateResponseHeaderDigest(digest, lastChunk.getHeaders());
 
             long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
             for (long p = lastChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
-                lastChunk = readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
             }
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -528,7 +524,7 @@ public final class ContainerRegistryContentClient {
 
         validateDigest(sha256, digest);
 
-        return new SimpleResponse<>(lastChunk.getRequest(), lastChunk.getStatusCode(), lastChunk.getHeaders(), null);
+        return context;
     }
 
     private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
