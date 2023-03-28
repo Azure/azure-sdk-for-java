@@ -84,33 +84,7 @@ abstract class AsyncBenchmark<T> {
         logger = LoggerFactory.getLogger(this.getClass());
         configuration = cfg;
 
-        logger.info(
-            "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE: {}",
-            System.getProperty("COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE"));
-
-        DirectConnectionConfig directConfig = new DirectConnectionConfig();
-        /*directConfig =
-            // Duplicate the default number of I/O threads per core
-            // We know that Spark often works with large payloads and we have seen
-            // indicators that the default number of I/O threads can be too low
-            // for workloads with large payloads
-            ImplementationBridgeHelpers
-                .DirectConnectionConfigHelper
-                .getDirectConnectionConfigAccessor()
-                .setIoThreadCountPerCoreFactor(directConfig, 1);*/
-
-
-        directConfig =
-            // Spark workloads often result in very high CPU load
-            // We have seen indicators that increasing Thread priority for I/O threads
-            // can reduce transient I/O errors/timeouts in this case
-            ImplementationBridgeHelpers
-                .DirectConnectionConfigHelper
-                .getDirectConnectionConfigAccessor()
-                .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY);
-
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .directMode(directConfig)
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
             .preferredRegions(cfg.getPreferredRegionsList())
