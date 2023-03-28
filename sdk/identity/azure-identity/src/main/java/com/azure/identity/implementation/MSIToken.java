@@ -117,15 +117,13 @@ public final class MSIToken extends AccessToken {
      * @return The number of seconds until refresh.
      */
     long getRefreshAtEpochSeconds() {
-        if (this.refreshIn != null) {
-            return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(Long.parseLong(refreshIn)).toEpochSecond();
-        }
 
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         OffsetDateTime expiresAt = EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn));
-        Duration duration = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresAt);
-        if (duration.toHours() >= 2) {
+        Duration duration = Duration.between(now, expiresAt);
+        if (duration.toHours() > 2) {
             long halfDuration = duration.getSeconds() / 2;
-            return expiresAt.minusSeconds(halfDuration).toEpochSecond();
+            return now.plusSeconds(Math.max(halfDuration, 2*60*60)).toEpochSecond();
         } else {
             return expiresAt.toEpochSecond();
         }
