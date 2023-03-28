@@ -34,6 +34,8 @@ object SampleE2EMain {
       .master("local")
       .getOrCreate()
 
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping
     import spark.implicits._

@@ -18,7 +18,7 @@ public final class StreamingPoliciesDeleteSamples {
         manager
             .streamingPolicies()
             .deleteWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "secureStreamingPolicyWithCommonEncryptionCbcsOnly",
                 com.azure.core.util.Context.NONE);

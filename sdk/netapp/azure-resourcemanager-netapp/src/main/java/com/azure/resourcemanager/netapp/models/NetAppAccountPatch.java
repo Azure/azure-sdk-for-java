@@ -20,6 +20,10 @@ public final class NetAppAccountPatch extends Resource {
     @JsonProperty(value = "properties")
     private AccountProperties innerProperties;
 
+    /** Creates an instance of NetAppAccountPatch class. */
+    public NetAppAccountPatch() {
+    }
+
     /**
      * Get the innerProperties property: NetApp Account properties.
      *

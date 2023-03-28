@@ -19,28 +19,27 @@ public final class FaceDetectorPresetTests {
         FaceDetectorPreset model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.FaceDetectorPreset\",\"resolution\":\"StandardDefinition\",\"mode\":\"Combined\",\"blurType\":\"High\",\"experimentalOptions\":{\"lvrwxkvtkk\":\"gjio\",\"k\":\"llqwjygvjayvblmh\",\"gsopbyrqufegxu\":\"uhbxvvy\"}}")
+                    "{\"@odata.type\":\"#Microsoft.Media.FaceDetectorPreset\",\"resolution\":\"SourceResolution\",\"mode\":\"Combined\",\"blurType\":\"Box\",\"experimentalOptions\":{\"eoybfhjxakvvjgs\":\"oorb\",\"dabg\":\"ordilmywwtkgkxny\"}}")
                 .toObject(FaceDetectorPreset.class);
-        Assertions.assertEquals(AnalysisResolution.STANDARD_DEFINITION, model.resolution());
+        Assertions.assertEquals(AnalysisResolution.SOURCE_RESOLUTION, model.resolution());
         Assertions.assertEquals(FaceRedactorMode.COMBINED, model.mode());
-        Assertions.assertEquals(BlurType.HIGH, model.blurType());
-        Assertions.assertEquals("gjio", model.experimentalOptions().get("lvrwxkvtkk"));
+        Assertions.assertEquals(BlurType.BOX, model.blurType());
+        Assertions.assertEquals("oorb", model.experimentalOptions().get("eoybfhjxakvvjgs"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FaceDetectorPreset model =
             new FaceDetectorPreset()
-                .withResolution(AnalysisResolution.STANDARD_DEFINITION)
+                .withResolution(AnalysisResolution.SOURCE_RESOLUTION)
                 .withMode(FaceRedactorMode.COMBINED)
-                .withBlurType(BlurType.HIGH)
-                .withExperimentalOptions(
-                    mapOf("lvrwxkvtkk", "gjio", "k", "llqwjygvjayvblmh", "gsopbyrqufegxu", "uhbxvvy"));
+                .withBlurType(BlurType.BOX)
+                .withExperimentalOptions(mapOf("eoybfhjxakvvjgs", "oorb", "dabg", "ordilmywwtkgkxny"));
         model = BinaryData.fromObject(model).toObject(FaceDetectorPreset.class);
-        Assertions.assertEquals(AnalysisResolution.STANDARD_DEFINITION, model.resolution());
+        Assertions.assertEquals(AnalysisResolution.SOURCE_RESOLUTION, model.resolution());
         Assertions.assertEquals(FaceRedactorMode.COMBINED, model.mode());
-        Assertions.assertEquals(BlurType.HIGH, model.blurType());
-        Assertions.assertEquals("gjio", model.experimentalOptions().get("lvrwxkvtkk"));
+        Assertions.assertEquals(BlurType.BOX, model.blurType());
+        Assertions.assertEquals("oorb", model.experimentalOptions().get("eoybfhjxakvvjgs"));
     }
 
     @SuppressWarnings("unchecked")

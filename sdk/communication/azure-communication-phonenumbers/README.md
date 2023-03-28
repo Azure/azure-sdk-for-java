@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
-  <version>1.0.18</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -251,8 +251,8 @@ if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
 Get the list of currently configured trunks or routes.
 
 ```java readme-sample-listTrunksAndRoutes
-List<SipTrunk> trunks = sipRoutingClient.listTrunks();
-List<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
+PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
+PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
 for (SipTrunk trunk : trunks) {
     System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
 }

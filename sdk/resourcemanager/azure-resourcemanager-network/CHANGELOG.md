@@ -1,6 +1,6 @@
 # Release History
 
-## 2.24.0-beta.1 (Unreleased)
+## 2.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.25.0 (2023-03-24)
+
+### Bugs Fixed
+
+- Fixed a bug that `listAvailablePrivateIPAddresses` in `Subnet` throws NPE when user has no permission.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-09-01`.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed a bug that updating source/destination of `NetworkSecurityGroup` rules would fail when from application security group to ip addresses/service tags.
 
 ## 2.23.0 (2023-01-27)
 

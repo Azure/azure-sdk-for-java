@@ -25,6 +25,10 @@ public final class TenantListResult {
     @JsonProperty(value = "nextLink", required = true)
     private String nextLink;
 
+    /** Creates an instance of TenantListResult class. */
+    public TenantListResult() {
+    }
+
     /**
      * Get the value property: An array of tenants.
      *

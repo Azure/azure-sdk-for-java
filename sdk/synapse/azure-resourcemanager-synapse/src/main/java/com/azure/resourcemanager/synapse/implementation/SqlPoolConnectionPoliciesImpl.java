@@ -27,17 +27,6 @@ public final class SqlPoolConnectionPoliciesImpl implements SqlPoolConnectionPol
         this.serviceManager = serviceManager;
     }
 
-    public SqlPoolConnectionPolicy get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ConnectionPolicyName connectionPolicyName) {
-        SqlPoolConnectionPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, connectionPolicyName);
-        if (inner != null) {
-            return new SqlPoolConnectionPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolConnectionPolicy> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -54,6 +43,17 @@ public final class SqlPoolConnectionPoliciesImpl implements SqlPoolConnectionPol
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolConnectionPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolConnectionPolicy get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, ConnectionPolicyName connectionPolicyName) {
+        SqlPoolConnectionPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, connectionPolicyName);
+        if (inner != null) {
+            return new SqlPoolConnectionPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

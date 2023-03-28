@@ -58,6 +58,10 @@ public final class ContainerNetworkInterfaceStatistics {
     @JsonProperty(value = "txDropped")
     private Long txDropped;
 
+    /** Creates an instance of ContainerNetworkInterfaceStatistics class. */
+    public ContainerNetworkInterfaceStatistics() {
+    }
+
     /**
      * Get the rxBytes property: The rxBytes property.
      *

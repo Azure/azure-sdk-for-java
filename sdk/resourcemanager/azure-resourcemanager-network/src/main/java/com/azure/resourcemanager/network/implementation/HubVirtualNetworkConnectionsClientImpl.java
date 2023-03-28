@@ -191,7 +191,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         } else {
             hubVirtualNetworkConnectionParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -262,7 +262,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         } else {
             hubVirtualNetworkConnectionParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -367,7 +367,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             String virtualHubName,
             String connectionName,
             HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters)
             .getSyncPoller();
     }
@@ -394,7 +395,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             String connectionName,
             HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters, context)
             .getSyncPoller();
     }
@@ -537,7 +539,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -592,7 +594,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -666,7 +668,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
     }
 
     /**
@@ -684,7 +686,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
     }
 
     /**
@@ -793,7 +795,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -849,7 +851,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -950,7 +952,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1010,7 +1012,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

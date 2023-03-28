@@ -17,7 +17,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-checkpointstore-jedis</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
 
 
   <name>Microsoft Azure client library for storing checkpoints in Azure Redis</name>
@@ -51,6 +51,12 @@
 
     <!-- Test dependencies -->
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -65,7 +71,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.26</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 /** Samples for HybridIdentityMetadata Put. */
 public final class HybridIdentityMetadataPutSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/CreateHybridIdentityMetadata.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/CreateHybridIdentityMetadata.json
      */
     /**
      * Sample code: CreateHybridIdentityMetadata.

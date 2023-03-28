@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks Delete. */
 public final class ManagementLocksDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class ManagementLocksDeleteSamples {
             .manager()
             .managementLockClient()
             .getManagementLocks()
-            .deleteWithResponse("resourcegroupname", "testlock", Context.NONE);
+            .deleteWithResponse("resourcegroupname", "testlock", com.azure.core.util.Context.NONE);
     }
 }

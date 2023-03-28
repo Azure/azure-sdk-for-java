@@ -1,21 +1,48 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.9.0-beta.2 (2023-03-16)
+
+### Features Added
+- Added CAE support to service principal authentication.
+- Pass more detailed refresh policy for managed identity tokens to MSAL.
+
+### Bugs Fixed
+- Fixed detection logic for az/azd.
+
+## 1.8.1 (2023-03-06)
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `msal4j` from `1.13.4` to version `1.13.5`.
+
+## 1.9.0-beta.1 (2023-02-08)
+
+### Features Added
+- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
+- Added support to disable instance discovery on AAD credentials.
+- `WorkloadIdentityCredential` and `DefaultAzureCredential` support Workload Identity Federation on Kubernetes. `DefaultAzureCredential` support requires environment variable configuration as set by the Workload Identity webhook.
+
+## 1.8.0 (2023-02-03)
 
 ### Features Added
 
-- [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
+#### Features Generally Available from v1.8.0-beta1
+- Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `msal4j` from `1.13.3` to version `1.13.4`.
 
-### Other Changes
 
 ## 1.8.0-beta.1 (2023-01-20)
 
 ### Features Added
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
+- Added support to disable instance discovery on AAD credentials.
 
 ## 1.7.3 (2023-01-06)
 

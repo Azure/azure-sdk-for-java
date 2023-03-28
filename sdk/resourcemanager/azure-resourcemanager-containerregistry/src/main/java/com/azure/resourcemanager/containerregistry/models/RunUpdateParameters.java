@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The set of run properties that can be updated. */
 @Fluent
 public final class RunUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunUpdateParameters.class);
-
     /*
      * The value that indicates whether archiving is enabled or not.
      */
     @JsonProperty(value = "isArchiveEnabled")
     private Boolean isArchiveEnabled;
+
+    /** Creates an instance of RunUpdateParameters class. */
+    public RunUpdateParameters() {
+    }
 
     /**
      * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.

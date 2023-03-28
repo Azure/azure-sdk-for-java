@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.32 (Unreleased)
+## 1.0.0-beta.34 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.33 (2023-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+- Upgraded OpenTelemetry from `1.20.0` to `1.23.0`.
+
+## 1.0.0-beta.32 (2023-02-01)
+
+### Features Added
+
+- Added support for custom tracer providers.
+- Switched to OpenTelemetry messaging semantic conventions and started reporting schema version.
+
+### Breaking Changes
+
+- Renamed attributes to converge with OpenTelemetry semantic conventions:
+  - `messaging_bus.destination` -> `messaging.destination.name`
+  - `peer.address` -> `net.peer.name`
+  - `clientRequestId` -> `az.client_request_id`
+  - `service.request.id` -> `az.service_request_id`
+- Removed `OpenTelemetryHttpPolicy`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+- Upgraded OpenTelemetry from `1.14.0` to `1.20.0`.
 
 ## 1.0.0-beta.31 (2023-01-05)
 

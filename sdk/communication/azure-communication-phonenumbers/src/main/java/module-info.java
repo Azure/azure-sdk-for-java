@@ -8,6 +8,7 @@ module com.azure.communication.phonenumbers {
     // public API surface area
     exports com.azure.communication.phonenumbers;
     exports com.azure.communication.phonenumbers.models;
+    exports com.azure.communication.phonenumbers.siprouting;
     exports com.azure.communication.phonenumbers.siprouting.models;
 
     opens com.azure.communication.phonenumbers.implementation.models

@@ -22,6 +22,10 @@ public final class WorkspaceKeyDetails {
     @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
+    /** Creates an instance of WorkspaceKeyDetails class. */
+    public WorkspaceKeyDetails() {
+    }
+
     /**
      * Get the name property: Workspace Key sub-resource name.
      *

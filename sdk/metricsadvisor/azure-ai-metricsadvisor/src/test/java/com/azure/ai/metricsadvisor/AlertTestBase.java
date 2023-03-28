@@ -8,15 +8,18 @@ import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 
 public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
-    @Test
-    public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
     public static final String ALERT_CONFIG_ID = "126d1470-b500-4ef0-b5c0-47f9ca914a75";
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     // Pre-configured test resource.
     protected static class ListAlertsInput {

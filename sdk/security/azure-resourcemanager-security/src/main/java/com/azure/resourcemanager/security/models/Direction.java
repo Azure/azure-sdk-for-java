@@ -17,6 +17,15 @@ public final class Direction extends ExpandableStringEnum<Direction> {
     public static final Direction OUTBOUND = fromString("Outbound");
 
     /**
+     * Creates a new instance of Direction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Direction() {
+    }
+
+    /**
      * Creates or finds a Direction from its string representation.
      *
      * @param name a name to look for.

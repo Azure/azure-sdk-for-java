@@ -35,6 +35,10 @@ public final class CapacityPoolInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of CapacityPoolInner class. */
+    public CapacityPoolInner() {
+    }
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *

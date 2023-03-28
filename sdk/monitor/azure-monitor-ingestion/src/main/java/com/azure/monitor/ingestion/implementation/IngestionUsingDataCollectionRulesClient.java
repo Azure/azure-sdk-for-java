@@ -19,7 +19,7 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous IngestionUsingDataCollectionRulesClient type. */
 @ServiceClient(builder = IngestionUsingDataCollectionRulesClientBuilder.class)
 public final class IngestionUsingDataCollectionRulesClient {
-    @Generated private final IngestionUsingDataCollectionRulesAsyncClient client;
+    @Generated private final IngestionUsingDataCollectionRulesClientImpl serviceClient;
 
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient class.
@@ -27,8 +27,8 @@ public final class IngestionUsingDataCollectionRulesClient {
      * @param client the async client.
      */
     @Generated
-    IngestionUsingDataCollectionRulesClient(IngestionUsingDataCollectionRulesAsyncClient client) {
-        this.client = client;
+    IngestionUsingDataCollectionRulesClient(IngestionUsingDataCollectionRulesClientImpl client) {
+        this.serviceClient = client;
     }
 
     /**
@@ -69,6 +69,6 @@ public final class IngestionUsingDataCollectionRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
             String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
-        return this.client.uploadWithResponse(ruleId, stream, body, requestOptions).block();
+        return this.serviceClient.uploadWithResponse(ruleId, stream, body, requestOptions);
     }
 }

@@ -11,11 +11,10 @@ import com.azure.resourcemanager.digitaltwins.models.ConnectionProperties;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DigitalTwinsPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DigitalTwinsProperties model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class DigitalTwinsPropertiesTests {
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DigitalTwinsProperties model =
             new DigitalTwinsProperties()
                 .withPrivateEndpointConnections(

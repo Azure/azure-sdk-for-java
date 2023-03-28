@@ -24,6 +24,10 @@ public final class WorkflowTriggerListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of WorkflowTriggerListResult class. */
+    public WorkflowTriggerListResult() {
+    }
+
     /**
      * Get the value property: A list of workflow triggers.
      *

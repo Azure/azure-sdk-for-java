@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230112.1
+      ref: refs/tags/azure-sdk-build-tools_20230321.1
 
 parameters:
 - name: Artifacts
@@ -99,7 +99,7 @@ stages:
             SkipCheckoutNone: true
 
         - script: |
-            pip install markdown2 BeautifulSoup4
+            python -m pip install markdown2 BeautifulSoup4
           displayName: 'pip install markdown2 and BeautifulSoup4'
 
         # Save the Package Properties
@@ -155,6 +155,7 @@ stages:
             arguments: >
               -SourceDirectory $(System.DefaultWorkingDirectory)/build
               -TargetDirectory $(Build.ArtifactStagingDirectory)
+              -Artifacts ('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage)
               -InformationAction Continue
 
         - template: /eng/common/pipelines/templates/steps/publish-artifact.yml

@@ -17,7 +17,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RecoverableSqlPoolInner;
  */
 public interface WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
     /**
-     * Get list of recoverable sql pools for workspace managed sql server.
+     * Get list of recoverable sql pools for the server.
+     *
+     * <p>Get list of recoverable sql pools for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -31,7 +33,9 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
     PagedIterable<RecoverableSqlPoolInner> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Get list of recoverable sql pools for workspace managed sql server.
+     * Get list of recoverable sql pools for the server.
+     *
+     * <p>Get list of recoverable sql pools for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -46,21 +50,9 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
     PagedIterable<RecoverableSqlPoolInner> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Get recoverable sql pools for workspace managed sql server.
+     * Get recoverable sql pools for the server.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName The name of the sql pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoverable sql pools for workspace managed sql server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoverableSqlPoolInner get(String resourceGroupName, String workspaceName, String sqlPoolName);
-
-    /**
-     * Get recoverable sql pools for workspace managed sql server.
+     * <p>Get recoverable sql pools for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -74,4 +66,20 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecoverableSqlPoolInner> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+
+    /**
+     * Get recoverable sql pools for the server.
+     *
+     * <p>Get recoverable sql pools for workspace managed sql server.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName The name of the sql pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recoverable sql pools for workspace managed sql server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecoverableSqlPoolInner get(String resourceGroupName, String workspaceName, String sqlPoolName);
 }

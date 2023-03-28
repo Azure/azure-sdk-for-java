@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+  <version>4.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
@@ -51,30 +51,19 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.2.8</version>   <!-- NOTE: This should be updated manually. -->
+        <version>1.2.10</version>   <!-- NOTE: This should be updated manually. -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-identity</artifactId>
-        <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.31.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+        <version>3.33.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager</artifactId>
-        <version>2.23.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-identity-extensions</artifactId>
-        <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+        <version>2.25.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       </dependency>
 
       <!-- Spring Cloud Azure -->
@@ -131,6 +120,31 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-feature-management</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-feature-management-web</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

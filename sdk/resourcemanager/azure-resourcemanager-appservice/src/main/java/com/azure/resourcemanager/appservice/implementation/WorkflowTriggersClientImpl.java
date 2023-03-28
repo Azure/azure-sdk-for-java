@@ -63,11 +63,10 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface WorkflowTriggersService {
+    public interface WorkflowTriggersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowTriggerListResult>> list(
@@ -84,9 +83,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers"
-                + "/{triggerName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowTriggerInner>> get(
@@ -102,9 +99,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers"
-                + "/{triggerName}/listCallbackUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/listCallbackUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrl(
@@ -120,9 +115,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers"
-                + "/{triggerName}/run")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/run")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> run(
@@ -138,9 +131,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers"
-                + "/{triggerName}/schemas/json")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/schemas/json")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JsonSchemaInner>> getSchemaJson(
@@ -526,31 +517,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     public Mono<WorkflowTriggerInner> getAsync(
         String resourceGroupName, String name, String workflowName, String triggerName) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, triggerName)
-            .flatMap(
-                (Response<WorkflowTriggerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a workflow trigger.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowTriggerInner get(String resourceGroupName, String name, String workflowName, String triggerName) {
-        return getAsync(resourceGroupName, name, workflowName, triggerName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -570,6 +537,23 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     public Response<WorkflowTriggerInner> getWithResponse(
         String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context).block();
+    }
+
+    /**
+     * Gets a workflow trigger.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowTriggerInner get(String resourceGroupName, String name, String workflowName, String triggerName) {
+        return getWithResponse(resourceGroupName, name, workflowName, triggerName, Context.NONE).getValue();
     }
 
     /**
@@ -704,32 +688,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     public Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
         String resourceGroupName, String name, String workflowName, String triggerName) {
         return listCallbackUrlWithResponseAsync(resourceGroupName, name, workflowName, triggerName)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the callback URL for a workflow trigger.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowTriggerCallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
-        return listCallbackUrlAsync(resourceGroupName, name, workflowName, triggerName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -749,6 +708,24 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
         String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
         return listCallbackUrlWithResponseAsync(resourceGroupName, name, workflowName, triggerName, context).block();
+    }
+
+    /**
+     * Get the callback URL for a workflow trigger.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the callback URL for a workflow trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowTriggerCallbackUrlInner listCallbackUrl(
+        String resourceGroupName, String name, String workflowName, String triggerName) {
+        return listCallbackUrlWithResponse(resourceGroupName, name, workflowName, triggerName, Context.NONE).getValue();
     }
 
     /**
@@ -927,7 +904,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(
         String resourceGroupName, String name, String workflowName, String triggerName) {
-        return beginRunAsync(resourceGroupName, name, workflowName, triggerName).getSyncPoller();
+        return this.beginRunAsync(resourceGroupName, name, workflowName, triggerName).getSyncPoller();
     }
 
     /**
@@ -946,7 +923,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(
         String resourceGroupName, String name, String workflowName, String triggerName, Context context) {
-        return beginRunAsync(resourceGroupName, name, workflowName, triggerName, context).getSyncPoller();
+        return this.beginRunAsync(resourceGroupName, name, workflowName, triggerName, context).getSyncPoller();
     }
 
     /**
@@ -1152,32 +1129,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     public Mono<JsonSchemaInner> getSchemaJsonAsync(
         String resourceGroupName, String name, String workflowName, String triggerName) {
         return getSchemaJsonWithResponseAsync(resourceGroupName, name, workflowName, triggerName)
-            .flatMap(
-                (Response<JsonSchemaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the trigger schema as JSON.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JsonSchemaInner getSchemaJson(
-        String resourceGroupName, String name, String workflowName, String triggerName) {
-        return getSchemaJsonAsync(resourceGroupName, name, workflowName, triggerName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1200,9 +1152,28 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     }
 
     /**
+     * Get the trigger schema as JSON.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the trigger schema as JSON.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JsonSchemaInner getSchemaJson(
+        String resourceGroupName, String name, String workflowName, String triggerName) {
+        return getSchemaJsonWithResponse(resourceGroupName, name, workflowName, triggerName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1237,7 +1208,8 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

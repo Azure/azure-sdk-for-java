@@ -58,9 +58,9 @@ public final class HybridContainerServiceManager {
 
     private Operations operations;
 
-    private VirtualNetworksOperations virtualNetworksOperations;
-
     private StorageSpacesOperations storageSpacesOperations;
+
+    private VirtualNetworksOperations virtualNetworksOperations;
 
     private final HybridContainerService clientObject;
 
@@ -229,7 +229,7 @@ public final class HybridContainerServiceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hybridcontainerservice")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -350,19 +350,6 @@ public final class HybridContainerServiceManager {
     }
 
     /**
-     * Gets the resource collection API of VirtualNetworksOperations. It manages VirtualNetworks.
-     *
-     * @return Resource collection API of VirtualNetworksOperations.
-     */
-    public VirtualNetworksOperations virtualNetworksOperations() {
-        if (this.virtualNetworksOperations == null) {
-            this.virtualNetworksOperations =
-                new VirtualNetworksOperationsImpl(clientObject.getVirtualNetworksOperations(), this);
-        }
-        return virtualNetworksOperations;
-    }
-
-    /**
      * Gets the resource collection API of StorageSpacesOperations. It manages StorageSpaces.
      *
      * @return Resource collection API of StorageSpacesOperations.
@@ -373,6 +360,19 @@ public final class HybridContainerServiceManager {
                 new StorageSpacesOperationsImpl(clientObject.getStorageSpacesOperations(), this);
         }
         return storageSpacesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualNetworksOperations. It manages VirtualNetworks.
+     *
+     * @return Resource collection API of VirtualNetworksOperations.
+     */
+    public VirtualNetworksOperations virtualNetworksOperations() {
+        if (this.virtualNetworksOperations == null) {
+            this.virtualNetworksOperations =
+                new VirtualNetworksOperationsImpl(clientObject.getVirtualNetworksOperations(), this);
+        }
+        return virtualNetworksOperations;
     }
 
     /**

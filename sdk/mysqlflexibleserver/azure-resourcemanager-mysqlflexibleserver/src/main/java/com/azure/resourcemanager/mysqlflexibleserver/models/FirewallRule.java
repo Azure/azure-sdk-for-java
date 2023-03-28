@@ -53,6 +53,13 @@ public interface FirewallRule {
     String endIpAddress();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.FirewallRuleInner object.
      *
      * @return the inner object.

@@ -96,6 +96,13 @@ public interface SessionHost {
     String assignedUser();
 
     /**
+     * Gets the friendlyName property: Friendly name of SessionHost.
+     *
+     * @return the friendlyName value.
+     */
+    String friendlyName();
+
+    /**
      * Gets the status property: Status for a SessionHost.
      *
      * @return the status value.

@@ -37,12 +37,15 @@ public final class ChangeProperties {
     private ChangeAttributes changeAttributes;
 
     /*
-     * A dictionary with changed property name as a key and the change details
-     * as the value
+     * A dictionary with changed property name as a key and the change details as the value
      */
     @JsonProperty(value = "changes")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ChangeBase> changes;
+
+    /** Creates an instance of ChangeProperties class. */
+    public ChangeProperties() {
+    }
 
     /**
      * Get the targetResourceId property: The fully qualified ID of the target resource that was changed.

@@ -85,8 +85,8 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_STARTER = "/bin/sh";
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
-    static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
-    static final Pattern LINUX_MAC_PROCESS_ERROR_MESSAGE = Pattern.compile("(.*)az:(.*)not found");
+    static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
+    static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -206,7 +206,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl);
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -223,6 +223,13 @@ public abstract class IdentityClientBase {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         }
+
+        if (!options.isCp1Disabled()) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            applicationBuilder.clientCapabilities(set);
+        }
+
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -260,7 +267,7 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl);
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -337,6 +344,10 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                if (accessToken.getClass().isInstance(MSIToken.class)) {
+                    MSIToken msiToken = (MSIToken) accessToken;
+                    result.setRefreshInSeconds(msiToken.getRefreshAtEpochSeconds());
+                }
                 return result;
             }).toFuture();
         });
@@ -373,10 +384,15 @@ public abstract class IdentityClientBase {
     }
 
     OnBehalfOfParameters buildOBOFlowParameters(TokenRequestContext request) {
-        return OnBehalfOfParameters
+        OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options))
-            .build();
+            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(customClaimRequest);
+        }
+        return builder.build();
     }
 
     InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
@@ -449,8 +465,8 @@ public abstract class IdentityClientBase {
                         break;
                     }
 
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                        || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
+                    if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
+                        || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
                                 "AzureCliCredential authentication unavailable. Azure CLI not installed."
@@ -537,8 +553,8 @@ public abstract class IdentityClientBase {
                         break;
                     }
 
-                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
-                            || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
+                    if (WINDOWS_PROCESS_ERROR_MESSAGE.matcher(line).find()
+                            || SH_PROCESS_ERROR_MESSAGE.matcher(line).find()) {
                         throw LoggingUtil.logCredentialUnavailableException(
                                 LOGGER,
                                 options,
@@ -710,5 +726,23 @@ public abstract class IdentityClientBase {
             default:
                 return new Proxy(Proxy.Type.HTTP, options.getAddress());
         }
+    }
+
+    /**
+     * Get the configured tenant id.
+     *
+     * @return the tenant id.
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Get the configured client id.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
     }
 }

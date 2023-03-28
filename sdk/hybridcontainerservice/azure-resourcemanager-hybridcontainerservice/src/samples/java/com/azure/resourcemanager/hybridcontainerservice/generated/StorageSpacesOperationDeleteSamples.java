@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageSpacesOperation Delete. */
 public final class StorageSpacesOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/DeleteStorageSpace.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteStorageSpace.json
      */
     /**
      * Sample code: DeleteStorageSpace.
@@ -20,6 +18,7 @@ public final class StorageSpacesOperationDeleteSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .storageSpacesOperations()
-            .deleteByResourceGroupWithResponse("test-arcappliance-resgrp", "test-storage", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-storage", com.azure.core.util.Context.NONE);
     }
 }

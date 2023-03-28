@@ -18,6 +18,10 @@ public final class PrivateLinkResourceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
+    /** Creates an instance of PrivateLinkResourceInner class. */
+    public PrivateLinkResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

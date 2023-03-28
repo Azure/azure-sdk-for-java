@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGroupType. */
+/** Resource Type of ApplicationGroup. */
 public final class ApplicationGroupType extends ExpandableStringEnum<ApplicationGroupType> {
     /** Static value RemoteApp for ApplicationGroupType. */
     public static final ApplicationGroupType REMOTE_APP = fromString("RemoteApp");
 
     /** Static value Desktop for ApplicationGroupType. */
     public static final ApplicationGroupType DESKTOP = fromString("Desktop");
+
+    /**
+     * Creates a new instance of ApplicationGroupType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGroupType() {
+    }
 
     /**
      * Creates or finds a ApplicationGroupType from its string representation.

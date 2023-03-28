@@ -17,22 +17,22 @@ public final class H264LayerTests {
         H264Layer model =
             BinaryData
                 .fromString(
-                    "{\"profile\":\"High\",\"level\":\"luudfdlwggytsb\",\"bufferWindow\":\"PT26H19M57S\",\"crf\":31.355131,\"referenceFrames\":1481495846,\"entropyMode\":\"Cabac\",\"bitrate\":2041049436,\"maxBitrate\":800109726,\"bFrames\":405729519,\"frameRate\":\"fxqknpirgneptt\",\"slices\":1651925529,\"adaptiveBFrame\":true,\"width\":\"ffcdmqnrojl\",\"height\":\"jnkrxf\",\"label\":\"dhcrati\"}")
+                    "{\"profile\":\"High444\",\"level\":\"pglydz\",\"bufferWindow\":\"PT209H34M52S\",\"crf\":25.056833,\"referenceFrames\":377292249,\"entropyMode\":\"Cabac\",\"bitrate\":1251506139,\"maxBitrate\":1014603209,\"bFrames\":1266268287,\"frameRate\":\"t\",\"slices\":584463560,\"adaptiveBFrame\":false,\"width\":\"dmovzvfva\",\"height\":\"zqadf\",\"label\":\"z\"}")
                 .toObject(H264Layer.class);
-        Assertions.assertEquals("ffcdmqnrojl", model.width());
-        Assertions.assertEquals("jnkrxf", model.height());
-        Assertions.assertEquals("dhcrati", model.label());
-        Assertions.assertEquals(2041049436, model.bitrate());
-        Assertions.assertEquals(800109726, model.maxBitrate());
-        Assertions.assertEquals(405729519, model.bFrames());
-        Assertions.assertEquals("fxqknpirgneptt", model.frameRate());
-        Assertions.assertEquals(1651925529, model.slices());
-        Assertions.assertEquals(true, model.adaptiveBFrame());
-        Assertions.assertEquals(H264VideoProfile.HIGH, model.profile());
-        Assertions.assertEquals("luudfdlwggytsb", model.level());
-        Assertions.assertEquals(Duration.parse("PT26H19M57S"), model.bufferWindow());
-        Assertions.assertEquals(31.355131F, model.crf());
-        Assertions.assertEquals(1481495846, model.referenceFrames());
+        Assertions.assertEquals("dmovzvfva", model.width());
+        Assertions.assertEquals("zqadf", model.height());
+        Assertions.assertEquals("z", model.label());
+        Assertions.assertEquals(1251506139, model.bitrate());
+        Assertions.assertEquals(1014603209, model.maxBitrate());
+        Assertions.assertEquals(1266268287, model.bFrames());
+        Assertions.assertEquals("t", model.frameRate());
+        Assertions.assertEquals(584463560, model.slices());
+        Assertions.assertEquals(false, model.adaptiveBFrame());
+        Assertions.assertEquals(H264VideoProfile.HIGH444, model.profile());
+        Assertions.assertEquals("pglydz", model.level());
+        Assertions.assertEquals(Duration.parse("PT209H34M52S"), model.bufferWindow());
+        Assertions.assertEquals(25.056833F, model.crf());
+        Assertions.assertEquals(377292249, model.referenceFrames());
         Assertions.assertEquals(EntropyMode.CABAC, model.entropyMode());
     }
 
@@ -40,36 +40,36 @@ public final class H264LayerTests {
     public void testSerialize() throws Exception {
         H264Layer model =
             new H264Layer()
-                .withWidth("ffcdmqnrojl")
-                .withHeight("jnkrxf")
-                .withLabel("dhcrati")
-                .withBitrate(2041049436)
-                .withMaxBitrate(800109726)
-                .withBFrames(405729519)
-                .withFrameRate("fxqknpirgneptt")
-                .withSlices(1651925529)
-                .withAdaptiveBFrame(true)
-                .withProfile(H264VideoProfile.HIGH)
-                .withLevel("luudfdlwggytsb")
-                .withBufferWindow(Duration.parse("PT26H19M57S"))
-                .withCrf(31.355131F)
-                .withReferenceFrames(1481495846)
+                .withWidth("dmovzvfva")
+                .withHeight("zqadf")
+                .withLabel("z")
+                .withBitrate(1251506139)
+                .withMaxBitrate(1014603209)
+                .withBFrames(1266268287)
+                .withFrameRate("t")
+                .withSlices(584463560)
+                .withAdaptiveBFrame(false)
+                .withProfile(H264VideoProfile.HIGH444)
+                .withLevel("pglydz")
+                .withBufferWindow(Duration.parse("PT209H34M52S"))
+                .withCrf(25.056833F)
+                .withReferenceFrames(377292249)
                 .withEntropyMode(EntropyMode.CABAC);
         model = BinaryData.fromObject(model).toObject(H264Layer.class);
-        Assertions.assertEquals("ffcdmqnrojl", model.width());
-        Assertions.assertEquals("jnkrxf", model.height());
-        Assertions.assertEquals("dhcrati", model.label());
-        Assertions.assertEquals(2041049436, model.bitrate());
-        Assertions.assertEquals(800109726, model.maxBitrate());
-        Assertions.assertEquals(405729519, model.bFrames());
-        Assertions.assertEquals("fxqknpirgneptt", model.frameRate());
-        Assertions.assertEquals(1651925529, model.slices());
-        Assertions.assertEquals(true, model.adaptiveBFrame());
-        Assertions.assertEquals(H264VideoProfile.HIGH, model.profile());
-        Assertions.assertEquals("luudfdlwggytsb", model.level());
-        Assertions.assertEquals(Duration.parse("PT26H19M57S"), model.bufferWindow());
-        Assertions.assertEquals(31.355131F, model.crf());
-        Assertions.assertEquals(1481495846, model.referenceFrames());
+        Assertions.assertEquals("dmovzvfva", model.width());
+        Assertions.assertEquals("zqadf", model.height());
+        Assertions.assertEquals("z", model.label());
+        Assertions.assertEquals(1251506139, model.bitrate());
+        Assertions.assertEquals(1014603209, model.maxBitrate());
+        Assertions.assertEquals(1266268287, model.bFrames());
+        Assertions.assertEquals("t", model.frameRate());
+        Assertions.assertEquals(584463560, model.slices());
+        Assertions.assertEquals(false, model.adaptiveBFrame());
+        Assertions.assertEquals(H264VideoProfile.HIGH444, model.profile());
+        Assertions.assertEquals("pglydz", model.level());
+        Assertions.assertEquals(Duration.parse("PT209H34M52S"), model.bufferWindow());
+        Assertions.assertEquals(25.056833F, model.crf());
+        Assertions.assertEquals(377292249, model.referenceFrames());
         Assertions.assertEquals(EntropyMode.CABAC, model.entropyMode());
     }
 }

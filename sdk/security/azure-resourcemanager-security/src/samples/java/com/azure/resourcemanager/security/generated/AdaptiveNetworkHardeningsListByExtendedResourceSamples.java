@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdaptiveNetworkHardenings ListByExtendedResource. */
 public final class AdaptiveNetworkHardeningsListByExtendedResourceSamples {
     /*
@@ -20,6 +18,7 @@ public final class AdaptiveNetworkHardeningsListByExtendedResourceSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .adaptiveNetworkHardenings()
-            .listByExtendedResource("rg1", "Microsoft.Compute", "virtualMachines", "vm1", Context.NONE);
+            .listByExtendedResource(
+                "rg1", "Microsoft.Compute", "virtualMachines", "vm1", com.azure.core.util.Context.NONE);
     }
 }

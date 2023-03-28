@@ -19,16 +19,15 @@ public class ContactProfilesProperties {
     private ContactProfilesPropertiesProvisioningState provisioningState;
 
     /*
-     * Minimum viable contact duration in ISO 8601 format. Used for listing the
-     * available contacts with a spacecraft at a given ground station.
+     * Minimum viable contact duration in ISO 8601 format. Used for listing the available contacts with a spacecraft at
+     * a given ground station.
      */
     @JsonProperty(value = "minimumViableContactDuration")
     private String minimumViableContactDuration;
 
     /*
-     * Minimum viable elevation for the contact in decimal degrees. Used for
-     * listing the available contacts with a spacecraft at a given ground
-     * station.
+     * Minimum viable elevation for the contact in decimal degrees. Used for listing the available contacts with a
+     * spacecraft at a given ground station.
      */
     @JsonProperty(value = "minimumElevationDegrees")
     private Float minimumElevationDegrees;
@@ -40,9 +39,8 @@ public class ContactProfilesProperties {
     private AutoTrackingConfiguration autoTrackingConfiguration;
 
     /*
-     * ARM resource identifier of the Event Hub used for telemetry. Requires
-     * granting Orbital Resource Provider the rights to send telemetry into the
-     * hub.
+     * ARM resource identifier of the Event Hub used for telemetry. Requires granting Orbital Resource Provider the
+     * rights to send telemetry into the hub.
      */
     @JsonProperty(value = "eventHubUri")
     private String eventHubUri;
@@ -54,11 +52,21 @@ public class ContactProfilesProperties {
     private ContactProfilesPropertiesNetworkConfiguration networkConfiguration;
 
     /*
-     * Links of the Contact Profile. Describes RF links, modem processing, and
-     * IP endpoints.
+     * Third-party mission configuration of the Contact Profile. Describes RF links, modem processing, and IP
+     * endpoints.
+     */
+    @JsonProperty(value = "thirdPartyConfigurations")
+    private List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations;
+
+    /*
+     * Links of the Contact Profile. Describes RF links, modem processing, and IP endpoints.
      */
     @JsonProperty(value = "links", required = true)
     private List<ContactProfileLink> links;
+
+    /** Creates an instance of ContactProfilesProperties class. */
+    public ContactProfilesProperties() {
+    }
 
     /**
      * Get the provisioningState property: The current state of the resource's creation, deletion, or modification.
@@ -190,6 +198,29 @@ public class ContactProfilesProperties {
     }
 
     /**
+     * Get the thirdPartyConfigurations property: Third-party mission configuration of the Contact Profile. Describes RF
+     * links, modem processing, and IP endpoints.
+     *
+     * @return the thirdPartyConfigurations value.
+     */
+    public List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations() {
+        return this.thirdPartyConfigurations;
+    }
+
+    /**
+     * Set the thirdPartyConfigurations property: Third-party mission configuration of the Contact Profile. Describes RF
+     * links, modem processing, and IP endpoints.
+     *
+     * @param thirdPartyConfigurations the thirdPartyConfigurations value to set.
+     * @return the ContactProfilesProperties object itself.
+     */
+    public ContactProfilesProperties withThirdPartyConfigurations(
+        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+        this.thirdPartyConfigurations = thirdPartyConfigurations;
+        return this;
+    }
+
+    /**
      * Get the links property: Links of the Contact Profile. Describes RF links, modem processing, and IP endpoints.
      *
      * @return the links value.
@@ -222,6 +253,9 @@ public class ContactProfilesProperties {
                         "Missing required property networkConfiguration in model ContactProfilesProperties"));
         } else {
             networkConfiguration().validate();
+        }
+        if (thirdPartyConfigurations() != null) {
+            thirdPartyConfigurations().forEach(e -> e.validate());
         }
         if (links() == null) {
             throw LOGGER

@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The GremlinDatabaseGetPropertiesOptions model. */
 @Fluent
 public final class GremlinDatabaseGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of GremlinDatabaseGetPropertiesOptions class. */
+    public GremlinDatabaseGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public GremlinDatabaseGetPropertiesOptions withThroughput(Integer throughput) {

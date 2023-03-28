@@ -19,6 +19,10 @@ public final class OpenAuthenticationAccessPolicies {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, OpenAuthenticationAccessPolicy> policies;
 
+    /** Creates an instance of OpenAuthenticationAccessPolicies class. */
+    public OpenAuthenticationAccessPolicies() {
+    }
+
     /**
      * Get the policies property: Open authentication policies.
      *

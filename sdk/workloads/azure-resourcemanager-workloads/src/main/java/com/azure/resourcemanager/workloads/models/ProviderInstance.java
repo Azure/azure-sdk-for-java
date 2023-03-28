@@ -32,7 +32,7 @@ public interface ProviderInstance {
     String type();
 
     /**
-     * Gets the identity property: Managed service identity (user assigned identities).
+     * Gets the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @return the identity value.
      */
@@ -60,7 +60,7 @@ public interface ProviderInstance {
     ProviderInstancePropertiesErrors errors();
 
     /**
-     * Gets the providerSettings property: Defines the provider instance errors.
+     * Gets the providerSettings property: Defines the provider specific properties.
      *
      * @return the providerSettings value.
      */
@@ -116,9 +116,10 @@ public interface ProviderInstance {
         /** The stage of the ProviderInstance definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Managed service identity (user assigned identities).
+             * Specifies the identity property: [currently not in use] Managed service identity(user assigned
+             * identities).
              *
-             * @param identity Managed service identity (user assigned identities).
+             * @param identity [currently not in use] Managed service identity(user assigned identities).
              * @return the next definition stage.
              */
             WithCreate withIdentity(UserAssignedServiceIdentity identity);
@@ -126,9 +127,9 @@ public interface ProviderInstance {
         /** The stage of the ProviderInstance definition allowing to specify providerSettings. */
         interface WithProviderSettings {
             /**
-             * Specifies the providerSettings property: Defines the provider instance errors..
+             * Specifies the providerSettings property: Defines the provider specific properties..
              *
-             * @param providerSettings Defines the provider instance errors.
+             * @param providerSettings Defines the provider specific properties.
              * @return the next definition stage.
              */
             WithCreate withProviderSettings(ProviderSpecificProperties providerSettings);

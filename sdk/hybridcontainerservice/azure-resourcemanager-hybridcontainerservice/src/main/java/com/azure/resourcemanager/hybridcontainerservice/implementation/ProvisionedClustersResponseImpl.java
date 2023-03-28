@@ -88,7 +88,7 @@ public final class ProvisionedClustersResponseImpl
 
     private String resourceGroupName;
 
-    private String provisionedClustersName;
+    private String resourceName;
 
     private ProvisionedClusters createProvisionedClusters;
 
@@ -104,7 +104,7 @@ public final class ProvisionedClustersResponseImpl
             serviceManager
                 .serviceClient()
                 .getProvisionedClustersOperations()
-                .createOrUpdate(resourceGroupName, provisionedClustersName, createProvisionedClusters, Context.NONE);
+                .createOrUpdate(resourceGroupName, resourceName, createProvisionedClusters, Context.NONE);
         return this;
     }
 
@@ -113,7 +113,7 @@ public final class ProvisionedClustersResponseImpl
             serviceManager
                 .serviceClient()
                 .getProvisionedClustersOperations()
-                .createOrUpdate(resourceGroupName, provisionedClustersName, createProvisionedClusters, context);
+                .createOrUpdate(resourceGroupName, resourceName, createProvisionedClusters, context);
         return this;
     }
 
@@ -121,7 +121,7 @@ public final class ProvisionedClustersResponseImpl
         String name, com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
         this.innerObject = new ProvisionedClustersResponseInner();
         this.serviceManager = serviceManager;
-        this.provisionedClustersName = name;
+        this.resourceName = name;
         this.createProvisionedClusters = new ProvisionedClusters();
     }
 
@@ -135,7 +135,7 @@ public final class ProvisionedClustersResponseImpl
             serviceManager
                 .serviceClient()
                 .getProvisionedClustersOperations()
-                .update(resourceGroupName, provisionedClustersName, updateProvisionedClusters, Context.NONE);
+                .update(resourceGroupName, resourceName, updateProvisionedClusters, Context.NONE);
         return this;
     }
 
@@ -144,7 +144,7 @@ public final class ProvisionedClustersResponseImpl
             serviceManager
                 .serviceClient()
                 .getProvisionedClustersOperations()
-                .update(resourceGroupName, provisionedClustersName, updateProvisionedClusters, context);
+                .update(resourceGroupName, resourceName, updateProvisionedClusters, context);
         return this;
     }
 
@@ -154,7 +154,7 @@ public final class ProvisionedClustersResponseImpl
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisionedClustersName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
+        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
     }
 
     public ProvisionedClustersResponse refresh() {
@@ -162,7 +162,7 @@ public final class ProvisionedClustersResponseImpl
             serviceManager
                 .serviceClient()
                 .getProvisionedClustersOperations()
-                .getByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, Context.NONE)
+                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -172,9 +172,21 @@ public final class ProvisionedClustersResponseImpl
             serviceManager
                 .serviceClient()
                 .getProvisionedClustersOperations()
-                .getByResourceGroupWithResponse(resourceGroupName, provisionedClustersName, context)
+                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
                 .getValue();
         return this;
+    }
+
+    public void upgradeNodeImageVersionForEntireCluster() {
+        serviceManager
+            .provisionedClustersOperations()
+            .upgradeNodeImageVersionForEntireCluster(resourceGroupName, resourceName);
+    }
+
+    public void upgradeNodeImageVersionForEntireCluster(Context context) {
+        serviceManager
+            .provisionedClustersOperations()
+            .upgradeNodeImageVersionForEntireCluster(resourceGroupName, resourceName, context);
     }
 
     public ProvisionedClustersResponseImpl withRegion(Region location) {

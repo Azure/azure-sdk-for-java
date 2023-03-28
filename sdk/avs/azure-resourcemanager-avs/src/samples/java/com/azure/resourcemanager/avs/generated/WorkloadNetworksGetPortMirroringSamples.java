@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetPortMirroring. */
 public final class WorkloadNetworksGetPortMirroringSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkloadNetworksGetPortMirroringSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetPortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE);
     }
 }

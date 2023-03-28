@@ -6,11 +6,10 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.SkuListInner;
-import org.junit.jupiter.api.Test;
 
 public final class SkuListInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuListInner model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class SkuListInnerTests {
                 .toObject(SkuListInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuListInner model = new SkuListInner();
         model = BinaryData.fromObject(model).toObject(SkuListInner.class);
     }

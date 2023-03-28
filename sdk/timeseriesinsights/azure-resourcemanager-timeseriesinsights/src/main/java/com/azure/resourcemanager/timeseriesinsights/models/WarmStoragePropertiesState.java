@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WarmStoragePropertiesState. */
+/** This string represents the state of warm storage properties usage. It can be "Ok", "Error", "Unknown". */
 public final class WarmStoragePropertiesState extends ExpandableStringEnum<WarmStoragePropertiesState> {
     /** Static value Ok for WarmStoragePropertiesState. */
     public static final WarmStoragePropertiesState OK = fromString("Ok");
@@ -18,6 +18,15 @@ public final class WarmStoragePropertiesState extends ExpandableStringEnum<WarmS
 
     /** Static value Unknown for WarmStoragePropertiesState. */
     public static final WarmStoragePropertiesState UNKNOWN = fromString("Unknown");
+
+    /**
+     * Creates a new instance of WarmStoragePropertiesState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WarmStoragePropertiesState() {
+    }
 
     /**
      * Creates or finds a WarmStoragePropertiesState from its string representation.
@@ -30,7 +39,11 @@ public final class WarmStoragePropertiesState extends ExpandableStringEnum<WarmS
         return fromString(name, WarmStoragePropertiesState.class);
     }
 
-    /** @return known WarmStoragePropertiesState values. */
+    /**
+     * Gets known WarmStoragePropertiesState values.
+     *
+     * @return known WarmStoragePropertiesState values.
+     */
     public static Collection<WarmStoragePropertiesState> values() {
         return values(WarmStoragePropertiesState.class);
     }

@@ -30,6 +30,9 @@ public final class TopNGroupScope {
     @JsonProperty(value = "minTopCount", required = true)
     private int minTopCount;
 
+    /** Creates an instance of TopNGroupScope class. */
+    public TopNGroupScope() {}
+
     /**
      * Get the top property: top N, value range : [1, +∞).
      *

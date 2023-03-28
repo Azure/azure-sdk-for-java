@@ -116,3 +116,6 @@ Chart.lock
 generatedValues.yaml
 stress-test-resources.json
 stress-test-addons*
+
+# Temp typespec files
+TempTypeSpecFiles/

@@ -23,6 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.ExportJobsResultInner;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient. */
@@ -62,7 +63,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
         Mono<Response<ExportJobsResultInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("operationId") String operationId,
@@ -75,7 +76,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +132,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @param context The context to associate with this operation.
@@ -185,7 +186,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +205,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @param context The context to associate with this operation.
@@ -224,7 +225,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

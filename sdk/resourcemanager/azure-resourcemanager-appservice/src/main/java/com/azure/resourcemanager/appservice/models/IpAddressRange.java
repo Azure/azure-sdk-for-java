@@ -16,6 +16,10 @@ public final class IpAddressRange {
     @JsonProperty(value = "addressRange")
     private String addressRange;
 
+    /** Creates an instance of IpAddressRange class. */
+    public IpAddressRange() {
+    }
+
     /**
      * Get the addressRange property: The IP address range.
      *

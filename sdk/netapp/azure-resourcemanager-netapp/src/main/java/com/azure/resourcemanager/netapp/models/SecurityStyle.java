@@ -17,6 +17,15 @@ public final class SecurityStyle extends ExpandableStringEnum<SecurityStyle> {
     public static final SecurityStyle UNIX = fromString("unix");
 
     /**
+     * Creates a new instance of SecurityStyle value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityStyle() {
+    }
+
+    /**
      * Creates or finds a SecurityStyle from its string representation.
      *
      * @param name a name to look for.

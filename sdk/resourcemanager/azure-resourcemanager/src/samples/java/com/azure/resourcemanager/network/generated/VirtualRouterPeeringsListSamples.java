@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualRouterPeerings List. */
 public final class VirtualRouterPeeringsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualRouterPeeringList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterPeeringList.json
      */
     /**
      * Sample code: List all Virtual Router Peerings for a given Virtual Router.
@@ -23,6 +21,6 @@ public final class VirtualRouterPeeringsListSamples {
             .manager()
             .serviceClient()
             .getVirtualRouterPeerings()
-            .list("rg1", "virtualRouter", Context.NONE);
+            .list("rg1", "virtualRouter", com.azure.core.util.Context.NONE);
     }
 }

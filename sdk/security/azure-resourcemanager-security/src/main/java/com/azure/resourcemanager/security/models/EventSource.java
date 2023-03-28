@@ -45,6 +45,15 @@ public final class EventSource extends ExpandableStringEnum<EventSource> {
         fromString("RegulatoryComplianceAssessmentSnapshot");
 
     /**
+     * Creates a new instance of EventSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventSource() {
+    }
+
+    /**
      * Creates or finds a EventSource from its string representation.
      *
      * @param name a name to look for.

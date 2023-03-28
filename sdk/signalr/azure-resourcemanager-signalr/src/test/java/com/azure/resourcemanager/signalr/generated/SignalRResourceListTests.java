@@ -16,11 +16,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRResourceListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SignalRResourceList model =
             BinaryData
                 .fromString(
@@ -39,8 +38,8 @@ public final class SignalRResourceListTests {
         Assertions.assertEquals("alhbx", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SignalRResourceList model =
             new SignalRResourceList()
                 .withValue(

@@ -16,7 +16,6 @@ import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -25,20 +24,18 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollectionResponseLanguageApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollectionResponseLegacyApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing sentiment analysis endpoint.
@@ -114,7 +111,7 @@ class AnalyzeSentimentUtilClient {
                     .setAnalysisInput(
                         new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                getNotNullContext(context))
                 .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                     getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
@@ -131,7 +128,7 @@ class AnalyzeSentimentUtilClient {
             options.isServiceLogsDisabled(),
             options.isIncludeOpinionMining(),
             StringIndexType.UTF16CODE_UNIT,
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context))
             .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}", response))
@@ -156,8 +153,7 @@ class AnalyzeSentimentUtilClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
-        context = enableSyncRestProxy(getNotNullContext(context))
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        context = enableSyncRestProxy(getNotNullContext(context));
 
         try {
             return (service != null)
@@ -182,7 +178,7 @@ class AnalyzeSentimentUtilClient {
                     StringIndexType.UTF16CODE_UNIT,
                     context));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 

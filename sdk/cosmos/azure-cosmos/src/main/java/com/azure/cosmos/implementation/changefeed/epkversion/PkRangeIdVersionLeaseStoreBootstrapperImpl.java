@@ -100,11 +100,8 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                         })
                         .flatMap(lockAcquired -> {
                             if (this.isLockAcquired) {
-                                return this.leaseStore.releaseInitializationLock();
-                            }
-
-                            if (this.isPkRangeIdVersionLeaseStoreLockAcquired) {
-                                return this.pkRangeIdVersionLeaseStoreManager.releaseInitializationLock();
+                                return this.leaseStore.releaseInitializationLock()
+                                    .then(this.releasePkRangeIdVersionLeaseStoreLock());
                             }
 
                             return Mono.just(lockAcquired);
@@ -113,6 +110,14 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             })
             .repeat(() -> !this.isInitialized)
             .then();
+    }
+
+    private Mono<Boolean> releasePkRangeIdVersionLeaseStoreLock() {
+        if (this.isPkRangeIdVersionLeaseStoreLockAcquired) {
+            return this.pkRangeIdVersionLeaseStoreManager.releaseInitializationLock();
+        }
+
+        return Mono.just(Boolean.FALSE);
     }
 
     private Mono<Boolean> bootstrapFromPkRangeVersionLeases() {

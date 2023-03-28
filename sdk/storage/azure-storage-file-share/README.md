@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.16.2</version>
+  <version>12.17.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -218,6 +218,23 @@ Once you have the ConnectionString, you can construct the share client with `${a
 String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
     .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
+```
+
+#### Share with `TokenCredential`
+Once you have the TokenCredential, you can construct the share client with `${accountName}`, `${shareName}` and `ShareTokenIntent`. 
+`ShareTokenIntent.BACKUP` specifies requests that are intended for backup/admin type operations, meaning that all
+file/directory ACLs are bypassed and full permissions are granted. User must have required RBAC permission in order to 
+use `ShareTokenIntent.BACKUP`.
+
+```java readme-sample-createShareClientWithTokenCredential
+String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
+
+ShareClient serviceClient = new ShareClientBuilder()
+    .endpoint(shareURL)
+    .credential(tokenCredential)
+    .shareTokenIntent(ShareTokenIntent.BACKUP)
+    .shareName(shareName)
+    .buildClient();
 ```
 
 ### Directory

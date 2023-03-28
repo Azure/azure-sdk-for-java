@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.cosmos.models.KeyKind;
 
 /** Samples for DatabaseAccounts RegenerateKey. */
 public final class DatabaseAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountRegenerateKey.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountRegenerateKey.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegenerateKey.
@@ -25,6 +24,9 @@ public final class DatabaseAccountsRegenerateKeySamples {
             .serviceClient()
             .getDatabaseAccounts()
             .regenerateKey(
-                "rg1", "ddb1", new DatabaseAccountRegenerateKeyParameters().withKeyKind(KeyKind.PRIMARY), Context.NONE);
+                "rg1",
+                "ddb1",
+                new DatabaseAccountRegenerateKeyParameters().withKeyKind(KeyKind.PRIMARY),
+                com.azure.core.util.Context.NONE);
     }
 }

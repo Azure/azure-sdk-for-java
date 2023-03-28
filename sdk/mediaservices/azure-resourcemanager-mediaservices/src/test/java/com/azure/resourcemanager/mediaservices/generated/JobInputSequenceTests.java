@@ -17,10 +17,10 @@ public final class JobInputSequenceTests {
         JobInputSequence model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputSequence\",\"inputs\":[{\"@odata.type\":\"#Microsoft.Media.JobInputClip\",\"files\":[\"voqyt\",\"byowbblgyavutp\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"xoi\",\"inputDefinitions\":[]}]}")
+                    "{\"@odata.type\":\"#Microsoft.Media.JobInputSequence\",\"inputs\":[{\"@odata.type\":\"#Microsoft.Media.JobInputClip\",\"files\":[\"cfxwmdbox\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"ft\",\"inputDefinitions\":[]}]}")
                 .toObject(JobInputSequence.class);
-        Assertions.assertEquals("voqyt", model.inputs().get(0).files().get(0));
-        Assertions.assertEquals("xoi", model.inputs().get(0).label());
+        Assertions.assertEquals("cfxwmdbox", model.inputs().get(0).files().get(0));
+        Assertions.assertEquals("ft", model.inputs().get(0).label());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,13 +31,13 @@ public final class JobInputSequenceTests {
                     Arrays
                         .asList(
                             new JobInputClip()
-                                .withFiles(Arrays.asList("voqyt", "byowbblgyavutp"))
+                                .withFiles(Arrays.asList("cfxwmdbox"))
                                 .withStart(new ClipTime())
                                 .withEnd(new ClipTime())
-                                .withLabel("xoi")
+                                .withLabel("ft")
                                 .withInputDefinitions(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(JobInputSequence.class);
-        Assertions.assertEquals("voqyt", model.inputs().get(0).files().get(0));
-        Assertions.assertEquals("xoi", model.inputs().get(0).label());
+        Assertions.assertEquals("cfxwmdbox", model.inputs().get(0).files().get(0));
+        Assertions.assertEquals("ft", model.inputs().get(0).label());
     }
 }

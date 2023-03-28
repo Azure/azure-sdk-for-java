@@ -41,6 +41,15 @@ public final class ResourceMoveState extends ExpandableStringEnum<ResourceMoveSt
     public static final ResourceMoveState PARTIAL_SUCCESS = fromString("PartialSuccess");
 
     /**
+     * Creates a new instance of ResourceMoveState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceMoveState() {
+    }
+
+    /**
      * Creates or finds a ResourceMoveState from its string representation.
      *
      * @param name a name to look for.

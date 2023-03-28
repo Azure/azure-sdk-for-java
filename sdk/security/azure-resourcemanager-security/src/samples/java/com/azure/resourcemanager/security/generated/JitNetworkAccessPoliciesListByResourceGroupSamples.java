@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JitNetworkAccessPolicies ListByResourceGroup. */
 public final class JitNetworkAccessPoliciesListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class JitNetworkAccessPoliciesListByResourceGroupSamples {
      */
     public static void getJITNetworkAccessPoliciesOnAResourceGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.jitNetworkAccessPolicies().listByResourceGroup("myRg1", Context.NONE);
+        manager.jitNetworkAccessPolicies().listByResourceGroup("myRg1", com.azure.core.util.Context.NONE);
     }
 }

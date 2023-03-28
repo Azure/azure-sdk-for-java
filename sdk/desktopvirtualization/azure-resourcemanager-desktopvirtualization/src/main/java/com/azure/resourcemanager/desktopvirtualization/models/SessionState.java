@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SessionState. */
+/** State of user session. */
 public final class SessionState extends ExpandableStringEnum<SessionState> {
     /** Static value Unknown for SessionState. */
     public static final SessionState UNKNOWN = fromString("Unknown");
@@ -27,6 +27,15 @@ public final class SessionState extends ExpandableStringEnum<SessionState> {
 
     /** Static value UserProfileDiskMounted for SessionState. */
     public static final SessionState USER_PROFILE_DISK_MOUNTED = fromString("UserProfileDiskMounted");
+
+    /**
+     * Creates a new instance of SessionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SessionState() {
+    }
 
     /**
      * Creates or finds a SessionState from its string representation.

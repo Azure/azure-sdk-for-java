@@ -40,6 +40,10 @@ public final class SubvolumeProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of SubvolumeProperties class. */
+    public SubvolumeProperties() {
+    }
+
     /**
      * Get the path property: path
      *

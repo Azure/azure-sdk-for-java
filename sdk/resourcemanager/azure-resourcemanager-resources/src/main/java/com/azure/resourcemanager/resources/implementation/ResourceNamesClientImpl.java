@@ -51,7 +51,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SubscriptionClientRe")
-    private interface ResourceNamesService {
+    public interface ResourceNamesService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/checkResourceName")
         @ExpectedResponses({200})
@@ -65,8 +65,10 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     }
 
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
+     *
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,8 +104,10 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     }
 
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
+     *
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @param context The context to associate with this operation.
@@ -133,25 +137,10 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     }
 
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
      *
-     * @param resourceNameDefinition Resource object with values for resource name and resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition) {
-        return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,23 +155,10 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     }
 
     /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * Checks resource name validity
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckResourceNameResultInner checkResourceName() {
-        final ResourceName resourceNameDefinition = null;
-        return checkResourceNameAsync(resourceNameDefinition).block();
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
      *
      * @param resourceNameDefinition Resource object with values for resource name and resource type.
      * @param context The context to associate with this operation.
@@ -196,5 +172,22 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     public Response<CheckResourceNameResultInner> checkResourceNameWithResponse(
         ResourceName resourceNameDefinition, Context context) {
         return checkResourceNameWithResponseAsync(resourceNameDefinition, context).block();
+    }
+
+    /**
+     * Checks resource name validity
+     *
+     * <p>A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start
+     * with a reserved word.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
+     *     reserved word.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckResourceNameResultInner checkResourceName() {
+        final ResourceName resourceNameDefinition = null;
+        return checkResourceNameWithResponse(resourceNameDefinition, Context.NONE).getValue();
     }
 }

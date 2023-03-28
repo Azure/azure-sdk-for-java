@@ -7,18 +7,14 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.PrivateEndpoint;
 import com.azure.resourcemanager.containerregistry.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object that represents a private endpoint connection for a container registry. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
     /*
      * The properties of a private endpoint connection.
      */
@@ -30,6 +26,10 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    public PrivateEndpointConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of a private endpoint connection.

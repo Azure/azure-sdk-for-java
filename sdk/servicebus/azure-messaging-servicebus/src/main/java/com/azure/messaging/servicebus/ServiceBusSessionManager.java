@@ -51,7 +51,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  */
 class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
-    private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
+    private static final String TRACKING_ID_KEY = "trackingId";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionManager.class);
     private final String entityPath;
@@ -277,7 +277,13 @@ class ServiceBusSessionManager implements AutoCloseable {
         }
         return Mono.defer(() -> createSessionReceiveLink()
             .flatMap(link -> link.getEndpointStates()
-                .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
+                .filter(e -> e == AmqpEndpointState.ACTIVE)
+                .next()
+                // While waiting for the link to ACTIVE, if the broker detaches the link without an error condition,
+                // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
+                // such publisher completion to transient (i.e., retriable) AmqpException to enable processor recovery.
+                .switchIfEmpty(Mono.error(() ->
+                    new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
                 .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
@@ -291,12 +297,24 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
                         getErrorContext()));
                 } else if (failure instanceof TimeoutException) {
-                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
+                    return Mono.empty(); // Retry always
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
+                    return Mono.empty(); // Retry always
                 } else {
-                    return Mono.<Long>error(failure);
+                    final long id = System.nanoTime();
+                    LOGGER.atInfo()
+                            .addKeyValue(TRACKING_ID_KEY, id)
+                            .log("Unable to acquire new session.", failure);
+                    // The link-endpoint-state publisher will emit signal on the reactor-executor thread, which is
+                    // non-blocking, if we use the session processor to recover the error, it requires a blocking
+                    // thread to close the client. Hence, we publish the error on the bounded-elastic thread.
+                    return Mono.<Long>error(failure)
+                            .publishOn(Schedulers.boundedElastic())
+                            .doOnError(e -> LOGGER.atInfo()
+                                    .addKeyValue(TRACKING_ID_KEY, id)
+                                    .log("Emitting the error signal received for session acquire attempt.", e)
+                    );
                 }
             })));
     }

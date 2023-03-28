@@ -15,7 +15,7 @@ public final class ReportConfigSorting {
      * Direction of sort.
      */
     @JsonProperty(value = "direction")
-    private ReportConfigSortingDirection direction;
+    private ReportConfigSortingType direction;
 
     /*
      * The name of the column to sort.
@@ -32,7 +32,7 @@ public final class ReportConfigSorting {
      *
      * @return the direction value.
      */
-    public ReportConfigSortingDirection direction() {
+    public ReportConfigSortingType direction() {
         return this.direction;
     }
 
@@ -42,7 +42,7 @@ public final class ReportConfigSorting {
      * @param direction the direction value to set.
      * @return the ReportConfigSorting object itself.
      */
-    public ReportConfigSorting withDirection(ReportConfigSortingDirection direction) {
+    public ReportConfigSorting withDirection(ReportConfigSortingType direction) {
         this.direction = direction;
         return this;
     }

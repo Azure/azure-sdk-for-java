@@ -10,6 +10,10 @@ import java.util.Map;
 /** A class representing update parameters for EmailService resource. */
 @Fluent
 public final class EmailServiceResourceUpdate extends TaggedResource {
+    /** Creates an instance of EmailServiceResourceUpdate class. */
+    public EmailServiceResourceUpdate() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public EmailServiceResourceUpdate withTags(Map<String, String> tags) {

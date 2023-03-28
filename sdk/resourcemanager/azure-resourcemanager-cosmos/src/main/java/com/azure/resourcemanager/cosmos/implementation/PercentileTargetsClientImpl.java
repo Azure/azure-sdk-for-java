@@ -55,7 +55,7 @@ public final class PercentileTargetsClientImpl implements PercentileTargetsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface PercentileTargetsService {
+    public interface PercentileTargetsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"

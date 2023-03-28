@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** A class represent managed identities used for request and response. */
 @Fluent
-public class ManagedIdentity {
+public final class ManagedIdentity {
     /*
      * Represents the identity type: systemAssigned, userAssigned, None
      */

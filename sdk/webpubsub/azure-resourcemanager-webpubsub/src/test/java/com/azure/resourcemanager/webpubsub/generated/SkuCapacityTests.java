@@ -6,11 +6,10 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.SkuCapacity;
-import org.junit.jupiter.api.Test;
 
 public final class SkuCapacityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuCapacity model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class SkuCapacityTests {
                 .toObject(SkuCapacity.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuCapacity model = new SkuCapacity();
         model = BinaryData.fromObject(model).toObject(SkuCapacity.class);
     }

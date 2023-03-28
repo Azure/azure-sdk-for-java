@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -19,6 +18,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 class HeartbeatTests {
 
@@ -26,14 +26,12 @@ class HeartbeatTests {
     private Consumer<List<TelemetryItem>> telemetryItemsConsumer;
 
     @Test
-    @Disabled // rework to not rely on initialization from separate thread
     void heartBeatPayloadContainsDataByDefault() throws InterruptedException {
         // given
         HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
         }, telemetryItemsConsumer);
 
-        // some of the initialization above happens in a separate thread
-        Thread.sleep(500);
+        await().until(() -> ((MetricsData) provider.gatherData().getData().getBaseData()).getProperties().size() > 0);
 
         // then
         MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();

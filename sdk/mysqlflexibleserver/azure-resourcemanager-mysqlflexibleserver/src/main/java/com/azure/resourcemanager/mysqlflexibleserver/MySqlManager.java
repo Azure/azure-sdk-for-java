@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -22,26 +24,32 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.MySqlManagementClient;
+import com.azure.resourcemanager.mysqlflexibleserver.implementation.AzureADAdministratorsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.BackupsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.CheckNameAvailabilitiesImpl;
+import com.azure.resourcemanager.mysqlflexibleserver.implementation.CheckNameAvailabilityWithoutLocationsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.CheckVirtualNetworkSubnetUsagesImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.ConfigurationsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.DatabasesImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.FirewallRulesImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.GetPrivateDnsZoneSuffixesImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.LocationBasedCapabilitiesImpl;
+import com.azure.resourcemanager.mysqlflexibleserver.implementation.LogFilesImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.MySqlManagementClientBuilder;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.OperationsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.ServersImpl;
+import com.azure.resourcemanager.mysqlflexibleserver.models.AzureADAdministrators;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backups;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CheckNameAvailabilities;
+import com.azure.resourcemanager.mysqlflexibleserver.models.CheckNameAvailabilityWithoutLocations;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CheckVirtualNetworkSubnetUsages;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Configurations;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Databases;
 import com.azure.resourcemanager.mysqlflexibleserver.models.FirewallRules;
 import com.azure.resourcemanager.mysqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
 import com.azure.resourcemanager.mysqlflexibleserver.models.LocationBasedCapabilities;
+import com.azure.resourcemanager.mysqlflexibleserver.models.LogFiles;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Operations;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Servers;
@@ -58,17 +66,19 @@ import java.util.stream.Collectors;
  * configurations with new business model.
  */
 public final class MySqlManager {
+    private Backups backups;
+
+    private Configurations configurations;
+
+    private Databases databases;
+
+    private FirewallRules firewallRules;
+
     private Servers servers;
 
     private Replicas replicas;
 
-    private Backups backups;
-
-    private FirewallRules firewallRules;
-
-    private Databases databases;
-
-    private Configurations configurations;
+    private LogFiles logFiles;
 
     private LocationBasedCapabilities locationBasedCapabilities;
 
@@ -76,9 +86,13 @@ public final class MySqlManager {
 
     private CheckNameAvailabilities checkNameAvailabilities;
 
+    private CheckNameAvailabilityWithoutLocations checkNameAvailabilityWithoutLocations;
+
     private GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes;
 
     private Operations operations;
+
+    private AzureADAdministrators azureADAdministrators;
 
     private final MySqlManagementClient clientObject;
 
@@ -108,6 +122,19 @@ public final class MySqlManager {
     }
 
     /**
+     * Creates an instance of MySql service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the MySql service API instance.
+     */
+    public static MySqlManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new MySqlManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create MySqlManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -125,6 +152,7 @@ public final class MySqlManager {
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -186,6 +214,19 @@ public final class MySqlManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
@@ -218,7 +259,7 @@ public final class MySqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mysqlflexibleserver")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -236,10 +277,15 @@ public final class MySqlManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -270,23 +316,11 @@ public final class MySqlManager {
         }
     }
 
-    /** @return Resource collection API of Servers. */
-    public Servers servers() {
-        if (this.servers == null) {
-            this.servers = new ServersImpl(clientObject.getServers(), this);
-        }
-        return servers;
-    }
-
-    /** @return Resource collection API of Replicas. */
-    public Replicas replicas() {
-        if (this.replicas == null) {
-            this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
-        }
-        return replicas;
-    }
-
-    /** @return Resource collection API of Backups. */
+    /**
+     * Gets the resource collection API of Backups.
+     *
+     * @return Resource collection API of Backups.
+     */
     public Backups backups() {
         if (this.backups == null) {
             this.backups = new BackupsImpl(clientObject.getBackups(), this);
@@ -294,23 +328,11 @@ public final class MySqlManager {
         return backups;
     }
 
-    /** @return Resource collection API of FirewallRules. */
-    public FirewallRules firewallRules() {
-        if (this.firewallRules == null) {
-            this.firewallRules = new FirewallRulesImpl(clientObject.getFirewallRules(), this);
-        }
-        return firewallRules;
-    }
-
-    /** @return Resource collection API of Databases. */
-    public Databases databases() {
-        if (this.databases == null) {
-            this.databases = new DatabasesImpl(clientObject.getDatabases(), this);
-        }
-        return databases;
-    }
-
-    /** @return Resource collection API of Configurations. */
+    /**
+     * Gets the resource collection API of Configurations.
+     *
+     * @return Resource collection API of Configurations.
+     */
     public Configurations configurations() {
         if (this.configurations == null) {
             this.configurations = new ConfigurationsImpl(clientObject.getConfigurations(), this);
@@ -318,7 +340,71 @@ public final class MySqlManager {
         return configurations;
     }
 
-    /** @return Resource collection API of LocationBasedCapabilities. */
+    /**
+     * Gets the resource collection API of Databases. It manages Database.
+     *
+     * @return Resource collection API of Databases.
+     */
+    public Databases databases() {
+        if (this.databases == null) {
+            this.databases = new DatabasesImpl(clientObject.getDatabases(), this);
+        }
+        return databases;
+    }
+
+    /**
+     * Gets the resource collection API of FirewallRules. It manages FirewallRule.
+     *
+     * @return Resource collection API of FirewallRules.
+     */
+    public FirewallRules firewallRules() {
+        if (this.firewallRules == null) {
+            this.firewallRules = new FirewallRulesImpl(clientObject.getFirewallRules(), this);
+        }
+        return firewallRules;
+    }
+
+    /**
+     * Gets the resource collection API of Servers. It manages Server.
+     *
+     * @return Resource collection API of Servers.
+     */
+    public Servers servers() {
+        if (this.servers == null) {
+            this.servers = new ServersImpl(clientObject.getServers(), this);
+        }
+        return servers;
+    }
+
+    /**
+     * Gets the resource collection API of Replicas.
+     *
+     * @return Resource collection API of Replicas.
+     */
+    public Replicas replicas() {
+        if (this.replicas == null) {
+            this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
+        }
+        return replicas;
+    }
+
+    /**
+     * Gets the resource collection API of LogFiles.
+     *
+     * @return Resource collection API of LogFiles.
+     */
+    public LogFiles logFiles() {
+        if (this.logFiles == null) {
+            this.logFiles = new LogFilesImpl(clientObject.getLogFiles(), this);
+        }
+        return logFiles;
+    }
+
+    /**
+     * Gets the resource collection API of LocationBasedCapabilities.
+     *
+     * @return Resource collection API of LocationBasedCapabilities.
+     */
     public LocationBasedCapabilities locationBasedCapabilities() {
         if (this.locationBasedCapabilities == null) {
             this.locationBasedCapabilities =
@@ -327,7 +413,11 @@ public final class MySqlManager {
         return locationBasedCapabilities;
     }
 
-    /** @return Resource collection API of CheckVirtualNetworkSubnetUsages. */
+    /**
+     * Gets the resource collection API of CheckVirtualNetworkSubnetUsages.
+     *
+     * @return Resource collection API of CheckVirtualNetworkSubnetUsages.
+     */
     public CheckVirtualNetworkSubnetUsages checkVirtualNetworkSubnetUsages() {
         if (this.checkVirtualNetworkSubnetUsages == null) {
             this.checkVirtualNetworkSubnetUsages =
@@ -336,7 +426,11 @@ public final class MySqlManager {
         return checkVirtualNetworkSubnetUsages;
     }
 
-    /** @return Resource collection API of CheckNameAvailabilities. */
+    /**
+     * Gets the resource collection API of CheckNameAvailabilities.
+     *
+     * @return Resource collection API of CheckNameAvailabilities.
+     */
     public CheckNameAvailabilities checkNameAvailabilities() {
         if (this.checkNameAvailabilities == null) {
             this.checkNameAvailabilities =
@@ -345,7 +439,25 @@ public final class MySqlManager {
         return checkNameAvailabilities;
     }
 
-    /** @return Resource collection API of GetPrivateDnsZoneSuffixes. */
+    /**
+     * Gets the resource collection API of CheckNameAvailabilityWithoutLocations.
+     *
+     * @return Resource collection API of CheckNameAvailabilityWithoutLocations.
+     */
+    public CheckNameAvailabilityWithoutLocations checkNameAvailabilityWithoutLocations() {
+        if (this.checkNameAvailabilityWithoutLocations == null) {
+            this.checkNameAvailabilityWithoutLocations =
+                new CheckNameAvailabilityWithoutLocationsImpl(
+                    clientObject.getCheckNameAvailabilityWithoutLocations(), this);
+        }
+        return checkNameAvailabilityWithoutLocations;
+    }
+
+    /**
+     * Gets the resource collection API of GetPrivateDnsZoneSuffixes.
+     *
+     * @return Resource collection API of GetPrivateDnsZoneSuffixes.
+     */
     public GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes() {
         if (this.getPrivateDnsZoneSuffixes == null) {
             this.getPrivateDnsZoneSuffixes =
@@ -354,12 +466,28 @@ public final class MySqlManager {
         return getPrivateDnsZoneSuffixes;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of AzureADAdministrators. It manages AzureADAdministrator.
+     *
+     * @return Resource collection API of AzureADAdministrators.
+     */
+    public AzureADAdministrators azureADAdministrators() {
+        if (this.azureADAdministrators == null) {
+            this.azureADAdministrators = new AzureADAdministratorsImpl(clientObject.getAzureADAdministrators(), this);
+        }
+        return azureADAdministrators;
     }
 
     /**

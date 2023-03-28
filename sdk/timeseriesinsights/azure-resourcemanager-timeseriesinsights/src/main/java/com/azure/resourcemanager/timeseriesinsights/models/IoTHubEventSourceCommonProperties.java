@@ -6,14 +6,11 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the IoTHub event source. */
 @Fluent
 public class IoTHubEventSourceCommonProperties extends AzureEventSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTHubEventSourceCommonProperties.class);
-
     /*
      * The name of the iot hub.
      */
@@ -21,19 +18,21 @@ public class IoTHubEventSourceCommonProperties extends AzureEventSourcePropertie
     private String iotHubName;
 
     /*
-     * The name of the iot hub's consumer group that holds the partitions from
-     * which events will be read.
+     * The name of the iot hub's consumer group that holds the partitions from which events will be read.
      */
     @JsonProperty(value = "consumerGroupName", required = true)
     private String consumerGroupName;
 
     /*
-     * The name of the Shared Access Policy key that grants the Time Series
-     * Insights service access to the iot hub. This shared access policy key
-     * must grant 'service connect' permissions to the iot hub.
+     * The name of the Shared Access Policy key that grants the Time Series Insights service access to the iot hub.
+     * This shared access policy key must grant 'service connect' permissions to the iot hub.
      */
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
+
+    /** Creates an instance of IoTHubEventSourceCommonProperties class. */
+    public IoTHubEventSourceCommonProperties() {
+    }
 
     /**
      * Get the iotHubName property: The name of the iot hub.
@@ -113,6 +112,27 @@ public class IoTHubEventSourceCommonProperties extends AzureEventSourcePropertie
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public IoTHubEventSourceCommonProperties withLocalTimestamp(LocalTimestamp localTimestamp) {
+        super.withLocalTimestamp(localTimestamp);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IoTHubEventSourceCommonProperties withType(IngressStartAtType type) {
+        super.withType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IoTHubEventSourceCommonProperties withTime(String time) {
+        super.withTime(time);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -122,22 +142,24 @@ public class IoTHubEventSourceCommonProperties extends AzureEventSourcePropertie
     public void validate() {
         super.validate();
         if (iotHubName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property iotHubName in model IoTHubEventSourceCommonProperties"));
         }
         if (consumerGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property consumerGroupName in model IoTHubEventSourceCommonProperties"));
         }
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model IoTHubEventSourceCommonProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IoTHubEventSourceCommonProperties.class);
 }

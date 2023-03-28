@@ -41,6 +41,10 @@ public final class RecurrenceSchedule {
     @JsonProperty(value = "monthlyOccurrences")
     private List<RecurrenceScheduleOccurrence> monthlyOccurrences;
 
+    /** Creates an instance of RecurrenceSchedule class. */
+    public RecurrenceSchedule() {
+    }
+
     /**
      * Get the minutes property: The minutes.
      *

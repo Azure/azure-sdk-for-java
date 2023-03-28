@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolOperations. */
 public interface SqlPoolOperations {
     /**
-     * Gets a list of operations performed on the SQL pool.
+     * Gets a list of operations performed on the SQL pool
+     *
+     * <p>Gets a list of operations performed on the SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -23,7 +25,9 @@ public interface SqlPoolOperations {
     PagedIterable<SqlPoolOperation> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Gets a list of operations performed on the SQL pool.
+     * Gets a list of operations performed on the SQL pool
+     *
+     * <p>Gets a list of operations performed on the SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

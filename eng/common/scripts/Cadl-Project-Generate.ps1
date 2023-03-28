@@ -1,8 +1,12 @@
+# For details see https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/Cadl-Project-Scripts.md
+
 [CmdletBinding()]
 param (
     [Parameter(Position=0)]
     [ValidateNotNullOrEmpty()]
-    [string] $ProjectDirectory
+    [string] $ProjectDirectory,
+    [Parameter(Position=1)]
+    [string] $CadlAdditionalOptions ## addtional cadl emitter options, separated by semicolon if more than one, e.g. option1=value1;option2=value2
 )
 
 $ErrorActionPreference = "Stop"
@@ -76,6 +80,12 @@ try {
         }
     }
     $cadlCompileCommand = "npx cadl compile $mainCadlFile --emit $emitterName$emitterAdditionalOptions"
+    if ($CadlAdditionalOptions) {
+        $options = $CadlAdditionalOptions.Split(";");
+        foreach ($option in $options) {
+            $cadlCompileCommand += " --option $emitterName.$option"
+        }
+    }
     Write-Host($cadlCompileCommand)
     Invoke-Expression $cadlCompileCommand
 

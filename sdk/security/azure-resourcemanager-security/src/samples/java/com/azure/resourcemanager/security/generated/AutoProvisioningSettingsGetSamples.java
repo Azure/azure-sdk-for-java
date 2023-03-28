@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AutoProvisioningSettings Get. */
 public final class AutoProvisioningSettingsGetSamples {
     /*
@@ -18,6 +16,6 @@ public final class AutoProvisioningSettingsGetSamples {
      */
     public static void getAnAutoProvisioningSettingForSubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.autoProvisioningSettings().getWithResponse("default", Context.NONE);
+        manager.autoProvisioningSettings().getWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

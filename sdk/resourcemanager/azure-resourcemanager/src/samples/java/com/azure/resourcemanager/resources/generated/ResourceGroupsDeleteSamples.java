@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGroups Delete. */
 public final class ResourceGroupsDeleteSamples {
     /*
@@ -23,7 +21,7 @@ public final class ResourceGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getResourceGroups()
-            .delete("my-resource-group", "Microsoft.Compute/virtualMachines", Context.NONE);
+            .delete("my-resource-group", "Microsoft.Compute/virtualMachines", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,6 +42,6 @@ public final class ResourceGroupsDeleteSamples {
             .delete(
                 "my-resource-group",
                 "Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

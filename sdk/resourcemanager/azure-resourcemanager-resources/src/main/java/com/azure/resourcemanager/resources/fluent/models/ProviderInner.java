@@ -42,6 +42,10 @@ public final class ProviderInner {
     @JsonProperty(value = "resourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderResourceType> resourceTypes;
 
+    /** Creates an instance of ProviderInner class. */
+    public ProviderInner() {
+    }
+
     /**
      * Get the id property: The provider ID.
      *
