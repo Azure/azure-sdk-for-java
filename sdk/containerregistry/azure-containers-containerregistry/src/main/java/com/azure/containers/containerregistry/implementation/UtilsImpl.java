@@ -47,7 +47,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
@@ -81,13 +80,11 @@ public final class UtilsImpl {
     private static final ContainerRegistryAudience ACR_ACCESS_TOKEN_AUDIENCE = ContainerRegistryAudience.fromString("https://containerregistry.azure.net");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
     // TODO (limolkova) should we send index and list too so that we won't need to change the default later on?
     public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
-    private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
     public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.uploadBlob";
     public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.downloadBlob";
@@ -437,14 +434,6 @@ public final class UtilsImpl {
                 .addKeyValue("responseDigest", responseHeaderDigest)
                 .log(new ServiceResponseException("The digest in the response header does not match the expected digest."));
         }
-    }
-
-    public static Context enableSync(Context context) {
-        if (context == null || context == Context.NONE) {
-            return CONTEXT_WITH_SYNC;
-        }
-
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     public static <H, T> String getLocation(ResponseBase<H, T> response) {

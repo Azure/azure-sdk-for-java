@@ -55,7 +55,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.UP
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentTypeString;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
@@ -221,7 +220,7 @@ public final class ContainerRegistryBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBlobResult uploadBlob(ReadableByteChannel stream, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
-        return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(stream, span), enableSync(context));
+        return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(stream, span), context);
     }
 
     /**
@@ -306,7 +305,7 @@ public final class ContainerRegistryBlobClient {
         try {
             Response<BinaryData> response =
                 registriesImpl.getManifestWithResponse(repositoryName, tagOrDigest,
-                    requestMediaTypes, enableSync(context));
+                    requestMediaTypes, context);
             return toDownloadManifestResponse(tagOrDigest, response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -393,10 +392,8 @@ public final class ContainerRegistryBlobClient {
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
-        context = enableSync(context);
         try {
-            Response<BinaryData> streamResponse =
-                blobsImpl.deleteBlobWithResponse(repositoryName, digest, enableSync(context));
+            Response<BinaryData> streamResponse = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
             return deleteResponseToSuccess(streamResponse);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
@@ -442,11 +439,8 @@ public final class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteManifestWithResponse(String digest, Context context) {
-        context = enableSync(context);
         try {
-            Response<Void> response = registriesImpl.deleteManifestWithResponse(repositoryName, digest,
-                enableSync(context));
-
+            Response<Void> response = registriesImpl.deleteManifestWithResponse(repositoryName, digest, context);
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -520,7 +514,7 @@ public final class ContainerRegistryBlobClient {
         try {
             ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> response = this.registriesImpl
                 .createManifestWithResponse(repositoryName, tagOrDigest, data, data.getLength(),
-                    manifestMediaType.toString(), enableSync(context));
+                    manifestMediaType.toString(), context);
 
             return new ResponseBase<>(
                 response.getRequest(),
@@ -536,7 +530,6 @@ public final class ContainerRegistryBlobClient {
     private void downloadBlobInternal(String digest, WritableByteChannel channel, Context context) {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
-        context = enableSync(context);
         MessageDigest sha256 = createSha256();
         try {
             Response<BinaryData> firstChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
