@@ -276,7 +276,7 @@ directive:
       $.schema = {
           "type": "string",
           "format": "binary"
-        }
+      };
 ```
 
 # Rename ArtifactBlobDescriptor to OciDescriptor
@@ -298,6 +298,20 @@ directive:
   transform: >
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
+```
+
+# Rename created to createdOn in OciAnnotations
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Annotations
+  transform: >
+    $.properties["org.opencontainers.image.created"] = {
+      "description": "Date and time on which the image was built (string, date-time as defined by https://tools.ietf.org/html/rfc3339#section-5.6)",
+      "type": "string",
+      "format": "date-time",
+      "x-ms-client-name": "CreatedOn"
+    };
 ```
 
 # Remove security definitions
