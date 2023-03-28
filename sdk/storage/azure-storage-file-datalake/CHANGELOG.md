@@ -1,18 +1,12 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
+## 12.15.0-beta.1 (2023-03-28)
 
 ### Features Added
 - Added support for 2022-11-02 service version.
 - Adding support for Encryption Context on DataLake files, a string value that can be passed to allow users to generate 
 file-level encryption keys. This value is returned on `DataLakeFileClient.getProperties()`, `DataLakeFileClient.readWithResponse()`,
 and `DataLakeFileClient.listPaths()`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 12.14.1 (2023-03-16)
 
