@@ -9,9 +9,9 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsy
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatusImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -35,7 +35,7 @@ public final class TopicProperties {
     private final boolean enableBatchedOperations;
     private boolean enableExpress;
     private Boolean enableSubscriptionPartitioning;
-    private final EntityAvailabilityStatus entityAvailabilityStatus;
+    private final EntityAvailabilityStatusImpl entityAvailabilityStatus;
     private boolean filteringMessagesBeforePublishing;
     private Boolean isAnonymousAccessible;
     private final List<AuthorizationRule> authorizationRules;
@@ -45,7 +45,7 @@ public final class TopicProperties {
     private final OffsetDateTime accessedAt;
     private long maxSizeInMegabytes;
     private long maxMessageSizeInKilobytes;
-    private final MessageCountDetails messageCountDetails;
+    private final MessageCountDetailsImpl messageCountDetails;
     private boolean requiresDuplicateDetection;
     private final long sizeInBytes;
     private final int subscriptionCount;
@@ -59,13 +59,13 @@ public final class TopicProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setTopicAccessor(new EntityHelper.TopicAccessor() {
             @Override
-            public TopicProperties toModel(TopicDescription options) {
+            public TopicProperties toModel(TopicDescriptionImpl options) {
                 return new TopicProperties(options);
             }
 
             @Override
-            public TopicDescription toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules) {
-                final TopicDescription description = new TopicDescription()
+            public TopicDescriptionImpl toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules) {
+                final TopicDescriptionImpl description = new TopicDescriptionImpl()
                     .setAccessedAt(topic.getAccessedAt())
                     .setAutoDeleteOnIdle(topic.getAutoDeleteOnIdle())
                     .setCreatedAt(topic.getCreatedAt())
@@ -111,7 +111,7 @@ public final class TopicProperties {
      *
      * @param topic Options to set on the topic.
      */
-    TopicProperties(TopicDescription topic) {
+    TopicProperties(TopicDescriptionImpl topic) {
         Objects.requireNonNull(topic, "'options' cannot be null.");
         this.accessedAt = topic.getAccessedAt();
         this.authorizationRules = topic.getAuthorizationRules()
@@ -442,7 +442,7 @@ public final class TopicProperties {
      *
      * @return the messageCountDetails value.
      */
-    MessageCountDetails getMessageCountDetails() {
+    MessageCountDetailsImpl getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -460,7 +460,7 @@ public final class TopicProperties {
      *
      * @return the entityAvailabilityStatus value.
      */
-    EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatusImpl getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 
