@@ -110,6 +110,7 @@ abstract class SyncBenchmark<T> {
             .endpoint(cfg.getServiceEndpoint())
             .preferredRegions(cfg.getPreferredRegionsList())
             .key(cfg.getMasterKey())
+            .userAgentSuffix(configuration.getApplicationName())
             .consistencyLevel(cfg.getConsistencyLevel())
             .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());

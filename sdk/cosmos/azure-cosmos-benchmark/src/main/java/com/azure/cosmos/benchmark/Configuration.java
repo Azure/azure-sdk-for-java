@@ -193,6 +193,9 @@ public class Configuration {
     @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
     private String testScenario = "GET";
 
+    @Parameter(names = "-applicationName", description = "The application name suffix in the user agent header")
+    private String applicationName = "";
+
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
 
@@ -356,6 +359,10 @@ public class Configuration {
 
     public String getMasterKey() {
         return masterKey;
+    }
+
+    public String getApplicationName() {
+        return applicationName;
     }
 
     public boolean isHelp() {

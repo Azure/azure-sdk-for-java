@@ -88,6 +88,7 @@ abstract class AsyncBenchmark<T> {
             .key(cfg.getMasterKey())
             .preferredRegions(cfg.getPreferredRegionsList())
             .consistencyLevel(cfg.getConsistencyLevel())
+            .userAgentSuffix(configuration.getApplicationName())
             .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
