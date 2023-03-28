@@ -28,7 +28,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: SettingFields
+custom-types: KeyValueFilter,KeyValueFields
 customization-class: src/main/java/AppConfigCustomization.java
 context-client-method-parameter: true
 service-interface-as-public: true
