@@ -6,7 +6,9 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import org.slf4j.Logger;
 
 import java.util.HashSet;
@@ -16,6 +18,9 @@ import java.util.Objects;
  * Customization class for Administration client for Service Bus
  */
 public class AdministrationClientCustomization extends Customization {
+    private static final String AUTHORIZATION_RULE_CLASS_NAME = "AuthorizationRule";
+    private static final String NAMESPACE_KEY = "namespace";
+
     private static final HashSet<String> CLASSES_TO_SKIP = new HashSet<>();
 
     static {
@@ -34,8 +39,7 @@ public class AdministrationClientCustomization extends Customization {
      * Customisations to the generated code.
      *
      * 1. Rename implementation models to include Impl. (Avoids having to fully write out the namespace due to naming
-     * conflicts.)
-     * 2. Adds import for JacksonXmlRootElement
+     * conflicts.) 2. Adds import for JacksonXmlRootElement
      */
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
@@ -50,6 +54,10 @@ public class AdministrationClientCustomization extends Customization {
             if (CLASSES_TO_SKIP.contains(className)) {
                 logger.info("Skipping '{}'", className);
                 continue;
+            }
+
+            if (AUTHORIZATION_RULE_CLASS_NAME.equals(className)) {
+                classCustomization = addAuthorizationRuleXmlNamepsace(classCustomization, logger);
             }
 
             classCustomization = addJacksonXmlRootElementImport(classCustomization, logger);
@@ -76,7 +84,7 @@ public class AdministrationClientCustomization extends Customization {
 
             if (Objects.isNull(declaration)) {
                 logger.warn("{}: Add Import - Could not find classByName.", className);
-                return ;
+                return;
             }
 
             logger.info("{}: Add Import - Checking for JacksonXmlRootElement attribute.", className);
@@ -98,6 +106,54 @@ public class AdministrationClientCustomization extends Customization {
 
             logger.info("{}: Add Import - Adding JacksonXmlRootElement import.", className);
             ast.addImport("com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement");
+        });
+    }
+
+
+    /**
+     * Modifying AuthorizationRule class to include the namespace for authorization type. The XML namespace is not added
+     * to the generated code. We want it to look like this:
+     *
+     * {@code @JacksonXmlProperty(localName = "type", namespace = "http://www.w3.org/2001/XMLSchema-instance", isAttribute = true)}
+     */
+    private ClassCustomization addAuthorizationRuleXmlNamepsace(ClassCustomization classCustomization, Logger logger) {
+        return classCustomization.customizeAst(ast -> {
+
+            logger.debug("{}: AddXmlNamespace - Getting class information.", AUTHORIZATION_RULE_CLASS_NAME);
+            final ClassOrInterfaceDeclaration declaration = ast.getClassByName(AUTHORIZATION_RULE_CLASS_NAME)
+                .orElse(null);
+
+            if (Objects.isNull(declaration)) {
+                logger.warn("{}: AddXmlNamespace - Could not find class.", AUTHORIZATION_RULE_CLASS_NAME);
+                return;
+            }
+
+            final FieldDeclaration typeField = declaration.getFieldByName("type").orElse(null);
+            if (Objects.isNull(typeField)) {
+                logger.warn("{}: AddXmlNamespace - Could not find authorization 'type' field.",
+                    AUTHORIZATION_RULE_CLASS_NAME);
+                return;
+            }
+
+            final AnnotationExpr annotation = typeField.getAnnotationByName("JacksonXmlProperty")
+                .orElse(null);
+            if (Objects.isNull(annotation)) {
+                logger.warn("{}: AddXmlNamespace - Could not get 'JacksonXmlProperty' annotation.",
+                    AUTHORIZATION_RULE_CLASS_NAME);
+                return;
+            }
+
+            final NormalAnnotationExpr annotationExpression = annotation.asNormalAnnotationExpr();
+            final boolean hasNamespace = annotationExpression.getPairs().stream()
+                .anyMatch(e -> NAMESPACE_KEY.equals(e.getName().asString()) && e.getValue().asStringLiteralExpr() != null);
+
+            if (hasNamespace) {
+                logger.info("{}: AddXmlNamespace - {} node already exists.", AUTHORIZATION_RULE_CLASS_NAME,
+                    NAMESPACE_KEY);
+                return;
+            }
+
+            annotationExpression.addPair(NAMESPACE_KEY, "http://www.w3.org/2001/XMLSchema-instance");
         });
     }
 }
