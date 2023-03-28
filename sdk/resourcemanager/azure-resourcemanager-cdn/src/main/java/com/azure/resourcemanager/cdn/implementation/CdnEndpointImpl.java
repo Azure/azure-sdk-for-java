@@ -4,11 +4,13 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
 import com.azure.resourcemanager.cdn.models.CdnDeliveryRule;
 import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
 import com.azure.resourcemanager.cdn.models.DeliveryRule;
+import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
@@ -28,10 +30,15 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
@@ -60,11 +67,17 @@ class CdnEndpointImpl
 
     private List<CustomDomainInner> customDomainList;
     private List<CustomDomainInner> deletedCustomDomainList;
+    private final Map<String, DeliveryRule> deliveryRuleMap = new ConcurrentHashMap<>();
 
     CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
         this.customDomainList = new ArrayList<>();
         this.deletedCustomDomainList = new ArrayList<>();
+        if (inner.deliveryPolicy() != null && inner.deliveryPolicy().rules() != null) {
+            for (DeliveryRule rule : inner.deliveryPolicy().rules()) {
+                this.deliveryRuleMap.put(rule.name(), rule);
+            }
+        }
     }
 
     @Override
@@ -75,6 +88,13 @@ class CdnEndpointImpl
     @Override
     public Mono<CdnEndpoint> createResourceAsync() {
         final CdnEndpointImpl self = this;
+        if (this.innerModel().deliveryPolicy() == null && this.deliveryRuleMap.size() > 0) {
+            this.innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                .withRules(this.deliveryRuleMap.values()
+                    .stream()
+                    .sorted(Comparator.comparingInt(DeliveryRule::order))
+                    .collect(Collectors.toList())));
+        }
         return this.parent().manager().serviceClient().getEndpoints().createAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -117,6 +137,21 @@ class CdnEndpointImpl
                 .withOptimizationType(this.innerModel().optimizationType())
                 .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
                 .withTags(this.innerModel().tags());
+
+        List<DeliveryRule> deliveryRules = this.deliveryRuleMap.values()
+            .stream()
+            .sorted(Comparator.comparingInt(DeliveryRule::order))
+            .collect(Collectors.toList());
+
+        if (innerModel().deliveryPolicy() == null && !CoreUtils.isNullOrEmpty(this.deliveryRuleMap)) {
+            endpointUpdateParameters.withDeliveryPolicy(
+                new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                    .withRules(deliveryRules));
+        } else if (innerModel().deliveryPolicy() != null) {
+            endpointUpdateParameters.withDeliveryPolicy(
+                innerModel().deliveryPolicy()
+                    .withRules(deliveryRules));
+        }
 
         DeepCreatedOrigin originInner = this.innerModel().origins().get(0);
         OriginUpdateParameters originUpdateParameters = new OriginUpdateParameters()
@@ -214,8 +249,7 @@ class CdnEndpointImpl
 
     @Override
     public Map<String, DeliveryRule> deliveryRules() {
-        // TODO (xiaofeicao, 2023-03-28 1:40 PM)
-        throw new UnsupportedOperationException("method [deliveryRules] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnEndpointImpl]");
+        return Collections.unmodifiableMap(this.deliveryRuleMap);
     }
 
     @Override
@@ -555,20 +589,20 @@ class CdnEndpointImpl
 
     @Override
     public CdnDeliveryRuleImpl defineDeliveryRule(String name) {
-        // TODO (xiaofeicao, 2023-03-28 1:22 PM)
-        throw new UnsupportedOperationException("method [defineDeliveryRule] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnEndpointImpl]");
+        CdnDeliveryRuleImpl deliveryRule = new CdnDeliveryRuleImpl(this, name);
+        this.deliveryRuleMap.put(name, deliveryRule.innerModel());
+        return deliveryRule;
     }
 
     @Override
     public CdnDeliveryRuleImpl updateDeliveryRule(String name) {
-        CdnDeliveryRuleImpl impl = null;
-        return impl;
+        return new CdnDeliveryRuleImpl(this, deliveryRules().get(name));
     }
 
     @Override
     public CdnEndpointImpl withoutDeliveryRule(String name) {
-        // TODO (xiaofeicao, 2023-03-28 2:04 PM)
-        throw new UnsupportedOperationException("method [withoutDeliveryRule] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnEndpointImpl]");
+        this.deliveryRuleMap.remove(name);
+        return this;
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
 import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
+import com.azure.resourcemanager.cdn.models.CacheType;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
@@ -18,9 +19,11 @@ import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
+import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.RedirectType;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
+import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -170,9 +173,11 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);
         String cdnEndpointName = generateRandomResourceName("cdnendp", 15);
         String cdnEndpointName2 = generateRandomResourceName("cdnendp", 15);
-        String ruleName1 = generateRandomResourceName("dr", 15);
-        String ruleName2 = generateRandomResourceName("dr", 15);
-        String ruleName3 = generateRandomResourceName("dr", 15);
+        String ruleName1 = generateRandomResourceName("cdndr", 15);
+        String ruleName2 = generateRandomResourceName("cdndr", 15);
+        String ruleName3 = generateRandomResourceName("cdndr", 15);
+        String originName1 = generateRandomResourceName("origin", 15);
+        String originName2 = generateRandomResourceName("origin", 15);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
             .withRegion(region)
@@ -185,9 +190,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withStandardAkamaiSku()
+            .withSku(SkuName.STANDARD_MICROSOFT)
             .defineNewEndpoint(cdnEndpointName)
-                .withOrigin("origin1", "www.someDomain.net")
+                .withOrigin(originName1, "www.someDomain.net")
                 .withHttpAllowed(false)
                 .withHttpsAllowed(true)
                 .defineDeliveryRule(ruleName1)
@@ -226,26 +231,28 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .updateEndpoint(cdnEndpointName)
             // define new deliveryRule
             .defineDeliveryRule(ruleName2)
-                .withOrder(2)
+                .withOrder(1)
                 .withMatchConditions(
                     new DeliveryRuleHttpVersionCondition()
                         .withParameters(
                             new HttpVersionMatchConditionParameters()
+                                .withOperator(HttpVersionOperator.EQUAL)
                                 .withMatchValues(Arrays.asList("2.0"))))
                 .withActions(
                     new DeliveryRuleCacheExpirationAction()
                         .withParameters(
                             new CacheExpirationActionParameters()
+                                .withCacheType(CacheType.ALL)
                                 .withCacheBehavior(CacheBehavior.BYPASS_CACHE)))
                 .attach()
             // update existing deliveryRule
             .updateDeliveryRule(ruleName1)
-                .withOrder(3)
+                .withOrder(2)
                 .parent()
             .parent()
             // define new endpoint
             .defineNewEndpoint(cdnEndpointName2)
-                .withOrigin("origin2", "www.someDomain.net")
+                .withOrigin(originName2, "www.someDomain.net")
                 .withHttpAllowed(false)
                 .withHttpsAllowed(true)
                 .defineDeliveryRule(ruleName3)
@@ -254,11 +261,14 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                         new DeliveryRuleHttpVersionCondition()
                             .withParameters(
                                 new HttpVersionMatchConditionParameters()
+                                    .withOperator(HttpVersionOperator.EQUAL)
                                     .withMatchValues(Arrays.asList("1.1"))))
                     .withActions(
                         new DeliveryRuleCacheExpirationAction()
                             .withParameters(
                                 new CacheExpirationActionParameters()
+                                    .withCacheType(CacheType.ALL)
+                                    .withCacheDuration("00:05:00")
                                     .withCacheBehavior(CacheBehavior.OVERRIDE)))
                     .attach()
             .attach()
@@ -272,7 +282,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         // rule1
         deliveryRule = endpoint.deliveryRules().get(ruleName1);
         Assertions.assertNotNull(deliveryRule);
-        Assertions.assertEquals(3, deliveryRule.order());
+        Assertions.assertEquals(2, deliveryRule.order());
 
         // rule2
         DeliveryRule deliveryRule2 = endpoint.deliveryRules().get(ruleName2);
@@ -282,7 +292,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertTrue(deliveryRule2.conditions().iterator().next() instanceof DeliveryRuleHttpVersionCondition);
         Assertions.assertTrue(deliveryRule2.actions().iterator().next() instanceof DeliveryRuleCacheExpirationAction);
         Assertions.assertEquals(1, deliveryRule2.order());
-        Assertions.assertEquals(2, deliveryRule2.order());
 
         // endpoint2
         CdnEndpoint endpoint2 = cdnProfile.endpoints().get(cdnEndpointName2);
@@ -298,6 +307,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                 .parent()
             .apply();
 
-        Assertions.assertEquals(0, cdnProfile.endpoints().get(cdnEndpointName).deliveryRules().size());
+        Assertions.assertEquals(1, cdnProfile.endpoints().get(cdnEndpointName).deliveryRules().size());
     }
 }

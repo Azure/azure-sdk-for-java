@@ -1,12 +1,15 @@
 package com.azure.resourcemanager.cdn.models;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /**
  * An immutable client-side representation of an Azure CDN endpoint delivery rule for standard rule engine.
  */
-public interface CdnDeliveryRule<ParentT> {
+@Fluent
+public interface CdnDeliveryRule extends ChildResource<CdnEndpoint> {
     /**
      * Grouping of CDN delivery rule definition stages as a part of parent CDN endpoint definition.
      */
@@ -14,16 +17,16 @@ public interface CdnDeliveryRule<ParentT> {
         /**
          * The first stage of a CDN delivery rule definition.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint definition to return to after attaching this definition
+         * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithOrder<ParentT> {}
+        interface Blank<T> extends WithOrder<T> {}
 
         /**
          * The stage of a CDN delivery rule definition allowing to specify the order of the rule in the Rules Engine.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint definition to return to after attaching this definition
+         * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
-        interface WithOrder<ParentT> {
+        interface WithOrder<T> {
             /**
              * Specify the order in which the rule are applied for the endpoint. Possible values {0,1,2,3,………}.
              * A rule with a lesser order will be applied before a rule with a greater order.
@@ -33,37 +36,37 @@ public interface CdnDeliveryRule<ParentT> {
              * @param order the order of the delivery rule
              * @return the next stage of the delivery rule definition
              */
-            WithMatchConditions<ParentT> withOrder(int order);
+            WithMatchConditions<T> withOrder(int order);
         }
 
         /**
          * The stage of a CDN delivery rule definition allowing to specify match conditions.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint definition to return to after attaching this definition
+         * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
-        interface WithMatchConditions<ParentT> {
+        interface WithMatchConditions<T> {
             /**
              * Specify a list of conditions that must be matched for the actions to be executed.
              *
              * @param matchConditions the conditions that must be matched for the actions to be executed
              * @return the next stage of the delivery rule definition
              */
-            WithActions<ParentT> withMatchConditions(DeliveryRuleCondition... matchConditions);
+            WithActions<T> withMatchConditions(DeliveryRuleCondition... matchConditions);
         }
 
         /**
          * The stage of a CDN delivery rule definition allowing to specify actions.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint definition to return to after attaching this definition
+         * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
-        interface WithActions<ParentT> {
+        interface WithActions<T> {
             /**
              * Specify a list of actions that are executed when all the conditions of a rule are satisfied.
              *
              * @param actions the actions that are executed when all the conditions of a rule are satisfied
              * @return the next stage of the delivery rule definition
              */
-            Attachable<ParentT> withActions(DeliveryRuleAction... actions);
+            Attachable<T> withActions(DeliveryRuleAction... actions);
         }
     }
 
@@ -74,9 +77,9 @@ public interface CdnDeliveryRule<ParentT> {
         /**
          * The stage of a CDN delivery rule update allowing to update the order of the rule in the Rules Engine.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint update to return to after updating this definition
+         * @param <T> the stage of the parent CDN endpoint update to return to after updating this definition
          */
-        interface WithOrder<ParentT> {
+        interface WithOrder<T> {
             /**
              * Specify the order in which the rule are applied for the endpoint. Possible values {0,1,2,3,………}.
              * A rule with a lesser order will be applied before a rule with a greater order.
@@ -86,37 +89,37 @@ public interface CdnDeliveryRule<ParentT> {
              * @param order the order of the delivery rule
              * @return the next stage of the delivery rule update
              */
-            Update<ParentT> withOrder(int order);
+            Update<T> withOrder(int order);
         }
 
         /**
          * The stage of a CDN delivery rule update allowing to update match conditions.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint update to return to after updating this definition
+         * @param <T> the stage of the parent CDN endpoint update to return to after updating this definition
          */
-        interface WithMatchConditions<ParentT> {
+        interface WithMatchConditions<T> {
             /**
              * Specify a list of conditions that must be matched for the actions to be executed.
              *
              * @param matchConditions the conditions that must be matched for the actions to be executed
              * @return the next stage of the delivery rule update
              */
-            Update<ParentT> withMatchConditions(DeliveryRuleCondition... matchConditions);
+            Update<T> withMatchConditions(DeliveryRuleCondition... matchConditions);
         }
 
         /**
          * The stage of a CDN delivery rule update allowing to update actions.
          *
-         * @param <ParentT> the stage of the parent CDN endpoint update to return to after updating this definition
+         * @param <T> the stage of the parent CDN endpoint update to return to after updating this definition
          */
-        interface WithActions<ParentT> {
+        interface WithActions<T> {
             /**
              * Specify a list of actions that are executed when all the conditions of a rule are satisfied.
              *
              * @param actions the actions that are executed when all the conditions of a rule are satisfied
              * @return the next stage of the delivery rule update
              */
-            Update<ParentT> withActions(DeliveryRuleAction... actions);
+            Update<T> withActions(DeliveryRuleAction... actions);
         }
     }
 

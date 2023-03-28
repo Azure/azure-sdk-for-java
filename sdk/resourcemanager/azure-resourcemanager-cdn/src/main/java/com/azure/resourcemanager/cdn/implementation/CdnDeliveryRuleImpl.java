@@ -1,44 +1,66 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.resourcemanager.cdn.models.CdnDeliveryRule;
+import com.azure.resourcemanager.cdn.models.CdnEndpoint;
+import com.azure.resourcemanager.cdn.models.DeliveryRule;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCondition;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * @author xiaofeicao
- * @createdAt 2023-03-28 1:24 PM
+ * Implementation for {@link CdnDeliveryRule}.
  */
-class CdnDeliveryRuleImpl implements CdnDeliveryRule<CdnEndpointImpl>,
+class CdnDeliveryRuleImpl
+    extends ChildResourceImpl<DeliveryRule, CdnEndpointImpl, CdnEndpoint>
+    implements CdnDeliveryRule,
     CdnDeliveryRule.Definition<CdnEndpointImpl>,
     CdnDeliveryRule.Update<CdnEndpointImpl> {
 
+    CdnDeliveryRuleImpl(CdnEndpointImpl parent, String name) {
+        this(parent, new DeliveryRule().withName(name));
+    }
+
+    CdnDeliveryRuleImpl(CdnEndpointImpl parent, DeliveryRule deliveryRule) {
+        super(deliveryRule, parent);
+    }
+
     @Override
     public CdnDeliveryRuleImpl withOrder(int order) {
-        // TODO (xiaofeicao, 2023-03-28 1:27 PM)
-        throw new UnsupportedOperationException("method [withOrder] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnDeliveryRuleImpl]");
+        innerModel().withOrder(order);
+        return this;
     }
 
     @Override
     public CdnDeliveryRuleImpl withMatchConditions(DeliveryRuleCondition... matchConditions) {
-        // TODO (xiaofeicao, 2023-03-28 1:27 PM)
-        throw new UnsupportedOperationException("method [withMatchConditions] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnDeliveryRuleImpl]");
+        List<DeliveryRuleCondition> conditions = new ArrayList<>();
+        if (matchConditions != null) {
+            conditions.addAll(Arrays.asList(matchConditions));
+        }
+        innerModel().withConditions(conditions);
+        return this;
     }
 
     @Override
     public CdnDeliveryRuleImpl withActions(DeliveryRuleAction... actions) {
-        // TODO (xiaofeicao, 2023-03-28 1:27 PM)
-        throw new UnsupportedOperationException("method [withActions] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnDeliveryRuleImpl]");
+        List<DeliveryRuleAction> actionList = new ArrayList<>();
+        if (actions != null) {
+            actionList.addAll(Arrays.asList(actions));
+        }
+        innerModel().withActions(actionList);
+        return this;
     }
 
     @Override
-    public CdnEndpointImpl parent() {
-        // TODO (xiaofeicao, 2023-03-28 1:27 PM)
-        throw new UnsupportedOperationException("method [parent] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnDeliveryRuleImpl]");
+    public String name() {
+        return innerModel().name();
     }
 
     @Override
     public CdnEndpointImpl attach() {
-        // TODO (xiaofeicao, 2023-03-28 1:32 PM)
-        throw new UnsupportedOperationException("method [attach] not implemented in class [com.azure.resourcemanager.cdn.implementation.CdnDeliveryRuleImpl]");
+        return parent();
     }
 }
