@@ -1,4 +1,4 @@
-# Azure Azure Health Insights Cancer Profiling client library for Java
+# Azure Cognitive Services Health Insights Cancer Profiling client library for Java
 
 [Health Insights](https://review.learn.microsoft.com/azure/azure-health-insights/?branch=release-azure-health-insights) is an Azure Applied AI Service built with the Azure Cognitive Services Framework, that leverages multiple Cognitive Services, Healthcare API services and other Azure resources.
 
