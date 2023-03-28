@@ -8,7 +8,9 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import org.slf4j.Logger;
 
 import java.util.HashSet;
@@ -119,7 +121,7 @@ public class AdministrationClientCustomization extends Customization {
     private ClassCustomization addAuthorizationRuleXmlNamepsace(ClassCustomization classCustomization, Logger logger) {
         return classCustomization.customizeAst(ast -> {
 
-            logger.debug("{}: AddXmlNamespace - Getting class information.", AUTHORIZATION_RULE_CLASS_NAME);
+            logger.info("{}: AddXmlNamespace - Getting class information.", AUTHORIZATION_RULE_CLASS_NAME);
             final ClassOrInterfaceDeclaration declaration = ast.getClassByName(AUTHORIZATION_RULE_CLASS_NAME)
                 .orElse(null);
 
@@ -153,7 +155,7 @@ public class AdministrationClientCustomization extends Customization {
                 return;
             }
 
-            annotationExpression.addPair(NAMESPACE_KEY, "http://www.w3.org/2001/XMLSchema-instance");
+            annotationExpression.addPair(NAMESPACE_KEY, new StringLiteralExpr("http://www.w3.org/2001/XMLSchema-instance"));
         });
     }
 }

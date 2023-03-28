@@ -23,7 +23,7 @@ public final class AuthorizationRuleImpl {
     /*
      * The authorization type.
      */
-    @JacksonXmlProperty(localName = "type", namespace = "http://www.w3.org/2001/XMLSchema-instance", isAttribute = true)
+    @JacksonXmlProperty(localName = "type", isAttribute = true, namespace = "http://www.w3.org/2001/XMLSchema-instance")
     private String type;
 
     /*
