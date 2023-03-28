@@ -4,9 +4,9 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
 /** Represents an entry in the feed when querying rules. */
@@ -23,8 +23,8 @@ public final class RuleDescriptionEntryImpl {
     /*
      * The name of the rule
      */
-    @JsonProperty(value = "title")
-    private Object title;
+    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
+    private String title;
 
     /*
      * The timestamp for when this rule was published
@@ -49,6 +49,9 @@ public final class RuleDescriptionEntryImpl {
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private RuleDescriptionEntryContentImpl content;
+
+    /** Creates an instance of RuleDescriptionEntry class. */
+    public RuleDescriptionEntryImpl() {}
 
     /**
      * Get the id property: The URL of the GET request.
@@ -75,7 +78,7 @@ public final class RuleDescriptionEntryImpl {
      *
      * @return the title value.
      */
-    public Object getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
@@ -85,7 +88,7 @@ public final class RuleDescriptionEntryImpl {
      * @param title the title value to set.
      * @return the RuleDescriptionEntry object itself.
      */
-    public RuleDescriptionEntryImpl setTitle(Object title) {
+    public RuleDescriptionEntryImpl setTitle(String title) {
         this.title = title;
         return this;
     }

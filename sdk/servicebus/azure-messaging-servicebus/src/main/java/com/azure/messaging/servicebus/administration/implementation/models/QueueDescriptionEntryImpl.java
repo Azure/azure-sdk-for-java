@@ -4,9 +4,9 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
 /** Represents an entry in the feed when querying queues. */
@@ -29,8 +29,8 @@ public final class QueueDescriptionEntryImpl {
     /*
      * The name of the queue
      */
-    @JsonProperty(value = "title")
-    private Object title;
+    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
+    private String title;
 
     /*
      * The timestamp for when this queue was published
@@ -61,6 +61,9 @@ public final class QueueDescriptionEntryImpl {
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private QueueDescriptionEntryContentImpl content;
+
+    /** Creates an instance of QueueDescriptionEntry class. */
+    public QueueDescriptionEntryImpl() {}
 
     /**
      * Get the base property: Base URL for the query.
@@ -107,7 +110,7 @@ public final class QueueDescriptionEntryImpl {
      *
      * @return the title value.
      */
-    public Object getTitle() {
+    public String getTitle() {
         return this.title;
     }
 
@@ -117,7 +120,7 @@ public final class QueueDescriptionEntryImpl {
      * @param title the title value to set.
      * @return the QueueDescriptionEntry object itself.
      */
-    public QueueDescriptionEntryImpl setTitle(Object title) {
+    public QueueDescriptionEntryImpl setTitle(String title) {
         this.title = title;
         return this;
     }

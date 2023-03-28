@@ -8,7 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The SubscriptionDescription. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+@JacksonXmlRootElement(localName = "SubscriptionDescriptionEntryContent", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class SubscriptionDescriptionEntryContentImpl {
 
@@ -25,6 +25,9 @@ public final class SubscriptionDescriptionEntryContentImpl {
             localName = "SubscriptionDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private SubscriptionDescriptionImpl subscriptionDescription;
+
+    /** Creates an instance of SubscriptionDescriptionEntryContent class. */
+    public SubscriptionDescriptionEntryContentImpl() {}
 
     /**
      * Get the type property: Type of content in subscription response.
