@@ -4,51 +4,47 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Collection;
 
 /** Access rights of an authorization. */
-public enum AccessRights {
-    /** Enum value Manage. */
-    MANAGE("Manage"),
+public final class AccessRights extends ExpandableStringEnum<AccessRights> {
+    /** Static value Manage for AccessRights. */
+    public static final AccessRights MANAGE = fromString("Manage");
 
-    /** Enum value Send. */
-    SEND("Send"),
+    /** Static value Send for AccessRights. */
+    public static final AccessRights SEND = fromString("Send");
 
-    /** Enum value Listen. */
-    LISTEN("Listen");
+    /** Static value Listen for AccessRights. */
+    public static final AccessRights LISTEN = fromString("Listen");
 
-    /** The actual serialized value for a AccessRights instance. */
-    private final String value;
+    /**
+     * Creates a new instance of AccessRights value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessRights() {}
 
-    AccessRights(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a AccessRights from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding AccessRights.
+     */
+    @JsonCreator
+    public static AccessRights fromString(String name) {
+        return fromString(name, AccessRights.class);
     }
 
     /**
-     * Parses a serialized value to a AccessRights instance.
+     * Gets known AccessRights values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AccessRights object, or null if unable to parse.
+     * @return known AccessRights values.
      */
-    @JsonCreator
-    public static AccessRights fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AccessRights[] items = AccessRights.values();
-        for (AccessRights item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AccessRights> values() {
+        return values(AccessRights.class);
     }
 }

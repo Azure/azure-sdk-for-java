@@ -4,51 +4,47 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Collection;
 
 /** The SKU for the messaging entity. */
-public enum MessagingSku {
-    /** Enum value Basic. */
-    BASIC("Basic"),
+public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
+    /** Static value Basic for MessagingSku. */
+    public static final MessagingSku BASIC = fromString("Basic");
 
-    /** Enum value Standard. */
-    STANDARD("Standard"),
+    /** Static value Standard for MessagingSku. */
+    public static final MessagingSku STANDARD = fromString("Standard");
 
-    /** Enum value Premium. */
-    PREMIUM("Premium");
+    /** Static value Premium for MessagingSku. */
+    public static final MessagingSku PREMIUM = fromString("Premium");
 
-    /** The actual serialized value for a MessagingSku instance. */
-    private final String value;
+    /**
+     * Creates a new instance of MessagingSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MessagingSku() {}
 
-    MessagingSku(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a MessagingSku from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding MessagingSku.
+     */
+    @JsonCreator
+    public static MessagingSku fromString(String name) {
+        return fromString(name, MessagingSku.class);
     }
 
     /**
-     * Parses a serialized value to a MessagingSku instance.
+     * Gets known MessagingSku values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed MessagingSku object, or null if unable to parse.
+     * @return known MessagingSku values.
      */
-    @JsonCreator
-    public static MessagingSku fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MessagingSku[] items = MessagingSku.values();
-        for (MessagingSku item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<MessagingSku> values() {
+        return values(MessagingSku.class);
     }
 }

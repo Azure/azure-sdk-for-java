@@ -27,6 +27,14 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
     public static final NamespaceType RELAY = fromString("Relay");
 
     /**
+     * Creates a new instance of NamespaceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NamespaceType() {}
+
+    /**
      * Creates or finds a NamespaceType from its string representation.
      *
      * @param name a name to look for.
