@@ -45,19 +45,6 @@ public interface Contacts {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified contact in a specified resource group.
-     */
-    Contact get(String resourceGroupName, String spacecraftName, String contactName);
-
-    /**
-     * Gets the specified contact in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spacecraftName Spacecraft ID.
-     * @param contactName Contact name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,6 +53,19 @@ public interface Contacts {
      */
     Response<Contact> getWithResponse(
         String resourceGroupName, String spacecraftName, String contactName, Context context);
+
+    /**
+     * Gets the specified contact in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param spacecraftName Spacecraft ID.
+     * @param contactName Contact name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified contact in a specified resource group.
+     */
+    Contact get(String resourceGroupName, String spacecraftName, String contactName);
 
     /**
      * Deletes a specified contact.

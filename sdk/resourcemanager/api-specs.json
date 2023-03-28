@@ -188,7 +188,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2021-06 --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue"
+    "args": "--tag=package-policy-2022-06 --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue"
   },
   "policy-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

@@ -476,7 +476,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("sub", 10);
 
-        client.createQueue(queueName).block(TIMEOUT);
+        client.createQueue(queueName)
+            .onErrorResume(ResourceExistsException.class, e -> Mono.empty())
+            .block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))

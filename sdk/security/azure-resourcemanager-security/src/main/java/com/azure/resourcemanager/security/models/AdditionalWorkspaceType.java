@@ -14,6 +14,15 @@ public final class AdditionalWorkspaceType extends ExpandableStringEnum<Addition
     public static final AdditionalWorkspaceType SENTINEL = fromString("Sentinel");
 
     /**
+     * Creates a new instance of AdditionalWorkspaceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdditionalWorkspaceType() {
+    }
+
+    /**
      * Creates or finds a AdditionalWorkspaceType from its string representation.
      *
      * @param name a name to look for.

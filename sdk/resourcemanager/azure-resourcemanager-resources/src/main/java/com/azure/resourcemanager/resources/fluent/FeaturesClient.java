@@ -122,19 +122,6 @@ public interface FeaturesClient {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FeatureResultInner get(String resourceProviderNamespace, String featureName);
-
-    /**
-     * Gets the preview feature with the specified name.
-     *
-     * @param resourceProviderNamespace The resource provider namespace for the feature.
-     * @param featureName The name of the feature to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,6 +130,19 @@ public interface FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FeatureResultInner> getWithResponse(String resourceProviderNamespace, String featureName, Context context);
+
+    /**
+     * Gets the preview feature with the specified name.
+     *
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the preview feature with the specified name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FeatureResultInner get(String resourceProviderNamespace, String featureName);
 
     /**
      * Registers the preview feature for the subscription.
@@ -175,19 +175,6 @@ public interface FeaturesClient {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FeatureResultInner register(String resourceProviderNamespace, String featureName);
-
-    /**
-     * Registers the preview feature for the subscription.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param featureName The name of the feature to register.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,6 +184,19 @@ public interface FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FeatureResultInner> registerWithResponse(
         String resourceProviderNamespace, String featureName, Context context);
+
+    /**
+     * Registers the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FeatureResultInner register(String resourceProviderNamespace, String featureName);
 
     /**
      * Unregisters the preview feature for the subscription.
@@ -230,19 +230,6 @@ public interface FeaturesClient {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FeatureResultInner unregister(String resourceProviderNamespace, String featureName);
-
-    /**
-     * Unregisters the preview feature for the subscription.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param featureName The name of the feature to unregister.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -252,4 +239,17 @@ public interface FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FeatureResultInner> unregisterWithResponse(
         String resourceProviderNamespace, String featureName, Context context);
+
+    /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FeatureResultInner unregister(String resourceProviderNamespace, String featureName);
 }

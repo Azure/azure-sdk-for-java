@@ -20,6 +20,15 @@ public final class RecommendationAction extends ExpandableStringEnum<Recommendat
     public static final RecommendationAction REMOVE = fromString("Remove");
 
     /**
+     * Creates a new instance of RecommendationAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendationAction() {
+    }
+
+    /**
      * Creates or finds a RecommendationAction from its string representation.
      *
      * @param name a name to look for.

@@ -7,11 +7,10 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.NameAvailabilityParameters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NameAvailabilityParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NameAvailabilityParameters model =
             BinaryData
                 .fromString("{\"type\":\"fmppe\",\"name\":\"bvmgxsabkyqduuji\"}")
@@ -20,8 +19,8 @@ public final class NameAvailabilityParametersTests {
         Assertions.assertEquals("bvmgxsabkyqduuji", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NameAvailabilityParameters model =
             new NameAvailabilityParameters().withType("fmppe").withName("bvmgxsabkyqduuji");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityParameters.class);

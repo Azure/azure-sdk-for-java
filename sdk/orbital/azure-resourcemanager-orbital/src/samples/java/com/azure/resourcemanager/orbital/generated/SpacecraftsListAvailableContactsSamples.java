@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.models.ContactParameters;
 import com.azure.resourcemanager.orbital.models.ContactParametersContactProfile;
 import java.time.OffsetDateTime;
@@ -12,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for Spacecrafts ListAvailableContacts. */
 public final class SpacecraftsListAvailableContactsSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/AvailableContactsList.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/AvailableContactsList.json
      */
     /**
      * Sample code: List of Contact.
@@ -31,8 +30,8 @@ public final class SpacecraftsListAvailableContactsSamples {
                             .withId(
                                 "/subscriptions/c1be1141-a7c9-4aac-9608-3c2e2f1152c3/resourceGroups/contoso-Rgp/providers/Microsoft.Orbital/contactProfiles/CONTOSO-CP"))
                     .withGroundStationName("EASTUS2_0")
-                    .withStartTime(OffsetDateTime.parse("2022-03-01T11:30:00Z"))
-                    .withEndTime(OffsetDateTime.parse("2022-03-02T11:30:00Z")),
-                Context.NONE);
+                    .withStartTime(OffsetDateTime.parse("2022-11-01T11:30:00Z"))
+                    .withEndTime(OffsetDateTime.parse("2022-11-02T11:30:00Z")),
+                com.azure.core.util.Context.NONE);
     }
 }

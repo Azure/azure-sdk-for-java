@@ -17,8 +17,7 @@ import java.util.Map;
 @Fluent
 public final class SubscriptionInner {
     /*
-     * The fully qualified ID for the subscription. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000.
+     * The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -42,8 +41,7 @@ public final class SubscriptionInner {
     private String tenantId;
 
     /*
-     * The subscription state. Possible values are Enabled, Warned, PastDue,
-     * Disabled, and Deleted.
+     * The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionState state;
@@ -55,9 +53,8 @@ public final class SubscriptionInner {
     private SubscriptionPolicies subscriptionPolicies;
 
     /*
-     * The authorization source of the request. Valid values are one or more
-     * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For
-     * example, 'Legacy, RoleBased'.
+     * The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased,
+     * Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
      */
     @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
@@ -74,6 +71,10 @@ public final class SubscriptionInner {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of SubscriptionInner class. */
+    public SubscriptionInner() {
+    }
 
     /**
      * Get the id property: The fully qualified ID for the subscription. For example,

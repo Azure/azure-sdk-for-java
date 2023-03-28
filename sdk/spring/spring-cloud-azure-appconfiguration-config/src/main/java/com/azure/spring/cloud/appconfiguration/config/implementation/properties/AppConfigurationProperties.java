@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -29,9 +28,6 @@ public final class AppConfigurationProperties {
     private boolean enabled = true;
 
     private List<ConfigStore> stores = new ArrayList<>();
-
-    @Nullable
-    private String clientId; // Optional: client_id of the managed identity
 
     private Duration refreshInterval;
 
@@ -61,20 +57,6 @@ public final class AppConfigurationProperties {
      */
     public void setStores(List<ConfigStore> stores) {
         this.stores = stores;
-    }
-
-    /**
-     * @return the clientId
-     */
-    public String getClientId() {
-        return clientId;
-    }
-
-    /**
-     * @param clientId the clientId to set
-     */
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 
     /**

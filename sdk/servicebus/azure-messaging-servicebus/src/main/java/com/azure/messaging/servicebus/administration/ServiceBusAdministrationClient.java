@@ -80,7 +80,7 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopicProperties;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopics;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTracingContext;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateSubscriptionBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
@@ -411,7 +411,7 @@ public final class ServiceBusAdministrationClient {
         }
         context = context == null ? Context.NONE : context;
         final Context contextWithHeaders
-            = enableSyncContext(getTracingContext(context).addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+            = enableSyncContext(getContext(context).addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
         final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             subscriptionOptions.setForwardTo(forwardTo);
@@ -1809,7 +1809,7 @@ public final class ServiceBusAdministrationClient {
     }
 
     private static Context enableSyncContext(Context context) {
-        return getTracingContext(context).addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        return getContext(context).addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     private <T> T deserialize(Object object, Class<T> clazz) {

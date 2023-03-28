@@ -74,8 +74,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules"
-                + "/{alertsSuppressionRuleName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertsSuppressionRuleInner>> get(
@@ -88,8 +87,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules"
-                + "/{alertsSuppressionRuleName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertsSuppressionRuleInner>> update(
@@ -103,8 +101,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules"
-                + "/{alertsSuppressionRuleName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
