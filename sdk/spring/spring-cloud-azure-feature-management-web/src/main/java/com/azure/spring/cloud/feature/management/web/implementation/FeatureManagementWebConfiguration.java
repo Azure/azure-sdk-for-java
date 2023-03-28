@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.implementation;
+package com.azure.spring.cloud.feature.management.web.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
 
-import com.azure.spring.cloud.feature.manager.FeatureHandler;
-import com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
 import com.azure.spring.cloud.feature.management.FeatureManager;
-import com.azure.spring.cloud.feature.manager.DisabledFeaturesHandler;
+import com.azure.spring.cloud.feature.management.web.DisabledFeaturesHandler;
+import com.azure.spring.cloud.feature.management.web.FeatureHandler;
+import com.azure.spring.cloud.feature.management.web.FeatureManagerSnapshot;
 
 /**
  * Configurations setting up FeatureManagerSnapshot, FeatureHandler, FeatureConfig

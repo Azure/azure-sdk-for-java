@@ -4,4 +4,4 @@
  * Package contains classes for accessing and creating Feature Flags, Feature Filters with
  * integrations with Spring Web.
  */
-package com.azure.spring.cloud.feature.manager;
+package com.azure.spring.cloud.feature.management.web;

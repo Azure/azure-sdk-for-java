@@ -34,7 +34,7 @@ public class AzureCosmosPropertiesTest {
     }
 
     private String getVersionFromPomFile() {
-        String fileName = "pom.xml";
+        String fileName = "../azure-cosmos/pom.xml";
         String versionStartTag = "<version>";
         String versionEndTag = "</version>";
         File file = new File(fileName);
