@@ -100,6 +100,10 @@ abstract class AsyncBenchmark<T> {
                     )
             );
 
+        if (configuration.isDefaultLog4jLoggerEnabled()) {
+            telemetryConfig.diagnosticLogs();
+        }
+
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
             logger.info("USING AZURE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
