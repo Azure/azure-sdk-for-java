@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.core.util.TracingOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
@@ -134,6 +135,10 @@ abstract class SyncBenchmark<T> {
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
             telemetryConfig.diagnosticLogs();
+        }
+
+        if (configuration.isTracingDisabled()) {
+            telemetryConfig.tracingOptions(new TracingOptions().setEnabled(false));
         }
 
         cosmosClient = cosmosClientBuilder.buildClient();
