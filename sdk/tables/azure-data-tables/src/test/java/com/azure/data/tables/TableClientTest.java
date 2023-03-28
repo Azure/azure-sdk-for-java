@@ -32,6 +32,7 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.TokenCachePersistenceOptions;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -74,7 +75,7 @@ public class TableClientTest extends TableClientTestBase {
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
 
-        tableClient.createTable();
+        tableClient.createTable(); 
     }
 
     @Test
@@ -95,8 +96,10 @@ public class TableClientTest extends TableClientTestBase {
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(interceptorManager.isLiveMode(), "This test only works in live mode.");
+
         Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
-            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06); 
 
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
@@ -110,12 +113,13 @@ public class TableClientTest extends TableClientTestBase {
             .additionallyAllowedTenants("*")
             .build();
 
+
         final TableClient tableClient2 =
             getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildClient();
-
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
+
         assertNotNull(tableClient2.createTable());
 
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);

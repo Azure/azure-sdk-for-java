@@ -106,6 +106,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(interceptorManager.isLiveMode(), "This test only works in live mode.");
         Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
             && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
 
