@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -136,6 +135,11 @@ public final class QueueDescriptionImpl {
                                 namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
                         List<AuthorizationRuleImpl> items) {
             this.items = items;
+        }
+
+        @JsonCreator()
+        private AuthorizationRulesWrapper() {
+            this.items = java.util.Collections.emptyList();
         }
     }
 
