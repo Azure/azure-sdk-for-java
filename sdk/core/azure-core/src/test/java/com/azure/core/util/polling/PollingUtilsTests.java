@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
