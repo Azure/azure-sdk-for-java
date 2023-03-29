@@ -27,174 +27,194 @@ pr:
 # boolean for each library. Note: AdditionalModules are never to have
 # parameter entries as those are not releasing libraries.
 parameters:
-- name: release_springcloudazurecore
-  displayName: 'spring-cloud-azure-core'
-  type: boolean
-  default: true
-- name: release_springcloudazureservice
-  displayName: 'spring-cloud-azure-service'
-  type: boolean
-  default: true
-- name: release_springcloudazureresourcemanager
-  displayName: 'spring-cloud-azure-resourcemanager'
-  type: boolean
-  default: true
-- name: release_springmessagingazure
-  displayName: 'spring-messaging-azure'
-  type: boolean
-  default: true
-- name: release_springmessagingazureeventhubs
-  displayName: 'spring-messaging-azure-eventhubs'
-  type: boolean
-  default: true
-- name: release_springmessagingazureservicebus
-  displayName: 'spring-messaging-azure-servicebus'
-  type: boolean
-  default: true
-- name: release_springmessagingazurestoragequeue
-  displayName: 'spring-messaging-azure-storage-queue'
-  type: boolean
-  default: true
-- name: release_springintegrationazurecore
-  displayName: 'spring-integration-azure-core'
-  type: boolean
-  default: true
-- name: release_springintegrationazureeventhubs
-  displayName: 'spring-integration-azure-eventhubs'
-  type: boolean
-  default: true
-- name: release_springintegrationazureservicebus
-  displayName: 'spring-integration-azure-servicebus'
-  type: boolean
-  default: true
-- name: release_springintegrationazurestoragequeue
-  displayName: 'spring-integration-azure-storage-queue'
-  type: boolean
-  default: true
-- name: release_springcloudazureautoconfigure
-  displayName: 'spring-cloud-azure-autoconfigure'
-  type: boolean
-  default: true
-- name: release_springcloudazureactuator
-  displayName: 'spring-cloud-azure-actuator'
-  type: boolean
-  default: true
-- name: release_springcloudazureactuatorautoconfigure
-  displayName: 'spring-cloud-azure-actuator-autoconfigure'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarter
-  displayName: 'spring-cloud-azure-starter'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarteractuator
-  displayName: 'spring-cloud-azure-starter-actuator'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarteractivedirectory
-  displayName: 'spring-cloud-azure-starter-active-directory'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarteractivedirectoryb2c
-  displayName: 'spring-cloud-azure-starter-active-directory-b2c'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterappconfiguration
-  displayName: 'spring-cloud-azure-starter-appconfiguration'
-  type: boolean
-  default: true
-- name: release_springcloudazurestartercosmos
-  displayName: 'spring-cloud-azure-starter-cosmos'
-  type: boolean
-  default: true
-#- name: release_springcloudazurestarterdatacosmos
-#  displayName: 'spring-cloud-azure-starter-data-cosmos'
-#  type: boolean
-#  default: true
-- name: release_springcloudazurestartereventhubs
-  displayName: 'spring-cloud-azure-starter-eventhubs'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterkeyvault
-  displayName: 'spring-cloud-azure-starter-keyvault'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterkeyvaultcertificates
-  displayName: 'spring-cloud-azure-starter-keyvault-certificates'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterkeyvaultsecrets
-  displayName: 'spring-cloud-azure-starter-keyvault-secrets'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterservicebus
-  displayName: 'spring-cloud-azure-starter-servicebus'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterservicebusjms
-  displayName: 'spring-cloud-azure-starter-servicebus-jms'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterstorage
-  displayName: 'spring-cloud-azure-starter-storage'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterstorageblob
-  displayName: 'spring-cloud-azure-starter-storage-blob'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterstoragefileshare
-  displayName: 'spring-cloud-azure-starter-storage-file-share'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterstoragequeue
-  displayName: 'spring-cloud-azure-starter-storage-queue'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterintegrationeventhubs
-  displayName: 'spring-cloud-azure-starter-integration-eventhubs'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterintegrationservicebus
-  displayName: 'spring-cloud-azure-starter-integration-servicebus'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterintegrationstoragequeue
-  displayName: 'spring-cloud-azure-starter-integration-storage-queue'
-  type: boolean
-  default: true
-- name: release_springcloudazurestreambinderservicebuscore
-  displayName: 'spring-cloud-azure-stream-binder-servicebus-core'
-  type: boolean
-  default: true
-- name: release_springcloudazurestreambinderservicebus
-  displayName: 'spring-cloud-azure-stream-binder-servicebus'
-  type: boolean
-  default: true
-- name: release_springcloudazurestreambindereventhubs
-  displayName: 'spring-cloud-azure-stream-binder-eventhubs'
-  type: boolean
-  default: true
-- name: release_springcloudazurestreambindereventhubscore
-  displayName: 'spring-cloud-azure-stream-binder-eventhubs-core'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterstreameventhubs
-  displayName: 'spring-cloud-azure-starter-stream-eventhubs'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterstreamservicebus
-  displayName: 'spring-cloud-azure-starter-stream-servicebus'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterjdbcmysql
-  displayName: 'spring-cloud-azure-starter-jdbc-mysql'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterjdbcpostgresql
-  displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
-  type: boolean
-  default: true
+  - name: release_springcloudazurecore
+    displayName: "spring-cloud-azure-core"
+    type: boolean
+    default: true
+  - name: release_springcloudazureservice
+    displayName: "spring-cloud-azure-service"
+    type: boolean
+    default: true
+  - name: release_springcloudazureresourcemanager
+    displayName: "spring-cloud-azure-resourcemanager"
+    type: boolean
+    default: true
+  - name: release_springmessagingazure
+    displayName: "spring-messaging-azure"
+    type: boolean
+    default: true
+  - name: release_springmessagingazureeventhubs
+    displayName: "spring-messaging-azure-eventhubs"
+    type: boolean
+    default: true
+  - name: release_springmessagingazureservicebus
+    displayName: "spring-messaging-azure-servicebus"
+    type: boolean
+    default: true
+  - name: release_springmessagingazurestoragequeue
+    displayName: "spring-messaging-azure-storage-queue"
+    type: boolean
+    default: true
+  - name: release_springintegrationazurecore
+    displayName: "spring-integration-azure-core"
+    type: boolean
+    default: true
+  - name: release_springintegrationazureeventhubs
+    displayName: "spring-integration-azure-eventhubs"
+    type: boolean
+    default: true
+  - name: release_springintegrationazureservicebus
+    displayName: "spring-integration-azure-servicebus"
+    type: boolean
+    default: true
+  - name: release_springintegrationazurestoragequeue
+    displayName: "spring-integration-azure-storage-queue"
+    type: boolean
+    default: true
+  - name: release_springcloudazureautoconfigure
+    displayName: "spring-cloud-azure-autoconfigure"
+    type: boolean
+    default: true
+  - name: release_springcloudazureactuator
+    displayName: "spring-cloud-azure-actuator"
+    type: boolean
+    default: true
+  - name: release_springcloudazureactuatorautoconfigure
+    displayName: "spring-cloud-azure-actuator-autoconfigure"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarter
+    displayName: "spring-cloud-azure-starter"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarteractuator
+    displayName: "spring-cloud-azure-starter-actuator"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarteractivedirectory
+    displayName: "spring-cloud-azure-starter-active-directory"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarteractivedirectoryb2c
+    displayName: "spring-cloud-azure-starter-active-directory-b2c"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterappconfiguration
+    displayName: "spring-cloud-azure-starter-appconfiguration"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestartercosmos
+    displayName: "spring-cloud-azure-starter-cosmos"
+    type: boolean
+    default: true
+  #- name: release_springcloudazurestarterdatacosmos
+  #  displayName: 'spring-cloud-azure-starter-data-cosmos'
+  #  type: boolean
+  #  default: true
+  - name: release_springcloudazurestartereventhubs
+    displayName: "spring-cloud-azure-starter-eventhubs"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterkeyvault
+    displayName: "spring-cloud-azure-starter-keyvault"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterkeyvaultcertificates
+    displayName: "spring-cloud-azure-starter-keyvault-certificates"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterkeyvaultsecrets
+    displayName: "spring-cloud-azure-starter-keyvault-secrets"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterservicebus
+    displayName: "spring-cloud-azure-starter-servicebus"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterservicebusjms
+    displayName: "spring-cloud-azure-starter-servicebus-jms"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterstorage
+    displayName: "spring-cloud-azure-starter-storage"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterstorageblob
+    displayName: "spring-cloud-azure-starter-storage-blob"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterstoragefileshare
+    displayName: "spring-cloud-azure-starter-storage-file-share"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterstoragequeue
+    displayName: "spring-cloud-azure-starter-storage-queue"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterintegrationeventhubs
+    displayName: "spring-cloud-azure-starter-integration-eventhubs"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterintegrationservicebus
+    displayName: "spring-cloud-azure-starter-integration-servicebus"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterintegrationstoragequeue
+    displayName: "spring-cloud-azure-starter-integration-storage-queue"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestreambinderservicebuscore
+    displayName: "spring-cloud-azure-stream-binder-servicebus-core"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestreambinderservicebus
+    displayName: "spring-cloud-azure-stream-binder-servicebus"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestreambindereventhubs
+    displayName: "spring-cloud-azure-stream-binder-eventhubs"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestreambindereventhubscore
+    displayName: "spring-cloud-azure-stream-binder-eventhubs-core"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterstreameventhubs
+    displayName: "spring-cloud-azure-starter-stream-eventhubs"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterstreamservicebus
+    displayName: "spring-cloud-azure-starter-stream-servicebus"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterjdbcmysql
+    displayName: "spring-cloud-azure-starter-jdbc-mysql"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterjdbcpostgresql
+    displayName: "spring-cloud-azure-starter-jdbc-postgresql"
+    type: boolean
+    default: true
+  - name: release_springcloudazureappconfigurationconfig
+    displayName: "spring-cloud-azure-appconfiguration-config"
+    type: boolean
+    default: true
+  - name: release_springcloudazureappconfigurationconfigweb
+    displayName: "spring-cloud-azure-appconfiguration-config-web"
+    type: boolean
+    default: true
+  - name: release_springcloudazurefeaturemanagement
+    displayName: "spring-cloud-azure-feature-management"
+    type: boolean
+    default: true
+  - name: release_springcloudazurefeaturemanagementweb
+    displayName: "spring-cloud-azure-feature-management-web"
+    type: boolean
+    default: true
+  - name: release_springcloudazurestarterappconfigurationconfig
+    displayName: "spring-cloud-azure-starter-appconfiguration-config"
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -334,14 +354,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartercosmos }}
-#      - name: spring-cloud-azure-starter-data-cosmos
-#        groupId: com.azure.spring
-#        safeName: springcloudazurestarterdatacosmos
-#        skipPublishDocGithubIo: true
-#        skipPublishDocMs: true
-#        skipUpdatePackageJson: true
-#        skipVerifyChangelog: true
-#        releaseInBatch: ${{ parameters.release_springcloudazurestarterdatacosmos }}
+      #      - name: spring-cloud-azure-starter-data-cosmos
+      #        groupId: com.azure.spring
+      #        safeName: springcloudazurestarterdatacosmos
+      #        skipPublishDocGithubIo: true
+      #        skipPublishDocMs: true
+      #        skipUpdatePackageJson: true
+      #        skipVerifyChangelog: true
+      #        releaseInBatch: ${{ parameters.release_springcloudazurestarterdatacosmos }}
       - name: spring-cloud-azure-starter-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestartereventhubs
@@ -503,4 +523,24 @@ extends:
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
     MatrixFilters:
-        - JavaTestVersion=^(?!1.8|1.11).*
+      - JavaTestVersion=^(?!1.8|1.11).*
+      - name: spring-cloud-azure-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: springcloudazureappconfigurationconfig
+        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfig }}
+      - name: spring-cloud-azure-appconfiguration-config-web
+        groupId: com.azure.spring
+        safeName: springcloudazureappconfigurationconfigweb
+        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfigweb }}
+      - name: spring-cloud-azure-feature-management
+        groupId: com.azure.spring
+        safeName: springcloudazurefeaturemanagement
+        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
+      - name: spring-cloud-azure-feature-management-web
+        groupId: com.azure.spring
+        safeName: springcloudazurefeaturemanagementweb
+        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagementweb }}
+      - name: spring-cloud-azure-starter-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterappconfigurationconfig
+        releaseInBatch: ${{ parameters.release_azurespringcloudstarterappconfigurationconfig }}
