@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-To build the SDK for ServiceBusManagementClient and ServiceBusManagementClient, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
+To build the SDK for ServiceBusAdministrationClient and ServiceBusAdministrationAsyncClient, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
 
 ### Setup
 ```ps
