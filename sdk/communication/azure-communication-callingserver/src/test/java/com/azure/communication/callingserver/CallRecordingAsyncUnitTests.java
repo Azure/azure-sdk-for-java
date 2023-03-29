@@ -4,15 +4,10 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.ChannelAffinity;
-import com.azure.communication.callingserver.models.RecordingChannel;
-import com.azure.communication.callingserver.models.RecordingContent;
-import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingState;
 import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;

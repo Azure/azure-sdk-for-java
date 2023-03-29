@@ -4,8 +4,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallingServerErrorException;
-import com.azure.communication.callautomation.models.RecordingChannel;
-import com.azure.communication.callautomation.models.RecordingContent;
 import com.azure.communication.callautomation.models.RecordingFormat;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
