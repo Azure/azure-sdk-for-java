@@ -3,24 +3,18 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.REQUEST_TIMEOUT;
 
 public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
 
-    final public static HttpTimeoutPolicy instance = new HttpTimeoutPolicyControlPlaneRead();
+    public static final HttpTimeoutPolicy INSTANCE = new HttpTimeoutPolicyControlPlaneRead();
 
-    public HttpTimeoutPolicyControlPlaneRead() {
+    private HttpTimeoutPolicyControlPlaneRead() {
     }
 
     @Override
@@ -29,39 +23,12 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
     }
 
     @Override
-    public Integer totalRetryCount() {
-        return getTimeoutAndDelays().size();
-    }
-
-    @Override
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
         return getTimeoutAndDelays();
     }
 
     @Override
-    public Boolean isSafeToRetry(HttpMethod httpMethod) {
-        return true;
-    }
-
-    // This is for control plane reads which should always be safe to retry on.
-    @Override
-    public Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<RxDocumentServiceResponse> responseMessage) {
-        if (responseMessage == null) {
-            return false;
-        }
-
-        final AtomicInteger statusCode = new AtomicInteger();
-        responseMessage.flatMap(rm -> {
-            statusCode.set(rm.getStatusCode());
-            return Mono.empty();
-        });
-        if (statusCode.get() != REQUEST_TIMEOUT) {
-            return false;
-        }
-
-        if (!this.isSafeToRetry(requestHttpMethod)) {
-            return false;
-        }
+    public boolean isSafeToRetry(HttpMethod httpMethod) {
         return true;
     }
 

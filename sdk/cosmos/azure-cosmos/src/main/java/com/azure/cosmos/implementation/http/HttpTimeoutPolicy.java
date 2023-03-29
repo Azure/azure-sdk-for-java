@@ -14,24 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
-    final public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
-
+    public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
         if (OperationType.QueryPlan.equals(request.getOperationType()) ||
             request.isAddressRefresh() ||
             request.getResourceType() == ResourceType.PartitionKeyRange) {
-            return HttpTimeoutPolicyControlPlaneHotPath.instance;
+            return HttpTimeoutPolicyControlPlaneHotPath.INSTANCE;
         }
+        return HttpTimeoutPolicyDefault.INSTANCE;
+    }
 
-        return HttpTimeoutPolicyDefault.instance;
+    public int totalRetryCount() {
+        return getTimeoutList().size();
     }
 
     public abstract Duration maximumRetryTimeLimit();
 
-    public abstract Integer totalRetryCount();
-
     public abstract List<ResponseTimeoutAndDelays> getTimeoutList();
 
-    public abstract Boolean isSafeToRetry(HttpMethod httpMethod);
-
-    public abstract Boolean shouldRetryBasedOnResponse(HttpMethod requestHttpMethod, Mono<RxDocumentServiceResponse> responseMessage);
+    public abstract boolean isSafeToRetry(HttpMethod httpMethod);
 }

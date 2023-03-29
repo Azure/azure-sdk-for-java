@@ -13,7 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
@@ -33,7 +34,7 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     public WebExceptionRetryPolicy(RetryContext retryContext) {
         durationTimer.start();
         this.retryContext = retryContext;
-        this.timeoutPolicy = HttpTimeoutPolicyDefault.instance;
+        this.timeoutPolicy = HttpTimeoutPolicyDefault.INSTANCE;
     }
 
     @Override
@@ -82,6 +83,7 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Boolean isOutOfRetries() {
-        return this.retryCountTimeout >= this.timeoutPolicy.totalRetryCount();
+        return this.durationTimer.getTime(TimeUnit.SECONDS) > this.timeoutPolicy.maximumRetryTimeLimit().toSeconds() ||
+        this.retryCountTimeout >= this.timeoutPolicy.totalRetryCount();
     }
 }
