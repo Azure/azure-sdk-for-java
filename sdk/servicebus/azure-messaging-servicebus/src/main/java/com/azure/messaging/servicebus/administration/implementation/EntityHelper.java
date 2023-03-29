@@ -580,7 +580,7 @@ public final class EntityHelper {
      * Interface for accessing methods on a rule.
      */
     public interface RuleAccessor {
-        RuleProperties toModel(RuleDescriptionImpl RuleDescriptionImpl);
+        RuleProperties toModel(RuleDescriptionImpl ruleDescriptionImpl);
 
         RuleAction toModel(RuleActionImpl implementation);
 
