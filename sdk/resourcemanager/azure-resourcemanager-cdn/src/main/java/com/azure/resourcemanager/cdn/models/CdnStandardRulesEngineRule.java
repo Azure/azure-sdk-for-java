@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 @Fluent
 public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
     /**
-     * Grouping of CDN delivery rule definition stages as a part of parent CDN endpoint definition.
+     * Grouping of CDN Standard rules engine rule definition stages as a part of parent CDN endpoint definition.
      */
     interface DefinitionStage {
         /**

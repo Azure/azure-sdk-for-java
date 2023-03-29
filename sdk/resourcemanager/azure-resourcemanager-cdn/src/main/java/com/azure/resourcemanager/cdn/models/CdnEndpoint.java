@@ -385,7 +385,7 @@ public interface CdnEndpoint extends
              *
              * @param name name of the rule
              * @param <T> the next stage of the endpoint definition
-             * @return the first stage of the delivery rule definition
+             * @return the first stage of the rule definition
              */
             <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
         }

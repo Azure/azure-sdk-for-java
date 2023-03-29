@@ -218,20 +218,20 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         CdnEndpoint endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
         Assertions.assertEquals(1, endpoint.standardRulesEngineRules().size());
-        DeliveryRule deliveryRule = endpoint.standardRulesEngineRules().get(ruleName1);
-        Assertions.assertNotNull(deliveryRule);
-        Assertions.assertEquals(1, deliveryRule.conditions().size());
-        Assertions.assertEquals(1, deliveryRule.actions().size());
-        Assertions.assertTrue(deliveryRule.conditions().iterator().next() instanceof DeliveryRuleRequestSchemeCondition);
-        Assertions.assertTrue(deliveryRule.actions().iterator().next() instanceof UrlRedirectAction);
-        Assertions.assertEquals(1, deliveryRule.order());
+        DeliveryRule rule = endpoint.standardRulesEngineRules().get(ruleName1);
+        Assertions.assertNotNull(rule);
+        Assertions.assertEquals(1, rule.conditions().size());
+        Assertions.assertEquals(1, rule.actions().size());
+        Assertions.assertTrue(rule.conditions().iterator().next() instanceof DeliveryRuleRequestSchemeCondition);
+        Assertions.assertTrue(rule.actions().iterator().next() instanceof UrlRedirectAction);
+        Assertions.assertEquals(1, rule.order());
 
         // update cdnProfile, add 1 additional rule, update existing rule to existing endpoint
         // and define a new endpoint with 1 rule
         cdnProfile
             .update()
             .updateEndpoint(cdnEndpointName)
-            // define new deliveryRule
+            // define new Standard rules engine rule
             .defineNewStandardRulesEngineRule(ruleName2)
                 .withOrder(1)
                 .withMatchConditions(
@@ -284,26 +284,26 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(2, endpoint.standardRulesEngineRules().size());
 
         // rule1
-        deliveryRule = endpoint.standardRulesEngineRules().get(ruleName1);
-        Assertions.assertNotNull(deliveryRule);
-        Assertions.assertEquals(2, deliveryRule.order());
+        rule = endpoint.standardRulesEngineRules().get(ruleName1);
+        Assertions.assertNotNull(rule);
+        Assertions.assertEquals(2, rule.order());
 
         // rule2
-        DeliveryRule deliveryRule2 = endpoint.standardRulesEngineRules().get(ruleName2);
-        Assertions.assertNotNull(deliveryRule2);
-        Assertions.assertEquals(1, deliveryRule2.conditions().size());
-        Assertions.assertEquals(1, deliveryRule2.actions().size());
-        Assertions.assertTrue(deliveryRule2.conditions().iterator().next() instanceof DeliveryRuleHttpVersionCondition);
-        Assertions.assertTrue(deliveryRule2.actions().iterator().next() instanceof DeliveryRuleCacheExpirationAction);
-        Assertions.assertEquals(1, deliveryRule2.order());
+        DeliveryRule rule2 = endpoint.standardRulesEngineRules().get(ruleName2);
+        Assertions.assertNotNull(rule2);
+        Assertions.assertEquals(1, rule2.conditions().size());
+        Assertions.assertEquals(1, rule2.actions().size());
+        Assertions.assertTrue(rule2.conditions().iterator().next() instanceof DeliveryRuleHttpVersionCondition);
+        Assertions.assertTrue(rule2.actions().iterator().next() instanceof DeliveryRuleCacheExpirationAction);
+        Assertions.assertEquals(1, rule2.order());
 
         // endpoint2
         CdnEndpoint endpoint2 = cdnProfile.endpoints().get(cdnEndpointName2);
         Assertions.assertNotNull(endpoint2);
 
         // rule3
-        DeliveryRule deliveryRule3 = endpoint2.standardRulesEngineRules().get(ruleName3);
-        Assertions.assertNotNull(deliveryRule3);
+        DeliveryRule rule3 = endpoint2.standardRulesEngineRules().get(ruleName3);
+        Assertions.assertNotNull(rule3);
 
         cdnProfile.update()
             .updateEndpoint(cdnEndpointName)
