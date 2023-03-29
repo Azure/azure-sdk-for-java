@@ -6,11 +6,9 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadBlobResult;
-import com.azure.containers.containerregistry.models.UploadManifestOptions;
-import com.azure.containers.containerregistry.models.UploadManifestResult;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
+import com.azure.containers.containerregistry.models.SetManifestOptions;
+import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -27,19 +25,17 @@ public class UploadImage {
     private static final String REPOSITORY = "hello/world";
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-    private static final String OUT_DIRECTORY = getTempDirectory();
     public static void main(String[] args) {
-
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
         // BEGIN: readme-sample-uploadImage
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
+        UploadRegistryBlobResult configUploadResult = contentClient.uploadBlob(configContent);
         System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
 
         OciDescriptor configDescriptor = new OciDescriptor()
@@ -48,11 +44,11 @@ public class UploadImage {
             .setSizeInBytes(configContent.getLength());
 
         BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
-        UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
+        UploadRegistryBlobResult layerUploadResult = contentClient.uploadBlob(layerContent);
         System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
 
         OciImageManifest manifest = new OciImageManifest()
-            .setConfig(configDescriptor)
+            .setConfiguration(configDescriptor)
             .setSchemaVersion(2)
             .setLayers(Collections.singletonList(
                 new OciDescriptor()
@@ -60,7 +56,7 @@ public class UploadImage {
                     .setSizeInBytes(layerContent.getLength())
                     .setMediaType("application/octet-stream")));
 
-        UploadManifestResult manifestResult = blobClient.uploadManifest(manifest, "latest");
+        SetManifestResult manifestResult = contentClient.setManifest(manifest, "latest");
         System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest());
         // END: readme-sample-uploadImage
 
@@ -68,46 +64,46 @@ public class UploadImage {
     }
 
     private void uploadBlobBinaryData() {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
         // BEGIN: com.azure.containers.containerregistry.uploadBlob
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        UploadBlobResult uploadResult = blobClient.uploadBlob(configContent);
+        UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(configContent);
         System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(), uploadResult.getSizeInBytes());
         // END: com.azure.containers.containerregistry.uploadBlob
     }
 
     private void uploadStream() throws IOException {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
         // BEGIN: com.azure.containers.containerregistry.uploadStream
         try (FileInputStream content = new FileInputStream("artifact.tar.gz")) {
-            UploadBlobResult uploadResult = blobClient.uploadBlob(content.getChannel(), Context.NONE);
+            UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(content.getChannel(), Context.NONE);
             System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
                 uploadResult.getDigest(), uploadResult.getSizeInBytes());
         }
         // END: com.azure.containers.containerregistry.uploadStream
     }
 
-    private void uploadManifest() {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+    private void setManifest() {
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
+        UploadRegistryBlobResult configUploadResult = contentClient.uploadBlob(configContent);
 
         OciDescriptor configDescriptor = new OciDescriptor()
             .setMediaType("application/vnd.unknown.config.v1+json")
@@ -115,10 +111,10 @@ public class UploadImage {
             .setSizeInBytes(configContent.getLength());
 
         BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
-        UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
+        UploadRegistryBlobResult layerUploadResult = contentClient.uploadBlob(layerContent);
 
         OciImageManifest manifest = new OciImageManifest()
-            .setConfig(configDescriptor)
+            .setConfiguration(configDescriptor)
             .setSchemaVersion(2)
             .setLayers(Collections.singletonList(
                 new OciDescriptor()
@@ -126,15 +122,15 @@ public class UploadImage {
                     .setSizeInBytes(layerContent.getLength())
                     .setMediaType("application/octet-stream")));
 
-        // BEGIN: com.azure.containers.containerregistry.uploadManifest
-        blobClient.uploadManifest(manifest, "v1");
-        // END: com.azure.containers.containerregistry.uploadManifest
+        // BEGIN: com.azure.containers.containerregistry.setManifest
+        contentClient.setManifest(manifest, "v1");
+        // END: com.azure.containers.containerregistry.setManifest
     }
 
     private void uploadCustomManifestMediaType() {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
@@ -158,9 +154,9 @@ public class UploadImage {
         BinaryData manifestList = BinaryData.fromString(manifest);
 
         // BEGIN: com.azure.containers.containerregistry.uploadCustomManifest
-        UploadManifestOptions options = new UploadManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE);
+        SetManifestOptions options = new SetManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE);
 
-        Response<UploadManifestResult> response = blobClient.uploadManifestWithResponse(options, Context.NONE);
+        Response<SetManifestResult> response = contentClient.setManifestWithResponse(options, Context.NONE);
         System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest());
         // END: com.azure.containers.containerregistry.uploadCustomManifest
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DigitalTwins GetByResourceGroup. */
 public final class DigitalTwinsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource with identity.
@@ -18,11 +16,13 @@ public final class DigitalTwinsGetByResourceGroupSamples {
      */
     public static void getADigitalTwinsInstanceResourceWithIdentity(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwins().getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", Context.NONE);
+        manager
+            .digitalTwins()
+            .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsGet_WithPrivateEndpointConnection_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsGet_WithPrivateEndpointConnection_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource with a private endpoint connection.
@@ -31,11 +31,13 @@ public final class DigitalTwinsGetByResourceGroupSamples {
      */
     public static void getADigitalTwinsInstanceResourceWithAPrivateEndpointConnection(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwins().getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", Context.NONE);
+        manager
+            .digitalTwins()
+            .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource.
@@ -44,6 +46,8 @@ public final class DigitalTwinsGetByResourceGroupSamples {
      */
     public static void getADigitalTwinsInstanceResource(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwins().getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", Context.NONE);
+        manager
+            .digitalTwins()
+            .getByResourceGroupWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE);
     }
 }

@@ -34,8 +34,6 @@ import java.util.function.BiFunction;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -158,13 +156,11 @@ public final class BlobBatchAsyncClient {
             .flatMap(batchOperationInfo -> containerScoped
                 ? client.getContainers().submitBatchWithResponseAsync(null,
                 batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
-                Flux.fromIterable(batchOperationInfo.getBody()), null, null,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                Flux.fromIterable(batchOperationInfo.getBody()), null, null, finalContext)
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, LOGGER))
                 : client.getServices().submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
-                batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null, null,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null, null, finalContext)
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, LOGGER)));
     }

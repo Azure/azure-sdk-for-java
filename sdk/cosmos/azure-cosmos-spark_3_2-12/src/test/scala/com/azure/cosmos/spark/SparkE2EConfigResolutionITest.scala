@@ -26,6 +26,8 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
       .config(sparkConfig)
       .getOrCreate()
 
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping
     import spark.implicits._

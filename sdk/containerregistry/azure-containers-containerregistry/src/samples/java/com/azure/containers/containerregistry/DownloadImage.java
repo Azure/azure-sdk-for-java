@@ -3,12 +3,10 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
@@ -22,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 
 public class DownloadImage {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
@@ -32,24 +29,24 @@ public class DownloadImage {
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
 
     public static void main(String[] args) throws IOException {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
         // BEGIN: readme-sample-downloadImage
-        DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+        GetManifestResult manifestResult = contentClient.getManifest("latest");
 
-        OciImageManifest manifest = manifestResult.asOciManifest();
+        OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
         System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
-        String configFileName = manifest.getConfig().getDigest() + ".json";
-        blobClient.downloadStream(manifest.getConfig().getDigest(), createFileChannel(configFileName));
+        String configFileName = manifest.getConfiguration().getDigest() + ".json";
+        contentClient.downloadStream(manifest.getConfiguration().getDigest(), createFileChannel(configFileName));
         System.out.printf("Got config: %s\n", configFileName);
 
         for (OciDescriptor layer : manifest.getLayers()) {
-            blobClient.downloadStream(layer.getDigest(), createFileChannel(layer.getDigest()));
+            contentClient.downloadStream(layer.getDigest(), createFileChannel(layer.getDigest()));
             System.out.printf("Got layer: %s\n", layer.getDigest());
         }
         // END: readme-sample-downloadImage
@@ -77,9 +74,9 @@ public class DownloadImage {
     }
 
     private void downloadStream() throws IOException {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
@@ -88,59 +85,37 @@ public class DownloadImage {
         // BEGIN: com.azure.containers.containerregistry.downloadStream
         Path file = Files.createTempFile(digest, ".tmp");
         SeekableByteChannel channel = Files.newByteChannel(file, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
-        blobClient.downloadStream(digest, channel);
+        contentClient.downloadStream(digest, channel);
         // END: com.azure.containers.containerregistry.downloadStream
     }
 
-    private void downloadManifest() {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+    private void getManifest() {
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
-        // BEGIN: com.azure.containers.containerregistry.downloadManifestTag
-        DownloadManifestResult latestResult = blobClient.downloadManifest("latest");
-        if (ManifestMediaType.DOCKER_MANIFEST.equals(latestResult.getMediaType())
-            || ManifestMediaType.OCI_MANIFEST.equals(latestResult.getMediaType())) {
-            OciImageManifest manifest = latestResult.asOciManifest();
+        // BEGIN: com.azure.containers.containerregistry.getManifestTag
+        GetManifestResult latestResult = contentClient.getManifest("latest");
+        if (ManifestMediaType.DOCKER_MANIFEST.equals(latestResult.getManifestMediaType())
+            || ManifestMediaType.OCI_MANIFEST.equals(latestResult.getManifestMediaType())) {
+            OciImageManifest manifest = latestResult.getManifest().toObject(OciImageManifest.class);
         } else {
-            throw new IllegalArgumentException("Unexpected manifest type: " + latestResult.getMediaType());
+            throw new IllegalArgumentException("Unexpected manifest type: " + latestResult.getManifestMediaType());
         }
-        // END: com.azure.containers.containerregistry.downloadManifestTag
+        // END: com.azure.containers.containerregistry.getManifestTag
 
-        // BEGIN: com.azure.containers.containerregistry.downloadManifestDigest
-        DownloadManifestResult digestResult = blobClient.downloadManifest(
+        // BEGIN: com.azure.containers.containerregistry.getManifestDigest
+        GetManifestResult getManifestResult = contentClient.getManifest(
             "sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311");
-        // END: com.azure.containers.containerregistry.downloadManifestDigest
-    }
+        // END: com.azure.containers.containerregistry.getManifestDigest
 
-    private void downloadCustomManifest() {
-        ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
-            .credential(CREDENTIAL)
-            .buildClient();
-
-        // BEGIN: com.azure.containers.containerregistry.downloadCustomManifest
-        ManifestMediaType dockerListType = ManifestMediaType
-            .fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-        ManifestMediaType ociIndexType = ManifestMediaType
-            .fromString("application/vnd.oci.image.index.v1+json");
-
-        Response<DownloadManifestResult> response = blobClient.downloadManifestWithResponse(
-            "latest",
-            Arrays.asList(dockerListType, ociIndexType),
+        // BEGIN: com.azure.containers.containerregistry.getManifestWithResponse
+        Response<GetManifestResult> downloadResponse = contentClient.getManifestWithResponse("latest",
             Context.NONE);
-        if (dockerListType.equals(response.getValue().getMediaType())) {
-            // DockerManifestList manifestList = downloadResult.getValue().getContent().toObject(DockerManifestList.class);
-            System.out.println("Got docker manifest list");
-        } else if (ociIndexType.equals(response.getValue().getMediaType())) {
-            // OciIndex ociIndex = downloadResult.getValue().getContent().toObject(OciIndex.class);
-            System.out.println("Got OCI index");
-        } else {
-            throw new IllegalArgumentException("Got unexpected manifest type: " + response.getValue().getMediaType());
-        }
-        // END: com.azure.containers.containerregistry.downloadCustomManifest
+        System.out.printf("Received manifest: digest - %s, response code: %s\n", downloadResponse.getValue().getDigest(),
+            downloadResponse.getStatusCode());
+        // END: com.azure.containers.containerregistry.getManifestWithResponse
     }
 }
