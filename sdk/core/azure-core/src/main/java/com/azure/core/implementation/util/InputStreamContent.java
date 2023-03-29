@@ -48,16 +48,10 @@ public final class InputStreamContent extends BinaryDataContent {
     public InputStreamContent(InputStream inputStream, Long length) {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
         this.length = length;
-        isReplayable = canMarkReset(inputStream, length);
-        if (isReplayable) {
-            this.content = () -> {
-                try {
-                    inputStream.reset();
-                    return inputStream;
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-            };
+        this.isReplayable = canMarkReset(inputStream, length);
+        if (this.isReplayable) {
+            inputStream.mark(length.intValue());
+            this.content = () -> resettableContent(inputStream);
         } else {
             this.content = () -> inputStream;
         }
@@ -119,12 +113,7 @@ public final class InputStreamContent extends BinaryDataContent {
             return this;
         }
 
-        InputStream inputStream = this.content.get();
-        if (canMarkReset(inputStream, length)) {
-            return createMarkResetContent(inputStream, length);
-        } else {
-            return readAndBuffer(inputStream, length);
-        }
+        return readAndBuffer(this.content.get(), length);
     }
 
     @Override
@@ -134,10 +123,6 @@ public final class InputStreamContent extends BinaryDataContent {
         }
 
         InputStream inputStream = this.content.get();
-        if (canMarkReset(inputStream, length)) {
-            return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
-        }
-
         return Mono.just(inputStream)
             .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
             .map(is -> readAndBuffer(is, length));
@@ -152,18 +137,13 @@ public final class InputStreamContent extends BinaryDataContent {
         return length != null && length < MAX_ARRAY_LENGTH && inputStream.markSupported();
     }
 
-    private static InputStreamContent createMarkResetContent(InputStream inputStream, Long length) {
-        inputStream.mark(length.intValue());
-        return new InputStreamContent(
-            () -> {
-                try {
-                    inputStream.reset();
-                    return inputStream;
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-            }, length, true
-        );
+    private static InputStream resettableContent(InputStream stream) {
+        try {
+            stream.reset();
+            return stream;
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {

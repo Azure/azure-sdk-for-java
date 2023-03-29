@@ -732,8 +732,7 @@ public class BinaryDataTest {
                     (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block())),
             Arguments.of(
                 Named.named("byte array stream",
-                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null)),
-                Named.named("expected bytes", bytes)
+                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null))
             )
         );
     }
