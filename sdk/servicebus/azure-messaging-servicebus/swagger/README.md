@@ -28,7 +28,7 @@ autorest --java --use=C:/work/autorest.java
 ### Code generation settings
 ``` yaml
 use: ['@autorest/java@4.1.16', '@autorest/modelerfour@4.25.0']
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8f83af24ce9b54bc5b4bb3d36b895dd1d2c62a23/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0f7b134efb524de6aadc6965d4e8fd2a78929989/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
