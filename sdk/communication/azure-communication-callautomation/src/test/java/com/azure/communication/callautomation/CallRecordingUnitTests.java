@@ -4,20 +4,14 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallingServerErrorException;
-import com.azure.communication.callautomation.models.RecordingFormat;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
