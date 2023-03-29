@@ -210,10 +210,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-<!--
-[cancer_profiling_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/main/java/com/azure/health/cancerprofiling/CancerProfilingClient.java
--->
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [cancer_profiling_docs]: https://review.learn.microsoft.com/azure/cognitive-services/health-decision-support/oncophenotype/overview?branch=main
+<!--
+[cancer_profiling_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/main/java/com/azure/health/cancerprofiling/CancerProfilingClient.java
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%healthinsights%2Fazure-health-insights-cancerprofiling%2FREADME.png)
+-->
