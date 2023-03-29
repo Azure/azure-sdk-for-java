@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.networkfunction.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
@@ -11,8 +12,10 @@ import com.azure.resourcemanager.networkfunction.models.CollectorPolicy;
 import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.ProvisioningState;
+import com.azure.resourcemanager.networkfunction.models.TagsObject;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPolicy.Definition, CollectorPolicy.Update {
     private CollectorPolicyInner innerObject;
@@ -29,6 +32,19 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String etag() {
@@ -56,6 +72,14 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
         return this.innerModel().provisioningState();
     }
 
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -73,6 +97,8 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     private String azureTrafficCollectorName;
 
     private String collectorPolicyName;
+
+    private TagsObject updateParameters;
 
     public CollectorPolicyImpl withExistingAzureTrafficCollector(
         String resourceGroupName, String azureTrafficCollectorName) {
@@ -109,6 +135,7 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     }
 
     public CollectorPolicyImpl update() {
+        this.updateParameters = new TagsObject();
         return this;
     }
 
@@ -117,8 +144,9 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
             serviceManager
                 .serviceClient()
                 .getCollectorPolicies()
-                .createOrUpdate(
-                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(), Context.NONE);
+                .updateTagsWithResponse(
+                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters, Context.NONE)
+                .getValue();
         return this;
     }
 
@@ -127,8 +155,9 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
             serviceManager
                 .serviceClient()
                 .getCollectorPolicies()
-                .createOrUpdate(
-                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, this.innerModel(), context);
+                .updateTagsWithResponse(
+                    resourceGroupName, azureTrafficCollectorName, collectorPolicyName, updateParameters, context)
+                .getValue();
         return this;
     }
 
@@ -162,6 +191,26 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
         return this;
     }
 
+    public CollectorPolicyImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
+        return this;
+    }
+
+    public CollectorPolicyImpl withRegion(String location) {
+        this.innerModel().withLocation(location);
+        return this;
+    }
+
+    public CollectorPolicyImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
     public CollectorPolicyImpl withIngestionPolicy(IngestionPolicyPropertiesFormat ingestionPolicy) {
         this.innerModel().withIngestionPolicy(ingestionPolicy);
         return this;
@@ -170,5 +219,9 @@ public final class CollectorPolicyImpl implements CollectorPolicy, CollectorPoli
     public CollectorPolicyImpl withEmissionPolicies(List<EmissionPoliciesPropertiesFormat> emissionPolicies) {
         this.innerModel().withEmissionPolicies(emissionPolicies);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

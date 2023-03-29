@@ -6,9 +6,12 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -22,18 +25,20 @@ import reactor.test.StepVerifier;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_ENDPOINT;
+import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot
- * be reproduced with the latest client.
+ * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot be
+ * reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
+    private final TestMode testMode = TestingHelpers.getTestMode();
     private TokenCredential tokenCredential;
     private String endpoint;
     private TestContextManager testContextManager;
@@ -44,6 +49,11 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         if (!testInfo.getTestMethod().isPresent()) {
             throw new IllegalStateException(
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
+        }
+
+        // We only do this in playback mode since the content is static.
+        if (testMode != TestMode.PLAYBACK) {
+            return;
         }
 
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
@@ -67,11 +77,22 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
     @AfterEach
     public void teardownTest() {
-        if (testContextManager != null && testContextManager.didTestRun()) {
+        if (testMode != TestMode.PLAYBACK) {
+            return;
+        }
+
+        if (testContextManager != null && testContextManager.didTestRun() && interceptorManager != null) {
             interceptorManager.close();
         }
 
         Mockito.framework().clearInlineMock(this);
+    }
+
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .skipRequest((httpRequest, context) -> false)
+            .build();
     }
 
     /**
@@ -80,11 +101,14 @@ public class SchemaRegistryAsyncClientPlaybackTests {
      */
     @Test
     public void getSchemaByIdFromPortal() {
+        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
+
         // Arrange
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
-            .httpClient(interceptorManager.getPlaybackClient())
+            .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()))
+            .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
@@ -99,16 +123,18 @@ public class SchemaRegistryAsyncClientPlaybackTests {
     }
 
     /**
-     * Verifies that the new serializer works with 1.0.0 schema registry client.
-     * https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
+     * Verifies that the new serializer works with 1.0.0 schema registry client. https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
      */
     @Test
     public void getSchemaBackCompatibility() {
+        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
+
         // Arrange
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(interceptorManager.getPlaybackClient())
+            .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 

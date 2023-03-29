@@ -17,6 +17,15 @@ public final class Severity extends ExpandableStringEnum<Severity> {
     public static final Severity WARNING = fromString("Warning");
 
     /**
+     * Creates a new instance of Severity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Severity() {
+    }
+
+    /**
      * Creates or finds a Severity from its string representation.
      *
      * @param name a name to look for.

@@ -26,6 +26,10 @@ public final class SubvolumePatchParams {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of SubvolumePatchParams class. */
+    public SubvolumePatchParams() {
+    }
+
     /**
      * Get the size property: size
      *

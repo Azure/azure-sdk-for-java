@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20220920.1
+      ref: refs/tags/azure-sdk-build-tools_20230321.1
 
 parameters:
 - name: Artifacts
@@ -28,6 +28,9 @@ parameters:
   type: boolean
   default: true
 
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+
 stages:
   - stage: Build
     jobs:
@@ -35,6 +38,13 @@ stages:
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
+        ReleaseArtifacts:
+        - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+              - ${{ artifact }}
+        - ${{ else }}:
+          - ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
         MatrixConfigs:
@@ -80,7 +90,7 @@ stages:
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
             parameters:
-              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
+              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /partitioncount=50 /consistency=Strong'
           - powershell: |
               $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
               $password = ConvertTo-SecureString -String $Key -Force -AsPlainText

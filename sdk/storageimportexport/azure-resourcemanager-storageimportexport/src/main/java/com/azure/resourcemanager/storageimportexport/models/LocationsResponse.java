@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.storageimportexport.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storageimportexport.fluent.models.LocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Locations response. */
 @Fluent
 public final class LocationsResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsResponse.class);
-
     /*
      * locations
      */
     @JsonProperty(value = "value")
     private List<LocationInner> value;
+
+    /** Creates an instance of LocationsResponse class. */
+    public LocationsResponse() {
+    }
 
     /**
      * Get the value property: locations.

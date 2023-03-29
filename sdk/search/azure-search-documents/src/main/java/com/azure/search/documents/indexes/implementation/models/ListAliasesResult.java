@@ -7,29 +7,29 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchAlias;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List Aliases request. If successful, it includes the associated index mappings for all aliases. */
 @Immutable
-public final class ListAliasesResult {
+public final class ListAliasesResult implements JsonSerializable<ListAliasesResult> {
     /*
      * The aliases in the Search service.
      */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<SearchAlias> aliases;
+    private final List<SearchAlias> aliases;
 
     /**
      * Creates an instance of ListAliasesResult class.
      *
      * @param aliases the aliases value to set.
      */
-    @JsonCreator
-    public ListAliasesResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchAlias> aliases) {
+    public ListAliasesResult(List<SearchAlias> aliases) {
         this.aliases = aliases;
     }
 
@@ -40,5 +40,52 @@ public final class ListAliasesResult {
      */
     public List<SearchAlias> getAliases() {
         return this.aliases;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.aliases, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListAliasesResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListAliasesResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListAliasesResult.
+     */
+    public static ListAliasesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean aliasesFound = false;
+                    List<SearchAlias> aliases = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            aliases = reader.readArray(reader1 -> SearchAlias.fromJson(reader1));
+                            aliasesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (aliasesFound) {
+                        ListAliasesResult deserializedValue = new ListAliasesResult(aliases);
+
+                        return deserializedValue;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!aliasesFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

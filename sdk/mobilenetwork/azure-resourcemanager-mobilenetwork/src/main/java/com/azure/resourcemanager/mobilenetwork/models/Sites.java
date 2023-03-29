@@ -11,7 +11,8 @@ import com.azure.core.util.Context;
 /** Resource collection API of Sites. */
 public interface Sites {
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -23,7 +24,8 @@ public interface Sites {
     void delete(String resourceGroupName, String mobileNetworkName, String siteName);
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -41,19 +43,6 @@ public interface Sites {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network site.
-     */
-    Site get(String resourceGroupName, String mobileNetworkName, String siteName);
-
-    /**
-     * Gets information about the specified mobile network site.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,6 +51,19 @@ public interface Sites {
      */
     Response<Site> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String siteName, Context context);
+
+    /**
+     * Gets information about the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified mobile network site.
+     */
+    Site get(String resourceGroupName, String mobileNetworkName, String siteName);
 
     /**
      * Lists all sites in the mobile network.
@@ -112,7 +114,8 @@ public interface Sites {
     Response<Site> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +125,8 @@ public interface Sites {
     void deleteById(String id);
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

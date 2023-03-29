@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network rule set for a container registry. */
 @Fluent
 public final class NetworkRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
-
     /*
      * The default action of allow or deny when no other rules match.
      */
@@ -26,6 +23,10 @@ public final class NetworkRuleSet {
      */
     @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
+
+    /** Creates an instance of NetworkRuleSet class. */
+    public NetworkRuleSet() {
+    }
 
     /**
      * Get the defaultAction property: The default action of allow or deny when no other rules match.
@@ -74,7 +75,7 @@ public final class NetworkRuleSet {
      */
     public void validate() {
         if (defaultAction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
         }
@@ -82,4 +83,6 @@ public final class NetworkRuleSet {
             ipRules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkRuleSet.class);
 }

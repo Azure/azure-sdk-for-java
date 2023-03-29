@@ -31,7 +31,7 @@ public final class ImageVersionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"name\":\"xkzb\",\"publishedDate\":\"2021-07-29T14:30:38Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1675812312,\"provisioningState\":\"iykzkdncjdx\"},\"id\":\"bzo\",\"name\":\"gculap\",\"type\":\"wyrpgogtqxepnyl\"}";
+            "{\"properties\":{\"name\":\"ybar\",\"publishedDate\":\"2021-06-21T23:29Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":462603095,\"provisioningState\":\"MovingResources\"},\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,8 @@ public final class ImageVersionsGetWithResponseMockTests {
         ImageVersion response =
             manager
                 .imageVersions()
-                .getWithResponse("xsspuunnoxyhk", "g", "ddrihpf", "oqcaaewdaomdj", "l", Context.NONE)
+                .getWithResponse(
+                    "mbtxhwgf", "srtawcoezbr", "ubskhudygoookkq", "qjbvleorfmlu", "qtqzfavyv", Context.NONE)
                 .getValue();
     }
 }

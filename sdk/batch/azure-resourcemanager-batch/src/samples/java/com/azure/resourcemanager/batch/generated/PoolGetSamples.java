@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Pool Get. */
 public final class PoolGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration Extensions.
@@ -22,7 +22,7 @@ public final class PoolGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolGet.json
      */
     /**
      * Sample code: GetPool.

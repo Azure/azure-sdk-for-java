@@ -25,6 +25,10 @@ public final class DataCollectionRuleResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DataCollectionRuleResourceListResult class. */
+    public DataCollectionRuleResourceListResult() {
+    }
+
     /**
      * Get the value property: A list of resources.
      *

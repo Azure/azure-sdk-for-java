@@ -1,15 +1,51 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only 
+  support single authentication per builder instance. 
+- Moved the validation of authentication to client builder's build method. 
+  
+### Other Changes
+
+## 1.4.3 (2023-03-16)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 1.4.2 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 1.4.1 (2023-01-17)
+
+### Bugs Fixed
+- Fixed shared `SyncTokenToken` and `RetryPolicy` policies across Configuration clients. 
+
+## 1.4.0 (2023-01-11)
+
+### Features Added
+- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
 
 ## 1.3.9 (2022-11-09)
 

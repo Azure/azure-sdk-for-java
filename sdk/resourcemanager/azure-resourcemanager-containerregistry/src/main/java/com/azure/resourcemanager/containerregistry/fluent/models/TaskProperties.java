@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
@@ -13,15 +12,12 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a task. */
 @Fluent
 public final class TaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskProperties.class);
-
     /*
      * The provisioning state of the task.
      */
@@ -77,25 +73,26 @@ public final class TaskProperties {
     private TriggerProperties trigger;
 
     /*
-     * The properties that describes a set of credentials that will be used
-     * when this run is invoked.
+     * The properties that describes a set of credentials that will be used when this run is invoked.
      */
     @JsonProperty(value = "credentials")
     private Credentials credentials;
 
     /*
-     * The template that describes the repository and tag information for run
-     * log artifact.
+     * The template that describes the repository and tag information for run log artifact.
      */
     @JsonProperty(value = "logTemplate")
     private String logTemplate;
 
     /*
-     * The value of this property indicates whether the task resource is system
-     * task or not.
+     * The value of this property indicates whether the task resource is system task or not.
      */
     @JsonProperty(value = "isSystemTask")
     private Boolean isSystemTask;
+
+    /** Creates an instance of TaskProperties class. */
+    public TaskProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the task.

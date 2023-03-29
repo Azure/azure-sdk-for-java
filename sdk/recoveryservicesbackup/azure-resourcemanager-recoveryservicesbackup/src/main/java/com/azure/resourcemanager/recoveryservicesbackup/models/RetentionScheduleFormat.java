@@ -20,6 +20,15 @@ public final class RetentionScheduleFormat extends ExpandableStringEnum<Retentio
     public static final RetentionScheduleFormat WEEKLY = fromString("Weekly");
 
     /**
+     * Creates a new instance of RetentionScheduleFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RetentionScheduleFormat() {
+    }
+
+    /**
      * Creates or finds a RetentionScheduleFormat from its string representation.
      *
      * @param name a name to look for.

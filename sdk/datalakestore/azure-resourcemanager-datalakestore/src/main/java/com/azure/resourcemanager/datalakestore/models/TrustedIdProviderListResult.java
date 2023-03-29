@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakestore.fluent.models.TrustedIdProviderInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Data Lake Store trusted identity provider list information. */
 @Immutable
 public final class TrustedIdProviderListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrustedIdProviderListResult.class);
-
     /*
      * The results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class TrustedIdProviderListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of TrustedIdProviderListResult class. */
+    public TrustedIdProviderListResult() {
+    }
 
     /**
      * Get the value property: The results of the list operation.

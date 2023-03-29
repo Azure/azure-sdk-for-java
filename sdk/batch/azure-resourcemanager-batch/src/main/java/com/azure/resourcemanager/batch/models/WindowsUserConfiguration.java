@@ -11,16 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class WindowsUserConfiguration {
     /*
-     * Login mode for user Specifies login mode for the user. The default value
-     * for VirtualMachineConfiguration pools is interactive mode and for
-     * CloudServiceConfiguration pools is batch mode.
+     * Login mode for user
+     *
+     * Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
+     * and for CloudServiceConfiguration pools is batch mode.
      */
     @JsonProperty(value = "loginMode")
     private LoginMode loginMode;
 
+    /** Creates an instance of WindowsUserConfiguration class. */
+    public WindowsUserConfiguration() {
+    }
+
     /**
-     * Get the loginMode property: Login mode for user Specifies login mode for the user. The default value for
-     * VirtualMachineConfiguration pools is interactive mode and for CloudServiceConfiguration pools is batch mode.
+     * Get the loginMode property: Login mode for user
+     *
+     * <p>Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
+     * and for CloudServiceConfiguration pools is batch mode.
      *
      * @return the loginMode value.
      */
@@ -29,8 +36,10 @@ public final class WindowsUserConfiguration {
     }
 
     /**
-     * Set the loginMode property: Login mode for user Specifies login mode for the user. The default value for
-     * VirtualMachineConfiguration pools is interactive mode and for CloudServiceConfiguration pools is batch mode.
+     * Set the loginMode property: Login mode for user
+     *
+     * <p>Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
+     * and for CloudServiceConfiguration pools is batch mode.
      *
      * @param loginMode the loginMode value to set.
      * @return the WindowsUserConfiguration object itself.

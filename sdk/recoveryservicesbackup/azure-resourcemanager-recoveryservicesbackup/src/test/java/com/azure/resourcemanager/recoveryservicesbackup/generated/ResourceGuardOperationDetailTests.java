@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardOperationDetail;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceGuardOperationDetailTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceGuardOperationDetail model =
             BinaryData
                 .fromString("{\"vaultCriticalOperation\":\"frpdsofbshrns\",\"defaultResourceRequest\":\"uswdv\"}")
@@ -20,8 +19,8 @@ public final class ResourceGuardOperationDetailTests {
         Assertions.assertEquals("uswdv", model.defaultResourceRequest());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceGuardOperationDetail model =
             new ResourceGuardOperationDetail()
                 .withVaultCriticalOperation("frpdsofbshrns")

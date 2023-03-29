@@ -10,27 +10,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WeeklyRetentionFormatTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WeeklyRetentionFormat model =
             BinaryData
-                .fromString("{\"daysOfTheWeek\":[\"Friday\"],\"weeksOfTheMonth\":[\"Last\"]}")
+                .fromString(
+                    "{\"daysOfTheWeek\":[\"Friday\",\"Sunday\",\"Monday\"],\"weeksOfTheMonth\":[\"Second\",\"Last\",\"Third\",\"Invalid\"]}")
                 .toObject(WeeklyRetentionFormat.class);
         Assertions.assertEquals(DayOfWeek.FRIDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.LAST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(WeekOfMonth.SECOND, model.weeksOfTheMonth().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WeeklyRetentionFormat model =
             new WeeklyRetentionFormat()
-                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.FRIDAY))
-                .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST));
+                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.SUNDAY, DayOfWeek.MONDAY))
+                .withWeeksOfTheMonth(
+                    Arrays.asList(WeekOfMonth.SECOND, WeekOfMonth.LAST, WeekOfMonth.THIRD, WeekOfMonth.INVALID));
         model = BinaryData.fromObject(model).toObject(WeeklyRetentionFormat.class);
         Assertions.assertEquals(DayOfWeek.FRIDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.LAST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(WeekOfMonth.SECOND, model.weeksOfTheMonth().get(0));
     }
 }

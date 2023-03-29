@@ -5,13 +5,14 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -43,9 +44,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 4. play a media to all participants
          * 5. hang up the call.
          */
-        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
-            .buildAsyncClient();
 
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
@@ -55,15 +53,20 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
         try {
             // create caller and receiver
-            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
+            
+            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                    .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
+                    .sourceIdentity(caller)
+                    .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -78,7 +81,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
@@ -100,7 +103,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.

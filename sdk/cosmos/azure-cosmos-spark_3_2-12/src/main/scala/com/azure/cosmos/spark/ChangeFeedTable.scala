@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.catalog.CosmosCatalogCosmosSDKClient
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -166,12 +167,12 @@ private class ChangeFeedTable(val session: SparkSession,
         }
 
         val state = new CosmosClientMetadataCachesSnapshot()
-        state.serialize(clientCacheItems(0).get.client)
+        state.serialize(clientCacheItems(0).get.cosmosClient)
 
         var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
         if (clientCacheItems(1).isDefined) {
           throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-          throughputControlState.get.serialize(clientCacheItems(1).get.client)
+          throughputControlState.get.serialize(clientCacheItems(1).get.cosmosClient)
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)

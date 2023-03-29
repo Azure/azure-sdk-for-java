@@ -34,6 +34,10 @@ public final class ServiceImpactingEventIncidentProperties {
     @JsonProperty(value = "incidentType")
     private String incidentType;
 
+    /** Creates an instance of ServiceImpactingEventIncidentProperties class. */
+    public ServiceImpactingEventIncidentProperties() {
+    }
+
     /**
      * Get the title property: Title of the incident.
      *

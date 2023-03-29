@@ -24,6 +24,10 @@ public final class TransparentDataEncryptionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TransparentDataEncryptionProperties innerProperties;
 
+    /** Creates an instance of TransparentDataEncryptionInner class. */
+    public TransparentDataEncryptionInner() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

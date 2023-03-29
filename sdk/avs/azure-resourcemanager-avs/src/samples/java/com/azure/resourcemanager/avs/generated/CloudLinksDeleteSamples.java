@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudLinks Delete. */
 public final class CloudLinksDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class CloudLinksDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void cloudLinksDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.cloudLinks().delete("group1", "cloud1", "cloudLink1", Context.NONE);
+        manager.cloudLinks().delete("group1", "cloud1", "cloudLink1", com.azure.core.util.Context.NONE);
     }
 }

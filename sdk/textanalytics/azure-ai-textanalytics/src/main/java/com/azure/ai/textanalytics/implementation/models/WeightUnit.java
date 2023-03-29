@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WeightUnit. */
+/** The weight Unit of measurement. */
 public final class WeightUnit extends ExpandableStringEnum<WeightUnit> {
     /** Static value Unspecified for WeightUnit. */
     public static final WeightUnit UNSPECIFIED = fromString("Unspecified");

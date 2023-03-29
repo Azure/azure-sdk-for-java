@@ -18,6 +18,10 @@ public final class MSDeployLogProperties {
     @JsonProperty(value = "entries", access = JsonProperty.Access.WRITE_ONLY)
     private List<MSDeployLogEntry> entries;
 
+    /** Creates an instance of MSDeployLogProperties class. */
+    public MSDeployLogProperties() {
+    }
+
     /**
      * Get the entries property: List of log entry messages.
      *

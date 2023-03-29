@@ -26,7 +26,7 @@ import java.util.Arrays;
 /** Samples for ContentKeyPolicies CreateOrUpdate. */
 public final class ContentKeyPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-multiple-options.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-create-multiple-options.json
      */
     /**
      * Sample code: Creates a Content Key Policy with multiple options.
@@ -38,7 +38,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyCreatedWithMultipleOptions")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays
@@ -65,7 +65,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-nodrm-token.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-create-nodrm-token.json
      */
     /**
      * Sample code: Creates a Content Key Policy with ClearKey option and Token Restriction.
@@ -77,7 +77,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyWithClearKeyOptionAndSwtTokenRestriction")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays
@@ -97,7 +97,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-playready-open.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-create-playready-open.json
      */
     /**
      * Sample code: Creates a Content Key Policy with PlayReady option and Open Restriction.
@@ -109,7 +109,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyWithPlayReadyOptionAndOpenRestriction")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays
@@ -145,7 +145,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-widevine-token.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/content-key-policies-create-widevine-token.json
      */
     /**
      * Sample code: Creates a Content Key Policy with Widevine option and Token Restriction.
@@ -157,7 +157,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyWithWidevineOptionAndJwtTokenRestriction")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays

@@ -10,13 +10,15 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
+import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Packet core control plane resource. */
@@ -29,18 +31,20 @@ public final class PacketCoreControlPlaneInner extends Resource {
     private PacketCoreControlPlanePropertiesFormat innerProperties = new PacketCoreControlPlanePropertiesFormat();
 
     /*
-     * The identity used to retrieve the ingress certificate from Azure key
-     * vault.
+     * The identity used to retrieve the ingress certificate from Azure key vault.
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of PacketCoreControlPlaneInner class. */
+    public PacketCoreControlPlaneInner() {
+    }
 
     /**
      * Get the innerProperties property: Packet core control plane Properties.
@@ -104,25 +108,36 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
+     * Get the installation property: The installation state of the packet core control plane resource.
      *
-     * @return the mobileNetwork value.
+     * @return the installation value.
      */
-    public MobileNetworkResourceId mobileNetwork() {
-        return this.innerProperties() == null ? null : this.innerProperties().mobileNetwork();
+    public Installation installation() {
+        return this.innerProperties() == null ? null : this.innerProperties().installation();
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
+     * Get the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
+     * in the same location as the packet core control plane.
      *
-     * @param mobileNetwork the mobileNetwork value to set.
+     * @return the sites value.
+     */
+    public List<SiteResourceId> sites() {
+        return this.innerProperties() == null ? null : this.innerProperties().sites();
+    }
+
+    /**
+     * Set the sites property: Site(s) under which this packet core control plane should be deployed. The sites must be
+     * in the same location as the packet core control plane.
+     *
+     * @param sites the sites value to set.
      * @return the PacketCoreControlPlaneInner object itself.
      */
-    public PacketCoreControlPlaneInner withMobileNetwork(MobileNetworkResourceId mobileNetwork) {
+    public PacketCoreControlPlaneInner withSites(List<SiteResourceId> sites) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
         }
-        this.innerProperties().withMobileNetwork(mobileNetwork);
+        this.innerProperties().withSites(sites);
         return this;
     }
 
@@ -196,6 +211,16 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
+     * Get the rollbackVersion property: The previous version of the packet core software that was deployed. Used when
+     * performing the rollback action.
+     *
+     * @return the rollbackVersion value.
+     */
+    public String rollbackVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().rollbackVersion();
+    }
+
+    /**
      * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
      * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
@@ -243,6 +268,33 @@ public final class PacketCoreControlPlaneInner extends Resource {
             this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
         }
         this.innerProperties().withSku(sku);
+        return this;
+    }
+
+    /**
+     * Get the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links
+     * for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this
+     * value to allow for GTP encapsulation.
+     *
+     * @return the ueMtu value.
+     */
+    public Integer ueMtu() {
+        return this.innerProperties() == null ? null : this.innerProperties().ueMtu();
+    }
+
+    /**
+     * Set the ueMtu property: The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links
+     * for all data networks. The MTU set on the user plane access link is calculated to be 60 bytes greater than this
+     * value to allow for GTP encapsulation.
+     *
+     * @param ueMtu the ueMtu value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withUeMtu(Integer ueMtu) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withUeMtu(ueMtu);
         return this;
     }
 

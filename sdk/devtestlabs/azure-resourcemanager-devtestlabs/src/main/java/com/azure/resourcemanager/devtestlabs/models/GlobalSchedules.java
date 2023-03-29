@@ -15,7 +15,7 @@ public interface GlobalSchedules {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> list();
 
@@ -30,7 +30,7 @@ public interface GlobalSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> list(String expand, String filter, Integer top, String orderby, Context context);
 
@@ -41,7 +41,7 @@ public interface GlobalSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> listByResourceGroup(String resourceGroupName);
 
@@ -57,10 +57,25 @@ public interface GlobalSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> listByResourceGroup(
         String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+
+    /**
+     * Get schedule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the schedule.
+     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule along with {@link Response}.
+     */
+    Response<Schedule> getByResourceGroupWithResponse(
+        String resourceGroupName, String name, String expand, Context context);
 
     /**
      * Get schedule.
@@ -75,19 +90,17 @@ public interface GlobalSchedules {
     Schedule getByResourceGroup(String resourceGroupName, String name);
 
     /**
-     * Get schedule.
+     * Delete schedule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return the {@link Response}.
      */
-    Response<Schedule> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Delete schedule.
@@ -99,19 +112,6 @@ public interface GlobalSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Delete schedule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
@@ -169,7 +169,7 @@ public interface GlobalSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return schedule along with {@link Response}.
      */
     Schedule getById(String id);
 
@@ -182,7 +182,7 @@ public interface GlobalSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return schedule along with {@link Response}.
      */
     Response<Schedule> getByIdWithResponse(String id, String expand, Context context);
 
@@ -204,7 +204,7 @@ public interface GlobalSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

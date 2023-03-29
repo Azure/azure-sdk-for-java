@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The api operations properties. */
 @Fluent
 public final class ApiOperationPropertiesDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiOperationPropertiesDefinition.class);
-
     /*
      * The summary of the api operation.
      */
@@ -73,6 +70,7 @@ public final class ApiOperationPropertiesDefinition {
      * The operation responses definition schemas.
      */
     @JsonProperty(value = "responsesDefinition")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerSchema> responsesDefinition;
 
     /*
@@ -86,6 +84,10 @@ public final class ApiOperationPropertiesDefinition {
      */
     @JsonProperty(value = "isNotification")
     private Boolean isNotification;
+
+    /** Creates an instance of ApiOperationPropertiesDefinition class. */
+    public ApiOperationPropertiesDefinition() {
+    }
 
     /**
      * Get the summary property: The summary of the api operation.

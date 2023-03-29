@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AlertsSuppressionRules List. */
 public final class AlertsSuppressionRulesListSamples {
     /*
@@ -17,7 +15,7 @@ public final class AlertsSuppressionRulesListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSuppressionRulesForSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.alertsSuppressionRules().list(null, Context.NONE);
+        manager.alertsSuppressionRules().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -30,6 +28,6 @@ public final class AlertsSuppressionRulesListSamples {
      */
     public static void getSuppressionAlertRuleForSubscriptionFilteredByAlertType(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.alertsSuppressionRules().list("IpAnomaly", Context.NONE);
+        manager.alertsSuppressionRules().list("IpAnomaly", com.azure.core.util.Context.NONE);
     }
 }

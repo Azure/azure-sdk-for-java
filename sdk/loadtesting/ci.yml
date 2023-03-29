@@ -1,0 +1,60 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/loadtesting/ci.yml
+      - sdk/loadtesting/azure-resourcemanager-loadtesting/
+      - sdk/loadtesting/azure-developer-loadtesting
+    exclude:
+      - sdk/loadtesting/pom.xml
+      - sdk/loadtesting/azure-resourcemanager-loadtesting/pom.xml
+      - sdk/loadtesting/azure-developer-loadtesting/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/loadtesting/ci.yml
+      - sdk/loadtesting/azure-resourcemanager-loadtesting/
+      - sdk/loadtesting/azure-developer-loadtesting
+    exclude:
+      - sdk/loadtesting/pom.xml
+      - sdk/loadtesting/azure-resourcemanager-loadtesting/pom.xml
+      - sdk/loadtesting/azure-developer-loadtesting/pom.xml
+
+parameters:
+  - name: release_azuredeveloperloadtesting
+    displayName: azure-developer-loadtesting
+    type: boolean
+    default: true
+    
+  - name: release_azureresourcemanagerloadtesting
+    displayName: azure-resourcemanager-loadtesting
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: loadtesting
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-loadtesting
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerloadtesting
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerloadtesting }}
+      - name: azure-developer-loadtesting
+        groupId: com.azure
+        safeName: azuredeveloperloadtesting
+        releaseInBatch: ${{ parameters.release_azuredeveloperloadtesting }}

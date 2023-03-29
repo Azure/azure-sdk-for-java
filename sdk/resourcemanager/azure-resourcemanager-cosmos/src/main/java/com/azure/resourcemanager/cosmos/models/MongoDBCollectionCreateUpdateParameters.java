@@ -19,6 +19,10 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     @JsonProperty(value = "properties", required = true)
     private MongoDBCollectionCreateUpdateProperties innerProperties = new MongoDBCollectionCreateUpdateProperties();
 
+    /** Creates an instance of MongoDBCollectionCreateUpdateParameters class. */
+    public MongoDBCollectionCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB MongoDB collection.
      *

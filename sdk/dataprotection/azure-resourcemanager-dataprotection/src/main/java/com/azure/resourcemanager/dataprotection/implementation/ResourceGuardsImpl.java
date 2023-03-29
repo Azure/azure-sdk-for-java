@@ -15,10 +15,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResou
 import com.azure.resourcemanager.dataprotection.models.DppBaseResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuards;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceGuardsImpl implements ResourceGuards {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuardsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGuardsImpl.class);
 
     private final ResourceGuardsClient innerClient;
 
@@ -52,16 +51,6 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         return Utils.mapPage(inner, inner1 -> new ResourceGuardResourceImpl(inner1, this.manager()));
     }
 
-    public ResourceGuardResource getByResourceGroup(String resourceGroupName, String resourceGuardsName) {
-        ResourceGuardResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, resourceGuardsName);
-        if (inner != null) {
-            return new ResourceGuardResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ResourceGuardResource> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceGuardsName, Context context) {
         Response<ResourceGuardResourceInner> inner =
@@ -77,12 +66,23 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String resourceGuardsName) {
-        this.serviceClient().delete(resourceGroupName, resourceGuardsName);
+    public ResourceGuardResource getByResourceGroup(String resourceGroupName, String resourceGuardsName) {
+        ResourceGuardResourceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, resourceGuardsName);
+        if (inner != null) {
+            return new ResourceGuardResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceGuardsName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String resourceGuardsName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceGuardsName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String resourceGuardsName) {
+        this.serviceClient().delete(resourceGroupName, resourceGuardsName);
     }
 
     public PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
@@ -173,19 +173,6 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public DppBaseResource getDefaultDisableSoftDeleteRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultDisableSoftDeleteRequestsObject(resourceGroupName, resourceGuardsName, requestName);
-        if (inner != null) {
-            return new DppBaseResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DppBaseResource> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
         Response<DppBaseResourceInner> inner =
@@ -204,12 +191,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(
+    public DppBaseResource getDefaultDisableSoftDeleteRequestsObject(
         String resourceGroupName, String resourceGuardsName, String requestName) {
         DppBaseResourceInner inner =
             this
                 .serviceClient()
-                .getDefaultDeleteResourceGuardProxyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+                .getDefaultDisableSoftDeleteRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -235,12 +222,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public DppBaseResource getDefaultBackupSecurityPinRequestsObject(
+    public DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(
         String resourceGroupName, String resourceGuardsName, String requestName) {
         DppBaseResourceInner inner =
             this
                 .serviceClient()
-                .getDefaultBackupSecurityPinRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+                .getDefaultDeleteResourceGuardProxyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -266,12 +253,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public DppBaseResource getDefaultDeleteProtectedItemRequestsObject(
+    public DppBaseResource getDefaultBackupSecurityPinRequestsObject(
         String resourceGroupName, String resourceGuardsName, String requestName) {
         DppBaseResourceInner inner =
             this
                 .serviceClient()
-                .getDefaultDeleteProtectedItemRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+                .getDefaultBackupSecurityPinRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -297,12 +284,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(
+    public DppBaseResource getDefaultDeleteProtectedItemRequestsObject(
         String resourceGroupName, String resourceGuardsName, String requestName) {
         DppBaseResourceInner inner =
             this
                 .serviceClient()
-                .getDefaultUpdateProtectionPolicyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+                .getDefaultDeleteProtectedItemRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -328,12 +315,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public DppBaseResource getDefaultUpdateProtectedItemRequestsObject(
+    public DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(
         String resourceGroupName, String resourceGuardsName, String requestName) {
         DppBaseResourceInner inner =
             this
                 .serviceClient()
-                .getDefaultUpdateProtectedItemRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+                .getDefaultUpdateProtectionPolicyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -359,10 +346,23 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
+    public DppBaseResource getDefaultUpdateProtectedItemRequestsObject(
+        String resourceGroupName, String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner =
+            this
+                .serviceClient()
+                .getDefaultUpdateProtectedItemRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+        if (inner != null) {
+            return new DppBaseResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public ResourceGuardResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -370,7 +370,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -382,7 +382,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public Response<ResourceGuardResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -390,7 +390,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -402,7 +402,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -410,19 +410,19 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceGuardsName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -430,13 +430,13 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, resourceGuardsName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context);
     }
 
     private ResourceGuardsClient serviceClient() {

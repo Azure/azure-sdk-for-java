@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.support.fluent.CommunicationsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunicationsClient. */
 public final class CommunicationsClientImpl implements CommunicationsClient {
-    private final ClientLogger logger = new ClientLogger(CommunicationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CommunicationsService service;
 
@@ -68,7 +65,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportComm")
-    private interface CommunicationsService {
+    public interface CommunicationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}"
@@ -151,7 +148,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
@@ -206,7 +204,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
@@ -257,20 +256,31 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
         String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponseAsync(supportTicketName, checkNameAvailabilityInput)
-            .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
+     * a new communication to the support ticket.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param checkNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
+        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+        return checkNameAvailabilityWithResponseAsync(supportTicketName, checkNameAvailabilityInput, context).block();
     }
 
     /**
@@ -287,25 +297,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityOutputInner checkNameAvailability(
         String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
-        return checkNameAvailabilityAsync(supportTicketName, checkNameAvailabilityInput).block();
-    }
-
-    /**
-     * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
-     * a new communication to the support ticket.
-     *
-     * @param supportTicketName Support ticket name.
-     * @param checkNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
-        return checkNameAvailabilityWithResponseAsync(supportTicketName, checkNameAvailabilityInput, context).block();
+        return checkNameAvailabilityWithResponse(supportTicketName, checkNameAvailabilityInput, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -325,7 +318,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationDetailsInner>> listSinglePageAsync(
@@ -390,7 +384,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationDetailsInner>> listSinglePageAsync(
@@ -451,7 +446,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationDetailsInner> listAsync(String supportTicketName, Integer top, String filter) {
@@ -471,7 +466,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationDetailsInner> listAsync(String supportTicketName) {
@@ -499,7 +494,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationDetailsInner> listAsync(
@@ -521,7 +516,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunicationDetailsInner> list(String supportTicketName) {
@@ -548,7 +543,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunicationDetailsInner> list(
@@ -564,7 +559,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommunicationDetailsInner>> getWithResponseAsync(
@@ -614,7 +610,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommunicationDetailsInner>> getWithResponseAsync(
@@ -660,19 +657,29 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommunicationDetailsInner> getAsync(String supportTicketName, String communicationName) {
         return getWithResponseAsync(supportTicketName, communicationName)
-            .flatMap(
-                (Response<CommunicationDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns communication details for a support ticket.
+     *
+     * @param supportTicketName Support ticket name.
+     * @param communicationName Communication name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that represents a Communication resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationDetailsInner> getWithResponse(
+        String supportTicketName, String communicationName, Context context) {
+        return getWithResponseAsync(supportTicketName, communicationName, context).block();
     }
 
     /**
@@ -687,24 +694,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationDetailsInner get(String supportTicketName, String communicationName) {
-        return getAsync(supportTicketName, communicationName).block();
-    }
-
-    /**
-     * Returns communication details for a support ticket.
-     *
-     * @param supportTicketName Support ticket name.
-     * @param communicationName Communication name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationDetailsInner> getWithResponse(
-        String supportTicketName, String communicationName, Context context) {
-        return getWithResponseAsync(supportTicketName, communicationName, context).block();
+        return getWithResponse(supportTicketName, communicationName, Context.NONE).getValue();
     }
 
     /**
@@ -716,7 +706,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -776,7 +767,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -835,9 +827,9 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return the {@link PollerFlux} for polling of object that represents a Communication resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreateAsync(
         String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -849,7 +841,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
                 this.client.getHttpPipeline(),
                 CommunicationDetailsInner.class,
                 CommunicationDetailsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -862,9 +854,9 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return the {@link PollerFlux} for polling of object that represents a Communication resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreateAsync(
         String supportTicketName,
         String communicationName,
@@ -892,12 +884,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return the {@link SyncPoller} for polling of object that represents a Communication resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
         String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
-        return beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters).getSyncPoller();
+        return this
+            .beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -910,15 +904,16 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return the {@link SyncPoller} for polling of object that represents a Communication resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
         String supportTicketName,
         String communicationName,
         CommunicationDetailsInner createCommunicationParameters,
         Context context) {
-        return beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters, context)
+        return this
+            .beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters, context)
             .getSyncPoller();
     }
 
@@ -931,7 +926,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommunicationDetailsInner> createAsync(
@@ -951,7 +946,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommunicationDetailsInner> createAsync(
@@ -1005,11 +1000,13 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -1040,12 +1037,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolutionAnalytics List. */
 public final class IotSecuritySolutionAnalyticsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class IotSecuritySolutionAnalyticsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecuritySolutionAnalytics(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutionAnalytics().listWithResponse("MyGroup", "default", Context.NONE);
+        manager.iotSecuritySolutionAnalytics().listWithResponse("MyGroup", "default", com.azure.core.util.Context.NONE);
     }
 }

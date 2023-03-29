@@ -11,36 +11,35 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileShareProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureFileShareProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"SQLDB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"timeZone\":\"qjfsmlmbtxhw\",\"protectedItemsCount\":849596082,\"resourceGuardOperationRequests\":[\"tawc\",\"ezbrhubskh\",\"dyg\"]}")
+                    "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"GenericDataSource\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"timeZone\":\"sjc\",\"protectedItemsCount\":2098917747,\"resourceGuardOperationRequests\":[\"ntiew\"]}")
                 .toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(849596082, model.protectedItemsCount());
-        Assertions.assertEquals("tawc", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SQLDB, model.workLoadType());
-        Assertions.assertEquals("qjfsmlmbtxhw", model.timeZone());
+        Assertions.assertEquals(2098917747, model.protectedItemsCount());
+        Assertions.assertEquals("ntiew", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workLoadType());
+        Assertions.assertEquals("sjc", model.timeZone());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureFileShareProtectionPolicy model =
             new AzureFileShareProtectionPolicy()
-                .withProtectedItemsCount(849596082)
-                .withResourceGuardOperationRequests(Arrays.asList("tawc", "ezbrhubskh", "dyg"))
-                .withWorkLoadType(WorkloadType.SQLDB)
+                .withProtectedItemsCount(2098917747)
+                .withResourceGuardOperationRequests(Arrays.asList("ntiew"))
+                .withWorkLoadType(WorkloadType.GENERIC_DATA_SOURCE)
                 .withSchedulePolicy(new SchedulePolicy())
                 .withRetentionPolicy(new RetentionPolicy())
-                .withTimeZone("qjfsmlmbtxhw");
+                .withTimeZone("sjc");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(849596082, model.protectedItemsCount());
-        Assertions.assertEquals("tawc", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SQLDB, model.workLoadType());
-        Assertions.assertEquals("qjfsmlmbtxhw", model.timeZone());
+        Assertions.assertEquals(2098917747, model.protectedItemsCount());
+        Assertions.assertEquals("ntiew", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workLoadType());
+        Assertions.assertEquals("sjc", model.timeZone());
     }
 }

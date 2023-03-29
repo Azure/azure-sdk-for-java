@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The TableGetPropertiesOptions model. */
 @Fluent
 public final class TableGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of TableGetPropertiesOptions class. */
+    public TableGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public TableGetPropertiesOptions withThroughput(Integer throughput) {

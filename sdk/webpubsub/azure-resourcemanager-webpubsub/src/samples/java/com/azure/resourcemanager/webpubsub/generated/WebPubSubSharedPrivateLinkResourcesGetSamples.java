@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSubSharedPrivateLinkResources Get. */
 public final class WebPubSubSharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubSharedPrivateLinkResources_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubSharedPrivateLinkResources_Get.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_Get.
@@ -20,6 +18,6 @@ public final class WebPubSubSharedPrivateLinkResourcesGetSamples {
         com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
         manager
             .webPubSubSharedPrivateLinkResources()
-            .getWithResponse("upstream", "myResourceGroup", "myWebPubSubService", Context.NONE);
+            .getWithResponse("upstream", "myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

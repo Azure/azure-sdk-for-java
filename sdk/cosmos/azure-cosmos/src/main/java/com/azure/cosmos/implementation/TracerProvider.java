@@ -74,12 +74,19 @@ public class TracerProvider {
         boolean isClientMetricsEnabled) {
 
         if (tracer == null &&
-            isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled) {
+            (isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled)) {
 
+            LOGGER.info("No OpenTelemetry tracer provided but metrics or client telemetry requested --> Using No-Op Tracer.");
             this.tracer = NoOpTracer.INSTANCE;
 
         } else {
-            this.tracer = tracer;
+            if (tracer == null) {
+                this.tracer = null;
+                LOGGER.info("Neither OpenTelemetry tracer provided nor client telemetry or metrics enabled.");
+            } else {
+                LOGGER.info("Using OpenTelemetry tracer {}", tracer.getClass().getCanonicalName());
+                this.tracer = tracer;
+            }
         }
 
         this.propagatingMono = new PropagatingMono();

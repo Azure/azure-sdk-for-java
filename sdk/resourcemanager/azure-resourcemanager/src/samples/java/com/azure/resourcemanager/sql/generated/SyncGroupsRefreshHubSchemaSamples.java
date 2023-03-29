@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncGroups RefreshHubSchema. */
 public final class SyncGroupsRefreshHubSchemaSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncGroupRefreshHubSchema.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupRefreshHubSchema.json
      */
     /**
      * Sample code: Refresh a hub database schema.

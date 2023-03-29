@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointCo
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProvisioningState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnection model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class PrivateEndpointConnectionTests {
         Assertions.assertEquals("jqabcypmivkwlzuv", model.privateLinkServiceConnectionState().actionRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnection model =
             new PrivateEndpointConnection()
                 .withProvisioningState(ProvisioningState.PENDING)

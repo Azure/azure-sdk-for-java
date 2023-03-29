@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntent;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionIntentTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProtectionIntent model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class ProtectionIntentTests {
         Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProtectionIntent model =
             new ProtectionIntent()
                 .withBackupManagementType(BackupManagementType.AZURE_SQL)

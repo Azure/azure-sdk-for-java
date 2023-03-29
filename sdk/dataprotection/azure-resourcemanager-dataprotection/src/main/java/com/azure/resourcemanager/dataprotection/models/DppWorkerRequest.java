@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The DppWorkerRequest model. */
 @Fluent
 public class DppWorkerRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppWorkerRequest.class);
-
     /*
      * The subscriptionId property.
      */
@@ -30,8 +26,7 @@ public class DppWorkerRequest {
     private String uri;
 
     /*
-     * Dictionary of
-     * <components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>
+     * Dictionary of <components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties>
      */
     @JsonProperty(value = "headers")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -61,6 +56,10 @@ public class DppWorkerRequest {
      */
     @JsonProperty(value = "httpMethod")
     private String httpMethod;
+
+    /** Creates an instance of DppWorkerRequest class. */
+    public DppWorkerRequest() {
+    }
 
     /**
      * Get the subscriptionId property: The subscriptionId property.

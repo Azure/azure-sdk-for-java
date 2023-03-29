@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
@@ -19,7 +18,7 @@ import java.util.Map;
 /** Samples for PolicyAssignments CreateById. */
 public final class PolicyAssignmentsCreateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createPolicyAssignmentById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentById.json
      */
     /**
      * Sample code: Create or update policy assignment by ID.
@@ -56,11 +55,11 @@ public final class PolicyAssignmentsCreateByIdSamples {
                             .createDefaultManagementSerializerAdapter()
                             .deserialize("{\"assignedBy\":\"Cheapskate Boss\"}", Object.class, SerializerEncoding.JSON))
                     .withEnforcementMode(EnforcementMode.DEFAULT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createPolicyAssignmentWithIdentityById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithIdentityById.json
      */
     /**
      * Sample code: Create or update policy assignment with a managed identity by ID.
@@ -99,7 +98,7 @@ public final class PolicyAssignmentsCreateByIdSamples {
                             .createDefaultManagementSerializerAdapter()
                             .deserialize("{\"assignedBy\":\"Cheapskate Boss\"}", Object.class, SerializerEncoding.JSON))
                     .withEnforcementMode(EnforcementMode.DEFAULT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

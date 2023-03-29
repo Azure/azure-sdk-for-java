@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.fluent.AccountsClient;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountKeysInner;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AccountsClient. */
 public final class AccountsClientImpl implements AccountsClient {
-    private final ClientLogger logger = new ClientLogger(AccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AccountsService service;
 
@@ -65,7 +62,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMapsManagementC")
-    private interface AccountsService {
+    public interface AccountsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
@@ -212,7 +209,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountInner>> createOrUpdateWithResponseAsync(
@@ -268,7 +266,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountInner>> createOrUpdateWithResponseAsync(
@@ -320,20 +319,32 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MapsAccountInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, MapsAccountInner mapsAccount) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, mapsAccount)
-            .flatMap(
-                (Response<MapsAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a Maps Account. A Maps Account holds the keys which allow access to the Maps REST APIs.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccount The new or updated parameters for the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MapsAccountInner> createOrUpdateWithResponse(
+        String resourceGroupName, String accountName, MapsAccountInner mapsAccount, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, mapsAccount, context).block();
     }
 
     /**
@@ -349,25 +360,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsAccountInner createOrUpdate(String resourceGroupName, String accountName, MapsAccountInner mapsAccount) {
-        return createOrUpdateAsync(resourceGroupName, accountName, mapsAccount).block();
-    }
-
-    /**
-     * Create or update a Maps Account. A Maps Account holds the keys which allow access to the Maps REST APIs.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param mapsAccount The new or updated parameters for the Maps Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MapsAccountInner> createOrUpdateWithResponse(
-        String resourceGroupName, String accountName, MapsAccountInner mapsAccount, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, mapsAccount, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, accountName, mapsAccount, Context.NONE).getValue();
     }
 
     /**
@@ -380,7 +373,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountInner>> updateWithResponseAsync(
@@ -440,7 +434,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountInner>> updateWithResponseAsync(
@@ -499,20 +494,36 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MapsAccountInner> updateAsync(
         String resourceGroupName, String accountName, MapsAccountUpdateParameters mapsAccountUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, mapsAccountUpdateParameters)
-            .flatMap(
-                (Response<MapsAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates a Maps Account. Only a subset of the parameters may be updated after creation, such as Sku, Tags,
+     * Properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccountUpdateParameters The updated parameters for the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure resource which represents access to a suite of Maps REST APIs along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MapsAccountInner> updateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        MapsAccountUpdateParameters mapsAccountUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, mapsAccountUpdateParameters, context).block();
     }
 
     /**
@@ -530,29 +541,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsAccountInner update(
         String resourceGroupName, String accountName, MapsAccountUpdateParameters mapsAccountUpdateParameters) {
-        return updateAsync(resourceGroupName, accountName, mapsAccountUpdateParameters).block();
-    }
-
-    /**
-     * Updates a Maps Account. Only a subset of the parameters may be updated after creation, such as Sku, Tags,
-     * Properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param mapsAccountUpdateParameters The updated parameters for the Maps Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource which represents access to a suite of Maps REST APIs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MapsAccountInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        MapsAccountUpdateParameters mapsAccountUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, mapsAccountUpdateParameters, context).block();
+        return updateWithResponse(resourceGroupName, accountName, mapsAccountUpdateParameters, Context.NONE).getValue();
     }
 
     /**
@@ -563,7 +552,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
@@ -611,7 +600,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -656,11 +645,27 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a Maps Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -674,23 +679,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName) {
-        deleteAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Delete a Maps Account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
+        deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -701,7 +690,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
+     * @return a Maps Account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountInner>> getByResourceGroupWithResponseAsync(
@@ -750,7 +739,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
+     * @return a Maps Account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountInner>> getByResourceGroupWithResponseAsync(
@@ -795,19 +784,29 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
+     * @return a Maps Account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MapsAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<MapsAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a Maps Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Maps Account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MapsAccountInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -822,24 +821,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Get a Maps Account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MapsAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -849,7 +831,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -901,7 +884,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listByResourceGroupSinglePageAsync(
@@ -950,7 +934,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MapsAccountInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -967,7 +951,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MapsAccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -983,7 +967,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsAccountInner> listByResourceGroup(String resourceGroupName) {
@@ -998,7 +982,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Resource Group.
+     * @return all Maps Accounts in a Resource Group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1010,7 +994,8 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listSinglePageAsync() {
@@ -1056,7 +1041,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listSinglePageAsync(Context context) {
@@ -1097,7 +1083,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MapsAccountInner> listAsync() {
@@ -1112,7 +1098,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MapsAccountInner> listAsync(Context context) {
@@ -1125,7 +1111,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsAccountInner> list() {
@@ -1139,7 +1125,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Maps Accounts in a Subscription.
+     * @return all Maps Accounts in a Subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsAccountInner> list(Context context) {
@@ -1155,7 +1141,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keys to use with the Maps APIs.
+     * @return the keys to use with the Maps APIs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountKeysInner>> listKeysWithResponseAsync(
@@ -1205,7 +1191,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keys to use with the Maps APIs.
+     * @return the keys to use with the Maps APIs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountKeysInner>> listKeysWithResponseAsync(
@@ -1251,19 +1237,30 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keys to use with the Maps APIs.
+     * @return the keys to use with the Maps APIs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MapsAccountKeysInner> listKeysAsync(String resourceGroupName, String accountName) {
         return listKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<MapsAccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
+     * Only one key is needed at a time; two are given to provide seamless key regeneration.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keys to use with the Maps APIs along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MapsAccountKeysInner> listKeysWithResponse(
+        String resourceGroupName, String accountName, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -1279,25 +1276,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsAccountKeysInner listKeys(String resourceGroupName, String accountName) {
-        return listKeysAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST APIs.
-     * Only one key is needed at a time; two are given to provide seamless key regeneration.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keys to use with the Maps APIs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MapsAccountKeysInner> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
+        return listKeysWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -1310,7 +1289,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of keys which can be used to access the Maps REST APIs.
+     * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountKeysInner>> regenerateKeysWithResponseAsync(
@@ -1368,7 +1348,8 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of keys which can be used to access the Maps REST APIs.
+     * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MapsAccountKeysInner>> regenerateKeysWithResponseAsync(
@@ -1422,20 +1403,32 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of keys which can be used to access the Maps REST APIs.
+     * @return the set of keys which can be used to access the Maps REST APIs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MapsAccountKeysInner> regenerateKeysAsync(
         String resourceGroupName, String accountName, MapsKeySpecification keySpecification) {
         return regenerateKeysWithResponseAsync(resourceGroupName, accountName, keySpecification)
-            .flatMap(
-                (Response<MapsAccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
+     * immediately.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param keySpecification Which key to regenerate: primary or secondary.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the set of keys which can be used to access the Maps REST APIs along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MapsAccountKeysInner> regenerateKeysWithResponse(
+        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context) {
+        return regenerateKeysWithResponseAsync(resourceGroupName, accountName, keySpecification, context).block();
     }
 
     /**
@@ -1453,36 +1446,18 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MapsAccountKeysInner regenerateKeys(
         String resourceGroupName, String accountName, MapsKeySpecification keySpecification) {
-        return regenerateKeysAsync(resourceGroupName, accountName, keySpecification).block();
-    }
-
-    /**
-     * Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
-     * immediately.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param keySpecification Which key to regenerate: primary or secondary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the set of keys which can be used to access the Maps REST APIs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MapsAccountKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context) {
-        return regenerateKeysWithResponseAsync(resourceGroupName, accountName, keySpecification, context).block();
+        return regenerateKeysWithResponse(resourceGroupName, accountName, keySpecification, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Maps Accounts.
+     * @return a list of Maps Accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1514,12 +1489,13 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Maps Accounts.
+     * @return a list of Maps Accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listByResourceGroupNextSinglePageAsync(
@@ -1551,11 +1527,12 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Maps Accounts.
+     * @return a list of Maps Accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1587,12 +1564,13 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Maps Accounts.
+     * @return a list of Maps Accounts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MapsAccountInner>> listBySubscriptionNextSinglePageAsync(

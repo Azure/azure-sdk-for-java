@@ -19,7 +19,7 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous IngestionUsingDataCollectionRulesClient type. */
 @ServiceClient(builder = IngestionUsingDataCollectionRulesClientBuilder.class)
 public final class IngestionUsingDataCollectionRulesClient {
-    @Generated private final IngestionUsingDataCollectionRulesAsyncClient client;
+    @Generated private final IngestionUsingDataCollectionRulesClientImpl serviceClient;
 
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient class.
@@ -27,12 +27,14 @@ public final class IngestionUsingDataCollectionRulesClient {
      * @param client the async client.
      */
     @Generated
-    IngestionUsingDataCollectionRulesClient(IngestionUsingDataCollectionRulesAsyncClient client) {
-        this.client = client;
+    IngestionUsingDataCollectionRulesClient(IngestionUsingDataCollectionRulesClientImpl client) {
+        this.serviceClient = client;
     }
 
     /**
-     * See error response code and error response message for more detail.
+     * Ingestion API used to directly ingest data using Data Collection Rules
+     *
+     * <p>See error response code and error response message for more detail.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -43,11 +45,13 @@ public final class IngestionUsingDataCollectionRulesClient {
      *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     Object
+     *     Object (Required)
      * ]
      * }</pre>
      *
@@ -65,6 +69,6 @@ public final class IngestionUsingDataCollectionRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
             String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
-        return this.client.uploadWithResponse(ruleId, stream, body, requestOptions).block();
+        return this.serviceClient.uploadWithResponse(ruleId, stream, body, requestOptions);
     }
 }

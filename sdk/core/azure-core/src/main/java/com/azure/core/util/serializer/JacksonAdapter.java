@@ -4,9 +4,14 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.implementation.ReflectionSerializable;
+import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,11 +21,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.BiConsumer;
+
+import static com.azure.core.implementation.ReflectionSerializable.deserializeAsJsonSerializable;
+import static com.azure.core.implementation.ReflectionSerializable.deserializeAsXmlSerializable;
+import static com.azure.core.implementation.ReflectionSerializable.supportsJsonSerializable;
+import static com.azure.core.implementation.ReflectionSerializable.supportsXmlSerializable;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
@@ -92,8 +109,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * are pre-configured for Azure serialization needs, but only outer mapper capable of flattening and populating
      * additionalProperties. Outer mapper is used by {@code JacksonAdapter} for all serialization needs.
      * <p>
-     * Register modules on the outer instance to add custom (de)serializers similar to {@code new JacksonAdapter((outer,
-     * inner) -> outer.registerModule(new MyModule()))}
+     * Register modules on the outer instance to add custom (de)serializers similar to
+     * {@code new JacksonAdapter((outer, inner) -> outer.registerModule(new MyModule()))}
      *
      * Use inner mapper for chaining serialization logic in your (de)serializers.
      *
@@ -111,7 +128,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
      * serializer()
      */
-    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
         this.rawOuterMapper = outerMapper;
         this.rawInnerMapper = innerMapper;
 
@@ -155,9 +173,19 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (String) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().writeValueAsString(object)
-            : mapper.writeValueAsString(object));
+        return (String) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return supportsXmlSerializable(object.getClass())
+                    ? ReflectionSerializable.serializeXmlSerializableToString(object)
+                    : getXmlMapper().writeValueAsString(object);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return object.toString();
+            } else {
+                return ReflectionSerializable.supportsJsonSerializable(object.getClass())
+                    ? ReflectionSerializable.serializeJsonSerializableToString(object)
+                    : mapper.writeValueAsString(object);
+            }
+        });
     }
 
     @Override
@@ -166,9 +194,19 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (byte[]) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().writeValueAsBytes(object)
-            : mapper.writeValueAsBytes(object));
+        return (byte[]) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                return supportsXmlSerializable(object.getClass())
+                    ? ReflectionSerializable.serializeXmlSerializableToBytes(object)
+                    : getXmlMapper().writeValueAsBytes(object);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return object.toString().getBytes(StandardCharsets.UTF_8);
+            } else {
+                return ReflectionSerializable.supportsJsonSerializable(object.getClass())
+                    ? ReflectionSerializable.serializeJsonSerializableToBytes(object)
+                    : mapper.writeValueAsBytes(object);
+            }
+        });
     }
 
     @Override
@@ -179,9 +217,19 @@ public class JacksonAdapter implements SerializerAdapter {
 
         useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
-                getXmlMapper().writeValue(outputStream, object);
+                if (supportsXmlSerializable(object.getClass())) {
+                    ReflectionSerializable.serializeXmlSerializableIntoOutputStream(object, outputStream);
+                } else {
+                    getXmlMapper().writeValue(outputStream, object);
+                }
+            } else if (encoding == SerializerEncoding.TEXT) {
+                outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
             } else {
-                mapper.writeValue(outputStream, object);
+                if (ReflectionSerializable.supportsJsonSerializable(object.getClass())) {
+                    ReflectionSerializable.serializeJsonSerializableIntoOutputStream(object, outputStream);
+                } else {
+                    mapper.writeValue(outputStream, object);
+                }
             }
 
             return null;
@@ -260,9 +308,21 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().readValue(value, type)
-            : mapper.readValue(value, type));
+        return (T) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                Class<?> rawClass = TypeUtil.getRawClass(type);
+                return supportsXmlSerializable(rawClass)
+                    ? deserializeAsXmlSerializable(rawClass, value.getBytes(StandardCharsets.UTF_8))
+                    : getXmlMapper().readValue(value, type);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return deserializeText(value, type);
+            } else {
+                Class<?> rawClass = TypeUtil.getRawClass(type);
+                return supportsJsonSerializable(rawClass)
+                    ? deserializeAsJsonSerializable(rawClass, value.getBytes(StandardCharsets.UTF_8))
+                    : mapper.readValue(value, type);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -272,9 +332,21 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().readValue(bytes, type)
-            : mapper.readValue(bytes, type));
+        return (T) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                Class<?> rawClass = TypeUtil.getRawClass(type);
+                return supportsXmlSerializable(rawClass)
+                    ? deserializeAsXmlSerializable(rawClass, bytes)
+                    : getXmlMapper().readValue(bytes, type);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                return deserializeText(CoreUtils.bomAwareToString(bytes, null), type);
+            } else {
+                Class<?> rawClass = TypeUtil.getRawClass(type);
+                return supportsJsonSerializable(rawClass)
+                    ? deserializeAsJsonSerializable(rawClass, bytes)
+                    : mapper.readValue(bytes, type);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -285,9 +357,90 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? getXmlMapper().readValue(inputStream, type)
-            : mapper.readValue(inputStream, type));
+        return (T) useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                Class<?> rawClass = TypeUtil.getRawClass(type);
+                return supportsXmlSerializable(rawClass)
+                    ? deserializeAsXmlSerializable(rawClass, inputStreamToBytes(inputStream))
+                    : getXmlMapper().readValue(inputStream, type);
+            } else if (encoding == SerializerEncoding.TEXT) {
+                AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+                byte[] buffer = new byte[8192];
+                int readCount;
+                while ((readCount = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, readCount);
+                }
+
+                return deserializeText(outputStream.bomAwareToString(null), type);
+            } else {
+                Class<?> rawClass = TypeUtil.getRawClass(type);
+                return supportsJsonSerializable(rawClass)
+                    ? deserializeAsJsonSerializable(rawClass, inputStreamToBytes(inputStream))
+                    : mapper.readValue(inputStream, type);
+            }
+        });
+    }
+
+    private static byte[] inputStreamToBytes(InputStream inputStream) throws IOException {
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        byte[] buffer = new byte[8192];
+        int readCount;
+        while ((readCount = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, readCount);
+        }
+
+        return outputStream.toByteArray();
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static Object deserializeText(String value, Type type) throws IOException {
+        if (type == String.class || type == CharSequence.class) {
+            return value;
+        } else if (type == int.class || type == Integer.class) {
+            return Integer.parseInt(value);
+        } else if (type == char.class || type == Character.class) {
+            return CoreUtils.isNullOrEmpty(value) ? null : value.charAt(0);
+        } else if (type == byte.class || type == Byte.class) {
+            return CoreUtils.isNullOrEmpty(value) ? null : (byte) value.charAt(0);
+        } else if (type == byte[].class) {
+            return CoreUtils.isNullOrEmpty(value) ? null : value.getBytes(StandardCharsets.UTF_8);
+        } else if (type == long.class || type == Long.class) {
+            return Long.parseLong(value);
+        } else if (type == short.class || type == Short.class) {
+            return Short.parseShort(value);
+        } else if (type == float.class || type == Float.class) {
+            return Float.parseFloat(value);
+        } else if (type == double.class || type == Double.class) {
+            return Double.parseDouble(value);
+        } else if (type == boolean.class || type == Boolean.class) {
+            return Boolean.parseBoolean(value);
+        } else if (type == OffsetDateTime.class) {
+            return OffsetDateTime.parse(value);
+        } else if (type == DateTimeRfc1123.class) {
+            return new DateTimeRfc1123(value);
+        } else if (type == URL.class) {
+            try {
+                return new URL(value);
+            } catch (MalformedURLException ex) {
+                throw new IOException(ex);
+            }
+        } else if (type == URI.class) {
+            return URI.create(value);
+        } else if (type == UUID.class) {
+            return UUID.fromString(value);
+        } else if (type == LocalDate.class) {
+            return LocalDate.parse(value);
+        } else if (Enum.class.isAssignableFrom((Class<?>) type)) {
+            return Enum.valueOf((Class) type, value);
+        } else if (ExpandableStringEnum.class.isAssignableFrom((Class<?>) type)) {
+            try {
+                return ((Class<?>) type).getDeclaredMethod("fromString", String.class).invoke(null, value);
+            } catch (ReflectiveOperationException ex) {
+                throw new IOException(ex);
+            }
+        } else {
+            throw new IllegalStateException("Unsupported text Content-Type Type: " + type);
+        }
     }
 
     @SuppressWarnings("unchecked")

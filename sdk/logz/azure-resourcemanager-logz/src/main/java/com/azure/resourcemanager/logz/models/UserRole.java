@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UserRole. */
+/** User roles on configured in Logz.io account. */
 public final class UserRole extends ExpandableStringEnum<UserRole> {
     /** Static value None for UserRole. */
     public static final UserRole NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class UserRole extends ExpandableStringEnum<UserRole> {
 
     /** Static value Admin for UserRole. */
     public static final UserRole ADMIN = fromString("Admin");
+
+    /**
+     * Creates a new instance of UserRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UserRole() {
+    }
 
     /**
      * Creates or finds a UserRole from its string representation.
@@ -30,7 +39,11 @@ public final class UserRole extends ExpandableStringEnum<UserRole> {
         return fromString(name, UserRole.class);
     }
 
-    /** @return known UserRole values. */
+    /**
+     * Gets known UserRole values.
+     *
+     * @return known UserRole values.
+     */
     public static Collection<UserRole> values() {
         return values(UserRole.class);
     }

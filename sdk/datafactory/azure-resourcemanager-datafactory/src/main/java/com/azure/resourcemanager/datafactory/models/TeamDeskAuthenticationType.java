@@ -17,6 +17,15 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
     public static final TeamDeskAuthenticationType TOKEN = fromString("Token");
 
     /**
+     * Creates a new instance of TeamDeskAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TeamDeskAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a TeamDeskAuthenticationType from its string representation.
      *
      * @param name a name to look for.

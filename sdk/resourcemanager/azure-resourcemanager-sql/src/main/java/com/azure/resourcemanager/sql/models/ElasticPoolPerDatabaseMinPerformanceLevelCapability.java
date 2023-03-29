@@ -34,6 +34,10 @@ public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ElasticPoolPerDatabaseMinPerformanceLevelCapability class. */
+    public ElasticPoolPerDatabaseMinPerformanceLevelCapability() {
+    }
+
     /**
      * Get the limit property: The minimum performance level per database.
      *

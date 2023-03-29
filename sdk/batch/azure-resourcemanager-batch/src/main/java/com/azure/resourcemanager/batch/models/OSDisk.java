@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OSDisk {
     /*
-     * Specifies the ephemeral Disk Settings for the operating system disk used
-     * by the virtual machine.
+     * Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
      */
     @JsonProperty(value = "ephemeralOSDiskSettings")
     private DiffDiskSettings ephemeralOSDiskSettings;
+
+    /** Creates an instance of OSDisk class. */
+    public OSDisk() {
+    }
 
     /**
      * Get the ephemeralOSDiskSettings property: Specifies the ephemeral Disk Settings for the operating system disk

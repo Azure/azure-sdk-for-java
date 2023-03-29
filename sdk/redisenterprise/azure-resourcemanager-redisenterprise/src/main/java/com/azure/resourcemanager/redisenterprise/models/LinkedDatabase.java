@@ -7,7 +7,11 @@ package com.azure.resourcemanager.redisenterprise.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Linked Database Specifies details of a linked database resource. */
+/**
+ * Linked Database
+ *
+ * <p>Specifies details of a linked database resource.
+ */
 @Fluent
 public final class LinkedDatabase {
     /*
@@ -21,6 +25,10 @@ public final class LinkedDatabase {
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private LinkState state;
+
+    /** Creates an instance of LinkedDatabase class. */
+    public LinkedDatabase() {
+    }
 
     /**
      * Get the id property: Resource ID of a database resource to link with this database.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,79 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-02-27)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+## 1.0.0-beta.5 (2023-02-14)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+## 1.0.0-beta.4 (2022-12-20)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Vaults` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.CapabilitiesProperties` was added
+
+* `models.ImmutabilityState` was added
+
+* `models.ResourceCapabilities` was added
+
+* `models.DnsZone` was added
+
+* `models.ResourceCapabilitiesBase` was added
+
+* `models.SecuritySettings` was added
+
+* `models.CapabilitiesResponse` was added
+
+* `models.VaultSubResourceType` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.ImmutabilitySettings` was added
+
+* `models.DnsZoneResponse` was added
+
+* `models.CapabilitiesResponseProperties` was added
+
+#### `models.RecoveryServices` was modified
+
+* `capabilitiesWithResponse(java.lang.String,models.ResourceCapabilities,com.azure.core.util.Context)` was added
+* `capabilities(java.lang.String,models.ResourceCapabilities)` was added
+
+#### `models.Vault$Definition` was modified
+
+* `withEtag(java.lang.String)` was added
+
+#### `models.Vaults` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `groupIds()` was added
+* `withGroupIds(java.util.List)` was added
+
+#### `models.Vault` was modified
+
+* `etag()` was added
+
+#### `models.VaultProperties` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `publicNetworkAccess()` was added
+* `securitySettings()` was added
+* `withSecuritySettings(models.SecuritySettings)` was added
 
 ## 1.0.0-beta.3 (2022-07-25)
 

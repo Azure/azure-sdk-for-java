@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
 
 /** Samples for CustomIpPrefixes CreateOrUpdate. */
 public final class CustomIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/CustomIpPrefixCreateCustomizedValues.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/CustomIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create custom IP prefix allocation method.
@@ -27,6 +26,6 @@ public final class CustomIpPrefixesCreateOrUpdateSamples {
                 "rg1",
                 "test-customipprefix",
                 new CustomIpPrefixInner().withLocation("westus").withCidr("0.0.0.0/24"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

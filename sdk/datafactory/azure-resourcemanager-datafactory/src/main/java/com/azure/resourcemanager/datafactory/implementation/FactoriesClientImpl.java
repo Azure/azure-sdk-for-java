@@ -66,7 +66,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface FactoriesService {
+    public interface FactoriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories")
         @ExpectedResponses({200})

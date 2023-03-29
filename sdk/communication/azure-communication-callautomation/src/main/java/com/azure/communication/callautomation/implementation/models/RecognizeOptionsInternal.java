@@ -30,6 +30,12 @@ public final class RecognizeOptionsInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
+     * Speech language to be recognized, If not set default is en-US
+     */
+    @JsonProperty(value = "speechLanguage")
+    private String speechLanguage;
+
+    /*
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfOptions")
@@ -38,8 +44,8 @@ public final class RecognizeOptionsInternal {
     /*
      * Defines Ivr choices for recognize.
      */
-    @JsonProperty(value = "ivrChoiceOptions")
-    private List<RecognizeChoice> ivrChoiceOptions;
+    @JsonProperty(value = "choices")
+    private List<RecognizeChoiceInternal> choices;
 
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
@@ -102,6 +108,26 @@ public final class RecognizeOptionsInternal {
     }
 
     /**
+     * Get the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @return the speechLanguage value.
+     */
+    public String getSpeechLanguage() {
+        return this.speechLanguage;
+    }
+
+    /**
+     * Set the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @param speechLanguage the speechLanguage value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechLanguage(String speechLanguage) {
+        this.speechLanguage = speechLanguage;
+        return this;
+    }
+
+    /**
      * Get the dtmfOptions property: Defines configurations for DTMF.
      *
      * @return the dtmfOptions value.
@@ -122,22 +148,22 @@ public final class RecognizeOptionsInternal {
     }
 
     /**
-     * Get the ivrChoiceOptions property: Defines Ivr choices for recognize.
+     * Get the choices property: Defines Ivr choices for recognize.
      *
-     * @return the ivrChoiceOptions value.
+     * @return the choices value.
      */
-    public List<RecognizeChoice> getIvrChoiceOptions() {
-        return this.ivrChoiceOptions;
+    public List<RecognizeChoiceInternal> getChoices() {
+        return this.choices;
     }
 
     /**
-     * Set the ivrChoiceOptions property: Defines Ivr choices for recognize.
+     * Set the choices property: Defines Ivr choices for recognize.
      *
-     * @param ivrChoiceOptions the ivrChoiceOptions value to set.
+     * @param choices the choices value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
-    public RecognizeOptionsInternal setIvrChoiceOptions(List<RecognizeChoice> ivrChoiceOptions) {
-        this.ivrChoiceOptions = ivrChoiceOptions;
+    public RecognizeOptionsInternal setChoices(List<RecognizeChoiceInternal> choices) {
+        this.choices = choices;
         return this;
     }
 }

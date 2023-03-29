@@ -6,19 +6,18 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
-import org.junit.jupiter.api.Test;
 
 public final class ValidateOperationRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ValidateOperationRequest model =
             BinaryData
                 .fromString("{\"objectType\":\"ValidateOperationRequest\"}")
                 .toObject(ValidateOperationRequest.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ValidateOperationRequest model = new ValidateOperationRequest();
         model = BinaryData.fromObject(model).toObject(ValidateOperationRequest.class);
     }

@@ -64,7 +64,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface FlowLogsService {
+    public interface FlowLogsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -200,7 +200,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +267,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -350,7 +350,9 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(
         String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, flowLogName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, flowLogName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -373,7 +375,8 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         String flowLogName,
         FlowLogInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, flowLogName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, flowLogName, parameters, context)
             .getSyncPoller();
     }
 
@@ -506,7 +509,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -573,7 +576,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -688,7 +691,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -744,7 +747,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -847,7 +850,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -903,7 +906,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -977,7 +980,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String flowLogName) {
-        return beginDeleteAsync(resourceGroupName, networkWatcherName, flowLogName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkWatcherName, flowLogName).getSyncPoller();
     }
 
     /**
@@ -995,7 +998,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String flowLogName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkWatcherName, flowLogName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkWatcherName, flowLogName, context).getSyncPoller();
     }
 
     /**
@@ -1099,7 +1102,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1159,7 +1162,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

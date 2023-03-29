@@ -41,7 +41,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,8 +51,6 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -420,7 +417,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         if (binaryData == null) {
             Flux<ByteBuffer> dataFlux = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                     options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-                .subscribeOn(Schedulers.boundedElastic())
                 : options.getDataFlux();
             dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
         } else {
@@ -439,8 +435,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-                encryptionScope, finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
+                encryptionScope, finalContext)
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -593,7 +589,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, options.getContentMd5(), tagsToString(options.getTags()),
             options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -763,7 +759,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
                 base64BlockId, data.getLength(), data, contentMd5, null, null,
                 leaseId, null, getCustomerProvidedKey(),
-                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                encryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -890,7 +886,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1160,7 +1156,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

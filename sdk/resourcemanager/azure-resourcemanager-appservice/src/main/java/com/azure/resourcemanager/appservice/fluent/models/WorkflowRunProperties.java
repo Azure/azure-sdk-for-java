@@ -91,6 +91,10 @@ public final class WorkflowRunProperties {
     @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowRunTrigger response;
 
+    /** Creates an instance of WorkflowRunProperties class. */
+    public WorkflowRunProperties() {
+    }
+
     /**
      * Get the waitEndTime property: Gets the wait end time.
      *

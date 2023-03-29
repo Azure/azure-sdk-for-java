@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeNodes GetIpAddress. */
 public final class IntegrationRuntimeNodesGetIpAddressSamples {
     /*
@@ -21,6 +19,10 @@ public final class IntegrationRuntimeNodesGetIpAddressSamples {
         manager
             .integrationRuntimeNodes()
             .getIpAddressWithResponse(
-                "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1", Context.NONE);
+                "exampleResourceGroup",
+                "exampleFactoryName",
+                "exampleIntegrationRuntime",
+                "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnomalyScope. */
+/** Anomaly scope. */
 public final class AnomalyScope extends ExpandableStringEnum<AnomalyScope> {
     /** Static value All for AnomalyScope. */
     public static final AnomalyScope ALL = fromString("All");
@@ -18,6 +18,14 @@ public final class AnomalyScope extends ExpandableStringEnum<AnomalyScope> {
 
     /** Static value TopN for AnomalyScope. */
     public static final AnomalyScope TOPN = fromString("TopN");
+
+    /**
+     * Creates a new instance of AnomalyScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnomalyScope() {}
 
     /**
      * Creates or finds a AnomalyScope from its string representation.
@@ -30,7 +38,11 @@ public final class AnomalyScope extends ExpandableStringEnum<AnomalyScope> {
         return fromString(name, AnomalyScope.class);
     }
 
-    /** @return known AnomalyScope values. */
+    /**
+     * Gets known AnomalyScope values.
+     *
+     * @return known AnomalyScope values.
+     */
     public static Collection<AnomalyScope> values() {
         return values(AnomalyScope.class);
     }

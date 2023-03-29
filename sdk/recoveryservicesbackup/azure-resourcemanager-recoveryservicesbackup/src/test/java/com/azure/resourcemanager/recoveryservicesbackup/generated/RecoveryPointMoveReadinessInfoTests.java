@@ -7,25 +7,24 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointMoveReadinessInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecoveryPointMoveReadinessInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecoveryPointMoveReadinessInfo model =
             BinaryData
-                .fromString("{\"isReadyForMove\":false,\"additionalInfo\":\"fz\"}")
+                .fromString("{\"isReadyForMove\":false,\"additionalInfo\":\"cf\"}")
                 .toObject(RecoveryPointMoveReadinessInfo.class);
         Assertions.assertEquals(false, model.isReadyForMove());
-        Assertions.assertEquals("fz", model.additionalInfo());
+        Assertions.assertEquals("cf", model.additionalInfo());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecoveryPointMoveReadinessInfo model =
-            new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("fz");
+            new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("cf");
         model = BinaryData.fromObject(model).toObject(RecoveryPointMoveReadinessInfo.class);
         Assertions.assertEquals(false, model.isReadyForMove());
-        Assertions.assertEquals("fz", model.additionalInfo());
+        Assertions.assertEquals("cf", model.additionalInfo());
     }
 }

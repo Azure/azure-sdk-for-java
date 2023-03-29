@@ -14,6 +14,15 @@ public final class RouteFilterRuleType extends ExpandableStringEnum<RouteFilterR
     public static final RouteFilterRuleType COMMUNITY = fromString("Community");
 
     /**
+     * Creates a new instance of RouteFilterRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteFilterRuleType() {
+    }
+
+    /**
      * Creates or finds a RouteFilterRuleType from its string representation.
      *
      * @param name a name to look for.

@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpandMsixImageList List of MSIX package properties retrieved from MSIX Image expansion. */
+/**
+ * ExpandMsixImageList
+ *
+ * <p>List of MSIX package properties retrieved from MSIX Image expansion.
+ */
 @Fluent
 public final class ExpandMsixImageList {
     /*
@@ -23,6 +27,10 @@ public final class ExpandMsixImageList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ExpandMsixImageList class. */
+    public ExpandMsixImageList() {
+    }
 
     /**
      * Get the value property: List of MSIX package properties from give MSIX Image.

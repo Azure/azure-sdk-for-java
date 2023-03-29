@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServiceEndpointPolicies Delete. */
 public final class ServiceEndpointPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ServiceEndpointPolicyDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceEndpointPolicyDelete.json
      */
     /**
      * Sample code: Delete service endpoint policy.
@@ -22,6 +20,6 @@ public final class ServiceEndpointPoliciesDeleteSamples {
             .manager()
             .serviceClient()
             .getServiceEndpointPolicies()
-            .delete("rg1", "serviceEndpointPolicy1", Context.NONE);
+            .delete("rg1", "serviceEndpointPolicy1", com.azure.core.util.Context.NONE);
     }
 }

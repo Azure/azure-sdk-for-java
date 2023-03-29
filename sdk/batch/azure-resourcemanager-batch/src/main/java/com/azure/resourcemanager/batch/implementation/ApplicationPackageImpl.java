@@ -131,16 +131,16 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
         return this;
     }
 
-    public ApplicationPackage activate(ActivateApplicationPackageParameters parameters) {
-        return serviceManager
-            .applicationPackages()
-            .activate(resourceGroupName, accountName, applicationName, versionName, parameters);
-    }
-
     public Response<ApplicationPackage> activateWithResponse(
         ActivateApplicationPackageParameters parameters, Context context) {
         return serviceManager
             .applicationPackages()
             .activateWithResponse(resourceGroupName, accountName, applicationName, versionName, parameters, context);
+    }
+
+    public ApplicationPackage activate(ActivateApplicationPackageParameters parameters) {
+        return serviceManager
+            .applicationPackages()
+            .activate(resourceGroupName, accountName, applicationName, versionName, parameters);
     }
 }

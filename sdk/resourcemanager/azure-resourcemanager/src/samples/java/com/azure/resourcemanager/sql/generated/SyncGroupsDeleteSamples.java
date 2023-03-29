@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncGroups Delete. */
 public final class SyncGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncGroupDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupDelete.json
      */
     /**
      * Sample code: Delete a sync group.

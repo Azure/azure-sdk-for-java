@@ -24,6 +24,8 @@ public final class BatchQueryResponse {
     private Integer status;
 
     /*
+     * A query response for a single query in a batch.
+     *
      * Contains the tables, columns & rows resulting from a query.
      */
     @JsonProperty(value = "body")
@@ -34,6 +36,9 @@ public final class BatchQueryResponse {
      */
     @JsonProperty(value = "headers")
     private Map<String, String> headers;
+
+    /** Creates an instance of BatchQueryResponse class. */
+    public BatchQueryResponse() {}
 
     /**
      * Get the id property: The id property.
@@ -76,7 +81,9 @@ public final class BatchQueryResponse {
     }
 
     /**
-     * Get the body property: Contains the tables, columns &amp; rows resulting from a query.
+     * Get the body property: A query response for a single query in a batch.
+     *
+     * <p>Contains the tables, columns &amp; rows resulting from a query.
      *
      * @return the body value.
      */
@@ -85,7 +92,9 @@ public final class BatchQueryResponse {
     }
 
     /**
-     * Set the body property: Contains the tables, columns &amp; rows resulting from a query.
+     * Set the body property: A query response for a single query in a batch.
+     *
+     * <p>Contains the tables, columns &amp; rows resulting from a query.
      *
      * @param body the body value to set.
      * @return the BatchQueryResponse object itself.

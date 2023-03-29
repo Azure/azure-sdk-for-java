@@ -8,27 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PointInTimeRange;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PointInTimeRangeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PointInTimeRange model =
             BinaryData
-                .fromString("{\"startTime\":\"2021-09-05T07:02:59Z\",\"endTime\":\"2021-09-10T21:52:33Z\"}")
+                .fromString("{\"startTime\":\"2021-11-06T16:53:49Z\",\"endTime\":\"2021-05-17T21:24:33Z\"}")
                 .toObject(PointInTimeRange.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T07:02:59Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T21:52:33Z"), model.endTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T16:53:49Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T21:24:33Z"), model.endTime());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PointInTimeRange model =
             new PointInTimeRange()
-                .withStartTime(OffsetDateTime.parse("2021-09-05T07:02:59Z"))
-                .withEndTime(OffsetDateTime.parse("2021-09-10T21:52:33Z"));
+                .withStartTime(OffsetDateTime.parse("2021-11-06T16:53:49Z"))
+                .withEndTime(OffsetDateTime.parse("2021-05-17T21:24:33Z"));
         model = BinaryData.fromObject(model).toObject(PointInTimeRange.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T07:02:59Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T21:52:33Z"), model.endTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T16:53:49Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T21:24:33Z"), model.endTime());
     }
 }

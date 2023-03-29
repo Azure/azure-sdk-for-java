@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** File share information with Path, Username, and Password. */
 @Fluent
 public final class FileShare {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShare.class);
-
     /*
      * User name credential to connect to the share location
      */
@@ -31,6 +28,10 @@ public final class FileShare {
      */
     @JsonProperty(value = "path", required = true)
     private String path;
+
+    /** Creates an instance of FileShare class. */
+    public FileShare() {
+    }
 
     /**
      * Get the username property: User name credential to connect to the share location.
@@ -99,8 +100,10 @@ public final class FileShare {
      */
     public void validate() {
         if (path() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property path in model FileShare"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileShare.class);
 }

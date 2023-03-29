@@ -6,10 +6,17 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
+import java.util.function.Consumer;
 
 /**
- * Response returned from the STS device code endpoint containing information necessary for
- * device code flow.
+ * <p>Device Code Info represents the response returned from the device code endpoint containing information
+ * necessary for device code flow. By default, the information in Device code info is printed onto the console
+ * as instructions for the user to follow when authenticating via {@link DeviceCodeCredential}. But, in the event
+ * user would like to override that behaviour and handle the device code info response, they can do so by specifying
+ * a {@link DeviceCodeCredentialBuilder#challengeConsumer(Consumer) challenge consumer} when instantiating the
+ * device code credential.</p>
+ *
+ * @see DeviceCodeCredential
  */
 @Immutable
 public class DeviceCodeInfo {

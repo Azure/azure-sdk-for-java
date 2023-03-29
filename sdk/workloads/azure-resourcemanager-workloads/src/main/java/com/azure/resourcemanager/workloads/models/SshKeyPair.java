@@ -26,6 +26,10 @@ public final class SshKeyPair {
     @JsonProperty(value = "privateKey")
     private String privateKey;
 
+    /** Creates an instance of SshKeyPair class. */
+    public SshKeyPair() {
+    }
+
     /**
      * Get the publicKey property: SSH public key.
      *

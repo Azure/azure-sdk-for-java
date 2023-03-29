@@ -9,6 +9,7 @@ import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
 import com.azure.resourcemanager.batch.models.KeyVaultReference;
+import com.azure.resourcemanager.batch.models.NetworkProfile;
 import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,11 +25,9 @@ public final class BatchAccountCreateProperties {
     private AutoStorageBaseProperties autoStorage;
 
     /*
-     * The pool allocation mode also affects how clients may authenticate to
-     * the Batch Service API. If the mode is BatchService, clients may
-     * authenticate using access keys or Azure Active Directory. If the mode is
-     * UserSubscription, clients must use Azure Active Directory. The default
-     * is BatchService.
+     * The pool allocation mode also affects how clients may authenticate to the Batch Service API. If the mode is
+     * BatchService, clients may authenticate using access keys or Azure Active Directory. If the mode is
+     * UserSubscription, clients must use Azure Active Directory. The default is BatchService.
      */
     @JsonProperty(value = "poolAllocationMode")
     private PoolAllocationMode poolAllocationMode;
@@ -46,20 +45,28 @@ public final class BatchAccountCreateProperties {
     private PublicNetworkAccessType publicNetworkAccess;
 
     /*
-     * Configures how customer data is encrypted inside the Batch account. By
-     * default, accounts are encrypted using a Microsoft managed key. For
-     * additional control, a customer-managed key can be used instead.
+     * The network profile only takes effect when publicNetworkAccess is enabled.
+     */
+    @JsonProperty(value = "networkProfile")
+    private NetworkProfile networkProfile;
+
+    /*
+     * Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a
+     * Microsoft managed key. For additional control, a customer-managed key can be used instead.
      */
     @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
-     * List of allowed authentication modes for the Batch account that can be
-     * used to authenticate with the data plane. This does not affect
-     * authentication with the control plane.
+     * List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.
+     * This does not affect authentication with the control plane.
      */
     @JsonProperty(value = "allowedAuthenticationModes")
     private List<AuthenticationMode> allowedAuthenticationModes;
+
+    /** Creates an instance of BatchAccountCreateProperties class. */
+    public BatchAccountCreateProperties() {
+    }
 
     /**
      * Get the autoStorage property: The properties related to the auto-storage account.
@@ -146,6 +153,26 @@ public final class BatchAccountCreateProperties {
     }
 
     /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountCreateProperties object itself.
+     */
+    public BatchAccountCreateProperties withNetworkProfile(NetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
      * Get the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
@@ -203,6 +230,9 @@ public final class BatchAccountCreateProperties {
         }
         if (keyVaultReference() != null) {
             keyVaultReference().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
         if (encryption() != null) {
             encryption().validate();

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntryPointType. */
+/** The type of entry point. Value can be either _main_ or _minor_. */
 public final class EntryPointType extends ExpandableStringEnum<EntryPointType> {
     /** Static value main for EntryPointType. */
     public static final EntryPointType MAIN = fromString("main");

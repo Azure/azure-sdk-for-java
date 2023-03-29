@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionInner;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 
 /** Samples for ExpressRouteCrossConnections CreateOrUpdate. */
 public final class ExpressRouteCrossConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCrossConnectionUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCrossConnectionUpdate.json
      */
     /**
      * Sample code: UpdateExpressRouteCrossConnection.
@@ -29,6 +28,6 @@ public final class ExpressRouteCrossConnectionsCreateOrUpdateSamples {
                 "<circuitServiceKey>",
                 new ExpressRouteCrossConnectionInner()
                     .withServiceProviderProvisioningState(ServiceProviderProvisioningState.NOT_PROVISIONED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

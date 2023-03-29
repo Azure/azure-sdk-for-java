@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentPatchResource;
 
 /** Samples for KubeEnvironments Update. */
 public final class KubeEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_Update.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/KubeEnvironments_Update.json
      */
     /**
      * Sample code: Update kube environments.
@@ -24,6 +23,9 @@ public final class KubeEnvironmentsUpdateSamples {
             .serviceClient()
             .getKubeEnvironments()
             .updateWithResponse(
-                "examplerg", "testkubeenv", new KubeEnvironmentPatchResource().withStaticIp("1.2.3.4"), Context.NONE);
+                "examplerg",
+                "testkubeenv",
+                new KubeEnvironmentPatchResource().withStaticIp("1.2.3.4"),
+                com.azure.core.util.Context.NONE);
     }
 }

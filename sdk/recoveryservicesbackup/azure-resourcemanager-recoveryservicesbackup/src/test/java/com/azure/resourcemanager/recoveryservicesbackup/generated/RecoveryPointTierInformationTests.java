@@ -11,32 +11,31 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecoveryPointTierInformationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecoveryPointTierInformation model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"ArchivedRP\",\"status\":\"Invalid\",\"extendedInfo\":{\"talhsnvkcdmxzr\":\"jwltlwtjjgu\",\"aaomylweazu\":\"oaimlnw\",\"hwwn\":\"cse\"}}")
+                    "{\"type\":\"ArchivedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"jrajcivm\":\"azkmtgguwp\"}}")
                 .toObject(RecoveryPointTierInformation.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.INVALID, model.status());
-        Assertions.assertEquals("jwltlwtjjgu", model.extendedInfo().get("talhsnvkcdmxzr"));
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
+        Assertions.assertEquals("azkmtgguwp", model.extendedInfo().get("jrajcivm"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecoveryPointTierInformation model =
             new RecoveryPointTierInformation()
                 .withType(RecoveryPointTierType.ARCHIVED_RP)
-                .withStatus(RecoveryPointTierStatus.INVALID)
-                .withExtendedInfo(mapOf("talhsnvkcdmxzr", "jwltlwtjjgu", "aaomylweazu", "oaimlnw", "hwwn", "cse"));
+                .withStatus(RecoveryPointTierStatus.DISABLED)
+                .withExtendedInfo(mapOf("jrajcivm", "azkmtgguwp"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformation.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.INVALID, model.status());
-        Assertions.assertEquals("jwltlwtjjgu", model.extendedInfo().get("talhsnvkcdmxzr"));
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
+        Assertions.assertEquals("azkmtgguwp", model.extendedInfo().get("jrajcivm"));
     }
 
     @SuppressWarnings("unchecked")

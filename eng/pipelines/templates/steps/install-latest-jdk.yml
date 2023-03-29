@@ -8,7 +8,7 @@ steps:
   # Make the assumption here Linux is being used, if it's not it's a configuration issue that needs to be fixed there.
   - task: Cache@2
     inputs:
-      key: 'jdk | "$(JavaTestVersion)" | "$(CacheSalt)" | "$(Agent.OS)"'
+      key: 'jdk | "1.${{ parameters.LatestJdkFeatureVersion }}" | "$(CacheSalt)" | "$(Agent.OS)"'
       path: $(Agent.BuildDirectory)/jdk-${{ parameters.LatestJdkFeatureVersion }}
     displayName: 'Cache Latest JDK'
 

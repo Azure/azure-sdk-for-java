@@ -16,84 +16,87 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadSqlRestoreRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureWorkloadSqlRestoreRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadSQLRestoreRequest\",\"shouldUseAlternateTargetLocation\":false,\"isNonRecoverable\":false,\"alternateDirectoryPaths\":[{\"mappingType\":\"Log\",\"sourceLogicalName\":\"sgzfczbg\",\"sourcePath\":\"fgbegl\",\"targetPath\":\"leohibetnluankr\"},{\"mappingType\":\"Data\",\"sourceLogicalName\":\"eebtijvacvb\",\"sourcePath\":\"z\",\"targetPath\":\"q\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"rnwxacevehjkuyxo\",\"sourcePath\":\"gaoql\",\"targetPath\":\"aeylinm\"}],\"recoveryType\":\"OriginalLocation\",\"sourceResourceId\":\"irpghriypoqeyh\",\"propertyBag\":{\"iq\":\"ykprlpyznu\"},\"targetInfo\":{\"overwriteOption\":\"Overwrite\",\"containerId\":\"iitdfuxt\",\"databaseName\":\"siibmiybnnustgn\",\"targetDirectoryForFileRestore\":\"hnmgixhcm\"},\"recoveryMode\":\"WorkloadRecovery\",\"targetVirtualMachineId\":\"foudor\"}")
+                    "{\"objectType\":\"AzureWorkloadSQLRestoreRequest\",\"shouldUseAlternateTargetLocation\":false,\"isNonRecoverable\":false,\"alternateDirectoryPaths\":[{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"hohsd\",\"sourcePath\":\"cdzsu\",\"targetPath\":\"ohdxbzlmcmu\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"hdbevwqqxeyskon\",\"sourcePath\":\"inkfkbgbz\",\"targetPath\":\"wxeqocljmygvkzqk\"}],\"recoveryType\":\"RestoreDisks\",\"sourceResourceId\":\"kbzefezrxcczurt\",\"propertyBag\":{\"zdix\":\"pqxbkwvzgnzvdf\",\"opqhewjptmc\":\"mqpnoda\",\"dlat\":\"sbostzel\",\"hrbbpneqvcwwyy\":\"tmzlbiojlv\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"hppr\",\"databaseName\":\"snmokayzej\",\"targetDirectoryForFileRestore\":\"lbkpb\"},\"recoveryMode\":\"FileRecovery\",\"targetVirtualMachineId\":\"iljhahz\"}")
                 .toObject(AzureWorkloadSqlRestoreRequest.class);
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("irpghriypoqeyh", model.sourceResourceId());
-        Assertions.assertEquals("ykprlpyznu", model.propertyBag().get("iq"));
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("iitdfuxt", model.targetInfo().containerId());
-        Assertions.assertEquals("siibmiybnnustgn", model.targetInfo().databaseName());
-        Assertions.assertEquals("hnmgixhcm", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("foudor", model.targetVirtualMachineId());
+        Assertions.assertEquals(RecoveryType.RESTORE_DISKS, model.recoveryType());
+        Assertions.assertEquals("kbzefezrxcczurt", model.sourceResourceId());
+        Assertions.assertEquals("pqxbkwvzgnzvdf", model.propertyBag().get("zdix"));
+        Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("hppr", model.targetInfo().containerId());
+        Assertions.assertEquals("snmokayzej", model.targetInfo().databaseName());
+        Assertions.assertEquals("lbkpb", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.FILE_RECOVERY, model.recoveryMode());
+        Assertions.assertEquals("iljhahz", model.targetVirtualMachineId());
         Assertions.assertEquals(false, model.shouldUseAlternateTargetLocation());
         Assertions.assertEquals(false, model.isNonRecoverable());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.alternateDirectoryPaths().get(0).mappingType());
-        Assertions.assertEquals("sgzfczbg", model.alternateDirectoryPaths().get(0).sourceLogicalName());
-        Assertions.assertEquals("fgbegl", model.alternateDirectoryPaths().get(0).sourcePath());
-        Assertions.assertEquals("leohibetnluankr", model.alternateDirectoryPaths().get(0).targetPath());
+        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.alternateDirectoryPaths().get(0).mappingType());
+        Assertions.assertEquals("hohsd", model.alternateDirectoryPaths().get(0).sourceLogicalName());
+        Assertions.assertEquals("cdzsu", model.alternateDirectoryPaths().get(0).sourcePath());
+        Assertions.assertEquals("ohdxbzlmcmu", model.alternateDirectoryPaths().get(0).targetPath());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureWorkloadSqlRestoreRequest model =
             new AzureWorkloadSqlRestoreRequest()
-                .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
-                .withSourceResourceId("irpghriypoqeyh")
-                .withPropertyBag(mapOf("iq", "ykprlpyznu"))
+                .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                .withSourceResourceId("kbzefezrxcczurt")
+                .withPropertyBag(
+                    mapOf(
+                        "zdix",
+                        "pqxbkwvzgnzvdf",
+                        "opqhewjptmc",
+                        "mqpnoda",
+                        "dlat",
+                        "sbostzel",
+                        "hrbbpneqvcwwyy",
+                        "tmzlbiojlv"))
                 .withTargetInfo(
                     new TargetRestoreInfo()
-                        .withOverwriteOption(OverwriteOptions.OVERWRITE)
-                        .withContainerId("iitdfuxt")
-                        .withDatabaseName("siibmiybnnustgn")
-                        .withTargetDirectoryForFileRestore("hnmgixhcm"))
-                .withRecoveryMode(RecoveryMode.WORKLOAD_RECOVERY)
-                .withTargetVirtualMachineId("foudor")
+                        .withOverwriteOption(OverwriteOptions.INVALID)
+                        .withContainerId("hppr")
+                        .withDatabaseName("snmokayzej")
+                        .withTargetDirectoryForFileRestore("lbkpb"))
+                .withRecoveryMode(RecoveryMode.FILE_RECOVERY)
+                .withTargetVirtualMachineId("iljhahz")
                 .withShouldUseAlternateTargetLocation(false)
                 .withIsNonRecoverable(false)
                 .withAlternateDirectoryPaths(
                     Arrays
                         .asList(
                             new SqlDataDirectoryMapping()
-                                .withMappingType(SqlDataDirectoryType.LOG)
-                                .withSourceLogicalName("sgzfczbg")
-                                .withSourcePath("fgbegl")
-                                .withTargetPath("leohibetnluankr"),
-                            new SqlDataDirectoryMapping()
-                                .withMappingType(SqlDataDirectoryType.DATA)
-                                .withSourceLogicalName("eebtijvacvb")
-                                .withSourcePath("z")
-                                .withTargetPath("q"),
+                                .withMappingType(SqlDataDirectoryType.INVALID)
+                                .withSourceLogicalName("hohsd")
+                                .withSourcePath("cdzsu")
+                                .withTargetPath("ohdxbzlmcmu"),
                             new SqlDataDirectoryMapping()
                                 .withMappingType(SqlDataDirectoryType.INVALID)
-                                .withSourceLogicalName("rnwxacevehjkuyxo")
-                                .withSourcePath("gaoql")
-                                .withTargetPath("aeylinm")));
+                                .withSourceLogicalName("hdbevwqqxeyskon")
+                                .withSourcePath("inkfkbgbz")
+                                .withTargetPath("wxeqocljmygvkzqk")));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlRestoreRequest.class);
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("irpghriypoqeyh", model.sourceResourceId());
-        Assertions.assertEquals("ykprlpyznu", model.propertyBag().get("iq"));
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("iitdfuxt", model.targetInfo().containerId());
-        Assertions.assertEquals("siibmiybnnustgn", model.targetInfo().databaseName());
-        Assertions.assertEquals("hnmgixhcm", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("foudor", model.targetVirtualMachineId());
+        Assertions.assertEquals(RecoveryType.RESTORE_DISKS, model.recoveryType());
+        Assertions.assertEquals("kbzefezrxcczurt", model.sourceResourceId());
+        Assertions.assertEquals("pqxbkwvzgnzvdf", model.propertyBag().get("zdix"));
+        Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("hppr", model.targetInfo().containerId());
+        Assertions.assertEquals("snmokayzej", model.targetInfo().databaseName());
+        Assertions.assertEquals("lbkpb", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.FILE_RECOVERY, model.recoveryMode());
+        Assertions.assertEquals("iljhahz", model.targetVirtualMachineId());
         Assertions.assertEquals(false, model.shouldUseAlternateTargetLocation());
         Assertions.assertEquals(false, model.isNonRecoverable());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.alternateDirectoryPaths().get(0).mappingType());
-        Assertions.assertEquals("sgzfczbg", model.alternateDirectoryPaths().get(0).sourceLogicalName());
-        Assertions.assertEquals("fgbegl", model.alternateDirectoryPaths().get(0).sourcePath());
-        Assertions.assertEquals("leohibetnluankr", model.alternateDirectoryPaths().get(0).targetPath());
+        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.alternateDirectoryPaths().get(0).mappingType());
+        Assertions.assertEquals("hohsd", model.alternateDirectoryPaths().get(0).sourceLogicalName());
+        Assertions.assertEquals("cdzsu", model.alternateDirectoryPaths().get(0).sourcePath());
+        Assertions.assertEquals("ohdxbzlmcmu", model.alternateDirectoryPaths().get(0).targetPath());
     }
 
     @SuppressWarnings("unchecked")

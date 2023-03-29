@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomIpPrefixes ListByResourceGroup. */
 public final class CustomIpPrefixesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/CustomIpPrefixList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/CustomIpPrefixList.json
      */
     /**
      * Sample code: List resource group Custom IP prefixes.
@@ -17,6 +15,11 @@ public final class CustomIpPrefixesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listResourceGroupCustomIPPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getCustomIpPrefixes().listByResourceGroup("rg1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getCustomIpPrefixes()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

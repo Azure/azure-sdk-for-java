@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** L7 health probe settings for a backend pool. */
 @Fluent
 public class HealthProbeSettingsUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthProbeSettingsUpdateParameters.class);
-
     /*
      * The path to use for the health probe. Default is /
      */
@@ -33,19 +29,21 @@ public class HealthProbeSettingsUpdateParameters {
     private Integer intervalInSeconds;
 
     /*
-     * Configures which HTTP method to use to probe the backends defined under
-     * backendPools.
+     * Configures which HTTP method to use to probe the backends defined under backendPools.
      */
     @JsonProperty(value = "healthProbeMethod")
     private FrontDoorHealthProbeMethod healthProbeMethod;
 
     /*
-     * Whether to enable health probes to be made against backends defined
-     * under backendPools. Health probes can only be disabled if there is a
-     * single enabled backend in single enabled backend pool.
+     * Whether to enable health probes to be made against backends defined under backendPools. Health probes can only
+     * be disabled if there is a single enabled backend in single enabled backend pool.
      */
     @JsonProperty(value = "enabledState")
     private HealthProbeEnabled enabledState;
+
+    /** Creates an instance of HealthProbeSettingsUpdateParameters class. */
+    public HealthProbeSettingsUpdateParameters() {
+    }
 
     /**
      * Get the path property: The path to use for the health probe. Default is /.

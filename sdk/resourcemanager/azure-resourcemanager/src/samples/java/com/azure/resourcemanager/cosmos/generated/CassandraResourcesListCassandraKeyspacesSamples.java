@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraResources ListCassandraKeyspaces. */
 public final class CassandraResourcesListCassandraKeyspacesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBCassandraKeyspaceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCassandraKeyspaceList.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceList.
@@ -22,6 +20,6 @@ public final class CassandraResourcesListCassandraKeyspacesSamples {
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .listCassandraKeyspaces("rgName", "ddb1", Context.NONE);
+            .listCassandraKeyspaces("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

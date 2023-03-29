@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains the tables, columns &amp; rows resulting from a query. */
+/**
+ * A query response.
+ *
+ * <p>Contains the tables, columns &amp; rows resulting from a query.
+ */
 @Fluent
 public final class QueryResults {
     /*

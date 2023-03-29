@@ -13,28 +13,32 @@ import java.util.List;
 @Fluent
 public final class SliceConfiguration {
     /*
-     * A reference to the slice that these settings apply to
+     * A reference to the slice that these settings apply to. The slice must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "slice", required = true)
     private SliceResourceId slice;
 
     /*
-     * The default data network to use if the UE does not explicitly specify
-     * it. Configuration for this object must exist in the
-     * `dataNetworkConfigurations` map.
+     * The default data network to use if the UE does not explicitly specify it. Configuration for this object must
+     * exist in the `dataNetworkConfigurations` map. The data network must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "defaultDataNetwork", required = true)
     private DataNetworkResourceId defaultDataNetwork;
 
     /*
-     * The allowed data networks and the settings to use for them. The list
-     * must not contain duplicate items and must contain at least one item.
+     * The allowed data networks and the settings to use for them. The list must not contain duplicate items and must
+     * contain at least one item.
      */
     @JsonProperty(value = "dataNetworkConfigurations", required = true)
     private List<DataNetworkConfiguration> dataNetworkConfigurations;
 
+    /** Creates an instance of SliceConfiguration class. */
+    public SliceConfiguration() {
+    }
+
     /**
-     * Get the slice property: A reference to the slice that these settings apply to.
+     * Get the slice property: A reference to the slice that these settings apply to. The slice must be in the same
+     * location as the SIM policy.
      *
      * @return the slice value.
      */
@@ -43,7 +47,8 @@ public final class SliceConfiguration {
     }
 
     /**
-     * Set the slice property: A reference to the slice that these settings apply to.
+     * Set the slice property: A reference to the slice that these settings apply to. The slice must be in the same
+     * location as the SIM policy.
      *
      * @param slice the slice value to set.
      * @return the SliceConfiguration object itself.
@@ -55,7 +60,8 @@ public final class SliceConfiguration {
 
     /**
      * Get the defaultDataNetwork property: The default data network to use if the UE does not explicitly specify it.
-     * Configuration for this object must exist in the `dataNetworkConfigurations` map.
+     * Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the
+     * same location as the SIM policy.
      *
      * @return the defaultDataNetwork value.
      */
@@ -65,7 +71,8 @@ public final class SliceConfiguration {
 
     /**
      * Set the defaultDataNetwork property: The default data network to use if the UE does not explicitly specify it.
-     * Configuration for this object must exist in the `dataNetworkConfigurations` map.
+     * Configuration for this object must exist in the `dataNetworkConfigurations` map. The data network must be in the
+     * same location as the SIM policy.
      *
      * @param defaultDataNetwork the defaultDataNetwork value to set.
      * @return the SliceConfiguration object itself.

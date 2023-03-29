@@ -11,10 +11,9 @@ import com.azure.resourcemanager.billing.fluent.TransactionsClient;
 import com.azure.resourcemanager.billing.fluent.models.TransactionInner;
 import com.azure.resourcemanager.billing.models.Transaction;
 import com.azure.resourcemanager.billing.models.Transactions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TransactionsImpl implements Transactions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransactionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TransactionsImpl.class);
 
     private final TransactionsClient innerClient;
 

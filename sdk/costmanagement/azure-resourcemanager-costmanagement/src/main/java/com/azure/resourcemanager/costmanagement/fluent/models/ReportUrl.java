@@ -5,21 +5,19 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.costmanagement.models.ReservationReportSchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The URL to download the generated report. */
 @Fluent
 public final class ReportUrl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportUrl.class);
-
     /*
-     * The URL to download the generated report.
+     * The CSV file from the reportUrl blob link consists of reservation usage data with the following schema at daily
+     * granularity
      */
     @JsonProperty(value = "reportUrl")
-    private String reportUrl;
+    private ReservationReportSchema reportUrl;
 
     /*
      * The time at which report URL becomes invalid.
@@ -27,22 +25,28 @@ public final class ReportUrl {
     @JsonProperty(value = "validUntil")
     private OffsetDateTime validUntil;
 
+    /** Creates an instance of ReportUrl class. */
+    public ReportUrl() {
+    }
+
     /**
-     * Get the reportUrl property: The URL to download the generated report.
+     * Get the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with the
+     * following schema at daily granularity.
      *
      * @return the reportUrl value.
      */
-    public String reportUrl() {
+    public ReservationReportSchema reportUrl() {
         return this.reportUrl;
     }
 
     /**
-     * Set the reportUrl property: The URL to download the generated report.
+     * Set the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with the
+     * following schema at daily granularity.
      *
      * @param reportUrl the reportUrl value to set.
      * @return the ReportUrl object itself.
      */
-    public ReportUrl withReportUrl(String reportUrl) {
+    public ReportUrl withReportUrl(ReservationReportSchema reportUrl) {
         this.reportUrl = reportUrl;
         return this;
     }

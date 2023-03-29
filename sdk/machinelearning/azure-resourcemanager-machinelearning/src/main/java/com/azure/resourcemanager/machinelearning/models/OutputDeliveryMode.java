@@ -17,6 +17,15 @@ public final class OutputDeliveryMode extends ExpandableStringEnum<OutputDeliver
     public static final OutputDeliveryMode UPLOAD = fromString("Upload");
 
     /**
+     * Creates a new instance of OutputDeliveryMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OutputDeliveryMode() {
+    }
+
+    /**
      * Creates or finds a OutputDeliveryMode from its string representation.
      *
      * @param name a name to look for.

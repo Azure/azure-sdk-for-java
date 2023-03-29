@@ -3,12 +3,38 @@
 ## 4.1.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Added support for analyzing new document types
+- 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 4.0.4 (2023-02-09)
+
+### Other Changes
+- Method `beginAnalyzeDocument` requires the document length to be specified and not null when 
+analyzing a document.
+
+#### Dependency Updates
+- Upgraded `azure-core` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` to version `1.13.0`.
+
+## 4.0.3 (2023-01-09)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
 ## 4.0.2 (2022-11-10)
 

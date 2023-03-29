@@ -24,6 +24,9 @@ public final class GeoJsonLineString extends GeoJsonGeometry {
     @JsonProperty(value = "coordinates", required = true)
     private List<List<Double>> coordinates;
 
+    /** Creates an instance of GeoJsonLineString class. */
+    public GeoJsonLineString() {}
+
     /**
      * Get the coordinates property: Coordinates for the `GeoJson LineString` geometry.
      *

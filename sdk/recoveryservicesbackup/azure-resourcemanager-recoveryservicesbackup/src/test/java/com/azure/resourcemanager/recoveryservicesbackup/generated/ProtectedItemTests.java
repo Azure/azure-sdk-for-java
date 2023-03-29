@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItem;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectedItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProtectedItem model =
             BinaryData
                 .fromString(
@@ -37,8 +36,8 @@ public final class ProtectedItemTests {
         Assertions.assertEquals(952204067, model.softDeleteRetentionPeriod());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProtectedItem model =
             new ProtectedItem()
                 .withContainerName("atuokthfuiu")

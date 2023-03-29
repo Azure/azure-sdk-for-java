@@ -7,25 +7,24 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityBasedRestoreDetails;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityBasedRestoreDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IdentityBasedRestoreDetails model =
             BinaryData
-                .fromString("{\"objectType\":\"tdewemxswvruu\",\"targetStorageAccountId\":\"zjgehkfkim\"}")
+                .fromString("{\"objectType\":\"wtxxpkyjcx\",\"targetStorageAccountId\":\"xgrytfmp\"}")
                 .toObject(IdentityBasedRestoreDetails.class);
-        Assertions.assertEquals("tdewemxswvruu", model.objectType());
-        Assertions.assertEquals("zjgehkfkim", model.targetStorageAccountId());
+        Assertions.assertEquals("wtxxpkyjcx", model.objectType());
+        Assertions.assertEquals("xgrytfmp", model.targetStorageAccountId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IdentityBasedRestoreDetails model =
-            new IdentityBasedRestoreDetails().withObjectType("tdewemxswvruu").withTargetStorageAccountId("zjgehkfkim");
+            new IdentityBasedRestoreDetails().withObjectType("wtxxpkyjcx").withTargetStorageAccountId("xgrytfmp");
         model = BinaryData.fromObject(model).toObject(IdentityBasedRestoreDetails.class);
-        Assertions.assertEquals("tdewemxswvruu", model.objectType());
-        Assertions.assertEquals("zjgehkfkim", model.targetStorageAccountId());
+        Assertions.assertEquals("wtxxpkyjcx", model.objectType());
+        Assertions.assertEquals("xgrytfmp", model.targetStorageAccountId());
     }
 }

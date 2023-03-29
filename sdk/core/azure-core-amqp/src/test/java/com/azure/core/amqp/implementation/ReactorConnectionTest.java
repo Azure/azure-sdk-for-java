@@ -60,12 +60,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -99,6 +101,7 @@ class ReactorConnectionTest {
     private ReactorConnection connection;
     private ConnectionHandler connectionHandler;
     private SessionHandler sessionHandler;
+    private SessionHandler sessionHandler2;
     private AutoCloseable mocksCloseable;
     private ConnectionOptions connectionOptions;
 
@@ -155,8 +158,11 @@ class ReactorConnectionTest {
             .thenReturn(connectionHandler);
         sessionHandler = new SessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, reactorDispatcher,
             TEST_DURATION, AmqpMetricsProvider.noop());
+        sessionHandler2 = new SessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, reactorDispatcher,
+            TEST_DURATION, AmqpMetricsProvider.noop());
+
         when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
-            .thenReturn(sessionHandler);
+            .thenReturn(sessionHandler, sessionHandler2, null);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
@@ -170,6 +176,8 @@ class ReactorConnectionTest {
 
     @AfterEach
     void teardown() throws Exception {
+        System.err.println("Clean-up");
+
         connectionHandler.close();
         sessionHandler.close();
 
@@ -191,22 +199,22 @@ class ReactorConnectionTest {
         final Map<String, Object> expectedProperties = new HashMap<>(connectionHandler.getConnectionProperties());
 
         // Assert
-        Assertions.assertNotNull(connection);
-        Assertions.assertEquals(CONNECTION_ID, connection.getId());
-        Assertions.assertEquals(FULLY_QUALIFIED_NAMESPACE, connection.getFullyQualifiedNamespace());
+        assertNotNull(connection);
+        assertEquals(CONNECTION_ID, connection.getId());
+        assertEquals(FULLY_QUALIFIED_NAMESPACE, connection.getFullyQualifiedNamespace());
 
-        Assertions.assertEquals(connectionHandler.getMaxFrameSize(), connection.getMaxFrameSize());
+        assertEquals(connectionHandler.getMaxFrameSize(), connection.getMaxFrameSize());
 
-        Assertions.assertNotNull(connection.getConnectionProperties());
-        Assertions.assertEquals(expectedProperties.size(), connection.getConnectionProperties().size());
+        assertNotNull(connection.getConnectionProperties());
+        assertEquals(expectedProperties.size(), connection.getConnectionProperties().size());
 
         expectedProperties.forEach((key, value) -> {
             final Object removed = connection.getConnectionProperties().remove(key);
-            Assertions.assertNotNull(removed);
+            assertNotNull(removed);
 
             final String expected = String.valueOf(value);
             final String actual = String.valueOf(removed);
-            Assertions.assertEquals(expected, actual);
+            assertEquals(expected, actual);
         });
         assertTrue(connection.getConnectionProperties().isEmpty());
     }
@@ -227,15 +235,16 @@ class ReactorConnectionTest {
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         connectionHandler.onConnectionRemoteOpen(connectionEvent);
 
+
         sessionHandler.onSessionRemoteOpen(sessionEvent);
 
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
-                Assertions.assertNotNull(s);
-                Assertions.assertEquals(SESSION_NAME, s.getSessionName());
+                assertNotNull(s);
+                assertEquals(SESSION_NAME, s.getSessionName());
                 assertTrue(s instanceof ReactorSession);
-                Assertions.assertSame(session, ((ReactorSession) s).session());
+                assertSame(session, ((ReactorSession) s).session());
             })
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -243,10 +252,10 @@ class ReactorConnectionTest {
         // Assert that the same instance is obtained and we don't get a new session with the same name.
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .assertNext(s -> {
-                Assertions.assertNotNull(s);
-                Assertions.assertEquals(SESSION_NAME, s.getSessionName());
+                assertNotNull(s);
+                assertEquals(SESSION_NAME, s.getSessionName());
                 assertTrue(s instanceof ReactorSession);
-                Assertions.assertSame(session, ((ReactorSession) s).session());
+                assertSame(session, ((ReactorSession) s).session());
             })
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -275,6 +284,76 @@ class ReactorConnectionTest {
                 assertTrue(((AmqpException) error).isTransient());
             })
             .verify(VERIFY_TIMEOUT);
+    }
+
+    @Test
+    void createSessionFailureWorksWithRetry() {
+        when(reactor.process()).then(invocation -> {
+            TimeUnit.SECONDS.sleep(5);
+            return true;
+        });
+
+        final AtomicInteger numberOfInvocations = new AtomicInteger();
+
+        final Session session2 = mock(Session.class);
+        final Record record2 = mock(Record.class);
+
+        when(session2.attachments()).thenReturn(record2);
+
+        when(session2.getRemoteState()).thenAnswer(invocation -> {
+            if (numberOfInvocations.getAndIncrement() < 1) {
+                return EndpointState.UNINITIALIZED;
+            } else {
+                return EndpointState.ACTIVE;
+            }
+        });
+
+        when(session.attachments()).thenReturn(record);
+        when(session.getRemoteState()).thenAnswer(invocation -> {
+            return EndpointState.UNINITIALIZED;
+        });
+
+        when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
+            connectionHandler)).thenReturn(connectionProtonJ);
+        when(connectionProtonJ.session()).thenReturn(session, session2);
+
+        // We only want it to emit a session when it is active.
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        connectionHandler.onConnectionRemoteOpen(connectionEvent);
+
+        final Event sessionEvent2 = mock(Event.class);
+        when(sessionEvent2.getSession()).thenReturn(session2);
+
+
+        // Act & Assert
+
+        // Assert that the first session timed out while being created.
+        StepVerifier.create(connection.createSession(SESSION_NAME))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+
+                final AmqpException exception = (AmqpException) error;
+                assertTrue(exception.isTransient());
+            })
+            .verify();
+
+        // Assert that the second time, a new session is obtained.
+        StepVerifier.create(connection.createSession(SESSION_NAME))
+            .then(() -> {
+                System.out.println("Pushing new session open downstream.");
+                sessionHandler2.onSessionRemoteOpen(sessionEvent2);
+            })
+            .assertNext(s -> {
+                assertNotNull(s);
+                assertEquals(SESSION_NAME, s.getSessionName());
+                assertTrue(s instanceof ReactorSession);
+                assertSame(session2, ((ReactorSession) s).session());
+            })
+            .expectComplete()
+            .verify();
+
+        verify(record).set(Handler.class, Handler.class, sessionHandler);
+        verify(record2).set(Handler.class, Handler.class, sessionHandler2);
     }
 
     /**

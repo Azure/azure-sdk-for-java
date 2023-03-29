@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountMapsClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountMapInner;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationAccountMapsClient. */
 public final class IntegrationAccountMapsClientImpl implements IntegrationAccountMapsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountMapsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountMapsService service;
 
@@ -65,7 +62,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface IntegrationAccountMapsService {
+    public interface IntegrationAccountMapsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
@@ -170,7 +167,8 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountMapInner>> listSinglePageAsync(
@@ -234,7 +232,8 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountMapInner>> listSinglePageAsync(
@@ -294,7 +293,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountMapInner> listAsync(
@@ -312,7 +311,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountMapInner> listAsync(String resourceGroupName, String integrationAccountName) {
@@ -334,7 +333,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountMapInner> listAsync(
@@ -352,7 +351,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountMapInner> list(String resourceGroupName, String integrationAccountName) {
@@ -372,7 +371,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account maps.
+     * @return a list of integration account maps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountMapInner> list(
@@ -389,7 +388,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
+     * @return an integration account map along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountMapInner>> getWithResponseAsync(
@@ -445,7 +444,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
+     * @return an integration account map along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountMapInner>> getWithResponseAsync(
@@ -497,20 +496,31 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
+     * @return an integration account map on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountMapInner> getAsync(
         String resourceGroupName, String integrationAccountName, String mapName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, mapName)
-            .flatMap(
-                (Response<IntegrationAccountMapInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets an integration account map.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account map along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IntegrationAccountMapInner> getWithResponse(
+        String resourceGroupName, String integrationAccountName, String mapName, Context context) {
+        return getWithResponseAsync(resourceGroupName, integrationAccountName, mapName, context).block();
     }
 
     /**
@@ -526,29 +536,12 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationAccountMapInner get(String resourceGroupName, String integrationAccountName, String mapName) {
-        return getAsync(resourceGroupName, integrationAccountName, mapName).block();
+        return getWithResponse(resourceGroupName, integrationAccountName, mapName, Context.NONE).getValue();
     }
 
     /**
-     * Gets an integration account map.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account map.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationAccountMapInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String mapName, Context context) {
-        return getWithResponseAsync(resourceGroupName, integrationAccountName, mapName, context).block();
-    }
-
-    /**
-     * Creates or updates an integration account map.
+     * Creates or updates an integration account map. If the map is larger than 4 MB, you need to store the map in an
+     * Azure blob and use the blob's Shared Access Signature (SAS) URL as the 'contentLink' property value.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -557,7 +550,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account map.
+     * @return the integration account map along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountMapInner>> createOrUpdateWithResponseAsync(
@@ -610,7 +603,8 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
     }
 
     /**
-     * Creates or updates an integration account map.
+     * Creates or updates an integration account map. If the map is larger than 4 MB, you need to store the map in an
+     * Azure blob and use the blob's Shared Access Signature (SAS) URL as the 'contentLink' property value.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -620,7 +614,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account map.
+     * @return the integration account map along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountMapInner>> createOrUpdateWithResponseAsync(
@@ -674,7 +668,8 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
     }
 
     /**
-     * Creates or updates an integration account map.
+     * Creates or updates an integration account map. If the map is larger than 4 MB, you need to store the map in an
+     * Azure blob and use the blob's Shared Access Signature (SAS) URL as the 'contentLink' property value.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -683,42 +678,18 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account map.
+     * @return the integration account map on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountMapInner> createOrUpdateAsync(
         String resourceGroupName, String integrationAccountName, String mapName, IntegrationAccountMapInner map) {
         return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, mapName, map)
-            .flatMap(
-                (Response<IntegrationAccountMapInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates or updates an integration account map.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @param map The integration account map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account map.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationAccountMapInner createOrUpdate(
-        String resourceGroupName, String integrationAccountName, String mapName, IntegrationAccountMapInner map) {
-        return createOrUpdateAsync(resourceGroupName, integrationAccountName, mapName, map).block();
-    }
-
-    /**
-     * Creates or updates an integration account map.
+     * Creates or updates an integration account map. If the map is larger than 4 MB, you need to store the map in an
+     * Azure blob and use the blob's Shared Access Signature (SAS) URL as the 'contentLink' property value.
      *
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
@@ -728,7 +699,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account map.
+     * @return the integration account map along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountMapInner> createOrUpdateWithResponse(
@@ -742,6 +713,26 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
     }
 
     /**
+     * Creates or updates an integration account map. If the map is larger than 4 MB, you need to store the map in an
+     * Azure blob and use the blob's Shared Access Signature (SAS) URL as the 'contentLink' property value.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @param map The integration account map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration account map.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationAccountMapInner createOrUpdate(
+        String resourceGroupName, String integrationAccountName, String mapName, IntegrationAccountMapInner map) {
+        return createOrUpdateWithResponse(resourceGroupName, integrationAccountName, mapName, map, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes an integration account map.
      *
      * @param resourceGroupName The resource group name.
@@ -750,7 +741,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -806,7 +797,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -858,12 +849,30 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String integrationAccountName, String mapName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, mapName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes an integration account map.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String integrationAccountName, String mapName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, integrationAccountName, mapName, context).block();
     }
 
     /**
@@ -878,25 +887,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String integrationAccountName, String mapName) {
-        deleteAsync(resourceGroupName, integrationAccountName, mapName).block();
-    }
-
-    /**
-     * Deletes an integration account map.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String mapName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, integrationAccountName, mapName, context).block();
+        deleteWithResponse(resourceGroupName, integrationAccountName, mapName, Context.NONE);
     }
 
     /**
@@ -909,7 +900,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -977,7 +968,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -1042,7 +1033,7 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlAsync(
@@ -1052,14 +1043,32 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
         GetCallbackUrlParameters listContentCallbackUrl) {
         return listContentCallbackUrlWithResponseAsync(
                 resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the content callback url.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @param listContentCallbackUrl The callback url parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the content callback url along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
+        String resourceGroupName,
+        String integrationAccountName,
+        String mapName,
+        GetCallbackUrlParameters listContentCallbackUrl,
+        Context context) {
+        return listContentCallbackUrlWithResponseAsync(
+                resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl, context)
+            .block();
     }
 
     /**
@@ -1080,43 +1089,21 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
         String integrationAccountName,
         String mapName,
         GetCallbackUrlParameters listContentCallbackUrl) {
-        return listContentCallbackUrlAsync(resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl)
-            .block();
-    }
-
-    /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String mapName,
-        GetCallbackUrlParameters listContentCallbackUrl,
-        Context context) {
-        return listContentCallbackUrlWithResponseAsync(
-                resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl, context)
-            .block();
+        return listContentCallbackUrlWithResponse(
+                resourceGroupName, integrationAccountName, mapName, listContentCallbackUrl, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account maps.
+     * @return the list of integration account maps along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountMapInner>> listNextSinglePageAsync(String nextLink) {
@@ -1147,12 +1134,14 @@ public final class IntegrationAccountMapsClientImpl implements IntegrationAccoun
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account maps.
+     * @return the list of integration account maps along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountMapInner>> listNextSinglePageAsync(String nextLink, Context context) {

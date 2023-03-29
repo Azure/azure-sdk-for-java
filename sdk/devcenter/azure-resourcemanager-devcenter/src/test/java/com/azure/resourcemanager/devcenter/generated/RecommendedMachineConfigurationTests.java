@@ -14,7 +14,7 @@ public final class RecommendedMachineConfigurationTests {
         RecommendedMachineConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"memory\":{\"min\":621346946,\"max\":194127225},\"vCPUs\":{\"min\":1965159297,\"max\":1807410645}}")
+                    "{\"memory\":{\"min\":1063088657,\"max\":973371108},\"vCPUs\":{\"min\":1664958649,\"max\":38935170}}")
                 .toObject(RecommendedMachineConfiguration.class);
     }
 

@@ -22,6 +22,10 @@ public final class ContentKeyPolicyTokenClaim {
     @JsonProperty(value = "claimValue")
     private String claimValue;
 
+    /** Creates an instance of ContentKeyPolicyTokenClaim class. */
+    public ContentKeyPolicyTokenClaim() {
+    }
+
     /**
      * Get the claimType property: Token claim type.
      *

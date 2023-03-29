@@ -25,6 +25,10 @@ public final class Recurrence {
     @JsonProperty(value = "schedule", required = true)
     private RecurrentSchedule schedule;
 
+    /** Creates an instance of Recurrence class. */
+    public Recurrence() {
+    }
+
     /**
      * Get the frequency property: the recurrence frequency. How often the schedule profile should take effect. This
      * value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule,

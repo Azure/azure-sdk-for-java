@@ -23,6 +23,9 @@ public final class ReverseSearchCrossStreetAddressResult {
     @JsonProperty(value = "addresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReverseSearchCrossStreetAddressResultItem> addresses;
 
+    /** Creates an instance of ReverseSearchCrossStreetAddressResult class. */
+    public ReverseSearchCrossStreetAddressResult() {}
+
     /**
      * Get the summary property: Summary object for a Search Address Reverse Cross Street response.
      *

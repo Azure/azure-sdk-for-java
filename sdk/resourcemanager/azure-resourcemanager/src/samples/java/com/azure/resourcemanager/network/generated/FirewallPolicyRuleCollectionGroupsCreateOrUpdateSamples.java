@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.FirewallPolicyRuleCollectionGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationRule;
 import com.azure.resourcemanager.network.models.FirewallPolicyFilterRuleCollection;
@@ -23,7 +22,7 @@ import java.util.Arrays;
 /** Samples for FirewallPolicyRuleCollectionGroups CreateOrUpdate. */
 public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicyRuleCollectionGroupPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create FirewallPolicyRuleCollectionGroup.
@@ -61,11 +60,11 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
                                                     .withSourceAddresses(Arrays.asList("10.1.25.0/24"))
                                                     .withDestinationAddresses(Arrays.asList("*"))
                                                     .withDestinationPorts(Arrays.asList("*")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
      */
     /**
      * Sample code: Create FirewallPolicyRuleCollectionGroup With IpGroups.
@@ -109,11 +108,11 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
                                                         Arrays
                                                             .asList(
                                                                 "/subscriptions/subid/providers/Microsoft.Network/resourceGroup/rg1/ipGroups/ipGroups2")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
      */
     /**
      * Sample code: Create FirewallPolicyRuleCollectionGroup With Web Categories.
@@ -156,11 +155,11 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
                                                                         FirewallPolicyRuleApplicationProtocolType.HTTPS)
                                                                     .withPort(443)))
                                                     .withWebCategories(Arrays.asList("Hacking")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create FirewallPolicyNatRuleCollectionGroup.
@@ -205,6 +204,6 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
                                                     .withTranslatedPort("8080")
                                                     .withSourceIpGroups(Arrays.asList())
                                                     .withTranslatedFqdn("internalhttp.server.net"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

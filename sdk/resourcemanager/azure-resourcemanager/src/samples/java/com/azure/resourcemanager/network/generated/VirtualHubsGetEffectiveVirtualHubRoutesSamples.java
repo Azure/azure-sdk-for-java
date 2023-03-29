@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
 
 /** Samples for VirtualHubs GetEffectiveVirtualHubRoutes. */
 public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/EffectiveRoutesListForRouteTable.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/EffectiveRoutesListForRouteTable.json
      */
     /**
      * Sample code: Effective Routes for a Route Table resource.
@@ -30,11 +29,11 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
                     .withResourceId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/hubRouteTables/hubRouteTable1")
                     .withVirtualWanResourceType("RouteTable"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/EffectiveRoutesListForConnection.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/EffectiveRoutesListForConnection.json
      */
     /**
      * Sample code: Effective Routes for a Connection resource.
@@ -54,11 +53,11 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
                     .withResourceId(
                         "/subscriptions/subid/resourceGroups/resourceGroupName/providers/Microsoft.Network/expressRouteGateways/expressRouteGatewayName/expressRouteConnections/connectionName")
                     .withVirtualWanResourceType("ExpressRouteConnection"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/EffectiveRoutesListForVirtualHub.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/EffectiveRoutesListForVirtualHub.json
      */
     /**
      * Sample code: Effective Routes for the Virtual Hub.
@@ -71,6 +70,6 @@ public final class VirtualHubsGetEffectiveVirtualHubRoutesSamples {
             .manager()
             .serviceClient()
             .getVirtualHubs()
-            .getEffectiveVirtualHubRoutes("rg1", "virtualHub1", null, Context.NONE);
+            .getEffectiveVirtualHubRoutes("rg1", "virtualHub1", null, com.azure.core.util.Context.NONE);
     }
 }

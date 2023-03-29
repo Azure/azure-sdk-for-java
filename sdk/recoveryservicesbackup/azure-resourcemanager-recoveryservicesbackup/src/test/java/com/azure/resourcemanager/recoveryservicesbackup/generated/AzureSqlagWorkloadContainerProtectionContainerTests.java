@@ -15,67 +15,68 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadType;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureSqlagWorkloadContainerProtectionContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureSqlagWorkloadContainerProtectionContainer model =
             BinaryData
                 .fromString(
-                    "{\"containerType\":\"SQLAGWorkLoadContainer\",\"sourceResourceId\":\"cbb\",\"lastUpdatedTime\":\"2021-06-19T13:37:47Z\",\"extendedInfo\":{\"hostServerName\":\"knapq\",\"inquiryInfo\":{\"status\":\"uicdhzbdybwwg\",\"inquiryDetails\":[]},\"nodesList\":[{\"nodeName\":\"mhmwffpl\",\"status\":\"u\"},{\"nodeName\":\"ck\",\"status\":\"rrvwey\"}]},\"workloadType\":\"GenericDataSource\",\"operationType\":\"Register\",\"friendlyName\":\"phaimmoi\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"oshbragapyy\",\"healthStatus\":\"fsv\",\"protectableObjectType\":\"avbopfp\"}")
+                    "{\"containerType\":\"SQLAGWorkLoadContainer\",\"sourceResourceId\":\"pubntnbatz\",\"lastUpdatedTime\":\"2021-05-08T04:44:08Z\",\"extendedInfo\":{\"hostServerName\":\"wsaae\",\"inquiryInfo\":{\"status\":\"ttcjuhplrvkmjc\",\"inquiryDetails\":[]},\"nodesList\":[{\"nodeName\":\"ggcvk\",\"status\":\"lizrzbjpsfxsfuz\"},{\"nodeName\":\"tmvag\",\"status\":\"idqlvhu\"},{\"nodeName\":\"eofiz\",\"status\":\"jfnmjmvlwyz\"},{\"nodeName\":\"lkujrllfojui\",\"status\":\"puuyjucejik\"}]},\"workloadType\":\"AzureFileShare\",\"operationType\":\"Register\",\"friendlyName\":\"zejet\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"tikyj\",\"healthStatus\":\"k\",\"protectableObjectType\":\"qzolxrzvhqjw\"}")
                 .toObject(AzureSqlagWorkloadContainerProtectionContainer.class);
-        Assertions.assertEquals("phaimmoi", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
-        Assertions.assertEquals("oshbragapyy", model.registrationStatus());
-        Assertions.assertEquals("fsv", model.healthStatus());
-        Assertions.assertEquals("avbopfp", model.protectableObjectType());
-        Assertions.assertEquals("cbb", model.sourceResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T13:37:47Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("knapq", model.extendedInfo().hostServerName());
-        Assertions.assertEquals("uicdhzbdybwwg", model.extendedInfo().inquiryInfo().status());
-        Assertions.assertEquals("mhmwffpl", model.extendedInfo().nodesList().get(0).nodeName());
-        Assertions.assertEquals("u", model.extendedInfo().nodesList().get(0).status());
-        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workloadType());
+        Assertions.assertEquals("zejet", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
+        Assertions.assertEquals("tikyj", model.registrationStatus());
+        Assertions.assertEquals("k", model.healthStatus());
+        Assertions.assertEquals("qzolxrzvhqjw", model.protectableObjectType());
+        Assertions.assertEquals("pubntnbatz", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-08T04:44:08Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("wsaae", model.extendedInfo().hostServerName());
+        Assertions.assertEquals("ttcjuhplrvkmjc", model.extendedInfo().inquiryInfo().status());
+        Assertions.assertEquals("ggcvk", model.extendedInfo().nodesList().get(0).nodeName());
+        Assertions.assertEquals("lizrzbjpsfxsfuz", model.extendedInfo().nodesList().get(0).status());
+        Assertions.assertEquals(WorkloadType.AZURE_FILE_SHARE, model.workloadType());
         Assertions.assertEquals(OperationType.REGISTER, model.operationType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureSqlagWorkloadContainerProtectionContainer model =
             new AzureSqlagWorkloadContainerProtectionContainer()
-                .withFriendlyName("phaimmoi")
-                .withBackupManagementType(BackupManagementType.INVALID)
-                .withRegistrationStatus("oshbragapyy")
-                .withHealthStatus("fsv")
-                .withProtectableObjectType("avbopfp")
-                .withSourceResourceId("cbb")
-                .withLastUpdatedTime(OffsetDateTime.parse("2021-06-19T13:37:47Z"))
+                .withFriendlyName("zejet")
+                .withBackupManagementType(BackupManagementType.DPM)
+                .withRegistrationStatus("tikyj")
+                .withHealthStatus("k")
+                .withProtectableObjectType("qzolxrzvhqjw")
+                .withSourceResourceId("pubntnbatz")
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-05-08T04:44:08Z"))
                 .withExtendedInfo(
                     new AzureWorkloadContainerExtendedInfo()
-                        .withHostServerName("knapq")
+                        .withHostServerName("wsaae")
                         .withInquiryInfo(
-                            new InquiryInfo().withStatus("uicdhzbdybwwg").withInquiryDetails(Arrays.asList()))
+                            new InquiryInfo().withStatus("ttcjuhplrvkmjc").withInquiryDetails(Arrays.asList()))
                         .withNodesList(
                             Arrays
                                 .asList(
-                                    new DistributedNodesInfo().withNodeName("mhmwffpl").withStatus("u"),
-                                    new DistributedNodesInfo().withNodeName("ck").withStatus("rrvwey"))))
-                .withWorkloadType(WorkloadType.GENERIC_DATA_SOURCE)
+                                    new DistributedNodesInfo().withNodeName("ggcvk").withStatus("lizrzbjpsfxsfuz"),
+                                    new DistributedNodesInfo().withNodeName("tmvag").withStatus("idqlvhu"),
+                                    new DistributedNodesInfo().withNodeName("eofiz").withStatus("jfnmjmvlwyz"),
+                                    new DistributedNodesInfo().withNodeName("lkujrllfojui").withStatus("puuyjucejik"))))
+                .withWorkloadType(WorkloadType.AZURE_FILE_SHARE)
                 .withOperationType(OperationType.REGISTER);
         model = BinaryData.fromObject(model).toObject(AzureSqlagWorkloadContainerProtectionContainer.class);
-        Assertions.assertEquals("phaimmoi", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
-        Assertions.assertEquals("oshbragapyy", model.registrationStatus());
-        Assertions.assertEquals("fsv", model.healthStatus());
-        Assertions.assertEquals("avbopfp", model.protectableObjectType());
-        Assertions.assertEquals("cbb", model.sourceResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T13:37:47Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("knapq", model.extendedInfo().hostServerName());
-        Assertions.assertEquals("uicdhzbdybwwg", model.extendedInfo().inquiryInfo().status());
-        Assertions.assertEquals("mhmwffpl", model.extendedInfo().nodesList().get(0).nodeName());
-        Assertions.assertEquals("u", model.extendedInfo().nodesList().get(0).status());
-        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workloadType());
+        Assertions.assertEquals("zejet", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
+        Assertions.assertEquals("tikyj", model.registrationStatus());
+        Assertions.assertEquals("k", model.healthStatus());
+        Assertions.assertEquals("qzolxrzvhqjw", model.protectableObjectType());
+        Assertions.assertEquals("pubntnbatz", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-08T04:44:08Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("wsaae", model.extendedInfo().hostServerName());
+        Assertions.assertEquals("ttcjuhplrvkmjc", model.extendedInfo().inquiryInfo().status());
+        Assertions.assertEquals("ggcvk", model.extendedInfo().nodesList().get(0).nodeName());
+        Assertions.assertEquals("lizrzbjpsfxsfuz", model.extendedInfo().nodesList().get(0).status());
+        Assertions.assertEquals(WorkloadType.AZURE_FILE_SHARE, model.workloadType());
         Assertions.assertEquals(OperationType.REGISTER, model.operationType());
     }
 }

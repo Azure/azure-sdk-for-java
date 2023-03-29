@@ -27,18 +27,24 @@ public final class MonitorProperties {
     private MonitorPropertiesErrors errors;
 
     /*
-     * The SAP monitor resources will be deployed in the SAP monitoring region.
-     * The subnet region should be same as the SAP monitoring region.
+     * The SAP monitor resources will be deployed in the SAP monitoring region. The subnet region should be same as the
+     * SAP monitoring region.
      */
     @JsonProperty(value = "appLocation")
     private String appLocation;
 
     /*
-     * Sets the routing preference of the SAP monitor. By default only RFC1918
-     * traffic is routed to the customer VNET.
+     * Sets the routing preference of the SAP monitor. By default only RFC1918 traffic is routed to the customer VNET.
      */
     @JsonProperty(value = "routingPreference")
     private RoutingPreference routingPreference;
+
+    /*
+     * Sets the preference for zone redundancy on resources created for the SAP monitor. By default resources will be
+     * created which do not support zone redundancy.
+     */
+    @JsonProperty(value = "zoneRedundancyPreference")
+    private String zoneRedundancyPreference;
 
     /*
      * Managed resource group configuration
@@ -47,8 +53,7 @@ public final class MonitorProperties {
     private ManagedRGConfiguration managedResourceGroupConfiguration;
 
     /*
-     * The ARM ID of the Log Analytics Workspace that is used for SAP
-     * monitoring.
+     * The ARM ID of the Log Analytics Workspace that is used for SAP monitoring.
      */
     @JsonProperty(value = "logAnalyticsWorkspaceArmId")
     private String logAnalyticsWorkspaceArmId;
@@ -64,6 +69,16 @@ public final class MonitorProperties {
      */
     @JsonProperty(value = "msiArmId", access = JsonProperty.Access.WRITE_ONLY)
     private String msiArmId;
+
+    /*
+     * The ARM ID of the Storage account used for SAP monitoring.
+     */
+    @JsonProperty(value = "storageAccountArmId", access = JsonProperty.Access.WRITE_ONLY)
+    private String storageAccountArmId;
+
+    /** Creates an instance of MonitorProperties class. */
+    public MonitorProperties() {
+    }
 
     /**
      * Get the provisioningState property: State of provisioning of the SAP monitor.
@@ -124,6 +139,28 @@ public final class MonitorProperties {
      */
     public MonitorProperties withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
+     * SAP monitor. By default resources will be created which do not support zone redundancy.
+     *
+     * @return the zoneRedundancyPreference value.
+     */
+    public String zoneRedundancyPreference() {
+        return this.zoneRedundancyPreference;
+    }
+
+    /**
+     * Set the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
+     * SAP monitor. By default resources will be created which do not support zone redundancy.
+     *
+     * @param zoneRedundancyPreference the zoneRedundancyPreference value to set.
+     * @return the MonitorProperties object itself.
+     */
+    public MonitorProperties withZoneRedundancyPreference(String zoneRedundancyPreference) {
+        this.zoneRedundancyPreference = zoneRedundancyPreference;
         return this;
     }
 
@@ -197,6 +234,15 @@ public final class MonitorProperties {
      */
     public String msiArmId() {
         return this.msiArmId;
+    }
+
+    /**
+     * Get the storageAccountArmId property: The ARM ID of the Storage account used for SAP monitoring.
+     *
+     * @return the storageAccountArmId value.
+     */
+    public String storageAccountArmId() {
+        return this.storageAccountArmId;
     }
 
     /**

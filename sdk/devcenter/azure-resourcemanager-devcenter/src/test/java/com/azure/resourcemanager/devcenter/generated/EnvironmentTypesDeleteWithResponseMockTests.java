@@ -57,6 +57,6 @@ public final class EnvironmentTypesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.environmentTypes().deleteWithResponse("vluwmncsttij", "y", "vpo", Context.NONE);
+        manager.environmentTypes().deleteWithResponse("ytibyow", "blgyavutpthj", "xoi", Context.NONE);
     }
 }

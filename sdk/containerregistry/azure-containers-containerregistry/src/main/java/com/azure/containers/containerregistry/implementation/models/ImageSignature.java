@@ -5,28 +5,32 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Signature of a signed manifest. */
 @Fluent
-public final class ImageSignature {
+public final class ImageSignature implements JsonSerializable<ImageSignature> {
     /*
      * A JSON web signature
      */
-    @JsonProperty(value = "header")
     private JWK headerProperty;
 
     /*
      * A signature for the image manifest, signed by a libtrust private key
      */
-    @JsonProperty(value = "signature")
     private String signature;
 
     /*
      * The signed protected header
      */
-    @JsonProperty(value = "protected")
     private String protectedProperty;
+
+    /** Creates an instance of ImageSignature class. */
+    public ImageSignature() {}
 
     /**
      * Get the headerProperty property: A JSON web signature.
@@ -86,5 +90,45 @@ public final class ImageSignature {
     public ImageSignature setProtectedProperty(String protectedProperty) {
         this.protectedProperty = protectedProperty;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("header", this.headerProperty);
+        jsonWriter.writeStringField("signature", this.signature);
+        jsonWriter.writeStringField("protected", this.protectedProperty);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageSignature from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageSignature if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageSignature.
+     */
+    public static ImageSignature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    ImageSignature deserializedImageSignature = new ImageSignature();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("header".equals(fieldName)) {
+                            deserializedImageSignature.headerProperty = JWK.fromJson(reader);
+                        } else if ("signature".equals(fieldName)) {
+                            deserializedImageSignature.signature = reader.getString();
+                        } else if ("protected".equals(fieldName)) {
+                            deserializedImageSignature.protectedProperty = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedImageSignature;
+                });
     }
 }

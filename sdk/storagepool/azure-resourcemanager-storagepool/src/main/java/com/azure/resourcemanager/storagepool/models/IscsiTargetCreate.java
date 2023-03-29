@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagepool.fluent.models.IscsiTargetCreateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Payload for iSCSI Target create or update requests. */
 @Fluent
 public final class IscsiTargetCreate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IscsiTargetCreate.class);
-
     /*
      * Properties for iSCSI Target create request.
      */
@@ -24,8 +21,7 @@ public final class IscsiTargetCreate extends ProxyResource {
     private IscsiTargetCreateProperties innerProperties = new IscsiTargetCreateProperties();
 
     /*
-     * Azure resource id. Indicates if this resource is managed by another
-     * Azure resource.
+     * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
     @JsonProperty(value = "managedBy")
     private String managedBy;
@@ -35,6 +31,10 @@ public final class IscsiTargetCreate extends ProxyResource {
      */
     @JsonProperty(value = "managedByExtended")
     private List<String> managedByExtended;
+
+    /** Creates an instance of IscsiTargetCreate class. */
+    public IscsiTargetCreate() {
+    }
 
     /**
      * Get the innerProperties property: Properties for iSCSI Target create request.
@@ -184,7 +184,7 @@ public final class IscsiTargetCreate extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model IscsiTargetCreate"));
@@ -192,4 +192,6 @@ public final class IscsiTargetCreate extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IscsiTargetCreate.class);
 }

@@ -57,7 +57,7 @@ import com.azure.maps.search.models.StructuredAddress;
 
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous SearchClient type. 
+/** Initializes a new instance of the asynchronous SearchClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.search.async.builder.key.instantiation -->
 * <pre>
@@ -90,7 +90,7 @@ import reactor.core.publisher.Mono;
 * MapsSearchAsyncClient client = builder.buildAsyncClient&#40;&#41;;
 * </pre>
 * <!-- end com.azure.maps.search.async.builder.ad.instantiation -->
-*/ 
+*/
 
 @ServiceClient(builder = MapsSearchClientBuilder.class, isAsync = true)
 public final class MapsSearchAsyncClient {
@@ -573,7 +573,7 @@ public final class MapsSearchAsyncClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.async.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchNearbyPointsOfInterest&#40;
@@ -608,7 +608,7 @@ public final class MapsSearchAsyncClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.async.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchNearbyPointsOfInterest&#40;
@@ -643,7 +643,7 @@ public final class MapsSearchAsyncClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.async.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchNearbyPointsOfInterest&#40;
@@ -675,7 +675,7 @@ public final class MapsSearchAsyncClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.async.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchNearbyPointsOfInterest&#40;
@@ -1891,26 +1891,27 @@ public final class MapsSearchAsyncClient {
      *
      * &#47;&#47; create route points
      * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
      * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
      *
      * &#47;&#47; simple
-     * asyncClient.searchAlongRoute&#40;new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;;
+     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
+     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchAlongRoute&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
      *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;;
+     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; complete
      * asyncClient.searchAlongRouteWithResponse&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
+     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
+     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.search_along_route -->
      *
@@ -1936,26 +1937,27 @@ public final class MapsSearchAsyncClient {
      *
      * &#47;&#47; create route points
      * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
      * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
      *
      * &#47;&#47; simple
-     * asyncClient.searchAlongRoute&#40;new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;;
+     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
+     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchAlongRoute&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
      *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;;
+     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; complete
      * asyncClient.searchAlongRouteWithResponse&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
+     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
+     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.search_along_route -->
      *
@@ -1982,26 +1984,27 @@ public final class MapsSearchAsyncClient {
      *
      * &#47;&#47; create route points
      * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
      * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
      *
      * &#47;&#47; simple
-     * asyncClient.searchAlongRoute&#40;new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;;
+     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
+     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchAlongRoute&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
      *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;;
+     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; complete
      * asyncClient.searchAlongRouteWithResponse&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
+     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
+     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.search_along_route -->
      *
@@ -2024,26 +2027,27 @@ public final class MapsSearchAsyncClient {
      *
      * &#47;&#47; create route points
      * List&lt;GeoPosition&gt; getPolygonPoints = new ArrayList&lt;&gt;&#40;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
-     * points.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.143035, 47.653536&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.187164, 47.617556&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.114981, 47.570599&#41;&#41;;
+     * getPolygonPoints.add&#40;new GeoPosition&#40;-122.132756, 47.654009&#41;&#41;;
      * GeoLineString getPolygonRoute = new GeoLineString&#40;getPolygonPoints&#41;;
      *
      * &#47;&#47; simple
-     * asyncClient.searchAlongRoute&#40;new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;;
+     * SearchAddressResult result = asyncClient.searchAlongRoute&#40;
+     *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; options
      * asyncClient.searchAlongRoute&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
      *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;;
+     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;;
      *
      * &#47;&#47; complete
      * asyncClient.searchAlongRouteWithResponse&#40;
      *     new SearchAlongRouteOptions&#40;&quot;burger&quot;, 1000, getPolygonRoute&#41;
-     *         .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;
-     *         .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
+     *     .setCategoryFilter&#40;Arrays.asList&#40;7315&#41;&#41;.setOperatingHours&#40;OperatingHoursRange.NEXT_SEVEN_DAYS&#41;
+     *     .setTop&#40;5&#41;&#41;.block&#40;&#41;.getStatusCode&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.search_along_route -->
      *
@@ -2093,7 +2097,7 @@ public final class MapsSearchAsyncClient {
      * asyncClient.beginFuzzySearchBatch&#40;fuzzyOptionsList&#41;.getSyncPoller&#40;&#41;.getFinalResult&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.fuzzy_search_batch -->
-     * 
+     *
      * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

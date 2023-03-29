@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.SkuCapacity;
 import com.azure.resourcemanager.machinelearning.models.SkuScaleType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuCapacityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuCapacity model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class SkuCapacityTests {
         Assertions.assertEquals(SkuScaleType.AUTOMATIC, model.scaleType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuCapacity model =
             new SkuCapacity()
                 .withDefaultProperty(179999920)

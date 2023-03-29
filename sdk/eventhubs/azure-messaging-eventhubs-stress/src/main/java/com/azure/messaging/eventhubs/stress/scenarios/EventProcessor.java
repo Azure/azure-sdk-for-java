@@ -10,9 +10,12 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service("EventProcessor")
+/**
+ * Test for EventProcessorClient
+ */
+@Component("EventProcessor")
 public class EventProcessor extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessor.class);
 
@@ -34,11 +37,11 @@ public class EventProcessor extends EventHubsScenario {
             .connectionString(eventHubsConnStr, eventHub)
             .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
             .processEvent(eventContext -> {
-                LOGGER.info("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                LOGGER.verbose("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                LOGGER.info("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+                LOGGER.error("Error occurred while processing events " + errorContext.getThrowable().getMessage());
             })
             .buildEventProcessorClient();
 

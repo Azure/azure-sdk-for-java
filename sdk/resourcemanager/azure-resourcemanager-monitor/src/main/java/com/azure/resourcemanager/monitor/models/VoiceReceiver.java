@@ -29,6 +29,10 @@ public final class VoiceReceiver {
     @JsonProperty(value = "phoneNumber", required = true)
     private String phoneNumber;
 
+    /** Creates an instance of VoiceReceiver class. */
+    public VoiceReceiver() {
+    }
+
     /**
      * Get the name property: The name of the voice receiver. Names must be unique across all receivers within an action
      * group.

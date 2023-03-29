@@ -17,21 +17,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * RedisEnterprise database properties Properties of RedisEnterprise databases, as opposed to general resource
- * properties like location, tags.
+ * RedisEnterprise database properties
+ *
+ * <p>Properties of RedisEnterprise databases, as opposed to general resource properties like location, tags.
  */
 @Fluent
 public final class DatabaseProperties {
     /*
-     * Specifies whether redis clients can connect using TLS-encrypted or
-     * plaintext redis protocols. Default is TLS-encrypted.
+     * Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is
+     * TLS-encrypted.
      */
     @JsonProperty(value = "clientProtocol")
     private Protocol clientProtocol;
 
     /*
-     * TCP port of the database endpoint. Specified at create time. Defaults to
-     * an available port.
+     * TCP port of the database endpoint. Specified at create time. Defaults to an available port.
      */
     @JsonProperty(value = "port")
     private Integer port;
@@ -67,18 +67,20 @@ public final class DatabaseProperties {
     private Persistence persistence;
 
     /*
-     * Optional set of redis modules to enable in this database - modules can
-     * only be added at creation time.
+     * Optional set of redis modules to enable in this database - modules can only be added at creation time.
      */
     @JsonProperty(value = "modules")
     private List<Module> modules;
 
     /*
-     * Optional set of properties to configure geo replication for this
-     * database.
+     * Optional set of properties to configure geo replication for this database.
      */
     @JsonProperty(value = "geoReplication")
     private DatabasePropertiesGeoReplication geoReplication;
+
+    /** Creates an instance of DatabaseProperties class. */
+    public DatabaseProperties() {
+    }
 
     /**
      * Get the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext

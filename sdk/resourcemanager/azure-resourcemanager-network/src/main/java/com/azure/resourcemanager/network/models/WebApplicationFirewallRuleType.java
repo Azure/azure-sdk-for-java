@@ -17,6 +17,15 @@ public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<W
     public static final WebApplicationFirewallRuleType INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of WebApplicationFirewallRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallRuleType() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallRuleType from its string representation.
      *
      * @param name a name to look for.

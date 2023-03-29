@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixSkuTier;
 /** Samples for PublicIpPrefixes CreateOrUpdate. */
 public final class PublicIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PublicIpPrefixCreateDefaults.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PublicIpPrefixCreateDefaults.json
      */
     /**
      * Sample code: Create public IP prefix defaults.
@@ -34,11 +33,11 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
                     .withLocation("westus")
                     .withSku(new PublicIpPrefixSku().withName(PublicIpPrefixSkuName.STANDARD))
                     .withPrefixLength(30),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PublicIpPrefixCreateCustomizedValues.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PublicIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP prefix allocation method.
@@ -62,6 +61,6 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
                             .withTier(PublicIpPrefixSkuTier.REGIONAL))
                     .withPublicIpAddressVersion(IpVersion.IPV4)
                     .withPrefixLength(30),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

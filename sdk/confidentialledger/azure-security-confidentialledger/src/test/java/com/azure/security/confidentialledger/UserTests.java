@@ -19,11 +19,11 @@ import org.junit.jupiter.api.Test;
 public final class UserTests extends ConfidentialLedgerClientTestBase {
     @Test
     public void testGetUserTests() throws Exception {
-        String userAad = Configuration.getGlobalConfiguration().get("USER_AAD", "ec667af1-0642-45f0-be8a-b76758a35dde");
+        String userAad = Configuration.getGlobalConfiguration().get("USER_AAD", "d958292f-5b70-4b66-9502-562217cc7eaa");
         RequestOptions requestOptions = new RequestOptions();
 
         Response<BinaryData> response = confidentialLedgerClient.getUserWithResponse(userAad, requestOptions);
-        
+
         BinaryData parsedResponse = response.getValue();
 
         Assertions.assertEquals(200, response.getStatusCode());

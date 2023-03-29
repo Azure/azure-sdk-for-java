@@ -5,9 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
-import java.util.UUID;
-
 /**
  * The options for creating a call.
  */
@@ -24,14 +21,14 @@ public class AnswerCallOptions {
     private final String callbackUrl;
 
     /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
-
-    /**
      * Media Streaming Configuration.
      */
     private MediaStreamingOptions mediaStreamingOptions;
+
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
+     */
+    private String azureCognitiveServicesEndpointUrl;
 
     /**
      * Constructor
@@ -42,7 +39,6 @@ public class AnswerCallOptions {
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
         this.callbackUrl = callbackUrl;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -64,32 +60,22 @@ public class AnswerCallOptions {
     }
 
     /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
      * Get the Media Streaming configuration.
      *
      * @return the mediaStreamingConfiguration.
      */
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
     }
 
     /**
@@ -100,6 +86,18 @@ public class AnswerCallOptions {
      */
     public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

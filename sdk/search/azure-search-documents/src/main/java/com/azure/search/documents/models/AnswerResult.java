@@ -7,11 +7,12 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -19,30 +20,26 @@ import java.util.Map;
  * Answers are extracted from the top search results. Answer candidates are scored and the top answers are selected.
  */
 @Fluent
-public final class AnswerResult {
+public final class AnswerResult implements JsonSerializable<AnswerResult> {
     /*
      * The score value represents how relevant the answer is to the query relative to other answers returned for the
      * query.
      */
-    @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Double score;
 
     /*
      * The key of the document the answer was extracted from.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
      * The text passage extracted from the document contents as the answer.
      */
-    @JsonProperty(value = "text", access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
     /*
      * Same text passage as in the Text property with highlighted text phrases most relevant to the query.
      */
-    @JsonProperty(value = "highlights", access = JsonProperty.Access.WRITE_ONLY)
     private String highlights;
 
     /*
@@ -50,7 +47,10 @@ public final class AnswerResult {
      * Answers are extracted from the top search results. Answer candidates are scored and the top answers are
      * selected.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of AnswerResult class. */
+    public AnswerResult() {}
 
     /**
      * Get the score property: The score value represents how relevant the answer is to the query relative to other
@@ -97,7 +97,6 @@ public final class AnswerResult {
      *
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -115,11 +114,65 @@ public final class AnswerResult {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("score", this.score);
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("highlights", this.highlights);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnswerResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnswerResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnswerResult.
+     */
+    public static AnswerResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    Double score = null;
+                    String key = null;
+                    String text = null;
+                    String highlights = null;
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("score".equals(fieldName)) {
+                            score = reader.getNullable(JsonReader::getDouble);
+                        } else if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                        } else if ("text".equals(fieldName)) {
+                            text = reader.getString();
+                        } else if ("highlights".equals(fieldName)) {
+                            highlights = reader.getString();
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
+                    }
+                    AnswerResult deserializedValue = new AnswerResult();
+                    deserializedValue.score = score;
+                    deserializedValue.key = key;
+                    deserializedValue.text = text;
+                    deserializedValue.highlights = highlights;
+                    deserializedValue.additionalProperties = additionalProperties;
+
+                    return deserializedValue;
+                });
     }
 }

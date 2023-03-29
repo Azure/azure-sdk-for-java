@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
 
 /** Samples for BillingSubscriptions ValidateMove. */
@@ -25,7 +24,7 @@ public final class BillingSubscriptionsValidateMoveSamples {
                 new TransferBillingSubscriptionRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,6 +43,6 @@ public final class BillingSubscriptionsValidateMoveSamples {
                 new TransferBillingSubscriptionRequestProperties()
                     .withDestinationInvoiceSectionId(
                         "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

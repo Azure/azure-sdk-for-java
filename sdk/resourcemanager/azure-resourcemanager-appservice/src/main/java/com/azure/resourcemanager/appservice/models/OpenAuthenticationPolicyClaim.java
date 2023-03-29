@@ -22,6 +22,10 @@ public final class OpenAuthenticationPolicyClaim {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of OpenAuthenticationPolicyClaim class. */
+    public OpenAuthenticationPolicyClaim() {
+    }
+
     /**
      * Get the name property: The name of the claim.
      *

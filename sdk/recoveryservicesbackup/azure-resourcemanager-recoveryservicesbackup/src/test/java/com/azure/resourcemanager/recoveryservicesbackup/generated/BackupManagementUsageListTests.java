@@ -12,11 +12,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.UsagesUnit;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupManagementUsageListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BackupManagementUsageList model =
             BinaryData
                 .fromString(
@@ -31,8 +30,8 @@ public final class BackupManagementUsageListTests {
         Assertions.assertEquals("lssai", model.value().get(0).name().localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BackupManagementUsageList model =
             new BackupManagementUsageList()
                 .withValue(

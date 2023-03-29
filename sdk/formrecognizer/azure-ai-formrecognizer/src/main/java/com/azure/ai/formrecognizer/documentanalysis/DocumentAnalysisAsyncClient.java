@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
@@ -28,6 +29,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -57,18 +60,18 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class, isAsync = true)
 public final class DocumentAnalysisAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisAsyncClient.class);
-    private final FormRecognizerClientImpl service;
+    private final DocumentModelsImpl documentModelsImpl;
     private final DocumentAnalysisServiceVersion serviceVersion;
 
     /**
      * Create a {@link DocumentAnalysisAsyncClient} that sends requests to the Form recognizer service's endpoint. Each
      * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline.
      *
-     * @param service The proxy service used to perform REST calls.
+     * @param formRecognizerClientImpl The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer service supported by this client library.
      */
-    DocumentAnalysisAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion) {
-        this.service = service;
+    DocumentAnalysisAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl, DocumentAnalysisServiceVersion serviceVersion) {
+        this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
         this.serviceVersion = serviceVersion;
     }
 
@@ -186,12 +189,14 @@ public final class DocumentAnalysisAsyncClient {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(() ->
-                        service.analyzeDocumentWithResponseAsync(modelId,
+                        documentModelsImpl.analyzeDocumentWithResponseAsync(modelId,
                                 CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
                                     ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
+                                Collections.emptyList(),
+                                Collections.emptyList(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
                             .map(analyzeDocumentResponse ->
@@ -199,11 +204,11 @@ public final class DocumentAnalysisAsyncClient {
                                     analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(resultId ->
-                    service.getAnalyzeDocumentResultWithResponseAsync(modelId, resultId, context)),
+                    documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId ->
-                    service.getAnalyzeDocumentResultWithResponseAsync(
+                    documentModelsImpl.getAnalyzeResultWithResponseAsync(
                         modelId,
                         resultId,
                         context))
@@ -311,6 +316,9 @@ public final class DocumentAnalysisAsyncClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} length is null or unspecified.
+     * Use {@link BinaryData#fromStream(InputStream, Long)} to create an instance of the {@code document}
+     * from given {@link InputStream} with length.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<OperationResult, AnalyzeResult>
@@ -329,19 +337,26 @@ public final class DocumentAnalysisAsyncClient {
                     + " be null or empty"));
             }
 
+            if (document.getLength() == null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                    + " be null"));
+            }
+
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(() ->
-                    service.analyzeDocumentWithResponseAsync(modelId,
+                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId,
                             null,
                             CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
                                 ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
+                            Collections.emptyList(),
+                            Collections.emptyList(),
                             document,
                             document.getLength(),
                             context)
@@ -349,11 +364,11 @@ public final class DocumentAnalysisAsyncClient {
                             analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(
-                    resultId -> service.getAnalyzeDocumentResultWithResponseAsync(
+                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
                         modelId, resultId, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> service.getAnalyzeDocumentResultWithResponseAsync(
+                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
                     modelId, resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))

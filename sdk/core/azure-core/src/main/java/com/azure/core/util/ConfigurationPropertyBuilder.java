@@ -9,12 +9,13 @@ import java.util.function.Function;
 
 /**
  * Builds configuration property.
+ *
  * @param <T> The property value type.
  */
 public final class ConfigurationPropertyBuilder<T> {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> PERMIT_VALUE_SANITIZER = (value) -> value;
-    private static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER = (value) -> Boolean.valueOf(value);
+    private static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER = Boolean::valueOf;
     private static final Function<String, Duration> CONFIGURATION_PROPERTY_DURATION_CONVERTER = (value) -> {
         long timeoutMillis = Long.parseLong(value);
         if (timeoutMillis < 0) {
@@ -24,8 +25,8 @@ public final class ConfigurationPropertyBuilder<T> {
         return Duration.ofMillis(timeoutMillis);
     };
 
-    private static final Function<String, Integer> CONFIGURATION_PROPERTY_INTEGER_CONVERTER = (value) -> Integer.valueOf(value);
-    private static final Function<String, String> CONFIGURATION_PROPERTY_STRING_CONVERTER =  Function.identity();
+    private static final Function<String, Integer> CONFIGURATION_PROPERTY_INTEGER_CONVERTER = Integer::valueOf;
+    private static final Function<String, String> CONFIGURATION_PROPERTY_STRING_CONVERTER = Function.identity();
 
     private final String name;
     private final Function<String, T> converter;
@@ -40,9 +41,9 @@ public final class ConfigurationPropertyBuilder<T> {
     private boolean required;
 
     /**
-     * Creates default {@link ConfigurationPropertyBuilder}.
-     * String property values are redacted in logs by default. If property value does not contain sensitive information, use
-     * {@link ConfigurationPropertyBuilder#logValue} to enable logging.
+     * Creates default {@link ConfigurationPropertyBuilder}. String property values are redacted in logs by default. If
+     * property value does not contain sensitive information, use {@link ConfigurationPropertyBuilder#logValue} to
+     * enable logging.
      *
      * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
@@ -66,8 +67,8 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parse value using {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
+     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parse value using
+     * {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
      * <pre>
@@ -85,8 +86,8 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parses value as long number of milliseconds, proxying  {@link NumberFormatException} exception.
+     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parses value as long number of
+     * milliseconds, proxying  {@link NumberFormatException} exception.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
      * <pre>
@@ -104,8 +105,8 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
-     * parse value using {@link Boolean#parseBoolean(String)}.
+     * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parse value using
+     * {@link Boolean#parseBoolean(String)}.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
      * <pre>
@@ -147,7 +148,8 @@ public final class ConfigurationPropertyBuilder<T> {
     /**
      * Sets default property value. {@code null} by default.
      *
-     * @param defaultValue value to be returned by {@link Configuration#get(ConfigurationProperty)} if the property isn't found.
+     * @param defaultValue value to be returned by {@link Configuration#get(ConfigurationProperty)} if the property
+     * isn't found.
      * @return the updated ConfigurationPropertyBuilder object.
      */
     public ConfigurationPropertyBuilder<T> defaultValue(T defaultValue) {
@@ -156,13 +158,13 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Sets flag indicating that property can be provided in the shared configuration section
-     * in addition to client-specific configuration section.
-     * Default is {@code false}, indicating that property can only be provided in local configuration.
+     * Sets flag indicating that property can be provided in the shared configuration section in addition to
+     * client-specific configuration section. Default is {@code false}, indicating that property can only be provided in
+     * local configuration.
      *
-     * @param shared If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will attempt to retrieve property from
-     *               local configuration and fall back to shared section, when local property is missing.
-     *               Otherwise, only local configuration will be checked.
+     * @param shared If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will attempt to retrieve
+     * property from local configuration and fall back to shared section, when local property is missing. Otherwise,
+     * only local configuration will be checked.
      * @return the updated ConfigurationPropertyBuilder object.
      */
     public ConfigurationPropertyBuilder<T> shared(boolean shared) {
@@ -171,13 +173,13 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Sets flag indicating if property value can be logged.
-     * Default is {@code false}, indicating that property value should not be logged. When and if retrieving of corresponding
-     * configuration property is logged, {@link Configuration} will use "redacted" string instead of property value.
-     * If flag is set to {@code true}, value is populated on the logs as is.
+     * Sets flag indicating if property value can be logged. Default is {@code false}, indicating that property value
+     * should not be logged. When and if retrieving of corresponding configuration property is logged,
+     * {@link Configuration} will use "redacted" string instead of property value. If flag is set to {@code true}, value
+     * is populated on the logs as is.
      *
      * @param logValue If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will log property value,
-     *                    Otherwise, value is redacted.
+     * Otherwise, value is redacted.
      * @return the updated ConfigurationPropertyBuilder object.
      */
     public ConfigurationPropertyBuilder<T> logValue(boolean logValue) {
@@ -189,10 +191,10 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Sets flag indicating if property is required.
-     * Default is {@code false}, indicating that property is optional.
+     * Sets flag indicating if property is required. Default is {@code false}, indicating that property is optional.
      *
-     * @param required If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will throw when property is not found.
+     * @param required If set to {@code true}, {@link Configuration#get(ConfigurationProperty)} will throw when property
+     * is not found.
      * @return the updated ConfigurationPropertyBuilder object.
      */
     public ConfigurationPropertyBuilder<T> required(boolean required) {
@@ -201,8 +203,8 @@ public final class ConfigurationPropertyBuilder<T> {
     }
 
     /**
-     * Sets one or more alias for property. {@link Configuration#get(ConfigurationProperty)} attempts to retrieve property by name first
-     * and only then tries to retrieve properties by alias in the order aliases are provided.
+     * Sets one or more alias for property. {@link Configuration#get(ConfigurationProperty)} attempts to retrieve
+     * property by name first and only then tries to retrieve properties by alias in the order aliases are provided.
      *
      * @param aliases one or more alias for the property name.
      * @return the updated ConfigurationPropertyBuilder object.
@@ -216,11 +218,11 @@ public final class ConfigurationPropertyBuilder<T> {
      * Sets environment variable name that can represent this property if explicit configuration is not set.
      *
      * <p>
-     * When property value is not found by {@code name} or {@code alias}, {@link Configuration#get(ConfigurationProperty)} falls back to
-     * system properties and environment variables.
-     *
-     * When environment variable (or system property) is not set, {@link Configuration#get(ConfigurationProperty)} does not attempt to
-     * read environment configuration.
+     * When property value is not found by {@code name} or {@code alias},
+     * {@link Configuration#get(ConfigurationProperty)} falls back to system properties and environment variables.
+     * <p>
+     * When environment variable (or system property) is not set, {@link Configuration#get(ConfigurationProperty)} does
+     * not attempt to read environment configuration.
      *
      * @param environmentVariableName environment variable name.
      * @return the updated ConfigurationPropertyBuilder object.
@@ -234,11 +236,11 @@ public final class ConfigurationPropertyBuilder<T> {
      * Sets system property name that can represent this property if explicit configuration is not set.
      *
      * <p>
-     * When property value is not found by {@code name} or {@code alias}, {@link Configuration#get(ConfigurationProperty)} falls back to
-     * system properties and environment variables.
-     *
-     * When environment variable (or system property) is not set, {@link Configuration#get(ConfigurationProperty)} does not attempt to
-     * read environment configuration.
+     * When property value is not found by {@code name} or {@code alias},
+     * {@link Configuration#get(ConfigurationProperty)} falls back to system properties and environment variables.
+     * <p>
+     * When environment variable (or system property) is not set, {@link Configuration#get(ConfigurationProperty)} does
+     * not attempt to read environment configuration.
      *
      * @param systemPropertyName one or more environment variable (or system property).
      * @return the updated ConfigurationPropertyBuilder object.
@@ -250,9 +252,11 @@ public final class ConfigurationPropertyBuilder<T> {
 
     /**
      * Builds configuration property instance.
+     *
      * @return {@link ConfigurationProperty} instance.
      */
     public ConfigurationProperty<T> build() {
-        return new ConfigurationProperty<>(name, defaultValue, required, converter, shared, environmentVariableName, systemPropertyName, aliases, valueSanitizer);
+        return new ConfigurationProperty<>(name, defaultValue, required, converter, shared, environmentVariableName,
+            systemPropertyName, aliases, valueSanitizer);
     }
 }

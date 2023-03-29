@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SecurityPartnerProviderInner;
 import com.azure.resourcemanager.network.models.SecurityProviderName;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for SecurityPartnerProviders CreateOrUpdate. */
 public final class SecurityPartnerProvidersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/SecurityPartnerProviderPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/SecurityPartnerProviderPut.json
      */
     /**
      * Sample code: Create Security Partner Provider.
@@ -38,7 +37,7 @@ public final class SecurityPartnerProvidersCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

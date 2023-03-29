@@ -5,86 +5,50 @@
 package com.azure.resourcemanager.sql.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.sql.models.AuthenticationType;
-import com.azure.resourcemanager.sql.models.DatabaseEdition;
-import com.azure.resourcemanager.sql.models.ImportRequest;
-import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
+import com.azure.resourcemanager.sql.models.ImportExistingDatabaseDefinition;
+import com.azure.resourcemanager.sql.models.NetworkIsolationSettings;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
 
 /** Samples for Databases ImportMethod. */
 public final class DatabasesImportMethodSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseCreateImportMinSasKey.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ImportDatabase.json
      */
     /**
-     * Sample code: Import bacpac into new database Min with SAS key.
+     * Sample code: Imports to an existing empty database.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void importBacpacIntoNewDatabaseMinWithSASKey(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void importsToAnExistingEmptyDatabase(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
             .importMethod(
-                "sqlcrudtest-4799",
-                "sqlcrudtest-5961",
-                new ImportRequest()
-                    .withStorageKeyType(StorageKeyType.SHARED_ACCESS_KEY)
-                    .withStorageKey(
-                        "?sr=b&sp=rw&se=2018-01-01T00%3A00%3A00Z&sig=sdfsdfklsdjflSLIFJLSIEJFLKSDJFDd/%2wdfskdjf3%3D&sv=2015-07-08")
-                    .withStorageUri("https://test.blob.core.windows.net/bacpacs/testbacpac.bacpac")
-                    .withAdministratorLogin("dummyLogin")
-                    .withAdministratorLoginPassword("Un53cuRE!")
-                    .withDatabaseName("TestDbImport")
-                    .withEdition(DatabaseEdition.BASIC)
-                    .withServiceObjectiveName(ServiceObjectiveName.BASIC)
-                    .withMaxSizeBytes("2147483648"),
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb",
+                new ImportExistingDatabaseDefinition()
+                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
+                    .withStorageKey("fakeTokenPlaceholder")
+                    .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
+                    .withAdministratorLogin("login")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
+                    .withAuthenticationType("Sql"),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseCreateImportMaxSasKey.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ImportDatabaseWithNetworkIsolation.json
      */
     /**
-     * Sample code: Import bacpac into new database Max with SAS key.
+     * Sample code: Imports to an existing empty database, using private link to communicate with SQL server and storage
+     * account.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void importBacpacIntoNewDatabaseMaxWithSASKey(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
-            .manager()
-            .serviceClient()
-            .getDatabases()
-            .importMethod(
-                "sqlcrudtest-4799",
-                "sqlcrudtest-5961",
-                new ImportRequest()
-                    .withStorageKeyType(StorageKeyType.SHARED_ACCESS_KEY)
-                    .withStorageKey(
-                        "?sr=b&sp=rw&se=2018-01-01T00%3A00%3A00Z&sig=sdfsdfklsdjflSLIFJLSIEJFLKSDJFDd/%2wdfskdjf3%3D&sv=2015-07-08")
-                    .withStorageUri("https://test.blob.core.windows.net/bacpacs/testbacpac.bacpac")
-                    .withAdministratorLogin("dummyLogin")
-                    .withAdministratorLoginPassword("Un53cuRE!")
-                    .withAuthenticationType(AuthenticationType.SQL)
-                    .withDatabaseName("TestDbImport")
-                    .withEdition(DatabaseEdition.BASIC)
-                    .withServiceObjectiveName(ServiceObjectiveName.BASIC)
-                    .withMaxSizeBytes("2147483648"),
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseCreateImportMaxStorageKey.json
-     */
-    /**
-     * Sample code: Import bacpac into new database Max with storage key.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void importBacpacIntoNewDatabaseMaxWithStorageKey(
+    public static void importsToAnExistingEmptyDatabaseUsingPrivateLinkToCommunicateWithSQLServerAndStorageAccount(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
@@ -92,52 +56,22 @@ public final class DatabasesImportMethodSamples {
             .serviceClient()
             .getDatabases()
             .importMethod(
-                "sqlcrudtest-4799",
-                "sqlcrudtest-5961",
-                new ImportRequest()
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb",
+                new ImportExistingDatabaseDefinition()
                     .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "sdlfkjdsf+sdlfkjsdlkfsjdfLDKFJSDLKFDFKLjsdfksjdflsdkfD2342309432849328479324/3RSD==")
-                    .withStorageUri("https://test.blob.core.windows.net/bacpacs/testbacpac.bacpac")
-                    .withAdministratorLogin("dummyLogin")
-                    .withAdministratorLoginPassword("Un53cuRE!")
-                    .withAuthenticationType(AuthenticationType.SQL)
-                    .withDatabaseName("TestDbImport")
-                    .withEdition(DatabaseEdition.BASIC)
-                    .withServiceObjectiveName(ServiceObjectiveName.BASIC)
-                    .withMaxSizeBytes("2147483648"),
-                Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DatabaseCreateImportMinStorageKey.json
-     */
-    /**
-     * Sample code: Import bacpac into new database Min with storage key.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void importBacpacIntoNewDatabaseMinWithStorageKey(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
-            .manager()
-            .serviceClient()
-            .getDatabases()
-            .importMethod(
-                "sqlcrudtest-4799",
-                "sqlcrudtest-5961",
-                new ImportRequest()
-                    .withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY)
-                    .withStorageKey(
-                        "sdlfkjdsf+sdlfkjsdlkfsjdfLDKFJSDLKFDFKLjsdfksjdflsdkfD2342309432849328479324/3RSD==")
-                    .withStorageUri("https://test.blob.core.windows.net/bacpacs/testbacpac.bacpac")
-                    .withAdministratorLogin("dummyLogin")
-                    .withAdministratorLoginPassword("Un53cuRE!")
-                    .withDatabaseName("TestDbImport")
-                    .withEdition(DatabaseEdition.BASIC)
-                    .withServiceObjectiveName(ServiceObjectiveName.BASIC)
-                    .withMaxSizeBytes("2147483648"),
+                    .withStorageKey("fakeTokenPlaceholder")
+                    .withStorageUri("https://test.blob.core.windows.net/test.bacpac")
+                    .withAdministratorLogin("login")
+                    .withAdministratorLoginPassword("fakeTokenPlaceholder")
+                    .withAuthenticationType("Sql")
+                    .withNetworkIsolation(
+                        new NetworkIsolationSettings()
+                            .withStorageAccountResourceId(
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Storage/storageAccounts/test-privatelink")
+                            .withSqlServerResourceId(
+                                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr")),
                 Context.NONE);
     }
 }

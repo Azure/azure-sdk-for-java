@@ -57,7 +57,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
-    private interface RecoverableManagedDatabasesService {
+    public interface RecoverableManagedDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
@@ -135,7 +135,6 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -146,7 +145,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                             resourceGroupName,
                             managedInstanceName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<RecoverableManagedDatabaseInner>>map(
@@ -197,7 +196,6 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -206,7 +204,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 resourceGroupName,
                 managedInstanceName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -334,7 +332,6 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -346,7 +343,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                             managedInstanceName,
                             recoverableDatabaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -393,7 +390,6 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -403,7 +399,7 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
                 managedInstanceName,
                 recoverableDatabaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -434,24 +430,6 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param recoverableDatabaseName The recoverableDatabaseName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoverableManagedDatabaseInner get(
-        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName) {
-        return getAsync(resourceGroupName, managedInstanceName, recoverableDatabaseName).block();
-    }
-
-    /**
-     * Gets a recoverable managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param recoverableDatabaseName The recoverableDatabaseName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -465,9 +443,29 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
     }
 
     /**
+     * Gets a recoverable managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param recoverableDatabaseName The recoverableDatabaseName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a recoverable managed database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecoverableManagedDatabaseInner get(
+        String resourceGroupName, String managedInstanceName, String recoverableDatabaseName) {
+        return getWithResponse(resourceGroupName, managedInstanceName, recoverableDatabaseName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -503,7 +501,8 @@ public final class RecoverableManagedDatabasesClientImpl implements RecoverableM
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

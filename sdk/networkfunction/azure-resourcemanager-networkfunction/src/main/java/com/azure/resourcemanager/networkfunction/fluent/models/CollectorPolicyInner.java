@@ -5,17 +5,18 @@
 package com.azure.resourcemanager.networkfunction.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Collector policy resource. */
 @Fluent
-public final class CollectorPolicyInner extends ProxyResource {
+public final class CollectorPolicyInner extends Resource {
     /*
      * Properties of the Collector Policy.
      */
@@ -33,6 +34,10 @@ public final class CollectorPolicyInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of CollectorPolicyInner class. */
+    public CollectorPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Collector Policy.
@@ -59,6 +64,20 @@ public final class CollectorPolicyInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CollectorPolicyInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CollectorPolicyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

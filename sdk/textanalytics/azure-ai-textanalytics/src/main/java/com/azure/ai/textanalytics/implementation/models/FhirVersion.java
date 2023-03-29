@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FhirVersion. */
+/**
+ * The FHIR Spec version that the result will use to format the fhirBundle. For additional information see
+ * https://www.hl7.org/fhir/overview.html.
+ */
 public final class FhirVersion extends ExpandableStringEnum<FhirVersion> {
     /** Static value 4.0.1 for FhirVersion. */
     public static final FhirVersion FOUR01 = fromString("4.0.1");

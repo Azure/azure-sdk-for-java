@@ -1,33 +1,51 @@
 parameters:
-  PackageName: not-specified
-  SafeName: not-specified
-  Clouds: 'Public,Int'
-  TestMode: 'LIVE'
-  EnvVars: {}
-  MatrixConfigs:
+- name: PackageName
+  type: string
+  default: not-specified
+- name: SafeName
+  type: string
+  default: not-specified
+- name: Clouds
+  type: string
+  default: 'Public,Int'
+- name: TestMode
+  type: string
+  default: 'LIVE'
+- name: TestResourceDirectories
+  type: object
+  default:
+    - communication/test-resources/
+- name: EnVars
+  type: object
+  default: {}
+- name: MatrixConfigs
+  type: object
+  default:
     - Name: Java_live_test_base
       Path: eng/pipelines/templates/stages/platform-matrix.json
       Selection: sparse
       GenerateVMJobs: true
+- name: CloudConfig
+  type: object
+  default:
+    Public:
+      SubscriptionConfigurations:
+        - $(sub-config-azure-cloud-test-resources)
+        - $(sub-config-communication-services-cloud-test-resources-common)
+        - $(sub-config-communication-services-cloud-test-resources-java)
+    Int:
+      SubscriptionConfigurations:
+        - $(sub-config-communication-int-test-resources-common)
+        - $(sub-config-communication-int-test-resources-java)
+
+      # This only affects the phone-numbers package
+      MatrixReplace:
+        - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-communication-services-cloud-test-resources-common)
-            - $(sub-config-communication-services-cloud-test-resources-java)
-        Int:
-          SubscriptionConfigurations:
-            - $(sub-config-communication-int-test-resources-common)
-            - $(sub-config-communication-int-test-resources-java)
-
-          # This only affects the phone-numbers package
-          MatrixReplace: 
-            - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
-            
+      CloudConfig: ${{ parameters.CloudConfig }}
       Clouds: ${{ parameters.Clouds }}
       TestMode: ${{ parameters.TestMode }}
       Artifacts:
@@ -35,21 +53,11 @@ stages:
           groupId: com.azure
           safeName: ${{ parameters.SafeName }}
       ServiceDirectory: communication
-      PreSteps:
-        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
-          condition: not(startsWith(variables['System.StageName'], 'Public'))
-      PostSteps:
-        - task: PublishCodeCoverageResults@1
-          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
-          inputs:
-            codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/
-            failIfCoverageEmpty: true
+      TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       EnvVars:
         SKIP_LIVE_TEST: TRUE
         ${{ each var in parameters.EnVars }}:
           ${{ var.key }}: ${{ var.value }}
-      MatrixConfigs: 
+      MatrixConfigs:
         - ${{ each config in parameters.MatrixConfigs }}:
           -  ${{ config }}

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowRunActions ListExpressionTraces. */
 public final class WorkflowRunActionsListExpressionTracesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRunActions_ListExpressionTraces.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActions_ListExpressionTraces.json
      */
     /**
      * Sample code: List expression traces.
@@ -28,6 +26,6 @@ public final class WorkflowRunActionsListExpressionTracesSamples {
                 "testFlow",
                 "08586776228332053161046300351",
                 "testAction",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

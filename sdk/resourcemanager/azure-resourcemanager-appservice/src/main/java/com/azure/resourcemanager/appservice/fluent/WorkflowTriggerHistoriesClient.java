@@ -142,24 +142,6 @@ public interface WorkflowTriggerHistoriesClient {
      * @param triggerName The workflow trigger name.
      * @param historyName The workflow trigger history name. Corresponds to the run name for triggers that resulted in a
      *     run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger history.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerHistoryInner get(
-        String resourceGroupName, String name, String workflowName, String triggerName, String historyName);
-
-    /**
-     * Gets a workflow trigger history.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
-     * @param historyName The workflow trigger history name. Corresponds to the run name for triggers that resulted in a
-     *     run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,6 +156,24 @@ public interface WorkflowTriggerHistoriesClient {
         String triggerName,
         String historyName,
         Context context);
+
+    /**
+     * Gets a workflow trigger history.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @param historyName The workflow trigger history name. Corresponds to the run name for triggers that resulted in a
+     *     run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow trigger history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkflowTriggerHistoryInner get(
+        String resourceGroupName, String name, String workflowName, String triggerName, String historyName);
 
     /**
      * Resubmits a workflow run based on the trigger history.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.List;
 /** The properties of the view. */
 @Fluent
 public final class ViewProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewProperties.class);
-
     /*
      * User input name of the view. Required.
      */
@@ -32,26 +28,20 @@ public final class ViewProperties {
     private String displayName;
 
     /*
-     * Cost Management scope to save the view on. This includes
-     * 'subscriptions/{subscriptionId}' for subscription scope,
-     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
-     * resourceGroup scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
-     * Billing Account scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}'
-     * for Department scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
+     * Cost Management scope to save the view on. This includes 'subscriptions/{subscriptionId}' for subscription
+     * scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
+     * scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
      * for EnrollmentAccount scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}'
-     * for BillingProfile scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}'
-     * for InvoiceSection scope,
-     * 'providers/Microsoft.Management/managementGroups/{managementGroupId}'
-     * for Management Group scope,
-     * '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}'
-     * for ExternalBillingAccount scope, and
-     * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}'
-     * for ExternalSubscription scope.
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
+     * InvoiceSection scope, 'providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group
+     * scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for
+     * ExternalBillingAccount scope, and
+     * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
+     * scope.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -69,13 +59,13 @@ public final class ViewProperties {
     private OffsetDateTime modifiedOn;
 
     /*
-     * Selected date range for viewing cost in.
+     * Date range of the current view.
      */
     @JsonProperty(value = "dateRange", access = JsonProperty.Access.WRITE_ONLY)
     private String dateRange;
 
     /*
-     * Selected currency.
+     * Currency of the current view.
      */
     @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
     private String currency;
@@ -115,6 +105,10 @@ public final class ViewProperties {
      */
     @JsonProperty(value = "pivots")
     private List<PivotProperties> pivots;
+
+    /** Creates an instance of ViewProperties class. */
+    public ViewProperties() {
+    }
 
     /**
      * Get the displayName property: User input name of the view. Required.
@@ -201,7 +195,7 @@ public final class ViewProperties {
     }
 
     /**
-     * Get the dateRange property: Selected date range for viewing cost in.
+     * Get the dateRange property: Date range of the current view.
      *
      * @return the dateRange value.
      */
@@ -210,7 +204,7 @@ public final class ViewProperties {
     }
 
     /**
-     * Get the currency property: Selected currency.
+     * Get the currency property: Currency of the current view.
      *
      * @return the currency value.
      */
@@ -426,12 +420,26 @@ public final class ViewProperties {
     }
 
     /**
-     * Get the includeMonetaryCommitment property: Include monetary commitment.
+     * Get the includeMonetaryCommitment property: If true, report includes monetary commitment.
      *
      * @return the includeMonetaryCommitment value.
      */
     public Boolean includeMonetaryCommitment() {
         return this.innerQuery() == null ? null : this.innerQuery().includeMonetaryCommitment();
+    }
+
+    /**
+     * Set the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @param includeMonetaryCommitment the includeMonetaryCommitment value to set.
+     * @return the ViewProperties object itself.
+     */
+    public ViewProperties withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        if (this.innerQuery() == null) {
+            this.innerQuery = new ReportConfigDefinition();
+        }
+        this.innerQuery().withIncludeMonetaryCommitment(includeMonetaryCommitment);
+        return this;
     }
 
     /**

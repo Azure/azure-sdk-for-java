@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConnectionMonitors Stop. */
 public final class ConnectionMonitorsStopSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherConnectionMonitorStop.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherConnectionMonitorStop.json
      */
     /**
      * Sample code: Stop connection monitor.
@@ -17,6 +15,11 @@ public final class ConnectionMonitorsStopSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void stopConnectionMonitor(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectionMonitors().stop("rg1", "nw1", "cm1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getConnectionMonitors()
+            .stop("rg1", "nw1", "cm1", com.azure.core.util.Context.NONE);
     }
 }

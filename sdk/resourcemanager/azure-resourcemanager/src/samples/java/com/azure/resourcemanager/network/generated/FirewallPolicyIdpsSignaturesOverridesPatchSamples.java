@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesInner;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for FirewallPolicyIdpsSignaturesOverrides Patch. */
 public final class FirewallPolicyIdpsSignaturesOverridesPatchSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicySignatureOverridesPatch.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicySignatureOverridesPatch.json
      */
     /**
      * Sample code: patch signature overrides.
@@ -36,7 +35,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesPatchSamples {
                     .withType("Microsoft.Network/firewallPolicies/signatureOverrides")
                     .withProperties(
                         new SignaturesOverridesProperties().withSignatures(mapOf("2000105", "Off", "2000106", "Deny"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

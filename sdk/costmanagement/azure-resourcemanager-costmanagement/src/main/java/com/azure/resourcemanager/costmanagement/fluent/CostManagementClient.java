@@ -10,6 +10,13 @@ import java.time.Duration;
 /** The interface for CostManagementClient class. */
 public interface CostManagementClient {
     /**
+     * Gets ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+     *
+     * @return the ifMatch value.
+     */
+    String getIfMatch();
+
+    /**
      * Gets server parameter.
      *
      * @return the endpoint value.
@@ -38,11 +45,11 @@ public interface CostManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the SettingsClient object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the SettingsClient object.
+     * @return the OperationsClient object.
      */
-    SettingsClient getSettings();
+    OperationsClient getOperations();
 
     /**
      * Gets the ViewsClient object to access its operations.
@@ -87,16 +94,65 @@ public interface CostManagementClient {
     GenerateReservationDetailsReportsClient getGenerateReservationDetailsReports();
 
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
      * Gets the ExportsClient object to access its operations.
      *
      * @return the ExportsClient object.
      */
     ExportsClient getExports();
+
+    /**
+     * Gets the GenerateCostDetailsReportsClient object to access its operations.
+     *
+     * @return the GenerateCostDetailsReportsClient object.
+     */
+    GenerateCostDetailsReportsClient getGenerateCostDetailsReports();
+
+    /**
+     * Gets the GenerateDetailedCostReportsClient object to access its operations.
+     *
+     * @return the GenerateDetailedCostReportsClient object.
+     */
+    GenerateDetailedCostReportsClient getGenerateDetailedCostReports();
+
+    /**
+     * Gets the GenerateDetailedCostReportOperationResultsClient object to access its operations.
+     *
+     * @return the GenerateDetailedCostReportOperationResultsClient object.
+     */
+    GenerateDetailedCostReportOperationResultsClient getGenerateDetailedCostReportOperationResults();
+
+    /**
+     * Gets the GenerateDetailedCostReportOperationStatusClient object to access its operations.
+     *
+     * @return the GenerateDetailedCostReportOperationStatusClient object.
+     */
+    GenerateDetailedCostReportOperationStatusClient getGenerateDetailedCostReportOperationStatus();
+
+    /**
+     * Gets the PriceSheetsClient object to access its operations.
+     *
+     * @return the PriceSheetsClient object.
+     */
+    PriceSheetsClient getPriceSheets();
+
+    /**
+     * Gets the ScheduledActionsClient object to access its operations.
+     *
+     * @return the ScheduledActionsClient object.
+     */
+    ScheduledActionsClient getScheduledActions();
+
+    /**
+     * Gets the BenefitRecommendationsClient object to access its operations.
+     *
+     * @return the BenefitRecommendationsClient object.
+     */
+    BenefitRecommendationsClient getBenefitRecommendations();
+
+    /**
+     * Gets the BenefitUtilizationSummariesClient object to access its operations.
+     *
+     * @return the BenefitUtilizationSummariesClient object.
+     */
+    BenefitUtilizationSummariesClient getBenefitUtilizationSummaries();
 }

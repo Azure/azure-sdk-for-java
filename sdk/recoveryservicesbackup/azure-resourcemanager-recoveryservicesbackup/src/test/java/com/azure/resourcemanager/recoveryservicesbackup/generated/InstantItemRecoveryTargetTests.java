@@ -9,59 +9,46 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ClientScriptForCo
 import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InstantItemRecoveryTargetTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         InstantItemRecoveryTarget model =
             BinaryData
                 .fromString(
-                    "{\"clientScripts\":[{\"scriptContent\":\"eksgbuxantuygd\",\"scriptExtension\":\"aq\",\"osType\":\"irpiwrqofulopmj\",\"url\":\"exwhcb\",\"scriptNameSuffix\":\"ibkeph\"},{\"scriptContent\":\"uerct\",\"scriptExtension\":\"oyin\",\"osType\":\"pbrlcyrduczkgofx\",\"url\":\"srucvcrrpcjtt\",\"scriptNameSuffix\":\"t\"},{\"scriptContent\":\"eaqnrmvvfkoxm\",\"scriptExtension\":\"hktuidvrma\",\"osType\":\"pdwwexymzvlazi\",\"url\":\"hpwvqsgnyyuu\",\"scriptNameSuffix\":\"vensrpm\"},{\"scriptContent\":\"yvpkpatlbijpzgsk\",\"scriptExtension\":\"fhfv\",\"osType\":\"mknbnxwcdommpv\",\"url\":\"awz\",\"scriptNameSuffix\":\"brttuiacl\"}]}")
+                    "{\"clientScripts\":[{\"scriptContent\":\"c\",\"scriptExtension\":\"tasfaymxbulpzeal\",\"osType\":\"qkyojwyvf\",\"url\":\"btsuahxs\",\"scriptNameSuffix\":\"jcmmzrrscub\"},{\"scriptContent\":\"sd\",\"scriptExtension\":\"pxqwo\",\"osType\":\"ffjxcjrmmuabwib\",\"url\":\"ogjo\",\"scriptNameSuffix\":\"cyefoyzbamwine\"}]}")
                 .toObject(InstantItemRecoveryTarget.class);
-        Assertions.assertEquals("eksgbuxantuygd", model.clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("aq", model.clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("irpiwrqofulopmj", model.clientScripts().get(0).osType());
-        Assertions.assertEquals("exwhcb", model.clientScripts().get(0).url());
-        Assertions.assertEquals("ibkeph", model.clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("c", model.clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("tasfaymxbulpzeal", model.clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("qkyojwyvf", model.clientScripts().get(0).osType());
+        Assertions.assertEquals("btsuahxs", model.clientScripts().get(0).url());
+        Assertions.assertEquals("jcmmzrrscub", model.clientScripts().get(0).scriptNameSuffix());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         InstantItemRecoveryTarget model =
             new InstantItemRecoveryTarget()
                 .withClientScripts(
                     Arrays
                         .asList(
                             new ClientScriptForConnect()
-                                .withScriptContent("eksgbuxantuygd")
-                                .withScriptExtension("aq")
-                                .withOsType("irpiwrqofulopmj")
-                                .withUrl("exwhcb")
-                                .withScriptNameSuffix("ibkeph"),
+                                .withScriptContent("c")
+                                .withScriptExtension("tasfaymxbulpzeal")
+                                .withOsType("qkyojwyvf")
+                                .withUrl("btsuahxs")
+                                .withScriptNameSuffix("jcmmzrrscub"),
                             new ClientScriptForConnect()
-                                .withScriptContent("uerct")
-                                .withScriptExtension("oyin")
-                                .withOsType("pbrlcyrduczkgofx")
-                                .withUrl("srucvcrrpcjtt")
-                                .withScriptNameSuffix("t"),
-                            new ClientScriptForConnect()
-                                .withScriptContent("eaqnrmvvfkoxm")
-                                .withScriptExtension("hktuidvrma")
-                                .withOsType("pdwwexymzvlazi")
-                                .withUrl("hpwvqsgnyyuu")
-                                .withScriptNameSuffix("vensrpm"),
-                            new ClientScriptForConnect()
-                                .withScriptContent("yvpkpatlbijpzgsk")
-                                .withScriptExtension("fhfv")
-                                .withOsType("mknbnxwcdommpv")
-                                .withUrl("awz")
-                                .withScriptNameSuffix("brttuiacl")));
+                                .withScriptContent("sd")
+                                .withScriptExtension("pxqwo")
+                                .withOsType("ffjxcjrmmuabwib")
+                                .withUrl("ogjo")
+                                .withScriptNameSuffix("cyefoyzbamwine")));
         model = BinaryData.fromObject(model).toObject(InstantItemRecoveryTarget.class);
-        Assertions.assertEquals("eksgbuxantuygd", model.clientScripts().get(0).scriptContent());
-        Assertions.assertEquals("aq", model.clientScripts().get(0).scriptExtension());
-        Assertions.assertEquals("irpiwrqofulopmj", model.clientScripts().get(0).osType());
-        Assertions.assertEquals("exwhcb", model.clientScripts().get(0).url());
-        Assertions.assertEquals("ibkeph", model.clientScripts().get(0).scriptNameSuffix());
+        Assertions.assertEquals("c", model.clientScripts().get(0).scriptContent());
+        Assertions.assertEquals("tasfaymxbulpzeal", model.clientScripts().get(0).scriptExtension());
+        Assertions.assertEquals("qkyojwyvf", model.clientScripts().get(0).osType());
+        Assertions.assertEquals("btsuahxs", model.clientScripts().get(0).url());
+        Assertions.assertEquals("jcmmzrrscub", model.clientScripts().get(0).scriptNameSuffix());
     }
 }

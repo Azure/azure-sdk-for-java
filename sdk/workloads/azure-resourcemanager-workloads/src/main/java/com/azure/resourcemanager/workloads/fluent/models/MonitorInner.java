@@ -19,7 +19,7 @@ import java.util.Map;
 @Fluent
 public final class MonitorInner extends Resource {
     /*
-     * Managed service identity (user assigned identities)
+     * [currently not in use] Managed service identity(user assigned identities)
      */
     @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
@@ -31,14 +31,17 @@ public final class MonitorInner extends Resource {
     private MonitorProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of MonitorInner class. */
+    public MonitorInner() {
+    }
+
     /**
-     * Get the identity property: Managed service identity (user assigned identities).
+     * Get the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @return the identity value.
      */
@@ -47,7 +50,7 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Set the identity property: Managed service identity (user assigned identities).
+     * Set the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @param identity the identity value to set.
      * @return the MonitorInner object itself.
@@ -158,6 +161,31 @@ public final class MonitorInner extends Resource {
     }
 
     /**
+     * Get the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
+     * SAP monitor. By default resources will be created which do not support zone redundancy.
+     *
+     * @return the zoneRedundancyPreference value.
+     */
+    public String zoneRedundancyPreference() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundancyPreference();
+    }
+
+    /**
+     * Set the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
+     * SAP monitor. By default resources will be created which do not support zone redundancy.
+     *
+     * @param zoneRedundancyPreference the zoneRedundancyPreference value to set.
+     * @return the MonitorInner object itself.
+     */
+    public MonitorInner withZoneRedundancyPreference(String zoneRedundancyPreference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MonitorProperties();
+        }
+        this.innerProperties().withZoneRedundancyPreference(zoneRedundancyPreference);
+        return this;
+    }
+
+    /**
      * Get the managedResourceGroupConfiguration property: Managed resource group configuration.
      *
      * @return the managedResourceGroupConfiguration value.
@@ -236,6 +264,15 @@ public final class MonitorInner extends Resource {
      */
     public String msiArmId() {
         return this.innerProperties() == null ? null : this.innerProperties().msiArmId();
+    }
+
+    /**
+     * Get the storageAccountArmId property: The ARM ID of the Storage account used for SAP monitoring.
+     *
+     * @return the storageAccountArmId value.
+     */
+    public String storageAccountArmId() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountArmId();
     }
 
     /**

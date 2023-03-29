@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.FirewallPolicyInner;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
@@ -33,7 +32,7 @@ import java.util.Map;
 /** Samples for FirewallPolicies CreateOrUpdate. */
 public final class FirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/FirewallPolicyPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/FirewallPolicyPut.json
      */
     /**
      * Sample code: Create FirewallPolicy.
@@ -123,10 +122,10 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
                         new FirewallPolicyTransportSecurity()
                             .withCertificateAuthority(
                                 new FirewallPolicyCertificateAuthority()
-                                    .withKeyVaultSecretId("https://kv/secret")
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")
                                     .withName("clientcert")))
                     .withSku(new FirewallPolicySku().withTier(FirewallPolicySkuTier.PREMIUM)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

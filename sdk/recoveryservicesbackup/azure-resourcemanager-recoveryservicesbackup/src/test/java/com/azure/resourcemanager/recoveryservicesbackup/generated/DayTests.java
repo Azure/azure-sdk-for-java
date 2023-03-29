@@ -7,21 +7,20 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Day;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DayTests {
-    @Test
-    public void testDeserialize() {
-        Day model = BinaryData.fromString("{\"date\":421757360,\"isLast\":true}").toObject(Day.class);
-        Assertions.assertEquals(421757360, model.date());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Day model = BinaryData.fromString("{\"date\":1914058756,\"isLast\":true}").toObject(Day.class);
+        Assertions.assertEquals(1914058756, model.date());
         Assertions.assertEquals(true, model.isLast());
     }
 
-    @Test
-    public void testSerialize() {
-        Day model = new Day().withDate(421757360).withIsLast(true);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Day model = new Day().withDate(1914058756).withIsLast(true);
         model = BinaryData.fromObject(model).toObject(Day.class);
-        Assertions.assertEquals(421757360, model.date());
+        Assertions.assertEquals(1914058756, model.date());
         Assertions.assertEquals(true, model.isLast());
     }
 }

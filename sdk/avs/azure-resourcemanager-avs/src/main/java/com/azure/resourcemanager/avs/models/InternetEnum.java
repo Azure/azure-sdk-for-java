@@ -17,6 +17,15 @@ public final class InternetEnum extends ExpandableStringEnum<InternetEnum> {
     public static final InternetEnum DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of InternetEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InternetEnum() {
+    }
+
+    /**
      * Creates or finds a InternetEnum from its string representation.
      *
      * @param name a name to look for.

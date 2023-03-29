@@ -17,6 +17,15 @@ public final class UpstreamAuthType extends ExpandableStringEnum<UpstreamAuthTyp
     public static final UpstreamAuthType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /**
+     * Creates a new instance of UpstreamAuthType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpstreamAuthType() {
+    }
+
+    /**
      * Creates or finds a UpstreamAuthType from its string representation.
      *
      * @param name a name to look for.

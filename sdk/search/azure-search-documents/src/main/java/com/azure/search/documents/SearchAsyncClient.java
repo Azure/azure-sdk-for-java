@@ -24,13 +24,10 @@ import com.azure.search.documents.implementation.models.SearchFirstPageResponseW
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestRequest;
-import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
-import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
@@ -51,12 +48,8 @@ import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -609,7 +602,7 @@ public final class SearchAsyncClient {
             .collect(Collectors.toList());
 
         boolean throwOnAnyError = options == null || options.throwOnAnyError();
-        return Utility.indexDocumentsWithResponse(restClient, indexActions, throwOnAnyError, context, LOGGER);
+        return Utility.indexDocumentsWithResponseAsync(restClient, indexActions, throwOnAnyError, context, LOGGER);
     }
 
     /**
@@ -686,22 +679,9 @@ public final class SearchAsyncClient {
         try {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
-                .onErrorMap(DocumentResponseConversions::exceptionMapper)
-                .map(res -> {
-                    if (serializer == null) {
-                        try {
-                            return new SimpleResponse<>(res, Utility.convertValue(res.getValue(), modelClass));
-                        } catch (IOException ex) {
-                            throw LOGGER.logExceptionAsError(
-                                new RuntimeException("Failed to deserialize document.", ex));
-                        }
-                    }
-                    ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-                    serializer.serialize(sourceStream, res.getValue());
-                    T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                        createInstance(modelClass));
-                    return new SimpleResponse<>(res, doc);
-                }).map(Function.identity());
+                .onErrorMap(Utility::exceptionMapper)
+                .map(res -> new SimpleResponse<>(res, serializer.deserializeFromBytes(
+                    serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -875,8 +855,8 @@ public final class SearchAsyncClient {
                 SearchDocumentsResult result = response.getValue();
 
                 SearchPagedResponse page = new SearchPagedResponse(
-                    new SimpleResponse<>(response, getSearchResults(result)),
-                    createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
+                    new SimpleResponse<>(response, getSearchResults(result, serializer)),
+                    createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
                     result.getCoverage(), result.getAnswers());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
@@ -885,23 +865,15 @@ public final class SearchAsyncClient {
             });
     }
 
-    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    static List<SearchResult> getSearchResults(SearchDocumentsResult result, JsonSerializer jsonSerializer) {
         return result.getResults().stream()
-            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
+            .map(searchResult -> SearchResultConverter.map(searchResult, jsonSerializer))
             .collect(Collectors.toList());
     }
 
-    private static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
+    static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
-    }
-
-    private static Map<String, List<FacetResult>> getFacets(SearchDocumentsResult result) {
-        if (result.getFacets() == null) {
-            return null;
-        }
-
-        return result.getFacets();
     }
 
     /**
@@ -964,14 +936,14 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
-            SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+            Utility.ensureSuggestOptions(suggestOptions));
 
         return new SuggestPagedFlux(() -> withContext(context -> suggest(suggestRequest, context)));
     }
 
     SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions, Context context) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+            suggesterName, Utility.ensureSuggestOptions(suggestOptions));
 
         return new SuggestPagedFlux(() -> suggest(suggestRequest, context));
     }
@@ -982,14 +954,14 @@ public final class SearchAsyncClient {
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
 
-                return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result)),
+                return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result, serializer)),
                     result.getCoverage());
             });
     }
 
-    private static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result) {
+    static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result, JsonSerializer serializer) {
         return result.getResults().stream()
-            .map(SuggestResultConverter::map)
+            .map(suggestResult -> SuggestResultConverter.map(suggestResult, serializer))
             .collect(Collectors.toList());
     }
 
@@ -1065,7 +1037,7 @@ public final class SearchAsyncClient {
      * @param options search options
      * @return SearchRequest
      */
-    private static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
+    static SearchRequest createSearchRequest(String searchText, SearchOptions options) {
         SearchRequest request = new SearchRequest().setSearchText(searchText);
 
         if (options == null) {
@@ -1146,7 +1118,7 @@ public final class SearchAsyncClient {
      * @param options suggest options
      * @return SuggestRequest
      */
-    private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
+    static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions options) {
         SuggestRequest request = new SuggestRequest(searchText, suggesterName);
 
@@ -1173,7 +1145,7 @@ public final class SearchAsyncClient {
      * @param options autocomplete options
      * @return AutocompleteRequest
      */
-    private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
+    static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions options) {
         AutocompleteRequest request = new AutocompleteRequest(searchText, suggesterName);
 
@@ -1199,7 +1171,7 @@ public final class SearchAsyncClient {
         return String.join(",", elements);
     }
 
-    private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+    static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         List<IndexAction<T>> actions = new ArrayList<>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)

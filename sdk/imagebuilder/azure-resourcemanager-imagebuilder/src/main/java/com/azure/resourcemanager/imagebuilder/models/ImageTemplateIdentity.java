@@ -11,22 +11,27 @@ import java.util.Map;
 
 /** Identity for the image template. */
 @Fluent
-public class ImageTemplateIdentity {
+public final class ImageTemplateIdentity {
     /*
-     * The type of identity used for the image template. The type 'None' will
-     * remove any identities from the image template.
+     * The type of identity used for the image template. The type 'None' will remove any identities from the image
+     * template.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the image template. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
+     * will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, ImageTemplateIdentityUserAssignedIdentities> userAssignedIdentities;
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /** Creates an instance of ImageTemplateIdentity class. */
+    public ImageTemplateIdentity() {
+    }
 
     /**
      * Get the type property: The type of identity used for the image template. The type 'None' will remove any
@@ -51,26 +56,27 @@ public class ImageTemplateIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the image template. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * Get the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, ImageTemplateIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the image template. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * Set the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
      *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ImageTemplateIdentity object itself.
      */
-    public ImageTemplateIdentity withUserAssignedIdentities(
-        Map<String, ImageTemplateIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public ImageTemplateIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

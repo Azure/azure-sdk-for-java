@@ -6,17 +6,16 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupportRequest;
-import org.junit.jupiter.api.Test;
 
 public final class FeatureSupportRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FeatureSupportRequest model =
             BinaryData.fromString("{\"featureType\":\"FeatureSupportRequest\"}").toObject(FeatureSupportRequest.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         FeatureSupportRequest model = new FeatureSupportRequest();
         model = BinaryData.fromObject(model).toObject(FeatureSupportRequest.class);
     }

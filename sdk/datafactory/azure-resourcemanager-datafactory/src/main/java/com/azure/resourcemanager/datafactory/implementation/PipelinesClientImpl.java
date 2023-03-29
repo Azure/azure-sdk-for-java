@@ -61,7 +61,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface PipelinesService {
+    public interface PipelinesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

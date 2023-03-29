@@ -16,6 +16,10 @@ public final class RedisForceRebootResponseInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of RedisForceRebootResponseInner class. */
+    public RedisForceRebootResponseInner() {
+    }
+
     /**
      * Get the message property: Status message.
      *

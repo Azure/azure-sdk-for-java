@@ -6,14 +6,15 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AdHocBackupRuleOptions Adhoc backup rules. */
+/**
+ * AdHocBackupRuleOptions
+ *
+ * <p>Adhoc backup rules.
+ */
 @Fluent
 public final class AdHocBackupRuleOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdHocBackupRuleOptions.class);
-
     /*
      * The ruleName property.
      */
@@ -21,10 +22,16 @@ public final class AdHocBackupRuleOptions {
     private String ruleName;
 
     /*
-     * AdhocBackupTriggerOption Adhoc backup trigger option
+     * AdhocBackupTriggerOption
+     *
+     * Adhoc backup trigger option
      */
     @JsonProperty(value = "triggerOption", required = true)
     private AdhocBackupTriggerOption triggerOption;
+
+    /** Creates an instance of AdHocBackupRuleOptions class. */
+    public AdHocBackupRuleOptions() {
+    }
 
     /**
      * Get the ruleName property: The ruleName property.
@@ -47,7 +54,9 @@ public final class AdHocBackupRuleOptions {
     }
 
     /**
-     * Get the triggerOption property: AdhocBackupTriggerOption Adhoc backup trigger option.
+     * Get the triggerOption property: AdhocBackupTriggerOption
+     *
+     * <p>Adhoc backup trigger option.
      *
      * @return the triggerOption value.
      */
@@ -56,7 +65,9 @@ public final class AdHocBackupRuleOptions {
     }
 
     /**
-     * Set the triggerOption property: AdhocBackupTriggerOption Adhoc backup trigger option.
+     * Set the triggerOption property: AdhocBackupTriggerOption
+     *
+     * <p>Adhoc backup trigger option.
      *
      * @param triggerOption the triggerOption value to set.
      * @return the AdHocBackupRuleOptions object itself.
@@ -73,12 +84,12 @@ public final class AdHocBackupRuleOptions {
      */
     public void validate() {
         if (ruleName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleName in model AdHocBackupRuleOptions"));
         }
         if (triggerOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property triggerOption in model AdHocBackupRuleOptions"));
@@ -86,4 +97,6 @@ public final class AdHocBackupRuleOptions {
             triggerOption().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdHocBackupRuleOptions.class);
 }

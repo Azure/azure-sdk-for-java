@@ -1,1 +1,28 @@
-{}
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard?api-version=2022-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23e5590c-8ae5-4a23-81f5-a4ad464f3c4f",
+      "Content-Type" : "application/json; serialization=Avro"
+    },
+    "Response" : {
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/$schemas/3fa5091aa00040409bb839a7fdede737?api-version=2022-10",
+      "StatusCode" : "204",
+      "Date" : "Thu, 26 Jan 2023 01:42:28 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "3fa5091aa00040409bb839a7fdede737",
+      "Schema-Group-Name" : "azsdk_java_group",
+      "Content-Length" : "0",
+      "Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard/versions/1?api-version=2022-10",
+      "Schema-Versions-Location" : "https://conniey-rg10-avro.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard/versions?api-version=2022-10"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

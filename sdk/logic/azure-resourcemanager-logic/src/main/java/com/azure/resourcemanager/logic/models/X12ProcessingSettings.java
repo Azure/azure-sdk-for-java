@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 processing settings. */
 @Fluent
 public final class X12ProcessingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12ProcessingSettings.class);
-
     /*
      * The value indicating whether to mask security information.
      */
@@ -21,8 +17,7 @@ public final class X12ProcessingSettings {
     private boolean maskSecurityInfo;
 
     /*
-     * The value indicating whether to convert numerical type to implied
-     * decimal.
+     * The value indicating whether to convert numerical type to implied decimal.
      */
     @JsonProperty(value = "convertImpliedDecimal", required = true)
     private boolean convertImpliedDecimal;
@@ -40,8 +35,7 @@ public final class X12ProcessingSettings {
     private boolean suspendInterchangeOnError;
 
     /*
-     * The value indicating whether to create empty xml tags for trailing
-     * separators.
+     * The value indicating whether to create empty xml tags for trailing separators.
      */
     @JsonProperty(value = "createEmptyXmlTagsForTrailingSeparators", required = true)
     private boolean createEmptyXmlTagsForTrailingSeparators;
@@ -51,6 +45,10 @@ public final class X12ProcessingSettings {
      */
     @JsonProperty(value = "useDotAsDecimalSeparator", required = true)
     private boolean useDotAsDecimalSeparator;
+
+    /** Creates an instance of X12ProcessingSettings class. */
+    public X12ProcessingSettings() {
+    }
 
     /**
      * Get the maskSecurityInfo property: The value indicating whether to mask security information.

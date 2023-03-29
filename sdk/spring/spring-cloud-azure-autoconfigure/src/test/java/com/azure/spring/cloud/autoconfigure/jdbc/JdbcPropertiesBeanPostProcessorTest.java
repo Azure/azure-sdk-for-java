@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
@@ -20,6 +20,8 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.mock.env.MockEnvironment;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.jdbc.MySqlAzureJdbcAutoConfigurationTest.MYSQL_USER_AGENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -33,6 +35,9 @@ class JdbcPropertiesBeanPostProcessorTest {
     private static final String POSTGRESQL_CONNECTION_STRING = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
     private static final String PASSWORD = "password";
     private static final String US_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/";
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
+    private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
+        + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 
     private MockEnvironment mockEnvironment;
 
@@ -94,6 +99,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
             MYSQL_USER_AGENT,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
         );
@@ -118,7 +124,8 @@ class JdbcPropertiesBeanPostProcessorTest {
                 MYSQL_CONNECTION_STRING,
                 MYSQL_USER_AGENT,
                 AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-                US_AUTHORITY_HOST_STRING
+                US_AUTHORITY_HOST_STRING,
+                PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -135,6 +142,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
             MYSQL_USER_AGENT,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
         );
@@ -156,7 +164,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -176,7 +185,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
         );
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -194,7 +204,9 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.POSTGRESQL,
             baseUrl,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH
+            APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH,
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            POSTGRESQL_ASSUME_MIN_SERVER_VERSION
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -214,7 +226,9 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.POSTGRESQL,
             baseUrl,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
+            POSTGRESQL_ASSUME_MIN_SERVER_VERSION
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());

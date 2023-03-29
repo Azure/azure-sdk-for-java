@@ -17,6 +17,10 @@ public final class SnapshotInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
+
     /**
      * Get the innerProperties property: Snapshot resource specific properties.
      *

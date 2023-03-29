@@ -58,11 +58,10 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface ProtectionPoliciesService {
+    public interface ProtectionPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionPolicyResourceInner>> get(
@@ -77,8 +76,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionPolicyResourceInner>> createOrUpdate(
@@ -94,8 +92,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupPolicies/{policyName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -625,7 +622,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName) {
-        return beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
+        return this.beginDeleteAsync(vaultName, resourceGroupName, policyName).getSyncPoller();
     }
 
     /**
@@ -644,7 +641,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vaultName, String resourceGroupName, String policyName, Context context) {
-        return beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();
+        return this.beginDeleteAsync(vaultName, resourceGroupName, policyName, context).getSyncPoller();
     }
 
     /**

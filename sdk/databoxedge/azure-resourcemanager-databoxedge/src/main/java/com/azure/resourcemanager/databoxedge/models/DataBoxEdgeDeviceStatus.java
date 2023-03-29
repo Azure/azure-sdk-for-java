@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataBoxEdgeDeviceStatus. */
+/** The status of the Data Box Edge/Gateway device. */
 public final class DataBoxEdgeDeviceStatus extends ExpandableStringEnum<DataBoxEdgeDeviceStatus> {
     /** Static value ReadyToSetup for DataBoxEdgeDeviceStatus. */
     public static final DataBoxEdgeDeviceStatus READY_TO_SETUP = fromString("ReadyToSetup");
@@ -32,6 +32,15 @@ public final class DataBoxEdgeDeviceStatus extends ExpandableStringEnum<DataBoxE
     public static final DataBoxEdgeDeviceStatus MAINTENANCE = fromString("Maintenance");
 
     /**
+     * Creates a new instance of DataBoxEdgeDeviceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataBoxEdgeDeviceStatus() {
+    }
+
+    /**
      * Creates or finds a DataBoxEdgeDeviceStatus from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class DataBoxEdgeDeviceStatus extends ExpandableStringEnum<DataBoxE
         return fromString(name, DataBoxEdgeDeviceStatus.class);
     }
 
-    /** @return known DataBoxEdgeDeviceStatus values. */
+    /**
+     * Gets known DataBoxEdgeDeviceStatus values.
+     *
+     * @return known DataBoxEdgeDeviceStatus values.
+     */
     public static Collection<DataBoxEdgeDeviceStatus> values() {
         return values(DataBoxEdgeDeviceStatus.class);
     }

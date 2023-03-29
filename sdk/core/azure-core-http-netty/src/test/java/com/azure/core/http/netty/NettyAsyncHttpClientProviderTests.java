@@ -3,6 +3,8 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
@@ -16,6 +18,8 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -104,5 +108,28 @@ public class NettyAsyncHttpClientProviderTests {
                 .createInstance(new HttpClientOptions());
         actualMaxConnections = httpClient.nettyClient.configuration().connectionProvider().maxConnections();
         // assertEquals(500, actualMaxConnections);
+    }
+
+    @Test
+    public void testNettyAsExplicitProvider() {
+        HttpClientOptions options = new HttpClientOptions();
+        options.setHttpClientProvider(NettyAsyncHttpClientProvider.class);
+        // sanity check
+        HttpClient httpClient = HttpClient.createDefault(options);
+        assertInstanceOf(NettyAsyncHttpClient.class, httpClient);
+    }
+
+    @Test
+    public void testIncorrectExplicitProvider() {
+        HttpClientOptions options = new HttpClientOptions();
+        options.setHttpClientProvider(AnotherHttpClientProvider.class);
+        assertThrows(IllegalStateException.class, () -> HttpClient.createDefault(options));
+    }
+
+    class AnotherHttpClientProvider implements HttpClientProvider {
+        @Override
+        public HttpClient createInstance() {
+            throw new IllegalStateException("should never be called");
+        }
     }
 }

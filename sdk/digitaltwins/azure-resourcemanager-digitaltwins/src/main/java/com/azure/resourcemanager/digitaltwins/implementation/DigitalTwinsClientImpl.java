@@ -68,11 +68,10 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsMan")
-    private interface DigitalTwinsService {
+    public interface DigitalTwinsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroup(
@@ -86,8 +85,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -118,8 +115,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -144,8 +140,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DigitalTwinsDescriptionListResult>> listByResourceGroup(
@@ -158,8 +153,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -307,21 +301,6 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      *
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstances resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsDescriptionInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Get DigitalTwinsInstances resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -332,6 +311,21 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     public Response<DigitalTwinsDescriptionInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Get DigitalTwinsInstances resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return digitalTwinsInstances resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DigitalTwinsDescriptionInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -530,7 +524,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).getSyncPoller();
     }
 
     /**
@@ -553,7 +547,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         String resourceName,
         DigitalTwinsDescriptionInner digitalTwinsCreate,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context)
+            .getSyncPoller();
     }
 
     /**
@@ -834,7 +830,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
-        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).getSyncPoller();
     }
 
     /**
@@ -855,7 +851,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         String resourceName,
         DigitalTwinsPatchDescription digitalTwinsPatchDescription,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1096,7 +1094,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -1113,7 +1111,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -1620,22 +1618,6 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
      *     name of the DigitalTwinsInstance to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName) {
-        return checkNameAvailabilityAsync(location, digitalTwinsInstanceCheckName).block();
-    }
-
-    /**
-     * Check if a DigitalTwinsInstance name is available.
-     *
-     * @param location Location of DigitalTwinsInstance.
-     * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1649,9 +1631,26 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     }
 
     /**
+     * Check if a DigitalTwinsInstance name is available.
+     *
+     * @param location Location of DigitalTwinsInstance.
+     * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
+     *     name of the DigitalTwinsInstance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName) {
+        return checkNameAvailabilityWithResponse(location, digitalTwinsInstanceCheckName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1687,7 +1686,8 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1725,7 +1725,8 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1762,7 +1763,8 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

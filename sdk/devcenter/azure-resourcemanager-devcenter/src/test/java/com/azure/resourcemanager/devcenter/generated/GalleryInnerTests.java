@@ -15,15 +15,15 @@ public final class GalleryInnerTests {
         GalleryInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"wzrlovmclwhij\",\"galleryResourceId\":\"oejctbzaqsqsy\"},\"id\":\"kbfkg\",\"name\":\"kdkexxp\",\"type\":\"ofmx\"}")
+                    "{\"properties\":{\"provisioningState\":\"Creating\",\"galleryResourceId\":\"kajionpim\"},\"id\":\"gstxgcp\",\"name\":\"dg\",\"type\":\"aajrm\"}")
                 .toObject(GalleryInner.class);
-        Assertions.assertEquals("oejctbzaqsqsy", model.galleryResourceId());
+        Assertions.assertEquals("kajionpim", model.galleryResourceId());
     }
 
     @Test
     public void testSerialize() {
-        GalleryInner model = new GalleryInner().withGalleryResourceId("oejctbzaqsqsy");
+        GalleryInner model = new GalleryInner().withGalleryResourceId("kajionpim");
         model = BinaryData.fromObject(model).toObject(GalleryInner.class);
-        Assertions.assertEquals("oejctbzaqsqsy", model.galleryResourceId());
+        Assertions.assertEquals("kajionpim", model.galleryResourceId());
     }
 }

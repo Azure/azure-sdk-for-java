@@ -16,7 +16,7 @@ public interface ProvisionedClustersOperations {
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +24,7 @@ public interface ProvisionedClustersOperations {
      * @return the Hybrid AKS provisioned cluster along with {@link Response}.
      */
     Response<ProvisionedClustersResponse> getByResourceGroupWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context);
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the provisioned cluster
@@ -32,13 +32,13 @@ public interface ProvisionedClustersOperations {
      * <p>Gets the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Hybrid AKS provisioned cluster.
      */
-    ProvisionedClustersResponse getByResourceGroup(String resourceGroupName, String provisionedClustersName);
+    ProvisionedClustersResponse getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Deletes the provisioned cluster
@@ -46,15 +46,14 @@ public interface ProvisionedClustersOperations {
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Deletes the provisioned cluster
@@ -62,12 +61,12 @@ public interface ProvisionedClustersOperations {
      * <p>Deletes the Hybrid AKS provisioned cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+     * @param resourceName Parameter for the name of the provisioned cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String provisionedClustersName);
+    void deleteByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Gets the provisioned clusters in a resource group
@@ -119,6 +118,59 @@ public interface ProvisionedClustersOperations {
      * @return the Hybrid AKS provisioned cluster in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProvisionedClustersResponse> list(Context context);
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster along with {@link Response}.
+     */
+    Response<ProvisionedClusterUpgradeProfile> getUpgradeProfileWithResponse(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Gets the upgrade profile of a provisioned cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the upgrade profile of a provisioned cluster.
+     */
+    ProvisionedClusterUpgradeProfile getUpgradeProfile(String resourceGroupName, String resourceName);
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgradeNodeImageVersionForEntireCluster(String resourceGroupName, String resourceName);
+
+    /**
+     * Upgrades the node image version of the cluster control plane and all agent pools to the latest.
+     *
+     * <p>Upgrading the node image version of a cluster applies the newest OS and runtime updates to the nodes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Parameter for the name of the provisioned cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgradeNodeImageVersionForEntireCluster(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the provisioned cluster

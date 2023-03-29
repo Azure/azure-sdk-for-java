@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualApplianceSites Delete. */
 public final class VirtualApplianceSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkVirtualApplianceSiteDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceSiteDelete.json
      */
     /**
      * Sample code: Delete Network Virtual Appliance Site.
@@ -22,6 +20,6 @@ public final class VirtualApplianceSitesDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualApplianceSites()
-            .delete("rg1", "nva", "site1", Context.NONE);
+            .delete("rg1", "nva", "site1", com.azure.core.util.Context.NONE);
     }
 }

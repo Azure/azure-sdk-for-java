@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataFlows Delete. */
 public final class DataFlowsDeleteSamples {
     /*
@@ -19,6 +17,7 @@ public final class DataFlowsDeleteSamples {
     public static void dataFlowsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         manager
             .dataFlows()
-            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", Context.NONE);
+            .deleteWithResponse(
+                "exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", com.azure.core.util.Context.NONE);
     }
 }

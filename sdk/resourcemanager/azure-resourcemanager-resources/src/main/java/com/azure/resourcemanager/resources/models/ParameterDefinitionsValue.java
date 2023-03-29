@@ -35,6 +35,10 @@ public final class ParameterDefinitionsValue {
     @JsonProperty(value = "metadata")
     private ParameterDefinitionsValueMetadata metadata;
 
+    /** Creates an instance of ParameterDefinitionsValue class. */
+    public ParameterDefinitionsValue() {
+    }
+
     /**
      * Get the type property: The data type of the parameter.
      *

@@ -35,6 +35,15 @@ public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemTyp
     public static final WorkloadItemType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
+     * Creates a new instance of WorkloadItemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadItemType() {
+    }
+
+    /**
      * Creates or finds a WorkloadItemType from its string representation.
      *
      * @param name a name to look for.

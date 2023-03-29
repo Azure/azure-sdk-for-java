@@ -21,13 +21,16 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Enables authentication to Azure Active Directory as the user signed in to Visual Studio Code via
- * the 'Azure Account' extension.
+ * <p>Enables authentication to Azure Active Directory as the user signed in to Visual Studio Code via
+ * the 'Azure Account' extension.</p>
  *
- * <p>It's a <a href="https://github.com/Azure/azure-sdk-for-java/issues/27364">known issue</a> that this credential doesn't
- * work with <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">Azure Account extension</a>
- * versions newer than <strong>0.9.11</strong>. A long-term fix to this problem is in progress. In the meantime, consider
- * authenticating with {@link AzureCliCredential}.</p>
+ * <p>It's a <a href="https://github.com/Azure/azure-sdk-for-java/issues/27364">known issue</a> that this credential
+ * doesn't work with <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account">Azure
+ * Account extension</a> versions newer than <strong>0.9.11</strong>. A long-term fix to this problem is in progress.
+ * In the meantime, consider authenticating with {@link AzureCliCredential}.</p>
+ *
+ * @see com.azure.identity
+ * @see VisualStudioCodeCredentialBuilder
  */
 public class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;

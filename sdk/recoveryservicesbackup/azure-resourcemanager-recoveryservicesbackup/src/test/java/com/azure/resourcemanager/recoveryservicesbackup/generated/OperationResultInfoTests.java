@@ -8,22 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationResultInfo;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResultInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationResultInfo model =
             BinaryData
-                .fromString("{\"objectType\":\"OperationResultInfo\",\"jobList\":[\"vzuyturmlmu\",\"wolba\"]}")
+                .fromString(
+                    "{\"objectType\":\"OperationResultInfo\",\"jobList\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"]}")
                 .toObject(OperationResultInfo.class);
-        Assertions.assertEquals("vzuyturmlmu", model.jobList().get(0));
+        Assertions.assertEquals("tsysi", model.jobList().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        OperationResultInfo model = new OperationResultInfo().withJobList(Arrays.asList("vzuyturmlmu", "wolba"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationResultInfo model =
+            new OperationResultInfo().withJobList(Arrays.asList("tsysi", "fvcl", "lxnfuijtkbusqogs", "ikayiansharuj"));
         model = BinaryData.fromObject(model).toObject(OperationResultInfo.class);
-        Assertions.assertEquals("vzuyturmlmu", model.jobList().get(0));
+        Assertions.assertEquals("tsysi", model.jobList().get(0));
     }
 }

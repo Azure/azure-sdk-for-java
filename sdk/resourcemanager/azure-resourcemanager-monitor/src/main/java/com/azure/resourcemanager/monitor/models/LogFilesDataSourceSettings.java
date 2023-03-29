@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The log files specific settings. */
 @Fluent
 public final class LogFilesDataSourceSettings extends LogFileSettings {
+    /** Creates an instance of LogFilesDataSourceSettings class. */
+    public LogFilesDataSourceSettings() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public LogFilesDataSourceSettings withText(LogFileSettingsText text) {

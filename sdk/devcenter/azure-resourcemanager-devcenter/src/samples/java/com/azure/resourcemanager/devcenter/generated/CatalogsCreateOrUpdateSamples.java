@@ -9,7 +9,7 @@ import com.azure.resourcemanager.devcenter.models.GitCatalog;
 /** Samples for Catalogs CreateOrUpdate. */
 public final class CatalogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Catalogs_CreateAdo.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Catalogs_CreateAdo.json
      */
     /**
      * Sample code: Catalogs_CreateOrUpdateAdo.
@@ -19,7 +19,7 @@ public final class CatalogsCreateOrUpdateSamples {
     public static void catalogsCreateOrUpdateAdo(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         manager
             .catalogs()
-            .define("{catalogName}")
+            .define("CentralCatalog")
             .withExistingDevcenter("rg1", "Contoso")
             .withAdoGit(
                 new GitCatalog()
@@ -31,7 +31,7 @@ public final class CatalogsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Catalogs_CreateGitHub.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Catalogs_CreateGitHub.json
      */
     /**
      * Sample code: Catalogs_CreateOrUpdateGitHub.
@@ -41,7 +41,7 @@ public final class CatalogsCreateOrUpdateSamples {
     public static void catalogsCreateOrUpdateGitHub(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
         manager
             .catalogs()
-            .define("{catalogName}")
+            .define("CentralCatalog")
             .withExistingDevcenter("rg1", "Contoso")
             .withGitHub(
                 new GitCatalog()

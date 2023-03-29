@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AddressValidationStatus. */
+/** The address validation status. */
 public enum AddressValidationStatus {
     /** Enum value Valid. */
     VALID("Valid"),
@@ -33,6 +33,9 @@ public enum AddressValidationStatus {
      */
     @JsonCreator
     public static AddressValidationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AddressValidationStatus[] items = AddressValidationStatus.values();
         for (AddressValidationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AddressValidationStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

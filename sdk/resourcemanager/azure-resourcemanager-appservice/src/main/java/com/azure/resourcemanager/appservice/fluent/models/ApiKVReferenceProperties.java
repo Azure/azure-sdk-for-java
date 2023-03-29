@@ -67,6 +67,10 @@ public final class ApiKVReferenceProperties {
     @JsonProperty(value = "activeVersion")
     private String activeVersion;
 
+    /** Creates an instance of ApiKVReferenceProperties class. */
+    public ApiKVReferenceProperties() {
+    }
+
     /**
      * Get the reference property: The reference property.
      *

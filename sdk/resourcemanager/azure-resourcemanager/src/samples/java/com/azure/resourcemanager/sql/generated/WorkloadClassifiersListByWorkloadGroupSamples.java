@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadClassifiers ListByWorkloadGroup. */
 public final class WorkloadClassifiersListByWorkloadGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/GetWorkloadClassifierList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetWorkloadClassifierList.json
      */
     /**
      * Sample code: Get the list of workload classifiers for a workload group.

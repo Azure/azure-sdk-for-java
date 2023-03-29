@@ -14,17 +14,17 @@ public final class UsageNameTests {
     public void testDeserialize() {
         UsageName model =
             BinaryData
-                .fromString("{\"localizedValue\":\"hwit\",\"value\":\"ypyynpcdpumnzg\"}")
+                .fromString("{\"localizedValue\":\"clvit\",\"value\":\"qzonosggbhcohf\"}")
                 .toObject(UsageName.class);
-        Assertions.assertEquals("hwit", model.localizedValue());
-        Assertions.assertEquals("ypyynpcdpumnzg", model.value());
+        Assertions.assertEquals("clvit", model.localizedValue());
+        Assertions.assertEquals("qzonosggbhcohf", model.value());
     }
 
     @Test
     public void testSerialize() {
-        UsageName model = new UsageName().withLocalizedValue("hwit").withValue("ypyynpcdpumnzg");
+        UsageName model = new UsageName().withLocalizedValue("clvit").withValue("qzonosggbhcohf");
         model = BinaryData.fromObject(model).toObject(UsageName.class);
-        Assertions.assertEquals("hwit", model.localizedValue());
-        Assertions.assertEquals("ypyynpcdpumnzg", model.value());
+        Assertions.assertEquals("clvit", model.localizedValue());
+        Assertions.assertEquals("qzonosggbhcohf", model.value());
     }
 }

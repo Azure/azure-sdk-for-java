@@ -5,16 +5,18 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.customerinsights.fluent.models.DataSource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The data source precedence is a way to know the precedence of each data source. */
-@JsonFlatten
 @Fluent
-public class DataSourcePrecedence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataSourcePrecedence.class);
+public final class DataSourcePrecedence {
+    /*
+     * Data Source is a way for us to know the source of instances. A single type can have data coming in from multiple
+     * places. In activities we use this to determine precedence rules.
+     */
+    @JsonProperty(value = "dataSource")
+    private DataSource innerDataSource;
 
     /*
      * the precedence value.
@@ -22,35 +24,19 @@ public class DataSourcePrecedence {
     @JsonProperty(value = "precedence")
     private Integer precedence;
 
-    /*
-     * The data source name
-     */
-    @JsonProperty(value = "dataSource.name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
+    /** Creates an instance of DataSourcePrecedence class. */
+    public DataSourcePrecedence() {
+    }
 
-    /*
-     * The data source type.
+    /**
+     * Get the innerDataSource property: Data Source is a way for us to know the source of instances. A single type can
+     * have data coming in from multiple places. In activities we use this to determine precedence rules.
+     *
+     * @return the innerDataSource value.
      */
-    @JsonProperty(value = "dataSource.dataSourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private DataSourceType dataSourceType;
-
-    /*
-     * The data source status.
-     */
-    @JsonProperty(value = "dataSource.status", access = JsonProperty.Access.WRITE_ONLY)
-    private Status status;
-
-    /*
-     * The data source ID.
-     */
-    @JsonProperty(value = "dataSource.id", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer id;
-
-    /*
-     * The data source reference id.
-     */
-    @JsonProperty(value = "dataSource.dataSourceReferenceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataSourceReferenceId;
+    private DataSource innerDataSource() {
+        return this.innerDataSource;
+    }
 
     /**
      * Get the precedence property: the precedence value.
@@ -78,7 +64,7 @@ public class DataSourcePrecedence {
      * @return the name value.
      */
     public String name() {
-        return this.name;
+        return this.innerDataSource() == null ? null : this.innerDataSource().name();
     }
 
     /**
@@ -87,7 +73,7 @@ public class DataSourcePrecedence {
      * @return the dataSourceType value.
      */
     public DataSourceType dataSourceType() {
-        return this.dataSourceType;
+        return this.innerDataSource() == null ? null : this.innerDataSource().dataSourceType();
     }
 
     /**
@@ -96,7 +82,7 @@ public class DataSourcePrecedence {
      * @return the status value.
      */
     public Status status() {
-        return this.status;
+        return this.innerDataSource() == null ? null : this.innerDataSource().status();
     }
 
     /**
@@ -105,7 +91,7 @@ public class DataSourcePrecedence {
      * @return the id value.
      */
     public Integer id() {
-        return this.id;
+        return this.innerDataSource() == null ? null : this.innerDataSource().id();
     }
 
     /**
@@ -114,7 +100,7 @@ public class DataSourcePrecedence {
      * @return the dataSourceReferenceId value.
      */
     public String dataSourceReferenceId() {
-        return this.dataSourceReferenceId;
+        return this.innerDataSource() == null ? null : this.innerDataSource().dataSourceReferenceId();
     }
 
     /**
@@ -123,5 +109,8 @@ public class DataSourcePrecedence {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerDataSource() != null) {
+            innerDataSource().validate();
+        }
     }
 }

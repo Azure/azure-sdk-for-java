@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -59,7 +60,7 @@ public class OperationStatusResult {
      * If present, details of the operation error.
      */
     @JsonProperty(value = "error")
-    private ErrorDetail error;
+    private ManagementError error;
 
     /** Creates an instance of OperationStatusResult class. */
     public OperationStatusResult() {
@@ -210,7 +211,7 @@ public class OperationStatusResult {
      *
      * @return the error value.
      */
-    public ErrorDetail error() {
+    public ManagementError error() {
         return this.error;
     }
 
@@ -220,7 +221,7 @@ public class OperationStatusResult {
      * @param error the error value to set.
      * @return the OperationStatusResult object itself.
      */
-    public OperationStatusResult withError(ErrorDetail error) {
+    public OperationStatusResult withError(ManagementError error) {
         this.error = error;
         return this;
     }
@@ -238,9 +239,6 @@ public class OperationStatusResult {
         }
         if (operations() != null) {
             operations().forEach(e -> e.validate());
-        }
-        if (error() != null) {
-            error().validate();
         }
     }
 

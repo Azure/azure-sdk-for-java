@@ -1,25 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.int.communication.azure.net/emails:send?api-version=2021-10-01-preview",
+    "Uri" : "https://REDACTED.int.communication.azure.net/emails:send?api-version=2023-03-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0-beta.1 (11.0.15; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ecbd03ff-f6cf-4aa5-bdcd-7787ca30ec01",
+      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ce857da4-041e-489e-9684-f311aa8fbf1a",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-azure-ref" : "20220720T183436Z-rpak1wsrs55r70e9gz92kcpzu400000003qg00000000c24b",
+      "x-azure-ref" : "20230315T225524Z-ch23ckymu96u79g7vbqgy06mh400000000z000000000vak2",
       "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "0",
-      "api-supported-versions" : "2021-10-01-preview",
-      "Repeatability-Result" : "accepted",
+      "Retry-After" : "0",
+      "api-supported-versions" : "2021-10-01-preview, 2023-01-15-preview, 2023-03-31",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "5803fd70-70e7-4de8-acab-d1aa88f35a60",
-      "retry-after" : "0",
+      "mise-correlation-id" : "94859753-7efe-4535-8cf2-4eefc37a2be4",
+      "Content-Length" : "77",
       "StatusCode" : "202",
-      "x-ms-request-id" : "4f89f34f-96e7-4b95-9470-2b2c3d9968c8",
-      "Operation-Location" : "REDACTED",
-      "Date" : "Wed, 20 Jul 2022 18:34:37 GMT"
+      "Operation-Location" : "https://acs-email-functional-test-acs-resource.int.communication.azure.net/emails/operations/5af42966-e8ea-4bcf-8bcd-3f948f7983f0?api-version=2023-03-31",
+      "Body" : "{\"id\":\"5af42966-e8ea-4bcf-8bcd-3f948f7983f0\",\"status\":\"Running\",\"error\":null}",
+      "Date" : "Wed, 15 Mar 2023 22:55:24 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/emails/operations/5af42966-e8ea-4bcf-8bcd-3f948f7983f0?api-version=2023-03-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-email/1.0.0 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9874f9f8-63fa-4ca3-b7c6-0ec201632c68"
+    },
+    "Response" : {
+      "Accept-Ranges" : "bytes",
+      "x-azure-ref" : "20230315T225554Z-ch23ckymu96u79g7vbqgy06mh400000000z000000000vnm0",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-10-01-preview, 2023-01-15-preview, 2023-03-31",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "d5e9770f-8138-4abf-94f4-3db3a83e1e65",
+      "retry-after" : "0",
+      "Content-Length" : "79",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"5af42966-e8ea-4bcf-8bcd-3f948f7983f0\",\"status\":\"Succeeded\",\"error\":null}",
+      "Date" : "Wed, 15 Mar 2023 22:55:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

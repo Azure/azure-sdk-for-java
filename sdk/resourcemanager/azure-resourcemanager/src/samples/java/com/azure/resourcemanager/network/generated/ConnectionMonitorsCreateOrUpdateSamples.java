@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpointFilter;
@@ -20,7 +19,7 @@ import java.util.Arrays;
 /** Samples for ConnectionMonitors CreateOrUpdate. */
 public final class ConnectionMonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherConnectionMonitorCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherConnectionMonitorCreate.json
      */
     /**
      * Sample code: Create connection monitor V1.
@@ -64,11 +63,11 @@ public final class ConnectionMonitorsCreateOrUpdateSamples {
                                     .withSources(Arrays.asList("source"))
                                     .withDestinations(Arrays.asList("destination")))),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherConnectionMonitorV2Create.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherConnectionMonitorV2Create.json
      */
     /**
      * Sample code: Create connection monitor V2.
@@ -131,6 +130,6 @@ public final class ConnectionMonitorsCreateOrUpdateSamples {
                                     .withDestinations(Arrays.asList("bing", "google"))))
                     .withOutputs(Arrays.asList()),
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

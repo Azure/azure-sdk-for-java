@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationSecurityGroups Delete. */
 public final class ApplicationSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationSecurityGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationSecurityGroupDelete.json
      */
     /**
      * Sample code: Delete application security group.
@@ -22,6 +20,6 @@ public final class ApplicationSecurityGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getApplicationSecurityGroups()
-            .delete("rg1", "test-asg", Context.NONE);
+            .delete("rg1", "test-asg", com.azure.core.util.Context.NONE);
     }
 }

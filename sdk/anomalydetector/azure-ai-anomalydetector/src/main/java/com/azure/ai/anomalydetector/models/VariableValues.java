@@ -4,53 +4,60 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VariableValues model. */
-@Fluent
+/** Variable values. */
+@Immutable
 public final class VariableValues {
     /*
-     * variable name
+     * Variable name of last detection request.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    @JsonProperty(value = "variable", required = true)
+    private String variable;
 
     /*
-     * timestamps
+     * Timestamps of last detection request
      */
     @JsonProperty(value = "timestamps", required = true)
     private List<String> timestamps;
 
     /*
-     * values
+     * Values of variables.
      */
     @JsonProperty(value = "values", required = true)
-    private List<Float> values;
+    private List<Double> values;
 
     /**
-     * Get the name property: variable name.
+     * Creates an instance of VariableValues class.
      *
-     * @return the name value.
+     * @param variable the variable value to set.
+     * @param timestamps the timestamps value to set.
+     * @param values the values value to set.
      */
-    public String getName() {
-        return this.name;
+    @JsonCreator
+    public VariableValues(
+            @JsonProperty(value = "variable", required = true) String variable,
+            @JsonProperty(value = "timestamps", required = true) List<String> timestamps,
+            @JsonProperty(value = "values", required = true) List<Double> values) {
+        this.variable = variable;
+        this.timestamps = timestamps;
+        this.values = values;
     }
 
     /**
-     * Set the name property: variable name.
+     * Get the variable property: Variable name of last detection request.
      *
-     * @param name the name value to set.
-     * @return the VariableValues object itself.
+     * @return the variable value.
      */
-    public VariableValues setName(String name) {
-        this.name = name;
-        return this;
+    public String getVariable() {
+        return this.variable;
     }
 
     /**
-     * Get the timestamps property: timestamps.
+     * Get the timestamps property: Timestamps of last detection request.
      *
      * @return the timestamps value.
      */
@@ -59,33 +66,11 @@ public final class VariableValues {
     }
 
     /**
-     * Set the timestamps property: timestamps.
-     *
-     * @param timestamps the timestamps value to set.
-     * @return the VariableValues object itself.
-     */
-    public VariableValues setTimestamps(List<String> timestamps) {
-        this.timestamps = timestamps;
-        return this;
-    }
-
-    /**
-     * Get the values property: values.
+     * Get the values property: Values of variables.
      *
      * @return the values value.
      */
-    public List<Float> getValues() {
+    public List<Double> getValues() {
         return this.values;
-    }
-
-    /**
-     * Set the values property: values.
-     *
-     * @param values the values value to set.
-     * @return the VariableValues object itself.
-     */
-    public VariableValues setValues(List<Float> values) {
-        this.values = values;
-        return this;
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DataMaskingFunction. */
+/** The masking function that is used for the data masking rule. */
 public enum DataMaskingFunction {
     /** Enum value Default. */
     DEFAULT("Default"),
@@ -42,6 +42,9 @@ public enum DataMaskingFunction {
      */
     @JsonCreator
     public static DataMaskingFunction fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DataMaskingFunction[] items = DataMaskingFunction.values();
         for (DataMaskingFunction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +54,7 @@ public enum DataMaskingFunction {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

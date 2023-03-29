@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AzureFirewalls List. */
 public final class AzureFirewallsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AzureFirewallListBySubscription.json
      */
     /**
      * Sample code: List all Azure Firewalls for a given subscription.
@@ -18,6 +16,6 @@ public final class AzureFirewallsListSamples {
      */
     public static void listAllAzureFirewallsForAGivenSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().list(Context.NONE);
+        azure.networks().manager().serviceClient().getAzureFirewalls().list(com.azure.core.util.Context.NONE);
     }
 }

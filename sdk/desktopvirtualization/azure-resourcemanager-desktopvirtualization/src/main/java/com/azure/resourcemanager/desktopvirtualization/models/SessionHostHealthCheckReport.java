@@ -28,6 +28,10 @@ public final class SessionHostHealthCheckReport {
     @JsonProperty(value = "additionalFailureDetails", access = JsonProperty.Access.WRITE_ONLY)
     private SessionHostHealthCheckFailureDetails additionalFailureDetails;
 
+    /** Creates an instance of SessionHostHealthCheckReport class. */
+    public SessionHostHealthCheckReport() {
+    }
+
     /**
      * Get the healthCheckName property: Represents the name of the health check operation performed.
      *

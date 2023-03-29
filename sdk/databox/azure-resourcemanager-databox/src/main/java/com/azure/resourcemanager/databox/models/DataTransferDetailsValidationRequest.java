@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("ValidateDataTransferDetails")
 @Fluent
 public final class DataTransferDetailsValidationRequest extends ValidationInputRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataTransferDetailsValidationRequest.class);
-
     /*
      * List of DataTransfer details to be used to export data from azure.
      */
@@ -42,6 +39,10 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
      */
     @JsonProperty(value = "transferType", required = true)
     private TransferType transferType;
+
+    /** Creates an instance of DataTransferDetailsValidationRequest class. */
+    public DataTransferDetailsValidationRequest() {
+    }
 
     /**
      * Get the dataExportDetails property: List of DataTransfer details to be used to export data from azure.
@@ -138,16 +139,18 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
             dataImportDetails().forEach(e -> e.validate());
         }
         if (deviceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deviceType in model DataTransferDetailsValidationRequest"));
         }
         if (transferType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property transferType in model DataTransferDetailsValidationRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataTransferDetailsValidationRequest.class);
 }

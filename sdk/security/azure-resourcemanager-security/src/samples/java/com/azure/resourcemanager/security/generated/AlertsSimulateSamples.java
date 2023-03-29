@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.AlertSimulatorBundlesRequestProperties;
 import com.azure.resourcemanager.security.models.AlertSimulatorRequestBody;
 import com.azure.resourcemanager.security.models.BundleType;
@@ -41,6 +40,6 @@ public final class AlertsSimulateSamples {
                                         BundleType.STORAGE_ACCOUNTS,
                                         BundleType.VIRTUAL_MACHINES,
                                         BundleType.COSMOS_DBS))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

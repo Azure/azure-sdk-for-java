@@ -8,30 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SqlDataDirectory;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SqlDataDirectoryType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlDataDirectoryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SqlDataDirectory model =
             BinaryData
-                .fromString("{\"type\":\"Data\",\"path\":\"wwpgdakchzyvlixq\",\"logicalName\":\"kcxk\"}")
+                .fromString("{\"type\":\"Log\",\"path\":\"hsgz\",\"logicalName\":\"zbgomfgbeg\"}")
                 .toObject(SqlDataDirectory.class);
-        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.type());
-        Assertions.assertEquals("wwpgdakchzyvlixq", model.path());
-        Assertions.assertEquals("kcxk", model.logicalName());
+        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.type());
+        Assertions.assertEquals("hsgz", model.path());
+        Assertions.assertEquals("zbgomfgbeg", model.logicalName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SqlDataDirectory model =
-            new SqlDataDirectory()
-                .withType(SqlDataDirectoryType.DATA)
-                .withPath("wwpgdakchzyvlixq")
-                .withLogicalName("kcxk");
+            new SqlDataDirectory().withType(SqlDataDirectoryType.LOG).withPath("hsgz").withLogicalName("zbgomfgbeg");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectory.class);
-        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.type());
-        Assertions.assertEquals("wwpgdakchzyvlixq", model.path());
-        Assertions.assertEquals("kcxk", model.logicalName());
+        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.type());
+        Assertions.assertEquals("hsgz", model.path());
+        Assertions.assertEquals("zbgomfgbeg", model.logicalName());
     }
 }

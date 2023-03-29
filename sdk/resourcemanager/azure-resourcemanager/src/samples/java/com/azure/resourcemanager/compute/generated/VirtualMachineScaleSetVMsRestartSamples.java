@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs Restart. */
 public final class VirtualMachineScaleSetVMsRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Restart_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Restart_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Restart_MinimumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachineScaleSetVMsRestartSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .restart("rgcompute", "aaaaaaaaaaaa", "aaaaaa", Context.NONE);
+            .restart("rgcompute", "aaaaaaaaaaaa", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.
@@ -41,6 +39,6 @@ public final class VirtualMachineScaleSetVMsRestartSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .restart("rgcompute", "aa", "aaaaaaaaaaaaaaaaa", Context.NONE);
+            .restart("rgcompute", "aa", "aaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

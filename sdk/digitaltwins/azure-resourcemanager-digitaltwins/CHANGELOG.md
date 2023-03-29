@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,140 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2023-03-24)
+
+- Azure Resource Manager AzureDigitalTwins client library for Java. This package contains Microsoft Azure SDK for AzureDigitalTwins Management SDK. Azure Digital Twins Client for managing DigitalTwinsInstance. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.TimeSeriesDatabaseConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.RecordPropertyAndItemRemovals` was added
+
+* `models.CleanupConnectionArtifacts` was added
+
+#### `models.TimeSeriesDatabaseConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,models.CleanupConnectionArtifacts,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,models.CleanupConnectionArtifacts,com.azure.core.util.Context)` was added
+
+#### `models.AzureDataExplorerConnectionProperties` was modified
+
+* `adxRelationshipLifecycleEventsTableName()` was added
+* `recordPropertyAndItemRemovals()` was added
+* `withRecordPropertyAndItemRemovals(models.RecordPropertyAndItemRemovals)` was added
+* `adxTwinLifecycleEventsTableName()` was added
+* `withAdxRelationshipLifecycleEventsTableName(java.lang.String)` was added
+* `withAdxTwinLifecycleEventsTableName(java.lang.String)` was added
+
+## 1.2.0-beta.1 (2023-02-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.36.0`.
+- Upgraded `azure-core-management` from `1.9.0` to `1.10.1`.
+
+## 1.1.0 (2022-12-22)
+
+- Azure Resource Manager AzureDigitalTwins client library for Java. This package contains Microsoft Azure SDK for AzureDigitalTwins Management SDK. Azure Digital Twins Client for managing DigitalTwinsInstance. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.IdentityType` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.ManagedIdentityReference` was added
+
+#### `models.DigitalTwinsIdentity` was modified
+
+* `userAssignedIdentities()` was added
+* `withUserAssignedIdentities(java.util.Map)` was added
+
+#### `models.EventGrid` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.DigitalTwinsEndpointResourceProperties` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.TimeSeriesDatabaseConnectionProperties` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `identity()` was added
+
+#### `models.AzureDataExplorerConnectionProperties` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.EventHub` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.ServiceBus` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+## 1.1.0-beta.1 (2022-12-20)
+
+- Azure Resource Manager AzureDigitalTwins client library for Java. This package contains Microsoft Azure SDK for AzureDigitalTwins Management SDK. Azure Digital Twins Client for managing DigitalTwinsInstance. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.IdentityType` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.ManagedIdentityReference` was added
+
+#### `models.DigitalTwinsIdentity` was modified
+
+* `withUserAssignedIdentities(java.util.Map)` was added
+* `userAssignedIdentities()` was added
+
+#### `models.EventGrid` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.DigitalTwinsEndpointResourceProperties` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `identity()` was added
+
+#### `models.TimeSeriesDatabaseConnectionProperties` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.AzureDataExplorerConnectionProperties` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.EventHub` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.ServiceBus` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
 
 ## 1.0.0 (2022-06-30)
 

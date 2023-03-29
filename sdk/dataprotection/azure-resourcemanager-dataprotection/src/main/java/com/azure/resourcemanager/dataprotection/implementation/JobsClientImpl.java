@@ -25,16 +25,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupJobResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupJobResourceList;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobsClient. */
 public final class JobsClientImpl implements JobsClient {
-    private final ClientLogger logger = new ClientLogger(JobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobsService service;
 
@@ -57,7 +55,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface JobsService {
+    public interface JobsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
@@ -67,7 +65,7 @@ public final class JobsClientImpl implements JobsClient {
         Mono<Response<AzureBackupJobResourceList>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @HeaderParam("Accept") String accept,
@@ -82,7 +80,7 @@ public final class JobsClientImpl implements JobsClient {
         Mono<Response<AzureBackupJobResourceInner>> get(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("jobId") String jobId,
@@ -103,12 +101,13 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBackupJobResourceInner>> listSinglePageAsync(
@@ -160,13 +159,14 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBackupJobResourceInner>> listSinglePageAsync(
@@ -215,12 +215,12 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBackupJobResourceInner> listAsync(String resourceGroupName, String vaultName) {
@@ -231,13 +231,13 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBackupJobResourceInner> listAsync(
@@ -250,12 +250,12 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String vaultName) {
@@ -265,13 +265,13 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Returns list of jobs belonging to a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(
@@ -282,13 +282,13 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job with id in a backup vault.
+     * @return a job with id in a backup vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBackupJobResourceInner>> getWithResponseAsync(
@@ -335,14 +335,14 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job with id in a backup vault.
+     * @return a job with id in a backup vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBackupJobResourceInner>> getWithResponseAsync(
@@ -386,31 +386,42 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job with id in a backup vault.
+     * @return a job with id in a backup vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureBackupJobResourceInner> getAsync(String resourceGroupName, String vaultName, String jobId) {
         return getWithResponseAsync(resourceGroupName, vaultName, jobId)
-            .flatMap(
-                (Response<AzureBackupJobResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a job with id in a backup vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job with id in a backup vault along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AzureBackupJobResourceInner> getWithResponse(
+        String resourceGroupName, String vaultName, String jobId, Context context) {
+        return getWithResponseAsync(resourceGroupName, vaultName, jobId, context).block();
+    }
+
+    /**
+     * Gets a job with id in a backup vault.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,35 +431,19 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureBackupJobResourceInner get(String resourceGroupName, String vaultName, String jobId) {
-        return getAsync(resourceGroupName, vaultName, jobId).block();
-    }
-
-    /**
-     * Gets a job with id in a backup vault.
-     *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param vaultName The name of the backup vault.
-     * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job with id in a backup vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBackupJobResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String jobId, Context context) {
-        return getWithResponseAsync(resourceGroupName, vaultName, jobId, context).block();
+        return getWithResponse(resourceGroupName, vaultName, jobId, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBackupJobResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -479,12 +474,14 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBackupJobResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ServiceEndpointPolicyDefinitions Get. */
 public final class ServiceEndpointPolicyDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ServiceEndpointPolicyDefinitionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ServiceEndpointPolicyDefinitionGet.json
      */
     /**
      * Sample code: Get service endpoint definition in service endpoint policy.
@@ -23,6 +21,6 @@ public final class ServiceEndpointPolicyDefinitionsGetSamples {
             .manager()
             .serviceClient()
             .getServiceEndpointPolicyDefinitions()
-            .getWithResponse("rg1", "testPolicy", "testDefinition", Context.NONE);
+            .getWithResponse("rg1", "testPolicy", "testDefinition", com.azure.core.util.Context.NONE);
     }
 }

@@ -41,6 +41,10 @@ public final class ImageTemplateLastRunStatus {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ImageTemplateLastRunStatus class. */
+    public ImageTemplateLastRunStatus() {
+    }
+
     /**
      * Get the startTime property: Start time of the last run (UTC).
      *

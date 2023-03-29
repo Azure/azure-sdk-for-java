@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InstancePoolLicenseType. */
+/**
+ * The license type. Possible values are 'LicenseIncluded' (price for SQL license is included) and 'BasePrice' (without
+ * SQL license price).
+ */
 public final class InstancePoolLicenseType extends ExpandableStringEnum<InstancePoolLicenseType> {
     /** Static value LicenseIncluded for InstancePoolLicenseType. */
     public static final InstancePoolLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");

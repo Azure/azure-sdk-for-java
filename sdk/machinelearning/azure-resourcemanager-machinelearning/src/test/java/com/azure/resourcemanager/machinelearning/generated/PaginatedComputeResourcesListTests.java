@@ -16,15 +16,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PaginatedComputeResourcesListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PaginatedComputeResourcesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"identity\":{\"principalId\":\"cf195185-4217-478b-b351-1f336eefd75c\",\"tenantId\":\"c083b884-6118-45b0-9fb7-1981e198fd88\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"unmmq\",\"tags\":{\"ocukoklyax\":\"xzko\"},\"sku\":{\"name\":\"onuq\",\"tier\":\"Basic\",\"size\":\"beypewrmjmw\",\"family\":\"jektcxsenh\",\"capacity\":2036309182},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"rzpwvlqdqgbiq\",\"provisioningState\":\"Deleting\",\"description\":\"kaet\",\"createdOn\":\"2021-03-20T05:01:22Z\",\"modifiedOn\":\"2021-02-19T02:27:03Z\",\"resourceId\":\"ivfsnk\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":false},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}],\"nextLink\":\"fnljky\"}")
+                    "{\"value\":[{\"identity\":{\"principalId\":\"6e82368f-483c-407c-b3d6-2d64ef6e71aa\",\"tenantId\":\"821c3424-4690-42c4-a22b-b51baca687f1\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"unmmq\",\"tags\":{\"ocukoklyax\":\"xzko\"},\"sku\":{\"name\":\"onuq\",\"tier\":\"Basic\",\"size\":\"beypewrmjmw\",\"family\":\"jektcxsenh\",\"capacity\":2036309182},\"properties\":{\"computeType\":\"Compute\",\"computeLocation\":\"rzpwvlqdqgbiq\",\"provisioningState\":\"Deleting\",\"description\":\"kaet\",\"createdOn\":\"2021-03-20T05:01:22Z\",\"modifiedOn\":\"2021-02-19T02:27:03Z\",\"resourceId\":\"ivfsnk\",\"provisioningErrors\":[],\"isAttachedCompute\":false,\"disableLocalAuth\":false},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}],\"nextLink\":\"fnljky\"}")
                 .toObject(PaginatedComputeResourcesList.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("unmmq", model.value().get(0).location());
@@ -41,8 +40,8 @@ public final class PaginatedComputeResourcesListTests {
         Assertions.assertEquals("fnljky", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PaginatedComputeResourcesList model =
             new PaginatedComputeResourcesList()
                 .withValue(

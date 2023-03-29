@@ -8,34 +8,33 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OverwriteOptions;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetRestoreInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TargetRestoreInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TargetRestoreInfo model =
             BinaryData
                 .fromString(
-                    "{\"overwriteOption\":\"Invalid\",\"containerId\":\"dxgketwzhhzjhfj\",\"databaseName\":\"vvmu\",\"targetDirectoryForFileRestore\":\"pmuneqsx\"}")
+                    "{\"overwriteOption\":\"FailOnConflict\",\"containerId\":\"qqs\",\"databaseName\":\"waoqvmmb\",\"targetDirectoryForFileRestore\":\"qfr\"}")
                 .toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.overwriteOption());
-        Assertions.assertEquals("dxgketwzhhzjhfj", model.containerId());
-        Assertions.assertEquals("vvmu", model.databaseName());
-        Assertions.assertEquals("pmuneqsx", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.overwriteOption());
+        Assertions.assertEquals("qqs", model.containerId());
+        Assertions.assertEquals("waoqvmmb", model.databaseName());
+        Assertions.assertEquals("qfr", model.targetDirectoryForFileRestore());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TargetRestoreInfo model =
             new TargetRestoreInfo()
-                .withOverwriteOption(OverwriteOptions.INVALID)
-                .withContainerId("dxgketwzhhzjhfj")
-                .withDatabaseName("vvmu")
-                .withTargetDirectoryForFileRestore("pmuneqsx");
+                .withOverwriteOption(OverwriteOptions.FAIL_ON_CONFLICT)
+                .withContainerId("qqs")
+                .withDatabaseName("waoqvmmb")
+                .withTargetDirectoryForFileRestore("qfr");
         model = BinaryData.fromObject(model).toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.overwriteOption());
-        Assertions.assertEquals("dxgketwzhhzjhfj", model.containerId());
-        Assertions.assertEquals("vvmu", model.databaseName());
-        Assertions.assertEquals("pmuneqsx", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.overwriteOption());
+        Assertions.assertEquals("qqs", model.containerId());
+        Assertions.assertEquals("waoqvmmb", model.databaseName());
+        Assertions.assertEquals("qfr", model.targetDirectoryForFileRestore());
     }
 }

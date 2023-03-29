@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes scaling information of a SKU. */
 @Immutable
 public final class ResourceSkuRestrictions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictions.class);
-
     /*
      * The type of restrictions.
      */
@@ -22,8 +18,8 @@ public final class ResourceSkuRestrictions {
     private ResourceSkuRestrictionsType type;
 
     /*
-     * The value of restrictions. If the restriction type is set to location.
-     * This would be different locations where the SKU is restricted.
+     * The value of restrictions. If the restriction type is set to location. This would be different locations where
+     * the SKU is restricted.
      */
     @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> values;
@@ -33,6 +29,10 @@ public final class ResourceSkuRestrictions {
      */
     @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuRestrictionsReasonCode reasonCode;
+
+    /** Creates an instance of ResourceSkuRestrictions class. */
+    public ResourceSkuRestrictions() {
+    }
 
     /**
      * Get the type property: The type of restrictions.

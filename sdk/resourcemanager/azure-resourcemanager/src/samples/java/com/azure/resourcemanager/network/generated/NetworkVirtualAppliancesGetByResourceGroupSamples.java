@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkVirtualAppliances GetByResourceGroup. */
 public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkVirtualApplianceGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceGet.json
      */
     /**
      * Sample code: Get NetworkVirtualAppliance.
@@ -22,6 +20,6 @@ public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getNetworkVirtualAppliances()
-            .getByResourceGroupWithResponse("rg1", "nva", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "nva", null, com.azure.core.util.Context.NONE);
     }
 }

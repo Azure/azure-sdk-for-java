@@ -15,32 +15,32 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     /*
-     * PrimaryConnectionString of the endpoint for key-based authentication.
-     * Will be obfuscated during read.
+     * PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
     @JsonProperty(value = "connectionStringPrimaryKey")
     private String connectionStringPrimaryKey;
 
     /*
-     * SecondaryConnectionString of the endpoint for key-based authentication.
-     * Will be obfuscated during read.
+     * SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
     @JsonProperty(value = "connectionStringSecondaryKey")
     private String connectionStringSecondaryKey;
 
     /*
-     * The URL of the EventHub namespace for identity-based authentication. It
-     * must include the protocol 'sb://'.
+     * The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'.
      */
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
-     * The EventHub name in the EventHub namespace for identity-based
-     * authentication.
+     * The EventHub name in the EventHub namespace for identity-based authentication.
      */
     @JsonProperty(value = "entityPath")
     private String entityPath;
+
+    /** Creates an instance of EventHub class. */
+    public EventHub() {
+    }
 
     /**
      * Get the connectionStringPrimaryKey property: PrimaryConnectionString of the endpoint for key-based
@@ -146,6 +146,13 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
     @Override
     public EventHub withDeadLetterUri(String deadLetterUri) {
         super.withDeadLetterUri(deadLetterUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventHub withIdentity(ManagedIdentityReference identity) {
+        super.withIdentity(identity);
         return this;
     }
 

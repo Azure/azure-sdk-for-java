@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.network.models.ActionType;
 import com.azure.resourcemanager.network.models.ExclusionManagedRule;
@@ -30,7 +29,7 @@ import java.util.Arrays;
 /** Samples for WebApplicationFirewallPolicies CreateOrUpdate. */
 public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a WAF policy within a resource group.
@@ -174,6 +173,6 @@ public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
                                                                             .withState(ManagedRuleEnabledState.DISABLED)
                                                                             .withAction(
                                                                                 ActionType.ANOMALY_SCORING)))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

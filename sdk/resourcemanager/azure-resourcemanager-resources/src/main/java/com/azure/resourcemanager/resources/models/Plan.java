@@ -40,6 +40,10 @@ public final class Plan {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of Plan class. */
+    public Plan() {
+    }
+
     /**
      * Get the name property: The plan ID.
      *

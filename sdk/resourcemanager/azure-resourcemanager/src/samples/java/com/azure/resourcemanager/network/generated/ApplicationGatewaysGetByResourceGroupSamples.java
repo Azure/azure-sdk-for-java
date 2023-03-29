@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationGateways GetByResourceGroup. */
 public final class ApplicationGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayGet.json
      */
     /**
      * Sample code: Get ApplicationGateway.
@@ -22,6 +20,6 @@ public final class ApplicationGatewaysGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .getByResourceGroupWithResponse("rg1", "appgw", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "appgw", com.azure.core.util.Context.NONE);
     }
 }

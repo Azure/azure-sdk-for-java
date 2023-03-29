@@ -13,7 +13,7 @@ import java.util.UUID;
 /** Samples for ServerAzureADAdministrators CreateOrUpdate. */
 public final class ServerAzureADAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/AdministratorCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/AdministratorCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates an existing Azure Active Directory administrator.
@@ -35,8 +35,7 @@ public final class ServerAzureADAdministratorsCreateOrUpdateSamples {
                     .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                     .withLogin("bob@contoso.com")
                     .withSid(UUID.fromString("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"))
-                    .withTenantId(UUID.fromString("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"))
-                    .withAzureADOnlyAuthentication(true),
+                    .withTenantId(UUID.fromString("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c")),
                 Context.NONE);
     }
 }

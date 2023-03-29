@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.DataVersionBase;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class DataVersionsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataVersionBase response =
-            manager.dataVersions().getWithResponse("x", "mdbgi", "ehfgsm", "rjuqbpxtokl", Context.NONE).getValue();
+            manager
+                .dataVersions()
+                .getWithResponse("x", "mdbgi", "ehfgsm", "rjuqbpxtokl", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("ngbso", response.properties().description());
         Assertions.assertEquals("kmii", response.properties().properties().get("zbkuckgkdsksw"));

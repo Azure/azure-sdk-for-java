@@ -23,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingPropertiesClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BillingPropertiesClient. */
 public final class BillingPropertiesClientImpl implements BillingPropertiesClient {
-    private final ClientLogger logger = new ClientLogger(BillingPropertiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BillingPropertiesService service;
 
@@ -55,7 +52,7 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface BillingPropertiesService {
+    public interface BillingPropertiesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingProperty/default")
         @ExpectedResponses({200})
@@ -86,7 +83,8 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the billing properties for a subscription.
+     * @return the billing properties for a subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingPropertyInner>> getWithResponseAsync() {
@@ -120,7 +118,8 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the billing properties for a subscription.
+     * @return the billing properties for a subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingPropertyInner>> getWithResponseAsync(Context context) {
@@ -148,19 +147,26 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the billing properties for a subscription.
+     * @return the billing properties for a subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingPropertyInner> getAsync() {
-        return getWithResponseAsync()
-            .flatMap(
-                (Response<BillingPropertyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the billing properties for a subscription. This operation is not supported for billing accounts with
+     * agreement type Enterprise Agreement.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties for a subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BillingPropertyInner> getWithResponse(Context context) {
+        return getWithResponseAsync(context).block();
     }
 
     /**
@@ -173,22 +179,7 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingPropertyInner get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Get the billing properties for a subscription. This operation is not supported for billing accounts with
-     * agreement type Enterprise Agreement.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the billing properties for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BillingPropertyInner> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+        return getWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -199,7 +190,7 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing property.
+     * @return a billing property along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingPropertyInner>> updateWithResponseAsync(BillingPropertyInner parameters) {
@@ -245,7 +236,7 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing property.
+     * @return a billing property along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingPropertyInner>> updateWithResponseAsync(
@@ -283,19 +274,27 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing property.
+     * @return a billing property on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingPropertyInner> updateAsync(BillingPropertyInner parameters) {
-        return updateWithResponseAsync(parameters)
-            .flatMap(
-                (Response<BillingPropertyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return updateWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the billing property of a subscription. Currently, cost center can be updated. The operation is supported
+     * only for billing accounts with agreement type Microsoft Customer Agreement.
+     *
+     * @param parameters Request parameters that are provided to the update billing property operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a billing property along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BillingPropertyInner> updateWithResponse(BillingPropertyInner parameters, Context context) {
+        return updateWithResponseAsync(parameters, context).block();
     }
 
     /**
@@ -310,22 +309,6 @@ public final class BillingPropertiesClientImpl implements BillingPropertiesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingPropertyInner update(BillingPropertyInner parameters) {
-        return updateAsync(parameters).block();
-    }
-
-    /**
-     * Updates the billing property of a subscription. Currently, cost center can be updated. The operation is supported
-     * only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param parameters Request parameters that are provided to the update billing property operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing property.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BillingPropertyInner> updateWithResponse(BillingPropertyInner parameters, Context context) {
-        return updateWithResponseAsync(parameters, context).block();
+        return updateWithResponse(parameters, Context.NONE).getValue();
     }
 }

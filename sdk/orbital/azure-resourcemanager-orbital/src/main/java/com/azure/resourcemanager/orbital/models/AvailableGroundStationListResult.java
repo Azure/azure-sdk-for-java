@@ -24,6 +24,10 @@ public final class AvailableGroundStationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AvailableGroundStationListResult class. */
+    public AvailableGroundStationListResult() {
+    }
+
     /**
      * Get the value property: A list of ground station resources.
      *

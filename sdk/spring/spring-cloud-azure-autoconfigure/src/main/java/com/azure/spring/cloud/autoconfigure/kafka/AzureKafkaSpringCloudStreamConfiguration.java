@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import(AzureGlobalPropertiesAutoConfiguration.class)
 public class AzureKafkaSpringCloudStreamConfiguration {
-    static final String AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS = AzureKafkaSpringCloudStreamConfiguration.class.getName();
 
     @Bean
     static KafkaBinderConfigurationPropertiesBeanPostProcessor kafkaBinderConfigurationPropertiesBeanPostProcessor(

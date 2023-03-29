@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConfigurationPolicyGroups Get. */
 public final class ConfigurationPolicyGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ConfigurationPolicyGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ConfigurationPolicyGroupGet.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupGet.
@@ -22,6 +20,6 @@ public final class ConfigurationPolicyGroupsGetSamples {
             .manager()
             .serviceClient()
             .getConfigurationPolicyGroups()
-            .getWithResponse("rg1", "vpnServerConfiguration1", "policyGroup1", Context.NONE);
+            .getWithResponse("rg1", "vpnServerConfiguration1", "policyGroup1", com.azure.core.util.Context.NONE);
     }
 }

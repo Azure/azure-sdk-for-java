@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.billing.models.InvoiceSectionsOnExpand;
 import com.azure.resourcemanager.billing.models.SpendingLimit;
 import com.azure.resourcemanager.billing.models.StatusReasonCode;
 import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,8 +22,6 @@ import java.util.Map;
 /** The properties of the billing profile. */
 @Fluent
 public final class BillingProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfileProperties.class);
-
     /*
      * The name of the billing profile.
      */
@@ -33,8 +29,7 @@ public final class BillingProfileProperties {
     private String displayName;
 
     /*
-     * The purchase order name that will appear on the invoices generated for
-     * the billing profile.
+     * The purchase order name that will appear on the invoices generated for the billing profile.
      */
     @JsonProperty(value = "poNumber")
     private String poNumber;
@@ -52,22 +47,19 @@ public final class BillingProfileProperties {
     private AddressDetails billTo;
 
     /*
-     * Identifies the billing profile that is linked to another billing profile
-     * in indirect purchase motion.
+     * Identifies the billing profile that is linked to another billing profile in indirect purchase motion.
      */
     @JsonProperty(value = "indirectRelationshipInfo", access = JsonProperty.Access.WRITE_ONLY)
     private IndirectRelationshipInfo indirectRelationshipInfo;
 
     /*
-     * Flag controlling whether the invoices for the billing profile are sent
-     * through email.
+     * Flag controlling whether the invoices for the billing profile are sent through email.
      */
     @JsonProperty(value = "invoiceEmailOptIn")
     private Boolean invoiceEmailOptIn;
 
     /*
-     * The day of the month when the invoice for the billing profile is
-     * generated.
+     * The day of the month when the invoice for the billing profile is generated.
      */
     @JsonProperty(value = "invoiceDay", access = JsonProperty.Access.WRITE_ONLY)
     private Integer invoiceDay;
@@ -85,8 +77,8 @@ public final class BillingProfileProperties {
     private List<AzurePlan> enabledAzurePlans;
 
     /*
-     * The invoice sections associated to the billing profile. By default this
-     * is not populated, unless it's specified in $expand.
+     * The invoice sections associated to the billing profile. By default this is not populated, unless it's specified
+     * in $expand.
      */
     @JsonProperty(value = "invoiceSections")
     private InvoiceSectionsOnExpand invoiceSections;
@@ -122,9 +114,8 @@ public final class BillingProfileProperties {
     private SpendingLimit spendingLimit;
 
     /*
-     * Identifies the cloud environments that are associated with a billing
-     * profile. This is a system managed optional field and gets updated as the
-     * billing profile gets associated with accounts in various clouds.
+     * Identifies the cloud environments that are associated with a billing profile. This is a system managed optional
+     * field and gets updated as the billing profile gets associated with accounts in various clouds.
      */
     @JsonProperty(value = "targetClouds", access = JsonProperty.Access.WRITE_ONLY)
     private List<TargetCloud> targetClouds;
@@ -135,6 +126,10 @@ public final class BillingProfileProperties {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of BillingProfileProperties class. */
+    public BillingProfileProperties() {
+    }
 
     /**
      * Get the displayName property: The name of the billing profile.

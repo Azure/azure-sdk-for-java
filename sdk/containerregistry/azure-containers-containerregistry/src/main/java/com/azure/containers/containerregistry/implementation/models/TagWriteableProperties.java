@@ -5,34 +5,37 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** Changeable attributes. */
 @Fluent
-public final class TagWriteableProperties {
+public final class TagWriteableProperties implements JsonSerializable<TagWriteableProperties> {
     /*
      * Delete enabled
      */
-    @JsonProperty(value = "deleteEnabled")
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
-    @JsonProperty(value = "writeEnabled")
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
-    @JsonProperty(value = "listEnabled")
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
-    @JsonProperty(value = "readEnabled")
     private Boolean readEnabled;
+
+    /** Creates an instance of TagWriteableProperties class. */
+    public TagWriteableProperties() {}
 
     /**
      * Get the deleteEnabled property: Delete enabled.
@@ -112,5 +115,50 @@ public final class TagWriteableProperties {
     public TagWriteableProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("deleteEnabled", this.deleteEnabled);
+        jsonWriter.writeBooleanField("writeEnabled", this.writeEnabled);
+        jsonWriter.writeBooleanField("listEnabled", this.listEnabled);
+        jsonWriter.writeBooleanField("readEnabled", this.readEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagWriteableProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagWriteableProperties if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagWriteableProperties.
+     */
+    public static TagWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    TagWriteableProperties deserializedTagWriteableProperties = new TagWriteableProperties();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("deleteEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.deleteEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("writeEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.writeEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("listEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.listEnabled = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("readEnabled".equals(fieldName)) {
+                            deserializedTagWriteableProperties.readEnabled = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedTagWriteableProperties;
+                });
     }
 }

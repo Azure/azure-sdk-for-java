@@ -59,7 +59,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface AvailablePrivateEndpointTypesService {
+    public interface AvailablePrivateEndpointTypesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
@@ -137,7 +137,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -191,7 +191,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -299,7 +299,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -359,7 +359,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

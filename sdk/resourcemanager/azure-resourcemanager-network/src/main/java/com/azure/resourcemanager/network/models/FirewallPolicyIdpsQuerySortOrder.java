@@ -17,6 +17,15 @@ public final class FirewallPolicyIdpsQuerySortOrder extends ExpandableStringEnum
     public static final FirewallPolicyIdpsQuerySortOrder DESCENDING = fromString("Descending");
 
     /**
+     * Creates a new instance of FirewallPolicyIdpsQuerySortOrder value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyIdpsQuerySortOrder() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyIdpsQuerySortOrder from its string representation.
      *
      * @param name a name to look for.

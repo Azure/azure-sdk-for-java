@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Port range details. */
 @Fluent
 public final class EndpointRangeDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointRangeDescription.class);
-
     /*
      * Starting port of a range of ports
      */
@@ -25,6 +21,10 @@ public final class EndpointRangeDescription {
      */
     @JsonProperty(value = "endPort", required = true)
     private int endPort;
+
+    /** Creates an instance of EndpointRangeDescription class. */
+    public EndpointRangeDescription() {
+    }
 
     /**
      * Get the startPort property: Starting port of a range of ports.

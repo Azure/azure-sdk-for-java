@@ -20,6 +20,15 @@ public final class SparkThriftTransportProtocol extends ExpandableStringEnum<Spa
     public static final SparkThriftTransportProtocol HTTP = fromString("HTTP ");
 
     /**
+     * Creates a new instance of SparkThriftTransportProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkThriftTransportProtocol() {
+    }
+
+    /**
      * Creates or finds a SparkThriftTransportProtocol from its string representation.
      *
      * @param name a name to look for.

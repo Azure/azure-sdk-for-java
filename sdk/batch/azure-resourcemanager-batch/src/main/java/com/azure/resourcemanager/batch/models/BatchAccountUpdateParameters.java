@@ -33,6 +33,10 @@ public final class BatchAccountUpdateParameters {
     @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
 
+    /** Creates an instance of BatchAccountUpdateParameters class. */
+    public BatchAccountUpdateParameters() {
+    }
+
     /**
      * Get the tags property: The user-specified tags associated with the account.
      *
@@ -155,6 +159,52 @@ public final class BatchAccountUpdateParameters {
             this.innerProperties = new BatchAccountUpdateProperties();
         }
         this.innerProperties().withAllowedAuthenticationModes(allowedAuthenticationModes);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessType publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the BatchAccountUpdateParameters object itself.
+     */
+    public BatchAccountUpdateParameters withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountUpdateParameters object itself.
+     */
+    public BatchAccountUpdateParameters withNetworkProfile(NetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 

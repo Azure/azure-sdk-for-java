@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.Properties;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_AUTHORITY_HOST;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
@@ -102,6 +103,7 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         properties.put(PROPERTY_AZURE_CLIENT_ID, "core-client-id");
         properties.put(PROPERTY_AZURE_CLIENT_SECRET, "core-client-secret");
         properties.put(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "core-client-cert-path");
+        properties.put(PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "core-client-cert-password");
         properties.put(PROPERTY_AZURE_USERNAME, "core-username");
         properties.put(PROPERTY_AZURE_PASSWORD, "core-password");
         properties.put(PROPERTY_AZURE_TENANT_ID, "core-tenant-id");
@@ -124,6 +126,7 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         assertEquals("core-client-id", globalProperties.getCredential().getClientId());
         assertEquals("core-client-secret", globalProperties.getCredential().getClientSecret());
         assertEquals("core-client-cert-path", globalProperties.getCredential().getClientCertificatePath());
+        assertEquals("core-client-cert-password", globalProperties.getCredential().getClientCertificatePassword());
         assertEquals("core-username", globalProperties.getCredential().getUsername());
         assertEquals("core-password", globalProperties.getCredential().getPassword());
         assertEquals("core-tenant-id", globalProperties.getProfile().getTenantId());

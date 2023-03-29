@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The policies for Enterprise Agreement enrollments. */
 @Immutable
 public final class EnrollmentPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentPolicies.class);
-
     /*
      * The policy that controls whether Account Owners can view charges.
      */
@@ -21,25 +17,26 @@ public final class EnrollmentPolicies {
     private Boolean accountOwnerViewCharges;
 
     /*
-     * The policy that controls whether Department Administrators can view
-     * charges.
+     * The policy that controls whether Department Administrators can view charges.
      */
     @JsonProperty(value = "departmentAdminViewCharges", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean departmentAdminViewCharges;
 
     /*
-     * The policy that controls whether Azure marketplace purchases are allowed
-     * in the enrollment.
+     * The policy that controls whether Azure marketplace purchases are allowed in the enrollment.
      */
     @JsonProperty(value = "marketplaceEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean marketplaceEnabled;
 
     /*
-     * The policy that controls whether Azure reservation purchases are allowed
-     * in the enrollment.
+     * The policy that controls whether Azure reservation purchases are allowed in the enrollment.
      */
     @JsonProperty(value = "reservedInstancesEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean reservedInstancesEnabled;
+
+    /** Creates an instance of EnrollmentPolicies class. */
+    public EnrollmentPolicies() {
+    }
 
     /**
      * Get the accountOwnerViewCharges property: The policy that controls whether Account Owners can view charges.

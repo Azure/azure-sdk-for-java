@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PublicIpAddresses GetCloudServicePublicIpAddress. */
 public final class PublicIpAddressesGetCloudServicePublicIpAddressSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/CloudServicePublicIpGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/CloudServicePublicIpGet.json
      */
     /**
      * Sample code: GetVMSSPublicIP.
@@ -23,6 +21,6 @@ public final class PublicIpAddressesGetCloudServicePublicIpAddressSamples {
             .serviceClient()
             .getPublicIpAddresses()
             .getCloudServicePublicIpAddressWithResponse(
-                "cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", "pub1", null, Context.NONE);
+                "cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", "pub1", null, com.azure.core.util.Context.NONE);
     }
 }

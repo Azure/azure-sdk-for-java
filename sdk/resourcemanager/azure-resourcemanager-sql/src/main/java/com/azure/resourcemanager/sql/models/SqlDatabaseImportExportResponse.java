@@ -7,12 +7,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.sql.fluent.models.ImportExportResponseInner;
+import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
 
 /** Response containing result of the Azure SQL Database import or export operation. */
 @Fluent
 public interface SqlDatabaseImportExportResponse
-    extends Indexable, HasInnerModel<ImportExportResponseInner>, HasId, HasName {
+    extends Indexable, HasInnerModel<ImportExportOperationResultInner>, HasId, HasName {
     /** @return the request type of the operation */
     String requestType();
 

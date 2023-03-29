@@ -29,6 +29,7 @@ import com.azure.monitor.query.implementation.logs.models.Table;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
+import com.azure.monitor.query.models.LogsColumnType;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
@@ -258,6 +259,128 @@ public final class LogsQueryAsyncClient {
         return queryBatchWithResponse(logsBatchQuery, Context.NONE);
     }
 
+    /**
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     *
+     * <p><strong>Query logs from the last 24 hours</strong></p>
+     * <!-- src_embed com.azure.monitor.query.LogsQueryAsyncClient.queryResource#String-String-QueryTimeInterval -->
+     * <pre>
+     * Mono&lt;LogsQueryResult&gt; queryResult = logsQueryAsyncClient.queryResource&#40;&quot;&#123;resource-id&#125;&quot;, &quot;&#123;kusto-query&#125;&quot;,
+     *     QueryTimeInterval.LAST_DAY&#41;;
+     * queryResult.subscribe&#40;result -&gt; &#123;
+     *     for &#40;LogsTableRow row : result.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *         System.out.println&#40;row.getRow&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .map&#40;LogsTableCell::getValueAsString&#41;
+     *             .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryAsyncClient.queryResource#String-String-QueryTimeInterval -->
+     *
+     * @param resourceId The resourceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @return The logs matching the query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogsQueryResult> queryResource(String resourceId, String query, QueryTimeInterval timeInterval) {
+        return queryResourceWithResponse(resourceId, query, timeInterval, new LogsQueryOptions())
+            .map(Response::getValue);
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     *
+     * @param resourceId The resourceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param type The type the result of this query should be mapped to.
+     * @param <T> The type the result of this query should be mapped to.
+     * @return The logs matching the query as a list of objects of type T.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<List<T>> queryResource(String resourceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
+        return queryResource(resourceId, query, timeInterval)
+            .map(result -> LogsQueryHelper.toObject(result.getTable(), type));
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     *
+     * @param resourceId The resourceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param type The type the result of this query should be mapped to.
+     * @param <T> The type the result of this query should be mapped to.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
+     * @return The logs matching the query as a list of objects of type T.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<List<T>> queryResource(String resourceId, String query, QueryTimeInterval timeInterval,
+                                            Class<T> type, LogsQueryOptions options) {
+        return queryResourceWithResponse(resourceId, query, timeInterval, options, Context.NONE)
+            .map(response -> LogsQueryHelper.toObject(response.getValue().getTable(), type));
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     *
+     * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
+     *
+     * <!-- src_embed com.azure.monitor.query.LogsQueryAsyncClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions -->
+     * <pre>
+     * Mono&lt;Response&lt;LogsQueryResult&gt;&gt; queryResult = logsQueryAsyncClient.queryResourceWithResponse&#40;&quot;&#123;resource-id&#125;&quot;,
+     *     &quot;&#123;kusto-query&#125;&quot;,
+     *     QueryTimeInterval.LAST_7_DAYS,
+     *     new LogsQueryOptions&#40;&#41;.setServerTimeout&#40;Duration.ofMinutes&#40;2&#41;&#41;&#41;;
+     *
+     * queryResult.subscribe&#40;result -&gt; &#123;
+     *     for &#40;LogsTableRow row : result.getValue&#40;&#41;.getTable&#40;&#41;.getRows&#40;&#41;&#41; &#123;
+     *         System.out.println&#40;row.getRow&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .map&#40;LogsTableCell::getValueAsString&#41;
+     *             .collect&#40;Collectors.joining&#40;&quot;,&quot;&#41;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.monitor.query.LogsQueryAsyncClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions -->
+     *
+     * @param resourceId The resourceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
+     * @return The logs matching the query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<LogsQueryResult>> queryResourceWithResponse(String resourceId, String query,
+                                                                      QueryTimeInterval timeInterval, LogsQueryOptions options) {
+        return withContext(context -> queryResourceWithResponse(resourceId, query, timeInterval, options, context));
+    }
+
+    /**
+     * Returns all the Azure Monitor logs matching the given query for an Azure resource.
+     *
+     * @param resourceId The resourceId where the query should be executed.
+     * @param query The Kusto query to fetch the logs.
+     * @param timeInterval The time period for which the logs should be looked up.
+     * @param type The type the result of this query should be mapped to.
+     * @param <T> The type the result of this query should be mapped to.
+     * @param options The log query options to configure server timeout, set additional workspaces or enable
+     * statistics and rendering information in response.
+     * @return The logs matching the query including the HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<Response<List<T>>> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
+                                                                  Class<T> type, LogsQueryOptions options) {
+        return queryResourceWithResponse(resourceId, query, timeInterval, options)
+            .map(response -> new SimpleResponse<>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(),
+                LogsQueryHelper.toObject(response.getValue().getTable(), type)));
+    }
+
     Mono<Response<LogsBatchQueryResultCollection>> queryBatchWithResponse(LogsBatchQuery logsBatchQuery, Context context) {
         List<BatchQueryRequest> requests = LogsQueryHelper.getBatchQueries(logsBatchQuery);
         Duration maxServerTimeout = LogsQueryHelper.getMaxServerTimeout(logsBatchQuery);
@@ -364,6 +487,48 @@ public final class LogsQueryAsyncClient {
                 });
     }
 
+    Mono<Response<LogsQueryResult>> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
+                                                               LogsQueryOptions options, Context context) {
+        if (resourceId != null && resourceId.startsWith("/")) {
+            resourceId = resourceId.substring(1);
+        }
+        String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
+        context = updateContext(options.getServerTimeout(), context);
+
+        QueryBody queryBody = new QueryBody(query);
+        if (timeInterval != null) {
+            queryBody.setTimespan(LogsQueryHelper.toIso8601Format(timeInterval));
+        }
+        queryBody.setWorkspaces(getAllWorkspaces(options));
+        return innerClient
+            .getQueries()
+            .resourceExecuteWithResponseAsync(resourceId,
+                queryBody,
+                preferHeader,
+                context)
+            .onErrorMap(ex -> {
+                if (ex instanceof ErrorResponseException) {
+                    ErrorResponseException error = (ErrorResponseException) ex;
+                    ErrorInfo errorInfo = error.getValue().getError();
+                    return new HttpResponseException(error.getMessage(), error.getResponse(),
+                        mapLogsQueryError(errorInfo));
+                }
+                return ex;
+            })
+            .map(this::convertToLogQueryResult)
+            .handle((Response<LogsQueryResult> response, SynchronousSink<Response<LogsQueryResult>> sink) -> {
+                if (response.getValue().getQueryResultStatus() == LogsQueryResultStatus.PARTIAL_FAILURE
+                    && !options.isAllowPartialErrors()) {
+
+                    sink.error(new ServiceResponseException("Query execution returned partial errors. To "
+                        + "disable exceptions on partial errors, set setAllowPartialErrors in "
+                        + "LogsQueryOptions to true."));
+                } else {
+                    sink.next(response);
+                }
+            });
+    }
+
     private Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
         QueryResults queryResults = response.getValue();
         LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(), queryResults.getStatistics(),
@@ -391,8 +556,12 @@ public final class LogsQueryAsyncClient {
                     LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
                     tableRows.add(tableRow);
                     for (int j = 0; j < row.size(); j++) {
+                        LogsColumnType columnType = table.getColumns().get(j).getType() == null
+                                ? null
+                                : LogsColumnType.fromString(table.getColumns().get(j).getType().toString());
                         LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-                                table.getColumns().get(j).getType(), j, i, row.get(j));
+                                columnType, j, i,
+                                row.get(j));
                         tableCells.add(cell);
                         tableRow.getRow().add(cell);
                     }

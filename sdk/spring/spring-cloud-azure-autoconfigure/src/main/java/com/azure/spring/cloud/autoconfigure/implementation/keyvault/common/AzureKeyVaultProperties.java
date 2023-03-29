@@ -15,7 +15,7 @@ public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationPrope
     public static final String PREFIX = "spring.cloud.azure.keyvault";
 
     /**
-     * Azure Key Vault endpoint.
+     * Azure Key Vault endpoint. For instance, 'https://{your-unique-keyvault-name}.vault.azure.net/'.
      */
     private String endpoint;
 

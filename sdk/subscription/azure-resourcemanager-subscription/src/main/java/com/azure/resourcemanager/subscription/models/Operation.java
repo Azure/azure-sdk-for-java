@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.subscription.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** REST API operation. */
 @Fluent
 public final class Operation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
@@ -25,6 +21,10 @@ public final class Operation {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /** Creates an instance of Operation class. */
+    public Operation() {
+    }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.

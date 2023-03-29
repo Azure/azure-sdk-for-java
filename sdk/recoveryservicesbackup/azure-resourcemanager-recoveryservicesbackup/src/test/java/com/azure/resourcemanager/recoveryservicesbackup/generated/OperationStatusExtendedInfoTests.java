@@ -6,19 +6,18 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatusExtendedInfo;
-import org.junit.jupiter.api.Test;
 
 public final class OperationStatusExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationStatusExtendedInfo model =
             BinaryData
                 .fromString("{\"objectType\":\"OperationStatusExtendedInfo\"}")
                 .toObject(OperationStatusExtendedInfo.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationStatusExtendedInfo model = new OperationStatusExtendedInfo();
         model = BinaryData.fromObject(model).toObject(OperationStatusExtendedInfo.class);
     }

@@ -63,7 +63,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface RouteFilterRulesService {
+    public interface RouteFilterRulesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -176,7 +176,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +232,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -305,7 +305,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeFilterName, String ruleName) {
-        return beginDeleteAsync(resourceGroupName, routeFilterName, ruleName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, routeFilterName, ruleName).getSyncPoller();
     }
 
     /**
@@ -323,7 +323,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeFilterName, String ruleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, routeFilterName, ruleName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, routeFilterName, ruleName, context).getSyncPoller();
     }
 
     /**
@@ -432,7 +432,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -489,7 +489,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -604,7 +604,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         } else {
             routeFilterRuleParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -674,7 +674,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         } else {
             routeFilterRuleParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -768,7 +768,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         String routeFilterName,
         String ruleName,
         RouteFilterRuleInner routeFilterRuleParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters)
             .getSyncPoller();
     }
 
@@ -792,8 +793,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         String ruleName,
         RouteFilterRuleInner routeFilterRuleParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, context)
             .getSyncPoller();
     }
 
@@ -925,7 +926,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -986,7 +987,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -4,6 +4,8 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -123,6 +125,28 @@ public interface CosmosOperations {
      */
     <T> T insert(T objectToSave, PartitionKey partitionKey);
 
+    /**
+     * patches item
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}, max operations is 10
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations);
+
+    /**
+     * patches item
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}, max operations is 10
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
     /**
      * Inserts item
      *

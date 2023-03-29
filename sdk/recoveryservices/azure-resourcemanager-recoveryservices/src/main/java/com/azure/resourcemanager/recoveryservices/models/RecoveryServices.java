@@ -14,7 +14,24 @@ public interface RecoveryServices {
      * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
      * their time of deletion be more than 24 Hours Ago.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location Location of the resource.
+     * @param input Contains information about Resource type and Resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for check name availability API along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
+        String resourceGroupName, String location, CheckNameAvailabilityParameters input, Context context);
+
+    /**
+     * API to check for resource name availability. A name is available if no other resource exists that has the same
+     * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
+     * their time of deletion be more than 24 Hours Ago.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location Location of the resource.
      * @param input Contains information about Resource type and Resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,19 +43,28 @@ public interface RecoveryServices {
         String resourceGroupName, String location, CheckNameAvailabilityParameters input);
 
     /**
-     * API to check for resource name availability. A name is available if no other resource exists that has the same
-     * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
-     * their time of deletion be more than 24 Hours Ago.
+     * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param location Location of the resource.
-     * @param input Contains information about Resource type and Resource name.
+     * @param input Contains information about Resource type and properties to get capabilities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for check name availability API along with {@link Response}.
+     * @return capabilities response for Microsoft.RecoveryServices along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input, Context context);
+    Response<CapabilitiesResponse> capabilitiesWithResponse(
+        String location, ResourceCapabilities input, Context context);
+
+    /**
+     * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
+     *
+     * @param location Location of the resource.
+     * @param input Contains information about Resource type and properties to get capabilities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return capabilities response for Microsoft.RecoveryServices.
+     */
+    CapabilitiesResponse capabilities(String location, ResourceCapabilities input);
 }
