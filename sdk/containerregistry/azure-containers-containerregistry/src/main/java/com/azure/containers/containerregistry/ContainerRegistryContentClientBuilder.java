@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.containers.containerregistry.specialized;
+package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -35,15 +34,15 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * ContainerRegistryBlobClient ContainerRegistryBlobClients} and {@link ContainerRegistryBlobAsyncClient ContainerRegistryBlobAsyncClients}, call {@link
+ * ContainerRegistryContentClient ContainerRegistryContentClients} and {@link ContainerRegistryContentAsyncClient ContainerRegistryContentAsyncClients}, call {@link
  * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
  * the desired client.
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
  * {@link #pipeline(HttpPipeline) this} and set the service endpoint with {@link #endpoint(String) this}. Using a
- * pipeline requires additional setup but allows for finer control on how the {@link ContainerRegistryBlobClient} and {@link
- * ContainerRegistryBlobAsyncClient} is built.</p>
+ * pipeline requires additional setup but allows for finer control on how the {@link ContainerRegistryContentClient} and {@link
+ * ContainerRegistryContentAsyncClient} is built.</p>
  * <p>The service does not directly support AAD credentials and as a result the clients internally depend on a policy that converts
  * the AAD credentials to the Azure Container Registry specific service credentials. In case you use your own pipeline, you
  * would need to provide implementation for this policy as well.
@@ -52,15 +51,15 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  */
 @ServiceClientBuilder(
     serviceClients = {
-        ContainerRegistryBlobAsyncClient.class,
-        ContainerRegistryBlobClient.class
+        ContainerRegistryContentAsyncClient.class,
+        ContainerRegistryContentClient.class
     })
-public final class ContainerRegistryBlobClientBuilder implements
-    ConfigurationTrait<ContainerRegistryBlobClientBuilder>,
-    EndpointTrait<ContainerRegistryBlobClientBuilder>,
-    HttpTrait<ContainerRegistryBlobClientBuilder>,
-    TokenCredentialTrait<ContainerRegistryBlobClientBuilder> {
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryBlobClientBuilder.class);
+public final class ContainerRegistryContentClientBuilder implements
+    ConfigurationTrait<ContainerRegistryContentClientBuilder>,
+    EndpointTrait<ContainerRegistryContentClientBuilder>,
+    HttpTrait<ContainerRegistryContentClientBuilder>,
+    TokenCredentialTrait<ContainerRegistryContentClientBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryContentClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -81,11 +80,11 @@ public final class ContainerRegistryBlobClientBuilder implements
      * Sets the service endpoint for the Azure Container Registry instance.
      *
      * @param endpoint The URL of the Container Registry instance.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder endpoint(String endpoint) {
+    public ContainerRegistryContentClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
@@ -100,9 +99,9 @@ public final class ContainerRegistryBlobClientBuilder implements
      * Sets the repository name for the Azure Container Registry Blob instance.
      *
      * @param repositoryName The URL of the Container Registry instance.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
-    public ContainerRegistryBlobClientBuilder repository(String repositoryName) {
+    public ContainerRegistryContentClientBuilder repositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
         return this;
     }
@@ -111,9 +110,9 @@ public final class ContainerRegistryBlobClientBuilder implements
      * Sets the audience for the Azure Container Registry service.
      *
      * @param audience ARM management scope associated with the given registry.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
-    public ContainerRegistryBlobClientBuilder audience(ContainerRegistryAudience audience) {
+    public ContainerRegistryContentClientBuilder audience(ContainerRegistryAudience audience) {
         this.audience = audience;
         return this;
     }
@@ -124,10 +123,10 @@ public final class ContainerRegistryBlobClientBuilder implements
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder credential(TokenCredential credential) {
+    public ContainerRegistryContentClientBuilder credential(TokenCredential credential) {
         this.credential = credential;
         return this;
     }
@@ -143,7 +142,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
      * If {@code pipeline} is set, all settings other than {@link #endpoint(String) endpoint} are ignored
-     * to build {@link ContainerRegistryBlobClient} or {@link ContainerRegistryBlobAsyncClient}.<br>
+     * to build {@link ContainerRegistryContentClient} or {@link ContainerRegistryContentAsyncClient}.<br>
      * </p>
      *
      * This service takes dependency on an internal policy which converts Azure token credentials into Azure Container Registry specific service credentials.
@@ -152,10 +151,10 @@ public final class ContainerRegistryBlobClientBuilder implements
      * {For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a> }.
      *
      * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public ContainerRegistryContentClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -170,9 +169,9 @@ public final class ContainerRegistryBlobClientBuilder implements
      * newer version of the client library may result in moving to a newer service version.
      *
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
-    public ContainerRegistryBlobClientBuilder serviceVersion(ContainerRegistryServiceVersion version) {
+    public ContainerRegistryContentClientBuilder serviceVersion(ContainerRegistryServiceVersion version) {
         this.version = version;
         return this;
     }
@@ -188,10 +187,10 @@ public final class ContainerRegistryBlobClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param httpClient The {@link HttpClient} to use for requests.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder httpClient(HttpClient httpClient) {
+    public ContainerRegistryContentClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -215,11 +214,11 @@ public final class ContainerRegistryBlobClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      *
-     * @return the updated {@link ContainerRegistryBlobClientBuilder} object
+     * @return the updated {@link ContainerRegistryContentClientBuilder} object
      * @see HttpClientOptions
      */
     @Override
-    public ContainerRegistryBlobClientBuilder clientOptions(ClientOptions clientOptions) {
+    public ContainerRegistryContentClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -231,10 +230,10 @@ public final class ContainerRegistryBlobClientBuilder implements
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.</p>
      *
      * @param configuration The configuration store to be used.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder configuration(Configuration configuration) {
+    public ContainerRegistryContentClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -252,10 +251,10 @@ public final class ContainerRegistryBlobClientBuilder implements
      *
      * @param httpLogOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests
      * to and from the service.
-     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
+     * @return The updated {@link ContainerRegistryContentClientBuilder} object.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public ContainerRegistryContentClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -264,14 +263,14 @@ public final class ContainerRegistryBlobClientBuilder implements
      * Sets the {@link HttpPipelinePolicy} that is used to retry requests.
      * <p>
      * The default retry policy will be used if not provided {@link #buildAsyncClient()} to
-     * build {@link ContainerRegistryBlobAsyncClient}.
+     * build {@link ContainerRegistryContentAsyncClient}.
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
      * {@link RetryPolicy} can be used to retry requests.
      *
-     * @return The updated ContainerRegistryBlobClientBuilder object.
+     * @return The updated ContainerRegistryContentClientBuilder object.
      */
-    public ContainerRegistryBlobClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public ContainerRegistryContentClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -290,10 +289,10 @@ public final class ContainerRegistryBlobClientBuilder implements
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
-     * @return The updated ContainerRegistryBlobClientBuilder object.
+     * @return The updated ContainerRegistryContentClientBuilder object.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder retryOptions(RetryOptions retryOptions) {
+    public ContainerRegistryContentClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -309,11 +308,11 @@ public final class ContainerRegistryBlobClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param policy A {@link HttpPipelinePolicy pipeline policy}.
-     * @return The updated ContainerRegistryBlobClientBuilder object.
+     * @return The updated ContainerRegistryContentClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
     @Override
-    public ContainerRegistryBlobClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public ContainerRegistryContentClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -326,17 +325,17 @@ public final class ContainerRegistryBlobClientBuilder implements
     }
 
     /**
-     * Creates a {@link ContainerRegistryBlobAsyncClient} based on options set in the Builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryBlobAsyncClient} is created.
+     * Creates a {@link ContainerRegistryContentAsyncClient} based on options set in the Builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryContentAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link ContainerRegistryBlobAsyncClient client}. All other builder settings are ignored.
+     * are used to create the {@link ContainerRegistryContentAsyncClient client}. All other builder settings are ignored.
      *
-     * @return A {@link ContainerRegistryBlobAsyncClient} with the options set from the builder.
+     * @return A {@link ContainerRegistryContentAsyncClient} with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} is null.
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      */
-    public ContainerRegistryBlobAsyncClient buildAsyncClient() {
+    public ContainerRegistryContentAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' can't be null");
 
         // Service version
@@ -347,22 +346,22 @@ public final class ContainerRegistryBlobClientBuilder implements
         Tracer tracer = createTracer(clientOptions);
         HttpPipeline pipeline = getHttpPipeline(tracer);
 
-        ContainerRegistryBlobAsyncClient client = new ContainerRegistryBlobAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion(), tracer);
+        ContainerRegistryContentAsyncClient client = new ContainerRegistryContentAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion(), tracer);
         return client;
     }
 
     /**
-     * Creates a {@link ContainerRegistryBlobClient} based on options set in the Builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryBlobClient} is created.
+     * Creates a {@link ContainerRegistryContentClient} based on options set in the Builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link ContainerRegistryContentClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline)}  pipeline} is set, then the {@code pipeline} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link ContainerRegistryBlobClient client}. All other builder settings are ignored.
+     * are used to create the {@link ContainerRegistryContentClient client}. All other builder settings are ignored.
      *
-     * @return A {@link ContainerRegistryBlobClient} with the options set from the builder.
+     * @return A {@link ContainerRegistryContentClient} with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code audience} is null.
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      */
-    public ContainerRegistryBlobClient buildClient() {
+    public ContainerRegistryContentClient buildClient() {
         Objects.requireNonNull(endpoint, "'endpoint' can't be null");
 
         // Service version
@@ -371,7 +370,7 @@ public final class ContainerRegistryBlobClientBuilder implements
             : ContainerRegistryServiceVersion.getLatest();
 
         Tracer tracer = createTracer(clientOptions);
-        return new ContainerRegistryBlobClient(repositoryName, getHttpPipeline(tracer), endpoint, serviceVersion.getVersion(), tracer);
+        return new ContainerRegistryContentClient(repositoryName, getHttpPipeline(tracer), endpoint, serviceVersion.getVersion(), tracer);
     }
 
     private HttpPipeline getHttpPipeline(Tracer tracer) {

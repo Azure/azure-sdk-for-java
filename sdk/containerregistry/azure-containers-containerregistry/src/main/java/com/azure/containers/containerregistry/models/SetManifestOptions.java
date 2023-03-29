@@ -8,29 +8,29 @@ import com.azure.core.util.BinaryData;
 import java.util.Objects;
 
 /**
- * Options for configuring the upload manifest operation.
+ * Set manifest options.
  */
-public final class UploadManifestOptions {
+public final class SetManifestOptions {
     private final ManifestMediaType mediaType;
     private final BinaryData manifest;
     private String tag;
 
     /**
-     * Instantiate an instance of upload manifest options with the ocimanifest information.
-     * @param ociManifest The Oci manifest.
+     * Creates new instance of {@link SetManifestOptions}
+     * @param ociImageManifest Instance of {@link OciImageManifest} to be set on the service.
      */
-    public UploadManifestOptions(OciImageManifest ociManifest) {
-        Objects.requireNonNull(ociManifest, "'ociManifest' can't be null.");
-        this.manifest = BinaryData.fromObject(ociManifest);
+    public SetManifestOptions(OciImageManifest ociImageManifest) {
+        Objects.requireNonNull(ociImageManifest, "'ociManifest' can't be null.");
+        this.manifest = BinaryData.fromObject(ociImageManifest);
         this.mediaType = ManifestMediaType.OCI_MANIFEST;
     }
 
     /**
-     * Instantiate an instance of upload manifest options with the manifest information.
-     * @param manifest The manifest that needs to be uploaded.
+     * Creates new instance of {@link SetManifestOptions}
+     * @param manifest The manifest to set.
      * @param manifestMediaType The media type of supplied manifest.
      */
-    public UploadManifestOptions(BinaryData manifest, ManifestMediaType manifestMediaType) {
+    public SetManifestOptions(BinaryData manifest, ManifestMediaType manifestMediaType) {
         Objects.requireNonNull(manifest, "'manifest' can't be null.");
         Objects.requireNonNull(manifestMediaType, "'manifestMediaType' can't be null.");
         this.manifest = manifest;
@@ -39,10 +39,10 @@ public final class UploadManifestOptions {
 
     /**
      * A tag to assign to the artifact represented by this manifest.
-     * @param tag The tag of the manifest.
-     * @return The UploadManifestOptions object.
+     * @param tag Tag to be set on the manifest when sending it.
+     * @return The {@link SetManifestOptions} object for chaining.
      */
-    public UploadManifestOptions setTag(String tag) {
+    public SetManifestOptions setTag(String tag) {
         this.tag = tag;
         return this;
     }
@@ -56,8 +56,8 @@ public final class UploadManifestOptions {
     }
 
     /**
-     * The manifest to be uploaded.
-     * @return The BinaryData representing the manifest.
+     * The manifest to be sent to the service.
+     * @return The {@link BinaryData} representing the manifest.
      */
     public BinaryData getManifest() {
         return this.manifest;
@@ -67,7 +67,7 @@ public final class UploadManifestOptions {
      * Media type of the corresponding manifest.
      * @return instance of {@link ManifestMediaType}.
      */
-    public ManifestMediaType getMediaType() {
+    public ManifestMediaType getManifestMediaType() {
         return mediaType;
     }
 }
