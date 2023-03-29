@@ -13,9 +13,11 @@ import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
+import com.azure.storage.file.share.models.AccessRight
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList
 import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.FileLastWrittenMode
@@ -2576,6 +2578,21 @@ class FileAPITests extends APISpec {
 
         expect:
         fileClient.listHandles().size() == 0
+    }
+
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2023_01_03")
+    def "List handles access rights"() {
+        given:
+        def shareClient = primaryFileServiceClient.getShareClient("myshare")
+        def directoryClient = shareClient.getDirectoryClient("mydirectory")
+        def fileClient = directoryClient.getFileClient("myfile")
+
+        when:
+        def list = fileClient.listHandles().asList()
+
+        then:
+        list.get(0).getAccessRightList()[0] == AccessRight.WRITE
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
