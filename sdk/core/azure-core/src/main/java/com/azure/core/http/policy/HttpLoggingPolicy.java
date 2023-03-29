@@ -17,6 +17,7 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -494,10 +495,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
                 })
-                .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
-                        prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            stream.toString(StandardCharsets.UTF_8)))
-                    .log(RESPONSE_LOG_MESSAGE));
+                .doFinally(ignored -> doLog(stream.toString(StandardCharsets.UTF_8)));
         }
 
         @Override
@@ -513,6 +511,19 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
             return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
+
+        @Override
+        public BinaryData getBodyAsBinaryData() {
+            BinaryData content = actualResponse.getBodyAsBinaryData();
+            doLog(content.toString());
+            return content;
+        }
+
+        private void doLog(String body) {
+            logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                    prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader, body))
+                .log(RESPONSE_LOG_MESSAGE);
         }
     }
 }

@@ -28,7 +28,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -58,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
@@ -485,7 +485,6 @@ public class HttpLoggingPolicyTests {
             .verifyComplete();
     }
 
-    @Disabled("Until retry policy sync workflow implemented")
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
@@ -517,16 +516,22 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
-
+        BinaryData content = response.getBodyAsBinaryData();
+        assertEquals(2, requestCount.get());
         String logString = convertOutputStreamToString(logCaptureStream);
-        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
-        assertEquals(3, messages.size());
+
+        // if HttpLoggingPolicy logger was created when verbose was enabled,
+        // there is no way to change it.
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString).stream()
+            .filter(m -> !m.getMessage().equals("Error resume.")).collect(Collectors.toList());
+
+        assertEquals(3, messages.size(), logString);
 
         expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
         expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
         expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
 
-        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
+        assertArrayEquals(responseBody, content.toBytes());
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")

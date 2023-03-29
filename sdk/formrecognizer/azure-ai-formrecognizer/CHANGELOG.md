@@ -3,7 +3,8 @@
 ## 4.1.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Added support for analyzing new document types
+- 
 ### Breaking Changes
 
 ### Bugs Fixed

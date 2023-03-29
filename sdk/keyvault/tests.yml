@@ -6,6 +6,8 @@ stages:
       ServiceDirectory: keyvault
       TimeoutInMinutes: 240
       SupportedClouds: 'Public,UsGov,China,Canary'
+      EnvVars:
+        AZURE_LOG_LEVEL: 2
       CloudConfig:
         Public:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)

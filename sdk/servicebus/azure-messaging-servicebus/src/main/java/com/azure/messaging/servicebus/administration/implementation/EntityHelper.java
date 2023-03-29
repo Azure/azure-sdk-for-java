@@ -68,8 +68,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 /**
  * Used to access internal methods on {@link QueueProperties}.
@@ -895,10 +893,9 @@ public final class EntityHelper {
         }
     }
 
-    public static Context getTracingContext(Context context) {
+    public static Context getContext(Context context) {
         context = context == null ? Context.NONE : context;
-        return context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
-            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        return context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
     }
 
     /**
