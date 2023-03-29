@@ -49,6 +49,8 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+
     /**
      * Instantiates a new query request options.
      */
@@ -300,6 +302,14 @@ public class CosmosQueryRequestOptions {
     public CosmosQueryRequestOptions setResponseContinuationTokenLimitInKb(int limitInKb) {
         this.responseContinuationTokenLimitInKb = limitInKb;
         return this;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+        return cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+
+    public void setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     /**
@@ -743,6 +753,7 @@ public class CosmosQueryRequestOptions {
                     requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
                     requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
                     requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
+                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {

@@ -126,7 +126,9 @@ implements IDocumentQueryExecutionContext<T> {
     public Mono<FeedResponse<T>> executeRequestAsync(
         Function<JsonNode, T> factoryMethod,
         RxDocumentServiceRequest request) {
-
+        if (this.cosmosQueryRequestOptions.getCosmosEndToEndOperationLatencyPolicyConfig() != null){
+            request.requestContext.setEndToEndOperationLantencyPolicyConfig(this.cosmosQueryRequestOptions.getCosmosEndToEndOperationLatencyPolicyConfig());
+        }
         return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(factoryMethod, request)
                 : this.executeReadFeedRequestAsync(factoryMethod, request));
     }

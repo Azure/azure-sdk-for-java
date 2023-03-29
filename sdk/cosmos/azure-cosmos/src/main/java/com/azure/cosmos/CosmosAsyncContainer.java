@@ -1021,11 +1021,11 @@ public class CosmosAsyncContainer {
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
      *
-     * @param <T> the type parameter.
-     * @param itemId the item id.
+     * @param <T>          the type parameter.
+     * @param itemId       the item id.
      * @param partitionKey the partition key.
-     * @param options the request {@link CosmosItemRequestOptions}.
-     * @param itemType the item type.
+     * @param options      the request {@link CosmosItemRequestOptions}.
+     * @param itemType     the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(

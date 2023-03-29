@@ -27,8 +27,9 @@ module com.azure.cosmos {
     //  This is only required by guava shaded libraries
     requires java.logging;
 	requires HdrHistogram;
+    requires commons.math3;
 
-	// public API surface area
+    // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;
@@ -72,11 +73,16 @@ module com.azure.cosmos {
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl.controller.group.global to com.fasterxml.jackson.databind;
+//    opens com.azure.cosmos.models to com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
+    exports com.azure.cosmos.implementation.directconnectivity.thompsonsampling to com.azure.cosmos.encryption;
+    opens com.azure.cosmos.implementation.directconnectivity.thompsonsampling to com.fasterxml.jackson.databind;
+
 
     // exporting packages specifically for cosmos test
     exports com.azure.cosmos.implementation.faultinjection to com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.directconnectivity.rntbd to com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.routing to com.azure.cosmos.test;
+
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;

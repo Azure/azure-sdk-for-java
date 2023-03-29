@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -15,17 +16,7 @@ import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -98,6 +89,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
+        private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -266,7 +258,8 @@ public interface AsyncDocumentClient {
                 state,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId);
+                clientCorrelationId,
+                cosmosEndToEndOperationLatencyPolicyConfig);
 
             client.init(state, null);
             return client;
@@ -330,6 +323,11 @@ public interface AsyncDocumentClient {
 
         public AzureKeyCredential getCredential() {
             return credential;
+        }
+
+        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+           this.cosmosEndToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+           return this;
         }
     }
 

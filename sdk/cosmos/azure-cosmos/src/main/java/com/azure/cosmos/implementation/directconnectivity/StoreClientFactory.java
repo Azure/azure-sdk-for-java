@@ -82,7 +82,7 @@ public class StoreClientFactory implements AutoCloseable {
         SessionContainer sessionContainer,
         GatewayServiceConfigurationReader serviceConfigurationReader,
         IAuthorizationTokenProvider authorizationTokenProvider,
-        boolean useMultipleWriteLocations) {
+        boolean useMultipleWriteLocations, GlobalEndpointManager globalEndpointManager) {
         this.throwIfClosed();
 
         return new StoreClient(diagnosticsClientContext,
@@ -92,7 +92,9 @@ public class StoreClientFactory implements AutoCloseable {
             serviceConfigurationReader,
             authorizationTokenProvider,
             this.transportClient,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            globalEndpointManager
+        );
     }
 
     private void throwIfClosed() {

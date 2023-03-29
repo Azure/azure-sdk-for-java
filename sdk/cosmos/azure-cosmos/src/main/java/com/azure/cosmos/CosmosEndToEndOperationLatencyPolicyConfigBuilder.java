@@ -9,7 +9,7 @@ import java.time.Duration;
 
 public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private final boolean isEnabled;
-    private Duration endToEndOperationTimeout = Duration.ofSeconds(2);
+    private Duration endToEndOperationTimeout = Duration.ofSeconds(2); //defaults to two seconds
     private Duration speculativeProcessingThreshold = null;
     private boolean isSpeculativeProcessingEnabled;
 

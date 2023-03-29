@@ -410,44 +410,44 @@ public class StoreReader {
                                         = new MutableVolatile<>();
 
                                     return Flux.defer(() ->
-                                                                    readFromReplicas(
-                                                                            storeResultList,
-                                                                            resolveApiResults,
-                                                                            replicasToRead,
-                                                                            entity,
-                                                                            includePrimary,
-                                                                            replicaCountToRead,
-                                                                            requiresValidLsn,
-                                                                            useSessionToken,
-                                                                            readMode,
-                                                                            checkMinLSN,
-                                                                            forceReadAll,
-                                                                            requestSessionToken,
-                                                                            hasGoneException,
-                                                                            enforceSessionCheck,
-                                                                            shortCircuitResult))
-                                            // repeat().takeUntil() simulate a while loop pattern
-                                            .repeat()
-                                            .takeUntil(x -> {
-                                                // Loop until we have the read quorum number of valid responses or if we have read all the replicas
-                                                if (replicasToRead.get() > 0 && resolveApiResults.size() > 0) {
-                                                    // take more from the source observable
-                                                    return false;
-                                                } else {
-                                                    // enough result
-                                                    return true;
+                                            readFromReplicas(
+                                                storeResultList,
+                                                resolveApiResults,
+                                                replicasToRead,
+                                                entity,
+                                                includePrimary,
+                                                replicaCountToRead,
+                                                requiresValidLsn,
+                                                useSessionToken,
+                                                readMode,
+                                                checkMinLSN,
+                                                forceReadAll,
+                                                requestSessionToken,
+                                                hasGoneException,
+                                                enforceSessionCheck,
+                                                shortCircuitResult))
+                                        // repeat().takeUntil() simulate a while loop pattern
+                                        .repeat()
+                                        .takeUntil(x -> {
+                                            // Loop until we have the read quorum number of valid responses or if we have read all the replicas
+                                            if (replicasToRead.get() > 0 && resolveApiResults.size() > 0) {
+                                                // take more from the source observable
+                                                return false;
+                                            } else {
+                                                // enough result
+                                                return true;
+                                            }
+                                        })
+                                        .thenMany(
+                                            Flux.defer(() -> {
+                                                    try {
+                                                        // TODO: some fields which get updated need to be thread-safe
+                                                        return Flux.just(createReadReplicaResult(storeResultList, replicaCountToRead, resolveApiResults.size(), hasGoneException.v, entity));
+                                                    } catch (Exception e) {
+                                                        return Flux.error(e);
+                                                    }
                                                 }
-                                            })
-                                            .thenMany(
-                                                    Flux.defer(() -> {
-                                                try {
-                                                    // TODO: some fields which get updated need to be thread-safe
-                                                                             return Flux.just(createReadReplicaResult(storeResultList, replicaCountToRead, resolveApiResults.size(), hasGoneException.v, entity));
-                                                } catch (Exception e) {
-                                                                             return Flux.error(e);
-                                                }
-                                                                     }
-                                                    ));
+                                            ));
                                 }));
                     } catch (Exception e) {
                         return Flux.error(e);

@@ -172,6 +172,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(this.apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(this.clientCorrelationId)
+                                       .withEndToEndOperationLatencyPolicyConfig(this.endToEndOperationLatencyPolicyConfig)
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
@@ -570,6 +571,10 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public CosmosAsyncDatabase getDatabase(String id) {
         return new CosmosAsyncDatabase(id, this);
+    }
+
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return endToEndOperationLatencyPolicyConfig;
     }
 
     /**

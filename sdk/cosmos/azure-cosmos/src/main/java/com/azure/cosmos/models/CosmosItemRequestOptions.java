@@ -6,7 +6,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -32,7 +31,8 @@ public class CosmosItemRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
-    private Boolean enableEndToEndOperationLatencyPolicy;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+
 
     /**
      * copy constructor
@@ -51,7 +51,7 @@ public class CosmosItemRequestOptions {
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
-        enableEndToEndOperationLatencyPolicy = options.enableEndToEndOperationLatencyPolicy;
+        endToEndOperationLatencyPolicyConfig = options.endToEndOperationLatencyPolicyConfig;
     }
 
 
@@ -319,6 +319,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
+        requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
@@ -404,20 +405,12 @@ public class CosmosItemRequestOptions {
         return this.operationContextAndListenerTuple;
     }
 
-    /**
-     * Gets if end to end operation latency is enabled
-     * @return if end to end operation latency is enabled or not
-     */
-    public Boolean getEnableEndToEndOperationLatencyPolicy() {
-        return enableEndToEndOperationLatencyPolicy;
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+        return endToEndOperationLatencyPolicyConfig;
     }
 
-    /**
-     * Sets the end to end operation latency policy for this operation
-     * @param enableEndToEndOperationLatencyPolicy enable or disable the end to end operation latency policy
-     */
-    public void setEnableEndToEndOperationLatencyPolicy(Boolean enableEndToEndOperationLatencyPolicy) {
-        this.enableEndToEndOperationLatencyPolicy = enableEndToEndOperationLatencyPolicy;
+    public void setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

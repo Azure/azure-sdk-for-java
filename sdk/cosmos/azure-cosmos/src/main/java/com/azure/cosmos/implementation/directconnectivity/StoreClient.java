@@ -7,25 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.BackoffRetryUtility;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IRetryPolicy;
-import com.azure.cosmos.implementation.ISessionToken;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RMResources;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.implementation.SessionContainer;
-import com.azure.cosmos.implementation.SessionTokenHelper;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -57,13 +39,13 @@ public class StoreClient implements IStoreClient {
     private final String ZERO_PARTITION_KEY_RANGE = "0";
 
     public StoreClient(
-            DiagnosticsClientContext diagnosticsClientContext,
-            Configs configs,
-            IAddressResolver addressResolver,
-            SessionContainer sessionContainer,
-            GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
-            TransportClient transportClient,
-            boolean useMultipleWriteLocations) {
+        DiagnosticsClientContext diagnosticsClientContext,
+        Configs configs,
+        IAddressResolver addressResolver,
+        SessionContainer sessionContainer,
+        GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
+        TransportClient transportClient,
+        boolean useMultipleWriteLocations, GlobalEndpointManager globalEndpointManager) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
@@ -77,7 +59,8 @@ public class StoreClient implements IStoreClient {
             serviceConfigurationReader,
             userTokenProvider,
             false,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            globalEndpointManager);
 
         addressResolver.setOpenConnectionsHandler(new RntbdOpenConnectionsHandler(transportClient));
     }
