@@ -53,12 +53,6 @@
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
       <version>5.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-      <version>4.7.0-beta.1</version><!--
-      {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
-    </dependency>
 
     <!-- Azure SDKs-->
     <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
