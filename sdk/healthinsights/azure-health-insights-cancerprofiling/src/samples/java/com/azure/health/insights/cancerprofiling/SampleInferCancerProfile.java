@@ -140,8 +140,8 @@ public class SampleInferCancerProfile {
             " Special studies: Pending");
 
         PatientDocument patientDocument3 = new PatientDocument(DocumentType.NOTE,
-                                                            "doc3",
-                                                            new DocumentContent(DocumentContentSourceType.INLINE, docContent3));
+            "doc3",
+            new DocumentContent(DocumentContentSourceType.INLINE, docContent3));
         patientDocument3.setClinicalType(ClinicalDocumentType.PATHOLOGY);
         patientDocument3.setLanguage("en");
         patientDocument3.setCreatedDateTime(OffsetDateTime.parse("2022-01-01T10:15:30+01:00"));

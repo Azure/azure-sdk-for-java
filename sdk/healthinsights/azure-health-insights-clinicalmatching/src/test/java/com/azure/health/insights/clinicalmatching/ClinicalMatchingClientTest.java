@@ -33,8 +33,7 @@ public class ClinicalMatchingClientTest extends ClinicalMatchingClientTestBase {
         try {
             testTMWithResponse(request -> {
 
-                BinaryData responseValue = getClient().beginMatchTrials(request, new RequestOptions()).waitForCompletion().getValue();
-
+                BinaryData responseValue = setPlaybackSyncPollerPollInterval(getClient().beginMatchTrials(request, new RequestOptions())).waitForCompletion().getValue();
                 TrialMatcherResult tmRespone = responseValue.toObject(TypeReference.createInstance(TrialMatcherResult.class));
                 List<TrialMatcherPatientResult> patients = tmRespone.getResults().getPatients();
                 assertEquals(1, patients.size());

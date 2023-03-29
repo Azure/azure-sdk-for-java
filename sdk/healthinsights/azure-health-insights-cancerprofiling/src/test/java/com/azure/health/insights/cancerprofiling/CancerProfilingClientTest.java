@@ -32,7 +32,7 @@ public class CancerProfilingClientTest extends CancerProfilingClientTestBase {
     public void test() {
         try {
             testCancerProfilingWithResponse(request -> {
-                BinaryData responseValue = getClient().beginInferCancerProfile(request, new RequestOptions()).waitForCompletion().getValue();
+                BinaryData responseValue = setPlaybackSyncPollerPollInterval(getClient().beginInferCancerProfile(request, new RequestOptions())).waitForCompletion().getValue();
                 OncoPhenotypeResult respone = responseValue.toObject(TypeReference.createInstance(OncoPhenotypeResult.class));
 
                 List<OncoPhenotypePatientResult> patients = respone.getResults().getPatients();
