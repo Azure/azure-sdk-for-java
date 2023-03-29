@@ -18,8 +18,8 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
     }
 
     @Override
-    public Duration maximumRetryTimeLimit() {
-        return Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+    public long maximumRetryTimeLimit() {
+        return Configs.getHttpResponseTimeoutInSeconds();
     }
 
     @Override

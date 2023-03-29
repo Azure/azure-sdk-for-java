@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
-    public static HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
+    public static final HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
         if (OperationType.QueryPlan.equals(request.getOperationType()) ||
             request.isAddressRefresh() ||
             request.getResourceType() == ResourceType.PartitionKeyRange) {
@@ -27,7 +27,7 @@ public abstract class HttpTimeoutPolicy {
         return getTimeoutList().size();
     }
 
-    public abstract Duration maximumRetryTimeLimit();
+    public abstract long maximumRetryTimeLimit();
 
     public abstract List<ResponseTimeoutAndDelays> getTimeoutList();
 

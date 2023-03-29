@@ -83,7 +83,7 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Boolean isOutOfRetries() {
-        return this.durationTimer.getTime(TimeUnit.SECONDS) > this.timeoutPolicy.maximumRetryTimeLimit().toSeconds() ||
+        return this.durationTimer.getTime(TimeUnit.SECONDS) > this.timeoutPolicy.maximumRetryTimeLimit() ||
         this.retryCountTimeout >= this.timeoutPolicy.totalRetryCount();
     }
 }
