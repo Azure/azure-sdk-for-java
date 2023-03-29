@@ -111,6 +111,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
      *
      * @param operationLocationHeaderName a custom header for polling the long-running operation.
      * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public SyncOperationResourcePollingStrategy(HttpHeaderName operationLocationHeaderName, PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");

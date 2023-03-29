@@ -111,6 +111,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      *
      * @param operationLocationHeaderName a custom header for polling the long-running operation.
      * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public OperationResourcePollingStrategy(HttpHeaderName operationLocationHeaderName, PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");

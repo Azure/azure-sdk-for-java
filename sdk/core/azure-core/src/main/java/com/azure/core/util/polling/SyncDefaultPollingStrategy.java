@@ -90,8 +90,7 @@ public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrate
      * serializer.
      *
      * @param pollingStrategyOptions options to configure this polling strategy.
-     * @throws NullPointerException If {@code pollingStrategyOptions} is null or
-     * {@link PollingStrategyOptions#getHttpPipeline()} is null.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
      */
     public SyncDefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");

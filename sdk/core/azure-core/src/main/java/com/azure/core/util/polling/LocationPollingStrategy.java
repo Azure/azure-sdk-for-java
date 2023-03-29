@@ -104,7 +104,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * Creates an instance of the location polling strategy.
      *
      * @param pollingStrategyOptions options to configure this polling strategy.
-     * @throws NullPointerException If {@code httpPipeline} is null.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
      */
     public LocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");

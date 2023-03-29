@@ -81,7 +81,6 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
             .setEndpoint(endpoint)
             .setSerializer(serializer)
             .setContext(context));
-
     }
 
     /**
@@ -90,8 +89,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * serializer.
      *
      * @param pollingStrategyOptions options to configure this polling strategy.
-     * @throws NullPointerException If {@code pollingStrategyOptions} is null or
-     * {@link PollingStrategyOptions#getHttpPipeline()} is null.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
      */
     public DefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
