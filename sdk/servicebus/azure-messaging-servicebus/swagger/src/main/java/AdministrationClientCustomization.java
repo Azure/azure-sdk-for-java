@@ -4,11 +4,11 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import org.slf4j.Logger;
@@ -22,6 +22,7 @@ import java.util.Objects;
 public class AdministrationClientCustomization extends Customization {
     private static final String AUTHORIZATION_RULE_CLASS_NAME = "AuthorizationRule";
     private static final String NAMESPACE_KEY = "namespace";
+    private static final String NAMESPACE_PROPERTIES_CLASS_NAME = "NamespaceProperties";
 
     private static final HashSet<String> CLASSES_TO_SKIP = new HashSet<>();
 
@@ -59,14 +60,21 @@ public class AdministrationClientCustomization extends Customization {
             }
 
             if (AUTHORIZATION_RULE_CLASS_NAME.equals(className)) {
-                classCustomization = addAuthorizationRuleXmlNamepsace(classCustomization, logger);
+                classCustomization = addAuthorizationRuleXmlNamespace(classCustomization, logger);
             }
 
             classCustomization = addJacksonXmlRootElementImport(classCustomization, logger);
             classCustomization = addImplementationToClassName(classCustomization, logger);
         }
+
+        // Change getCreatedTime modifier on NamespaceProperties.
+        changeNamespaceModifier(customization, logger);
     }
 
+    /**
+     * Suffix classes with {@code Impl} to avoid naming collisions where we have to explicitly reference the package
+     * name and class.
+     */
     private ClassCustomization addImplementationToClassName(ClassCustomization classCustomization, Logger logger) {
         String current = classCustomization.getClassName();
         String renamed = current + "Impl";
@@ -76,6 +84,10 @@ public class AdministrationClientCustomization extends Customization {
         return classCustomization.rename(renamed);
     }
 
+    /**
+     * When JacksonXmlRootElement annotation is added to the class, sometimes the import is not added. Consequently, it
+     * breaks the build.
+     */
     private ClassCustomization addJacksonXmlRootElementImport(ClassCustomization classCustomization, Logger logger) {
         final String className = classCustomization.getClassName();
 
@@ -111,14 +123,14 @@ public class AdministrationClientCustomization extends Customization {
         });
     }
 
-
     /**
      * Modifying AuthorizationRule class to include the namespace for authorization type. The XML namespace is not added
      * to the generated code. We want it to look like this:
      *
-     * {@code @JacksonXmlProperty(localName = "type", namespace = "http://www.w3.org/2001/XMLSchema-instance", isAttribute = true)}
+     * {@code @JacksonXmlProperty(localName = "type", namespace = "http://www.w3.org/2001/XMLSchema-instance",
+     * isAttribute = true)}
      */
-    private ClassCustomization addAuthorizationRuleXmlNamepsace(ClassCustomization classCustomization, Logger logger) {
+    private ClassCustomization addAuthorizationRuleXmlNamespace(ClassCustomization classCustomization, Logger logger) {
         return classCustomization.customizeAst(ast -> {
 
             logger.info("{}: AddXmlNamespace - Getting class information.", AUTHORIZATION_RULE_CLASS_NAME);
@@ -157,5 +169,16 @@ public class AdministrationClientCustomization extends Customization {
 
             annotationExpression.addPair(NAMESPACE_KEY, new StringLiteralExpr("http://www.w3.org/2001/XMLSchema-instance"));
         });
+    }
+
+    private void changeNamespaceModifier(LibraryCustomization libraryCustomization, Logger logger) {
+        final ClassCustomization classCustomization = libraryCustomization.getClass(
+            "com.azure.messaging.servicebus.administration.models", NAMESPACE_PROPERTIES_CLASS_NAME);
+        final String methodName = "setCreatedTime";
+
+        logger.info("{}: Removing modifier on method '{}'", classCustomization.getClassName(), methodName);
+
+        final MethodCustomization setCreatedTime = classCustomization.getMethod(methodName);
+        setCreatedTime.setModifier(0);
     }
 }

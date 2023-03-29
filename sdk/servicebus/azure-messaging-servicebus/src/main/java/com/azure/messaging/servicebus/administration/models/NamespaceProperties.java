@@ -110,7 +110,7 @@ public final class NamespaceProperties {
      * @param createdTime the createdTime value to set.
      * @return the NamespaceProperties object itself.
      */
-    public NamespaceProperties setCreatedTime(OffsetDateTime createdTime) {
+    NamespaceProperties setCreatedTime(OffsetDateTime createdTime) {
         this.createdTime = createdTime;
         return this;
     }
