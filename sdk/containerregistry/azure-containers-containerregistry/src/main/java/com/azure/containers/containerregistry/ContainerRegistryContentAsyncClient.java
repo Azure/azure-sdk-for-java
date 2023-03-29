@@ -182,17 +182,14 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsync -->
      *
-     * <!-- src_embed com.azure.containers.containerregistry.uploadStreamAsync -->
+     * <!-- src_embed com.azure.containers.containerregistry.uploadFileAsync -->
      * <pre>
-     * Flux.using&#40;
-     *         &#40;&#41; -&gt; new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;,
-     *         fileStream -&gt; contentClient.uploadBlob&#40;FluxUtil.toFluxByteBuffer&#40;fileStream, CHUNK_SIZE&#41;&#41;,
-     *         this::closeStream&#41;
+     * contentClient.uploadBlob&#40;BinaryData.fromFile&#40;Paths.get&#40;&quot;artifact.tar.gz&quot;&#41;, CHUNK_SIZE&#41;&#41;
      *     .subscribe&#40;uploadResult -&gt;
      *         System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
      *             uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.uploadStreamAsync -->
+     * <!-- end com.azure.containers.containerregistry.uploadFileAsync -->
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      * <pre>

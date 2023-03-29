@@ -12,17 +12,13 @@ import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Random;
 
@@ -170,7 +166,7 @@ public class UploadImageAsync {
         // END: com.azure.containers.containerregistry.uploadCustomManifestAsync
     }
 
-    private void uploadBlob() throws FileNotFoundException {
+    private void uploadBlob() {
         ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
@@ -186,24 +182,12 @@ public class UploadImageAsync {
                     uploadResult.getDigest(), uploadResult.getSizeInBytes()));
         // END: com.azure.containers.containerregistry.uploadBlobAsync
 
-        // BEGIN: com.azure.containers.containerregistry.uploadStreamAsync
-        Flux.using(
-                () -> new FileInputStream("artifact.tar.gz"),
-                fileStream -> contentClient.uploadBlob(BinaryData.fromStream(fileStream)),
-                this::closeStream)
+        // BEGIN: com.azure.containers.containerregistry.uploadFileAsync
+        contentClient.uploadBlob(BinaryData.fromFile(Paths.get("artifact.tar.gz"), CHUNK_SIZE))
             .subscribe(uploadResult ->
                 System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
                     uploadResult.getDigest(), uploadResult.getSizeInBytes()));
-        // END: com.azure.containers.containerregistry.uploadStreamAsync
-    }
-
-    private void closeStream(InputStream stream) {
-        try {
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        // END: com.azure.containers.containerregistry.uploadFileAsync
     }
 
     private void uploadBlobFails() {

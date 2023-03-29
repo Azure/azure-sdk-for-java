@@ -267,9 +267,11 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         long size = CHUNK_SIZE * 50;
         AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        StepVerifier.create(asyncClient.uploadBlob(BinaryData.fromStream(generateAsyncStream(size)))
+        StepVerifier.create(
+            BinaryData.fromFlux(generateAsyncStream(size), size, false)
+                .flatMap(content -> asyncClient.uploadBlob(content))
                 .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
-                .flatMapMany(bd -> bd.toFluxByteBuffer())
+                .flatMapMany(BinaryData::toFluxByteBuffer)
                 .doOnNext(bb -> download.addAndGet(bb.remaining()))
                 .then())
             .verifyComplete();
@@ -542,7 +544,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         });
     }
 
-    private class TestInputStream extends InputStream {
+    private static class TestInputStream extends InputStream {
         private final long size;
         private long position = 0;
 
@@ -581,7 +583,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         }
     }
 
-    private class TestOutputStream extends OutputStream {
+    private static class TestOutputStream extends OutputStream {
         private long position = 0;
 
         @Override

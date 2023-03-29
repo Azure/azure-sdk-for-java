@@ -16,9 +16,9 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -62,7 +62,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.to
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -210,15 +209,14 @@ public final class ContainerRegistryContentClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.containers.containerregistry.uploadStream -->
+     * <!-- src_embed com.azure.containers.containerregistry.uploadFile -->
      * <pre>
-     * try &#40;FileInputStream content = new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;&#41; &#123;
-     *     UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;content.getChannel&#40;&#41;, Context.NONE&#41;;
-     *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
-     *         uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
-     * &#125;
+     * BinaryData content = BinaryData.fromFile&#40;Paths.get&#40;&quot;artifact.tar.gz&quot;, CHUNK_SIZE&#41;&#41;;
+     * UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;content, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
+     *     uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.uploadStream -->
+     * <!-- end com.azure.containers.containerregistry.uploadFile -->
      *
      * @param content The blob content.
      * @param context Additional context that is passed through the Http pipeline during the service call.

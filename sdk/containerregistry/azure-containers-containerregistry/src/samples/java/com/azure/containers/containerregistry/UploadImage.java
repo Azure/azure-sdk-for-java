@@ -8,20 +8,20 @@ import com.azure.containers.containerregistry.implementation.models.AcrErrorsExc
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
+
+import static reactor.netty.Metrics.CHUNK_SIZE;
 
 public class UploadImage {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
@@ -106,20 +106,19 @@ public class UploadImage {
         // END: com.azure.containers.containerregistry.uploadBlobErrorHandling
     }
 
-    private void uploadStream() throws IOException {
+    private void uploadStream() {
         ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildClient();
 
-        // BEGIN: com.azure.containers.containerregistry.uploadStream
-        try (FileInputStream content = new FileInputStream("artifact.tar.gz")) {
-            UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(BinaryData.fromStream(content), Context.NONE);
-            System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
-                uploadResult.getDigest(), uploadResult.getSizeInBytes());
-        }
-        // END: com.azure.containers.containerregistry.uploadStream
+        // BEGIN: com.azure.containers.containerregistry.uploadFile
+        BinaryData content = BinaryData.fromFile(Paths.get("artifact.tar.gz", CHUNK_SIZE));
+        UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(content, Context.NONE);
+        System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
+            uploadResult.getDigest(), uploadResult.getSizeInBytes());
+        // END: com.azure.containers.containerregistry.uploadFile
     }
 
     private void setManifest() {
@@ -187,26 +186,5 @@ public class UploadImage {
         Response<SetManifestResult> response = contentClient.setManifestWithResponse(options, Context.NONE);
         System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest());
         // END: com.azure.containers.containerregistry.uploadCustomManifest
-    }
-
-    private static FileInputStream getFileStream(String name) {
-        try {
-            return new FileInputStream(name);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static String getTempDirectory() {
-        String outDir = null;
-        try {
-            outDir = Files.createTempDirectory(null).toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        System.out.printf("Writing content to %s\n", outDir);
-        return outDir;
     }
 }
