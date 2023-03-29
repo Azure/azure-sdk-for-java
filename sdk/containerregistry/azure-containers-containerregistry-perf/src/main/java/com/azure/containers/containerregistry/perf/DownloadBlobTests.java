@@ -4,7 +4,7 @@
 package com.azure.containers.containerregistry.perf;
 
 import com.azure.containers.containerregistry.perf.core.ServiceTest;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
@@ -29,10 +29,11 @@ public class DownloadBlobTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> setupAsync() {
-        return blobAsyncClient
-            .uploadBlob(generateAsyncStream(options.getSize()))
-            .doOnNext(result -> digest[0] = result.getDigest())
-            .then();
+        return
+            BinaryData.fromFlux(generateAsyncStream(options.getSize()))
+                .flatMap(content -> blobAsyncClient .uploadBlob(content) )
+                .doOnNext(result -> digest[0] = result.getDigest())
+                .then();
     }
 
     @Override

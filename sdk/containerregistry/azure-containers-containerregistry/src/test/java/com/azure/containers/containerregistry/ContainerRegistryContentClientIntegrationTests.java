@@ -265,7 +265,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 50;
-        Mono<BinaryData> data = BinaryData.fromStreamAsync(new TestInputStream(size), size).map(BinaryData::toReplayableBinaryData);
+        Mono<BinaryData> data = BinaryData.fromFlux(generateAsyncStream(size), size, false);
         AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
         StepVerifier.create(data

@@ -4,12 +4,12 @@
 package com.azure.containers.containerregistry.perf;
 
 import com.azure.containers.containerregistry.perf.core.ServiceTest;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.RepeatingInputStream;
 import reactor.core.publisher.Mono;
 
-import java.nio.channels.Channels;
 import java.util.Arrays;
 
 public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
@@ -25,11 +25,14 @@ public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
     @Override
     public void run() {
         RepeatingInputStream input = new RepeatingInputStream(options.getSize());
-        blobClient.uploadBlob(Channels.newChannel(input), Context.NONE);
+        blobClient.uploadBlob(BinaryData.fromStream(input), Context.NONE);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadBlob(generateAsyncStream(options.getSize())).then();
+        return
+            BinaryData.fromFlux(generateAsyncStream(options.getSize()))
+                .flatMap(content -> blobAsyncClient.uploadBlob(content))
+                .then();
     }
 }
