@@ -37,7 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.health.insights.clinicalmatching.AzureHealthInsightsServiceVersion;
+import com.azure.health.insights.clinicalmatching.ClinicalMatchingServiceVersion;
 import com.azure.health.insights.clinicalmatching.models.TrialMatcherResult;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -66,14 +66,14 @@ public final class ClinicalMatchingClientImpl {
     }
 
     /** Service version. */
-    private final AzureHealthInsightsServiceVersion serviceVersion;
+    private final ClinicalMatchingServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public AzureHealthInsightsServiceVersion getServiceVersion() {
+    public ClinicalMatchingServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -108,7 +108,7 @@ public final class ClinicalMatchingClientImpl {
      *     https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public ClinicalMatchingClientImpl(String endpoint, AzureHealthInsightsServiceVersion serviceVersion) {
+    public ClinicalMatchingClientImpl(String endpoint, ClinicalMatchingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -127,7 +127,7 @@ public final class ClinicalMatchingClientImpl {
      * @param serviceVersion Service version.
      */
     public ClinicalMatchingClientImpl(
-            HttpPipeline httpPipeline, String endpoint, AzureHealthInsightsServiceVersion serviceVersion) {
+            HttpPipeline httpPipeline, String endpoint, ClinicalMatchingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -144,7 +144,7 @@ public final class ClinicalMatchingClientImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            AzureHealthInsightsServiceVersion serviceVersion) {
+            ClinicalMatchingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

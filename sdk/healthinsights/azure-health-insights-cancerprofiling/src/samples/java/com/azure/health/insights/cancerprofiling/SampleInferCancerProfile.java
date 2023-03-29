@@ -39,7 +39,7 @@ public class SampleInferCancerProfile {
 
         CancerProfilingAsyncClient asyncClient = new CancerProfilingClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
+            .serviceVersion(CancerProfilingServiceVersion.getLatest())
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
         // END: com.azure.health.insights.cancerprofiling.buildasyncclient

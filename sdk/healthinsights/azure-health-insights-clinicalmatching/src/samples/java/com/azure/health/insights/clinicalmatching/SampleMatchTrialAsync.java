@@ -50,7 +50,7 @@ public class SampleMatchTrialAsync {
 
         ClinicalMatchingAsyncClient asyncClient = new ClinicalMatchingClientBuilder()
             .endpoint(endpoint)
-            .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
+            .serviceVersion(ClinicalMatchingServiceVersion.getLatest())
             .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
         // END: com.azure.health.insights.clinicalmatching.buildasyncclient

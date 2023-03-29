@@ -37,7 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.health.insights.cancerprofiling.AzureHealthInsightsServiceVersion;
+import com.azure.health.insights.cancerprofiling.CancerProfilingServiceVersion;
 import com.azure.health.insights.cancerprofiling.models.OncoPhenotypeResult;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -66,14 +66,14 @@ public final class CancerProfilingClientImpl {
     }
 
     /** Service version. */
-    private final AzureHealthInsightsServiceVersion serviceVersion;
+    private final CancerProfilingServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public AzureHealthInsightsServiceVersion getServiceVersion() {
+    public CancerProfilingServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -108,7 +108,7 @@ public final class CancerProfilingClientImpl {
      *     https://westus2.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
-    public CancerProfilingClientImpl(String endpoint, AzureHealthInsightsServiceVersion serviceVersion) {
+    public CancerProfilingClientImpl(String endpoint, CancerProfilingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -127,7 +127,7 @@ public final class CancerProfilingClientImpl {
      * @param serviceVersion Service version.
      */
     public CancerProfilingClientImpl(
-            HttpPipeline httpPipeline, String endpoint, AzureHealthInsightsServiceVersion serviceVersion) {
+            HttpPipeline httpPipeline, String endpoint, CancerProfilingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -144,7 +144,7 @@ public final class CancerProfilingClientImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            AzureHealthInsightsServiceVersion serviceVersion) {
+            CancerProfilingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

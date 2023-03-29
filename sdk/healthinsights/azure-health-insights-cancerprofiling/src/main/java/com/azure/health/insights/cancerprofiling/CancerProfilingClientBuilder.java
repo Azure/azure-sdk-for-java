@@ -179,7 +179,7 @@ public final class CancerProfilingClientBuilder
     /*
      * Service version
      */
-    @Generated private AzureHealthInsightsServiceVersion serviceVersion;
+    @Generated private CancerProfilingServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -188,7 +188,7 @@ public final class CancerProfilingClientBuilder
      * @return the CancerProfilingClientBuilder.
      */
     @Generated
-    public CancerProfilingClientBuilder serviceVersion(AzureHealthInsightsServiceVersion serviceVersion) {
+    public CancerProfilingClientBuilder serviceVersion(CancerProfilingServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -218,8 +218,8 @@ public final class CancerProfilingClientBuilder
     @Generated
     private CancerProfilingClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureHealthInsightsServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : AzureHealthInsightsServiceVersion.getLatest();
+        CancerProfilingServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : CancerProfilingServiceVersion.getLatest();
         CancerProfilingClientImpl client =
                 new CancerProfilingClientImpl(
                         localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);

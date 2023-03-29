@@ -179,7 +179,7 @@ public final class ClinicalMatchingClientBuilder
     /*
      * Service version
      */
-    @Generated private AzureHealthInsightsServiceVersion serviceVersion;
+    @Generated private ClinicalMatchingServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -188,7 +188,7 @@ public final class ClinicalMatchingClientBuilder
      * @return the ClinicalMatchingClientBuilder.
      */
     @Generated
-    public ClinicalMatchingClientBuilder serviceVersion(AzureHealthInsightsServiceVersion serviceVersion) {
+    public ClinicalMatchingClientBuilder serviceVersion(ClinicalMatchingServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -218,8 +218,8 @@ public final class ClinicalMatchingClientBuilder
     @Generated
     private ClinicalMatchingClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureHealthInsightsServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : AzureHealthInsightsServiceVersion.getLatest();
+        ClinicalMatchingServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : ClinicalMatchingServiceVersion.getLatest();
         ClinicalMatchingClientImpl client =
                 new ClinicalMatchingClientImpl(
                         localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);

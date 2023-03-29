@@ -53,7 +53,7 @@ String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHT
 
 CancerProfilingAsyncClient asyncClient = new CancerProfilingClientBuilder()
     .endpoint(endpoint)
-    .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
+    .serviceVersion(CancerProfilingServiceVersion.getLatest())
     .credential(new AzureKeyCredential(apiKey))
     .buildAsyncClient();
 ```
@@ -216,4 +216,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [cancer_profiling_docs]: https://review.learn.microsoft.com/azure/cognitive-services/health-decision-support/oncophenotype/overview?branch=main
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdeviceupdate%2Fazure-iot-deviceupdate%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%healthinsights%2Fazure-health-insights-cancerprofiling%2FREADME.png)

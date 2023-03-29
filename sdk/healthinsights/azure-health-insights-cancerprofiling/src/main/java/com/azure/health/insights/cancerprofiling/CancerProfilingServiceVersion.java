@@ -7,13 +7,13 @@ package com.azure.health.insights.cancerprofiling;
 import com.azure.core.util.ServiceVersion;
 
 /** Service version of CancerProfilingClient. */
-public enum AzureHealthInsightsServiceVersion implements ServiceVersion {
+public enum CancerProfilingServiceVersion implements ServiceVersion {
     /** Enum value 2023-03-01-preview. */
     V2023_03_01_PREVIEW("2023-03-01-preview");
 
     private final String version;
 
-    AzureHealthInsightsServiceVersion(String version) {
+    CancerProfilingServiceVersion(String version) {
         this.version = version;
     }
 
@@ -26,9 +26,9 @@ public enum AzureHealthInsightsServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      *
-     * @return The latest {@link AzureHealthInsightsServiceVersion}.
+     * @return The latest {@link CancerProfilingServiceVersion}.
      */
-    public static AzureHealthInsightsServiceVersion getLatest() {
+    public static CancerProfilingServiceVersion getLatest() {
         return V2023_03_01_PREVIEW;
     }
 }

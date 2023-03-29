@@ -53,7 +53,7 @@ String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHT
 
 ClinicalMatchingAsyncClient asyncClient = new ClinicalMatchingClientBuilder()
     .endpoint(endpoint)
-    .serviceVersion(AzureHealthInsightsServiceVersion.getLatest())
+    .serviceVersion(ClinicalMatchingServiceVersion.getLatest())
     .credential(new AzureKeyCredential(apiKey))
     .buildAsyncClient();
 ```
@@ -157,3 +157,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 <!--
 [clinical_matching_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/main/java/com/azure/health/clinicalmatching/ClinicalMatchingClient.java
 -->
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%healthinsights%2Fazure-health-insights-clinicalmatching%2FREADME.png)
