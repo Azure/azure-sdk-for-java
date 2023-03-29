@@ -377,6 +377,7 @@ public interface CdnEndpoint extends
 
             /**
              * Begins the definition of the delivery rule to be attached to the endpoint.
+             * Supports {@link SkuName#STANDARD_MICROSOFT}.
              *
              * @param name name of the delivery rule
              * @param <T> the next stage of the endpoint definition
@@ -667,6 +668,7 @@ public interface CdnEndpoint extends
 
             /**
              * Begins the definition of the delivery rule to be attached to the endpoint.
+             * Supports {@link SkuName#STANDARD_MICROSOFT}.
              *
              * @param name name of the delivery rule
              * @param <T> the next stage of the endpoint definition
@@ -949,6 +951,7 @@ public interface CdnEndpoint extends
 
         /**
          * Begins the update of the delivery rule.
+         * Supports {@link SkuName#STANDARD_MICROSOFT}.
          *
          * @param name name of the delivery rule to update
          * @param <T> the next stage of the endpoint update
@@ -958,6 +961,7 @@ public interface CdnEndpoint extends
 
         /**
          * Removes the delivery rule from the endpoint.
+         * Supports {@link SkuName#STANDARD_MICROSOFT}.
          *
          * @param name name of the delivery rule to remove
          * @return the next stage of the endpoint update

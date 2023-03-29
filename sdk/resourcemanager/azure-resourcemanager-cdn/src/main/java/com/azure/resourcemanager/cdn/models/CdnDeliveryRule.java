@@ -6,7 +6,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /**
- * An immutable client-side representation of an Azure CDN endpoint delivery rule for standard rule engine.
+ * An immutable client-side representation of an Azure CDN endpoint delivery rule for Standard rule engine.
  */
 @Fluent
 public interface CdnDeliveryRule extends ChildResource<CdnEndpoint> {

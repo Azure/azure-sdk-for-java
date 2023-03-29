@@ -18,6 +18,8 @@ import com.azure.resourcemanager.cdn.models.DeliveryRuleCacheExpirationAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
+import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
+import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.RedirectType;
@@ -190,7 +192,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withSku(SkuName.STANDARD_MICROSOFT)
+            .withStandardMicrosoftSku()
             .defineNewEndpoint(cdnEndpointName)
                 .withOrigin(originName1, "www.someDomain.net")
                 .withHttpAllowed(false)
@@ -213,6 +215,8 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                     .attach()
                 .attach()
             .create();
+
+        cdnProfile.refresh();
 
         CdnEndpoint endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
@@ -274,6 +278,8 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .attach()
         .apply();
 
+        cdnProfile.refresh();
+
         // endpoint1
         endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
@@ -306,6 +312,8 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                 .withoutDeliveryRule(ruleName1)
                 .parent()
             .apply();
+
+        cdnProfile.refresh();
 
         Assertions.assertEquals(1, cdnProfile.endpoints().get(cdnEndpointName).deliveryRules().size());
     }

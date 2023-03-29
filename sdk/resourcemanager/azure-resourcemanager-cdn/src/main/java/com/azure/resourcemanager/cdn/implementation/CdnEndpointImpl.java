@@ -15,6 +15,7 @@ import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
+import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
@@ -73,7 +74,9 @@ class CdnEndpointImpl
         super(name, parent, inner);
         this.customDomainList = new ArrayList<>();
         this.deletedCustomDomainList = new ArrayList<>();
-        if (inner.deliveryPolicy() != null && inner.deliveryPolicy().rules() != null) {
+        if (isStandardMicrosoftSku()
+            && inner.deliveryPolicy() != null
+            && inner.deliveryPolicy().rules() != null) {
             for (DeliveryRule rule : inner.deliveryPolicy().rules()) {
                 this.deliveryRuleMap.put(rule.name(), rule);
             }
@@ -88,7 +91,9 @@ class CdnEndpointImpl
     @Override
     public Mono<CdnEndpoint> createResourceAsync() {
         final CdnEndpointImpl self = this;
-        if (this.innerModel().deliveryPolicy() == null && this.deliveryRuleMap.size() > 0) {
+        if (isStandardMicrosoftSku()
+            && this.innerModel().deliveryPolicy() == null
+            && this.deliveryRuleMap.size() > 0) {
             this.innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
                 .withRules(this.deliveryRuleMap.values()
                     .stream()
@@ -138,19 +143,21 @@ class CdnEndpointImpl
                 .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
                 .withTags(this.innerModel().tags());
 
-        List<DeliveryRule> deliveryRules = this.deliveryRuleMap.values()
-            .stream()
-            .sorted(Comparator.comparingInt(DeliveryRule::order))
-            .collect(Collectors.toList());
+        if (isStandardMicrosoftSku()) {
+            List<DeliveryRule> deliveryRules = this.deliveryRuleMap.values()
+                .stream()
+                .sorted(Comparator.comparingInt(DeliveryRule::order))
+                .collect(Collectors.toList());
 
-        if (innerModel().deliveryPolicy() == null && !CoreUtils.isNullOrEmpty(this.deliveryRuleMap)) {
-            endpointUpdateParameters.withDeliveryPolicy(
-                new EndpointPropertiesUpdateParametersDeliveryPolicy()
-                    .withRules(deliveryRules));
-        } else if (innerModel().deliveryPolicy() != null) {
-            endpointUpdateParameters.withDeliveryPolicy(
-                innerModel().deliveryPolicy()
-                    .withRules(deliveryRules));
+            if (innerModel().deliveryPolicy() == null && !CoreUtils.isNullOrEmpty(this.deliveryRuleMap)) {
+                endpointUpdateParameters.withDeliveryPolicy(
+                    new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                        .withRules(deliveryRules));
+            } else if (innerModel().deliveryPolicy() != null) {
+                endpointUpdateParameters.withDeliveryPolicy(
+                    innerModel().deliveryPolicy()
+                        .withRules(deliveryRules));
+            }
         }
 
         DeepCreatedOrigin originInner = this.innerModel().origins().get(0);
@@ -631,5 +638,9 @@ class CdnEndpointImpl
                 .withAction(action);
 
         return geoFilter;
+    }
+
+    private boolean isStandardMicrosoftSku() {
+        return SkuName.STANDARD_MICROSOFT.equals(parent().sku().name());
     }
 }
