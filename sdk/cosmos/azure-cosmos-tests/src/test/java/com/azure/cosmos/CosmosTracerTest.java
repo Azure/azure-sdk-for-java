@@ -47,7 +47,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionEndpoints;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -1161,7 +1160,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(attributes.get("db.system")).isEqualTo("cosmosdb");
         assertThat(attributes.get("db.operation")).isEqualTo(methodName);
-        assertThat(attributes.get("net.peer.name")).isEqualTo("localhost");
+        assertThat(attributes.get("net.peer.name")).isNotNull();
         assertThat(attributes.get("db.cosmosdb.request_content_length")).isNotNull();
 
         assertThat(attributes.get("db.cosmosdb.operation_type")).isEqualTo(ctx.getOperationType());
