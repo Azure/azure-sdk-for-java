@@ -12,6 +12,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
@@ -32,7 +36,6 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.TokenCachePersistenceOptions;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -71,6 +74,14 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     protected void beforeTest() {
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
+        interceptorManager.addSanitizers(customSanitizers);
+
+        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+        interceptorManager.addMatchers(customMatcher);
+
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
@@ -775,7 +786,8 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void submitTransactionAllActions() {
-        submitTransactionAllActionsImpl("partitionKey", "rowKey");
+        Runnable func = () -> submitTransactionAllActionsImpl("partitionKey", "rowKey");
+        func.run();
     }
 
     @Test
