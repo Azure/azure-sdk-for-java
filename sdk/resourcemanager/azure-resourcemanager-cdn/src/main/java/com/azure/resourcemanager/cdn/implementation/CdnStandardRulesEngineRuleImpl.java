@@ -1,6 +1,6 @@
 package com.azure.resourcemanager.cdn.implementation;
 
-import com.azure.resourcemanager.cdn.models.CdnDeliveryRule;
+import com.azure.resourcemanager.cdn.models.CdnStandardRulesEngineRule;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.DeliveryRule;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleAction;
@@ -12,30 +12,30 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Implementation for {@link CdnDeliveryRule}.
+ * Implementation for {@link CdnStandardRulesEngineRule}.
  */
-class CdnDeliveryRuleImpl
+class CdnStandardRulesEngineRuleImpl
     extends ChildResourceImpl<DeliveryRule, CdnEndpointImpl, CdnEndpoint>
-    implements CdnDeliveryRule,
-    CdnDeliveryRule.Definition<CdnEndpointImpl>,
-    CdnDeliveryRule.Update<CdnEndpointImpl> {
+    implements CdnStandardRulesEngineRule,
+    CdnStandardRulesEngineRule.Definition<CdnEndpointImpl>,
+    CdnStandardRulesEngineRule.Update<CdnEndpointImpl> {
 
-    CdnDeliveryRuleImpl(CdnEndpointImpl parent, String name) {
+    CdnStandardRulesEngineRuleImpl(CdnEndpointImpl parent, String name) {
         this(parent, new DeliveryRule().withName(name));
     }
 
-    CdnDeliveryRuleImpl(CdnEndpointImpl parent, DeliveryRule deliveryRule) {
+    CdnStandardRulesEngineRuleImpl(CdnEndpointImpl parent, DeliveryRule deliveryRule) {
         super(deliveryRule, parent);
     }
 
     @Override
-    public CdnDeliveryRuleImpl withOrder(int order) {
+    public CdnStandardRulesEngineRuleImpl withOrder(int order) {
         innerModel().withOrder(order);
         return this;
     }
 
     @Override
-    public CdnDeliveryRuleImpl withMatchConditions(DeliveryRuleCondition... matchConditions) {
+    public CdnStandardRulesEngineRuleImpl withMatchConditions(DeliveryRuleCondition... matchConditions) {
         List<DeliveryRuleCondition> conditions = new ArrayList<>();
         if (matchConditions != null) {
             conditions.addAll(Arrays.asList(matchConditions));
@@ -45,7 +45,7 @@ class CdnDeliveryRuleImpl
     }
 
     @Override
-    public CdnDeliveryRuleImpl withActions(DeliveryRuleAction... actions) {
+    public CdnStandardRulesEngineRuleImpl withActions(DeliveryRuleAction... actions) {
         List<DeliveryRuleAction> actionList = new ArrayList<>();
         if (actions != null) {
             actionList.addAll(Arrays.asList(actions));

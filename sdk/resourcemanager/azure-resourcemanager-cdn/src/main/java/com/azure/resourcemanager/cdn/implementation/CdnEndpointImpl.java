@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
-import com.azure.resourcemanager.cdn.models.CdnDeliveryRule;
 import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
 import com.azure.resourcemanager.cdn.models.DeliveryRule;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
@@ -37,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -68,19 +66,14 @@ class CdnEndpointImpl
 
     private List<CustomDomainInner> customDomainList;
     private List<CustomDomainInner> deletedCustomDomainList;
-    private final Map<String, DeliveryRule> deliveryRuleMap = new ConcurrentHashMap<>();
+    // rule map for rules engine in Standard Microsoft SKU, indexed by rule name
+    private final Map<String, DeliveryRule> standardRulesEngineRuleMap = new ConcurrentHashMap<>();
 
     CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
         this.customDomainList = new ArrayList<>();
         this.deletedCustomDomainList = new ArrayList<>();
-        if (isStandardMicrosoftSku()
-            && inner.deliveryPolicy() != null
-            && inner.deliveryPolicy().rules() != null) {
-            for (DeliveryRule rule : inner.deliveryPolicy().rules()) {
-                this.deliveryRuleMap.put(rule.name(), rule);
-            }
-        }
+        initializeRuleMapForStandardMicrosoftSku();
     }
 
     @Override
@@ -93,9 +86,9 @@ class CdnEndpointImpl
         final CdnEndpointImpl self = this;
         if (isStandardMicrosoftSku()
             && this.innerModel().deliveryPolicy() == null
-            && this.deliveryRuleMap.size() > 0) {
+            && this.standardRulesEngineRuleMap.size() > 0) {
             this.innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
-                .withRules(this.deliveryRuleMap.values()
+                .withRules(this.standardRulesEngineRuleMap.values()
                     .stream()
                     .sorted(Comparator.comparingInt(DeliveryRule::order))
                     .collect(Collectors.toList())));
@@ -144,19 +137,19 @@ class CdnEndpointImpl
                 .withTags(this.innerModel().tags());
 
         if (isStandardMicrosoftSku()) {
-            List<DeliveryRule> deliveryRules = this.deliveryRuleMap.values()
+            List<DeliveryRule> rules = this.standardRulesEngineRuleMap.values()
                 .stream()
                 .sorted(Comparator.comparingInt(DeliveryRule::order))
                 .collect(Collectors.toList());
 
-            if (innerModel().deliveryPolicy() == null && !CoreUtils.isNullOrEmpty(this.deliveryRuleMap)) {
+            if (innerModel().deliveryPolicy() == null && !CoreUtils.isNullOrEmpty(this.standardRulesEngineRuleMap)) {
                 endpointUpdateParameters.withDeliveryPolicy(
                     new EndpointPropertiesUpdateParametersDeliveryPolicy()
-                        .withRules(deliveryRules));
+                        .withRules(rules));
             } else if (innerModel().deliveryPolicy() != null) {
                 endpointUpdateParameters.withDeliveryPolicy(
                     innerModel().deliveryPolicy()
-                        .withRules(deliveryRules));
+                        .withRules(rules));
             }
         }
 
@@ -225,6 +218,7 @@ class CdnEndpointImpl
             .flatMap(cdnEndpoint -> {
                 self.customDomainList.clear();
                 self.deletedCustomDomainList.clear();
+                initializeRuleMapForStandardMicrosoftSku();
                 return self.parent().manager().serviceClient().getCustomDomains().listByEndpointAsync(
                         self.parent().resourceGroupName(),
                         self.parent().name(),
@@ -255,8 +249,8 @@ class CdnEndpointImpl
     }
 
     @Override
-    public Map<String, DeliveryRule> deliveryRules() {
-        return Collections.unmodifiableMap(this.deliveryRuleMap);
+    public Map<String, DeliveryRule> standardRuleEngineRules() {
+        return Collections.unmodifiableMap(this.standardRulesEngineRuleMap);
     }
 
     @Override
@@ -595,20 +589,22 @@ class CdnEndpointImpl
     }
 
     @Override
-    public CdnDeliveryRuleImpl defineNewDeliveryRule(String name) {
-        CdnDeliveryRuleImpl deliveryRule = new CdnDeliveryRuleImpl(this, name);
-        this.deliveryRuleMap.put(name, deliveryRule.innerModel());
+    @SuppressWarnings("unchecked")
+    public CdnStandardRulesEngineRuleImpl defineNewStandardRulesEngineRule(String name) {
+        CdnStandardRulesEngineRuleImpl deliveryRule = new CdnStandardRulesEngineRuleImpl(this, name);
+        this.standardRulesEngineRuleMap.put(name, deliveryRule.innerModel());
         return deliveryRule;
     }
 
     @Override
-    public CdnDeliveryRuleImpl updateDeliveryRule(String name) {
-        return new CdnDeliveryRuleImpl(this, deliveryRules().get(name));
+    @SuppressWarnings("unchecked")
+    public CdnStandardRulesEngineRuleImpl updateStandardRulesEngineRule(String name) {
+        return new CdnStandardRulesEngineRuleImpl(this, standardRuleEngineRules().get(name));
     }
 
     @Override
-    public CdnEndpointImpl withoutDeliveryRule(String name) {
-        this.deliveryRuleMap.remove(name);
+    public CdnEndpointImpl withoutStandardRulesEngineRule(String name) {
+        this.standardRulesEngineRuleMap.remove(name);
         return this;
     }
 
@@ -638,6 +634,17 @@ class CdnEndpointImpl
                 .withAction(action);
 
         return geoFilter;
+    }
+
+    private void initializeRuleMapForStandardMicrosoftSku() {
+        standardRulesEngineRuleMap.clear();
+        if (isStandardMicrosoftSku()
+            && innerModel().deliveryPolicy() != null
+            && innerModel().deliveryPolicy().rules() != null) {
+            for (DeliveryRule rule : innerModel().deliveryPolicy().rules()) {
+                this.standardRulesEngineRuleMap.put(rule.name(), rule);
+            }
+        }
     }
 
     private boolean isStandardMicrosoftSku() {

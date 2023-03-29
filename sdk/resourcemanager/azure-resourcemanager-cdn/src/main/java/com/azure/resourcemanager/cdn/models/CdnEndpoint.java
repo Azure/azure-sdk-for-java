@@ -186,7 +186,11 @@ public interface CdnEndpoint extends
      */
     PagedIterable<ResourceUsage> listResourceUsage();
 
-    Map<String, DeliveryRule> deliveryRules();
+    /**
+     * @return the map of the Standard rules engine rules, indexed by rule name
+     *         (note: this is only available for Standard Microsoft CDN Sku endpoints)
+     */
+    Map<String, DeliveryRule> standardRuleEngineRules();
 
     /**
      * Grouping of CDN profile endpoint definition stages as a part of parent CDN profile definition.
@@ -376,14 +380,14 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
 
             /**
-             * Begins the definition of the delivery rule to be attached to the endpoint.
+             * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
              * Supports {@link SkuName#STANDARD_MICROSOFT}.
              *
              * @param name name of the delivery rule
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
-            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineNewDeliveryRule(String name);
+            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
         }
 
         /** The final stage of the CDN profile Premium Verizon endpoint definition.
@@ -667,14 +671,14 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
 
             /**
-             * Begins the definition of the delivery rule to be attached to the endpoint.
+             * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
              * Supports {@link SkuName#STANDARD_MICROSOFT}.
              *
              * @param name name of the delivery rule
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
-            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineNewDeliveryRule(String name);
+            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
         }
 
         /**
@@ -938,7 +942,7 @@ public interface CdnEndpoint extends
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
-        <T extends UpdateStandardEndpoint> CdnDeliveryRule.DefinitionStage.Blank<T> defineNewDeliveryRule(String name);
+        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
 
         /**
          * Begins the update of the delivery rule.
@@ -948,7 +952,7 @@ public interface CdnEndpoint extends
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
-        <T extends UpdateStandardEndpoint> CdnDeliveryRule.Update<T>  updateDeliveryRule(String name);
+        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.Update<T> updateStandardRulesEngineRule(String name);
 
         /**
          * Removes the delivery rule from the endpoint.
@@ -957,7 +961,7 @@ public interface CdnEndpoint extends
          * @param name name of the delivery rule to remove
          * @return the next stage of the endpoint update
          */
-        UpdateStandardEndpoint withoutDeliveryRule(String name);
+        UpdateStandardEndpoint withoutStandardRulesEngineRule(String name);
     }
 
     /**

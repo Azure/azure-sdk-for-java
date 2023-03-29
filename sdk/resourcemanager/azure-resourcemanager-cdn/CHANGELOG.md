@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `defineDeliveryRule` and `updateDeliveryRule` in `CdnEndpoint` for Standard Microsoft Sku.
+- Supported `defineNewStandardRulesEngineRule` and `updateStandardRulesEngineRule` in `CdnEndpoint` for Standard Microsoft Sku.
 - Supported `withStandardMicrosoftSku` in `CdnProfile`.
 
 ## 2.25.0 (2023-03-24)
