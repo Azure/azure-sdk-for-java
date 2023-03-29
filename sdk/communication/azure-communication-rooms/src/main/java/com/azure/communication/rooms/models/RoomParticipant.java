@@ -64,7 +64,7 @@ public final class RoomParticipant {
      * @param role the role value to set.
      * @return the RoomParticipant object itself.
      */
-    public RoomParticipant setRole(RoleType role) {
+    public RoomParticipant setRole(Role role) {
         this.role = role;
         return this;
     }

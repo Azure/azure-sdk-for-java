@@ -7,6 +7,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 
 import com.azure.communication.rooms.implementation.models.RoomsCollection;
 import com.azure.communication.rooms.implementation.models.ParticipantProperties;
+import com.azure.communication.rooms.implementation.models.RoomModel;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.ParticipantsCollection;
 import com.azure.communication.rooms.models.RoomJoinPolicy;

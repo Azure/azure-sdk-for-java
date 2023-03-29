@@ -3,44 +3,44 @@
 
 package com.azure.communication.rooms.implementation.converters;
 
-import com.azure.communication.rooms.models.RoleType;
+import com.azure.communication.rooms.models.Role;
 
 /**
  * A converter between {@link com.azure.communication.rooms.implementation.models.Role} and
- * {@link RoleType}.
+ * {@link Role}.
  */
 public final class RoleTypeConverter {
     /**
-     * Maps from {com.azure.communication.rooms.implementation.models.Role} to {@link RoleType}.
+     * Maps from {com.azure.communication.rooms.implementation.models.Role} to {@link Role}.
      */
-    public static RoleType convert(com.azure.communication.rooms.implementation.models.Role roleType) {
+    public static Role convert(com.azure.communication.rooms.implementation.models.Role roleType) {
         if (roleType == null) {
             return null;
         }
 
-        RoleType role = RoleType.ATTENDEE;
+        Role role = Role.ATTENDEE;
 
         switch (roleType.toString()) {
             case "Attendee":
-                role = RoleType.ATTENDEE;
+                role = Role.ATTENDEE;
                 break;
             case "Consumer":
-                role = RoleType.CONSUMER;
+                role = Role.CONSUMER;
                 break;
             case "Presenter":
-                role = RoleType.PRESENTER;
+                role = Role.PRESENTER;
                 break;
             default:
-                role = RoleType.ATTENDEE;
+                role = Role.ATTENDEE;
                 break;
         }
         return role;
     }
 
     /**
-     * Maps from {@link RoleType} to {com.azure.communication.rooms.implementation.models.Role}.
+     * Maps from {@link Role} to {com.azure.communication.rooms.implementation.models.Role}.
     */
-    public static com.azure.communication.rooms.implementation.models.Role convert(RoleType roleType) {
+    public static com.azure.communication.rooms.implementation.models.Role convert(Role roleType) {
         if (roleType == null) {
             return null;
         }

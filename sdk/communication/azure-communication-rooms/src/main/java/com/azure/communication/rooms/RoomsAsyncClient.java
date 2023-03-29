@@ -237,8 +237,9 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
             .listAsync(context)
+            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
             .flatMap((Response<PagedFlux<RoomModel>> response) -> {
-                return Mono.just(response.getValue());
+                return response;
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -262,7 +263,7 @@ public final class RoomsAsyncClient {
             .listAsync(context)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
             .flatMap((Response<PagedFlux<RoomModel>> response) -> {
-                return Mono.just(response.getValue());
+                return response.getValue();
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -460,7 +461,7 @@ public final class RoomsAsyncClient {
             return this.participantsClient
             .listAsync(roomId, context)
             .flatMap((Response<PagedFlux<RoomParticipant>> response) -> {
-                return Mono.just(response);
+                return response;
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -485,7 +486,7 @@ public final class RoomsAsyncClient {
             .listAsync(roomId, context)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
             .flatMap((Response<PagedFlux<RoomParticipant>> response) -> {
-                return Mono.just(response);
+                return response;
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
