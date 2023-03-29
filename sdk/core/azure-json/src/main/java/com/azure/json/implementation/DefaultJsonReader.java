@@ -170,7 +170,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean resetSupported() {
+    public boolean isResetSupported() {
         return resetSupported;
     }
 

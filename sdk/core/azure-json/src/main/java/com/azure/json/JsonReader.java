@@ -265,12 +265,12 @@ public abstract class JsonReader implements Closeable {
      *
      * @return Whether {@link #reset()} is supported.
      */
-    public abstract boolean resetSupported();
+    public abstract boolean isResetSupported();
 
     /**
      * Creates a new {@link JsonReader} reset to the beginning of the JSON stream.
      * <p>
-     * Use {@link #resetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
+     * Use {@link #isResetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
      * and it isn't supported an {@link IllegalStateException} will be thrown.
      *
      * @return A new {@link JsonReader} reset to the beginning of the JSON stream.
