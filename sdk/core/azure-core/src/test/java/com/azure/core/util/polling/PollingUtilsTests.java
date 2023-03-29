@@ -3,7 +3,12 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.implementation.PollingUtils;
+import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
@@ -63,5 +68,58 @@ public class PollingUtilsTests {
         assertEquals(expectedPath, getAbsolutePath(relativePathWithSlash, endpoint, null));
         // Case 4: both of endpoint and relative path have slash
         assertEquals(expectedPath, getAbsolutePath(relativePathWithSlash, endpointWithSlash, null));
+    }
+
+    @Test
+    public void testConvertResponse() {
+        String status = "Succeeded";
+
+        Resource convertOrigin = new Resource().setName("name").setStatus(status);
+
+        PollResult convertResult = PollingUtils.convertResponse(convertOrigin,
+            new DefaultJsonSerializer(),
+            TypeReference.createInstance(PollResult.class)).block();
+
+        assertEquals(status, convertResult.getStatus());
+    }
+
+    private static class PollResult {
+        @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+        private String status;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public PollResult setStatus(String status) {
+            this.status = status;
+            return this;
+        }
+    }
+
+    private static class Resource {
+        @JsonProperty(value = "name", required = true)
+        private String name;
+
+        @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+        private String status;
+
+        public String getName() {
+            return name;
+        }
+
+        public Resource setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public Resource setStatus(String status) {
+            this.status = status;
+            return this;
+        }
     }
 }
