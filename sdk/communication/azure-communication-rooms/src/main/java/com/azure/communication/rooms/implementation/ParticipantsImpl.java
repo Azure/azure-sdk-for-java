@@ -6,6 +6,7 @@ package com.azure.communication.rooms.implementation;
 
 import com.azure.communication.rooms.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.rooms.implementation.models.ParticipantsCollection;
+import com.azure.communication.rooms.implementation.models.RoomParticipant;
 import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -20,6 +21,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -73,6 +78,15 @@ public final class ParticipantsImpl {
                 @BodyParam("application/merge-patch+json") UpdateParticipantsRequest updateParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<ParticipantsCollection>> listNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") URL endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -82,14 +96,28 @@ public final class ParticipantsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return participants in a room along with {@link Response} on successful completion of {@link Mono}.
+     * @return participants in a room along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ParticipantsCollection>> listWithResponseAsync(String roomId) {
+    public Mono<PagedResponse<RoomParticipant>> listSinglePageAsync(String roomId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.list(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
+                        context ->
+                                service.list(
+                                        this.client.getEndpoint(),
+                                        roomId,
+                                        this.client.getApiVersion(),
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -100,12 +128,21 @@ public final class ParticipantsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return participants in a room along with {@link Response} on successful completion of {@link Mono}.
+     * @return participants in a room along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ParticipantsCollection>> listWithResponseAsync(String roomId, Context context) {
+    public Mono<PagedResponse<RoomParticipant>> listSinglePageAsync(String roomId, Context context) {
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context);
+        return service.list(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -115,40 +152,11 @@ public final class ParticipantsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return participants in a room on successful completion of {@link Mono}.
+     * @return participants in a room as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ParticipantsCollection> listAsync(String roomId) {
-        return listWithResponseAsync(roomId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get participants in a room.
-     *
-     * @param roomId The id of the room to get participants from.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return participants in a room on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ParticipantsCollection> listAsync(String roomId, Context context) {
-        return listWithResponseAsync(roomId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get participants in a room.
-     *
-     * @param roomId The id of the room to get participants from.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return participants in a room.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection list(String roomId) {
-        return listAsync(roomId).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RoomParticipant> listAsync(String roomId) {
+        return new PagedFlux<>(() -> listSinglePageAsync(roomId), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -159,11 +167,41 @@ public final class ParticipantsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return participants in a room along with {@link Response}.
+     * @return participants in a room as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> listWithResponse(String roomId, Context context) {
-        return listWithResponseAsync(roomId, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RoomParticipant> listAsync(String roomId, Context context) {
+        return new PagedFlux<>(
+                () -> listSinglePageAsync(roomId, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get participants in a room.
+     *
+     * @param roomId The id of the room to get participants from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants in a room as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoomParticipant> list(String roomId) {
+        return new PagedIterable<>(listAsync(roomId));
+    }
+
+    /**
+     * Get participants in a room.
+     *
+     * @param roomId The id of the room to get participants from.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants in a room as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoomParticipant> list(String roomId, Context context) {
+        return new PagedIterable<>(listAsync(roomId, context));
     }
 
     /**
@@ -279,5 +317,56 @@ public final class ParticipantsImpl {
     public Response<Object> updateWithResponse(
             String roomId, UpdateParticipantsRequest updateParticipantsRequest, Context context) {
         return updateWithResponseAsync(roomId, updateParticipantsRequest, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of participants in a room along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RoomParticipant>> listNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of participants in a room along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RoomParticipant>> listNextSinglePageAsync(String nextLink, Context context) {
+        final String accept = "application/json";
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

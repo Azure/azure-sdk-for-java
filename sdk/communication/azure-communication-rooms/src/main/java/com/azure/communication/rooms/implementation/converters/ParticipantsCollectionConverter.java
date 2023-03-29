@@ -31,8 +31,8 @@ public final class ParticipantsCollectionConverter {
 
         List<com.azure.communication.rooms.models.RoomParticipant> participants = new ArrayList<>();
 
-        if (obj.getParticipants() != null) {
-            participants = obj.getParticipants()
+        if (obj.getValue() != null) {
+            participants = obj.getValue()
                 .stream()
                 .map((participant) -> RoomParticipantConverter.convert(participant))
                 .collect(Collectors.toList());
@@ -61,7 +61,7 @@ public final class ParticipantsCollectionConverter {
                 .collect(Collectors.toList());
         }
 
-        com.azure.communication.rooms.implementation.models.ParticipantsCollection participantsCollection = new com.azure.communication.rooms.implementation.models.ParticipantsCollection().setParticipants(participants);
+        com.azure.communication.rooms.implementation.models.ParticipantsCollection participantsCollection = new com.azure.communication.rooms.implementation.models.ParticipantsCollection().setValue(participants);
         return participantsCollection;
     }
 }

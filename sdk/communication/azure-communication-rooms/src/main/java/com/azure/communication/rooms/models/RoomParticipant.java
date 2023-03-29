@@ -23,7 +23,7 @@ public final class RoomParticipant {
      * The Role of a room participant.
      */
     @JsonProperty(value = "role")
-    private RoleType role;
+    private Role role;
 
     /**
      * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
@@ -54,7 +54,7 @@ public final class RoomParticipant {
      *
      * @return the role value.
      */
-    public RoleType getRole() {
+    public Role getRole() {
         return this.role;
     }
 

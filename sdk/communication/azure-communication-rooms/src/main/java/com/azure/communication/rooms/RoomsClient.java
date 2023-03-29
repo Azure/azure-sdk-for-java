@@ -3,6 +3,10 @@
 
 package com.azure.communication.rooms;
 
+import com.azure.communication.common.CommunicationIdentifier;
+
+import com.azure.communication.rooms.implementation.models.RoomsCollection;
+import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.ParticipantsCollection;
 import com.azure.communication.rooms.models.RoomJoinPolicy;
@@ -12,6 +16,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.http.rest.PagedFlux;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -132,7 +137,7 @@ public final class RoomsClient {
      * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoomsCollection> listRoomsWithResponse() {
+    public Response<PagedFlux<RoomModel>> listRoomsWithResponse() {
         return roomsAsyncClient.listRoomsWithResponse().block();
     }
 
@@ -142,7 +147,7 @@ public final class RoomsClient {
      * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoomsCollection> listRooms() {
+    public Response<PagedFlux<RoomModel>> listRooms() {
         return roomsAsyncClient.listRooms().block();
     }
 
@@ -154,7 +159,7 @@ public final class RoomsClient {
      * @return response for a successful upsert participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> upsertParticipants(String roomId, List<RoomParticipant> participants) {
+    public Object upsertParticipants(String roomId, List<RoomParticipant> participants) {
         return roomsAsyncClient.upsertParticipants(roomId, participants).block();
     }
 
@@ -178,7 +183,7 @@ public final class RoomsClient {
      * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> removeParticipants(String roomId, List<CommunicationIdentifier> identifiers) {
+    public Object removeParticipants(String roomId, List<CommunicationIdentifier> identifiers) {
         return roomsAsyncClient.removeParticipants(roomId, identifiers).block();
     }
 
@@ -201,7 +206,7 @@ public final class RoomsClient {
      * @return Room Participants List
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection getParticipants(String roomId) {
+    public PagedFlux<RoomParticipant> getParticipants(String roomId) {
         return roomsAsyncClient.getParticipants(roomId).block();
     }
 
@@ -213,7 +218,7 @@ public final class RoomsClient {
      * @return The Room Participants list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> getParticipantsWithResponse(String roomId, Context context) {
+    public Response<PagedFlux<RoomParticipant>> getParticipantsWithResponse(String roomId, Context context) {
         return roomsAsyncClient.getParticipantsWithResponse(roomId, context).block();
     }
 
