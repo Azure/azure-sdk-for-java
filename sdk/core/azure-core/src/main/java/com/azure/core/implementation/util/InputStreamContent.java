@@ -47,9 +47,20 @@ public final class InputStreamContent extends BinaryDataContent {
      */
     public InputStreamContent(InputStream inputStream, Long length) {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
-        this.content = () -> inputStream;
         this.length = length;
-        isReplayable = false;
+        isReplayable = canMarkReset(inputStream, length);
+        if (isReplayable) {
+            this.content = () -> {
+                try {
+                    inputStream.reset();
+                    return inputStream;
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            };
+        } else {
+            this.content = () -> inputStream;
+        }
     }
 
     private InputStreamContent(Supplier<InputStream> inputStreamSupplier, Long length, boolean isReplayable) {

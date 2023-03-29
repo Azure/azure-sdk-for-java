@@ -214,17 +214,11 @@ public final class ContainerRegistryContentAsyncClient {
      * @return The operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
-     * @throws IllegalArgumentException thrown if the {@code content} is not replayable, such when {@link BinaryData} is created from
-     *         {@code Flux<ByteBuffer>} or {@link java.io.InputStream} that does not support mark and reset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadRegistryBlobResult> uploadBlob(BinaryData content) {
         if (content == null) {
             return monoError(LOGGER, new NullPointerException("'content' can't be null."));
-        }
-
-        if (!content.isReplayable()) {
-            return monoError(LOGGER, new IllegalArgumentException("'content' is not replayable."));
         }
 
         return withContext(context -> runWithTracing(UPLOAD_BLOB_SPAN_NAME, span -> uploadBlob(content.toFluxByteBuffer(), span), context));

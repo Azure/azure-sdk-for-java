@@ -343,7 +343,7 @@ public class ContainerRegistryContentClientTests {
         sha256.update(data);
 
         try (ByteArrayInputStream stream = new ByteArrayInputStream(data)) {
-            BinaryData content = BinaryData.fromStream(stream, (long) data.length).toReplayableBinaryData();
+            BinaryData content = BinaryData.fromStream(stream, (long) data.length);
 
             ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
             ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
@@ -410,41 +410,38 @@ public class ContainerRegistryContentClientTests {
             () -> asyncClient.uploadBlob(content));
     }
 
-    @Test
-    public void uploadFromStreamNotReplayableThrows() throws IOException {
+    @SyncAsyncTest
+    public void uploadFromStreamNotReplayable() throws IOException {
         byte[] data = Arrays.copyOfRange(CHUNK, 0, 1024 * 100);
-        Supplier<String> calculateDigest = () -> "";
-        ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
-        ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
+        sha256.update(data);
 
         try (ByteArrayInputStream stream = new ByteArrayInputStream(data)) {
-            BinaryData content = BinaryData.fromStream(stream, (long) data.length);
+            BinaryData content = BinaryData.fromStream(stream, null);
 
-            assertThrows(IllegalArgumentException.class, () -> client.uploadBlob(content));
-            StepVerifier.create(asyncClient.uploadBlob(content))
-                    .expectError(IllegalArgumentException.class)
-                    .verify();
+            ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
+            ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
+            SyncAsyncExtension.execute(
+                () -> client.uploadBlob(content),
+                () -> asyncClient.uploadBlob(content));
         }
     }
 
-    @Test
-    public void uploadFromFluxNotReplayable() throws IOException {
+    @SyncAsyncTest
+    public void uploadFromFluxNotReplayable() {
+        byte[] data = Arrays.copyOfRange(CHUNK, 0, 1024 * 100);
+        sha256.update(data);
         Flux<ByteBuffer> flux = Flux.create(sink -> {
-            byte[] data = new byte[100];
-            new Random().nextBytes(data);
             sink.next(ByteBuffer.wrap(data));
             sink.complete();
         });
 
+        BinaryData content = BinaryData.fromFlux(flux, (long) data.length, false).block();
+
         ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
-
-        BinaryData content = BinaryData.fromFlux(flux, null, false).block();
-        assertThrows(IllegalArgumentException.class, () -> client.uploadBlob(content));
-
-        StepVerifier.create(asyncClient.uploadBlob(content))
-            .expectError(IllegalArgumentException.class)
-            .verify();
+        SyncAsyncExtension.execute(
+            () -> client.uploadBlob(content),
+            () -> asyncClient.uploadBlob(content));
     }
 
     @Test

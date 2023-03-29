@@ -196,8 +196,6 @@ public final class ContainerRegistryContentClient {
      * @return The upload response.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is {@code null}.
-     * @throws IllegalArgumentException thrown if the {@code content} is not replayable, such when {@link BinaryData} is created from
-     *         {@code Flux<ByteBuffer>} or {@link java.io.InputStream} that does not support mark and reset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadRegistryBlobResult uploadBlob(BinaryData content) {
@@ -227,9 +225,6 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadRegistryBlobResult uploadBlob(BinaryData content, Context context) {
         Objects.requireNonNull(content, "'content' cannot be null.");
-        if (!content.isReplayable()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'content' is not replayable."));
-        }
 
         InputStream stream = content.toStream();
         ReadableByteChannel channel = Channels.newChannel(stream);

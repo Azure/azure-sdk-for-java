@@ -247,7 +247,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 20;
-        BinaryData data = BinaryData.fromStream(new TestInputStream(size), size).toReplayableBinaryData();
+        BinaryData data = BinaryData.fromStream(new TestInputStream(size), size);
         UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
 
         TestOutputStream output = new TestOutputStream();
