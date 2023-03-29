@@ -62,6 +62,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.to
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides a client that exposes operations to push and pull images into container registry.
@@ -161,8 +162,6 @@ public final class ContainerRegistryContentClient {
 
     /**
      * Uploads a blob to the repository in chunks of 4MB.
-     * Use this method to upload relatively small content that fits into memory. For large content use
-     * {@link ContainerRegistryContentClient#uploadBlob(ReadableByteChannel, Context)} overload.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -198,20 +197,12 @@ public final class ContainerRegistryContentClient {
      * @return The upload response.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is {@code null}.
+     * @throws IllegalArgumentException thrown if the {@code content} is not replayable, such when {@link BinaryData} is created from
+     *         {@code Flux<ByteBuffer>} or {@link java.io.InputStream} that does not support mark and reset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadRegistryBlobResult uploadBlob(BinaryData content) {
-        Objects.requireNonNull(content, "'content' cannot be null.");
-        InputStream stream = content.toStream();
-        try {
-            return uploadBlob(Channels.newChannel(stream), Context.NONE);
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                LOGGER.warning("Failed to close the stream", e);
-            }
-        }
+        return uploadBlob(content, Context.NONE);
     }
 
     /**
@@ -236,9 +227,24 @@ public final class ContainerRegistryContentClient {
      * @throws NullPointerException thrown if the {@code stream} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadRegistryBlobResult uploadBlob(ReadableByteChannel content, Context context) {
+    public UploadRegistryBlobResult uploadBlob(BinaryData content, Context context) {
         Objects.requireNonNull(content, "'content' cannot be null.");
-        return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(content, span), context);
+        if (!content.isReplayable()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'content' is not replayable."));
+        }
+
+        InputStream stream = content.toStream();
+        ReadableByteChannel channel = Channels.newChannel(stream);
+        try {
+            return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(channel, span), context);
+        } finally {
+            try {
+                channel.close();
+                stream.close();
+            } catch (IOException e) {
+                LOGGER.warning("Failed to close the stream", e);
+            }
+        }
     }
 
     /**

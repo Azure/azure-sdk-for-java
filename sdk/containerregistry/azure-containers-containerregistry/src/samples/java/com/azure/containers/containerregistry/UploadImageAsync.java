@@ -50,9 +50,10 @@ public class UploadImageAsync {
                 .setDigest(result.getDigest())
                 .setSizeInBytes(result.getSizeInBytes()));
 
-        Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
-        Mono<OciDescriptor> uploadLayer = contentClient
-            .uploadBlob(layerContent)
+        long dataLength = 1024 * 1024 * 1024;
+        Mono<BinaryData> layerContent = BinaryData.fromFlux(getData(dataLength), dataLength, false); // 1 GB
+        Mono<OciDescriptor> uploadLayer =
+            layerContent.flatMap(content -> contentClient.uploadBlob(content))
             .map(result -> new OciDescriptor()
                 .setDigest(result.getDigest())
                 .setSizeInBytes(result.getSizeInBytes())
@@ -108,9 +109,10 @@ public class UploadImageAsync {
                 .setDigest(configUploadResult.getDigest())
                 .setSizeInBytes(configContent.getLength()));
 
-        Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
-        Mono<OciDescriptor> layer = contentClient
-            .uploadBlob(layerContent)
+        long dataLength = 1024 * 1024 * 1024;
+        Mono<BinaryData> layerContent = BinaryData.fromFlux(getData(dataLength), dataLength, false); // 1 GB
+        Mono<OciDescriptor> layer = layerContent
+            .flatMap(content -> contentClient.uploadBlob(content))
             .map(result -> new OciDescriptor()
                 .setDigest(result.getDigest())
                 .setSizeInBytes(result.getSizeInBytes())
@@ -187,7 +189,7 @@ public class UploadImageAsync {
         // BEGIN: com.azure.containers.containerregistry.uploadStreamAsync
         Flux.using(
                 () -> new FileInputStream("artifact.tar.gz"),
-                fileStream -> contentClient.uploadBlob(FluxUtil.toFluxByteBuffer(fileStream, CHUNK_SIZE)),
+                fileStream -> contentClient.uploadBlob(BinaryData.fromStream(fileStream)),
                 this::closeStream)
             .subscribe(uploadResult ->
                 System.out.printf("Uploaded blob: digest - '%s', size - %s\n",

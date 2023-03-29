@@ -115,7 +115,7 @@ public class UploadImage {
 
         // BEGIN: com.azure.containers.containerregistry.uploadStream
         try (FileInputStream content = new FileInputStream("artifact.tar.gz")) {
-            UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(content.getChannel(), Context.NONE);
+            UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(BinaryData.fromStream(content), Context.NONE);
             System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
                 uploadResult.getDigest(), uploadResult.getSizeInBytes());
         }

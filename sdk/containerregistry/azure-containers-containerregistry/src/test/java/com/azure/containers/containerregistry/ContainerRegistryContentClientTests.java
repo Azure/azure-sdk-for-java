@@ -260,7 +260,7 @@ public class ContainerRegistryContentClientTests {
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
-            () -> asyncClient.uploadBlob(content));
+            () -> BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)));
     }
 
     @SyncAsyncTest
@@ -272,7 +272,7 @@ public class ContainerRegistryContentClientTests {
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
         SyncAsyncExtension.execute(
             () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
-            () -> asyncClient.uploadBlob(content));
+            () -> BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)));
     }
 
     private ByteBuffer slice(ByteBuffer buffer, int offset, int length) {
@@ -296,7 +296,7 @@ public class ContainerRegistryContentClientTests {
         Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
-        StepVerifier.create(asyncClient.uploadBlob(content))
+        StepVerifier.create(BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -315,7 +315,7 @@ public class ContainerRegistryContentClientTests {
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(() -> "foo"));
         assertThrows(IllegalStateException.class, () -> client.uploadBlob(BinaryData.fromFlux(content).block()));
 
-        StepVerifier.create(asyncClient.uploadBlob(content))
+        StepVerifier.create(BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)))
             .expectError(IllegalStateException.class)
             .verify();
     }

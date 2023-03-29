@@ -248,7 +248,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         long size = CHUNK_SIZE * 20;
         TestInputStream input = new TestInputStream(size);
-        UploadRegistryBlobResult result = client.uploadBlob(Channels.newChannel(input), Context.NONE);
+        UploadRegistryBlobResult result = client.uploadBlob(BinaryData.fromStream(input), Context.NONE);
 
         TestOutputStream output = new TestOutputStream();
         client.downloadStream(result.getDigest(), Channels.newChannel(output));
@@ -267,7 +267,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         long size = CHUNK_SIZE * 50;
         AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        StepVerifier.create(asyncClient.uploadBlob(generateAsyncStream(size))
+        StepVerifier.create(asyncClient.uploadBlob(BinaryData.fromStream(generateAsyncStream(size)))
                 .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
                 .flatMapMany(bd -> bd.toFluxByteBuffer())
                 .doOnNext(bb -> download.addAndGet(bb.remaining()))
