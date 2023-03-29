@@ -247,8 +247,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 20;
-        TestInputStream input = new TestInputStream(size);
-        UploadRegistryBlobResult result = client.uploadBlob(BinaryData.fromStream(input), Context.NONE);
+        BinaryData data = BinaryData.fromStream(new TestInputStream(size), size).toReplayableBinaryData();
+        UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
 
         TestOutputStream output = new TestOutputStream();
         client.downloadStream(result.getDigest(), Channels.newChannel(output));
@@ -265,10 +265,10 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 50;
+        Mono<BinaryData> data = BinaryData.fromStreamAsync(new TestInputStream(size), size).map(BinaryData::toReplayableBinaryData);
         AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        StepVerifier.create(
-            BinaryData.fromFlux(generateAsyncStream(size), size, false)
+        StepVerifier.create(data
                 .flatMap(content -> asyncClient.uploadBlob(content))
                 .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
                 .flatMapMany(BinaryData::toFluxByteBuffer)
@@ -547,6 +547,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     private static class TestInputStream extends InputStream {
         private final long size;
         private long position = 0;
+        private long mark = 0;
 
         TestInputStream(long size) {
             this.size = size;
@@ -580,6 +581,21 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         @Override
         public int available() {
             return (int) Math.min(Integer.MAX_VALUE, size - position);
+        }
+
+        @Override
+        public synchronized void mark(int readlimit) {
+            mark = position;
+        }
+
+        @Override
+        public synchronized void reset() {
+            position = mark;
+        }
+
+        @Override
+        public boolean markSupported() {
+            return true;
         }
     }
 
