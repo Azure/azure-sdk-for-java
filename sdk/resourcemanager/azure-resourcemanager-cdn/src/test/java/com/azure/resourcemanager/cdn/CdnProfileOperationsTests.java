@@ -217,8 +217,8 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         CdnEndpoint endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
-        Assertions.assertEquals(1, endpoint.standardRuleEngineRules().size());
-        DeliveryRule deliveryRule = endpoint.standardRuleEngineRules().get(ruleName1);
+        Assertions.assertEquals(1, endpoint.standardRulesEngineRules().size());
+        DeliveryRule deliveryRule = endpoint.standardRulesEngineRules().get(ruleName1);
         Assertions.assertNotNull(deliveryRule);
         Assertions.assertEquals(1, deliveryRule.conditions().size());
         Assertions.assertEquals(1, deliveryRule.actions().size());
@@ -281,15 +281,15 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         // endpoint1
         endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
-        Assertions.assertEquals(2, endpoint.standardRuleEngineRules().size());
+        Assertions.assertEquals(2, endpoint.standardRulesEngineRules().size());
 
         // rule1
-        deliveryRule = endpoint.standardRuleEngineRules().get(ruleName1);
+        deliveryRule = endpoint.standardRulesEngineRules().get(ruleName1);
         Assertions.assertNotNull(deliveryRule);
         Assertions.assertEquals(2, deliveryRule.order());
 
         // rule2
-        DeliveryRule deliveryRule2 = endpoint.standardRuleEngineRules().get(ruleName2);
+        DeliveryRule deliveryRule2 = endpoint.standardRulesEngineRules().get(ruleName2);
         Assertions.assertNotNull(deliveryRule2);
         Assertions.assertEquals(1, deliveryRule2.conditions().size());
         Assertions.assertEquals(1, deliveryRule2.actions().size());
@@ -302,7 +302,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertNotNull(endpoint2);
 
         // rule3
-        DeliveryRule deliveryRule3 = endpoint2.standardRuleEngineRules().get(ruleName3);
+        DeliveryRule deliveryRule3 = endpoint2.standardRulesEngineRules().get(ruleName3);
         Assertions.assertNotNull(deliveryRule3);
 
         cdnProfile.update()
@@ -313,6 +313,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         cdnProfile.refresh();
 
-        Assertions.assertEquals(1, cdnProfile.endpoints().get(cdnEndpointName).standardRuleEngineRules().size());
+        Assertions.assertEquals(1, cdnProfile.endpoints().get(cdnEndpointName).standardRulesEngineRules().size());
     }
 }

@@ -249,7 +249,7 @@ class CdnEndpointImpl
     }
 
     @Override
-    public Map<String, DeliveryRule> standardRuleEngineRules() {
+    public Map<String, DeliveryRule> standardRulesEngineRules() {
         return Collections.unmodifiableMap(this.standardRulesEngineRuleMap);
     }
 
@@ -599,7 +599,7 @@ class CdnEndpointImpl
     @Override
     @SuppressWarnings("unchecked")
     public CdnStandardRulesEngineRuleImpl updateStandardRulesEngineRule(String name) {
-        return new CdnStandardRulesEngineRuleImpl(this, standardRuleEngineRules().get(name));
+        return new CdnStandardRulesEngineRuleImpl(this, standardRulesEngineRules().get(name));
     }
 
     @Override

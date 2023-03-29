@@ -15,14 +15,14 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
      */
     interface DefinitionStage {
         /**
-         * The first stage of a CDN delivery rule definition.
+         * The first stage of a CDN Standard rules engine rule definition.
          *
          * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
         interface Blank<T> extends WithOrder<T> {}
 
         /**
-         * The stage of a CDN delivery rule definition allowing to specify the order of the rule in the Rules Engine.
+         * The stage of a CDN Standard rules engine rule definition allowing to specify the order of the rule.
          *
          * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
@@ -33,14 +33,14 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * Rule with order 0 is a special rule. It does not require any condition and actions listed in it will
              * always be applied.
              *
-             * @param order the order of the delivery rule
-             * @return the next stage of the delivery rule definition
+             * @param order the order of the Standard rules engine rule
+             * @return the next stage of the Standard rules engine rule definition
              */
             WithMatchConditions<T> withOrder(int order);
         }
 
         /**
-         * The stage of a CDN delivery rule definition allowing to specify match conditions.
+         * The stage of a CDN Standard rules engine rule definition allowing to specify match conditions.
          *
          * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
@@ -49,13 +49,13 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * Specify a list of conditions that must be matched for the actions to be executed.
              *
              * @param matchConditions the conditions that must be matched for the actions to be executed
-             * @return the next stage of the delivery rule definition
+             * @return the next stage of the Standard rules engine rule definition
              */
             WithActions<T> withMatchConditions(DeliveryRuleCondition... matchConditions);
         }
 
         /**
-         * The stage of a CDN delivery rule definition allowing to specify actions.
+         * The stage of a CDN Standard rules engine rule definition allowing to specify actions.
          *
          * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
          */
@@ -64,18 +64,18 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * Specify a list of actions that are executed when all the conditions of a rule are satisfied.
              *
              * @param actions the actions that are executed when all the conditions of a rule are satisfied
-             * @return the next stage of the delivery rule definition
+             * @return the next stage of the Standard rules engine rule definition
              */
             Attachable<T> withActions(DeliveryRuleAction... actions);
         }
     }
 
     /**
-     * Grouping of CDN delivery rule update stages.
+     * Grouping of CDN Standard rules engine rule update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of a CDN delivery rule update allowing to update the order of the rule in the Rules Engine.
+         * The stage of a CDN Standard rules engine rule update allowing to update the order of the rule in the Rules Engine.
          *
          * @param <T> the stage of the parent CDN endpoint update to return to after updating this definition
          */
@@ -86,14 +86,14 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * Rule with order 0 is a special rule. It does not require any condition and actions listed in it will
              * always be applied.
              *
-             * @param order the order of the delivery rule
-             * @return the next stage of the delivery rule update
+             * @param order the order of the Standard rules engine rule
+             * @return the next stage of the Standard rules engine rule update
              */
             Update<T> withOrder(int order);
         }
 
         /**
-         * The stage of a CDN delivery rule update allowing to update match conditions.
+         * The stage of a CDN Standard rules engine rule update allowing to update match conditions.
          *
          * @param <T> the stage of the parent CDN endpoint update to return to after updating this definition
          */
@@ -102,13 +102,13 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * Specify a list of conditions that must be matched for the actions to be executed.
              *
              * @param matchConditions the conditions that must be matched for the actions to be executed
-             * @return the next stage of the delivery rule update
+             * @return the next stage of the Standard rules engine rule update
              */
             Update<T> withMatchConditions(DeliveryRuleCondition... matchConditions);
         }
 
         /**
-         * The stage of a CDN delivery rule update allowing to update actions.
+         * The stage of a CDN Standard rules engine rule update allowing to update actions.
          *
          * @param <T> the stage of the parent CDN endpoint update to return to after updating this definition
          */
@@ -117,14 +117,14 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * Specify a list of actions that are executed when all the conditions of a rule are satisfied.
              *
              * @param actions the actions that are executed when all the conditions of a rule are satisfied
-             * @return the next stage of the delivery rule update
+             * @return the next stage of the Standard rules engine rule update
              */
             Update<T> withActions(DeliveryRuleAction... actions);
         }
     }
 
     /**
-     * The entirety of a CDN delivery rule definition.
+     * The entirety of a CDN Standard rules engine rule definition.
      *
      * @param <ParentT> the stage of the parent CDN endpoint definition to return to after attaching this definition
      */

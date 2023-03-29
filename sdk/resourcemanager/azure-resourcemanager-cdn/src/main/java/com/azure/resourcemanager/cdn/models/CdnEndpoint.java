@@ -190,7 +190,7 @@ public interface CdnEndpoint extends
      * @return the map of the Standard rules engine rules, indexed by rule name
      *         (note: this is only available for Standard Microsoft CDN Sku endpoints)
      */
-    Map<String, DeliveryRule> standardRuleEngineRules();
+    Map<String, DeliveryRule> standardRulesEngineRules();
 
     /**
      * Grouping of CDN profile endpoint definition stages as a part of parent CDN profile definition.
@@ -383,7 +383,7 @@ public interface CdnEndpoint extends
              * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
              * Supports {@link SkuName#STANDARD_MICROSOFT}.
              *
-             * @param name name of the delivery rule
+             * @param name name of the rule
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
@@ -674,7 +674,7 @@ public interface CdnEndpoint extends
              * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
              * Supports {@link SkuName#STANDARD_MICROSOFT}.
              *
-             * @param name name of the delivery rule
+             * @param name name of the rule
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
@@ -936,29 +936,30 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withoutCustomDomain(String hostName);
 
         /**
-         * Begins the update of the delivery rule.
+         * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
+         * Supports {@link SkuName#STANDARD_MICROSOFT}.
          *
-         * @param name name of the delivery rule
+         * @param name name of the rule
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
         <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
 
         /**
-         * Begins the update of the delivery rule.
+         * Begins the update of the Standard rules engine rule.
          * Supports {@link SkuName#STANDARD_MICROSOFT}.
          *
-         * @param name name of the delivery rule to update
+         * @param name name of the rule to update
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
         <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.Update<T> updateStandardRulesEngineRule(String name);
 
         /**
-         * Removes the delivery rule from the endpoint.
+         * Removes the rule from the endpoint's Standard rules engine.
          * Supports {@link SkuName#STANDARD_MICROSOFT}.
          *
-         * @param name name of the delivery rule to remove
+         * @param name name of the rule to remove
          * @return the next stage of the endpoint update
          */
         UpdateStandardEndpoint withoutStandardRulesEngineRule(String name);
