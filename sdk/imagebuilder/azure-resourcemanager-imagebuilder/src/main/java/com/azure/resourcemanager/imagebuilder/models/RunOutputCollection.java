@@ -24,6 +24,10 @@ public final class RunOutputCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RunOutputCollection class. */
+    public RunOutputCollection() {
+    }
+
     /**
      * Get the value property: An array of run outputs.
      *

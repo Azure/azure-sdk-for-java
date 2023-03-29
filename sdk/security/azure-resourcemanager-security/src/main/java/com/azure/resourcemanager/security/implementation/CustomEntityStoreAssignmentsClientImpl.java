@@ -64,8 +64,7 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
     public interface CustomEntityStoreAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomEntityStoreAssignmentInner>> getByResourceGroup(
@@ -79,8 +78,7 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomEntityStoreAssignmentInner>> create(
@@ -95,8 +93,7 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments/{customEntityStoreAssignmentName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -110,8 +107,7 @@ public final class CustomEntityStoreAssignmentsClientImpl implements CustomEntit
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/customEntityStoreAssignments")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customEntityStoreAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomEntityStoreAssignmentsListResult>> listByResourceGroup(

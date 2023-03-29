@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites ListStaticSiteBuildFunctions. */
 public final class StaticSitesListStaticSiteBuildFunctionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListStaticSiteBuildFunctions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListStaticSiteBuildFunctions.json
      */
     /**
      * Sample code: Gets the functions of a particular static site build.
@@ -23,6 +21,6 @@ public final class StaticSitesListStaticSiteBuildFunctionsSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .listStaticSiteBuildFunctions("rg", "testStaticSite0", "default", Context.NONE);
+            .listStaticSiteBuildFunctions("rg", "testStaticSite0", "default", com.azure.core.util.Context.NONE);
     }
 }

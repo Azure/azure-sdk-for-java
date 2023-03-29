@@ -18,27 +18,38 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A token credential provider that can provide a credential from a list of providers.
+ * The ChainedTokenCredential is a convenience credential that allows users to chain together a set of TokenCredential
+ * together. The credential executes each credential in the chain sequentially and returns the token from the first
+ * credential in the chain that successfully authenticates.
  *
- * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then
- * interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
+ * <p><strong>Sample: Construct a ChainedTokenCredential.</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link ChainedTokenCredential},
+ * using the {@link ChainedTokenCredentialBuilder} to configure it. The sample below
+ * tries silent username+password login tried first, then interactive browser login as needed
+ * (e.g. when 2FA is turned on in the directory). Once this credential is created, it may be passed into the builder
+ * of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
  * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
  * <pre>
- * UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
  *     .username&#40;fakeUsernamePlaceholder&#41;
  *     .password&#40;fakePasswordPlaceholder&#41;
  *     .build&#40;&#41;;
- * InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
  *     .clientId&#40;clientId&#41;
  *     .port&#40;8765&#41;
  *     .build&#40;&#41;;
- * ChainedTokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;
+ * TokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;
  *     .addLast&#40;usernamePasswordCredential&#41;
  *     .addLast&#40;interactiveBrowserCredential&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.chainedtokencredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see ChainedTokenCredentialBuilder
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {

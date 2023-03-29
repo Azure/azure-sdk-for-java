@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.azure.spring.cloud.config.AppConfigurationAutoConfiguration.AppConfigurationWatchAutoConfiguration;
 import com.azure.spring.cloud.actuator.appconfiguration.AppConfigurationConfigHealthIndicator;
-import com.azure.spring.cloud.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.appconfiguration.config.AppConfigurationAutoConfiguration.AppConfigurationWatchAutoConfiguration;
 
 /**
  * Health Indicator for Azure App Configuration store connections.

@@ -71,8 +71,7 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}"
-                + "/ExternalSecuritySolutions")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExternalSecuritySolutionList>> listByHomeRegion(
@@ -85,8 +84,7 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/ExternalSecuritySolutions/{externalSecuritySolutionsName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions/{externalSecuritySolutionsName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExternalSecuritySolutionInner>> get(

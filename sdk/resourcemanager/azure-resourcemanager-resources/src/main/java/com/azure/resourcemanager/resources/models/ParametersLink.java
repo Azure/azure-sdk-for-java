@@ -23,6 +23,10 @@ public final class ParametersLink {
     @JsonProperty(value = "contentVersion")
     private String contentVersion;
 
+    /** Creates an instance of ParametersLink class. */
+    public ParametersLink() {
+    }
+
     /**
      * Get the uri property: The URI of the parameters file.
      *

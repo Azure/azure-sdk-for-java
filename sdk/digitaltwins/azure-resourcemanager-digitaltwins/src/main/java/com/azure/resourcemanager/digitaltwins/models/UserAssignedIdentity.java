@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information about the user assigned identity. */
 @Immutable
-public class UserAssignedIdentity {
+public final class UserAssignedIdentity {
     /*
      * The client id of the User Assigned Identity Resource.
      */

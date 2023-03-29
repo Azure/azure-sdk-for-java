@@ -17,10 +17,10 @@ public final class QuotaRequestDetailsListTests {
         QuotaRequestDetailsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"message\":\"ncormrlxqtvcof\",\"requestSubmitTime\":\"2021-04-19T01:16:51Z\",\"value\":[]},\"id\":\"vkg\",\"name\":\"u\",\"type\":\"gdknnqv\"},{\"properties\":{\"provisioningState\":\"Failed\",\"message\":\"n\",\"requestSubmitTime\":\"2021-11-22T10:46:24Z\",\"value\":[]},\"id\":\"dsg\",\"name\":\"a\",\"type\":\"mkycgra\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"taeburuvdm\",\"requestSubmitTime\":\"2021-03-10T19:42:31Z\",\"value\":[]},\"id\":\"zlxwabmqoefkifr\",\"name\":\"tpuqujmq\",\"type\":\"gkfbtndoaong\"}],\"nextLink\":\"cn\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"jaltolmnc\",\"requestSubmitTime\":\"2021-02-08T05:43:26Z\",\"value\":[]},\"id\":\"qwcsdbnwdcfhuc\",\"name\":\"dpfuvg\",\"type\":\"sbjjc\"}],\"nextLink\":\"vxb\"}")
                 .toObject(QuotaRequestDetailsList.class);
-        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("cn", model.nextLink());
+        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("vxb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,17 +31,11 @@ public final class QuotaRequestDetailsListTests {
                     Arrays
                         .asList(
                             new QuotaRequestDetailsInner()
-                                .withProvisioningState(QuotaRequestState.ACCEPTED)
-                                .withValue(Arrays.asList()),
-                            new QuotaRequestDetailsInner()
-                                .withProvisioningState(QuotaRequestState.FAILED)
-                                .withValue(Arrays.asList()),
-                            new QuotaRequestDetailsInner()
                                 .withProvisioningState(QuotaRequestState.SUCCEEDED)
                                 .withValue(Arrays.asList())))
-                .withNextLink("cn");
+                .withNextLink("vxb");
         model = BinaryData.fromObject(model).toObject(QuotaRequestDetailsList.class);
-        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
-        Assertions.assertEquals("cn", model.nextLink());
+        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("vxb", model.nextLink());
     }
 }

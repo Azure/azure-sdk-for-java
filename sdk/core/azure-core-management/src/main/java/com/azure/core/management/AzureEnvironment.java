@@ -48,6 +48,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "azuredatalakeanalytics.net");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
             put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
+            put("managedHsmDnsSuffix", ".managedhsm.azure.net");
         }});
 
     /**
@@ -73,6 +74,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
+            put("managedHsmDnsSuffix", ".managedhsm.azure.cn");
         }});
 
     /**
@@ -98,6 +100,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
             put("azureApplicationInsightsResourceId", "N/A");
+            put("managedHsmDnsSuffix", ".managedhsm.usgovcloudapi.net");
         }});
 
     /**
@@ -129,6 +132,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
+            put("managedHsmDnsSuffix", "N/A");
         }});
 
     /**
@@ -347,7 +351,9 @@ public final class AzureEnvironment {
         /** Azure Application Insights. */
         APPLICATION_INSIGHTS("azureApplicationInsightsResourceId"),
         /** Microsoft Graph APIs endpoint. */
-        MICROSOFT_GRAPH("microsoftGraphResourceId");
+        MICROSOFT_GRAPH("microsoftGraphResourceId"),
+        /** Managed HSM DNS suffix. */
+        MANAGED_HSM("managedHsmDnsSuffix");
 
         private final String field;
 

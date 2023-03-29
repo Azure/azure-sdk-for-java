@@ -22,12 +22,12 @@ public final class SubProtectionPolicyTests {
         SubProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"oookkqfq\":{\"tieringMode\":\"Invalid\",\"duration\":547871572,\"durationType\":\"Invalid\"}}}")
+                    "{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"qybaryeua\":{\"tieringMode\":\"TierRecommended\",\"duration\":1020341632,\"durationType\":\"Years\"}}}")
                 .toObject(SubProtectionPolicy.class);
         Assertions.assertEquals(PolicyType.COPY_ONLY_FULL, model.policyType());
-        Assertions.assertEquals(TieringMode.INVALID, model.tieringPolicy().get("oookkqfq").tieringMode());
-        Assertions.assertEquals(547871572, model.tieringPolicy().get("oookkqfq").duration());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.tieringPolicy().get("oookkqfq").durationType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("qybaryeua").tieringMode());
+        Assertions.assertEquals(1020341632, model.tieringPolicy().get("qybaryeua").duration());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.tieringPolicy().get("qybaryeua").durationType());
     }
 
     @org.junit.jupiter.api.Test
@@ -39,16 +39,16 @@ public final class SubProtectionPolicyTests {
                 .withRetentionPolicy(new RetentionPolicy())
                 .withTieringPolicy(
                     mapOf(
-                        "oookkqfq",
+                        "qybaryeua",
                         new TieringPolicy()
-                            .withTieringMode(TieringMode.INVALID)
-                            .withDuration(547871572)
-                            .withDurationType(RetentionDurationType.INVALID)));
+                            .withTieringMode(TieringMode.TIER_RECOMMENDED)
+                            .withDuration(1020341632)
+                            .withDurationType(RetentionDurationType.YEARS)));
         model = BinaryData.fromObject(model).toObject(SubProtectionPolicy.class);
         Assertions.assertEquals(PolicyType.COPY_ONLY_FULL, model.policyType());
-        Assertions.assertEquals(TieringMode.INVALID, model.tieringPolicy().get("oookkqfq").tieringMode());
-        Assertions.assertEquals(547871572, model.tieringPolicy().get("oookkqfq").duration());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.tieringPolicy().get("oookkqfq").durationType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("qybaryeua").tieringMode());
+        Assertions.assertEquals(1020341632, model.tieringPolicy().get("qybaryeua").duration());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.tieringPolicy().get("qybaryeua").durationType());
     }
 
     @SuppressWarnings("unchecked")

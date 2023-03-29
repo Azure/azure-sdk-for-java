@@ -67,8 +67,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -428,8 +426,7 @@ public final class BlobContainerAsyncClient {
         Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().createWithResponseAsync(
-            containerName, null, metadata, accessType, null, blobContainerEncryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            containerName, null, metadata, accessType, null, blobContainerEncryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -578,8 +575,7 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().deleteWithResponseAsync(containerName, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfUnmodifiedSince(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -720,8 +716,7 @@ public final class BlobContainerAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getContainers()
-            .getPropertiesWithResponseAsync(containerName, null, leaseId, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .getPropertiesWithResponseAsync(containerName, null, leaseId, null, context)
             .map(rb -> {
                 ContainersGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobContainerProperties properties = new BlobContainerProperties(hd.getXMsMeta(), hd.getETag(),
@@ -805,8 +800,7 @@ public final class BlobContainerAsyncClient {
         }
 
         return this.azureBlobStorage.getContainers().setMetadataWithResponseAsync(containerName, null,
-            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -874,8 +868,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId, Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().getAccessPolicyWithResponseAsync(
-            containerName, null, leaseId, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            containerName, null, leaseId, null, context)
             .map(response -> new SimpleResponse<>(response,
                 new BlobContainerAccessPolicies(response.getDeserializedHeaders().getXMsBlobPublicAccess(),
                 response.getValue())));
@@ -999,8 +992,7 @@ public final class BlobContainerAsyncClient {
 
         return this.azureBlobStorage.getContainers().setAccessPolicyWithResponseAsync(
             containerName, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfUnmodifiedSince(), null, identifiers, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1464,8 +1456,7 @@ public final class BlobContainerAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
-                options.getQuery(), marker, options.getMaxResultsPerPage(), null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
+                options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null
                     ? Collections.emptyList()
@@ -1533,8 +1524,7 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
@@ -1576,7 +1566,7 @@ public final class BlobContainerAsyncClient {
 //
 //        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
 //            sourceContainerName, null, null, requestConditions.getLeaseId(),
-//            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+//            context)
 //            .map(response -> new SimpleResponse<>(response, this));
 //    }
 

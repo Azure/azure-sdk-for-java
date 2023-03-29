@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 
 /** Samples for AppServicePlans CreateOrUpdate. */
 public final class AppServicePlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/CreateOrUpdateAppServicePlan.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/CreateOrUpdateAppServicePlan.json
      */
     /**
      * Sample code: Create Or Update App Service plan.
@@ -37,6 +36,6 @@ public final class AppServicePlansCreateOrUpdateSamples {
                             .withFamily("P")
                             .withCapacity(1))
                     .withKind("app"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

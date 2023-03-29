@@ -4,38 +4,16 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation;
 
-import com.azure.communication.phonenumbers.siprouting.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.siprouting.implementation.models.SipConfiguration;
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the SipRoutingAdminClient type. */
 public final class SipRoutingAdminClientImpl {
-    /** The proxy service used to perform REST calls. */
-    private final SipRoutingAdminClientService service;
-
     /** The communication resource, for example https://resourcename.communication.azure.com. */
     private final String endpoint;
 
@@ -84,6 +62,18 @@ public final class SipRoutingAdminClientImpl {
         return this.serializerAdapter;
     }
 
+    /** The SipRoutingsImpl object to access its operations. */
+    private final SipRoutingsImpl sipRoutings;
+
+    /**
+     * Gets the SipRoutingsImpl object to access its operations.
+     *
+     * @return the SipRoutingsImpl object.
+     */
+    public SipRoutingsImpl getSipRoutings() {
+        return this.sipRoutings;
+    }
+
     /**
      * Initializes an instance of SipRoutingAdminClient client.
      *
@@ -125,236 +115,6 @@ public final class SipRoutingAdminClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
-        this.service =
-                RestProxy.create(SipRoutingAdminClientService.class, this.httpPipeline, this.getSerializerAdapter());
-    }
-
-    /**
-     * The interface defining all the services for SipRoutingAdminClient to be used by the proxy service to perform REST
-     * calls.
-     */
-    @Host("{endpoint}")
-    @ServiceInterface(name = "SipRoutingAdminClien")
-    public interface SipRoutingAdminClientService {
-        @Get("/sip")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<SipConfiguration>> getSipConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Patch("/sip")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorResponseException.class,
-                code = {500, 422, 415})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<SipConfiguration>> patchSipConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") SipConfiguration body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-    }
-
-    /**
-     * Gets SIP configuration for resource.
-     *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SipConfiguration>> getSipConfigurationWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.getSipConfiguration(this.getEndpoint(), this.getApiVersion(), accept, context));
-    }
-
-    /**
-     * Gets SIP configuration for resource.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SipConfiguration>> getSipConfigurationWithResponseAsync(Context context) {
-        final String accept = "application/json";
-        return service.getSipConfiguration(this.getEndpoint(), this.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets SIP configuration for resource.
-     *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SipConfiguration> getSipConfigurationAsync() {
-        return getSipConfigurationWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets SIP configuration for resource.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SipConfiguration> getSipConfigurationAsync(Context context) {
-        return getSipConfigurationWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets SIP configuration for resource.
-     *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SipConfiguration getSipConfiguration() {
-        return getSipConfigurationAsync().block();
-    }
-
-    /**
-     * Gets SIP configuration for resource.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SipConfiguration> getSipConfigurationWithResponse(Context context) {
-        return getSipConfigurationWithResponseAsync(context).block();
-    }
-
-    /**
-     * Patches SIP configuration for resource.
-     *
-     * @param body Configuration patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
-     *     415.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
-     *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SipConfiguration>> patchSipConfigurationWithResponseAsync(SipConfiguration body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.patchSipConfiguration(this.getEndpoint(), this.getApiVersion(), body, accept, context));
-    }
-
-    /**
-     * Patches SIP configuration for resource.
-     *
-     * @param body Configuration patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
-     *     415.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
-     *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SipConfiguration>> patchSipConfigurationWithResponseAsync(
-            SipConfiguration body, Context context) {
-        final String accept = "application/json";
-        return service.patchSipConfiguration(this.getEndpoint(), this.getApiVersion(), body, accept, context);
-    }
-
-    /**
-     * Patches SIP configuration for resource.
-     *
-     * @param body Configuration patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
-     *     415.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
-     *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SipConfiguration> patchSipConfigurationAsync(SipConfiguration body) {
-        return patchSipConfigurationWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Patches SIP configuration for resource.
-     *
-     * @param body Configuration patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
-     *     415.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
-     *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SipConfiguration> patchSipConfigurationAsync(SipConfiguration body, Context context) {
-        return patchSipConfigurationWithResponseAsync(body, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Patches SIP configuration for resource.
-     *
-     * @param body Configuration patch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
-     *     415.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
-     *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SipConfiguration patchSipConfiguration(SipConfiguration body) {
-        return patchSipConfigurationAsync(body).block();
-    }
-
-    /**
-     * Patches SIP configuration for resource.
-     *
-     * @param body Configuration patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
-     *     415.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
-     *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SipConfiguration> patchSipConfigurationWithResponse(SipConfiguration body, Context context) {
-        return patchSipConfigurationWithResponseAsync(body, context).block();
+        this.sipRoutings = new SipRoutingsImpl(this);
     }
 }

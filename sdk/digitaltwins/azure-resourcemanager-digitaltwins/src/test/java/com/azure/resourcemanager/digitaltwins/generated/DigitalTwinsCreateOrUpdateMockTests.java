@@ -37,7 +37,7 @@ public final class DigitalTwinsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-03-20T09:56:32Z\",\"lastUpdatedTime\":\"2021-08-03T01:57:35Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"awgqwgxhni\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"gklwn\",\"tenantId\":\"hjdauwhvylwz\",\"userAssignedIdentities\":{}},\"location\":\"xujznbmpowu\",\"tags\":{\"obbc\":\"zqlveualupjmkhf\",\"tghfgblcgwxzvl\":\"wsrtjriplrbpbe\"},\"id\":\"qhjk\",\"name\":\"egibtnmxiebww\",\"type\":\"loayqcgw\"}";
+            "{\"properties\":{\"createdTime\":\"2021-11-19T04:43:06Z\",\"lastUpdatedTime\":\"2021-01-21T23:49:51Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"ow\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ualupjmkh\",\"tenantId\":\"obbc\",\"userAssignedIdentities\":{}},\"location\":\"tjrip\",\"tags\":{\"vlvqhjkbegi\":\"pbewtghfgblcgwx\",\"mxiebw\":\"t\",\"gwyzm\":\"aloayqcgwrtzju\"},\"id\":\"txon\",\"name\":\"mtsavjcbpwxqp\",\"type\":\"rknftguvriuhprwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,31 +68,22 @@ public final class DigitalTwinsCreateOrUpdateMockTests {
         DigitalTwinsDescription response =
             manager
                 .digitalTwins()
-                .define("v")
-                .withRegion("qpv")
-                .withExistingResourceGroup("fkuwbcrnwbmehhse")
-                .withTags(
-                    mapOf(
-                        "zlfmisgwbnbbeld",
-                        "mwsrcrgvxpvgo",
-                        "ali",
-                        "wkz",
-                        "hashsfwxosow",
-                        "urqhaka",
-                        "cjooxdjebwpucwwf",
-                        "xcug"))
+                .define("auhashsfwx")
+                .withRegion("jgjrwjueiotwm")
+                .withExistingResourceGroup("zbaliourqha")
+                .withTags(mapOf("it", "tdx", "hniskxfbkpyc", "nrjawgqwg"))
                 .withIdentity(
                     new DigitalTwinsIdentity()
                         .withType(DigitalTwinsIdentityType.USER_ASSIGNED)
                         .withUserAssignedIdentities(mapOf()))
                 .withPrivateEndpointConnections(Arrays.asList())
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .create();
 
-        Assertions.assertEquals("xujznbmpowu", response.location());
-        Assertions.assertEquals("zqlveualupjmkhf", response.tags().get("obbc"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals("tjrip", response.location());
+        Assertions.assertEquals("pbewtghfgblcgwx", response.tags().get("vlvqhjkbegi"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
     }
 
     @SuppressWarnings("unchecked")

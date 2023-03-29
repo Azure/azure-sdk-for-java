@@ -25,6 +25,10 @@ public final class CsmPublishingProfileOptions {
     @JsonProperty(value = "includeDisasterRecoveryEndpoints")
     private Boolean includeDisasterRecoveryEndpoints;
 
+    /** Creates an instance of CsmPublishingProfileOptions class. */
+    public CsmPublishingProfileOptions() {
+    }
+
     /**
      * Get the format property: Name of the format. Valid values are: FileZilla3 WebDeploy -- default Ftp.
      *

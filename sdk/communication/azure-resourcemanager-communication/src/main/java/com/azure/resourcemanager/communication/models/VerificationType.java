@@ -26,6 +26,15 @@ public final class VerificationType extends ExpandableStringEnum<VerificationTyp
     public static final VerificationType DMARC = fromString("DMARC");
 
     /**
+     * Creates a new instance of VerificationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VerificationType() {
+    }
+
+    /**
      * Creates or finds a VerificationType from its string representation.
      *
      * @param name a name to look for.

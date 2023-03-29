@@ -21,6 +21,15 @@ public final class PricingTier extends ExpandableStringEnum<PricingTier> {
     public static final PricingTier STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of PricingTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PricingTier() {
+    }
+
+    /**
      * Creates or finds a PricingTier from its string representation.
      *
      * @param name a name to look for.

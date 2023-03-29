@@ -40,6 +40,10 @@ public final class PremierAddOnPatchResourceProperties {
     @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
 
+    /** Creates an instance of PremierAddOnPatchResourceProperties class. */
+    public PremierAddOnPatchResourceProperties() {
+    }
+
     /**
      * Get the sku property: Premier add on SKU.
      *

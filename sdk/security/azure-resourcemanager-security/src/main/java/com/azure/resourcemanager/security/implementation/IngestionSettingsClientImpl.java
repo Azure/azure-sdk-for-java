@@ -112,8 +112,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}"
-                + "/listTokens")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}/listTokens")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IngestionSettingTokenInner>> listTokens(
@@ -126,8 +125,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}"
-                + "/listConnectionStrings")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/ingestionSettings/{ingestionSettingName}/listConnectionStrings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConnectionStringsInner>> listConnectionStrings(

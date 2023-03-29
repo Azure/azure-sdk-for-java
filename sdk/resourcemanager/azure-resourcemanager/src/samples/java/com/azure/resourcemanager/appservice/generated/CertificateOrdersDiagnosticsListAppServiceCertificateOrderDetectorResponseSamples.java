@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CertificateOrdersDiagnostics ListAppServiceCertificateOrderDetectorResponse. */
 public final class CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
      */
     /**
      * Sample code: List app service certificate detector response.
@@ -23,6 +21,6 @@ public final class CertificateOrdersDiagnosticsListAppServiceCertificateOrderDet
             .serviceClient()
             .getCertificateOrdersDiagnostics()
             .listAppServiceCertificateOrderDetectorResponse(
-                "Sample-WestUSResourceGroup", "SampleCertificateOrderName", Context.NONE);
+                "Sample-WestUSResourceGroup", "SampleCertificateOrderName", com.azure.core.util.Context.NONE);
     }
 }

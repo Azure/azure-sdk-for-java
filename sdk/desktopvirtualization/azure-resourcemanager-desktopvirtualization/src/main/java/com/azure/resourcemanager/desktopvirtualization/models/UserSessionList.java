@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.UserSession
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** UserSessionList List of UserSession definitions. */
+/**
+ * UserSessionList
+ *
+ * <p>List of UserSession definitions.
+ */
 @Fluent
 public final class UserSessionList {
     /*
@@ -23,6 +27,10 @@ public final class UserSessionList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of UserSessionList class. */
+    public UserSessionList() {
+    }
 
     /**
      * Get the value property: List of UserSession definitions.

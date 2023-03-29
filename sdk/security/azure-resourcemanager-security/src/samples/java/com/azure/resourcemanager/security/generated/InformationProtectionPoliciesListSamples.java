@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InformationProtectionPolicies List. */
 public final class InformationProtectionPoliciesListSamples {
     /*
@@ -19,6 +17,8 @@ public final class InformationProtectionPoliciesListSamples {
     public static void getInformationProtectionPolicies(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .informationProtectionPolicies()
-            .list("providers/Microsoft.Management/managementGroups/148059f7-faf3-49a6-ba35-85122112291e", Context.NONE);
+            .list(
+                "providers/Microsoft.Management/managementGroups/148059f7-faf3-49a6-ba35-85122112291e",
+                com.azure.core.util.Context.NONE);
     }
 }

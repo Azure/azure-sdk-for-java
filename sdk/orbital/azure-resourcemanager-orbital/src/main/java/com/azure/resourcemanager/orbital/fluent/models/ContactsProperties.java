@@ -118,6 +118,10 @@ public final class ContactsProperties {
     @JsonProperty(value = "contactProfile", required = true)
     private ContactsPropertiesContactProfile contactProfile;
 
+    /** Creates an instance of ContactsProperties class. */
+    public ContactsProperties() {
+    }
+
     /**
      * Get the provisioningState property: The current state of the resource's creation, deletion, or modification.
      *

@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -384,16 +383,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
-    public OpenConnectionRntbdRequestRecord openConnection(Uri addressUri) {
-        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+    public OpenConnectionRntbdRequestRecord openConnection(final RntbdRequestArgs args) {
+        checkNotNull(args, "Argument 'args' should not be null");
 
         this.throwIfClosed();
 
         if (this.connectionStateListener != null) {
-            this.connectionStateListener.onBeforeSendRequest(addressUri);
+            this.connectionStateListener.onBeforeSendRequest(args.physicalAddressUri());
         }
 
-        OpenConnectionRntbdRequestRecord requestRecord = new OpenConnectionRntbdRequestRecord(addressUri);
+        OpenConnectionRntbdRequestRecord requestRecord = new OpenConnectionRntbdRequestRecord(args);
         final Future<Channel> openChannelFuture = this.channelPool.acquire(requestRecord);
 
         if (openChannelFuture.isDone()) {
@@ -419,11 +418,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             // Releasing the channel back to the pool so other requests can use it
             this.releaseToPool(channel);
 
-            requestRecord.getAddressUri().setConnected();
+            requestRecord.args().physicalAddressUri().setConnected();
 
-            openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), true);
+            openConnectionResponse =
+                new OpenConnectionResponse(requestRecord.args().physicalAddressUri(), true);
         } else {
-            openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), false, openChannelFuture.cause());
+            openConnectionResponse =
+                new OpenConnectionResponse(
+                    requestRecord.args().physicalAddressUri(),
+                    false,
+                    openChannelFuture.cause());
         }
 
         requestRecord.complete(openConnectionResponse);

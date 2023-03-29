@@ -23,32 +23,36 @@ public final class SpacecraftsProperties {
     /*
      * NORAD ID of the spacecraft.
      */
-    @JsonProperty(value = "noradId", required = true)
+    @JsonProperty(value = "noradId")
     private String noradId;
 
     /*
      * Title line of the two-line element set (TLE).
      */
-    @JsonProperty(value = "titleLine")
+    @JsonProperty(value = "titleLine", required = true)
     private String titleLine;
 
     /*
      * Line 1 of the two-line element set (TLE).
      */
-    @JsonProperty(value = "tleLine1")
+    @JsonProperty(value = "tleLine1", required = true)
     private String tleLine1;
 
     /*
      * Line 2 of the two-line element set (TLE).
      */
-    @JsonProperty(value = "tleLine2")
+    @JsonProperty(value = "tleLine2", required = true)
     private String tleLine2;
 
     /*
      * Immutable list of Spacecraft links.
      */
-    @JsonProperty(value = "links")
+    @JsonProperty(value = "links", required = true)
     private List<SpacecraftLink> links;
+
+    /** Creates an instance of SpacecraftsProperties class. */
+    public SpacecraftsProperties() {
+    }
 
     /**
      * Get the provisioningState property: The current state of the resource's creation, deletion, or modification.
@@ -176,12 +180,26 @@ public final class SpacecraftsProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (noradId() == null) {
+        if (titleLine() == null) {
             throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property noradId in model SpacecraftsProperties"));
+                    new IllegalArgumentException("Missing required property titleLine in model SpacecraftsProperties"));
         }
-        if (links() != null) {
+        if (tleLine1() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property tleLine1 in model SpacecraftsProperties"));
+        }
+        if (tleLine2() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property tleLine2 in model SpacecraftsProperties"));
+        }
+        if (links() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property links in model SpacecraftsProperties"));
+        } else {
             links().forEach(e -> e.validate());
         }
     }

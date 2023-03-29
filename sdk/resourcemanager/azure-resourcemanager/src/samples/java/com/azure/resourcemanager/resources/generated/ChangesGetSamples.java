@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Changes Get. */
 public final class ChangesGetSamples {
     /*
@@ -28,6 +26,6 @@ public final class ChangesGetSamples {
                 "resourceType1",
                 "resourceName1",
                 "1d58d72f-0719-4a48-9228-b7ea682885bf",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

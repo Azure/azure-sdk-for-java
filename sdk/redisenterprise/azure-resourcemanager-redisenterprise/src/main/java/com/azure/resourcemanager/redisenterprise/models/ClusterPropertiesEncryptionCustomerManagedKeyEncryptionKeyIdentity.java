@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Vault.
  */
 @Fluent
-public class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity {
+public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity {
     /*
      * User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/<sub
      * uuid>/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.

@@ -37,6 +37,10 @@ public final class RemotePrivateEndpointConnectionProperties {
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
+    /** Creates an instance of RemotePrivateEndpointConnectionProperties class. */
+    public RemotePrivateEndpointConnectionProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioningState property.
      *

@@ -37,6 +37,8 @@ object SampleReadE2EMain {
       .master("local")
       .getOrCreate()
 
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     val df = spark.read.format("cosmos.oltp").options(cfg).load()
     df.show(numRows = 10)
 

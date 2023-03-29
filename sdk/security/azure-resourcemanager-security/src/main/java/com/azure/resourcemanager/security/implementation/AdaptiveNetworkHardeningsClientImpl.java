@@ -68,8 +68,7 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
     public interface AdaptiveNetworkHardeningsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdaptiveNetworkHardeningsList>> listByExtendedResource(
@@ -85,9 +84,7 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings"
-                + "/{adaptiveNetworkHardeningResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings/{adaptiveNetworkHardeningResourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdaptiveNetworkHardeningInner>> get(
@@ -104,9 +101,7 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings"
-                + "/{adaptiveNetworkHardeningResourceName}/{adaptiveNetworkHardeningEnforceAction}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/adaptiveNetworkHardenings/{adaptiveNetworkHardeningResourceName}/{adaptiveNetworkHardeningEnforceAction}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enforce(
@@ -867,7 +862,8 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
         String resourceName,
         String adaptiveNetworkHardeningResourceName,
         AdaptiveNetworkHardeningEnforceRequest body) {
-        return beginEnforceAsync(
+        return this
+            .beginEnforceAsync(
                 resourceGroupName,
                 resourceNamespace,
                 resourceType,
@@ -902,7 +898,8 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
         String adaptiveNetworkHardeningResourceName,
         AdaptiveNetworkHardeningEnforceRequest body,
         Context context) {
-        return beginEnforceAsync(
+        return this
+            .beginEnforceAsync(
                 resourceGroupName,
                 resourceNamespace,
                 resourceType,

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 /** Samples for ItemLevelRecoveryConnections Revoke. */
 public final class ItemLevelRecoveryConnectionsRevokeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/AzureIaasVm/Revoke_Ilr.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/AzureIaasVm/Revoke_Ilr.json
      */
     /**
      * Sample code: Revoke Instant Item Level Recovery for Azure Vm.

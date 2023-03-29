@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignalRCustomDomains Get. */
 public final class SignalRCustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRCustomDomains_Get.json
      */
     /**
      * Sample code: SignalRCustomDomains_Get.
@@ -17,6 +15,8 @@ public final class SignalRCustomDomainsGetSamples {
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRCustomDomainsGet(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager.signalRCustomDomains().getWithResponse("myResourceGroup", "mySignalRService", "example", Context.NONE);
+        manager
+            .signalRCustomDomains()
+            .getWithResponse("myResourceGroup", "mySignalRService", "example", com.azure.core.util.Context.NONE);
     }
 }

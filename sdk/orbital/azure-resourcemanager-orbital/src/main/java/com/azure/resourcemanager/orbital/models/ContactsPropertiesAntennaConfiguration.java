@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class ContactsPropertiesAntennaConfiguration {
     /*
-     * The destination IP a packet can be sent to. This would for example be
-     * the TCP endpoint you would send data to.
+     * The destination IP a packet can be sent to. This would for example be the TCP endpoint you would send data to.
      */
     @JsonProperty(value = "destinationIp")
     private String destinationIp;
@@ -23,6 +22,10 @@ public final class ContactsPropertiesAntennaConfiguration {
      */
     @JsonProperty(value = "sourceIps")
     private List<String> sourceIps;
+
+    /** Creates an instance of ContactsPropertiesAntennaConfiguration class. */
+    public ContactsPropertiesAntennaConfiguration() {
+    }
 
     /**
      * Get the destinationIp property: The destination IP a packet can be sent to. This would for example be the TCP

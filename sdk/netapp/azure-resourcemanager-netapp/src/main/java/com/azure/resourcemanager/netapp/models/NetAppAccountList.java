@@ -24,6 +24,10 @@ public final class NetAppAccountList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NetAppAccountList class. */
+    public NetAppAccountList() {
+    }
+
     /**
      * Get the value property: Multiple NetApp accounts.
      *

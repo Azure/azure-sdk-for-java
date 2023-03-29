@@ -35,6 +35,10 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
+    /** Creates an instance of SitePatchResourceInner class. */
+    public SitePatchResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: SitePatchResource resource specific properties.
      *
@@ -176,8 +180,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @return the serverFarmId value.
      */
@@ -187,8 +190,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @param serverFarmId the serverFarmId value to set.
      * @return the SitePatchResourceInner object itself.

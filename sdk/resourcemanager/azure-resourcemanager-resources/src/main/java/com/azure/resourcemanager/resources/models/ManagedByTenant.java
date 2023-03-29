@@ -16,6 +16,10 @@ public final class ManagedByTenant {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
+    /** Creates an instance of ManagedByTenant class. */
+    public ManagedByTenant() {
+    }
+
     /**
      * Get the tenantId property: The tenant ID of the managing tenant. This is a GUID.
      *

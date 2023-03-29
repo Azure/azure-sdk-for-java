@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.models.ContactProfile;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for ContactProfiles UpdateTags. */
 public final class ContactProfilesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactProfileUpdateTag.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactProfileUpdateTag.json
      */
     /**
      * Sample code: Update Contact Profile tags.
@@ -23,7 +22,7 @@ public final class ContactProfilesUpdateTagsSamples {
         ContactProfile resource =
             manager
                 .contactProfiles()
-                .getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO-CP", Context.NONE)
+                .getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO-CP", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

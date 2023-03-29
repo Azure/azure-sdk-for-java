@@ -12,31 +12,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VnetRouteProperties {
     /*
-     * The starting address for this route. This may also include a CIDR
-     * notation, in which case the end address must not be specified.
+     * The starting address for this route. This may also include a CIDR notation, in which case the end address must
+     * not be specified.
      */
     @JsonProperty(value = "startAddress")
     private String startAddress;
 
     /*
-     * The ending address for this route. If the start address is specified in
-     * CIDR notation, this must be omitted.
+     * The ending address for this route. If the start address is specified in CIDR notation, this must be omitted.
      */
     @JsonProperty(value = "endAddress")
     private String endAddress;
 
     /*
      * The type of route this is:
-     * DEFAULT - By default, every app has routes to the local address ranges
-     * specified by RFC1918
+     * DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
      * INHERITED - Routes inherited from the real Virtual Network routes
      * STATIC - Static route set on the app only
      *
-     * These values will be used for syncing an app's routes with those from a
-     * Virtual Network.
+     * These values will be used for syncing an app's routes with those from a Virtual Network.
      */
     @JsonProperty(value = "routeType")
     private RouteType routeType;
+
+    /** Creates an instance of VnetRouteProperties class. */
+    public VnetRouteProperties() {
+    }
 
     /**
      * Get the startAddress property: The starting address for this route. This may also include a CIDR notation, in
