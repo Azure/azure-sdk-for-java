@@ -20,9 +20,8 @@ import java.nio.ByteBuffer;
 public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
     private final byte[] body;
 
-    public OkHttpAsyncBufferedResponse(Response response, HttpRequest request, byte[] body,
-        boolean eagerlyConvertHeaders) {
-        super(response, request, eagerlyConvertHeaders);
+    public OkHttpAsyncBufferedResponse(Response response, HttpRequest request, byte[] body) {
+        super(response, request);
         this.body = body;
     }
 

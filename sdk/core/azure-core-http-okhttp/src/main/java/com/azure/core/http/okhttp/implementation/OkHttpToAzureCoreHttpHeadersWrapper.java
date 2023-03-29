@@ -29,12 +29,13 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     public OkHttpToAzureCoreHttpHeadersWrapper(Headers okhttpHeaders) {
         this.okhttpHeaders = okhttpHeaders;
-        this.azureCoreHeaders = new HttpHeaders(okhttpHeaders.size() * 2);
     }
 
     @Override
     public int getSize() {
-        return converted ? azureCoreHeaders.getSize() : okhttpHeaders.size();
+        convertIfNeeded();
+
+        return azureCoreHeaders.getSize();
     }
 
     @Override

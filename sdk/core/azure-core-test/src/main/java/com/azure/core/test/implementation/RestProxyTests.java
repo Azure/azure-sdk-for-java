@@ -82,6 +82,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -1532,7 +1533,7 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
 
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
@@ -1547,7 +1548,7 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
 
         final byte[] body = response.getValue();
         assertNotNull(body);
@@ -1564,7 +1565,7 @@ public abstract class RestProxyTests {
     public void service20GetBytesOnlyStatus() {
         final Response<Void> response = createService(Service20.class).getBytesOnlyStatus();
 
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -1574,7 +1575,7 @@ public abstract class RestProxyTests {
     public void service20GetBytesOnlyHeaders() {
         final Response<Void> response = createService(Service20.class).getBytes100OnlyRawHeaders();
 
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -1588,7 +1589,7 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
 
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
@@ -1603,7 +1604,7 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
 
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);

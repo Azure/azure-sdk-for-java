@@ -66,7 +66,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
         HttpRequestMetadata requestMetadata = request.getMetadata();
         boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
         boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
-        boolean eagerlyConvertHeaders = requestMetadata.isHeadersEagerlyConverted();
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
@@ -87,8 +86,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 .subscribe(okHttpRequest -> {
                     try {
                         Call call = httpClient.newCall(okHttpRequest);
-                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody,
-                            eagerlyConvertHeaders));
+                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse, ignoreResponseBody
+                        ));
                         sink.onCancel(call::cancel);
                     } catch (Exception ex) {
                         sink.error(ex);
@@ -102,15 +101,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
         HttpRequestMetadata requestMetadata = request.getMetadata();
         boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
         boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
-        boolean eagerlyConvertHeaders = requestMetadata.isHeadersEagerlyConverted();
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         Request okHttpRequest = toOkHttpRequest(request, progressReporter);
         try {
             Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
-            return toHttpResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
-                eagerlyConvertHeaders);
+            return toHttpResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -202,7 +199,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     }
 
     private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
-        boolean eagerlyReadResponse, boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
+        boolean eagerlyReadResponse, boolean ignoreResponseBody) throws IOException {
         // For now, eagerlyReadResponse and ignoreResponseBody works the same.
 //        if (ignoreResponseBody) {
 //            ResponseBody body = response.body();
@@ -224,10 +221,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
         if (eagerlyReadResponse || ignoreResponseBody) {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
-                return new OkHttpAsyncBufferedResponse(response, request, bytes, eagerlyConvertHeaders);
+                return new OkHttpAsyncBufferedResponse(response, request, bytes);
             }
         } else {
-            return new OkHttpAsyncResponse(response, request, eagerlyConvertHeaders);
+            return new OkHttpAsyncResponse(response, request);
         }
     }
 
@@ -236,15 +233,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private final HttpRequest request;
         private final boolean eagerlyReadResponse;
         private final boolean ignoreResponseBody;
-        private final boolean eagerlyConvertHeaders;
 
         OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request, boolean eagerlyReadResponse,
-            boolean ignoreResponseBody, boolean eagerlyConvertHeaders) {
+            boolean ignoreResponseBody) {
             this.sink = sink;
             this.request = request;
             this.eagerlyReadResponse = eagerlyReadResponse;
             this.ignoreResponseBody = ignoreResponseBody;
-            this.eagerlyConvertHeaders = eagerlyConvertHeaders;
         }
 
         @SuppressWarnings("NullableProblems")
@@ -263,8 +258,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
             try {
-                sink.success(toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody,
-                    eagerlyConvertHeaders));
+                sink.success(toHttpResponse(request, response, eagerlyReadResponse, ignoreResponseBody
+                ));
             } catch (IOException ex) {
                 // Reading the body bytes may cause an IOException, if it happens propagate it.
                 sink.error(ex);

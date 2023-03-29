@@ -218,7 +218,7 @@ public class VertxAsyncHttpClientTests {
     public void testBufferedResponse() {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
 
-        StepVerifier.create(getResponse(client, "/short", new HttpRequestMetadata(null, null, true, false, false))
+        StepVerifier.create(getResponse(client, "/short", new HttpRequestMetadata(null, null, true, false))
                 .flatMapMany(HttpResponse::getBody))
             .assertNext(buffer -> assertArrayEquals(SHORT_BODY, buffer.array()))
             .verifyComplete();
@@ -236,7 +236,7 @@ public class VertxAsyncHttpClientTests {
     public void testEmptyBufferedResponse() {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
 
-        StepVerifier.create(getResponse(client, "/empty", new HttpRequestMetadata(null, null, true, false, false))
+        StepVerifier.create(getResponse(client, "/empty", new HttpRequestMetadata(null, null, true, false))
                 .flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)

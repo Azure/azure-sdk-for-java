@@ -86,7 +86,7 @@ public class HttpLoggingPolicyTests {
         setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
 
         requestMetadata = new HttpRequestMetadata(HttpLoggingPolicyTests.class.getName(),
-            new ClientLogger(HttpLoggingPolicyTests.class.getName()), false, false, false);
+            new ClientLogger(HttpLoggingPolicyTests.class.getName()), false, false);
 
         /*
          * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to

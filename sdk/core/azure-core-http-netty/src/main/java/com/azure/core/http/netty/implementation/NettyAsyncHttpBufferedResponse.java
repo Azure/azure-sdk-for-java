@@ -22,9 +22,8 @@ import java.nio.charset.Charset;
 public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponseBase {
     private final byte[] body;
 
-    public NettyAsyncHttpBufferedResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body,
-        boolean headersEagerlyConverted) {
-        super(httpClientResponse, httpRequest, headersEagerlyConverted);
+    public NettyAsyncHttpBufferedResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body) {
+        super(httpClientResponse, httpRequest);
         this.body = body;
     }
 

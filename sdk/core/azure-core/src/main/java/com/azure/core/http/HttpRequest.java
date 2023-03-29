@@ -21,7 +21,7 @@ public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);
 
-    private static final HttpRequestMetadata EMPTY_METADATA = new HttpRequestMetadata("", null, false, false, false);
+    private static final HttpRequestMetadata EMPTY_METADATA = new HttpRequestMetadata("", null, false, false);
 
     private HttpMethod httpMethod;
     private URL url;

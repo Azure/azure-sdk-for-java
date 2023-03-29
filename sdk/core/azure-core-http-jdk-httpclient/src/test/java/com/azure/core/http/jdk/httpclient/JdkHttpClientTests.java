@@ -121,7 +121,7 @@ public class JdkHttpClientTests {
     public void testBufferedResponseSync() {
         HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"))
-            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+            .setMetadata(new HttpRequestMetadata(null, null, true, false));
         HttpResponse response = client.sendSync(request, Context.NONE);
         Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }

@@ -53,16 +53,13 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
                 HttpHeaders headers = new HttpHeaders();
                 headers.set("Content-Length", contentLengthHeaderValue);
                 HttpRequest httpRequest = new HttpRequest(HttpMethod.PUT, targetURL, headers, data)
-                    .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+                    .setMetadata(new HttpRequestMetadata(null, null, true, false));
                 // HttpRequestMetadata with 'eagerlyReadResponse' makes sure that the response is disposed to prevent
                 // connection leaks. There's no response body in this scenario anyway.
                 return httpPipeline.send(httpRequest, Context.NONE)
-                    .map(httpResponse -> {
-                        if (httpResponse.getStatusCode() / 100 != 2) {
-                            throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
-                        }
-                        return httpResponse;
-                    })
+                    .flatMap(httpResponse -> (httpResponse.getStatusCode() / 100 != 2)
+                        ? Mono.error(new IllegalStateException("Endpoint didn't return 2xx http status code."))
+                        : Mono.just(httpResponse))
                     .then();
             });
     }

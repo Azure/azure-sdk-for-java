@@ -759,8 +759,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return Creates an {@link HttpRequestMetadata} based on this REST API method.
      */
     public HttpRequestMetadata createRequestMetadata() {
-        return new HttpRequestMetadata(fullyQualifiedMethodName, logger, responseEagerlyRead, ignoreResponseBody,
-            headersEagerlyConverted);
+        return new HttpRequestMetadata(fullyQualifiedMethodName, logger, responseEagerlyRead, ignoreResponseBody);
     }
 
     public static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {

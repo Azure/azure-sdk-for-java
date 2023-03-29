@@ -132,7 +132,6 @@ class NettyAsyncHttpClient implements HttpClient {
         HttpRequestMetadata requestMetadata = request.getMetadata();
         boolean eagerlyReadResponse = requestMetadata.isResponseEagerlyRead();
         boolean ignoreResponseBody = requestMetadata.isResponseBodyIgnored();
-        boolean headersEagerlyConverted = requestMetadata.isHeadersEagerlyConverted();
         long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
@@ -162,8 +161,8 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(toReactorNettyHttpMethod(request.getHttpMethod()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
-                headersEagerlyConverted))
+            .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody
+            ))
             .single()
             .flatMap(response -> {
                 if (addProxyHandler && response.getStatusCode() == 407) {
@@ -306,13 +305,10 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param disableBufferCopy Flag indicating if the network response shouldn't be buffered.
      * @param eagerlyReadResponse Flag indicating if the network response should be eagerly read into memory.
      * @param ignoreResponseBody Flag indicating if the network response should be ignored.
-     * @param headersEagerlyConverted Flag indicating if the Netty HttpHeaders should be eagerly converted to Azure Core
-     * HttpHeaders.
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Mono<HttpResponse>> responseDelegate(
-        HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody,
-        boolean headersEagerlyConverted) {
+        HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse, boolean ignoreResponseBody) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             // For now, eagerlyReadResponse and ignoreResponseBody works the same.
 //            if (ignoreResponseBody) {
@@ -339,11 +335,11 @@ class NettyAsyncHttpClient implements HttpClient {
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .switchIfEmpty(Mono.just(EMPTY_BYTES))
-                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
-                        headersEagerlyConverted));
+                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes
+                    ));
             } else {
                 return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                    disableBufferCopy, headersEagerlyConverted));
+                    disableBufferCopy));
             }
         };
     }

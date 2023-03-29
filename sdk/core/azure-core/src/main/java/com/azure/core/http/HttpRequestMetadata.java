@@ -20,7 +20,6 @@ public final class HttpRequestMetadata {
     private final ClientLogger logger;
     private final boolean eagerlyReadResponse;
     private final boolean ignoreResponseBody;
-    private final boolean eagerlyConvertHeaders;
     private int tryCount;
 
     /**
@@ -30,21 +29,18 @@ public final class HttpRequestMetadata {
      * @param logger The {@link ClientLogger} associated with the request.
      * @param eagerlyReadResponse Whether the network response should be eagerly read into memory.
      * @param ignoreResponseBody Whether the network response should be ignored.
-     * @param eagerlyConvertHeaders Whether the HTTP header typed used by the {@link HttpClient} implementation should
-     * be eagerly converted into {@link HttpHeaders Azure Core HttpHeaders}.
      */
     public HttpRequestMetadata(String callerMethod, ClientLogger logger, boolean eagerlyReadResponse,
-        boolean ignoreResponseBody, boolean eagerlyConvertHeaders) {
-        this(callerMethod, logger, eagerlyReadResponse, ignoreResponseBody, eagerlyConvertHeaders, 1);
+        boolean ignoreResponseBody) {
+        this(callerMethod, logger, eagerlyReadResponse, ignoreResponseBody, 1);
     }
 
     private HttpRequestMetadata(String callerMethod, ClientLogger logger, boolean eagerlyReadResponse,
-        boolean ignoreResponseBody, boolean eagerlyConvertHeaders, int tryCount) {
+        boolean ignoreResponseBody, int tryCount) {
         this.callerMethod = callerMethod;
         this.logger = logger;
         this.eagerlyReadResponse = eagerlyReadResponse;
         this.ignoreResponseBody = ignoreResponseBody;
-        this.eagerlyConvertHeaders = eagerlyConvertHeaders;
         this.tryCount = tryCount;
     }
 
@@ -96,19 +92,6 @@ public final class HttpRequestMetadata {
     }
 
     /**
-     * Whether the HTTP header typed used by the {@link HttpClient} implementation should be eagerly converted into
-     * {@link HttpHeaders Azure Core HttpHeaders}.
-     * <p>
-     * Used in scenarios such as when the HTTP headers will be used to created strongly typed HTTP header objects or
-     * when it's known there will be many HTTP header lookups.
-     *
-     * @return Whether HTTP headers should be eagerly converted into {@link HttpHeaders}.
-     */
-    public boolean isHeadersEagerlyConverted() {
-        return eagerlyConvertHeaders;
-    }
-
-    /**
      * Gets the request try count.
      * <p>
      * Used in scenarios such as HTTP request logging where the attempt, or retry attempt, count is included in the log
@@ -139,7 +122,6 @@ public final class HttpRequestMetadata {
     }
 
     HttpRequestMetadata copy() {
-        return new HttpRequestMetadata(callerMethod, logger, eagerlyReadResponse, ignoreResponseBody,
-            eagerlyConvertHeaders, tryCount);
+        return new HttpRequestMetadata(callerMethod, logger, eagerlyReadResponse, ignoreResponseBody, tryCount);
     }
 }

@@ -10,13 +10,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -74,7 +72,7 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
         }
     }
 
-    private NettyToAzureCoreHttpHeadersWrapper createHeaderWrapper(HttpHeaders nettyHeaders) {
+    private static NettyToAzureCoreHttpHeadersWrapper createHeaderWrapper(HttpHeaders nettyHeaders) {
         return new NettyToAzureCoreHttpHeadersWrapper(nettyHeaders);
     }
 
@@ -148,39 +146,32 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
     @ParameterizedTest
     @MethodSource("httpHeaderIteratorSupplier")
     public void httpHeaderIterator(HttpHeaders nettyHeaders, List<HttpHeader> expected) {
-        List<HttpHeader> actual = new ArrayList<>();
-        createHeaderWrapper(nettyHeaders)
-            .iterator()
-            .forEachRemaining(actual::add);
+        com.azure.core.http.HttpHeaders actual = createHeaderWrapper(nettyHeaders);
 
-        assertEquals(expected.size(), actual.size());
-        for (int i = 0; i < expected.size(); i++) {
-            HttpHeader expectedHeader = expected.get(i);
-            HttpHeader actualHeader = actual.get(i);
+        assertEquals(expected.size(), actual.getSize());
+        for (HttpHeader header : expected) {
+            HttpHeader actualHeader = actual.get(header.getName());
 
-            assertEquals(expectedHeader.getName(), actualHeader.getName());
-            assertEquals(expectedHeader.getValue(), actualHeader.getValue());
-            assertArrayEquals(expectedHeader.getValues(), actualHeader.getValues());
-            assertLinesMatch(expectedHeader.getValuesList(), actualHeader.getValuesList());
+            assertEquals(header.getName(), actualHeader.getName());
+            assertEquals(header.getValue(), actualHeader.getValue());
+            assertArrayEquals(header.getValues(), actualHeader.getValues());
+            assertLinesMatch(header.getValuesList(), actualHeader.getValuesList());
         }
     }
 
     @ParameterizedTest
     @MethodSource("httpHeaderIteratorSupplier")
     public void httpHeaderStream(HttpHeaders nettyHeaders, List<HttpHeader> expected) {
-        List<HttpHeader> actual = createHeaderWrapper(nettyHeaders)
-            .stream()
-            .collect(Collectors.toList());
+        com.azure.core.http.HttpHeaders actual = createHeaderWrapper(nettyHeaders);
 
-        assertEquals(expected.size(), actual.size());
-        for (int i = 0; i < expected.size(); i++) {
-            HttpHeader expectedHeader = expected.get(i);
-            HttpHeader actualHeader = actual.get(i);
+        assertEquals(expected.size(), actual.getSize());
+        for (HttpHeader header : expected) {
+            HttpHeader actualHeader = actual.get(header.getName());
 
-            assertEquals(expectedHeader.getName(), actualHeader.getName());
-            assertEquals(expectedHeader.getValue(), actualHeader.getValue());
-            assertArrayEquals(expectedHeader.getValues(), actualHeader.getValues());
-            assertLinesMatch(expectedHeader.getValuesList(), actualHeader.getValuesList());
+            assertEquals(header.getName(), actualHeader.getName());
+            assertEquals(header.getValue(), actualHeader.getValue());
+            assertArrayEquals(header.getValues(), actualHeader.getValues());
+            assertLinesMatch(header.getValuesList(), actualHeader.getValuesList());
         }
     }
 
@@ -259,32 +250,6 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
 
             // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
             Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c"))
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("testToMultiMapSupplier")
-    public void testToMultiMap(HttpHeaders headers, Map<String, String[]> expectedMultiMap) {
-        Map<String, String[]> actualMultiMap = new NettyToAzureCoreHttpHeadersWrapper(headers).toMultiMap();
-
-        assertEquals(expectedMultiMap.size(), actualMultiMap.size());
-        for (Map.Entry<String, String[]> entry : expectedMultiMap.entrySet()) {
-            assertTrue(actualMultiMap.containsKey(entry.getKey()));
-            assertArrayEquals(entry.getValue(), actualMultiMap.get(entry.getKey()));
-        }
-    }
-
-    private static Stream<Arguments> testToMultiMapSupplier() {
-        return Stream.of(
-            // Empty HttpHeaders will return an empty map.
-            Arguments.of(new DefaultHttpHeaders(), Collections.emptyMap()),
-
-            // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
-            Arguments.of(new DefaultHttpHeaders().set("a", "b"), Collections.singletonMap("a", new String[] { "b" })),
-
-            // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
-            Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"),
-                Collections.singletonMap("a", new String[] { "b", "c" }))
         );
     }
 }

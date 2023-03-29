@@ -352,7 +352,7 @@ public class NettyAsyncHttpClientTests {
     public void testBufferedResponseSync() {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))
-            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+            .setMetadata(new HttpRequestMetadata(null, null, true, false));
         HttpResponse response = client.sendSync(request, Context.NONE);
         Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }
@@ -561,7 +561,7 @@ public class NettyAsyncHttpClientTests {
                 .build();
 
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))
-                    .setMetadata(new HttpRequestMetadata(null, null, true, false, false)), Context.NONE))
+                    .setMetadata(new HttpRequestMetadata(null, null, true, false)), Context.NONE))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
                 .verify();

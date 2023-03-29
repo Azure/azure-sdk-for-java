@@ -54,6 +54,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
@@ -291,7 +292,7 @@ public abstract class HttpClientTests {
     public void shouldBufferResponse() {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             BinaryData.fromString("test body"))
-            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+            .setMetadata(new HttpRequestMetadata(null, null, true, false));
 
         HttpResponse response = SyncAsyncExtension.execute(
             () -> createHttpClient().sendSync(request, Context.NONE),
@@ -312,7 +313,7 @@ public abstract class HttpClientTests {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody)
-            .setMetadata(new HttpRequestMetadata(null, null, true, false, false));
+            .setMetadata(new HttpRequestMetadata(null, null, true, false));
 
         HttpResponse response = SyncAsyncExtension.execute(
             () -> createHttpClient().sendSync(request, Context.NONE),
@@ -352,7 +353,7 @@ public abstract class HttpClientTests {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody)
-            .setMetadata(new HttpRequestMetadata(null, null, false, false, true));
+            .setMetadata(new HttpRequestMetadata(null, null, false, false));
 
         HttpResponse response = SyncAsyncExtension.execute(
             () -> createHttpClient().sendSync(request, Context.NONE),
@@ -360,7 +361,7 @@ public abstract class HttpClientTests {
         );
 
         // Validate getHttpHeaders type is HttpHeaders (not instanceof)
-        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+        assertInstanceOf(HttpHeaders.class, response.getHeaders());
     }
 
     /**
@@ -371,10 +372,7 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
         StepVerifier.create(createHttpClient()
