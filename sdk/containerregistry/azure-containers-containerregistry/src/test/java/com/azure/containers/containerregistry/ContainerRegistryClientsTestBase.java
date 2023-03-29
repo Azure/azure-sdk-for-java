@@ -106,17 +106,17 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryContentClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient) {
+    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
-        return getBlobClientBuilder(repositoryName, httpClient, credential);
+        return getContentClientBuilder(repositoryName, httpClient, credential);
     }
 
-    ContainerRegistryContentClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential) {
-        return getBlobClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
+        return getContentClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryContentClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential, String endpoint) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));

@@ -31,7 +31,7 @@ public class UploadImageAsync {
     private static final int CHUNK_SIZE = 4 * 1024 * 1024; // content will be uploaded in chunks of up to 4MB size
     public static void main(String[] args) {
 
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
@@ -40,7 +40,7 @@ public class UploadImageAsync {
         // BEGIN: readme-sample-uploadImageAsync
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        Mono<OciDescriptor> uploadConfig = blobClient
+        Mono<OciDescriptor> uploadConfig = contentClient
             .uploadBlob(configContent)
             .map(result -> new OciDescriptor()
                 .setMediaType("application/vnd.unknown.config.v1+json")
@@ -48,7 +48,7 @@ public class UploadImageAsync {
                 .setSizeInBytes(result.getSizeInBytes()));
 
         Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
-        Mono<OciDescriptor> uploadLayer = blobClient
+        Mono<OciDescriptor> uploadLayer = contentClient
             .uploadBlob(layerContent)
             .map(result -> new OciDescriptor()
                 .setDigest(result.getDigest())
@@ -60,7 +60,7 @@ public class UploadImageAsync {
                 .setConfiguration(tuple.getT1())
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))
-            .flatMap(manifest -> blobClient.setManifest(manifest, "latest"))
+            .flatMap(manifest -> contentClient.setManifest(manifest, "latest"))
             .doOnSuccess(manifestResult -> System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()))
             .block();
         // END: readme-sample-uploadImageAsync
@@ -90,7 +90,7 @@ public class UploadImageAsync {
     }
 
     private void setManifest() {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
@@ -98,7 +98,7 @@ public class UploadImageAsync {
 
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        Mono<OciDescriptor> config = blobClient
+        Mono<OciDescriptor> config = contentClient
             .uploadBlob(configContent)
             .map(configUploadResult -> new OciDescriptor()
                 .setMediaType("application/vnd.unknown.config.v1+json")
@@ -106,7 +106,7 @@ public class UploadImageAsync {
                 .setSizeInBytes(configContent.getLength()));
 
         Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
-        Mono<OciDescriptor> layer = blobClient
+        Mono<OciDescriptor> layer = contentClient
             .uploadBlob(layerContent)
             .map(result -> new OciDescriptor()
                 .setDigest(result.getDigest())
@@ -121,7 +121,7 @@ public class UploadImageAsync {
                             .setConfiguration(configDescriptor)
                             .setSchemaVersion(2)
                             .setLayers(Collections.singletonList(layerDescriptor));
-                    Mono<SetManifestResult> result = blobClient.setManifest(manifest, "latest");
+                    Mono<SetManifestResult> result = contentClient.setManifest(manifest, "latest");
                     // END: com.azure.containers.containerregistry.setManifestAsync
                     return result;
                 }))
@@ -130,7 +130,7 @@ public class UploadImageAsync {
 
     private void uploadCustomManifestMediaType() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(credential)
@@ -159,14 +159,14 @@ public class UploadImageAsync {
         SetManifestOptions options = new SetManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE)
             .setTag("v2");
 
-        blobClient.setManifestWithResponse(options)
+        contentClient.setManifestWithResponse(options)
             .subscribe(response ->
                 System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest()));
         // END: com.azure.containers.containerregistry.uploadCustomManifestAsync
     }
 
     private void uploadBlob() throws FileNotFoundException {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
@@ -175,7 +175,7 @@ public class UploadImageAsync {
         // BEGIN: com.azure.containers.containerregistry.uploadBlobAsync
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        blobClient
+        contentClient
             .uploadBlob(configContent)
             .subscribe(uploadResult -> System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
                     uploadResult.getDigest(), uploadResult.getSizeInBytes()));
@@ -184,7 +184,7 @@ public class UploadImageAsync {
         // BEGIN: com.azure.containers.containerregistry.uploadStreamAsync
         Flux.using(
                 () -> new FileInputStream("artifact.tar.gz"),
-                fileStream -> blobClient.uploadBlob(FluxUtil.toFluxByteBuffer(fileStream, CHUNK_SIZE)),
+                fileStream -> contentClient.uploadBlob(FluxUtil.toFluxByteBuffer(fileStream, CHUNK_SIZE)),
                 this::closeStream)
             .subscribe(uploadResult ->
                 System.out.printf("Uploaded blob: digest - '%s', size - %s\n",

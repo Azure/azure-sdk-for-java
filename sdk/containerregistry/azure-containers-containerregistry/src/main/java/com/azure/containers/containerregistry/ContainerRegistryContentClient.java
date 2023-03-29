@@ -115,7 +115,7 @@ public final class ContainerRegistryContentClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.setManifest -->
      * <pre>
-     * blobClient.setManifest&#40;manifest, &quot;v1&quot;&#41;;
+     * contentClient.setManifest&#40;manifest, &quot;v1&quot;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.setManifest -->
      *
@@ -142,7 +142,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * SetManifestOptions options = new SetManifestOptions&#40;manifestList, DOCKER_MANIFEST_LIST_TYPE&#41;;
      *
-     * Response&lt;SetManifestResult&gt; response = blobClient.setManifestWithResponse&#40;options, Context.NONE&#41;;
+     * Response&lt;SetManifestResult&gt; response = contentClient.setManifestWithResponse&#40;options, Context.NONE&#41;;
      * System.out.println&#40;&quot;Manifest uploaded, digest - &quot; + response.getValue&#40;&#41;.getDigest&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadCustomManifest -->
@@ -170,7 +170,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * BinaryData configContent = BinaryData.fromObject&#40;Collections.singletonMap&#40;&quot;hello&quot;, &quot;world&quot;&#41;&#41;;
      *
-     * UploadRegistryBlobResult uploadResult = blobClient.uploadBlob&#40;configContent&#41;;
+     * UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;configContent&#41;;
      * System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;, uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlob -->
@@ -203,7 +203,7 @@ public final class ContainerRegistryContentClient {
      * <!-- src_embed com.azure.containers.containerregistry.uploadStream -->
      * <pre>
      * try &#40;FileInputStream content = new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;&#41; &#123;
-     *     UploadRegistryBlobResult uploadResult = blobClient.uploadBlob&#40;content.getChannel&#40;&#41;, Context.NONE&#41;;
+     *     UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;content.getChannel&#40;&#41;, Context.NONE&#41;;
      *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
      *         uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * &#125;
@@ -231,7 +231,7 @@ public final class ContainerRegistryContentClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestTag -->
      * <pre>
-     * GetManifestResult latestResult = blobClient.getManifest&#40;&quot;latest&quot;&#41;;
+     * GetManifestResult latestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
      * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
      *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *     OciImageManifest manifest = latestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
@@ -245,7 +245,7 @@ public final class ContainerRegistryContentClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestDigest -->
      * <pre>
-     * GetManifestResult getManifestResult = blobClient.getManifest&#40;
+     * GetManifestResult getManifestResult = contentClient.getManifest&#40;
      *     &quot;sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311&quot;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.getManifestDigest -->
@@ -267,7 +267,7 @@ public final class ContainerRegistryContentClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponse -->
      * <pre>
-     * Response&lt;GetManifestResult&gt; downloadResponse = blobClient.getManifestWithResponse&#40;&quot;latest&quot;,
+     * Response&lt;GetManifestResult&gt; downloadResponse = contentClient.getManifestWithResponse&#40;&quot;latest&quot;,
      *     Context.NONE&#41;;
      * System.out.printf&#40;&quot;Received manifest: digest - %s, response code: %s&#92;n&quot;, downloadResponse.getValue&#40;&#41;.getDigest&#40;&#41;,
      *     downloadResponse.getStatusCode&#40;&#41;&#41;;
@@ -302,7 +302,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * Path file = Files.createTempFile&#40;digest, &quot;.tmp&quot;&#41;;
      * SeekableByteChannel channel = Files.newByteChannel&#40;file, StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE&#41;;
-     * blobClient.downloadStream&#40;digest, channel&#41;;
+     * contentClient.downloadStream&#40;digest, channel&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.downloadStream -->
      *
@@ -340,11 +340,11 @@ public final class ContainerRegistryContentClient {
      *
      * <!-- src_embed readme-sample-deleteBlob -->
      * <pre>
-     * GetManifestResult manifestResult = blobClient.getManifest&#40;&quot;latest&quot;&#41;;
+     * GetManifestResult manifestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
      *
      * OciImageManifest manifest = manifestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      * for &#40;OciDescriptor layer : manifest.getLayers&#40;&#41;&#41; &#123;
-     *     blobClient.deleteBlob&#40;layer.getDigest&#40;&#41;&#41;;
+     *     contentClient.deleteBlob&#40;layer.getDigest&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end readme-sample-deleteBlob -->
@@ -393,8 +393,8 @@ public final class ContainerRegistryContentClient {
      *
      * <!-- src_embed readme-sample-deleteManifest -->
      * <pre>
-     * GetManifestResult manifestResult = blobClient.getManifest&#40;&quot;latest&quot;&#41;;
-     * blobClient.deleteManifest&#40;manifestResult.getDigest&#40;&#41;&#41;;
+     * GetManifestResult manifestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
+     * contentClient.deleteManifest&#40;manifestResult.getDigest&#40;&#41;&#41;;
      * </pre>
      * <!-- end readme-sample-deleteManifest -->
      *

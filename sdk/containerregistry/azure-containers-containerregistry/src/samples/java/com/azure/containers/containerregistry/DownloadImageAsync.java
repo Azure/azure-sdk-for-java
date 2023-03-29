@@ -32,14 +32,14 @@ public class DownloadImageAsync {
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
 
     public static void main(String[] args) {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
         // BEGIN: readme-sample-downloadImageAsync
-        blobClient
+        contentClient
             .getManifest("latest")
             .map(manifestResult -> manifestResult.getManifest().toObject(OciImageManifest.class))
             .doOnSuccess(manifest -> System.out.printf("Got manifest:\n%s\n", prettyPrint(manifest)))
@@ -47,7 +47,7 @@ public class DownloadImageAsync {
                 String configFileName = manifest.getConfiguration().getDigest() + ".json";
                 FileChannel configChannel = createFileChannel(configFileName);
 
-                Mono<Void> downloadConfig = blobClient
+                Mono<Void> downloadConfig = contentClient
                         .downloadStream(manifest.getConfiguration().getDigest())
                         .flatMap(downloadResponse -> FluxUtil.writeToWritableByteChannel(downloadResponse.toFluxByteBuffer(), configChannel))
                         .doOnSuccess(i -> System.out.printf("Got config: %s\n", configFileName))
@@ -56,7 +56,7 @@ public class DownloadImageAsync {
                 Flux<Void> downloadLayers = Flux.fromIterable(manifest.getLayers())
                     .flatMap(layer -> {
                         FileChannel layerChannel = createFileChannel(layer.getDigest());
-                        return blobClient.downloadStream(layer.getDigest())
+                        return contentClient.downloadStream(layer.getDigest())
                             .flatMap(downloadResponse -> FluxUtil.writeToWritableByteChannel(downloadResponse.toFluxByteBuffer(), layerChannel))
                             .doOnSuccess(i -> System.out.printf("Got layer: %s\n", layer.getDigest()))
                             .doFinally(i -> closeStream(layerChannel));
@@ -71,7 +71,7 @@ public class DownloadImageAsync {
     }
 
     private static void downloadBlob() {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
@@ -79,7 +79,7 @@ public class DownloadImageAsync {
         String digest = "sha256:6581596932dc735fd0df8cc240e6c28845a66829126da5ce25b983cf244e2311";
 
         // BEGIN: com.azure.containers.containerregistry.downloadStreamAsyncFile
-        blobClient
+        contentClient
             .downloadStream(digest)
             .flatMap(downloadResult ->
                 Mono.using(() -> new FileOutputStream(trimSha(digest)),
@@ -91,7 +91,7 @@ public class DownloadImageAsync {
 
 
         // BEGIN: com.azure.containers.containerregistry.downloadStreamAsyncSocket
-        blobClient
+        contentClient
             .downloadStream(digest)
             .flatMap(downloadResult ->
                 Mono.using(
@@ -117,14 +117,14 @@ public class DownloadImageAsync {
     }
 
     private static void getManifest() {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
         // BEGIN: com.azure.containers.containerregistry.getManifestAsync
-        blobClient.getManifest("latest")
+        contentClient.getManifest("latest")
             .doOnNext(downloadResult -> {
                 if (ManifestMediaType.OCI_MANIFEST.equals(downloadResult.getManifestMediaType())
                     || ManifestMediaType.DOCKER_MANIFEST.equals(downloadResult.getManifestMediaType())) {
@@ -139,14 +139,14 @@ public class DownloadImageAsync {
     }
 
     private static void getManifestWithResponse() {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
             .repositoryName(REPOSITORY)
             .credential(CREDENTIAL)
             .buildAsyncClient();
 
         // BEGIN: com.azure.containers.containerregistry.getManifestWithResponseAsync
-        blobClient.getManifestWithResponse("latest")
+        contentClient.getManifestWithResponse("latest")
             .doOnNext(response -> {
                 GetManifestResult manifestResult = response.getValue();
                 if (ManifestMediaType.OCI_MANIFEST.equals(manifestResult.getManifestMediaType())

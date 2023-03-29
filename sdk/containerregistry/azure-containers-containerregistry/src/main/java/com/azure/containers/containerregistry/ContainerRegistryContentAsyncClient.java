@@ -114,7 +114,7 @@ public final class ContainerRegistryContentAsyncClient {
      *         .setConfiguration&#40;configDescriptor&#41;
      *         .setSchemaVersion&#40;2&#41;
      *         .setLayers&#40;Collections.singletonList&#40;layerDescriptor&#41;&#41;;
-     * Mono&lt;SetManifestResult&gt; result = blobClient.setManifest&#40;manifest, &quot;latest&quot;&#41;;
+     * Mono&lt;SetManifestResult&gt; result = contentClient.setManifest&#40;manifest, &quot;latest&quot;&#41;;
      * </pre>
      * <!-- end com.azure.containers.containerregistry.setManifestAsync -->
      *
@@ -145,7 +145,7 @@ public final class ContainerRegistryContentAsyncClient {
      * SetManifestOptions options = new SetManifestOptions&#40;manifestList, DOCKER_MANIFEST_LIST_TYPE&#41;
      *     .setTag&#40;&quot;v2&quot;&#41;;
      *
-     * blobClient.setManifestWithResponse&#40;options&#41;
+     * contentClient.setManifestWithResponse&#40;options&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.println&#40;&quot;Manifest uploaded, digest - &quot; + response.getValue&#40;&#41;.getDigest&#40;&#41;&#41;&#41;;
      * </pre>
@@ -175,7 +175,7 @@ public final class ContainerRegistryContentAsyncClient {
      * <pre>
      * BinaryData configContent = BinaryData.fromObject&#40;Collections.singletonMap&#40;&quot;hello&quot;, &quot;world&quot;&#41;&#41;;
      *
-     * blobClient
+     * contentClient
      *     .uploadBlob&#40;configContent&#41;
      *     .subscribe&#40;uploadResult -&gt; System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
      *             uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;&#41;;
@@ -209,7 +209,7 @@ public final class ContainerRegistryContentAsyncClient {
      * <pre>
      * Flux.using&#40;
      *         &#40;&#41; -&gt; new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;,
-     *         fileStream -&gt; blobClient.uploadBlob&#40;FluxUtil.toFluxByteBuffer&#40;fileStream, CHUNK_SIZE&#41;&#41;,
+     *         fileStream -&gt; contentClient.uploadBlob&#40;FluxUtil.toFluxByteBuffer&#40;fileStream, CHUNK_SIZE&#41;&#41;,
      *         this::closeStream&#41;
      *     .subscribe&#40;uploadResult -&gt;
      *         System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
@@ -238,7 +238,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestAsync -->
      * <pre>
-     * blobClient.getManifest&#40;&quot;latest&quot;&#41;
+     * contentClient.getManifest&#40;&quot;latest&quot;&#41;
      *     .doOnNext&#40;downloadResult -&gt; &#123;
      *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;
      *             || ManifestMediaType.DOCKER_MANIFEST.equals&#40;downloadResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
@@ -271,7 +271,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.getManifestWithResponseAsync -->
      * <pre>
-     * blobClient.getManifestWithResponse&#40;&quot;latest&quot;&#41;
+     * contentClient.getManifestWithResponse&#40;&quot;latest&quot;&#41;
      *     .doOnNext&#40;response -&gt; &#123;
      *         GetManifestResult manifestResult = response.getValue&#40;&#41;;
      *         if &#40;ManifestMediaType.OCI_MANIFEST.equals&#40;manifestResult.getManifestMediaType&#40;&#41;&#41;
@@ -306,7 +306,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.downloadStreamAsyncFile -->
      * <pre>
-     * blobClient
+     * contentClient
      *     .downloadStream&#40;digest&#41;
      *     .flatMap&#40;downloadResult -&gt;
      *         Mono.using&#40;&#40;&#41; -&gt; new FileOutputStream&#40;trimSha&#40;digest&#41;&#41;,
@@ -321,7 +321,7 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * <!-- src_embed com.azure.containers.containerregistry.downloadStreamAsyncSocket -->
      * <pre>
-     * blobClient
+     * contentClient
      *     .downloadStream&#40;digest&#41;
      *     .flatMap&#40;downloadResult -&gt;
      *         Mono.using&#40;
@@ -350,8 +350,8 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * <!-- src_embed readme-sample-deleteBlobAsync -->
      * <pre>
-     * blobClient.getManifest&#40;&quot;latest&quot;&#41;
-     *     .flatMap&#40;manifest -&gt; blobClient.deleteBlob&#40;manifest.getDigest&#40;&#41;&#41;&#41;
+     * contentClient.getManifest&#40;&quot;latest&quot;&#41;
+     *     .flatMap&#40;manifest -&gt; contentClient.deleteBlob&#40;manifest.getDigest&#40;&#41;&#41;&#41;
      *     .block&#40;&#41;;
      * </pre>
      * <!-- end readme-sample-deleteBlobAsync -->
@@ -386,8 +386,8 @@ public final class ContainerRegistryContentAsyncClient {
      *
      * <!-- src_embed readme-sample-deleteManifestAsync -->
      * <pre>
-     * blobClient.getManifest&#40;&quot;latest&quot;&#41;
-     *     .flatMap&#40;manifest -&gt; blobClient.deleteManifest&#40;manifest.getDigest&#40;&#41;&#41;&#41;
+     * contentClient.getManifest&#40;&quot;latest&quot;&#41;
+     *     .flatMap&#40;manifest -&gt; contentClient.deleteManifest&#40;manifest.getDigest&#40;&#41;&#41;&#41;
      *     .block&#40;&#41;;
      * </pre>
      * <!-- end readme-sample-deleteManifestAsync -->

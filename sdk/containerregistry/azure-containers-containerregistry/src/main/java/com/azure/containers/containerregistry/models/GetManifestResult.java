@@ -6,7 +6,7 @@ import com.azure.containers.containerregistry.implementation.ConstructorAccessor
 import com.azure.core.util.BinaryData;
 
 /**
- * The result from downloading a manifest from the registry.
+ * The result of getting a manifest from the registry.
  */
 public final class GetManifestResult {
     static {
@@ -32,8 +32,8 @@ public final class GetManifestResult {
     }
 
     /**
-     * The manifest stream that was downloaded.
-     * @return The associated manifest stream.
+     * The manifest content retrieved from the service.
+     * @return The associated manifest content.
      */
     public BinaryData getManifest() {
         return this.rawData;

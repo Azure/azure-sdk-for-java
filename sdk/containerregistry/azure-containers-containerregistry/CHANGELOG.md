@@ -6,7 +6,7 @@
 
 ### Breaking Changes from version 1.1.0-beta.3
 
-- `ContainerRegistryContentClientBuilder`, `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were renamed to `ContainerRegistryContentClientBuilder`,
+- `ContainerRegistryBlobClientBuilder`, `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were renamed to `ContainerRegistryContentClientBuilder`,
   `ContainerRegistryContentClient`, and `ContainerRegistryContentAsyncClient` and moved to `com.azure.containers.containerregistry` package. 
 - `UploadBlobResult` was renamed to `UploadRegistryBlobResult`
 - `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` changes:

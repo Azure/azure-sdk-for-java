@@ -37,15 +37,15 @@ public class ReadmeSamples {
         // END: readme-sample-createClient
     }
 
-    public void createBlobClient() {
-        // BEGIN: readme-sample-createBlobClient
+    public void createContentClient() {
+        // BEGIN: readme-sample-createContentClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryContentClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .repositoryName(repository)
             .buildClient();
-        // END: readme-sample-createBlobClient
+        // END: readme-sample-createContentClient
     }
 
     public void createAsyncClient() {
@@ -61,7 +61,7 @@ public class ReadmeSamples {
     public void createBlobAsyncClient() {
         // BEGIN: readme-sample-createBlobAsyncClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .repositoryName(repository)
@@ -282,59 +282,59 @@ public class ReadmeSamples {
     }
 
     public void deleteBlob()  {
-        ContainerRegistryContentClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint())
             .repositoryName(repository)
             .credential(credential)
             .buildClient();
 
         // BEGIN: readme-sample-deleteBlob
-        GetManifestResult manifestResult = blobClient.getManifest("latest");
+        GetManifestResult manifestResult = contentClient.getManifest("latest");
 
         OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
         for (OciDescriptor layer : manifest.getLayers()) {
-            blobClient.deleteBlob(layer.getDigest());
+            contentClient.deleteBlob(layer.getDigest());
         }
         // END: readme-sample-deleteBlob
     }
 
     public void deleteManifest()  {
-        ContainerRegistryContentClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint())
             .repositoryName(repository)
             .credential(credential)
             .buildClient();
 
         // BEGIN: readme-sample-deleteManifest
-        GetManifestResult manifestResult = blobClient.getManifest("latest");
-        blobClient.deleteManifest(manifestResult.getDigest());
+        GetManifestResult manifestResult = contentClient.getManifest("latest");
+        contentClient.deleteManifest(manifestResult.getDigest());
         // END: readme-sample-deleteManifest
     }
 
     public void deleteBlobAsync()  {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint())
             .repositoryName(repository)
             .credential(credential)
             .buildAsyncClient();
 
         // BEGIN: readme-sample-deleteBlobAsync
-        blobClient.getManifest("latest")
-            .flatMap(manifest -> blobClient.deleteBlob(manifest.getDigest()))
+        contentClient.getManifest("latest")
+            .flatMap(manifest -> contentClient.deleteBlob(manifest.getDigest()))
             .block();
         // END: readme-sample-deleteBlobAsync
     }
 
     public void deleteManifestAsync()  {
-        ContainerRegistryContentAsyncClient blobClient = new ContainerRegistryContentClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint())
             .repositoryName(repository)
             .credential(credential)
             .buildAsyncClient();
 
         // BEGIN: readme-sample-deleteManifestAsync
-        blobClient.getManifest("latest")
-            .flatMap(manifest -> blobClient.deleteManifest(manifest.getDigest()))
+        contentClient.getManifest("latest")
+            .flatMap(manifest -> contentClient.deleteManifest(manifest.getDigest()))
             .block();
         // END: readme-sample-deleteManifestAsync
     }
