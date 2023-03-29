@@ -595,7 +595,7 @@ class CdnEndpointImpl
     }
 
     @Override
-    public CdnDeliveryRuleImpl defineDeliveryRule(String name) {
+    public CdnDeliveryRuleImpl defineNewDeliveryRule(String name) {
         CdnDeliveryRuleImpl deliveryRule = new CdnDeliveryRuleImpl(this, name);
         this.deliveryRuleMap.put(name, deliveryRule.innerModel());
         return deliveryRule;

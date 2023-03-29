@@ -383,7 +383,7 @@ public interface CdnEndpoint extends
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
-            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
+            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineNewDeliveryRule(String name);
         }
 
         /** The final stage of the CDN profile Premium Verizon endpoint definition.
@@ -674,7 +674,7 @@ public interface CdnEndpoint extends
              * @param <T> the next stage of the endpoint definition
              * @return the first stage of the delivery rule definition
              */
-            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
+            <T extends WithStandardAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineNewDeliveryRule(String name);
         }
 
         /**
@@ -742,15 +742,6 @@ public interface CdnEndpoint extends
              * @return the next stage of the definition
              */
             WithPremiumAttach<ParentT> withCustomDomain(String hostName);
-
-            /**
-             * Begins the definition of the delivery rule to be attached to the endpoint.
-             *
-             * @param name name of the delivery rule
-             * @param <T> the next stage of the endpoint definition
-             * @return the first stage of the delivery rule definition
-             */
-            <T extends WithPremiumAttach<ParentT>> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
         }
 
         /**
@@ -947,7 +938,7 @@ public interface CdnEndpoint extends
          * @param <T> the next stage of the endpoint update
          * @return the first stage of the delivery rule update
          */
-        <T extends UpdateStandardEndpoint> CdnDeliveryRule.DefinitionStage.Blank<T> defineDeliveryRule(String name);
+        <T extends UpdateStandardEndpoint> CdnDeliveryRule.DefinitionStage.Blank<T> defineNewDeliveryRule(String name);
 
         /**
          * Begins the update of the delivery rule.

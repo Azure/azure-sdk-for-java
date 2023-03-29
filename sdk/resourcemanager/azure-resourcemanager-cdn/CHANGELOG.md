@@ -4,11 +4,8 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `defineDeliveryRule` and `updateDeliveryRule` in `CdnEndpoint` for Standard Microsoft Sku.
+- Supported `withStandardMicrosoftSku` in `CdnProfile`.
 
 ## 2.25.0 (2023-03-24)
 

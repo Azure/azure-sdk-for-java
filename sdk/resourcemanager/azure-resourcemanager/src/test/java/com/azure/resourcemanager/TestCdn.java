@@ -35,7 +35,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
         CdnProfile cdnProfile = profiles.define(cdnProfileName)
             .withRegion(region)
             .withNewResourceGroup(groupName)
-            .withStandardAkamaiSku()
+            .withStandardMicrosoftSku()
             .defineNewEndpoint(cdnEndpointName)
             .withOrigin(cdnOriginHostName)
             .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryIsoCode.ARGENTINA)
@@ -50,7 +50,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
             .attach()
             .create();
 
-        Assertions.assertTrue(cdnProfile.sku().name().equals(SkuName.STANDARD_AKAMAI));
+        Assertions.assertTrue(cdnProfile.sku().name().equals(SkuName.STANDARD_MICROSOFT));
         Assertions.assertNotNull(cdnProfile.endpoints());
         Assertions.assertEquals(1, cdnProfile.endpoints().size());
         CdnEndpoint endpoint = cdnProfile.endpoints().get(cdnEndpointName);

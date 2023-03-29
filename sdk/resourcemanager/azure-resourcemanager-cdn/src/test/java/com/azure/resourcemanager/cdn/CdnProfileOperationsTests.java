@@ -18,14 +18,11 @@ import com.azure.resourcemanager.cdn.models.DeliveryRuleCacheExpirationAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
-import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
-import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.RedirectType;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
-import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -66,7 +63,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withStandardAkamaiSku()
+            .withStandardMicrosoftSku()
             .create();
 
         Assertions.assertNotNull(cdnProfile);
@@ -97,7 +94,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withStandardAkamaiSku()
+            .withStandardMicrosoftSku()
             .create();
 
         Assertions.assertNotNull(cdnProfile);
@@ -137,7 +134,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
-            .withStandardAkamaiSku()
+            .withStandardMicrosoftSku()
             .defineNewEndpoint(cdnEndpointName)
                 .withOrigin("origin1", "www.someDomain.net")
                 .withHttpAllowed(false)
@@ -197,7 +194,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                 .withOrigin(originName1, "www.someDomain.net")
                 .withHttpAllowed(false)
                 .withHttpsAllowed(true)
-                .defineDeliveryRule(ruleName1)
+                .defineNewDeliveryRule(ruleName1)
                     .withOrder(1)
                     .withMatchConditions(
                         new DeliveryRuleRequestSchemeCondition()
@@ -234,7 +231,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .update()
             .updateEndpoint(cdnEndpointName)
             // define new deliveryRule
-            .defineDeliveryRule(ruleName2)
+            .defineNewDeliveryRule(ruleName2)
                 .withOrder(1)
                 .withMatchConditions(
                     new DeliveryRuleHttpVersionCondition()
@@ -259,7 +256,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                 .withOrigin(originName2, "www.someDomain.net")
                 .withHttpAllowed(false)
                 .withHttpsAllowed(true)
-                .defineDeliveryRule(ruleName3)
+                .defineNewDeliveryRule(ruleName3)
                     .withOrder(1)
                     .withMatchConditions(
                         new DeliveryRuleHttpVersionCondition()
