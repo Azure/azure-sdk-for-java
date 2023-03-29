@@ -251,16 +251,16 @@ try {
 
 ### Blob and manifest operations
 
-This section contains samples for `ContainerRegistryBlobClient` that show how to upload and download images. 
+This section contains samples for `ContainerRegistryContentClient` that show how to upload and download images. 
 
 First, we need to create blob client.
 
-```java readme-sample-createBlobClient
+```java readme-sample-createContentClient
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-ContainerRegistryBlobClient blobClient = new ContainerRegistryBlobClientBuilder()
+ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
     .endpoint(endpoint)
     .credential(credential)
-    .repository(repository)
+    .repositoryName(repository)
     .buildClient();
 ```
 
@@ -272,7 +272,7 @@ which describes an image or artifact and assign it a tag.
 ```java readme-sample-uploadImage
 BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-UploadBlobResult configUploadResult = blobClient.uploadBlob(configContent);
+UploadRegistryBlobResult configUploadResult = contentClient.uploadBlob(configContent);
 System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
 
 OciDescriptor configDescriptor = new OciDescriptor()
@@ -281,11 +281,11 @@ OciDescriptor configDescriptor = new OciDescriptor()
     .setSizeInBytes(configContent.getLength());
 
 BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
-UploadBlobResult layerUploadResult = blobClient.uploadBlob(layerContent);
+UploadRegistryBlobResult layerUploadResult = contentClient.uploadBlob(layerContent);
 System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
 
 OciImageManifest manifest = new OciImageManifest()
-    .setConfig(configDescriptor)
+    .setConfiguration(configDescriptor)
     .setSchemaVersion(2)
     .setLayers(Collections.singletonList(
         new OciDescriptor()
@@ -293,7 +293,7 @@ OciImageManifest manifest = new OciImageManifest()
             .setSizeInBytes(layerContent.getLength())
             .setMediaType("application/octet-stream")));
 
-UploadManifestResult manifestResult = blobClient.uploadManifest(manifest, "latest");
+SetManifestResult manifestResult = contentClient.setManifest(manifest, "latest");
 System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest());
 ```
 
@@ -302,17 +302,17 @@ System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()
 To download a full image, we need to download its manifest and then download individual layers and configuration. 
 
 ```java readme-sample-downloadImage
-DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+GetManifestResult manifestResult = contentClient.getManifest("latest");
 
-OciImageManifest manifest = manifestResult.asOciManifest();
+OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
 System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
-String configFileName = manifest.getConfig().getDigest() + ".json";
-blobClient.downloadStream(manifest.getConfig().getDigest(), createFileChannel(configFileName));
+String configFileName = manifest.getConfiguration().getDigest() + ".json";
+contentClient.downloadStream(manifest.getConfiguration().getDigest(), createFileChannel(configFileName));
 System.out.printf("Got config: %s\n", configFileName);
 
 for (OciDescriptor layer : manifest.getLayers()) {
-    blobClient.downloadStream(layer.getDigest(), createFileChannel(layer.getDigest()));
+    contentClient.downloadStream(layer.getDigest(), createFileChannel(layer.getDigest()));
     System.out.printf("Got layer: %s\n", layer.getDigest());
 }
 ```
@@ -320,19 +320,19 @@ for (OciDescriptor layer : manifest.getLayers()) {
 #### Delete blob
 
 ```java readme-sample-deleteBlob
-DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
+GetManifestResult manifestResult = contentClient.getManifest("latest");
 
-OciImageManifest manifest = manifestResult.asOciManifest();
+OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
 for (OciDescriptor layer : manifest.getLayers()) {
-    blobClient.deleteBlob(layer.getDigest());
+    contentClient.deleteBlob(layer.getDigest());
 }
 ```
 
 #### Delete manifest
 
 ```java readme-sample-deleteManifest
-DownloadManifestResult manifestResult = blobClient.downloadManifest("latest");
-blobClient.deleteManifest(manifestResult.getDigest());
+GetManifestResult manifestResult = contentClient.getManifest("latest");
+contentClient.deleteManifest(manifestResult.getDigest());
 ```
 
 ## Troubleshooting

@@ -82,7 +82,7 @@ public class OpenTelemetryAttributesTests {
         assertEquals(13, attributes.size());
         assertEquals("value", attributes.get(AttributeKey.stringKey("foobar")));
         assertEquals("host", attributes.get(AttributeKey.stringKey("net.peer.name")));
-        assertEquals("entity", attributes.get(AttributeKey.stringKey("messaging.destination")));
+        assertEquals("entity", attributes.get(AttributeKey.stringKey("messaging.destination.name")));
         assertEquals("path", attributes.get(AttributeKey.stringKey("messaging.az.entity_path")));
         assertEquals("amqp::error::code", attributes.get(AttributeKey.stringKey("amqp.error_condition")));
         assertEquals("rejected", attributes.get(AttributeKey.stringKey("amqp.delivery_state")));

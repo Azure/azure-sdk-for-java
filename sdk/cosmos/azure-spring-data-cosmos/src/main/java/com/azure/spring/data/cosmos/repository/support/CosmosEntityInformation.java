@@ -74,6 +74,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final boolean persitable;
     private final boolean autoScale;
     private final boolean isIndexingPolicySpecified;
+    private final boolean overwriteIndexingPolicy;
 
     /**
      * Initialization
@@ -109,6 +110,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.persitable = Persistable.class.isAssignableFrom(domainType);
         this.autoScale = getIsAutoScale(domainType);
         this.isIndexingPolicySpecified = isIndexingPolicySpecified(domainType);
+        this.overwriteIndexingPolicy = getIndexingPolicyOverwritePolicy(domainType);
     }
 
     @Override
@@ -284,6 +286,15 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Check if overwrite indexing policy is enabled
+     *
+     * @return boolean
+     */
+    public boolean isOverwriteIndexingPolicy() {
+        return overwriteIndexingPolicy;
+    }
+
+    /**
      * Check if container should use autoscale for resource units
      *
      * @return boolean
@@ -424,13 +435,23 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return ttl;
     }
 
-
-    private Boolean getIndexingPolicyAutomatic(Class<?> domainType) {
-        Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC);
+    private boolean getIndexingPolicyOverwritePolicy(Class<?> domainType) {
+        boolean isOverwritePolicy = Constants.DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY;
         final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
-            isAutomatic = Boolean.valueOf(annotation.automatic());
+            isOverwritePolicy = annotation.overwritePolicy();
+        }
+
+        return isOverwritePolicy;
+    }
+
+    private boolean getIndexingPolicyAutomatic(Class<?> domainType) {
+        boolean isAutomatic = Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
+
+        if (annotation != null) {
+            isAutomatic = annotation.automatic();
         }
 
         return isAutomatic;

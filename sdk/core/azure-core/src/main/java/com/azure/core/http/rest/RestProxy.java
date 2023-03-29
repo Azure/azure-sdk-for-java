@@ -28,9 +28,9 @@ import java.lang.reflect.Proxy;
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final boolean GLOBAL_SYNC_PROXY_ENABLE = Configuration.getGlobalConfiguration()
-        .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", false);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final boolean GLOBAL_SYNC_PROXY_ENABLED = Configuration.getGlobalConfiguration()
+        .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", true);
 
     private final SwaggerInterfaceParser interfaceParser;
     private final AsyncRestProxy asyncRestProxy;
@@ -83,18 +83,20 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser = getMethodParser(method);
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
-        boolean isReactive = methodParser.isReactive();
-        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE)
-            .orElse(GLOBAL_SYNC_PROXY_ENABLE);
 
-
-        if (isReactive || !syncRestProxyEnabled) {
+        if (methodParser.isReactive() || isSyncDisabled(context)) {
             return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+                options != null ? options.getRequestCallback() : null, methodParser, methodParser.isReactive(), args);
         } else {
             return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+                options != null ? options.getRequestCallback() : null, methodParser, false, args);
         }
+    }
+
+    private static boolean isSyncDisabled(Context context) {
+        return !(boolean) context
+            .getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLED)
+            .orElse(GLOBAL_SYNC_PROXY_ENABLED);
     }
 
     /**
