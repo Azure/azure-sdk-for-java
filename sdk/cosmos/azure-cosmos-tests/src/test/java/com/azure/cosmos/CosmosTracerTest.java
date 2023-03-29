@@ -111,10 +111,16 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = getClientBuilder().buildAsyncClient();
-        cosmosAsyncDatabase = getSharedCosmosDatabase(client);
-        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
-        cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+        try {
+            client = getClientBuilder().buildAsyncClient();
+            cosmosAsyncDatabase = getSharedCosmosDatabase(client);
+            cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
+            cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+        } catch (Throwable error) {
+            logger.error("BeforeClass of CosmosTracerTest failed unexpectedly", error);
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     @Override
