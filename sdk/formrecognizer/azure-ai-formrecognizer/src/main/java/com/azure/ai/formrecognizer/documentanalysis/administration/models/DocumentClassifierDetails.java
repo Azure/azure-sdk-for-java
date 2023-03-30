@@ -4,7 +4,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentClassifierDetailsHelper;
 import com.azure.core.annotation.Fluent;
 
@@ -42,7 +41,7 @@ public final class DocumentClassifierDetails {
     /*
      * List of document types to classify against.
      */
-    private Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> docTypes;
+    private Map<String, ClassifierDocumentTypeDetails> docTypes;
 
     /** Creates an instance of DocumentClassifierDetails class. */
     public DocumentClassifierDetails() {}
@@ -142,7 +141,7 @@ public final class DocumentClassifierDetails {
      *
      * @return the docTypes value.
      */
-    public Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> getDocTypes() {
+    public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
     }
 

@@ -44,6 +44,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.NON_EXIST_M
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentModelAdminClientTest extends DocumentModelAdministrationClientTestBase {
     private DocumentModelAdministrationClient client;
@@ -427,8 +428,10 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                 client.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
-
-            validateClassifierModelData(buildModelPoller.getFinalResult());
+            DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
+            validateClassifierModelData(documentClassifierDetails);
+            documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
+                -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
         });
     }
 
@@ -453,8 +456,12 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
                         new BuildDocumentClassifierOptions().setDescription("Json L classifier model"), Context.NONE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
+            DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
 
-            validateClassifierModelData(buildModelPoller.getFinalResult());
+            documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
+                -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl().contains("training-data-classifier")));
+
+            validateClassifierModelData(documentClassifierDetails);
         });
     }
 }

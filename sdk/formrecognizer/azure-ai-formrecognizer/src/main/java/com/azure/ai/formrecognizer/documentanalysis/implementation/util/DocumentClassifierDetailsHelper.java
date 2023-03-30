@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

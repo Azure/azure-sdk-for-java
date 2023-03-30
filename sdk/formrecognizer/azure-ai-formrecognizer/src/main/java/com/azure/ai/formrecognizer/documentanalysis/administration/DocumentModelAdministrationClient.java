@@ -1043,55 +1043,7 @@ public final class DocumentModelAdministrationClient {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
-    /**
-     * Builds a custom document analysis model.
-     * <p>Models are built using documents that are of the following content
-     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
-     * Other type of content is ignored.
-     * </p>
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
-     * <pre>
-     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * String modelId = &quot;custom-model-id&quot;;
-     * String prefix = &quot;Invoice&quot;;
-     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
-     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
-     *
-     * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
-     *         DocumentModelBuildMode.TEMPLATE,
-     *         prefix,
-     *         new BuildDocumentModelOptions&#40;&#41;
-     *             .setModelId&#40;modelId&#41;
-     *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setTags&#40;attrs&#41;,
-     *         Context.NONE&#41;
-     *     .getFinalResult&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
-     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
-     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
-     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
-     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
-     *     &#125;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
-     *
-     * @param docTypes explain doctypes.
-     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns the built {@link DocumentClassifierDetails custom document analysis model}.
-     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code docTypes} is null.
-     */
+
     /**
      * Builds a custom classifier document model.
      * <p>Classifier models can identify multiple documents or multiple instances of a single document. For that,
@@ -1280,7 +1232,7 @@ public final class DocumentModelAdministrationClient {
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().stream().map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails)).collect(Collectors.toList()),
+                res.getValue().stream().map(documentClassifierDetails -> Transforms.fromInnerDocumentClassifierDetails(documentClassifierDetails)).collect(Collectors.toList()),
                 res.getContinuationToken(),
                 null);
         } catch (ErrorResponseException ex) {
@@ -1299,7 +1251,7 @@ public final class DocumentModelAdministrationClient {
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().stream().map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails)).collect(Collectors.toList()),
+                res.getValue().stream().map(documentClassifierDetails -> Transforms.fromInnerDocumentClassifierDetails(documentClassifierDetails)).collect(Collectors.toList()),
                 res.getContinuationToken(),
                 null);
         } catch (ErrorResponseException ex) {
@@ -1378,7 +1330,7 @@ public final class DocumentModelAdministrationClient {
                 response =
                 documentClassifiersImpl.getClassifierWithResponse(classifierId, enableSyncRestProxy(getTracingContext(context)));
 
-            return new SimpleResponse<>(response, Transforms.toDocumentClassifierDetails(response.getValue()));
+            return new SimpleResponse<>(response, Transforms.fromInnerDocumentClassifierDetails(response.getValue()));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -1561,7 +1513,9 @@ public final class DocumentModelAdministrationClient {
             try {
                 Objects.requireNonNull(docTypes, "'docTypes' cannot be null.");
                 BuildDocumentClassifierRequest buildDocumentModelRequest =
-                    getBuildDocumentClassifierRequest(classifierId, buildDocumentClassifierOptions.getDescription(), toInnerDocTypes(docTypes));
+                    getBuildDocumentClassifierRequest(classifierId,
+                        buildDocumentClassifierOptions.getDescription(),
+                        toInnerDocTypes(docTypes));
 
                 ResponseBase<DocumentClassifiersBuildClassifierHeaders, Void>
                     response = documentClassifiersImpl.buildClassifierWithResponse(buildDocumentModelRequest, context);

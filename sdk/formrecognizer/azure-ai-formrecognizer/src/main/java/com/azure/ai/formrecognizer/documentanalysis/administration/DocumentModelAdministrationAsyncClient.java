@@ -967,7 +967,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 res.getStatusCode(),
                 res.getHeaders(),
                 res.getValue().stream()
-                    .map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails))
+                    .map(documentClassifierDetails -> Transforms.fromInnerDocumentClassifierDetails(documentClassifierDetails))
                     .collect(Collectors.toList()),
                 res.getContinuationToken(),
                 null));
@@ -988,7 +988,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 res.getStatusCode(),
                 res.getHeaders(),
                 res.getValue().stream()
-                    .map(documentClassifierDetails -> Transforms.toDocumentClassifierDetails(documentClassifierDetails))
+                    .map(documentClassifierDetails -> Transforms.fromInnerDocumentClassifierDetails(documentClassifierDetails))
                     .collect(Collectors.toList()),
                 res.getContinuationToken(),
                 null));
@@ -1068,7 +1068,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
         return documentClassifiersImpl.getClassifierWithResponseAsync(classifierId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, Transforms.toDocumentClassifierDetails(response.getValue())));
+            .map(response -> new SimpleResponse<>(response, Transforms.fromInnerDocumentClassifierDetails(response.getValue())));
     }
 
     /**
