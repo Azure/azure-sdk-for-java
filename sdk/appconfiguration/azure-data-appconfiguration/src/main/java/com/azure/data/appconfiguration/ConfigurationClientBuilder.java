@@ -153,7 +153,6 @@ public final class ConfigurationClientBuilder implements
 
     private ClientOptions clientOptions;
     private String connectionString;
-    private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
 
     private String endpoint;
@@ -253,7 +252,6 @@ public final class ConfigurationClientBuilder implements
         } else {
             tokenCredentialLocal = this.tokenCredential;
         }
-
 
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
