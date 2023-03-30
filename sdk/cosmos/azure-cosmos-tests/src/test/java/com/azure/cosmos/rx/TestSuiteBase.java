@@ -646,10 +646,42 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected void safeDeleteCollection(CosmosAsyncContainer collection) {
+
         if (collection != null) {
             try {
-                collection.delete().block();
+                logger.info("attempting to delete container {}.{}....",
+                    collection.getDatabase().getId(),
+                    collection.getId());
+                collection.delete();
+                logger.info("Container {}.{} deletion completed",
+                    collection.getDatabase().getId(),
+                    collection.getId());
             } catch (Exception e) {
+                boolean shouldLogAsError = true;
+                if (e  instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) e;
+                    if (cosmosException.getStatusCode() == 404) {
+                        shouldLogAsError = false;
+                        logger.info(
+                            "Container {}.{} does not exist anymore.",
+                            collection.getDatabase().getId(),
+                            collection.getId());
+                    }
+                }
+
+                if (shouldLogAsError) {
+                    logger.error("failed to delete sync container {}.{}",
+                        collection.getDatabase().getId(),
+                        collection.getId()
+                        e);
+                }
+            }
+            finally {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -657,7 +689,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteCollection(CosmosAsyncDatabase database, String collectionId) {
         if (database != null && collectionId != null) {
             try {
-                database.getContainer(collectionId).delete().block();
+                safeDeleteCollection(database.getContainer(collectionId));
             } catch (Exception e) {
             }
         }
