@@ -44,119 +44,119 @@ public final class AzureKafkaPropertiesUtils {
 
     public enum AzureKafkaPasswordlessPropertiesMapping {
 
-        clientCertificatePassword(CREDENTIAL_PREFIX + "client-certificate-password",
+        CLIENT_CERTIFICATE_PASSWORD(CREDENTIAL_PREFIX + "client-certificate-password",
             p -> p.getCredential().getClientCertificatePassword(),
             (p, s) -> p.getCredential().setClientCertificatePassword(s)),
 
-        clientCertificatePath(CREDENTIAL_PREFIX + "client-certificate-path",
+        CLIENT_CERTIFICATE_PATH(CREDENTIAL_PREFIX + "client-certificate-path",
             p -> p.getCredential().getClientCertificatePath(),
             (p, s) -> p.getCredential().setClientCertificatePath(s)),
 
-        clientId(CREDENTIAL_PREFIX + "client-id",
+        CLIENT_ID(CREDENTIAL_PREFIX + "client-id",
             p -> p.getCredential().getClientId(),
             (p, s) -> p.getCredential().setClientId(s)),
 
-        clientSecret(CREDENTIAL_PREFIX + "client-secret",
+        CLIENT_SECRET(CREDENTIAL_PREFIX + "client-secret",
             p -> p.getCredential().getClientSecret(),
             (p, s) -> p.getCredential().setClientSecret(s)),
 
-        managedIdentityEnabled(CREDENTIAL_PREFIX + "managed-identity-enabled",
+        MANAGED_IDENTITY_ENABLED(CREDENTIAL_PREFIX + "managed-identity-enabled",
             p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
             (p, s) -> p.getCredential().setManagedIdentityEnabled(Boolean.valueOf(s))),
 
-        password(CREDENTIAL_PREFIX + "password",
+        PASSWORD(CREDENTIAL_PREFIX + "password",
             p -> p.getCredential().getPassword(),
             (p, s) -> p.getCredential().setPassword(s)),
 
-        username(CREDENTIAL_PREFIX + "username",
+        USERNAME(CREDENTIAL_PREFIX + "username",
             p -> p.getCredential().getUsername(),
             (p, s) -> p.getCredential().setUsername(s)),
 
-        cloudType(PROFILE_PREFIX + "cloud-type",
+        CLOUD_TYPE(PROFILE_PREFIX + "cloud-type",
             p -> Optional.ofNullable(p.getProfile().getCloudType()).map(v -> v.name()).orElse(null),
             (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.fromString(s))),
 
-        activeDirectoryEndpoint(ENVIRONMENT_PREFIX + "active-directory-endpoint",
+        ACTIVE_DIRECTORY_ENDPOINT(ENVIRONMENT_PREFIX + "active-directory-endpoint",
             p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryEndpoint(s)),
 
-        activeDirectoryGraphApiVersion(ENVIRONMENT_PREFIX + "active-directory-graph-api-version",
+        ACTIVE_DIRECTORY_GRAPH_API_VERSION(ENVIRONMENT_PREFIX + "active-directory-graph-api-version",
             p -> p.getProfile().getEnvironment().getActiveDirectoryGraphApiVersion(),
             (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion(s)),
 
-        activeDirectoryGraphEndpoint(ENVIRONMENT_PREFIX + "active-directory-graph-endpoint",
+        ACTIVE_DIRECTORY_GRAPH_ENDPOINT(ENVIRONMENT_PREFIX + "active-directory-graph-endpoint",
             p -> p.getProfile().getEnvironment().getActiveDirectoryGraphEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryGraphEndpoint(s)),
 
-        activeDirectoryResourceId(ENVIRONMENT_PREFIX + "active-directory-resource-id",
+        ACTIVE_DIRECTORY_RESOURCE_ID(ENVIRONMENT_PREFIX + "active-directory-resource-id",
             p -> p.getProfile().getEnvironment().getActiveDirectoryResourceId(),
             (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryResourceId(s)),
 
-        azureApplicationInsightsEndpoint(ENVIRONMENT_PREFIX + "azure-application-insights-endpoint",
+        AZURE_APPLICATION_INSIGHTS_ENDPOINT(ENVIRONMENT_PREFIX + "azure-application-insights-endpoint",
             p -> p.getProfile().getEnvironment().getAzureApplicationInsightsEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setAzureApplicationInsightsEndpoint(s)),
 
-        azureDataLakeAnalyticsCatalogAndJobEndpointSuffix(ENVIRONMENT_PREFIX + "azure-data-lake-analytics-catalog-and-job-endpoint-suffix",
+        AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "azure-data-lake-analytics-catalog-and-job-endpoint-suffix",
             p -> p.getProfile().getEnvironment().getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(s)),
 
-        azureDataLakeStoreFileSystemEndpointSuffix(ENVIRONMENT_PREFIX + "azure-data-lake-store-file-system-endpoint-suffix",
+        AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "azure-data-lake-store-file-system-endpoint-suffix",
             p -> p.getProfile().getEnvironment().getAzureDataLakeStoreFileSystemEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeStoreFileSystemEndpointSuffix(s)),
 
-        azureLogAnalyticsEndpoint(ENVIRONMENT_PREFIX + "azure-log-analytics-endpoint",
+        AZURE_LOG_ANALYTICS_ENDPOINT(ENVIRONMENT_PREFIX + "azure-log-analytics-endpoint",
             p -> p.getProfile().getEnvironment().getAzureLogAnalyticsEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setAzureLogAnalyticsEndpoint(s)),
 
-        dataLakeEndpointResourceId(ENVIRONMENT_PREFIX + "data-lake-endpoint-resource-id",
+        DATA_LAKE_ENDPOINT_RESOURCE_ID(ENVIRONMENT_PREFIX + "data-lake-endpoint-resource-id",
             p -> p.getProfile().getEnvironment().getDataLakeEndpointResourceId(),
             (p, s) -> p.getProfile().getEnvironment().setDataLakeEndpointResourceId(s)),
 
-        galleryEndpoint(ENVIRONMENT_PREFIX + "gallery-endpoint",
+        GALLERY_ENDPOINT(ENVIRONMENT_PREFIX + "gallery-endpoint",
             p -> p.getProfile().getEnvironment().getGalleryEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setGalleryEndpoint(s)),
 
-        keyVaultDnsSuffix(ENVIRONMENT_PREFIX + "key-vault-dns-suffix",
+        KEY_VAULT_DNS_SUFFIX(ENVIRONMENT_PREFIX + "key-vault-dns-suffix",
             p -> p.getProfile().getEnvironment().getKeyVaultDnsSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setKeyVaultDnsSuffix(s)),
 
-        managementEndpoint(ENVIRONMENT_PREFIX + "management-endpoint",
+        MANAGEMENT_ENDPOINT(ENVIRONMENT_PREFIX + "management-endpoint",
             p -> p.getProfile().getEnvironment().getManagementEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setManagementEndpoint(s)),
 
-        microsoftGraphEndpoint(ENVIRONMENT_PREFIX + "microsoft-graph-endpoint",
+        MICROSOFT_GRAPH_ENDPOINT(ENVIRONMENT_PREFIX + "microsoft-graph-endpoint",
             p -> p.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setMicrosoftGraphEndpoint(s)),
 
-        portal(ENVIRONMENT_PREFIX + "portal",
+        PORTAL(ENVIRONMENT_PREFIX + "portal",
             p -> p.getProfile().getEnvironment().getPortal(),
             (p, s) -> p.getProfile().getEnvironment().setPortal(s)),
 
-        publishingProfile(ENVIRONMENT_PREFIX + "publishing-profile",
+        PUBLISHING_PROFILE(ENVIRONMENT_PREFIX + "publishing-profile",
             p -> p.getProfile().getEnvironment().getPublishingProfile(),
             (p, s) -> p.getProfile().getEnvironment().setPublishingProfile(s)),
 
-        resourceManagerEndpoint(ENVIRONMENT_PREFIX + "resource-manager-endpoint",
+        RESOURCE_MANAGER_ENDPOINT(ENVIRONMENT_PREFIX + "resource-manager-endpoint",
             p -> p.getProfile().getEnvironment().getResourceManagerEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setResourceManagerEndpoint(s)),
 
-        sqlManagementEndpoint(ENVIRONMENT_PREFIX + "sql-management-endpoint",
+        SQL_MANAGEMENT_ENDPOINT(ENVIRONMENT_PREFIX + "sql-management-endpoint",
             p -> p.getProfile().getEnvironment().getSqlManagementEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setSqlManagementEndpoint(s)),
 
-        sqlServerHostnameSuffix(ENVIRONMENT_PREFIX + "sql-server-hostname-suffix",
+        SQL_SERVER_HOSTNAME_SUFFIX(ENVIRONMENT_PREFIX + "sql-server-hostname-suffix",
             p -> p.getProfile().getEnvironment().getSqlServerHostnameSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setSqlServerHostnameSuffix(s)),
 
-        storageEndpointSuffix(ENVIRONMENT_PREFIX + "storage-endpoint-suffix",
+        STORAGE_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "storage-endpoint-suffix",
             p -> p.getProfile().getEnvironment().getStorageEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setStorageEndpointSuffix(s)),
 
-        subscriptionId(PROFILE_PREFIX + "subscription-id",
+        SUBSCRIPTION_ID(PROFILE_PREFIX + "subscription-id",
             p -> p.getProfile().getSubscriptionId(),
             (p, s) -> p.getProfile().setSubscriptionId(s)),
 
-        tenantId(PROFILE_PREFIX + "tenant-id",
+        TENANT_ID(PROFILE_PREFIX + "tenant-id",
             p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
