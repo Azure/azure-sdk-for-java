@@ -20,8 +20,8 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-cosmos-tests/
-      - sdk/cosmos/azure-spring-data-cosmos/
-      - sdk/cosmos/azure-spring-data-cosmos-test/
+      - sdk/spring/azure-spring-data-cosmos/
+      - sdk/spring/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
       - eng/pipelines/templates/stages/archetype-sdk-client.yml
       - eng/pipelines/templates/jobs/ci.yml
@@ -36,8 +36,8 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml      -
-      - sdk/cosmos/azure-spring-data-cosmos/pom.xml
-      - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
+      - sdk/spring/azure-spring-data-cosmos/pom.xml
+      - sdk/spring/azure-spring-data-cosmos-test/pom.xml
 
 pr:
   branches:
@@ -61,8 +61,8 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/      -
-      - sdk/cosmos/azure-spring-data-cosmos/
-      - sdk/cosmos/azure-spring-data-cosmos-test/
+      - sdk/spring/azure-spring-data-cosmos/
+      - sdk/spring/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
     exclude:
       - sdk/cosmos/pom.xml
@@ -74,8 +74,8 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml      -
-      - sdk/cosmos/azure-spring-data-cosmos/pom.xml
-      - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
+      - sdk/spring/azure-spring-data-cosmos/pom.xml
+      - sdk/spring/azure-spring-data-cosmos-test/pom.xml
       - sdk/cosmos/azure-cosmos-test/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
 
