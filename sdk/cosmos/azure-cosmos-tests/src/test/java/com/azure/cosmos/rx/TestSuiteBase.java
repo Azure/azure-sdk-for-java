@@ -258,7 +258,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                     partitionKey = new PartitionKey(null);
                 }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                return cosmosContainer.deleteItem(doc.getResourceId(), partitionKey);
             }).then().block();
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
