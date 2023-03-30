@@ -22,8 +22,7 @@ All of these samples need the endpoint to your Health Insights resource, and you
 
 |**File Name**|**Description**|
 |----------------|-------------|
-<!-- |[SampleMatchTrialAsync.java][match_trials_async]|Get all matching clinical trials for a specific patient (async)| -->
+|[SampleMatchTrialAsync.java][match_trials_async]|Get all matching clinical trials for a specific patient (async)|
 
-<!-- LINKS 
-[match_trials_async]: 
--->
+<!-- LINKS -->
+[match_trials_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/samples/java/com/azure/health/insights/clinicalmatching/SampleMatchTrialAsync.java
