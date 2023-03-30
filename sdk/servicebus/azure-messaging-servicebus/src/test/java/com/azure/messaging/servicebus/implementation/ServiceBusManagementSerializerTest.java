@@ -188,6 +188,23 @@ class ServiceBusManagementSerializerTest {
     }
 
     /**
+     * Verify we can deserialize feed XML from a list queues operation.  This caused errors in previous versions of
+     * jackson 2.10.0 because {@link QueueDescriptionEntryImpl#getTitle()} is a complex object.
+     */
+    @Test
+    void deserializeQueueDescriptionFeedDoesNotError() throws IOException {
+        // Arrange
+        final String contents = getContents("QueueDescriptionFeed-Errors.xml");
+
+        // Act
+        final QueueDescriptionFeedImpl actual = serializer.deserialize(contents, QueueDescriptionFeedImpl.class);
+
+        // Assert
+        assertNotNull(actual);
+        assertEquals(53, actual.getEntry().size());
+    }
+
+    /**
      * Verify we can deserialize feed XML from a list queues operation that has a paged response.
      */
     @Test
