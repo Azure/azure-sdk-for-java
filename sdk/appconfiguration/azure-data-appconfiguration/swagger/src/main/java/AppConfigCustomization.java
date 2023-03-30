@@ -20,7 +20,7 @@ public class AppConfigCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        PackageCustomization models = customization.getPackage("com.azure.data.appconfiguration.implementation.models");
+        PackageCustomization models = customization.getPackage("com.azure.data.appconfiguration.models");
 
         customizeKeyValueFilter(models.getClass("SnapshotSettingFilter"));
         customizeKeyValueFields(models.getClass("SettingFields"));

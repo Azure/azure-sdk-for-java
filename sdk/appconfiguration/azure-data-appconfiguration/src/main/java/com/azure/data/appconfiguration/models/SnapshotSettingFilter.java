@@ -23,11 +23,11 @@ public final class SnapshotSettingFilter {
     private String label;
 
     /**
-     * Constructor of {@link SnapshotSettingFilter}.
+     * Creates an instance of SnapshotSettingFilter class.
      *
-     * @param key The key value to set.
+     * @param key the key value to set.
      */
-    public SnapshotSettingFilter(String key) {
+    public SnapshotSettingFilter(@JsonProperty(value = "key", required = true) String key) {
         this.key = key;
     }
 
@@ -53,7 +53,7 @@ public final class SnapshotSettingFilter {
      * Set the label property: Filters {@link ConfigurationSetting} by their label field.
      *
      * @param label the label value to set.
-     * @return the {@link SnapshotSettingFilter} object itself.
+     * @return the SnapshotSettingFilter object itself.
      */
     public SnapshotSettingFilter setLabel(String label) {
         this.label = label;

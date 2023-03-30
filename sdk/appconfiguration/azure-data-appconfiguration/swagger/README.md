@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/68aa92c941547dffe3e0d980a529cdc8688faff3/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
