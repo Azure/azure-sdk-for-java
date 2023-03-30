@@ -652,7 +652,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 logger.info("attempting to delete container {}.{}....",
                     collection.getDatabase().getId(),
                     collection.getId());
-                collection.delete();
+                collection.delete().block();
                 logger.info("Container {}.{} deletion completed",
                     collection.getDatabase().getId(),
                     collection.getId());
@@ -672,7 +672,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 if (shouldLogAsError) {
                     logger.error("failed to delete sync container {}.{}",
                         collection.getDatabase().getId(),
-                        collection.getId()
+                        collection.getId(),
                         e);
                 }
             }
