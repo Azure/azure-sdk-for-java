@@ -35,7 +35,6 @@ import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.formatFullyQualifiedReference;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.isDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
@@ -111,7 +110,7 @@ public final class RegistryArtifact {
     public Response<Void> deleteWithResponse(Context context) {
         String res = getDigest();
         try {
-            Response<Void> response = serviceClient.deleteManifestWithResponse(getRepositoryName(), res, enableSync(context));
+            Response<Void> response = serviceClient.deleteManifestWithResponse(getRepositoryName(), res, context);
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
@@ -178,7 +177,7 @@ public final class RegistryArtifact {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
         }
         try {
-            Response<Void> response = serviceClient.deleteTagWithResponse(getRepositoryName(), tag, enableSync(context));
+            Response<Void> response = serviceClient.deleteTagWithResponse(getRepositoryName(), tag, context);
 
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
@@ -241,7 +240,7 @@ public final class RegistryArtifact {
         String res = getDigest();
         try {
             Response<ArtifactManifestPropertiesInternal> internalResponse = this.serviceClient
-                .getManifestPropertiesWithResponse(getRepositoryName(), res, enableSync(context));
+                .getManifestPropertiesWithResponse(getRepositoryName(), res, context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
@@ -311,7 +310,7 @@ public final class RegistryArtifact {
 
         try {
             Response<ArtifactTagPropertiesInternal> internalResponse = this.serviceClient
-                .getTagPropertiesWithResponse(getRepositoryName(), tag, enableSync(context));
+                .getTagPropertiesWithResponse(getRepositoryName(), tag, context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactTagPropertiesHelper.create(internalResponse.getValue()));
@@ -450,7 +449,7 @@ public final class RegistryArtifact {
     private PagedResponse<ArtifactTagProperties> listTagPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
             PagedResponse<TagAttributesBase> res = serviceClient.getTagsNextSinglePage(nextLink,
-                enableSync(context));
+                context);
 
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
@@ -502,7 +501,7 @@ public final class RegistryArtifact {
 
         try {
             Response<ArtifactTagPropertiesInternal> internalResponse = this.serviceClient
-                .updateTagAttributesWithResponse(getRepositoryName(), tag, writeableProperties, enableSync(context));
+                .updateTagAttributesWithResponse(getRepositoryName(), tag, writeableProperties, context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactTagPropertiesHelper.create(internalResponse.getValue()));
@@ -578,7 +577,7 @@ public final class RegistryArtifact {
         try {
             Response<ArtifactManifestPropertiesInternal> internalResponse = this.serviceClient
                 .updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties,
-                    enableSync(context));
+                    context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
@@ -659,7 +658,7 @@ public final class RegistryArtifact {
         try {
             PagedResponse<TagAttributesBase> response =
                 serviceClient.getTagsSinglePage(getRepositoryName(), null, pageSize, orderString, res,
-                    enableSync(context));
+                    context);
 
             return UtilsImpl.getPagedResponseWithContinuationToken(response,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
