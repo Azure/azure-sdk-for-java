@@ -20,6 +20,7 @@ public class SamplesArguments {
     private static final String CLIENT_SECRET = "clientSecret";
     private static final String LOG_DETAIL_LEVEL = "logLevel";
     private static final String EVENT_ROUTE_ENDPOINT_NAME = "eventRouteEndpointName";
+    private static final String STORAGE_ACCOUNT_ENDPOINT = "storageAccountEndpoint";
 
     private String digitalTwinEndpoint;
     private String tenantId;
@@ -27,6 +28,7 @@ public class SamplesArguments {
     private String clientSecret;
     private HttpLogDetailLevel httpLogDetailLevel = HttpLogDetailLevel.NONE;
     private String eventRouteEndpointName;
+    private String storageAccountEndpoint;
 
     public SamplesArguments(String[] args) {
 
@@ -36,6 +38,7 @@ public class SamplesArguments {
         Option clientSecret = new Option("s", CLIENT_SECRET, true, "AAD Client Secret");
         Option logLevel = new Option("l", LOG_DETAIL_LEVEL, true, "Http logging detail level \n 0 -> NONE \n 1 -> BASIC \n 2 -> HEADERS \n 3 -> BODY \n 4 -> BODY_AND_HEADERS");
         Option eventRouteEndpointName = new Option("e", EVENT_ROUTE_ENDPOINT_NAME, true, "(Event route sample only) The name of an existing event route endpoint");
+        Option storageAccountEndpoint = new Option("o", STORAGE_ACCOUNT_ENDPOINT, true, "Storage Account with permissions for adt instance");
 
         endpoint.setRequired(true);
         tenantId.setRequired(true);
@@ -43,6 +46,7 @@ public class SamplesArguments {
         clientSecret.setRequired(true);
         logLevel.setRequired(false);
         eventRouteEndpointName.setRequired(false);
+        storageAccountEndpoint.setRequired(false);
 
         Options options = new Options()
             .addOption(endpoint)
@@ -50,7 +54,8 @@ public class SamplesArguments {
             .addOption(clientId)
             .addOption(clientSecret)
             .addOption(logLevel)
-            .addOption(eventRouteEndpointName);
+            .addOption(eventRouteEndpointName)
+            .addOption(storageAccountEndpoint);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -70,6 +75,7 @@ public class SamplesArguments {
         this.clientId = cmd.getOptionValue(CLIENT_ID);
         this.clientSecret = cmd.getOptionValue(CLIENT_SECRET);
         this.eventRouteEndpointName = cmd.getOptionValue(EVENT_ROUTE_ENDPOINT_NAME);
+        this.storageAccountEndpoint = cmd.getOptionValue(STORAGE_ACCOUNT_ENDPOINT);
 
         String inputLogLevel = cmd.getOptionValue(LOG_DETAIL_LEVEL);
 
@@ -110,6 +116,10 @@ public class SamplesArguments {
 
     public String getEventRouteEndpointName() {
         return this.eventRouteEndpointName;
+    }
+
+    public String getStorageAccountEndpoint() {
+        return this.storageAccountEndpoint;
     }
 
     private static HttpLogDetailLevel convertFromInt(int input) throws NumberFormatException {
