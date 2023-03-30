@@ -5,7 +5,6 @@ package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import reactor.core.publisher.Mono;
@@ -53,34 +52,24 @@ public class Utility {
                    .setTags(setting.getTags());
     }
 
-    // Translate generated List<KeyValueFields> to public-explored SettingFields[].
-    public static SettingFields[] toSettingFieldsArray(List<KeyValueFields> kvFieldsList) {
-        int size = kvFieldsList.size();
+    // List<SettingFields> to SettingFields[]
+    public static SettingFields[] toSettingFieldsArray(List<SettingFields> settingFieldsList) {
+        int size = settingFieldsList.size();
         SettingFields[] fields = new SettingFields[size];
         for (int i = 0; i < size; i++) {
-            fields[i] = toSettingFields(kvFieldsList.get(i));
+            fields[i] = settingFieldsList.get(i);
         }
         return fields;
     }
 
-    // Translate generated KeyValueFields to public-explored SettingFields.
-    public static SettingFields toSettingFields(KeyValueFields keyValueFields) {
-        return keyValueFields == null ? null : SettingFields.fromString(keyValueFields.toString());
-    }
-
-    // Translate public-explored SettingFields[] to generated List<KeyValueFields>.
-    public static List<KeyValueFields> toKeyValueFieldsList(SettingFields[] settingFieldsArray) {
+    // SettingFields[] to List<SettingFields>
+    public static List<SettingFields> toSettingFieldsList(SettingFields[] settingFieldsArray) {
         int size = settingFieldsArray.length;
-        List<KeyValueFields> keyValueFields = new ArrayList<>(size);
+        List<SettingFields> settingFieldsList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            keyValueFields.add(toKeyValueFields(settingFieldsArray[i]));
+            settingFieldsList.add(settingFieldsArray[i]);
         }
-        return keyValueFields;
-    }
-
-    // Translate public-explored SettingFields to generated KeyValueFields.
-    public static KeyValueFields toKeyValueFields(SettingFields settingFields) {
-        return settingFields == null ? null : KeyValueFields.fromString(settingFields.toString());
+        return settingFieldsList;
     }
 
     /*

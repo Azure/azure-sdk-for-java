@@ -175,6 +175,25 @@ public final class ContainerRegistryContentClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlob -->
      *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadBlobErrorHandling -->
+     * <pre>
+     * BinaryData configContent = BinaryData.fromObject&#40;Collections.singletonMap&#40;&quot;hello&quot;, &quot;world&quot;&#41;&#41;;
+     *
+     * try &#123;
+     *     UploadRegistryBlobResult uploadResult = contentClient.uploadBlob&#40;configContent&#41;;
+     *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;, uploadResult.getDigest&#40;&#41;,
+     *         uploadResult.getSizeInBytes&#40;&#41;&#41;;
+     * &#125; catch &#40;HttpResponseException ex&#41; &#123;
+     *     if &#40;ex.getCause&#40;&#41; instanceof AcrErrorsException&#41; &#123;
+     *         AcrErrorsException acrErrors = &#40;AcrErrorsException&#41; ex.getCause&#40;&#41;;
+     *         for &#40;AcrErrorInfo info : acrErrors.getValue&#40;&#41;.getErrors&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Uploaded blob failed: code '%s'&#92;n&quot;, info.getCode&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadBlobErrorHandling -->
+     *
      * @param content The blob content. The content may be loaded into memory depending on how {@link BinaryData} is created.
      * @return The upload response.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
