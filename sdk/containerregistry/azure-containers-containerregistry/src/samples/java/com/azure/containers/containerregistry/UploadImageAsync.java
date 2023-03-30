@@ -3,11 +3,14 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
@@ -199,5 +202,29 @@ public class UploadImageAsync {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    private void uploadBlobFails() {
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(ENDPOINT)
+            .repositoryName(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
+
+        long dataLength = 1024 * 1024 * 1024;
+        Mono<BinaryData> layerContent = BinaryData.fromFlux(getData(dataLength), dataLength, false); // 1 GB
+
+        // BEGIN: com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling
+        layerContent
+            .flatMap(content -> contentClient.uploadBlob(content))
+            .doOnError(HttpResponseException.class, (ex) -> {
+                if (ex.getCause() instanceof AcrErrorsException) {
+                    AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
+                    for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
+                        System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
+                    }
+                }
+            });
+        // END: com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling
     }
 }
