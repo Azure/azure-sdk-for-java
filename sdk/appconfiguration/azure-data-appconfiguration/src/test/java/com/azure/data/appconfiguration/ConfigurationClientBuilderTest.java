@@ -61,6 +61,17 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @Test
     @DoNotRecord
+    public void clientMissingEndpointButTokenCredentialProvided() {
+        assertThrows(NullPointerException.class, () -> {
+            final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            TokenCredential credentials = request -> Mono.just(
+                new AccessToken("this_is_a_token", OffsetDateTime.MAX));
+            builder.credential(credentials).buildClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord
     public void malformedURLExceptionForEndpoint() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
