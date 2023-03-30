@@ -42,6 +42,8 @@ public class RequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private CosmosDiagnosticsThresholds thresholds;
 
+    private boolean nonIdempotentWriteRetriesEnabled = false;
+
     /**
      * Gets the triggers to be invoked before the operation.
      *
@@ -69,6 +71,16 @@ public class RequestOptions {
      */
     public void setPreTriggerInclude(List<String> preTriggerInclude) {
         this.preTriggerInclude = preTriggerInclude;
+    }
+
+    public RequestOptions setNonIdempotentWriteRetriesEnabled(boolean enabled) {
+        this.nonIdempotentWriteRetriesEnabled = enabled;
+
+        return this;
+    }
+
+    public boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     /**

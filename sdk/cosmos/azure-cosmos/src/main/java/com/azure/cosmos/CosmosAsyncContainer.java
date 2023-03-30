@@ -310,8 +310,26 @@ public class CosmosAsyncContainer {
         return withContext(context -> createItemInternal(item, requestOptions, context));
     }
 
+    private <T> Mono<CosmosItemResponse<T>> createItemWithRetriesInternal(T item, CosmosItemRequestOptions options) {
+        return createItemInternal(item, options);
+    }
+
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options, Context context) {
-        Mono<CosmosItemResponse<T>> responseMono = createItemInternal(item, options);
+        checkNotNull(options, "Argument 'options' must not be null.");
+
+        boolean shouldRetryWithoutIdempotencyGuarantee = itemOptionsAccessor
+            .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                options,
+                this.database.getClient().getNonIdempotentWriteRetriesEnabled(),
+                true);
+
+        Mono<CosmosItemResponse<T>> responseMono;
+        if (shouldRetryWithoutIdempotencyGuarantee) {
+            responseMono = createItemWithRetriesInternal(item, options);
+        } else {
+            responseMono = createItemInternal(item, options);
+        }
+
         CosmosAsyncClient client = database
             .getClient();
         return client
@@ -333,6 +351,7 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+
         return database.getDocClientWrapper()
                    .createDocument(getLink(),
                                    item,

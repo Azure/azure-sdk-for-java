@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
@@ -1279,6 +1280,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .preferredRegions(preferredRegions)
             .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
             .consistencyLevel(consistencyLevel);
+        ImplementationBridgeHelpers
+            .CosmosClientBuilderHelper
+            .getCosmosClientBuilderAccessor()
+            .buildConnectionPolicy(builder);
 
         if (!retryOnThrottledRequests) {
             builder.throttlingRetryOptions(new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(0));

@@ -95,6 +95,7 @@ public final class CosmosAsyncClient implements Closeable {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
+    private final Boolean nonIdempotentWriteRetriesEnabled;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -110,6 +111,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
+        this.nonIdempotentWriteRetriesEnabled = builder.getNonIdempotentWriteRetriesEnabled();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -589,6 +591,10 @@ public final class CosmosAsyncClient implements Closeable {
 
     void openConnectionsAndInitCaches() {
         blockListVoidResponse(openConnectionsAndInitCachesInternal());
+    }
+
+    Boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     private Mono<List<Void>> openConnectionsAndInitCachesInternal() {

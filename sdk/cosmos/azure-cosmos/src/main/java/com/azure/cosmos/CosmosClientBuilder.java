@@ -123,6 +123,8 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+
+    private Boolean nonIdempotentWriteRetriesEnabled = null;
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
@@ -682,6 +684,41 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets a flag indicating whether to allow retries for write operations when the SDK can't guarantee that
+     * the retry won't impact idempotency. This is for example the case, when retrying a createItem operation
+     * after the initial attempt timed-out after writing the request payload on the network connection. It is
+     * unclear whether the initial request ever reached the service and was processed there or not. The retry
+     * could return a 409-Conflict response simply because the initial attempt was processed.
+     * When enabling write retries even when idempotency is not guaranteed the SDK will apply a few extra
+     * steps to minimize the risk for the caller of facing these idempotency issues due to retries. If enabled.
+     * the SDK will use a system property "_trackingId" which will be stored in the documents to help
+     * filter out failure conditions caused simply by retries for requests that have actually been processed already
+     * by the service. For example a 409 on a retry would be mapped back to a 201 if the document has the same
+     * _trackingId value the initial attempt to create the document used.
+     * <p>
+     * DEFAULT value is false.
+     * <p>
+     * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for all write operations
+     * (except patch operations). It can be overridden on per-request base in the request options. For patch
+     * operations by default (unless overridden in the request options) retries are always disabled by default
+     * when the retry can't be guaranteed to be idempotent. The exception for patch is used because whether
+     * a retry is "safe" for a patch operation really depends on the set of patch instructions. The documentation
+     * for the patch operation has more details.
+     *
+     * @param nonIdempotentWriteRetriesEnabled a flag indicating whether write operations should by default be retried
+     * when idempotency cannot eb guaranteed
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder enableNonIdempotentWriteRetries() {
+        this.nonIdempotentWriteRetriesEnabled = true;
+        return this;
+    }
+
+    Boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
+    }
+
+    /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
      * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}.
@@ -872,7 +909,7 @@ public class CosmosClientBuilder implements
     }
 
     //  Connection policy has to be built before it can be used by this builder
-    private void buildConnectionPolicy() {
+    ConnectionPolicy buildConnectionPolicy() {
         if (this.directConnectionConfig != null) {
             //  Check if the user passed additional gateway connection configuration
             //  If this is null, initialize with default values
@@ -889,6 +926,7 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        return this.connectionPolicy;
     }
 
     private void validateConfig() {
@@ -995,6 +1033,11 @@ public class CosmosClientBuilder implements
                 @Override
                 public ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder) {
                     return builder.getConnectionPolicy();
+                }
+
+                @Override
+                public ConnectionPolicy buildConnectionPolicy(CosmosClientBuilder builder) {
+                    return builder.buildConnectionPolicy();
                 }
 
                 @Override

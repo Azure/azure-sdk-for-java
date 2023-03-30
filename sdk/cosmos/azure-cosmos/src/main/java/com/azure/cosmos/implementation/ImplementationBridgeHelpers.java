@@ -127,6 +127,8 @@ public class ImplementationBridgeHelpers {
 
             ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder);
 
+            ConnectionPolicy buildConnectionPolicy(CosmosClientBuilder builder);
+
             Configs getConfigs(CosmosClientBuilder builder);
 
             ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
@@ -343,6 +345,10 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
+            boolean calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                CosmosItemRequestOptions cosmosItemRequestOptions,
+                Boolean clientDefault,
+                boolean operationDefault);
         }
     }
 

@@ -179,7 +179,8 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
                 BridgeInternal.hasSendingRequestStarted((CosmosException)exception) &&
-                !((GoneException)exception).isBasedOn410ResponseFromService()) {
+                !((GoneException)exception).isBasedOn410ResponseFromService() &&
+                !this.request.getNonIdempotentWriteRetriesEnabled()) {
 
                 logger.warn(
                     "Operation will NOT be retried. Write operations which failed due to transient transport errors " +
