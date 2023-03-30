@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IngestionSettings ListTokens. */
 public final class IngestionSettingsListTokensSamples {
     /*
@@ -17,6 +15,6 @@ public final class IngestionSettingsListTokensSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void listIngestionSettingTokens(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.ingestionSettings().listTokensWithResponse("default", Context.NONE);
+        manager.ingestionSettings().listTokensWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

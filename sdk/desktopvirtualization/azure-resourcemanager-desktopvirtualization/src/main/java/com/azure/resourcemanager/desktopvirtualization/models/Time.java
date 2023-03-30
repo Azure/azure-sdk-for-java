@@ -22,6 +22,10 @@ public final class Time {
     @JsonProperty(value = "minute", required = true)
     private int minute;
 
+    /** Creates an instance of Time class. */
+    public Time() {
+    }
+
     /**
      * Get the hour property: The hour.
      *

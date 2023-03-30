@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignalR Restart. */
 public final class SignalRRestartSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_Restart.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Restart.json
      */
     /**
      * Sample code: SignalR_Restart.
@@ -17,6 +15,6 @@ public final class SignalRRestartSamples {
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRRestart(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager.signalRs().restart("myResourceGroup", "mySignalRService", Context.NONE);
+        manager.signalRs().restart("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE);
     }
 }

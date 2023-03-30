@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiCollection List. */
 public final class ApiCollectionListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ApiCollectionListSamples {
      */
     public static void getsAListOfAzureAPIManagementAPIsThatHaveBeenOnboardedToDefenderForAPIs(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.apiCollections().list("rg1", "apimService1", Context.NONE);
+        manager.apiCollections().list("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.orbital.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.ContactInner;
 import java.time.OffsetDateTime;
@@ -32,11 +33,11 @@ public interface Contact {
     String type();
 
     /**
-     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
-     * @return the etag value.
+     * @return the systemData value.
      */
-    String etag();
+    SystemData systemData();
 
     /**
      * Gets the provisioningState property: The current state of the resource's creation, deletion, or modification.
@@ -167,7 +168,13 @@ public interface Contact {
 
     /** The entirety of the Contact definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithParentResource,
+            DefinitionStages.WithReservationStartTime,
+            DefinitionStages.WithReservationEndTime,
+            DefinitionStages.WithGroundStationName,
+            DefinitionStages.WithContactProfile,
+            DefinitionStages.WithCreate {
     }
     /** The Contact definition stages. */
     interface DefinitionStages {
@@ -183,18 +190,54 @@ public interface Contact {
              * @param spacecraftName Spacecraft ID.
              * @return the next definition stage.
              */
-            WithCreate withExistingSpacecraft(String resourceGroupName, String spacecraftName);
+            WithReservationStartTime withExistingSpacecraft(String resourceGroupName, String spacecraftName);
+        }
+        /** The stage of the Contact definition allowing to specify reservationStartTime. */
+        interface WithReservationStartTime {
+            /**
+             * Specifies the reservationStartTime property: Reservation start time of a contact (ISO 8601 UTC
+             * standard)..
+             *
+             * @param reservationStartTime Reservation start time of a contact (ISO 8601 UTC standard).
+             * @return the next definition stage.
+             */
+            WithReservationEndTime withReservationStartTime(OffsetDateTime reservationStartTime);
+        }
+        /** The stage of the Contact definition allowing to specify reservationEndTime. */
+        interface WithReservationEndTime {
+            /**
+             * Specifies the reservationEndTime property: Reservation end time of a contact (ISO 8601 UTC standard)..
+             *
+             * @param reservationEndTime Reservation end time of a contact (ISO 8601 UTC standard).
+             * @return the next definition stage.
+             */
+            WithGroundStationName withReservationEndTime(OffsetDateTime reservationEndTime);
+        }
+        /** The stage of the Contact definition allowing to specify groundStationName. */
+        interface WithGroundStationName {
+            /**
+             * Specifies the groundStationName property: Azure Ground Station name..
+             *
+             * @param groundStationName Azure Ground Station name.
+             * @return the next definition stage.
+             */
+            WithContactProfile withGroundStationName(String groundStationName);
+        }
+        /** The stage of the Contact definition allowing to specify contactProfile. */
+        interface WithContactProfile {
+            /**
+             * Specifies the contactProfile property: The reference to the contact profile resource..
+             *
+             * @param contactProfile The reference to the contact profile resource.
+             * @return the next definition stage.
+             */
+            WithCreate withContactProfile(ContactsPropertiesContactProfile contactProfile);
         }
         /**
          * The stage of the Contact definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithReservationStartTime,
-                DefinitionStages.WithReservationEndTime,
-                DefinitionStages.WithGroundStationName,
-                DefinitionStages.WithContactProfile {
+        interface WithCreate extends DefinitionStages.WithProvisioningState {
             /**
              * Executes the create request.
              *
@@ -220,47 +263,6 @@ public interface Contact {
              * @return the next definition stage.
              */
             WithCreate withProvisioningState(ContactsPropertiesProvisioningState provisioningState);
-        }
-        /** The stage of the Contact definition allowing to specify reservationStartTime. */
-        interface WithReservationStartTime {
-            /**
-             * Specifies the reservationStartTime property: Reservation start time of a contact (ISO 8601 UTC
-             * standard)..
-             *
-             * @param reservationStartTime Reservation start time of a contact (ISO 8601 UTC standard).
-             * @return the next definition stage.
-             */
-            WithCreate withReservationStartTime(OffsetDateTime reservationStartTime);
-        }
-        /** The stage of the Contact definition allowing to specify reservationEndTime. */
-        interface WithReservationEndTime {
-            /**
-             * Specifies the reservationEndTime property: Reservation end time of a contact (ISO 8601 UTC standard)..
-             *
-             * @param reservationEndTime Reservation end time of a contact (ISO 8601 UTC standard).
-             * @return the next definition stage.
-             */
-            WithCreate withReservationEndTime(OffsetDateTime reservationEndTime);
-        }
-        /** The stage of the Contact definition allowing to specify groundStationName. */
-        interface WithGroundStationName {
-            /**
-             * Specifies the groundStationName property: Azure Ground Station name..
-             *
-             * @param groundStationName Azure Ground Station name.
-             * @return the next definition stage.
-             */
-            WithCreate withGroundStationName(String groundStationName);
-        }
-        /** The stage of the Contact definition allowing to specify contactProfile. */
-        interface WithContactProfile {
-            /**
-             * Specifies the contactProfile property: The reference to the contact profile resource..
-             *
-             * @param contactProfile The reference to the contact profile resource.
-             * @return the next definition stage.
-             */
-            WithCreate withContactProfile(ContactsPropertiesContactProfile contactProfile);
         }
     }
     /**

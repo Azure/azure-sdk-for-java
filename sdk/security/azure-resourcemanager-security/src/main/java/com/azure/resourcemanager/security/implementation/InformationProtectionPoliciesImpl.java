@@ -69,8 +69,7 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "scope");
         if (scope == null) {
             throw LOGGER
@@ -82,8 +81,7 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "informationProtectionPolicyName");
         if (informationProtectionPolicyNameLocal == null) {
             throw LOGGER
@@ -105,8 +103,7 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "scope");
         if (scope == null) {
             throw LOGGER
@@ -118,8 +115,7 @@ public final class InformationProtectionPoliciesImpl implements InformationProte
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies"
-                        + "/{informationProtectionPolicyName}",
+                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
                     "informationProtectionPolicyName");
         if (informationProtectionPolicyNameLocal == null) {
             throw LOGGER

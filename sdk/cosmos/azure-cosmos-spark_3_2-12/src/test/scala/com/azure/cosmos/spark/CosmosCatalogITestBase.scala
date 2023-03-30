@@ -31,6 +31,8 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
       .enableHiveSupport()
       .getOrCreate()
 
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     spark.conf.set(s"spark.sql.catalog.testCatalog", "com.azure.cosmos.spark.CosmosCatalog")
     spark.conf.set(s"spark.sql.catalog.testCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
     spark.conf.set(s"spark.sql.catalog.testCatalog.spark.cosmos.accountKey", cosmosMasterKey)

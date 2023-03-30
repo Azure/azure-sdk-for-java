@@ -22,6 +22,12 @@ public final class CurrencyValue {
     @JsonProperty(value = "currencySymbol")
     private String currencySymbol;
 
+    /*
+     * Resolved currency code (ISO 4217), if any.
+     */
+    @JsonProperty(value = "currencyCode")
+    private String currencyCode;
+
     /** Creates an instance of CurrencyValue class. */
     public CurrencyValue() {}
 
@@ -62,6 +68,26 @@ public final class CurrencyValue {
      */
     public CurrencyValue setCurrencySymbol(String currencySymbol) {
         this.currencySymbol = currencySymbol;
+        return this;
+    }
+
+    /**
+     * Get the currencyCode property: Resolved currency code (ISO 4217), if any.
+     *
+     * @return the currencyCode value.
+     */
+    public String getCurrencyCode() {
+        return this.currencyCode;
+    }
+
+    /**
+     * Set the currencyCode property: Resolved currency code (ISO 4217), if any.
+     *
+     * @param currencyCode the currencyCode value to set.
+     * @return the CurrencyValue object itself.
+     */
+    public CurrencyValue setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
         return this;
     }
 }

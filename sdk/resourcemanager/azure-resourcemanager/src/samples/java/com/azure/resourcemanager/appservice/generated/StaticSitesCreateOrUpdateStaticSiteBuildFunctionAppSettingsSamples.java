@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for StaticSites CreateOrUpdateStaticSiteBuildFunctionAppSettings. */
 public final class StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
      */
     /**
      * Sample code: Creates or updates the function app settings of a static site build.
@@ -31,7 +30,7 @@ public final class StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsSa
                 "testStaticSite0",
                 "12",
                 new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -275,6 +275,8 @@ service
 <details>
 <summary> communication </summary>
 
+* [package-preview-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager#tag-package-preview-2023-03)
+    * [1.1.0-beta.4](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-communication/1.1.0-beta.4)
 * [package-preview-2022-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager#tag-package-preview-2022-07)
     * [1.1.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-communication/1.1.0-beta.3)
 * [package-2021-10-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/communication/resource-manager#tag-package-2021-10-01-preview)
@@ -410,6 +412,7 @@ service
     * [1.0.0-beta.5](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.5)
     * [1.0.0-beta.4](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.4)
     * [1.0.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.3)
+    * [1.0.0-beta.22](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.22)
     * [1.0.0-beta.21](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.21)
     * [1.0.0-beta.20](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.20)
     * [1.0.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.2)
@@ -490,6 +493,9 @@ service
 * [package-preview-2021-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager#tag-package-preview-2021-09)
     * [1.0.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-desktopvirtualization/1.0.0-beta.2)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-desktopvirtualization/1.0.0-beta.1)
+* [package-2022-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager#tag-package-2022-09)
+    * [1.0.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-desktopvirtualization/1.0.0-beta.3)
+    * [1.0.0](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-desktopvirtualization/1.0.0)
 </details>
 
 <br/>
@@ -681,6 +687,14 @@ service
 
 <br/>
 <details>
+<summary> graphservices </summary>
+
+* [package-2022-09-22-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/graphservicesprod/resource-manager#tag-package-2022-09-22-preview)
+    * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-graphservices/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> hanaonazure </summary>
 
 * [package-2017-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hanaonazure/resource-manager#tag-package-2017-11)
@@ -742,6 +756,8 @@ service
 <details>
 <summary> hybridcontainerservice </summary>
 
+* [package-preview-2022-09](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridaks/resource-manager#tag-package-preview-2022-09)
+    * [1.0.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-hybridcontainerservice/1.0.0-beta.2)
 * [package-2022-05-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridaks/resource-manager#tag-package-2022-05-01-preview)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-hybridcontainerservice/1.0.0-beta.1)
 </details>
@@ -770,6 +786,8 @@ service
 <details>
 <summary> imagebuilder </summary>
 
+* [package-2022-07](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/imagebuilder/resource-manager#tag-package-2022-07)
+    * [1.0.0-beta.4](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-imagebuilder/1.0.0-beta.4)
 * [package-2022-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/imagebuilder/resource-manager#tag-package-2022-02)
     * [1.0.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-imagebuilder/1.0.0-beta.3)
 * [package-2021-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/imagebuilder/resource-manager#tag-package-2021-10)
@@ -1024,6 +1042,8 @@ service
 <details>
 <summary> netapp </summary>
 
+* [package-netapp-2022-09-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2022-09-01)
+    * [1.0.0-beta.12](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-netapp/1.0.0-beta.12)
 * [package-netapp-2022-05-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2022-05-01)
     * [1.0.0-beta.11](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-netapp/1.0.0-beta.11)
 * [package-netapp-2022-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2022-03-01)
@@ -1097,6 +1117,8 @@ service
 <details>
 <summary> orbital </summary>
 
+* [package-2022-11-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager#tag-package-2022-11-01)
+    * [1.0.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-orbital/1.0.0-beta.2)
 * [package-2022-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager#tag-package-2022-03-01)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-orbital/1.0.0-beta.1)
 </details>
@@ -1203,6 +1225,8 @@ service
 <details>
 <summary> recoveryservicesbackup </summary>
 
+* [package-2023-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager#tag-package-2023-02)
+    * [1.1.0](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-recoveryservicesbackup/1.1.0)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager#tag-package-2023-01)
     * [1.0.0-beta.7](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-recoveryservicesbackup/1.0.0-beta.7)
     * [1.0.0](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-recoveryservicesbackup/1.0.0)
@@ -1231,6 +1255,9 @@ service
 <details>
 <summary> redisenterprise </summary>
 
+* [package-preview-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager#tag-package-preview-2023-03)
+    * [1.1.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-redisenterprise/1.1.0-beta.3)
+    * [1.1.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-redisenterprise/1.1.0-beta.2)
 * [package-preview-2021-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager#tag-package-preview-2021-02)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-redisenterprise/1.0.0-beta.1)
 * [package-2022-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager#tag-package-2022-01)
@@ -1254,6 +1281,7 @@ service
 <summary> reservations </summary>
 
 * [package-2022-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager#tag-package-2022-11)
+    * [1.0.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-reservations/1.0.0-beta.2)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-reservations/1.0.0-beta.1)
 </details>
 
@@ -1311,6 +1339,7 @@ service
 <summary> security </summary>
 
 * [package-composite-v3](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager#tag-package-composite-v3)
+    * [1.0.0-beta.4](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-security/1.0.0-beta.4)
     * [1.0.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-security/1.0.0-beta.3)
     * [1.0.0-beta.2](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-security/1.0.0-beta.2)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-security/1.0.0-beta.1)
@@ -1369,6 +1398,8 @@ service
 <details>
 <summary> signalr </summary>
 
+* [package-2023-02-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager#tag-package-2023-02-01)
+    * [1.0.0-beta.6](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-signalr/1.0.0-beta.6)
 * [package-2022-08-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager#tag-package-2022-08-01-preview)
     * [1.0.0-beta.5](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-signalr/1.0.0-beta.5)
 * [package-2022-02-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/signalr/resource-manager#tag-package-2022-02-01)
@@ -1397,6 +1428,8 @@ service
 <details>
 <summary> storagecache </summary>
 
+* [package-preview-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-preview-2023-03)
+    * [1.0.0-beta.8](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.8)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-2023-01)
     * [1.0.0-beta.7](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.7)
 * [package-2022-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-2022-05)
@@ -1426,6 +1459,8 @@ service
 <details>
 <summary> storagemover </summary>
 
+* [package-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagemover/resource-manager#tag-package-2023-03)
+    * [1.0.0](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-storagemover/1.0.0)
 * [package-2022-07-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagemover/resource-manager#tag-package-2022-07-01-preview)
     * [1.0.0-beta.1](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-storagemover/1.0.0-beta.1)
 </details>
@@ -1526,6 +1561,9 @@ service
 <details>
 <summary> webpubsub </summary>
 
+* [package-2023-02-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/webpubsub/resource-manager#tag-package-2023-02-01)
+    * [1.0.0-beta.4](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-webpubsub/1.0.0-beta.4)
+    * [1.0.0](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-webpubsub/1.0.0)
 * [package-2022-08-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/webpubsub/resource-manager#tag-package-2022-08-01-preview)
     * [1.0.0-beta.3](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-webpubsub/1.0.0-beta.3)
 * [package-2021-10-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/webpubsub/resource-manager#tag-package-2021-10-01)

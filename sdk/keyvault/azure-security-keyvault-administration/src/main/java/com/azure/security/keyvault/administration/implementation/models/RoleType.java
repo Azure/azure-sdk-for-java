@@ -17,6 +17,14 @@ public final class RoleType extends ExpandableStringEnum<RoleType> {
     public static final RoleType CUSTOM_ROLE = fromString("CustomRole");
 
     /**
+     * Creates a new instance of RoleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoleType() {}
+
+    /**
      * Creates or finds a RoleType from its string representation.
      *
      * @param name a name to look for.

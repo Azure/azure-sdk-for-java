@@ -1,15 +1,24 @@
 ## Release History
 
-### 3.33.0-beta.1 (Unreleased)
+### 3.34.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+* Added a new flag `overwritePolicy` to `CosmosIndexingPolicy` that when set to true (by default it is false) will allow the user to overwrite the Indexing policy in Portal using the Indexing Policy defined in the SDK. This will affect users who change the Indexing Policy they have defined on the container and want that to overwrite what is in portal, you will now need to set the flag `overwritePolicy` to true for this to happen. The reason we have added this breaking change is that allowing overwrite of an existing indexing policy is considered too risky to be a default behavior. The risk is that you may be removing indexes through multiple indexing policy changes, and in that case the query engine may not provide consistent or complete results until all index transformations are complete. So we are changing the default behavior so that users must opt in to overwriting the indexing policy that exists. - See [PR 33171](https://github.com/Azure/azure-sdk-for-java/pull/33171)
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 3.33.0 (2023-03-17)
 
 #### Bugs Fixed
 * Bug fixed in `ReactiveCosmosTemplate` where returning a Flux<JsonNode> was causing an error - See [PR 33730](https://github.com/Azure/azure-sdk-for-java/pull/33730)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.42.0`.
+* Updated `Spring Data Commons` to version `2.7.8`.
 
 ### 3.32.0 (2023-02-17)
 

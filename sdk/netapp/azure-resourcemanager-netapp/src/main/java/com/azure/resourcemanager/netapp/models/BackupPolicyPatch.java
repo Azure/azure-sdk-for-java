@@ -20,6 +20,10 @@ public final class BackupPolicyPatch extends Resource {
     @JsonProperty(value = "properties")
     private BackupPolicyProperties innerProperties;
 
+    /** Creates an instance of BackupPolicyPatch class. */
+    public BackupPolicyPatch() {
+    }
+
     /**
      * Get the innerProperties property: Backup policy Properties.
      *

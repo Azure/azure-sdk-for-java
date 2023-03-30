@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomAssessmentAutomations GetByResourceGroup. */
 public final class CustomAssessmentAutomationsGetByResourceGroupSamples {
     /*
@@ -19,6 +17,7 @@ public final class CustomAssessmentAutomationsGetByResourceGroupSamples {
     public static void getACustomAssessmentAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .customAssessmentAutomations()
-            .getByResourceGroupWithResponse("TestResourceGroup", "MyCustomAssessmentAutomation", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "TestResourceGroup", "MyCustomAssessmentAutomation", com.azure.core.util.Context.NONE);
     }
 }

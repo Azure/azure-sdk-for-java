@@ -19,6 +19,10 @@ public final class PrivateAccessInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PrivateAccessProperties innerProperties;
 
+    /** Creates an instance of PrivateAccessInner class. */
+    public PrivateAccessInner() {
+    }
+
     /**
      * Get the innerProperties property: PrivateAccess resource specific properties.
      *

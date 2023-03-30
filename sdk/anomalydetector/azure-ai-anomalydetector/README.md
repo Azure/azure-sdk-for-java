@@ -183,7 +183,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[api_reference_doc]: https://aka.ms/azsdk/net/docs/ref/anomalydetector
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/anomaly-detector/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
 [anomaly_detector_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/AnomalyDetectorClient.java

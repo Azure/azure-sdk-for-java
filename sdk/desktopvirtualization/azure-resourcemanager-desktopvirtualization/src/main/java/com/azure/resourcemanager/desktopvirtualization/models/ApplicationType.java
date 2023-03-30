@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationType. */
+/** Application type of application. */
 public final class ApplicationType extends ExpandableStringEnum<ApplicationType> {
     /** Static value RemoteApp for ApplicationType. */
     public static final ApplicationType REMOTE_APP = fromString("RemoteApp");
 
     /** Static value Desktop for ApplicationType. */
     public static final ApplicationType DESKTOP = fromString("Desktop");
+
+    /**
+     * Creates a new instance of ApplicationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationType() {
+    }
 
     /**
      * Creates or finds a ApplicationType from its string representation.

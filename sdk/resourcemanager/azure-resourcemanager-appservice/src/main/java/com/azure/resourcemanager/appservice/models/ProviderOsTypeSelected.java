@@ -26,6 +26,15 @@ public final class ProviderOsTypeSelected extends ExpandableStringEnum<ProviderO
     public static final ProviderOsTypeSelected ALL = fromString("All");
 
     /**
+     * Creates a new instance of ProviderOsTypeSelected value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProviderOsTypeSelected() {
+    }
+
+    /**
      * Creates or finds a ProviderOsTypeSelected from its string representation.
      *
      * @param name a name to look for.

@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class AppInsightsWebAppStackSettings {
     /*
-     * <code>true</code> if remote Application Insights is supported for the
-     * stack; otherwise, <code>false</code>.
+     * <code>true</code> if remote Application Insights is supported for the stack; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSupported;
 
     /*
-     * <code>true</code> if Application Insights is disabled by default for the
-     * stack; otherwise, <code>false</code>.
+     * <code>true</code> if Application Insights is disabled by default for the stack; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isDefaultOff", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefaultOff;
+
+    /** Creates an instance of AppInsightsWebAppStackSettings class. */
+    public AppInsightsWebAppStackSettings() {
+    }
 
     /**
      * Get the isSupported property: &lt;code&gt;true&lt;/code&gt; if remote Application Insights is supported for the

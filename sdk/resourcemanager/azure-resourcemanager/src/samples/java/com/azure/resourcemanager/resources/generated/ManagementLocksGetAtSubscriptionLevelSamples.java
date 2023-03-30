@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks GetAtSubscriptionLevel. */
 public final class ManagementLocksGetAtSubscriptionLevelSamples {
     /*
@@ -22,6 +20,6 @@ public final class ManagementLocksGetAtSubscriptionLevelSamples {
             .manager()
             .managementLockClient()
             .getManagementLocks()
-            .getAtSubscriptionLevelWithResponse("testlock", Context.NONE);
+            .getAtSubscriptionLevelWithResponse("testlock", com.azure.core.util.Context.NONE);
     }
 }

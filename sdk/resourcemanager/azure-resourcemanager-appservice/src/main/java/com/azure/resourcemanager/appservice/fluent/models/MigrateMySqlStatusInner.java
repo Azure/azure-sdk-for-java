@@ -18,6 +18,10 @@ public final class MigrateMySqlStatusInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MigrateMySqlStatusProperties innerProperties;
 
+    /** Creates an instance of MigrateMySqlStatusInner class. */
+    public MigrateMySqlStatusInner() {
+    }
+
     /**
      * Get the innerProperties property: MigrateMySqlStatus resource specific properties.
      *

@@ -28,6 +28,10 @@ public final class TargetResource {
     @JsonProperty(value = "resourceType")
     private String resourceType;
 
+    /** Creates an instance of TargetResource class. */
+    public TargetResource() {
+    }
+
     /**
      * Get the id property: The ID of the resource.
      *

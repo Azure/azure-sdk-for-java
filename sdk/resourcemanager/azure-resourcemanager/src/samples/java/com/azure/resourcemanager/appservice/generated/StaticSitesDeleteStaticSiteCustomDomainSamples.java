@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites DeleteStaticSiteCustomDomain. */
 public final class StaticSitesDeleteStaticSiteCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteStaticSiteCustomDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteStaticSiteCustomDomain.json
      */
     /**
      * Sample code: Delete a custom domain for a static site.
@@ -22,6 +20,7 @@ public final class StaticSitesDeleteStaticSiteCustomDomainSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .deleteStaticSiteCustomDomain("rg", "testStaticSite0", "custom.domain.net", Context.NONE);
+            .deleteStaticSiteCustomDomain(
+                "rg", "testStaticSite0", "custom.domain.net", com.azure.core.util.Context.NONE);
     }
 }

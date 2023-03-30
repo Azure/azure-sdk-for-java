@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 
 /** Samples for ResourceGroups CreateOrUpdate. */
@@ -24,6 +23,6 @@ public final class ResourceGroupsCreateOrUpdateSamples {
             .serviceClient()
             .getResourceGroups()
             .createOrUpdateWithResponse(
-                "my-resource-group", new ResourceGroupInner().withLocation("eastus"), Context.NONE);
+                "my-resource-group", new ResourceGroupInner().withLocation("eastus"), com.azure.core.util.Context.NONE);
     }
 }

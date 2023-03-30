@@ -22,6 +22,10 @@ public final class ContentHash {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of ContentHash class. */
+    public ContentHash() {
+    }
+
     /**
      * Get the algorithm property: The algorithm of the content hash.
      *

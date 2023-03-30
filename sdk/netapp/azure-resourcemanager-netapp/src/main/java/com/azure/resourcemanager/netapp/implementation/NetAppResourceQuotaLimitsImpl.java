@@ -38,15 +38,6 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
         return Utils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
     }
 
-    public SubscriptionQuotaItem get(String location, String quotaLimitName) {
-        SubscriptionQuotaItemInner inner = this.serviceClient().get(location, quotaLimitName);
-        if (inner != null) {
-            return new SubscriptionQuotaItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context) {
         Response<SubscriptionQuotaItemInner> inner =
             this.serviceClient().getWithResponse(location, quotaLimitName, context);
@@ -56,6 +47,15 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SubscriptionQuotaItem get(String location, String quotaLimitName) {
+        SubscriptionQuotaItemInner inner = this.serviceClient().get(location, quotaLimitName);
+        if (inner != null) {
+            return new SubscriptionQuotaItemImpl(inner, this.manager());
         } else {
             return null;
         }

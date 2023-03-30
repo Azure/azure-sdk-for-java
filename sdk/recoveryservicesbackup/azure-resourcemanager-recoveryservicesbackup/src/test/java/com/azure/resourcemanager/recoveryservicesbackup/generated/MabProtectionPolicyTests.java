@@ -17,22 +17,22 @@ public final class MabProtectionPolicyTests {
         MabProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1309345071,\"resourceGuardOperationRequests\":[\"u\",\"hlkyqltqsrog\",\"uwkffdjktsysid\"]}")
+                    "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":2003888088,\"resourceGuardOperationRequests\":[\"tqsrogtuwkff\"]}")
                 .toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(1309345071, model.protectedItemsCount());
-        Assertions.assertEquals("u", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(2003888088, model.protectedItemsCount());
+        Assertions.assertEquals("tqsrogtuwkff", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MabProtectionPolicy model =
             new MabProtectionPolicy()
-                .withProtectedItemsCount(1309345071)
-                .withResourceGuardOperationRequests(Arrays.asList("u", "hlkyqltqsrog", "uwkffdjktsysid"))
+                .withProtectedItemsCount(2003888088)
+                .withResourceGuardOperationRequests(Arrays.asList("tqsrogtuwkff"))
                 .withSchedulePolicy(new SchedulePolicy())
                 .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(1309345071, model.protectedItemsCount());
-        Assertions.assertEquals("u", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(2003888088, model.protectedItemsCount());
+        Assertions.assertEquals("tqsrogtuwkff", model.resourceGuardOperationRequests().get(0));
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Providers List. */
 public final class ProvidersListSamples {
     /*
@@ -17,6 +15,11 @@ public final class ProvidersListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getProviders(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.genericResources().manager().serviceClient().getProviders().list(null, null, Context.NONE);
+        azure
+            .genericResources()
+            .manager()
+            .serviceClient()
+            .getProviders()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 }

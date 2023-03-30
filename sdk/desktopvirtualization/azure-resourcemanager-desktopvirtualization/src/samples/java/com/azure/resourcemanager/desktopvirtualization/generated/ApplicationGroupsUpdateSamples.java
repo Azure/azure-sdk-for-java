@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroup;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for ApplicationGroups Update. */
 public final class ApplicationGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ApplicationGroup_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/ApplicationGroup_Update.json
      */
     /**
      * Sample code: ApplicationGroups_Update.
@@ -24,7 +23,7 @@ public final class ApplicationGroupsUpdateSamples {
         ApplicationGroup resource =
             manager
                 .applicationGroups()
-                .getByResourceGroupWithResponse("resourceGroup1", "applicationGroup1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "applicationGroup1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

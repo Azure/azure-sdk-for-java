@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceSettings Get. */
 public final class WorkspaceSettingsGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspaceSettingsGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getAWorkspaceSettingOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.workspaceSettings().getWithResponse("default", Context.NONE);
+        manager.workspaceSettings().getWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

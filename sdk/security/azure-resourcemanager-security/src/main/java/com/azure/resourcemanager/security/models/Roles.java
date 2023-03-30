@@ -23,6 +23,15 @@ public final class Roles extends ExpandableStringEnum<Roles> {
     public static final Roles CONTRIBUTOR = fromString("Contributor");
 
     /**
+     * Creates a new instance of Roles value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Roles() {
+    }
+
+    /**
      * Creates or finds a Roles from its string representation.
      *
      * @param name a name to look for.

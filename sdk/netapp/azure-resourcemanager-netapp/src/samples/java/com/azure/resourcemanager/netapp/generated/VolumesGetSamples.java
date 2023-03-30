@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Volumes Get. */
 public final class VolumesGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Volumes_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Get.json
      */
     /**
      * Sample code: Volumes_Get.
@@ -17,6 +15,6 @@ public final class VolumesGetSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().getWithResponse("myRG", "account1", "pool1", "volume1", Context.NONE);
+        manager.volumes().getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,6 +22,10 @@ public final class SiteCloneabilityCriterion {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of SiteCloneabilityCriterion class. */
+    public SiteCloneabilityCriterion() {
+    }
+
     /**
      * Get the name property: Name of criterion.
      *

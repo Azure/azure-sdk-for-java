@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
@@ -34,7 +33,7 @@ public final class DigitalTwinsDeleteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-11-29T20:21:47Z\",\"lastUpdatedTime\":\"2021-10-19T12:26:50Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"x\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"abgl\",\"tenantId\":\"hxw\",\"userAssignedIdentities\":{}},\"location\":\"qik\",\"tags\":{\"bhvgy\":\"ovplw\",\"svmkfssxquk\":\"gu\"},\"id\":\"fpl\",\"name\":\"mg\",\"type\":\"xnkjzkdesl\"}";
+            "{\"properties\":{\"createdTime\":\"2021-02-25T04:11:47Z\",\"lastUpdatedTime\":\"2021-01-10T00:04:32Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"osvmk\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"plgmgsxnk\",\"tenantId\":\"kde\",\"userAssignedIdentities\":{}},\"location\":\"lopwiyig\",\"tags\":{\"upedeojnabckhs\":\"kdwzbaiuebbaumny\",\"ie\":\"txp\"},\"id\":\"tfhvpesapskrdqmh\",\"name\":\"jdhtldwkyzxu\",\"type\":\"tkncwsc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +61,12 @@ public final class DigitalTwinsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DigitalTwinsDescription response = manager.digitalTwins().delete("hdwbavxbniwdjs", "zt", Context.NONE);
+        DigitalTwinsDescription response =
+            manager.digitalTwins().delete("lcuhxwtctyqiklb", "ovplw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qik", response.location());
-        Assertions.assertEquals("ovplw", response.tags().get("bhvgy"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("lopwiyig", response.location());
+        Assertions.assertEquals("kdwzbaiuebbaumny", response.tags().get("upedeojnabckhs"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, response.identity().type());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
     }
 }

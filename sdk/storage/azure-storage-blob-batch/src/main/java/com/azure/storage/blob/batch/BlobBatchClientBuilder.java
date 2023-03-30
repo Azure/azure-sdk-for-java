@@ -144,6 +144,7 @@ public final class BlobBatchClientBuilder {
         return new HttpPipelineBuilder()
             .httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(pipeline.getTracer())
             .build();
     }
 }

@@ -12,9 +12,11 @@ import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
+import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
@@ -230,8 +232,21 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().cloneProgress();
     }
 
+    public FileAccessLogs fileAccessLogs() {
+        return this.innerModel().fileAccessLogs();
+    }
+
     public AvsDataStore avsDataStore() {
         return this.innerModel().avsDataStore();
+    }
+
+    public List<String> dataStoreResourceId() {
+        List<String> inner = this.innerModel().dataStoreResourceId();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Boolean isDefaultQuotaEnabled() {
@@ -285,6 +300,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public EnableSubvolumes enableSubvolumes() {
         return this.innerModel().enableSubvolumes();
+    }
+
+    public String provisionedAvailabilityZone() {
+        return this.innerModel().provisionedAvailabilityZone();
+    }
+
+    public Boolean isLargeVolume() {
+        return this.innerModel().isLargeVolume();
     }
 
     public Region region() {
@@ -416,8 +439,12 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void breakReplication(BreakReplicationRequest body) {
-        serviceManager.volumes().breakReplication(resourceGroupName, accountName, poolName, volumeName, body);
+    public void breakFileLocks() {
+        serviceManager.volumes().breakFileLocks(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void breakFileLocks(BreakFileLocksRequest body, Context context) {
+        serviceManager.volumes().breakFileLocks(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void breakReplication() {
@@ -486,10 +513,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void poolChange(PoolChangeRequest body, Context context) {
         serviceManager.volumes().poolChange(resourceGroupName, accountName, poolName, volumeName, body, context);
-    }
-
-    public void relocate(RelocateVolumeRequest body) {
-        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, body);
     }
 
     public void relocate() {
@@ -758,6 +781,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
         this.innerModel().withEnableSubvolumes(enableSubvolumes);
+        return this;
+    }
+
+    public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
+        this.innerModel().withIsLargeVolume(isLargeVolume);
         return this;
     }
 

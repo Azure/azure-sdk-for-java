@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Accounts RenewCredentials. */
 public final class AccountsRenewCredentialsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Accounts_RenewCredentials.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_RenewCredentials.json
      */
     /**
      * Sample code: Accounts_RenewCredentials.
@@ -17,6 +15,6 @@ public final class AccountsRenewCredentialsSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountsRenewCredentials(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().renewCredentials("myRG", "account1", Context.NONE);
+        manager.accounts().renewCredentials("myRG", "account1", com.azure.core.util.Context.NONE);
     }
 }

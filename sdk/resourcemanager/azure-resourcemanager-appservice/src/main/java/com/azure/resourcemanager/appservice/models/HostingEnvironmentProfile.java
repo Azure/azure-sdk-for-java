@@ -28,6 +28,10 @@ public final class HostingEnvironmentProfile {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of HostingEnvironmentProfile class. */
+    public HostingEnvironmentProfile() {
+    }
+
     /**
      * Get the id property: Resource ID of the App Service Environment.
      *

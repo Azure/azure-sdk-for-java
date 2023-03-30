@@ -29,6 +29,10 @@ public final class ProviderExtendedLocation {
     @JsonProperty(value = "extendedLocations")
     private List<String> extendedLocations;
 
+    /** Creates an instance of ProviderExtendedLocation class. */
+    public ProviderExtendedLocation() {
+    }
+
     /**
      * Get the location property: The azure location.
      *

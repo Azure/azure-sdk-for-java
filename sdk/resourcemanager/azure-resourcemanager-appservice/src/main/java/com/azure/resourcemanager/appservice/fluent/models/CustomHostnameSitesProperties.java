@@ -29,6 +29,10 @@ public final class CustomHostnameSitesProperties {
     @JsonProperty(value = "siteResourceIds")
     private List<IdentifierInner> siteResourceIds;
 
+    /** Creates an instance of CustomHostnameSitesProperties class. */
+    public CustomHostnameSitesProperties() {
+    }
+
     /**
      * Get the customHostname property: The customHostname property.
      *

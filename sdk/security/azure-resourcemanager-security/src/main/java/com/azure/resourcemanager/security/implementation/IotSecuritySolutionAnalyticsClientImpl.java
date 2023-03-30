@@ -56,8 +56,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
     public interface IotSecuritySolutionAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}/analyticsModels")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionAnalyticsModelListInner>> list(
@@ -71,8 +70,7 @@ public final class IotSecuritySolutionAnalyticsClientImpl implements IotSecurity
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}/analyticsModels/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecuritySolutionAnalyticsModelInner>> get(
