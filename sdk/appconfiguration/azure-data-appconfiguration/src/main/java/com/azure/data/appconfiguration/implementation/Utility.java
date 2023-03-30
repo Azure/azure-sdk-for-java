@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration.implementation;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

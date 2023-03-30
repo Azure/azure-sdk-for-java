@@ -41,7 +41,7 @@ customization-class: src/main/java/AppConfigCustomization.java
 ```yaml
 output-folder: ..\
 java: true
-use: '@autorest/java@4.1.15'
+use: '@autorest/java@4.1.16'
 enable-sync-stack: true
 generate-client-interfaces: false
 generate-client-as-impl: true
@@ -65,4 +65,53 @@ directive:
     where: $.parameters.KeyValueFields
     transform: >
       $.items["x-ms-enum"].name = "SettingFields"; 
+```
+### Modify SettingField enums
+```yaml
+directive:
+  - from: swagger-document
+    where: $.parameters.KeyValueFields
+    transform: >
+      $.items["x-ms-enum"].values = [
+        {
+          "value": "key",
+          "name": "key",
+          "description": "Populates the `key` from the service."
+        },
+        {
+          "value": "label",
+          "name": "label",
+          "description": "Populates the `label` from the service."
+        },
+        {
+          "value": "value",
+          "name": "value",
+          "description": "Populates the `value` from the service."
+        },
+        {
+          "value": "content_type",
+          "name": "content_type",
+          "description": "Populates the `content_type` from the service."
+        },
+        {
+          "value": "etag",
+          "name": "etag ",
+          "description": "Populates the `etag` from the service."
+        },
+        {
+          "value": "last_modified",
+          "name": "last_modified",
+          "description": "Populates the `last_modified` from the service."
+        },
+        {
+          "value": "locked",
+          "name": "is_read_only ",
+          "description": "Populates the `locked` from the service."
+        },
+        {
+          "value": "tags",
+          "name": "tags",
+          "description": "Populates the `tags` from the service."
+        }
+      ];
 ```

@@ -46,46 +46,13 @@ public class AppConfigCustomization extends Customization {
     private void customizeKeyValueFields(ClassCustomization classCustomization) {
         classCustomization.addImports("java.util.Locale;");
         classCustomization.addImports("com.azure.data.appconfiguration.ConfigurationAsyncClient;");
-        // Methods customizations
-        classCustomization.getConstant("KEY")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getKey()} from the service.");
-
-        classCustomization.getConstant("LABEL")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getLabel()} from the service.");
-
-        classCustomization.getConstant("VALUE")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getValue()} from the service.");
-
-        classCustomization.getConstant("CONTENT_TYPE")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getContentType()} from the service.");
-
-        classCustomization.getConstant("LAST_MODIFIED")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getLastModified()} from the service.");
-
-        classCustomization.getConstant("TAGS")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getTags()} from the service.");
-
-        classCustomization.getConstant("ETAG")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#getETag()} from the service.");
-
+        // Modify fromString() method
         MethodCustomization fromString = classCustomization.getMethod("fromString");
         fromString.getJavadoc()
             .setDescription("Creates or finds a {@link SettingFields} from its string representation.")
             .setReturn("the corresponding {@link SettingFields}");
         fromString.removeAnnotation("JsonCreator");
-
-        // Rename LOCKED to IS_READ_ONLY
-        classCustomization = classCustomization.renameEnumMember("LOCKED", "IS_READ_ONLY");
-        classCustomization.getConstant("IS_READ_ONLY")
-            .getJavadoc()
-            .setDescription("Populates the {@link ConfigurationSetting#isReadOnly()} from the service.");
+        // Add class-level javadoc
         classCustomization.getJavadoc()
             .setDescription(joinWithNewline(
                 "",
@@ -102,16 +69,19 @@ public class AppConfigCustomization extends Customization {
 
     private ClassCustomization addToStringMapper(ClassCustomization classCustomization) {
         return classCustomization.customizeAst(ast -> {
-            String className = classCustomization.getClassName();
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            // Remove original class javadoc
+            clazz.removeJavaDocComment();
+            // Add toStringMapper method
             clazz.addMethod("toStringMapper", Modifier.Keyword.STATIC, Modifier.Keyword.PUBLIC).setType("String")
                 .addParameter("SettingFields", "field")
                 .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return field.toString().toLowerCase(Locale.US);"))))
-                .addAnnotation("Deprecated")
+                .addAnnotation(Deprecated.class)
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
                     " * Converts the SettingFields to a string that is usable for HTTP requests and logging.",
                     " * @param field SettingFields to map.",
-                    " * @return SettingFields as a lowercase string in the US locale."
+                    " * @return SettingFields as a lowercase string in the US locale.",
+                    " * @deprecated This method is no longer needed. SettingFields is using lower case enum value for the HTTP requests."
                 )));
         });
     }

@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -13,32 +14,31 @@ import java.util.Locale;
  * @see SettingSelector
  * @see ConfigurationAsyncClient
  */
-/** Defines values for SettingFields. */
 public final class SettingFields extends ExpandableStringEnum<SettingFields> {
 
-    /** Populates the {@link ConfigurationSetting#getKey()} from the service. */
+    /** Populates the `key` from the service. */
     public static final SettingFields KEY = fromString("key");
 
-    /** Populates the {@link ConfigurationSetting#getLabel()} from the service. */
+    /** Populates the `label` from the service. */
     public static final SettingFields LABEL = fromString("label");
 
-    /** Populates the {@link ConfigurationSetting#getContentType()} from the service. */
-    public static final SettingFields CONTENT_TYPE = fromString("content_type");
-
-    /** Populates the {@link ConfigurationSetting#getValue()} from the service. */
+    /** Populates the `value` from the service. */
     public static final SettingFields VALUE = fromString("value");
 
-    /** Populates the {@link ConfigurationSetting#getLastModified()} from the service. */
+    /** Populates the `content_type` from the service. */
+    public static final SettingFields CONTENT_TYPE = fromString("content_type");
+
+    /** Populates the `etag` from the service. */
+    public static final SettingFields ETAG = fromString("etag");
+
+    /** Populates the `last_modified` from the service. */
     public static final SettingFields LAST_MODIFIED = fromString("last_modified");
 
-    /** Populates the {@link ConfigurationSetting#getTags()} from the service. */
-    public static final SettingFields TAGS = fromString("tags");
-
-    /** Populates the {@link ConfigurationSetting#isReadOnly()} from the service. */
+    /** Populates the `locked` from the service. */
     public static final SettingFields IS_READ_ONLY = fromString("locked");
 
-    /** Populates the {@link ConfigurationSetting#getETag()} from the service. */
-    public static final SettingFields ETAG = fromString("etag");
+    /** Populates the `tags` from the service. */
+    public static final SettingFields TAGS = fromString("tags");
 
     /**
      * Creates a new instance of SettingFields value.
@@ -72,6 +72,7 @@ public final class SettingFields extends ExpandableStringEnum<SettingFields> {
      *
      * @param field SettingFields to map.
      * @return SettingFields as a lowercase string in the US locale.
+     * @deprecated This method is no longer needed. SettingFields is using lower case enum value for the HTTP requests.
      */
     @Deprecated()
     public static String toStringMapper(SettingFields field) {
