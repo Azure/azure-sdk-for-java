@@ -210,7 +210,7 @@ public class CreateGroupCallOptions {
     
     
     /**
-     * Set Custom Context for PSNT targets
+     * Set Custom Context for PSTN targets
      * @param sipHeaders collection of Custom Context for PSTN targets 
      * @return the CreateGroupCallOptions object itself
      */
