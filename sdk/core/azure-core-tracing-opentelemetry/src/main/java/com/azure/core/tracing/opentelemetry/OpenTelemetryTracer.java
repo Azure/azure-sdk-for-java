@@ -185,7 +185,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Context remoteParentContext = options.getRemoteParent();
         SpanContext remoteSpanContext = remoteParentContext == null ? null : getOrNull(remoteParentContext, SPAN_CONTEXT_KEY, SpanContext.class);
 
-        if (remoteSpanContext != null && remoteSpanContext.isValid()) {
+        if (remoteSpanContext != null) {
             if (parentContext == null) {
                 parentContext = io.opentelemetry.context.Context.root();
             }

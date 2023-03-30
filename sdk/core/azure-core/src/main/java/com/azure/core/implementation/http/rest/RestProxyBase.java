@@ -176,40 +176,19 @@ public abstract class RestProxyBase {
      * @return The updated context containing the span context.
      */
     Context startTracingSpan(SwaggerMethodParser method, Context context) {
-        // First check if tracing is enabled. This is an optimized operation, so it is done first.
-        if (!tracer.isEnabled()) {
-            return context;
+        if (isTracingEnabled(context)) {
+            Object tracingContextObj = context.getData("TRACING_CONTEXT").orElse(null);
+            Context tracingContext = tracingContextObj instanceof Context ? (Context) tracingContextObj : context;
+            return tracer.start(method.getSpanName(), tracingContext);
         }
 
-        // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
-        if ((boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
-            return context;
-        }
-
-        Object tracingContextObj = context.getData("TRACING_CONTEXT").orElse(null);
-        Context tracingContext = tracingContextObj instanceof Context ? (Context) tracingContextObj : context;
-        return tracer.start(method.getSpanName(), tracingContext);
+        return context;
     }
 
-    // This handles each onX for the response mono.
-    // The signal indicates the status and contains the metadata we need to end the tracing span.
-    void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable,
-        Context span) {
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        if (span == null
-            || (boolean) span.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
-            return;
-        }
-
-        if (throwable != null) {
-            tracer.end(null, throwable, span);
-        }
-
-        if (httpDecodedResponse != null) {
-            //noinspection ConstantConditions
-            int statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-            tracer.end(statusCode >= 400 ? "" : null, null, span);
-        }
+    protected boolean isTracingEnabled(Context context) {
+        // First check if tracing is enabled. This is an optimized operation, so it is done first.
+        // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
+        return tracer.isEnabled() && !(boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
     }
 
     /**
