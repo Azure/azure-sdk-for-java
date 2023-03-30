@@ -6,11 +6,13 @@ package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesOptimize;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
@@ -34,6 +36,16 @@ public final class ImageTemplateInner extends Resource {
      */
     @JsonProperty(value = "identity", required = true)
     private ImageTemplateIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of ImageTemplateInner class. */
+    public ImageTemplateInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the image template.
@@ -62,6 +74,15 @@ public final class ImageTemplateInner extends Resource {
     public ImageTemplateInner withIdentity(ImageTemplateIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -123,6 +144,29 @@ public final class ImageTemplateInner extends Resource {
             this.innerProperties = new ImageTemplateProperties();
         }
         this.innerProperties().withCustomize(customize);
+        return this;
+    }
+
+    /**
+     * Get the optimize property: Specifies optimization to be performed on image.
+     *
+     * @return the optimize value.
+     */
+    public ImageTemplatePropertiesOptimize optimize() {
+        return this.innerProperties() == null ? null : this.innerProperties().optimize();
+    }
+
+    /**
+     * Set the optimize property: Specifies optimization to be performed on image.
+     *
+     * @param optimize the optimize value to set.
+     * @return the ImageTemplateInner object itself.
+     */
+    public ImageTemplateInner withOptimize(ImageTemplatePropertiesOptimize optimize) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageTemplateProperties();
+        }
+        this.innerProperties().withOptimize(optimize);
         return this;
     }
 
@@ -203,7 +247,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Get the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
-     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
+     * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @return the buildTimeoutInMinutes value.
      */
@@ -213,7 +257,7 @@ public final class ImageTemplateInner extends Resource {
 
     /**
      * Set the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
-     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
+     * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @param buildTimeoutInMinutes the buildTimeoutInMinutes value to set.
      * @return the ImageTemplateInner object itself.

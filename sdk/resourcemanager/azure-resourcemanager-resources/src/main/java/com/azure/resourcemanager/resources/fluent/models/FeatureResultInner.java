@@ -35,6 +35,10 @@ public final class FeatureResultInner {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of FeatureResultInner class. */
+    public FeatureResultInner() {
+    }
+
     /**
      * Get the name property: The name of the feature.
      *

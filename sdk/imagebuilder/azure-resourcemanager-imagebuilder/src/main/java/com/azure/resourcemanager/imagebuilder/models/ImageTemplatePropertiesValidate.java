@@ -12,22 +12,18 @@ import java.util.List;
 @Fluent
 public final class ImageTemplatePropertiesValidate {
     /*
-     * If validation fails and this field is set to false, output image(s) will
-     * not be distributed. This is the default behavior. If validation fails
-     * and this field is set to true, output image(s) will still be
-     * distributed. Please use this option with caution as it may result in bad
-     * images being distributed for use. In either case (true or false), the
-     * end to end image run will be reported as having failed in case of a
-     * validation failure. [Note: This field has no effect if validation
-     * succeeds.]
+     * If validation fails and this field is set to false, output image(s) will not be distributed. This is the default
+     * behavior. If validation fails and this field is set to true, output image(s) will still be distributed. Please
+     * use this option with caution as it may result in bad images being distributed for use. In either case (true or
+     * false), the end to end image run will be reported as having failed in case of a validation failure. [Note: This
+     * field has no effect if validation succeeds.]
      */
     @JsonProperty(value = "continueDistributeOnFailure")
     private Boolean continueDistributeOnFailure;
 
     /*
-     * If this field is set to true, the image specified in the 'source'
-     * section will directly be validated. No separate build will be run to
-     * generate and then validate a customized image.
+     * If this field is set to true, the image specified in the 'source' section will directly be validated. No
+     * separate build will be run to generate and then validate a customized image.
      */
     @JsonProperty(value = "sourceValidationOnly")
     private Boolean sourceValidationOnly;
@@ -37,6 +33,10 @@ public final class ImageTemplatePropertiesValidate {
      */
     @JsonProperty(value = "inVMValidations")
     private List<ImageTemplateInVMValidator> inVMValidations;
+
+    /** Creates an instance of ImageTemplatePropertiesValidate class. */
+    public ImageTemplatePropertiesValidate() {
+    }
 
     /**
      * Get the continueDistributeOnFailure property: If validation fails and this field is set to false, output image(s)

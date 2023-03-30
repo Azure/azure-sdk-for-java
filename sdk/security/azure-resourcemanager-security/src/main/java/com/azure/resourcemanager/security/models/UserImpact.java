@@ -20,6 +20,15 @@ public final class UserImpact extends ExpandableStringEnum<UserImpact> {
     public static final UserImpact HIGH = fromString("High");
 
     /**
+     * Creates a new instance of UserImpact value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UserImpact() {
+    }
+
+    /**
      * Creates or finds a UserImpact from its string representation.
      *
      * @param name a name to look for.

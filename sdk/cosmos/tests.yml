@@ -25,6 +25,8 @@ stages:
           groupId: com.azure
           safeName: azurecosmos
       AdditionalModules:
+        - name: azure-cosmos-tests
+          groupId: com.azure
         - name: azure-cosmos-benchmark
           groupId: com.azure
       TimeoutInMinutes: 120

@@ -19,6 +19,10 @@ public final class CertificatePatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CertificatePatchResourceProperties innerProperties;
 
+    /** Creates an instance of CertificatePatchResource class. */
+    public CertificatePatchResource() {
+    }
+
     /**
      * Get the innerProperties property: CertificatePatchResource resource specific properties.
      *
@@ -270,8 +274,7 @@ public final class CertificatePatchResource extends ProxyOnlyResource {
 
     /**
      * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @return the serverFarmId value.
      */
@@ -281,8 +284,7 @@ public final class CertificatePatchResource extends ProxyOnlyResource {
 
     /**
      * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @param serverFarmId the serverFarmId value to set.
      * @return the CertificatePatchResource object itself.

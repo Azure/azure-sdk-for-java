@@ -20,6 +20,15 @@ public final class Source extends ExpandableStringEnum<Source> {
     public static final Source ON_PREMISE_SQL = fromString("OnPremiseSql");
 
     /**
+     * Creates a new instance of Source value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Source() {
+    }
+
+    /**
      * Creates or finds a Source from its string representation.
      *
      * @param name a name to look for.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -42,13 +41,9 @@ public final class WorkspaceProperties {
     @JsonProperty(value = "cloudPcResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cloudPcResource;
 
-    /*
-     * Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private
-     * endpoints
-     */
-    @JsonProperty(value = "publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    /** Creates an instance of WorkspaceProperties class. */
+    public WorkspaceProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of Workspace. (internal use).
@@ -126,28 +121,6 @@ public final class WorkspaceProperties {
      */
     public Boolean cloudPcResource() {
         return this.cloudPcResource;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the WorkspaceProperties object itself.
-     */
-    public WorkspaceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
     }
 
     /**

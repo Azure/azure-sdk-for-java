@@ -82,8 +82,7 @@ public final class AllowedConnectionsClientImpl implements AllowedConnectionsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
-                + "/{ascLocation}/allowedConnections/{connectionType}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections/{connectionType}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AllowedConnectionsResourceInner>> get(

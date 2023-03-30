@@ -55,8 +55,7 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
     public interface ValidateOperationStatusesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupValidateOperationsStatuses/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperationsStatuses/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationStatusInner>> get(

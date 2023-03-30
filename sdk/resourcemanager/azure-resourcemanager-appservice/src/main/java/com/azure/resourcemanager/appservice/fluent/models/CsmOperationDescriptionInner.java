@@ -42,6 +42,10 @@ public final class CsmOperationDescriptionInner {
     @JsonProperty(value = "properties")
     private CsmOperationDescriptionProperties properties;
 
+    /** Creates an instance of CsmOperationDescriptionInner class. */
+    public CsmOperationDescriptionInner() {
+    }
+
     /**
      * Get the name property: The name property.
      *

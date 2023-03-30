@@ -16,22 +16,21 @@ public final class AzureSqlProtectionPolicyTests {
         AzureSqlProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1487517308,\"resourceGuardOperationRequests\":[\"myst\",\"luqypfcvlerch\",\"qbmfpjbabwidf\",\"xsspuunnoxyhk\"]}")
+                    "{\"backupManagementType\":\"AzureSql\",\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":704877183,\"resourceGuardOperationRequests\":[\"stcyohpfkyrkdbd\",\"iogsjkmnwq\",\"nobaiyhddviacegf\"]}")
                 .toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(1487517308, model.protectedItemsCount());
-        Assertions.assertEquals("myst", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(704877183, model.protectedItemsCount());
+        Assertions.assertEquals("stcyohpfkyrkdbd", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSqlProtectionPolicy model =
             new AzureSqlProtectionPolicy()
-                .withProtectedItemsCount(1487517308)
-                .withResourceGuardOperationRequests(
-                    Arrays.asList("myst", "luqypfcvlerch", "qbmfpjbabwidf", "xsspuunnoxyhk"))
+                .withProtectedItemsCount(704877183)
+                .withResourceGuardOperationRequests(Arrays.asList("stcyohpfkyrkdbd", "iogsjkmnwq", "nobaiyhddviacegf"))
                 .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectionPolicy.class);
-        Assertions.assertEquals(1487517308, model.protectedItemsCount());
-        Assertions.assertEquals("myst", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(704877183, model.protectedItemsCount());
+        Assertions.assertEquals("stcyohpfkyrkdbd", model.resourceGuardOperationRequests().get(0));
     }
 }

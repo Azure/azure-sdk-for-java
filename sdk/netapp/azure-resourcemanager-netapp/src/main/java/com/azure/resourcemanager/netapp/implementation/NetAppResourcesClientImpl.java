@@ -56,7 +56,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface NetAppResourcesService {
+    public interface NetAppResourcesService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
@@ -115,7 +115,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a resource name is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -167,7 +167,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a resource name is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +217,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a resource name is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -235,24 +235,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a resource name is available.
      *
-     * @param location The location.
-     * @param body Name availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckAvailabilityResponseInner checkNameAvailability(String location, ResourceNameAvailabilityRequest body) {
-        return checkNameAvailabilityAsync(location, body).block();
-    }
-
-    /**
-     * Check resource name availability
-     *
-     * <p>Check if a resource name is available.
-     *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,11 +250,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
+     *
+     * @param location The name of Azure region.
+     * @param body Name availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckAvailabilityResponseInner checkNameAvailability(String location, ResourceNameAvailabilityRequest body) {
+        return checkNameAvailabilityWithResponse(location, body, Context.NONE).getValue();
+    }
+
+    /**
      * Check file path availability
      *
      * <p>Check if a file path is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,7 +323,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a file path is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body File path availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,7 +373,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a file path is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -392,24 +392,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a file path is available.
      *
-     * @param location The location.
-     * @param body File path availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckAvailabilityResponseInner checkFilePathAvailability(String location, FilePathAvailabilityRequest body) {
-        return checkFilePathAvailabilityAsync(location, body).block();
-    }
-
-    /**
-     * Check file path availability
-     *
-     * <p>Check if a file path is available.
-     *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body File path availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,11 +407,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
+     *
+     * @param location The name of Azure region.
+     * @param body File path availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckAvailabilityResponseInner checkFilePathAvailability(String location, FilePathAvailabilityRequest body) {
+        return checkFilePathAvailabilityWithResponse(location, body, Context.NONE).getValue();
+    }
+
+    /**
      * Check quota availability
      *
      * <p>Check if a quota is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,7 +480,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a quota is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Quota availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,7 +530,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a quota is available.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -548,24 +548,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Check if a quota is available.
      *
-     * @param location The location.
-     * @param body Quota availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckAvailabilityResponseInner checkQuotaAvailability(String location, QuotaAvailabilityRequest body) {
-        return checkQuotaAvailabilityAsync(location, body).block();
-    }
-
-    /**
-     * Check quota availability
-     *
-     * <p>Check if a quota is available.
-     *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param body Quota availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,11 +563,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
+     *
+     * @param location The name of Azure region.
+     * @param body Quota availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckAvailabilityResponseInner checkQuotaAvailability(String location, QuotaAvailabilityRequest body) {
+        return checkQuotaAvailabilityWithResponse(location, body, Context.NONE).getValue();
+    }
+
+    /**
      * Describes region specific information.
      *
      * <p>Provides storage to network proximity and logical zone mapping information.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -628,7 +628,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Provides storage to network proximity and logical zone mapping information.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -670,7 +670,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Provides storage to network proximity and logical zone mapping information.
      *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -686,23 +686,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      *
      * <p>Provides storage to network proximity and logical zone mapping information.
      *
-     * @param location The location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides region specific information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegionInfoInner queryRegionInfo(String location) {
-        return queryRegionInfoAsync(location).block();
-    }
-
-    /**
-     * Describes region specific information.
-     *
-     * <p>Provides storage to network proximity and logical zone mapping information.
-     *
-     * @param location The location.
+     * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -712,5 +696,21 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionInfoInner> queryRegionInfoWithResponse(String location, Context context) {
         return queryRegionInfoWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegionInfoInner queryRegionInfo(String location) {
+        return queryRegionInfoWithResponse(location, Context.NONE).getValue();
     }
 }

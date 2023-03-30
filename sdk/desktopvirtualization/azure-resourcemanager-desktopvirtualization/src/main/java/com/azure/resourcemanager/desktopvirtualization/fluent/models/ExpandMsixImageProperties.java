@@ -33,8 +33,7 @@ public final class ExpandMsixImageProperties {
     private String packageName;
 
     /*
-     * Package Family Name from appxmanifest.xml. Contains Package Name and
-     * Publisher name.
+     * Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name.
      */
     @JsonProperty(value = "packageFamilyName")
     private String packageFamilyName;
@@ -92,6 +91,10 @@ public final class ExpandMsixImageProperties {
      */
     @JsonProperty(value = "packageApplications")
     private List<MsixPackageApplications> packageApplications;
+
+    /** Creates an instance of ExpandMsixImageProperties class. */
+    public ExpandMsixImageProperties() {
+    }
 
     /**
      * Get the packageAlias property: Alias of MSIX Package.

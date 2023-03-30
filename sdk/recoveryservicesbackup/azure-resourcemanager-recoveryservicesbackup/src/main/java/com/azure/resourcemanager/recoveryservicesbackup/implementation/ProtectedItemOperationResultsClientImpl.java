@@ -57,9 +57,7 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
     public interface ProtectedItemOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/operationResults/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/operationResults/{operationId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectedItemResourceInner>> get(

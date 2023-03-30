@@ -20,7 +20,7 @@ public interface SnapshotPoliciesClient {
     /**
      * List snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +33,7 @@ public interface SnapshotPoliciesClient {
     /**
      * List snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,21 +47,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Get a snapshot Policy.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotPolicyInner get(String resourceGroupName, String accountName, String snapshotPolicyName);
-
-    /**
-     * Get a snapshot Policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
@@ -75,25 +61,23 @@ public interface SnapshotPoliciesClient {
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
 
     /**
-     * Create a snapshot policy.
+     * Get a snapshot Policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
-     * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return a snapshot Policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotPolicyInner create(
-        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyInner body);
+    SnapshotPolicyInner get(String resourceGroupName, String accountName, String snapshotPolicyName);
 
     /**
      * Create a snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
@@ -112,9 +96,25 @@ public interface SnapshotPoliciesClient {
         Context context);
 
     /**
+     * Create a snapshot policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param snapshotPolicyName The name of the snapshot policy.
+     * @param body Snapshot policy object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot policy information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotPolicyInner create(
+        String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyInner body);
+
+    /**
      * Patch a snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
@@ -130,7 +130,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Patch a snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
@@ -151,7 +151,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Patch a snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
@@ -167,7 +167,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Patch a snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
@@ -188,7 +188,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Delete snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +203,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Delete snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
@@ -219,7 +219,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Delete snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +232,7 @@ public interface SnapshotPoliciesClient {
     /**
      * Delete snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
@@ -248,23 +248,7 @@ public interface SnapshotPoliciesClient {
      *
      * <p>Get volumes associated with snapshot policy.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotPolicyVolumeListInner listVolumes(String resourceGroupName, String accountName, String snapshotPolicyName);
-
-    /**
-     * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
@@ -276,4 +260,20 @@ public interface SnapshotPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SnapshotPolicyVolumeListInner> listVolumesWithResponse(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
+
+    /**
+     * Get volumes for snapshot policy
+     *
+     * <p>Get volumes associated with snapshot policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param snapshotPolicyName The name of the snapshot policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volumes associated with snapshot policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SnapshotPolicyVolumeListInner listVolumes(String resourceGroupName, String accountName, String snapshotPolicyName);
 }

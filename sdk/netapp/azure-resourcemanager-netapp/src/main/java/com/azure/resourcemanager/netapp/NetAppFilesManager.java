@@ -36,7 +36,6 @@ import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
-import com.azure.resourcemanager.netapp.implementation.VaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
@@ -51,7 +50,6 @@ import com.azure.resourcemanager.netapp.models.Pools;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.azure.resourcemanager.netapp.models.Subvolumes;
-import com.azure.resourcemanager.netapp.models.Vaults;
 import com.azure.resourcemanager.netapp.models.VolumeGroups;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRules;
 import com.azure.resourcemanager.netapp.models.Volumes;
@@ -87,8 +85,6 @@ public final class NetAppFilesManager {
     private BackupPolicies backupPolicies;
 
     private VolumeQuotaRules volumeQuotaRules;
-
-    private Vaults vaults;
 
     private VolumeGroups volumeGroups;
 
@@ -259,7 +255,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.11");
+                .append("1.0.0-beta.12");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -459,18 +455,6 @@ public final class NetAppFilesManager {
             this.volumeQuotaRules = new VolumeQuotaRulesImpl(clientObject.getVolumeQuotaRules(), this);
         }
         return volumeQuotaRules;
-    }
-
-    /**
-     * Gets the resource collection API of Vaults.
-     *
-     * @return Resource collection API of Vaults.
-     */
-    public Vaults vaults() {
-        if (this.vaults == null) {
-            this.vaults = new VaultsImpl(clientObject.getVaults(), this);
-        }
-        return vaults;
     }
 
     /**

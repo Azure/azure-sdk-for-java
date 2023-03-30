@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for Workspaces CreateOrUpdate. */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Workspace_Create.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/Workspace_Create.json
      */
     /**
      * Sample code: Workspace_Create.

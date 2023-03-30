@@ -95,8 +95,8 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
-        return this.transportClient.openConnection(serviceEndpoint, addressUri);
+    public Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest) {
+        return this.transportClient.openConnection(physicalAddress, openConnectionRequest);
     }
 
     @Override

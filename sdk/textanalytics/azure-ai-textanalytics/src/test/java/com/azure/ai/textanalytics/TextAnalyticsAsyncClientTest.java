@@ -69,7 +69,6 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_SPANISH;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.textanalytics.TestUtils.DYNAMIC_CLASSIFICATION_CATEGORIES;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
@@ -97,7 +96,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedDynamicClassifyDocumentResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultSortByOffset;
@@ -3055,98 +3053,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 )),
                 result.toStream().collect(Collectors.toList()));
         }, null);
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationDuplicateIdInput(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs,
-                DYNAMIC_CLASSIFICATION_CATEGORIES, null))
-                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
-        });
-    }
-
-    @Disabled("Disable tests by service request. https://github.com/Azure/azure-sdk-for-java/issues/33555")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES,
-                null))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
-                });
-        });
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        dynamicClassificationRunner((inputs, options) -> {
-            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES,
-                options))
-                .assertNext(response -> validateDynamicClassifyDocumentResultCollectionWithResponse(true,
-                    getExpectedDynamicClassifyDocumentResultCollection(), 200, response))
-                .verifyComplete();
-        });
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        dynamicClassificationStringInputRunner((inputs, options) ->
-            StepVerifier.create(client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
-                options))
-                .assertNext(response -> validateDynamicClassifyDocumentResultCollection(true,
-                    getExpectedDynamicClassifyDocumentResultCollection(), response))
-                .verifyComplete());
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        dynamicClassificationBatchWarningRunner((inputs, options) ->
-            StepVerifier.create(client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES,
-                options))
-                .assertNext(response -> response.getValue().forEach(classifyDocumentResult ->
-                    classifyDocumentResult.getWarnings().forEach(warning -> {
-                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-                    })))
-                .verifyComplete()
-        );
-    }
-
-    @Disabled("Disable tests by service request. https://github.com/Azure/azure-sdk-for-java/issues/33555")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationBatchTooManyDocuments(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs -> {
-            StepVerifier.create(client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
-                null))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
-                });
-        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

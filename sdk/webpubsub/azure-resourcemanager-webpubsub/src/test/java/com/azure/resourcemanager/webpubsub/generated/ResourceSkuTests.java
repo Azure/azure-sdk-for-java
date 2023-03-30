@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceSkuTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceSku model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class ResourceSkuTests {
         Assertions.assertEquals(1044580515, model.capacity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceSku model =
             new ResourceSku().withName("zwtruwiqzbqjvsov").withTier(WebPubSubSkuTier.BASIC).withCapacity(1044580515);
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);

@@ -23,6 +23,15 @@ public final class AuthenticationProvisioningState extends ExpandableStringEnum<
     public static final AuthenticationProvisioningState INCORRECT_POLICY = fromString("IncorrectPolicy");
 
     /**
+     * Creates a new instance of AuthenticationProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationProvisioningState() {
+    }
+
+    /**
      * Creates or finds a AuthenticationProvisioningState from its string representation.
      *
      * @param name a name to look for.

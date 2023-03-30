@@ -19,6 +19,10 @@ public final class DomainPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DomainPatchResourceProperties innerProperties;
 
+    /** Creates an instance of DomainPatchResource class. */
+    public DomainPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: DomainPatchResource resource specific properties.
      *

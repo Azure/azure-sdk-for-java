@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsRevisions DeactivateRevision. */
 public final class ContainerAppsRevisionsDeactivateRevisionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeactivateRevision.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeactivateRevision.json
      */
     /**
      * Sample code: Deactivate Container App's revision.
@@ -22,6 +20,7 @@ public final class ContainerAppsRevisionsDeactivateRevisionSamples {
             .manager()
             .serviceClient()
             .getContainerAppsRevisions()
-            .deactivateRevisionWithResponse("rg", "testcontainerApp0", "testcontainerApp0-pjxhsye", Context.NONE);
+            .deactivateRevisionWithResponse(
+                "rg", "testcontainerApp0", "testcontainerApp0-pjxhsye", com.azure.core.util.Context.NONE);
     }
 }

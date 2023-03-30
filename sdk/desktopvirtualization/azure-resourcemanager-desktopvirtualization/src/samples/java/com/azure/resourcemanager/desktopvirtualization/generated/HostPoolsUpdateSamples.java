@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdatePatchProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
+import com.azure.resourcemanager.desktopvirtualization.models.MaintenanceWindowPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfoPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationTokenOperation;
+import com.azure.resourcemanager.desktopvirtualization.models.SessionHostComponentUpdateType;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for HostPools Update. */
 public final class HostPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/HostPool_Update.json
      */
     /**
      * Sample code: HostPool_Update.
@@ -29,7 +32,10 @@ public final class HostPoolsUpdateSamples {
     public static void hostPoolUpdate(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
         HostPool resource =
-            manager.hostPools().getByResourceGroupWithResponse("resourceGroup1", "hostPool1", Context.NONE).getValue();
+            manager
+                .hostPools()
+                .getByResourceGroupWithResponse("resourceGroup1", "hostPool1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
@@ -48,7 +54,16 @@ public final class HostPoolsUpdateSamples {
             .withSsoClientSecretKeyVaultPath("https://keyvault/secret")
             .withSsoSecretType(SsoSecretType.SHARED_KEY)
             .withStartVMOnConnect(false)
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAgentUpdate(
+                new AgentUpdatePatchProperties()
+                    .withType(SessionHostComponentUpdateType.SCHEDULED)
+                    .withUseSessionHostLocalTime(false)
+                    .withMaintenanceWindowTimeZone("Alaskan Standard Time")
+                    .withMaintenanceWindows(
+                        Arrays
+                            .asList(
+                                new MaintenanceWindowPatchProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
+                                new MaintenanceWindowPatchProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
             .apply();
     }
 

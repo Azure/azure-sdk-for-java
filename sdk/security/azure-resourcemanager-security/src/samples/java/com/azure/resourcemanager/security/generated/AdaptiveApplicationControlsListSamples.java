@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdaptiveApplicationControls List. */
 public final class AdaptiveApplicationControlsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class AdaptiveApplicationControlsListSamples {
      */
     public static void getsAListOfApplicationControlGroupsOfMachinesForTheSubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls().listWithResponse(true, false, Context.NONE);
+        manager.adaptiveApplicationControls().listWithResponse(true, false, com.azure.core.util.Context.NONE);
     }
 }

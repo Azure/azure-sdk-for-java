@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignalRCustomDomains Delete. */
 public final class SignalRCustomDomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRCustomDomains_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRCustomDomains_Delete.json
      */
     /**
      * Sample code: SignalRCustomDomains_Delete.
@@ -17,6 +15,8 @@ public final class SignalRCustomDomainsDeleteSamples {
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRCustomDomainsDelete(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager.signalRCustomDomains().delete("myResourceGroup", "mySignalRService", "example", Context.NONE);
+        manager
+            .signalRCustomDomains()
+            .delete("myResourceGroup", "mySignalRService", "example", com.azure.core.util.Context.NONE);
     }
 }

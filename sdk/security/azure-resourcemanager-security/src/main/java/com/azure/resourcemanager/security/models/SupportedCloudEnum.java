@@ -17,6 +17,15 @@ public final class SupportedCloudEnum extends ExpandableStringEnum<SupportedClou
     public static final SupportedCloudEnum GCP = fromString("GCP");
 
     /**
+     * Creates a new instance of SupportedCloudEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportedCloudEnum() {
+    }
+
+    /**
      * Creates or finds a SupportedCloudEnum from its string representation.
      *
      * @param name a name to look for.

@@ -69,6 +69,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.storage.blob.implementation.util.BuilderHelper.createTracer;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
@@ -261,6 +262,7 @@ public final class EncryptedBlobClientBuilder implements
         return new HttpPipelineBuilder()
             .httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(pipeline.getTracer())
             .build();
     }
 
@@ -288,6 +290,7 @@ public final class EncryptedBlobClientBuilder implements
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
+                .tracer(httpPipeline.getTracer())
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
         }
@@ -345,6 +348,7 @@ public final class EncryptedBlobClientBuilder implements
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(createTracer(clientOptions))
             .build();
     }
 

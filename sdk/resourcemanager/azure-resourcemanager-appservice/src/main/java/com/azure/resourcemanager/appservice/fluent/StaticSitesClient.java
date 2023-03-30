@@ -13,9 +13,11 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.PrivateLinkResourcesWrapperInner;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBasicAuthPropertiesArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewArmResourceInner;
@@ -26,6 +28,8 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvided
 import com.azure.resourcemanager.appservice.fluent.models.StaticSitesWorkflowPreviewInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringListInner;
+import com.azure.resourcemanager.appservice.models.BasicAuthName;
+import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchRequest;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
@@ -46,7 +50,9 @@ public interface StaticSitesClient
         InnerSupportsListing<StaticSiteArmResourceInner>,
         InnerSupportsDelete<Void> {
     /**
-     * Description for Generates a preview workflow file for the static site.
+     * Generates a preview workflow file for the static site
+     *
+     * <p>Description for Generates a preview workflow file for the static site.
      *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
@@ -63,7 +69,9 @@ public interface StaticSitesClient
         String location, StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest);
 
     /**
-     * Description for Generates a preview workflow file for the static site.
+     * Generates a preview workflow file for the static site
+     *
+     * <p>Description for Generates a preview workflow file for the static site.
      *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
@@ -79,23 +87,9 @@ public interface StaticSitesClient
         String location, StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest);
 
     /**
-     * Description for Generates a preview workflow file for the static site.
+     * Generates a preview workflow file for the static site
      *
-     * @param location Location where you plan to create the static site.
-     * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
-     *     properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSitesWorkflowPreviewInner previewWorkflow(
-        String location, StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest);
-
-    /**
-     * Description for Generates a preview workflow file for the static site.
+     * <p>Description for Generates a preview workflow file for the static site.
      *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
@@ -112,7 +106,27 @@ public interface StaticSitesClient
         String location, StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest, Context context);
 
     /**
-     * Description for Get all Static Sites for a subscription.
+     * Generates a preview workflow file for the static site
+     *
+     * <p>Description for Generates a preview workflow file for the static site.
+     *
+     * @param location Location where you plan to create the static site.
+     * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
+     *     properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return preview for the Static Site Workflow to be generated.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSitesWorkflowPreviewInner previewWorkflow(
+        String location, StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest);
+
+    /**
+     * Get all Static Sites for a subscription.
+     *
+     * <p>Description for Get all Static Sites for a subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -123,7 +137,9 @@ public interface StaticSitesClient
     PagedFlux<StaticSiteArmResourceInner> listAsync();
 
     /**
-     * Description for Get all Static Sites for a subscription.
+     * Get all Static Sites for a subscription.
+     *
+     * <p>Description for Get all Static Sites for a subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -134,7 +150,9 @@ public interface StaticSitesClient
     PagedIterable<StaticSiteArmResourceInner> list();
 
     /**
-     * Description for Get all Static Sites for a subscription.
+     * Get all Static Sites for a subscription.
+     *
+     * <p>Description for Get all Static Sites for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +165,9 @@ public interface StaticSitesClient
     PagedIterable<StaticSiteArmResourceInner> list(Context context);
 
     /**
-     * Description for Gets all static sites in the specified resource group.
+     * Gets all static sites in the specified resource group.
+     *
+     * <p>Description for Gets all static sites in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +180,9 @@ public interface StaticSitesClient
     PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Description for Gets all static sites in the specified resource group.
+     * Gets all static sites in the specified resource group.
+     *
+     * <p>Description for Gets all static sites in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +195,9 @@ public interface StaticSitesClient
     PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Description for Gets all static sites in the specified resource group.
+     * Gets all static sites in the specified resource group.
+     *
+     * <p>Description for Gets all static sites in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -187,7 +211,9 @@ public interface StaticSitesClient
     PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Description for Gets the details of a static site.
+     * Gets the details of a static site.
+     *
+     * <p>Description for Gets the details of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -202,7 +228,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the details of a static site.
+     * Gets the details of a static site.
+     *
+     * <p>Description for Gets the details of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -216,21 +244,9 @@ public interface StaticSitesClient
     Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the details of a static site.
+     * Gets the details of a static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteArmResourceInner getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Description for Gets the details of a static site.
+     * <p>Description for Gets the details of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -246,7 +262,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Gets the details of a static site.
+     *
+     * <p>Description for Gets the details of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteArmResourceInner getByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -262,7 +296,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -278,7 +314,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -294,7 +332,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -311,7 +351,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -327,7 +369,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -343,7 +387,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -360,7 +406,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -374,7 +422,9 @@ public interface StaticSitesClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -388,7 +438,9 @@ public interface StaticSitesClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -402,7 +454,9 @@ public interface StaticSitesClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -417,7 +471,9 @@ public interface StaticSitesClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -431,7 +487,9 @@ public interface StaticSitesClient
     Mono<Void> deleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -444,7 +502,9 @@ public interface StaticSitesClient
     void delete(String resourceGroupName, String name);
 
     /**
-     * Description for Deletes a static site.
+     * Deletes a static site.
+     *
+     * <p>Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
@@ -458,7 +518,9 @@ public interface StaticSitesClient
     void delete(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -474,7 +536,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -490,23 +554,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope);
 
     /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to create or update.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteArmResourceInner updateStaticSite(
-        String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope);
-
-    /**
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
@@ -523,7 +573,27 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope, Context context);
 
     /**
-     * Description for Gets the list of users of a static site.
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * <p>Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to create or update.
+     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteArmResourceInner updateStaticSite(
+        String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope);
+
+    /**
+     * Gets the list of users of a static site.
+     *
+     * <p>Description for Gets the list of users of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -539,7 +609,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String authprovider);
 
     /**
-     * Description for Gets the list of users of a static site.
+     * Gets the list of users of a static site.
+     *
+     * <p>Description for Gets the list of users of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -555,7 +627,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String authprovider);
 
     /**
-     * Description for Gets the list of users of a static site.
+     * Gets the list of users of a static site.
+     *
+     * <p>Description for Gets the list of users of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -572,7 +646,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String authprovider, Context context);
 
     /**
-     * Description for Deletes the user entry from the static site.
+     * Deletes the user entry from the static site.
+     *
+     * <p>Description for Deletes the user entry from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
@@ -589,7 +665,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String authprovider, String userid);
 
     /**
-     * Description for Deletes the user entry from the static site.
+     * Deletes the user entry from the static site.
+     *
+     * <p>Description for Deletes the user entry from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
@@ -605,22 +683,9 @@ public interface StaticSitesClient
     Mono<Void> deleteStaticSiteUserAsync(String resourceGroupName, String name, String authprovider, String userid);
 
     /**
-     * Description for Deletes the user entry from the static site.
+     * Deletes the user entry from the static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the staticsite.
-     * @param authprovider The auth provider for this user.
-     * @param userid The user id of the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteStaticSiteUser(String resourceGroupName, String name, String authprovider, String userid);
-
-    /**
-     * Description for Deletes the user entry from the static site.
+     * <p>Description for Deletes the user entry from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
@@ -638,7 +703,26 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String authprovider, String userid, Context context);
 
     /**
-     * Description for Updates a user entry with the listed roles.
+     * Deletes the user entry from the static site.
+     *
+     * <p>Description for Deletes the user entry from the static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the staticsite.
+     * @param authprovider The auth provider for this user.
+     * @param userid The user id of the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteStaticSiteUser(String resourceGroupName, String name, String authprovider, String userid);
+
+    /**
+     * Updates a user entry with the listed roles
+     *
+     * <p>Description for Updates a user entry with the listed roles.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -660,7 +744,9 @@ public interface StaticSitesClient
         StaticSiteUserArmResourceInner staticSiteUserEnvelope);
 
     /**
-     * Description for Updates a user entry with the listed roles.
+     * Updates a user entry with the listed roles
+     *
+     * <p>Description for Updates a user entry with the listed roles.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -682,29 +768,9 @@ public interface StaticSitesClient
         StaticSiteUserArmResourceInner staticSiteUserEnvelope);
 
     /**
-     * Description for Updates a user entry with the listed roles.
+     * Updates a user entry with the listed roles
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param authprovider The auth provider for this user.
-     * @param userid The user id of the user.
-     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserArmResourceInner updateStaticSiteUser(
-        String resourceGroupName,
-        String name,
-        String authprovider,
-        String userid,
-        StaticSiteUserArmResourceInner staticSiteUserEnvelope);
-
-    /**
-     * Description for Updates a user entry with the listed roles.
+     * <p>Description for Updates a user entry with the listed roles.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -728,7 +794,33 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Gets all static site builds for a particular static site.
+     * Updates a user entry with the listed roles
+     *
+     * <p>Description for Updates a user entry with the listed roles.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param authprovider The auth provider for this user.
+     * @param userid The user id of the user.
+     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteUserArmResourceInner updateStaticSiteUser(
+        String resourceGroupName,
+        String name,
+        String authprovider,
+        String userid,
+        StaticSiteUserArmResourceInner staticSiteUserEnvelope);
+
+    /**
+     * Gets all static site builds for a particular static site.
+     *
+     * <p>Description for Gets all static site builds for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -742,7 +834,9 @@ public interface StaticSitesClient
     PagedFlux<StaticSiteBuildArmResourceInner> getStaticSiteBuildsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets all static site builds for a particular static site.
+     * Gets all static site builds for a particular static site.
+     *
+     * <p>Description for Gets all static site builds for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -756,7 +850,9 @@ public interface StaticSitesClient
     PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name);
 
     /**
-     * Description for Gets all static site builds for a particular static site.
+     * Gets all static site builds for a particular static site.
+     *
+     * <p>Description for Gets all static site builds for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -772,7 +868,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the details of a static site build.
+     * Gets the details of a static site build.
+     *
+     * <p>Description for Gets the details of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -788,7 +886,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the details of a static site build.
+     * Gets the details of a static site build.
+     *
+     * <p>Description for Gets the details of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -804,22 +904,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the details of a static site build.
+     * Gets the details of a static site build.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Build ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteBuildArmResourceInner getStaticSiteBuild(String resourceGroupName, String name, String environmentName);
-
-    /**
-     * Description for Gets the details of a static site build.
+     * <p>Description for Gets the details of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -836,7 +923,26 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Deletes a static site build.
+     * Gets the details of a static site build.
+     *
+     * <p>Description for Gets the details of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Build ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteBuildArmResourceInner getStaticSiteBuild(String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -852,7 +958,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Deletes a static site build.
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -868,7 +976,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Deletes a static site build.
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -884,7 +994,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Deletes a static site build.
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -901,7 +1013,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Deletes a static site build.
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -916,7 +1030,9 @@ public interface StaticSitesClient
     Mono<Void> deleteStaticSiteBuildAsync(String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Deletes a static site build.
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -930,7 +1046,9 @@ public interface StaticSitesClient
     void deleteStaticSiteBuild(String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Deletes a static site build.
+     * Deletes a static site build.
+     *
+     * <p>Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -945,7 +1063,9 @@ public interface StaticSitesClient
     void deleteStaticSiteBuild(String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Creates or updates the app settings of a static site build.
+     * Creates or updates the app settings of a static site build.
+     *
+     * <p>Description for Creates or updates the app settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -962,7 +1082,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the app settings of a static site build.
+     * Creates or updates the app settings of a static site build.
+     *
+     * <p>Description for Creates or updates the app settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -979,24 +1101,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the app settings of a static site build.
+     * Creates or updates the app settings of a static site build.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner createOrUpdateStaticSiteBuildAppSettings(
-        String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
-
-    /**
-     * Description for Creates or updates the app settings of a static site build.
+     * <p>Description for Creates or updates the app settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1018,7 +1125,28 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Creates or updates the function app settings of a static site build.
+     * Creates or updates the app settings of a static site build.
+     *
+     * <p>Description for Creates or updates the app settings of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param appSettings The dictionary containing the static site app settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner createOrUpdateStaticSiteBuildAppSettings(
+        String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
+
+    /**
+     * Creates or updates the function app settings of a static site build.
+     *
+     * <p>Description for Creates or updates the function app settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1035,7 +1163,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the function app settings of a static site build.
+     * Creates or updates the function app settings of a static site build.
+     *
+     * <p>Description for Creates or updates the function app settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1052,24 +1182,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the function app settings of a static site build.
+     * Creates or updates the function app settings of a static site build.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner createOrUpdateStaticSiteBuildFunctionAppSettings(
-        String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
-
-    /**
-     * Description for Creates or updates the function app settings of a static site build.
+     * <p>Description for Creates or updates the function app settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1091,7 +1206,483 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Gets the functions of a particular static site build.
+     * Creates or updates the function app settings of a static site build.
+     *
+     * <p>Description for Creates or updates the function app settings of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param appSettings The dictionary containing the static site function app settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner createOrUpdateStaticSiteBuildFunctionAppSettings(
+        String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings);
+
+    /**
+     * Returns overviews of database connections for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DatabaseConnectionInner> getBuildDatabaseConnectionsAsync(
+        String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Returns overviews of database connections for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnections(
+        String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Returns overviews of database connections for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnections(
+        String resourceGroupName, String name, String environmentName, Context context);
+
+    /**
+     * Returns overview of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithResponseAsync(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Returns overview of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> getBuildDatabaseConnectionAsync(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Returns overview of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithResponse(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName, Context context);
+
+    /**
+     * Returns overview of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner getBuildDatabaseConnection(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> createOrUpdateBuildDatabaseConnectionWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> createOrUpdateBuildDatabaseConnectionAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> createOrUpdateBuildDatabaseConnectionWithResponse(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope,
+        Context context);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner createOrUpdateBuildDatabaseConnection(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope);
+
+    /**
+     * Delete a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteBuildDatabaseConnectionWithResponseAsync(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Delete a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteBuildDatabaseConnectionAsync(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Delete a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteBuildDatabaseConnectionWithResponse(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName, Context context);
+
+    /**
+     * Delete a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteBuildDatabaseConnection(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> updateBuildDatabaseConnectionWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> updateBuildDatabaseConnectionAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> updateBuildDatabaseConnectionWithResponse(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
+        Context context);
+
+    /**
+     * Create or update a database connection for a static site build
+     *
+     * <p>Description for Create or update a database connection for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner updateBuildDatabaseConnection(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope);
+
+    /**
+     * Returns details of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithDetailsWithResponseAsync(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Returns details of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> getBuildDatabaseConnectionWithDetailsAsync(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Returns details of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithDetailsWithResponse(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName, Context context);
+
+    /**
+     * Returns details of a database connection for a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner getBuildDatabaseConnectionWithDetails(
+        String resourceGroupName, String name, String environmentName, String databaseConnectionName);
+
+    /**
+     * Gets the functions of a particular static site build.
+     *
+     * <p>Description for Gets the functions of a particular static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1107,7 +1698,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the functions of a particular static site build.
+     * Gets the functions of a particular static site build.
+     *
+     * <p>Description for Gets the functions of a particular static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1123,7 +1716,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the functions of a particular static site build.
+     * Gets the functions of a particular static site build.
+     *
+     * <p>Description for Gets the functions of a particular static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1140,7 +1735,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Gets the application settings of a static site build.
+     * Gets the application settings of a static site build.
+     *
+     * <p>Description for Gets the application settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1156,7 +1753,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the application settings of a static site build.
+     * Gets the application settings of a static site build.
+     *
+     * <p>Description for Gets the application settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1172,22 +1771,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the application settings of a static site build.
+     * Gets the application settings of a static site build.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner listStaticSiteBuildAppSettings(String resourceGroupName, String name, String environmentName);
-
-    /**
-     * Description for Gets the application settings of a static site build.
+     * <p>Description for Gets the application settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1204,7 +1790,26 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Gets the application settings of a static site build.
+     * Gets the application settings of a static site build.
+     *
+     * <p>Description for Gets the application settings of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner listStaticSiteBuildAppSettings(String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Gets the application settings of a static site build.
+     *
+     * <p>Description for Gets the application settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1220,7 +1825,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the application settings of a static site build.
+     * Gets the application settings of a static site build.
+     *
+     * <p>Description for Gets the application settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1236,23 +1843,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the application settings of a static site build.
+     * Gets the application settings of a static site build.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner listStaticSiteBuildFunctionAppSettings(
-        String resourceGroupName, String name, String environmentName);
-
-    /**
-     * Description for Gets the application settings of a static site build.
+     * <p>Description for Gets the application settings of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1269,7 +1862,76 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Gets the details of the user provided function apps registered with a static site build.
+     * Gets the application settings of a static site build.
+     *
+     * <p>Description for Gets the application settings of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner listStaticSiteBuildFunctionAppSettings(
+        String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Returns details of database connections for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetailsAsync(
+        String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Returns details of database connections for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetails(
+        String resourceGroupName, String name, String environmentName);
+
+    /**
+     * Returns details of database connections for a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetails(
+        String resourceGroupName, String name, String environmentName, Context context);
+
+    /**
+     * Gets the details of the user provided function apps registered with a static site build
+     *
+     * <p>Description for Gets the details of the user provided function apps registered with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1285,7 +1947,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the details of the user provided function apps registered with a static site build.
+     * Gets the details of the user provided function apps registered with a static site build
+     *
+     * <p>Description for Gets the details of the user provided function apps registered with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1301,7 +1965,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName);
 
     /**
-     * Description for Gets the details of the user provided function apps registered with a static site build.
+     * Gets the details of the user provided function apps registered with a static site build
+     *
+     * <p>Description for Gets the details of the user provided function apps registered with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1318,7 +1984,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, Context context);
 
     /**
-     * Description for Gets the details of the user provided function app registered with a static site build.
+     * Gets the details of the user provided function app registered with a static site build
+     *
+     * <p>Description for Gets the details of the user provided function app registered with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1337,7 +2005,9 @@ public interface StaticSitesClient
             String resourceGroupName, String name, String environmentName, String functionAppName);
 
     /**
-     * Description for Gets the details of the user provided function app registered with a static site build.
+     * Gets the details of the user provided function app registered with a static site build
+     *
+     * <p>Description for Gets the details of the user provided function app registered with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1354,24 +2024,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, String functionAppName);
 
     /**
-     * Description for Gets the details of the user provided function app registered with a static site build.
+     * Gets the details of the user provided function app registered with a static site build
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSiteBuild(
-        String resourceGroupName, String name, String environmentName, String functionAppName);
-
-    /**
-     * Description for Gets the details of the user provided function app registered with a static site build.
+     * <p>Description for Gets the details of the user provided function app registered with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1390,7 +2045,28 @@ public interface StaticSitesClient
             String resourceGroupName, String name, String environmentName, String functionAppName, Context context);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Gets the details of the user provided function app registered with a static site build
+     *
+     * <p>Description for Gets the details of the user provided function app registered with a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param functionAppName Name of the function app registered with the static site build.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User Provided Function App ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSiteBuild(
+        String resourceGroupName, String name, String environmentName, String functionAppName);
+
+    /**
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1418,7 +2094,9 @@ public interface StaticSitesClient
         Boolean isForced);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1448,7 +2126,9 @@ public interface StaticSitesClient
             Boolean isForced);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1456,9 +2136,34 @@ public interface StaticSitesClient
      * @param functionAppName Name of the function app to register with the static site build.
      * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
      *     See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     *     function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     *     &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<
+            PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
+            StaticSiteUserProvidedFunctionAppArmResourceInner>
+        beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(
+            String resourceGroupName,
+            String name,
+            String environmentName,
+            String functionAppName,
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
+
+    /**
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param functionAppName Name of the function app to register with the static site build.
+     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
+     *     See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1474,11 +2179,12 @@ public interface StaticSitesClient
             String name,
             String environmentName,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
-            Boolean isForced);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1510,7 +2216,9 @@ public interface StaticSitesClient
             Context context);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1537,7 +2245,9 @@ public interface StaticSitesClient
         Boolean isForced);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1560,34 +2270,9 @@ public interface StaticSitesClient
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app to register with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     *     See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     *     function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     *     &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSiteBuild(
-        String resourceGroupName,
-        String name,
-        String environmentName,
-        String functionAppName,
-        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
-        Boolean isForced);
-
-    /**
-     * Description for Register a user provided function app with a static site build.
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1610,7 +2295,9 @@ public interface StaticSitesClient
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
-     * Description for Register a user provided function app with a static site build.
+     * Register a user provided function app with a static site build
+     *
+     * <p>Description for Register a user provided function app with a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1639,7 +2326,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Detach the user provided function app from the static site build.
+     * Detach the user provided function app from the static site build
+     *
+     * <p>Description for Detach the user provided function app from the static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1656,7 +2345,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, String functionAppName);
 
     /**
-     * Description for Detach the user provided function app from the static site build.
+     * Detach the user provided function app from the static site build
+     *
+     * <p>Description for Detach the user provided function app from the static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1673,23 +2364,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, String functionAppName);
 
     /**
-     * Description for Detach the user provided function app from the static site build.
+     * Detach the user provided function app from the static site build
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachUserProvidedFunctionAppFromStaticSiteBuild(
-        String resourceGroupName, String name, String environmentName, String functionAppName);
-
-    /**
-     * Description for Detach the user provided function app from the static site build.
+     * <p>Description for Detach the user provided function app from the static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1707,7 +2384,27 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String environmentName, String functionAppName, Context context);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Detach the user provided function app from the static site build
+     *
+     * <p>Description for Detach the user provided function app from the static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param functionAppName Name of the function app registered with the static site build.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void detachUserProvidedFunctionAppFromStaticSiteBuild(
+        String resourceGroupName, String name, String environmentName, String functionAppName);
+
+    /**
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1728,7 +2425,9 @@ public interface StaticSitesClient
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1749,7 +2448,9 @@ public interface StaticSitesClient
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1770,7 +2471,9 @@ public interface StaticSitesClient
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1793,7 +2496,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1814,7 +2519,9 @@ public interface StaticSitesClient
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1834,7 +2541,9 @@ public interface StaticSitesClient
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a specific environment of a static site.
+     * Deploys zipped content to a specific environment of a static site.
+     *
+     * <p>Description for Deploys zipped content to a specific environment of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1856,7 +2565,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Creates or updates the app settings of a static site.
+     * Creates or updates the app settings of a static site.
+     *
+     * <p>Description for Creates or updates the app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1872,7 +2583,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the app settings of a static site.
+     * Creates or updates the app settings of a static site.
+     *
+     * <p>Description for Creates or updates the app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1888,23 +2601,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the app settings of a static site.
+     * Creates or updates the app settings of a static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner createOrUpdateStaticSiteAppSettings(
-        String resourceGroupName, String name, StringDictionaryInner appSettings);
-
-    /**
-     * Description for Creates or updates the app settings of a static site.
+     * <p>Description for Creates or updates the app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1921,7 +2620,242 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings, Context context);
 
     /**
-     * Description for Creates or updates the function app settings of a static site.
+     * Creates or updates the app settings of a static site.
+     *
+     * <p>Description for Creates or updates the app settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param appSettings The dictionary containing the static site app settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner createOrUpdateStaticSiteAppSettings(
+        String resourceGroupName, String name, StringDictionaryInner appSettings);
+
+    /**
+     * Gets the basic auth properties for a static site as a collection.
+     *
+     * <p>Description for Gets the basic auth properties for a static site as a collection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site basic auth as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthAsync(String resourceGroupName, String name);
+
+    /**
+     * Gets the basic auth properties for a static site as a collection.
+     *
+     * <p>Description for Gets the basic auth properties for a static site as a collection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site basic auth as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName, String name);
+
+    /**
+     * Gets the basic auth properties for a static site as a collection.
+     *
+     * <p>Description for Gets the basic auth properties for a static site as a collection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site basic auth as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(
+        String resourceGroupName, String name, Context context);
+
+    /**
+     * Gets the basic auth properties for a static site.
+     *
+     * <p>Description for Gets the basic auth properties for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> getBasicAuthWithResponseAsync(
+        String resourceGroupName, String name, BasicAuthName basicAuthName);
+
+    /**
+     * Gets the basic auth properties for a static site.
+     *
+     * <p>Description for Gets the basic auth properties for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthAsync(
+        String resourceGroupName, String name, BasicAuthName basicAuthName);
+
+    /**
+     * Gets the basic auth properties for a static site.
+     *
+     * <p>Description for Gets the basic auth properties for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthWithResponse(
+        String resourceGroupName, String name, BasicAuthName basicAuthName, Context context);
+
+    /**
+     * Gets the basic auth properties for a static site.
+     *
+     * <p>Description for Gets the basic auth properties for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteBasicAuthPropertiesArmResourceInner getBasicAuth(
+        String resourceGroupName, String name, BasicAuthName basicAuthName);
+
+    /**
+     * Adds or updates basic auth for a static site.
+     *
+     * <p>Description for Adds or updates basic auth for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        BasicAuthName basicAuthName,
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope);
+
+    /**
+     * Adds or updates basic auth for a static site.
+     *
+     * <p>Description for Adds or updates basic auth for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthAsync(
+        String resourceGroupName,
+        String name,
+        BasicAuthName basicAuthName,
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope);
+
+    /**
+     * Adds or updates basic auth for a static site.
+     *
+     * <p>Description for Adds or updates basic auth for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthWithResponse(
+        String resourceGroupName,
+        String name,
+        BasicAuthName basicAuthName,
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope,
+        Context context);
+
+    /**
+     * Adds or updates basic auth for a static site.
+     *
+     * <p>Description for Adds or updates basic auth for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param basicAuthName name of the basic auth entry.
+     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static site basic auth properties ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteBasicAuthPropertiesArmResourceInner createOrUpdateBasicAuth(
+        String resourceGroupName,
+        String name,
+        BasicAuthName basicAuthName,
+        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope);
+
+    /**
+     * Creates or updates the function app settings of a static site.
+     *
+     * <p>Description for Creates or updates the function app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1937,7 +2871,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the function app settings of a static site.
+     * Creates or updates the function app settings of a static site.
+     *
+     * <p>Description for Creates or updates the function app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1953,23 +2889,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings);
 
     /**
-     * Description for Creates or updates the function app settings of a static site.
+     * Creates or updates the function app settings of a static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site function app settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner createOrUpdateStaticSiteFunctionAppSettings(
-        String resourceGroupName, String name, StringDictionaryInner appSettings);
-
-    /**
-     * Description for Creates or updates the function app settings of a static site.
+     * <p>Description for Creates or updates the function app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -1986,7 +2908,27 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings, Context context);
 
     /**
-     * Description for Creates an invitation link for a user with the role.
+     * Creates or updates the function app settings of a static site.
+     *
+     * <p>Description for Creates or updates the function app settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param appSettings The dictionary containing the static site function app settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner createOrUpdateStaticSiteFunctionAppSettings(
+        String resourceGroupName, String name, StringDictionaryInner appSettings);
+
+    /**
+     * Creates an invitation link for a user with the role
+     *
+     * <p>Description for Creates an invitation link for a user with the role.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2005,7 +2947,9 @@ public interface StaticSitesClient
         StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope);
 
     /**
-     * Description for Creates an invitation link for a user with the role.
+     * Creates an invitation link for a user with the role
+     *
+     * <p>Description for Creates an invitation link for a user with the role.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2023,25 +2967,9 @@ public interface StaticSitesClient
         StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope);
 
     /**
-     * Description for Creates an invitation link for a user with the role.
+     * Creates an invitation link for a user with the role
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserInvitationResponseResourceInner createUserRolesInvitationLink(
-        String resourceGroupName,
-        String name,
-        StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope);
-
-    /**
-     * Description for Creates an invitation link for a user with the role.
+     * <p>Description for Creates an invitation link for a user with the role.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2061,7 +2989,29 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Gets all static site custom domains for a particular static site.
+     * Creates an invitation link for a user with the role
+     *
+     * <p>Description for Creates an invitation link for a user with the role.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static sites user roles invitation link resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteUserInvitationResponseResourceInner createUserRolesInvitationLink(
+        String resourceGroupName,
+        String name,
+        StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope);
+
+    /**
+     * Gets all static site custom domains for a particular static site.
+     *
+     * <p>Description for Gets all static site custom domains for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
@@ -2076,7 +3026,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets all static site custom domains for a particular static site.
+     * Gets all static site custom domains for a particular static site.
+     *
+     * <p>Description for Gets all static site custom domains for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
@@ -2091,7 +3043,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets all static site custom domains for a particular static site.
+     * Gets all static site custom domains for a particular static site.
+     *
+     * <p>Description for Gets all static site custom domains for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
@@ -2107,7 +3061,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets an existing custom domain for a particular static site.
+     * Gets an existing custom domain for a particular static site.
+     *
+     * <p>Description for Gets an existing custom domain for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
@@ -2124,7 +3080,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Gets an existing custom domain for a particular static site.
+     * Gets an existing custom domain for a particular static site.
+     *
+     * <p>Description for Gets an existing custom domain for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
@@ -2140,23 +3098,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Gets an existing custom domain for a particular static site.
+     * Gets an existing custom domain for a particular static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site resource to search in.
-     * @param domainName The custom domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteCustomDomainOverviewArmResourceInner getStaticSiteCustomDomain(
-        String resourceGroupName, String name, String domainName);
-
-    /**
-     * Description for Gets an existing custom domain for a particular static site.
+     * <p>Description for Gets an existing custom domain for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
@@ -2173,7 +3117,27 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName, Context context);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Gets an existing custom domain for a particular static site.
+     *
+     * <p>Description for Gets an existing custom domain for a particular static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site resource to search in.
+     * @param domainName The custom domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Custom Domain Overview ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteCustomDomainOverviewArmResourceInner getStaticSiteCustomDomain(
+        String resourceGroupName, String name, String domainName);
+
+    /**
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2195,7 +3159,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2218,7 +3184,9 @@ public interface StaticSitesClient
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2241,7 +3209,9 @@ public interface StaticSitesClient
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2266,7 +3236,9 @@ public interface StaticSitesClient
             Context context);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2287,7 +3259,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2308,7 +3282,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * <p>Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2331,7 +3307,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2347,7 +3325,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2363,7 +3343,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2379,7 +3361,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2396,7 +3380,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String domainName, Context context);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2411,7 +3397,9 @@ public interface StaticSitesClient
     Mono<Void> deleteStaticSiteCustomDomainAsync(String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2425,7 +3413,9 @@ public interface StaticSitesClient
     void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName);
 
     /**
-     * Description for Deletes a custom domain.
+     * Deletes a custom domain.
+     *
+     * <p>Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2440,7 +3430,9 @@ public interface StaticSitesClient
     void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName, Context context);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2461,7 +3453,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2482,7 +3476,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2503,7 +3499,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2526,7 +3524,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2547,7 +3547,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2567,7 +3569,9 @@ public interface StaticSitesClient
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope);
 
     /**
-     * Description for Validates a particular custom domain can be added to a static site.
+     * Validates a particular custom domain can be added to a static site.
+     *
+     * <p>Description for Validates a particular custom domain can be added to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2589,7 +3593,428 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Detaches a static site.
+     * Returns overviews of database connections for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DatabaseConnectionInner> getDatabaseConnectionsAsync(String resourceGroupName, String name);
+
+    /**
+     * Returns overviews of database connections for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getDatabaseConnections(String resourceGroupName, String name);
+
+    /**
+     * Returns overviews of database connections for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getDatabaseConnections(
+        String resourceGroupName, String name, Context context);
+
+    /**
+     * Returns overview of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithResponseAsync(
+        String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Returns overview of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> getDatabaseConnectionAsync(
+        String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Returns overview of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> getDatabaseConnectionWithResponse(
+        String resourceGroupName, String name, String databaseConnectionName, Context context);
+
+    /**
+     * Returns overview of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner getDatabaseConnection(String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> createOrUpdateDatabaseConnectionWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> createOrUpdateDatabaseConnectionAsync(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> createOrUpdateDatabaseConnectionWithResponse(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope,
+        Context context);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner createOrUpdateDatabaseConnection(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionInner databaseConnectionRequestEnvelope);
+
+    /**
+     * Delete a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteDatabaseConnectionWithResponseAsync(
+        String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Delete a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteDatabaseConnectionAsync(String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Delete a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteDatabaseConnectionWithResponse(
+        String resourceGroupName, String name, String databaseConnectionName, Context context);
+
+    /**
+     * Delete a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDatabaseConnection(String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> updateDatabaseConnectionWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> updateDatabaseConnectionAsync(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> updateDatabaseConnectionWithResponse(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
+        Context context);
+
+    /**
+     * Create or update a database connection for a static site
+     *
+     * <p>Description for Create or update a database connection for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner updateDatabaseConnection(
+        String resourceGroupName,
+        String name,
+        String databaseConnectionName,
+        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope);
+
+    /**
+     * Returns details of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithDetailsWithResponseAsync(
+        String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Returns details of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseConnectionInner> getDatabaseConnectionWithDetailsAsync(
+        String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Returns details of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseConnectionInner> getDatabaseConnectionWithDetailsWithResponse(
+        String resourceGroupName, String name, String databaseConnectionName, Context context);
+
+    /**
+     * Returns details of a database connection for a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param databaseConnectionName Name of the database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Database Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseConnectionInner getDatabaseConnectionWithDetails(
+        String resourceGroupName, String name, String databaseConnectionName);
+
+    /**
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2603,7 +4028,9 @@ public interface StaticSitesClient
     Mono<Response<Flux<ByteBuffer>>> detachStaticSiteWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Detaches a static site.
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2617,7 +4044,9 @@ public interface StaticSitesClient
     PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Detaches a static site.
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2631,7 +4060,9 @@ public interface StaticSitesClient
     SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name);
 
     /**
-     * Description for Detaches a static site.
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2646,7 +4077,9 @@ public interface StaticSitesClient
     SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Detaches a static site.
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2660,7 +4093,9 @@ public interface StaticSitesClient
     Mono<Void> detachStaticSiteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Detaches a static site.
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2673,7 +4108,9 @@ public interface StaticSitesClient
     void detachStaticSite(String resourceGroupName, String name);
 
     /**
-     * Description for Detaches a static site.
+     * Detaches a static site.
+     *
+     * <p>Description for Detaches a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
@@ -2687,7 +4124,9 @@ public interface StaticSitesClient
     void detachStaticSite(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the functions of a static site.
+     * Gets the functions of a static site.
+     *
+     * <p>Description for Gets the functions of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2702,7 +4141,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the functions of a static site.
+     * Gets the functions of a static site.
+     *
+     * <p>Description for Gets the functions of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2717,7 +4158,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the functions of a static site.
+     * Gets the functions of a static site.
+     *
+     * <p>Description for Gets the functions of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2733,7 +4176,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the application settings of a static site.
+     * Gets the application settings of a static site.
+     *
+     * <p>Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2748,7 +4193,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the application settings of a static site.
+     * Gets the application settings of a static site.
+     *
+     * <p>Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2762,21 +4209,9 @@ public interface StaticSitesClient
     Mono<StringDictionaryInner> listStaticSiteAppSettingsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the application settings of a static site.
+     * Gets the application settings of a static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner listStaticSiteAppSettings(String resourceGroupName, String name);
-
-    /**
-     * Description for Gets the application settings of a static site.
+     * <p>Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2792,7 +4227,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Lists the roles configured for the static site.
+     * Gets the application settings of a static site.
+     *
+     * <p>Description for Gets the application settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner listStaticSiteAppSettings(String resourceGroupName, String name);
+
+    /**
+     * Lists the roles configured for the static site.
+     *
+     * <p>Description for Lists the roles configured for the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2807,7 +4260,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Lists the roles configured for the static site.
+     * Lists the roles configured for the static site.
+     *
+     * <p>Description for Lists the roles configured for the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2821,21 +4276,9 @@ public interface StaticSitesClient
     Mono<StringListInner> listStaticSiteConfiguredRolesAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Lists the roles configured for the static site.
+     * Lists the roles configured for the static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringListInner listStaticSiteConfiguredRoles(String resourceGroupName, String name);
-
-    /**
-     * Description for Lists the roles configured for the static site.
+     * <p>Description for Lists the roles configured for the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2851,7 +4294,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the application settings of a static site.
+     * Lists the roles configured for the static site.
+     *
+     * <p>Description for Lists the roles configured for the static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string list resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringListInner listStaticSiteConfiguredRoles(String resourceGroupName, String name);
+
+    /**
+     * Gets the application settings of a static site.
+     *
+     * <p>Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2866,7 +4327,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the application settings of a static site.
+     * Gets the application settings of a static site.
+     *
+     * <p>Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2880,21 +4343,9 @@ public interface StaticSitesClient
     Mono<StringDictionaryInner> listStaticSiteFunctionAppSettingsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the application settings of a static site.
+     * Gets the application settings of a static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner listStaticSiteFunctionAppSettings(String resourceGroupName, String name);
-
-    /**
-     * Description for Gets the application settings of a static site.
+     * <p>Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2910,7 +4361,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Lists the secrets for an existing static site.
+     * Gets the application settings of a static site.
+     *
+     * <p>Description for Gets the application settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner listStaticSiteFunctionAppSettings(String resourceGroupName, String name);
+
+    /**
+     * Lists the secrets for an existing static site.
+     *
+     * <p>Description for Lists the secrets for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2924,7 +4393,9 @@ public interface StaticSitesClient
     Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Lists the secrets for an existing static site.
+     * Lists the secrets for an existing static site.
+     *
+     * <p>Description for Lists the secrets for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2938,21 +4409,9 @@ public interface StaticSitesClient
     Mono<StringDictionaryInner> listStaticSiteSecretsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Lists the secrets for an existing static site.
+     * Lists the secrets for an existing static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StringDictionaryInner listStaticSiteSecrets(String resourceGroupName, String name);
-
-    /**
-     * Description for Lists the secrets for an existing static site.
+     * <p>Description for Lists the secrets for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2968,7 +4427,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the list of private endpoint connections associated with a static site.
+     * Lists the secrets for an existing static site.
+     *
+     * <p>Description for Lists the secrets for an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner listStaticSiteSecrets(String resourceGroupName, String name);
+
+    /**
+     * Gets the list of private endpoint connections associated with a static site
+     *
+     * <p>Description for Gets the list of private endpoint connections associated with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2983,7 +4460,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the list of private endpoint connections associated with a static site.
+     * Gets the list of private endpoint connections associated with a static site
+     *
+     * <p>Description for Gets the list of private endpoint connections associated with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -2998,7 +4477,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the list of private endpoint connections associated with a static site.
+     * Gets the list of private endpoint connections associated with a static site
+     *
+     * <p>Description for Gets the list of private endpoint connections associated with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3014,7 +4495,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3031,7 +4514,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3047,23 +4532,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(
-        String resourceGroupName, String name, String privateEndpointConnectionName);
-
-    /**
-     * Description for Gets a private endpoint connection.
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3080,7 +4551,27 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param privateEndpointConnectionName Name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote Private Endpoint Connection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(
+        String resourceGroupName, String name, String privateEndpointConnectionName);
+
+    /**
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3101,7 +4592,9 @@ public interface StaticSitesClient
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3124,7 +4617,9 @@ public interface StaticSitesClient
             PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3147,7 +4642,9 @@ public interface StaticSitesClient
             PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3172,7 +4669,9 @@ public interface StaticSitesClient
             Context context);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3192,7 +4691,9 @@ public interface StaticSitesClient
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3212,7 +4713,9 @@ public interface StaticSitesClient
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3234,7 +4737,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3250,7 +4755,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3266,7 +4773,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3282,7 +4791,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3299,7 +4810,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3315,7 +4828,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3330,7 +4845,9 @@ public interface StaticSitesClient
     Object deletePrivateEndpointConnection(String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3347,7 +4864,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
@@ -3363,7 +4882,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
@@ -3377,21 +4898,9 @@ public interface StaticSitesClient
     Mono<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name);
-
-    /**
-     * Description for Gets the private link resources.
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
@@ -3407,7 +4916,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Resets the api key for an existing static site.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper for a collection of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name);
+
+    /**
+     * Resets the api key for an existing static site.
+     *
+     * <p>Description for Resets the api key for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3423,7 +4950,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
 
     /**
-     * Description for Resets the api key for an existing static site.
+     * Resets the api key for an existing static site.
+     *
+     * <p>Description for Resets the api key for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3439,22 +4968,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
 
     /**
-     * Description for Resets the api key for an existing static site.
+     * Resets the api key for an existing static site.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetStaticSiteApiKey(
-        String resourceGroupName, String name, StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
-
-    /**
-     * Description for Resets the api key for an existing static site.
+     * <p>Description for Resets the api key for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3474,7 +4990,70 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Gets the details of the user provided function apps registered with a static site.
+     * Resets the api key for an existing static site.
+     *
+     * <p>Description for Resets the api key for an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetStaticSiteApiKey(
+        String resourceGroupName, String name, StaticSiteResetPropertiesArmResource resetPropertiesEnvelope);
+
+    /**
+     * Returns details of database connections for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsAsync(String resourceGroupName, String name);
+
+    /**
+     * Returns details of database connections for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getDatabaseConnectionsWithDetails(String resourceGroupName, String name);
+
+    /**
+     * Returns details of database connections for a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DatabaseConnectionInner> getDatabaseConnectionsWithDetails(
+        String resourceGroupName, String name, Context context);
+
+    /**
+     * Gets the details of the user provided function apps registered with a static site
+     *
+     * <p>Description for Gets the details of the user provided function apps registered with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3489,7 +5068,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the details of the user provided function apps registered with a static site.
+     * Gets the details of the user provided function apps registered with a static site
+     *
+     * <p>Description for Gets the details of the user provided function apps registered with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3504,7 +5085,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the details of the user provided function apps registered with a static site.
+     * Gets the details of the user provided function apps registered with a static site
+     *
+     * <p>Description for Gets the details of the user provided function apps registered with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3520,7 +5103,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the details of the user provided function app registered with a static site.
+     * Gets the details of the user provided function app registered with a static site
+     *
+     * <p>Description for Gets the details of the user provided function app registered with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3538,7 +5123,9 @@ public interface StaticSitesClient
             String resourceGroupName, String name, String functionAppName);
 
     /**
-     * Description for Gets the details of the user provided function app registered with a static site.
+     * Gets the details of the user provided function app registered with a static site
+     *
+     * <p>Description for Gets the details of the user provided function app registered with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3554,23 +5141,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String functionAppName);
 
     /**
-     * Description for Gets the details of the user provided function app registered with a static site.
+     * Gets the details of the user provided function app registered with a static site
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSite(
-        String resourceGroupName, String name, String functionAppName);
-
-    /**
-     * Description for Gets the details of the user provided function app registered with a static site.
+     * <p>Description for Gets the details of the user provided function app registered with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3587,7 +5160,27 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String functionAppName, Context context);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Gets the details of the user provided function app registered with a static site
+     *
+     * <p>Description for Gets the details of the user provided function app registered with a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param functionAppName Name of the function app registered with the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User Provided Function App ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteUserProvidedFunctionAppArmResourceInner getUserProvidedFunctionAppForStaticSite(
+        String resourceGroupName, String name, String functionAppName);
+
+    /**
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3613,7 +5206,9 @@ public interface StaticSitesClient
         Boolean isForced);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3641,16 +5236,41 @@ public interface StaticSitesClient
             Boolean isForced);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
      * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
      *     See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     *     function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     *     &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<
+            PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
+            StaticSiteUserProvidedFunctionAppArmResourceInner>
+        beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(
+            String resourceGroupName,
+            String name,
+            String functionAppName,
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
+
+    /**
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param functionAppName Name of the function app to register with the static site.
+     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
+     *     See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -3665,11 +5285,12 @@ public interface StaticSitesClient
             String resourceGroupName,
             String name,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
-            Boolean isForced);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3699,7 +5320,9 @@ public interface StaticSitesClient
             Context context);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3724,7 +5347,9 @@ public interface StaticSitesClient
         Boolean isForced);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3745,32 +5370,9 @@ public interface StaticSitesClient
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app to register with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     *     See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     *     function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     *     &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteUserProvidedFunctionAppArmResourceInner registerUserProvidedFunctionAppWithStaticSite(
-        String resourceGroupName,
-        String name,
-        String functionAppName,
-        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
-        Boolean isForced);
-
-    /**
-     * Description for Register a user provided function app with a static site.
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3791,7 +5393,9 @@ public interface StaticSitesClient
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope);
 
     /**
-     * Description for Register a user provided function app with a static site.
+     * Register a user provided function app with a static site
+     *
+     * <p>Description for Register a user provided function app with a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3818,7 +5422,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Detach the user provided function app from the static site.
+     * Detach the user provided function app from the static site
+     *
+     * <p>Description for Detach the user provided function app from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3834,7 +5440,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String functionAppName);
 
     /**
-     * Description for Detach the user provided function app from the static site.
+     * Detach the user provided function app from the static site
+     *
+     * <p>Description for Detach the user provided function app from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3850,21 +5458,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String functionAppName);
 
     /**
-     * Description for Detach the user provided function app from the static site.
+     * Detach the user provided function app from the static site
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachUserProvidedFunctionAppFromStaticSite(String resourceGroupName, String name, String functionAppName);
-
-    /**
-     * Description for Detach the user provided function app from the static site.
+     * <p>Description for Detach the user provided function app from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3881,7 +5477,25 @@ public interface StaticSitesClient
         String resourceGroupName, String name, String functionAppName, Context context);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Detach the user provided function app from the static site
+     *
+     * <p>Description for Detach the user provided function app from the static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param functionAppName Name of the function app registered with the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void detachUserProvidedFunctionAppFromStaticSite(String resourceGroupName, String name, String functionAppName);
+
+    /**
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3898,7 +5512,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3915,7 +5531,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3932,7 +5550,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3953,7 +5573,9 @@ public interface StaticSitesClient
         Context context);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3970,7 +5592,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -3986,7 +5610,9 @@ public interface StaticSitesClient
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope);
 
     /**
-     * Description for Deploys zipped content to a static site.
+     * Deploys zipped content to a static site.
+     *
+     * <p>Description for Deploys zipped content to a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
@@ -4435,22 +6061,6 @@ public interface StaticSitesClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendArmResourceInner getLinkedBackend(
-        String resourceGroupName, String name, String linkedBackendName);
-
-    /**
-     * Returns the details of a linked backend linked to a static site by name.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -4461,6 +6071,22 @@ public interface StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendWithResponse(
         String resourceGroupName, String name, String linkedBackendName, Context context);
+
+    /**
+     * Returns the details of a linked backend linked to a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteLinkedBackendArmResourceInner getLinkedBackend(
+        String resourceGroupName, String name, String linkedBackendName);
 
     /**
      * Link backend to a static site.
@@ -4633,23 +6259,6 @@ public interface StaticSitesClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
-     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> unlinkBackendAsync(
-        String resourceGroupName, String name, String linkedBackendName, Boolean isCleaningAuthConfig);
-
-    /**
-     * Unlink a backend from a static site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the backend linked to the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -4658,20 +6267,6 @@ public interface StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> unlinkBackendAsync(String resourceGroupName, String name, String linkedBackendName);
-
-    /**
-     * Unlink a backend from a static site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the backend linked to the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unlinkBackend(String resourceGroupName, String name, String linkedBackendName);
 
     /**
      * Unlink a backend from a static site.
@@ -4690,6 +6285,20 @@ public interface StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> unlinkBackendWithResponse(
         String resourceGroupName, String name, String linkedBackendName, Boolean isCleaningAuthConfig, Context context);
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void unlinkBackend(String resourceGroupName, String name, String linkedBackendName);
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
@@ -4733,23 +6342,6 @@ public interface StaticSitesClient
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StaticSiteLinkedBackendArmResourceInner getLinkedBackendForBuild(
-        String resourceGroupName, String name, String environmentName, String linkedBackendName);
-
-    /**
-     * Returns the details of a linked backend linked to a static site build by name.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -4760,6 +6352,23 @@ public interface StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildWithResponse(
         String resourceGroupName, String name, String environmentName, String linkedBackendName, Context context);
+
+    /**
+     * Returns the details of a linked backend linked to a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StaticSiteLinkedBackendArmResourceInner getLinkedBackendForBuild(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName);
 
     /**
      * Link backend to a static site build.
@@ -4952,7 +6561,6 @@ public interface StaticSitesClient
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the backend linked to the static site.
-     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -4961,43 +6569,6 @@ public interface StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> unlinkBackendFromBuildAsync(
-        String resourceGroupName,
-        String name,
-        String environmentName,
-        String linkedBackendName,
-        Boolean isCleaningAuthConfig);
-
-    /**
-     * Unlink a backend from a static site build.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the backend linked to the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> unlinkBackendFromBuildAsync(
-        String resourceGroupName, String name, String environmentName, String linkedBackendName);
-
-    /**
-     * Unlink a backend from a static site build.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the backend linked to the static site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unlinkBackendFromBuild(
         String resourceGroupName, String name, String environmentName, String linkedBackendName);
 
     /**
@@ -5023,4 +6594,20 @@ public interface StaticSitesClient
         String linkedBackendName,
         Boolean isCleaningAuthConfig,
         Context context);
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void unlinkBackendFromBuild(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName);
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UserSessions Delete. */
 public final class UserSessionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_Delete.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/UserSession_Delete.json
      */
     /**
      * Sample code: UserSession_Delete.
@@ -20,6 +18,12 @@ public final class UserSessionsDeleteSamples {
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
         manager
             .userSessions()
-            .deleteWithResponse("resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", true, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1",
+                "hostPool1",
+                "sessionHost1.microsoft.com",
+                "1",
+                true,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -30,8 +30,10 @@
   <properties>
     <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-exports com.azure.core.serializer.json/com.azure.core.serializer.json.jackson.implementation=ALL-UNNAMED
       --add-opens com.azure.monitor.query/com.azure.monitor.query=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>

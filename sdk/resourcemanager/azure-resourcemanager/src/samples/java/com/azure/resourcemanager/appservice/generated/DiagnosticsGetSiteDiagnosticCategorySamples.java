@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostics GetSiteDiagnosticCategory. */
 public final class DiagnosticsGetSiteDiagnosticCategorySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
      */
     /**
      * Sample code: Get App Diagnostic Category.
@@ -23,11 +21,11 @@ public final class DiagnosticsGetSiteDiagnosticCategorySamples {
             .serviceClient()
             .getDiagnostics()
             .getSiteDiagnosticCategoryWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", Context.NONE);
+                "Sample-WestUSResourceGroup", "SampleApp", "availability", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
      */
     /**
      * Sample code: Get App Slot Diagnostic Category.
@@ -41,6 +39,6 @@ public final class DiagnosticsGetSiteDiagnosticCategorySamples {
             .serviceClient()
             .getDiagnostics()
             .getSiteDiagnosticCategoryWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", Context.NONE);
+                "Sample-WestUSResourceGroup", "SampleApp", "availability", com.azure.core.util.Context.NONE);
     }
 }

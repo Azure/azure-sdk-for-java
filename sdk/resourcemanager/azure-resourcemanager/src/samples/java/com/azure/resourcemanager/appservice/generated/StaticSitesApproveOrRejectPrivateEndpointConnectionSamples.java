@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 
 /** Samples for StaticSites ApproveOrRejectPrivateEndpointConnection. */
 public final class StaticSitesApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ApproveRejectSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ApproveRejectSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a site.
@@ -35,6 +34,6 @@ public final class StaticSitesApproveOrRejectPrivateEndpointConnectionSamples {
                             .withStatus("Approved")
                             .withDescription("Approved by admin.")
                             .withActionsRequired("")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

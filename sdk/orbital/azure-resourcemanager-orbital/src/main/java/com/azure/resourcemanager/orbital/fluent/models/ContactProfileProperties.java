@@ -7,6 +7,7 @@ package com.azure.resourcemanager.orbital.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfileLink;
+import com.azure.resourcemanager.orbital.models.ContactProfileThirdPartyConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesProperties;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesNetworkConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
@@ -15,6 +16,10 @@ import java.util.List;
 /** Properties of the contact profile resource. */
 @Fluent
 public final class ContactProfileProperties extends ContactProfilesProperties {
+    /** Creates an instance of ContactProfileProperties class. */
+    public ContactProfileProperties() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ContactProfileProperties withProvisioningState(
@@ -56,6 +61,14 @@ public final class ContactProfileProperties extends ContactProfilesProperties {
     public ContactProfileProperties withNetworkConfiguration(
         ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         super.withNetworkConfiguration(networkConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContactProfileProperties withThirdPartyConfigurations(
+        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+        super.withThirdPartyConfigurations(thirdPartyConfigurations);
         return this;
     }
 

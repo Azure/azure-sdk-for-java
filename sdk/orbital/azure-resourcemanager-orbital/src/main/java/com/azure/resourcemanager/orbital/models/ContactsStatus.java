@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContactsStatus. */
+/** Status of a contact. */
 public final class ContactsStatus extends ExpandableStringEnum<ContactsStatus> {
     /** Static value scheduled for ContactsStatus. */
     public static final ContactsStatus SCHEDULED = fromString("scheduled");
@@ -24,6 +24,15 @@ public final class ContactsStatus extends ExpandableStringEnum<ContactsStatus> {
 
     /** Static value providerCancelled for ContactsStatus. */
     public static final ContactsStatus PROVIDER_CANCELLED = fromString("providerCancelled");
+
+    /**
+     * Creates a new instance of ContactsStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContactsStatus() {
+    }
 
     /**
      * Creates or finds a ContactsStatus from its string representation.

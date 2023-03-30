@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -12,9 +11,8 @@ import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.io.ByteArrayInputStream;
-import java.time.Duration;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -120,15 +118,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
                 .attach()
                 .apply();
         Assertions.assertNotNull(webApp);
-        if (!isPlaybackMode()) {
-            // maybe 2 minutes is enough?
-            ResourceManagerUtils.sleep(Duration.ofMinutes(2));
-            Response<String> response = curl("http://" + webApp1.defaultHostname());
-            Assertions.assertEquals(200, response.getStatusCode());
-            String body = response.getValue();
-            Assertions.assertNotNull(body);
-            Assertions.assertTrue(body.contains("Hello world from linux 4"));
-        }
+        assertAppRunning(webApp1.defaultHostname());
 
         // update to a java 11 image
         webApp = webApp1.update().withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11).apply();
@@ -184,15 +174,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
                 .attach()
                 .apply();
         Assertions.assertNotNull(webApp);
-        if (!isPlaybackMode()) {
-            // wait long
-            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
-            Response<String> response = curl("https://" + webApp1.defaultHostname());
-            Assertions.assertEquals(200, response.getStatusCode());
-            String body = response.getValue();
-            Assertions.assertNotNull(body);
-            Assertions.assertTrue(body.contains("Hello world from linux 4"));
-        }
+        assertAppRunning(webApp1.defaultHostname());
     }
 
     @Test

@@ -22,6 +22,10 @@ public final class TagCount {
     @JsonProperty(value = "value")
     private Integer value;
 
+    /** Creates an instance of TagCount class. */
+    public TagCount() {
+    }
+
     /**
      * Get the type property: Type of count.
      *

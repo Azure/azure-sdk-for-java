@@ -22,6 +22,10 @@ public final class SendMessage {
     @JsonProperty(value = "messageBody")
     private String messageBody;
 
+    /** Creates an instance of SendMessage class. */
+    public SendMessage() {
+    }
+
     /**
      * Get the messageTitle property: Title of message.
      *

@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHost
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SessionHostList List of SessionHost definitions. */
+/**
+ * SessionHostList
+ *
+ * <p>List of SessionHost definitions.
+ */
 @Fluent
 public final class SessionHostList {
     /*
@@ -23,6 +27,10 @@ public final class SessionHostList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of SessionHostList class. */
+    public SessionHostList() {
+    }
 
     /**
      * Get the value property: List of SessionHost definitions.

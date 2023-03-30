@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_40932bd/providers/Microsoft.Web/serverfarms/HighlyAvailableWebApps?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_40932bd/providers/Microsoft.Web/serverfarms/HighlyAvailableWebApps?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "f09f71a7-ee9a-4cdc-ac60-1129c1fef2da",

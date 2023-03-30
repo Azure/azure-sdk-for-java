@@ -950,13 +950,13 @@ public final class TableAsyncClient {
 
         String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
 
-        if (split.length != 2) {
+        if (split.length == 0) {
             return monoError(logger, new RuntimeException(
-                "Split done incorrectly, must have partition and row key: " + token));
+                "Split done incorrectly, must have partition key: " + token));
         }
 
         String nextPartitionKey = split[0];
-        String nextRowKey = split[1];
+        String nextRowKey = split.length > 1 ? split[1] : null;
 
         return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
     }

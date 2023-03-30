@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HostPoolType. */
+/** HostPool type for desktop. */
 public final class HostPoolType extends ExpandableStringEnum<HostPoolType> {
     /** Static value Personal for HostPoolType. */
     public static final HostPoolType PERSONAL = fromString("Personal");
@@ -18,6 +18,15 @@ public final class HostPoolType extends ExpandableStringEnum<HostPoolType> {
 
     /** Static value BYODesktop for HostPoolType. */
     public static final HostPoolType BYODESKTOP = fromString("BYODesktop");
+
+    /**
+     * Creates a new instance of HostPoolType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HostPoolType() {
+    }
 
     /**
      * Creates or finds a HostPoolType from its string representation.
