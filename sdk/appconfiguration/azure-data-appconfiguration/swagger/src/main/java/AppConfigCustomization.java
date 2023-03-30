@@ -45,10 +45,8 @@ public class AppConfigCustomization extends Customization {
 
     private void customizeKeyValueFields(ClassCustomization classCustomization) {
         classCustomization.addImports("java.util.Locale;");
-
         classCustomization.addImports("com.azure.data.appconfiguration.ConfigurationAsyncClient;");
-
-
+        // Methods customizations
         classCustomization.getConstant("KEY")
             .getJavadoc()
             .setDescription("Populates the {@link ConfigurationSetting#getKey()} from the service.");
