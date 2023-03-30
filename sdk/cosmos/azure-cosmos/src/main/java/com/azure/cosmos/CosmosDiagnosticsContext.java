@@ -498,7 +498,14 @@ public final class CosmosDiagnosticsContext {
         try {
             return mapper.writeValueAsString(ctxNode);
         } catch (JsonProcessingException e) {
-            return "{ \"exception\": \"" + e + "\" }";
+            ctxNode = mapper.createObjectNode();
+            ctxNode.put("exception", e.toString());
+            try {
+                return mapper.writeValueAsString(ctxNode);
+            } catch (JsonProcessingException ex) {
+                // should never happen
+                throw new RuntimeException(ex);
+            }
         }
     }
 
