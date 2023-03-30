@@ -3,11 +3,11 @@
 
 package com.azure.json.contract;
 
-import com.azure.json.ReadValueCallback;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,13 +19,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -53,78 +55,71 @@ public abstract class JsonReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
-    public <T> void basicOperations(String json, T expectedValue,
-        ReadValueCallback<JsonReader, T> function) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
-            reader.nextToken(); // Initialize the JsonReader for reading.
-
-            T actualValue = assertDoesNotThrow(() -> function.read(reader));
-
-            assertEquals(expectedValue, actualValue);
-        }
+    public <T> void basicOperations(String json, T expectedValue, ReadValueCallback<JsonReader, T> function)
+        throws IOException {
+        readAndValidate(json, function, actual -> assertEquals(expectedValue, actual));
     }
 
     private static Stream<Arguments> basicOperationsSupplier() {
+        UUID uuid = UUID.randomUUID();
         return Stream.of(
             // Value handling.
 
             // Boolean
-            Arguments.of("false", false, createJsonConsumer(JsonReader::getBoolean)),
-            Arguments.of("true", true, createJsonConsumer(JsonReader::getBoolean)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getBoolean))),
+            Arguments.of("false", false, read(JsonReader::getBoolean)),
+            Arguments.of("true", true, read(JsonReader::getBoolean)),
+            Arguments.of("null", null, read(reader -> reader.getNullable(JsonReader::getBoolean))),
 
             // Double
-            Arguments.of("-42.0", -42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("-42", -42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("42.0", 42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("42", 42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getDouble))),
+            Arguments.of("-42.0", -42D, read(JsonReader::getDouble)),
+            Arguments.of("-42", -42D, read(JsonReader::getDouble)),
+            Arguments.of("42.0", 42D, read(JsonReader::getDouble)),
+            Arguments.of("42", 42D, read(JsonReader::getDouble)),
+            Arguments.of("null", null, read(reader -> reader.getNullable(JsonReader::getDouble))),
 
             // Float
-            Arguments.of("-42.0", -42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("-42", -42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("42.0", 42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("42", 42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getFloat))),
+            Arguments.of("-42.0", -42F, read(JsonReader::getFloat)),
+            Arguments.of("-42", -42F, read(JsonReader::getFloat)),
+            Arguments.of("42.0", 42F, read(JsonReader::getFloat)),
+            Arguments.of("42", 42F, read(JsonReader::getFloat)),
+            Arguments.of("null", null, read(reader -> reader.getNullable(JsonReader::getFloat))),
 
             // Integer
-            Arguments.of("-42", -42, createJsonConsumer(JsonReader::getInt)),
-            Arguments.of("42", 42, createJsonConsumer(JsonReader::getInt)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getInt))),
+            Arguments.of("-42", -42, read(JsonReader::getInt)),
+            Arguments.of("42", 42, read(JsonReader::getInt)),
+            Arguments.of("null", null, read(reader -> reader.getNullable(JsonReader::getInt))),
 
             // Long
-            Arguments.of("-42", -42L, createJsonConsumer(JsonReader::getLong)),
-            Arguments.of("42", 42L, createJsonConsumer(JsonReader::getLong)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getLong))),
+            Arguments.of("-42", -42L, read(JsonReader::getLong)),
+            Arguments.of("42", 42L, read(JsonReader::getLong)),
+            Arguments.of("null", null, read(reader -> reader.getNullable(JsonReader::getLong))),
 
             // String
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getString)),
-            Arguments.of("\"\"", "", createJsonConsumer(JsonReader::getString)),
-            Arguments.of("\"hello\"", "hello", createJsonConsumer(JsonReader::getString))
+            Arguments.of("null", null, read(JsonReader::getString)),
+            Arguments.of("\"\"", "", read(JsonReader::getString)),
+            Arguments.of("\"hello\"", "hello", read(JsonReader::getString)),
+
+            // Nullable
+            Arguments.of("\"" + uuid + "\"", uuid,
+                read(reader -> reader.getNullable(reader1 -> UUID.fromString(reader1.getString()))))
         );
     }
 
     // Byte arrays can't use Object.equals as they'll be compared by memory location instead of value equality.
     @ParameterizedTest
     @MethodSource("binaryOperationsSupplier")
-    public void binaryOperations(String json, byte[] expectedValue,
-        ReadValueCallback<JsonReader, byte[]> function) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
-            reader.nextToken(); // Initialize the JsonReader for reading.
-
-            byte[] actualValue = assertDoesNotThrow(() -> function.read(reader));
-
-            assertArrayEquals(expectedValue, actualValue);
-        }
+    public void binaryOperations(String json, byte[] expectedValue, ReadValueCallback<JsonReader, byte[]> function)
+        throws IOException {
+        readAndValidate(json, function, actual -> assertArrayEquals(expectedValue, actual));
     }
 
     private static Stream<Arguments> binaryOperationsSupplier() {
         return Stream.of(
             // Binary
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getBinary)),
-            Arguments.of("\"\"", new byte[0], createJsonConsumer(JsonReader::getBinary)),
+            Arguments.of("null", null, read(JsonReader::getBinary)),
+            Arguments.of("\"\"", new byte[0], read(JsonReader::getBinary)),
             Arguments.of("\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"",
-                "Hello".getBytes(StandardCharsets.UTF_8), createJsonConsumer(JsonReader::getBinary))
+                "Hello".getBytes(StandardCharsets.UTF_8), read(JsonReader::getBinary))
         );
     }
 
@@ -633,16 +628,174 @@ public abstract class JsonReaderContractTests {
         );
     }
 
-    private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) throws IOException {
+    @Test
+    public void getTextOnUninitializedReadThrowsIllegalStateException() throws IOException {
+        try (JsonReader reader = getJsonReader("{}")) {
+            assertThrows(IllegalStateException.class, reader::getText);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTextSupplier")
+    public void getToken(String json, int nextTokens, String expected) throws IOException {
+        try (JsonReader reader = getJsonReader(json)) {
+            for (int i = 0; i < nextTokens; i++) {
+                reader.nextToken();
+            }
+
+            assertEquals(expected, reader.getText());
+        }
+    }
+
+    private static Stream<Arguments> getTextSupplier() {
+        return Stream.of(
+            Arguments.of("{}", 1, "{"),
+            Arguments.of("{}", 2, "}"),
+
+            Arguments.of("[]", 1, "["),
+            Arguments.of("[]", 2, "]"),
+
+            Arguments.of("{\"field\":\"value\"}", 2, "field"),
+
+            Arguments.of("{\"field\":\"value\"}", 3, "value"),
+            Arguments.of("{\"field\":42}", 3, "42"),
+            Arguments.of("{\"field\":42.0}", 3, "42.0"),
+            Arguments.of("{\"field\":true}", 3, "true"),
+            Arguments.of("{\"field\":false}", 3, "false"),
+            Arguments.of("{\"field\":null}", 3, "null")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("isJsonStructSupplier")
+    public void isJsonStruct(String json, int nextTokens, boolean isStart, boolean expected) throws IOException {
+        try (JsonReader reader = getJsonReader(json)) {
+            for (int i = 0; i < nextTokens; i++) {
+                reader.nextToken();
+            }
+
+            assertEquals(expected, isStart ? reader.isStartArrayOrObject() : reader.isEndArrayOrObject());
+        }
+    }
+
+    private static Stream<Arguments> isJsonStructSupplier() {
+        return Stream.of(
+            Arguments.of("{}", 1, true, true),
+            Arguments.of("{}", 1, false, false),
+            Arguments.of("{}", 2, true, false),
+            Arguments.of("{}", 2, false, true),
+
+            Arguments.of("[]", 1, true, true),
+            Arguments.of("[]", 1, false, false),
+            Arguments.of("[]", 2, true, false),
+            Arguments.of("[]", 2, false, true),
+
+            Arguments.of("{\"field\":\"value\"}", 2, true, false),
+            Arguments.of("{\"field\":\"value\"}", 2, false, false),
+
+            Arguments.of("{\"field\":\"value\"}", 3, true, false),
+            Arguments.of("{\"field\":\"value\"}", 3, false, false),
+            Arguments.of("{\"field\":42}", 3, true, false),
+            Arguments.of("{\"field\":42}", 3, false, false),
+            Arguments.of("{\"field\":42.0}", 3, true, false),
+            Arguments.of("{\"field\":42.0}", 3, false, false),
+            Arguments.of("{\"field\":true}", 3, true, false),
+            Arguments.of("{\"field\":true}", 3, false, false),
+            Arguments.of("{\"field\":false}", 3, true, false),
+            Arguments.of("{\"field\":false}", 3, false, false),
+            Arguments.of("{\"field\":null}", 3, true, false),
+            Arguments.of("{\"field\":null}", 3, false, false)
+        );
+    }
+
+    @Test
+    public void readArrayNonStartArrayTokenThrowsIllegalStateException() {
+        assertThrows(IllegalStateException.class, () -> getJsonReader("{}").readArray(JsonReader::readUntyped));
+    }
+
+    @ParameterizedTest
+    @MethodSource("readArraySupplier")
+    public void readArray(String json, ReadValueCallback<JsonReader, List<Object>> read, List<Object> expected)
+        throws IOException {
+        readAndValidate(json, read, actual -> {
+            if (expected == null) {
+                assertNull(actual);
+            } else {
+                assertEquals(expected.size(), actual.size());
+                for (int i = 0; i < expected.size(); i++) {
+                    assertEquals(expected.get(i), actual.get(i));
+                }
+            }
+        });
+    }
+
+    private static Stream<Arguments> readArraySupplier() {
+        ReadValueCallback<JsonReader, List<Object>> reader = read(r -> r.readArray(JsonReader::readUntyped));
+        return Stream.of(
+            Arguments.of("", reader, null),
+            Arguments.of("null", reader, null),
+            Arguments.of("[]", reader, Collections.emptyList()),
+            Arguments.of("[10]", reader, Collections.singletonList(10)),
+            Arguments.of("[true,10,10.0,\"hello\"]", reader, Arrays.asList(true, 10, 10.0D, "hello"))
+        );
+    }
+
+    @Test
+    public void readMapNonStartObjectTokenThrowsIllegalStateException() {
+        assertThrows(IllegalStateException.class, () -> getJsonReader("[]").readMap(JsonReader::readUntyped));
+    }
+
+    @ParameterizedTest
+    @MethodSource("readMapSupplier")
+    public void readMap(String json, ReadValueCallback<JsonReader, Map<String, Object>> read, Map<String,
+        Object> expected) throws IOException {
+        readAndValidate(json, read, actual -> {
+            if (expected == null) {
+                assertNull(actual);
+            } else {
+                assertEquals(expected.size(), actual.size());
+                for (String expectedKey : expected.keySet()) {
+                    assertTrue(actual.containsKey(expectedKey));
+                    assertEquals(expected.get(expectedKey), actual.get(expectedKey));
+                }
+            }
+        });
+    }
+
+    private static Stream<Arguments> readMapSupplier() {
+        ReadValueCallback<JsonReader, Map<String, Object>> reader = read(r -> r.readMap(JsonReader::readUntyped));
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("boolean", true);
+        map.put("int", 42);
+        map.put("decimal", 42.0D);
+        map.put("string", "hello");
+
+        return Stream.of(
+            Arguments.of("", reader, null),
+            Arguments.of("null", reader, null),
+            Arguments.of("{}", reader, Collections.emptyMap()),
+            Arguments.of("{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}", reader, map)
+        );
+    }
+
+    private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken)
+        throws IOException {
         assertNull(reader.currentToken());
         reader.nextToken();
 
         assertEquals(expectedInitialToken, reader.currentToken());
     }
 
-    private static <T> ReadValueCallback<JsonReader, T> createJsonConsumer(
-        ReadValueCallback<JsonReader, T> func) {
+    private static <T> ReadValueCallback<JsonReader, T> read(ReadValueCallback<JsonReader, T> func) {
         return func;
+    }
+
+    private <T> void readAndValidate(String json, ReadValueCallback<JsonReader, T> read, Consumer<T> validate)
+        throws IOException {
+        try (JsonReader reader = getJsonReader(json)) {
+            reader.nextToken(); // Initialize the JsonReader for reading.
+            validate.accept(read.read(reader));
+        }
     }
 
     private static final class TestData implements JsonSerializable<TestData> {

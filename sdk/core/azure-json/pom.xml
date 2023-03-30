@@ -57,8 +57,8 @@
     <javadoc.excludePackageNames/>
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
 
-    <jacoco.min.linecoverage>0.55</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
