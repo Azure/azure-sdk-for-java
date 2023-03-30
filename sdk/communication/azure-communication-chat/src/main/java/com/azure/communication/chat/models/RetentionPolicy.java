@@ -4,9 +4,8 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.models.BasedOnThreadCreationDateRetentionPolicy;
+import com.azure.communication.chat.implementation.models.ThreadCreationDatePolicy;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = RetentionPolicy.class)
 @JsonTypeName("RetentionPolicy")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = BasedOnThreadCreationDateRetentionPolicy.class)
+    @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = ThreadCreationDatePolicy.class)
 })
 @Immutable
 public class RetentionPolicy {}

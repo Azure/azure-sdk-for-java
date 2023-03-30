@@ -24,7 +24,8 @@ public final class CreateChatThreadOptions {
     private List<ChatParticipant> participants;
 
     /*
-     * Data retention policy for auto deletion.
+     * Data retention policy for auto deletion. It's not updatable after
+     * creation.
      */
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
@@ -70,7 +71,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     * Get the retentionPolicy property: Data retention policy for auto deletion. It's not updatable after creation.
      *
      * @return the retentionPolicy value.
      */
@@ -79,7 +80,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     * Set the retentionPolicy property: Data retention policy for auto deletion. It's not updatable after creation.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the CreateChatThreadOptions object itself.

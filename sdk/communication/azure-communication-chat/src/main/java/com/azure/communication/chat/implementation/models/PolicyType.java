@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for PolicyType. */
 public final class PolicyType extends ExpandableStringEnum<PolicyType> {
-    /** Static value basedOnThreadCreationDate for PolicyType. */
-    public static final PolicyType BASED_ON_THREAD_CREATION_DATE = fromString("basedOnThreadCreationDate");
+    /** Static value threadCreationDate for PolicyType. */
+    public static final PolicyType THREAD_CREATION_DATE = fromString("threadCreationDate");
 
     /**
      * Creates or finds a PolicyType from its string representation.

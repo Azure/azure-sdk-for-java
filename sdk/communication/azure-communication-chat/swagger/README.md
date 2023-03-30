@@ -33,7 +33,7 @@ To update generated files for chat service, run the following command
 ``` yaml
 tag: package-chat-2023-07-01-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/LuChen-Microsoft-communication-Chat-2023-07-01-preview/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/Chat/readme.md
 java: true
 title: AzureCommunicationChatService
 output-folder: ..\

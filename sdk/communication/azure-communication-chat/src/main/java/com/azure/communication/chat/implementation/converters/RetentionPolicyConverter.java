@@ -3,7 +3,7 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.chat.models.BasedOnThreadCreationDateRetentionPolicy;
+import com.azure.communication.chat.models.ThreadCreationDatePolicy;
 import com.azure.communication.chat.models.RetentionPolicy;
 
 /**
@@ -20,10 +20,10 @@ public final class RetentionPolicyConverter {
         }
 
         RetentionPolicy retentionPolicy;
-        if (obj instanceof com.azure.communication.chat.implementation.models.BasedOnThreadCreationDateRetentionPolicy) {
-            com.azure.communication.chat.implementation.models.BasedOnThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy =
-                (com.azure.communication.chat.implementation.models.BasedOnThreadCreationDateRetentionPolicy) obj;
-            retentionPolicy = new BasedOnThreadCreationDateRetentionPolicy().setDaysAfterCreation(basedOnThreadCreationDateRetentionPolicy.getDaysAfterCreation());
+        if (obj instanceof com.azure.communication.chat.implementation.models.ThreadCreationDatePolicy) {
+            com.azure.communication.chat.implementation.models.ThreadCreationDatePolicy basedOnThreadCreationDateRetentionPolicy =
+                (com.azure.communication.chat.implementation.models.ThreadCreationDatePolicy) obj;
+            retentionPolicy = new ThreadCreationDatePolicy().setDaysAfterCreation(basedOnThreadCreationDateRetentionPolicy.getDaysAfterCreation());
         } else {
             retentionPolicy = new RetentionPolicy();
         }
@@ -43,9 +43,9 @@ public final class RetentionPolicyConverter {
         }
 
         com.azure.communication.chat.implementation.models.RetentionPolicy retentionPolicy;
-        if (obj instanceof BasedOnThreadCreationDateRetentionPolicy) {
-            BasedOnThreadCreationDateRetentionPolicy basedOnThreadCreationDateRetentionPolicy = (BasedOnThreadCreationDateRetentionPolicy) obj;
-            retentionPolicy = new com.azure.communication.chat.implementation.models.BasedOnThreadCreationDateRetentionPolicy()
+        if (obj instanceof ThreadCreationDatePolicy) {
+            ThreadCreationDatePolicy basedOnThreadCreationDateRetentionPolicy = (ThreadCreationDatePolicy) obj;
+            retentionPolicy = new com.azure.communication.chat.implementation.models.ThreadCreationDatePolicy()
                 .setDaysAfterCreation(basedOnThreadCreationDateRetentionPolicy.getDaysAfterCreation());
         } else {
             retentionPolicy = new com.azure.communication.chat.implementation.models.RetentionPolicy();

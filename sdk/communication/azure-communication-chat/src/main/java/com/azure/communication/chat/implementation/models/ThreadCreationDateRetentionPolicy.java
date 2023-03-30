@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Thread retention policy based on thread creation date. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "policyType")
-@JsonTypeName("basedOnThreadCreationDate")
+@JsonTypeName("threadCreationDate")
 @Fluent
-public final class BasedOnThreadCreationDateRetentionPolicy extends RetentionPolicy {
+public final class ThreadCreationDateRetentionPolicy extends RetentionPolicy {
     /*
      * Indicates how many days after the thread creation the thread will be
      * deleted. Only 90 is accepted for now.
@@ -36,9 +36,9 @@ public final class BasedOnThreadCreationDateRetentionPolicy extends RetentionPol
      * Only 90 is accepted for now.
      *
      * @param daysAfterCreation the daysAfterCreation value to set.
-     * @return the BasedOnThreadCreationDateRetentionPolicy object itself.
+     * @return the ThreadCreationDateRetentionPolicy object itself.
      */
-    public BasedOnThreadCreationDateRetentionPolicy setDaysAfterCreation(int daysAfterCreation) {
+    public ThreadCreationDateRetentionPolicy setDaysAfterCreation(int daysAfterCreation) {
         this.daysAfterCreation = daysAfterCreation;
         return this;
     }

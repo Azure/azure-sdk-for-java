@@ -9,15 +9,13 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Data retention policy for auto deletion. */
+/** Data retention policy for auto deletion. It's not updatable after creation. */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "policyType",
         defaultImpl = RetentionPolicy.class)
 @JsonTypeName("RetentionPolicy")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = BasedOnThreadCreationDateRetentionPolicy.class)
-})
+@JsonSubTypes({@JsonSubTypes.Type(name = "threadCreationDate", value = ThreadCreationDateRetentionPolicy.class)})
 @Immutable
 public class RetentionPolicy {}
