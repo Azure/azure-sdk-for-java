@@ -155,7 +155,7 @@ For more information please see [Container Registry Concepts](https://docs.micro
 
 - Registry operations:
   - [List repository names](#list-repository-names)
-  - [List artifact tags with anonymous access](#list-tags-with-anonymous-access)
+  - [List artifact tags with anonymous access](#list-artifact-tags-with-anonymous-access)
   - [Set artifact properties](#set-artifact-properties)
   - [Delete images](#delete-images)
   - [Delete repository with anonymous access throws](#delete-a-repository-with-anonymous-access-throws)
@@ -264,7 +264,7 @@ ContainerRegistryContentClient contentClient = new ContainerRegistryContentClien
     .buildClient();
 ```
 
-#### Upload 
+#### Upload Images
 
 To upload a full image, we need to upload individual layers and configuration. After that we can upload a manifest 
 which describes an image or artifact and assign it a tag.  
