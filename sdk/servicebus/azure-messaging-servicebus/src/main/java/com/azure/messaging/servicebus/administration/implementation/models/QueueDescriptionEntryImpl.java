@@ -30,7 +30,7 @@ public final class QueueDescriptionEntryImpl {
      * The name of the queue
      */
     @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
-    private String title;
+    private Object title;
 
     /*
      * The timestamp for when this queue was published
@@ -110,7 +110,7 @@ public final class QueueDescriptionEntryImpl {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -120,7 +120,7 @@ public final class QueueDescriptionEntryImpl {
      * @param title the title value to set.
      * @return the QueueDescriptionEntry object itself.
      */
-    public QueueDescriptionEntryImpl setTitle(String title) {
+    public QueueDescriptionEntryImpl setTitle(Object title) {
         this.title = title;
         return this;
     }
