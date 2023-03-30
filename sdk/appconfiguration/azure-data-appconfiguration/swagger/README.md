@@ -28,10 +28,23 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFilter,KeyValueFields
+custom-types: KeyValueFields,KeyValueFilter
 customization-class: src/main/java/AppConfigCustomization.java
 context-client-method-parameter: true
 service-interface-as-public: true
 generic-response-type: true
 default-http-exception-type: com.azure.core.exception.HttpResponseException
+required-fields-as-ctor-args: true
+```
+
+### Renames
+``` yaml $(java)
+directive:
+  - rename-model:
+      from: KeyValueFilter
+      to: SnapshotSettingFilter
+  - from: swagger-document
+    where: $.parameters.KeyValueFields
+    transform: >
+      $.items["x-ms-enum"].name = "SettingFields"; 
 ```

@@ -20,47 +20,34 @@ public class AppConfigCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        PackageCustomization models = customization.getPackage("com.azure.data.appconfiguration.models");
+        PackageCustomization models = customization.getPackage("com.azure.data.appconfiguration.implementation.models");
 
-        customizeKeyValueFilter(models.getClass("KeyValueFilter"));
-
-        customizeKeyValueFields(models.getClass("KeyValueFields"));
+        customizeKeyValueFilter(models.getClass("SnapshotSettingFilter"));
+        customizeKeyValueFields(models.getClass("SettingFields"));
     }
 
     private void customizeKeyValueFilter(ClassCustomization classCustomization) {
+        // Edit javadoc of `setLabel` method
         classCustomization.getMethod("setLabel")
             .getJavadoc()
-            .setDescription("Set the label property: Filters {@link ConfigurationSetting} by their label field.")
-            .setReturn("the {@link KeyValueFilter} object itself.");
+            .setDescription("Set the label property: Filters {@link ConfigurationSetting} by their label field.");
+        // Edit javadoc of `getKey` method
         classCustomization.getMethod("getKey")
             .getJavadoc()
             .setDescription("Get the key property: Filters {@link ConfigurationSetting} by their key field.");
+        // Edit javadoc of `getLabel` method
         classCustomization.getMethod("getLabel")
             .getJavadoc()
             .setDescription("Get the label property: Filters {@link ConfigurationSetting} by their label field.");
-
-        classCustomization = classCustomization.customizeAst(
-            ast -> ast.getClassByName("KeyValueFilter")
-                       .get()
-                       .getDefaultConstructor().get()
-                       .remove())
-                                 .removeMethod("setKey")
-                                 .rename("SnapshotSettingFilter");
-
-        classCustomization.addConstructor(joinWithNewline(
-            "public SnapshotSettingFilter(String key) {",
-            "   this.key = key;",
-            "}"))
-            .getJavadoc()
-            .setDescription("Constructor of {@link SnapshotSettingFilter}.")
-            .setParam("key", "The key value to set.");
+        classCustomization.getConstructor("SnapshotSettingFilter")
+            .removeAnnotation("JsonCreator");
     }
 
     private void customizeKeyValueFields(ClassCustomization classCustomization) {
         classCustomization.addImports("java.util.Locale;");
+
         classCustomization.addImports("com.azure.data.appconfiguration.ConfigurationAsyncClient;");
 
-        classCustomization = classCustomization.removeMethod("values");
 
         classCustomization.getConstant("KEY")
             .getJavadoc()
@@ -96,21 +83,12 @@ public class AppConfigCustomization extends Customization {
             .setReturn("the corresponding {@link SettingFields}");
         fromString.removeAnnotation("JsonCreator");
 
-        classCustomization = classCustomization.customizeAst(
-            ast -> ast.getClassByName("KeyValueFields")
-                       .get()
-                       .getDefaultConstructor().get()
-                       .remove());
-
         // Rename LOCKED to IS_READ_ONLY
         classCustomization = classCustomization.renameEnumMember("LOCKED", "IS_READ_ONLY");
         classCustomization.getConstant("IS_READ_ONLY")
             .getJavadoc()
             .setDescription("Populates the {@link ConfigurationSetting#isReadOnly()} from the service.");
-
-        // Change class name to SettingFields
-        ClassCustomization settingFields = classCustomization.rename("SettingFields");
-        settingFields.getJavadoc()
+        classCustomization.getJavadoc()
             .setDescription(joinWithNewline(
                 "",
                 "Fields in {@link ConfigurationSetting} that can be returned from GET queries.",
@@ -121,17 +99,17 @@ public class AppConfigCustomization extends Customization {
             ));
 
         // Add toStringMapper static new method to SettingFields
-        addToStringMapper(settingFields);
+        addToStringMapper(classCustomization);
     }
 
     private ClassCustomization addToStringMapper(ClassCustomization classCustomization) {
         return classCustomization.customizeAst(ast -> {
             String className = classCustomization.getClassName();
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(className).get();
-
             clazz.addMethod("toStringMapper", Modifier.Keyword.STATIC, Modifier.Keyword.PUBLIC).setType("String")
                 .addParameter("SettingFields", "field")
                 .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return field.toString().toLowerCase(Locale.US);"))))
+                .addAnnotation("Deprecated")
                 .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
                     " * Converts the SettingFields to a string that is usable for HTTP requests and logging.",
                     " * @param field SettingFields to map.",
