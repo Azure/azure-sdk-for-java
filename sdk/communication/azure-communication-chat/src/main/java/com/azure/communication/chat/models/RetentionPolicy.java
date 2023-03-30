@@ -4,7 +4,6 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.models.ThreadCreationDatePolicy;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
