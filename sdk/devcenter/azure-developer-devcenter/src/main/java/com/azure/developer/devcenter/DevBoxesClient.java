@@ -17,21 +17,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.implementation.DevBoxesImpl;
 import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
 @ServiceClient(builder = DevBoxesClientBuilder.class)
 public final class DevBoxesClient {
-    @Generated private final DevBoxesAsyncClient client;
+    @Generated private final DevBoxesImpl serviceClient;
 
     /**
      * Initializes an instance of DevBoxesClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    DevBoxesClient(DevBoxesAsyncClient client) {
-        this.client = client;
+    DevBoxesClient(DevBoxesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -52,15 +53,15 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
-     *     location: String (Optional)
+     *     name: String (Required)
+     *     location: String (Required)
      *     osType: String(Windows) (Optional)
      *     hardwareProfile (Optional): {
      *         skuName: String (Optional)
      *         vCPUs: Integer (Optional)
      *         memoryGB: Integer (Optional)
      *     }
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
      *     storageProfile (Optional): {
      *         osDisk (Optional): {
      *             diskSizeGB: Integer (Optional)
@@ -74,6 +75,11 @@ public final class DevBoxesClient {
      *         publishedDate: OffsetDateTime (Optional)
      *     }
      *     localAdministrator: String(Enabled/Disabled) (Optional)
+     *     stopOnDisconnect (Optional): {
+     *         status: String(Enabled/Disabled) (Required)
+     *         gracePeriodMinutes: Integer (Optional)
+     *     }
+     *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
      * }</pre>
      *
@@ -88,7 +94,7 @@ public final class DevBoxesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listPools(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listPools(projectName, requestOptions));
+        return this.serviceClient.listPools(projectName, requestOptions);
     }
 
     /**
@@ -98,15 +104,15 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
-     *     location: String (Optional)
+     *     name: String (Required)
+     *     location: String (Required)
      *     osType: String(Windows) (Optional)
      *     hardwareProfile (Optional): {
      *         skuName: String (Optional)
      *         vCPUs: Integer (Optional)
      *         memoryGB: Integer (Optional)
      *     }
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
      *     storageProfile (Optional): {
      *         osDisk (Optional): {
      *             diskSizeGB: Integer (Optional)
@@ -120,11 +126,16 @@ public final class DevBoxesClient {
      *         publishedDate: OffsetDateTime (Optional)
      *     }
      *     localAdministrator: String(Enabled/Disabled) (Optional)
+     *     stopOnDisconnect (Optional): {
+     *         status: String(Enabled/Disabled) (Required)
+     *         gracePeriodMinutes: Integer (Optional)
+     *     }
+     *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
      * }</pre>
      *
-     * @param poolName The name of a pool of Dev Boxes.
      * @param projectName The DevCenter Project upon which to execute operations.
+     * @param poolName The name of a pool of Dev Boxes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -135,8 +146,8 @@ public final class DevBoxesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPoolWithResponse(
-            String poolName, String projectName, RequestOptions requestOptions) {
-        return this.client.getPoolWithResponse(poolName, projectName, requestOptions).block();
+            String projectName, String poolName, RequestOptions requestOptions) {
+        return this.serviceClient.getPoolWithResponse(projectName, poolName, requestOptions);
     }
 
     /**
@@ -157,11 +168,11 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
-     *     type: String(StopDevBox) (Optional)
-     *     frequency: String(Daily) (Optional)
-     *     time: String (Optional)
-     *     timeZone: String (Optional)
+     *     name: String (Required)
+     *     type: String(StopDevBox) (Required)
+     *     frequency: String(Daily) (Required)
+     *     time: String (Required)
+     *     timeZone: String (Required)
      * }
      * }</pre>
      *
@@ -176,9 +187,8 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSchedulesByPool(
-            String projectName, String poolName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listSchedulesByPool(projectName, poolName, requestOptions));
+    public PagedIterable<BinaryData> listSchedules(String projectName, String poolName, RequestOptions requestOptions) {
+        return this.serviceClient.listSchedules(projectName, poolName, requestOptions);
     }
 
     /**
@@ -188,11 +198,11 @@ public final class DevBoxesClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
-     *     type: String(StopDevBox) (Optional)
-     *     frequency: String(Daily) (Optional)
-     *     time: String (Optional)
-     *     timeZone: String (Optional)
+     *     name: String (Required)
+     *     type: String(StopDevBox) (Required)
+     *     frequency: String(Daily) (Required)
+     *     time: String (Required)
+     *     timeZone: String (Required)
      * }
      * }</pre>
      *
@@ -208,9 +218,155 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getScheduleByPoolWithResponse(
+    public Response<BinaryData> getScheduleWithResponse(
             String projectName, String poolName, String scheduleName, RequestOptions requestOptions) {
-        return this.client.getScheduleByPoolWithResponse(projectName, poolName, scheduleName, requestOptions).block();
+        return this.serviceClient.getScheduleWithResponse(projectName, poolName, scheduleName, requestOptions);
+    }
+
+    /**
+     * Lists Dev Boxes that the caller has access to in the DevCenter.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
+     *     provisioningState: String (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
+     *         }
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAllDevBoxes(RequestOptions requestOptions) {
+        return this.serviceClient.listAllDevBoxes(requestOptions);
+    }
+
+    /**
+     * Lists Dev Boxes in the Dev Center for a particular user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     projectName: String (Optional)
+     *     poolName: String (Required)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
+     *     provisioningState: String (Optional)
+     *     actionState: String (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
+     *     uniqueId: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     location: String (Optional)
+     *     osType: String(Windows) (Optional)
+     *     user: String (Optional)
+     *     hardwareProfile (Optional): {
+     *         skuName: String (Optional)
+     *         vCPUs: Integer (Optional)
+     *         memoryGB: Integer (Optional)
+     *     }
+     *     storageProfile (Optional): {
+     *         osDisk (Optional): {
+     *             diskSizeGB: Integer (Optional)
+     *         }
+     *     }
+     *     imageReference (Optional): {
+     *         name: String (Optional)
+     *         version: String (Optional)
+     *         operatingSystem: String (Optional)
+     *         osBuildNumber: String (Optional)
+     *         publishedDate: OffsetDateTime (Optional)
+     *     }
+     *     createdTime: OffsetDateTime (Optional)
+     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     * }
+     * }</pre>
+     *
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAllDevBoxesByUser(String userId, RequestOptions requestOptions) {
+        return this.serviceClient.listAllDevBoxesByUser(userId, requestOptions);
     }
 
     /**
@@ -234,14 +390,18 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -280,9 +440,8 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDevBoxesByUser(
-            String projectName, String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDevBoxesByUser(projectName, userId, requestOptions));
+    public PagedIterable<BinaryData> listDevBoxes(String projectName, String userId, RequestOptions requestOptions) {
+        return this.serviceClient.listDevBoxes(projectName, userId, requestOptions);
     }
 
     /**
@@ -295,14 +454,18 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -342,13 +505,13 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDevBoxByUserWithResponse(
+    public Response<BinaryData> getDevBoxWithResponse(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.getDevBoxByUserWithResponse(projectName, userId, devBoxName, requestOptions).block();
+        return this.serviceClient.getDevBoxWithResponse(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
-     * Creates or updates a Dev Box.
+     * Creates or replaces a Dev Box.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -357,14 +520,18 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -398,14 +565,18 @@ public final class DevBoxesClient {
      *     name: String (Optional)
      *     projectName: String (Optional)
      *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
+     *     hibernateSupport: String(Enabled/Disabled/OsUnsupported) (Optional)
      *     provisioningState: String (Optional)
      *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
+     *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -442,38 +613,36 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a DevBox Dev Box.
+     * @return the {@link SyncPoller} for polling of a Dev Box.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateDevBox(
             String projectName, String userId, String devBoxName, BinaryData body, RequestOptions requestOptions) {
-        return this.client.beginCreateDevBox(projectName, userId, devBoxName, body, requestOptions).getSyncPoller();
+        return this.serviceClient.beginCreateDevBox(projectName, userId, devBoxName, body, requestOptions);
     }
 
     /**
      * Deletes a Dev Box.
      *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param devBoxName The name of a Dev Box.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, Void> beginDeleteDevBox(
-            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
-    }
-
-    /**
-     * Starts a Dev Box.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     status: String (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Float (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     * }
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -484,13 +653,53 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, Void> beginDeleteDevBox(
+            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+        return this.serviceClient.beginDeleteDevBox(projectName, userId, devBoxName, requestOptions);
+    }
+
+    /**
+     * Starts a Dev Box.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     status: String (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Float (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginStartDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.beginStartDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginStartDevBox(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -506,6 +715,25 @@ public final class DevBoxesClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     status: String (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Float (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
@@ -515,13 +743,53 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginStopDevBox(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.beginStopDevBox(projectName, userId, devBoxName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginStopDevBox(projectName, userId, devBoxName, requestOptions);
+    }
+
+    /**
+     * Restarts a Dev Box.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     status: String (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Float (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginRestartDevBox(
+            String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
+        return this.serviceClient.beginRestartDevBox(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
@@ -551,22 +819,23 @@ public final class DevBoxesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRemoteConnectionWithResponse(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return this.client.getRemoteConnectionWithResponse(projectName, userId, devBoxName, requestOptions).block();
+        return this.serviceClient.getRemoteConnectionWithResponse(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
-     * Lists upcoming actions on a Dev Box.
+     * Lists actions on a Dev Box.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     actionType: String(Stop) (Optional)
-     *     reason: String(Schedule) (Optional)
-     *     scheduledTime: OffsetDateTime (Optional)
-     *     originalScheduledTime: OffsetDateTime (Optional)
-     *     sourceId: String (Optional)
+     *     name: String (Required)
+     *     actionType: String(Stop) (Required)
+     *     sourceId: String (Required)
+     *     suspendedUntil: OffsetDateTime (Optional)
+     *     next (Optional): {
+     *         scheduledTime: OffsetDateTime (Required)
+     *     }
      * }
      * }</pre>
      *
@@ -579,28 +848,29 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Upcoming Action list result as paginated response with {@link PagedIterable}.
+     * @return the actions list result as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listUpcomingActions(
+    public PagedIterable<BinaryData> listActions(
             String projectName, String userId, String devBoxName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listUpcomingActions(projectName, userId, devBoxName, requestOptions));
+        return this.serviceClient.listActions(projectName, userId, devBoxName, requestOptions);
     }
 
     /**
-     * Gets an Upcoming Action.
+     * Gets an action.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     actionType: String(Stop) (Optional)
-     *     reason: String(Schedule) (Optional)
-     *     scheduledTime: OffsetDateTime (Optional)
-     *     originalScheduledTime: OffsetDateTime (Optional)
-     *     sourceId: String (Optional)
+     *     name: String (Required)
+     *     actionType: String(Stop) (Required)
+     *     sourceId: String (Required)
+     *     suspendedUntil: OffsetDateTime (Optional)
+     *     next (Optional): {
+     *         scheduledTime: OffsetDateTime (Required)
+     *     }
      * }
      * }</pre>
      *
@@ -608,35 +878,29 @@ public final class DevBoxesClient {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param upcomingActionId The upcoming action id.
+     * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an Upcoming Action along with {@link Response}.
+     * @return an action along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUpcomingActionWithResponse(
-            String projectName,
-            String userId,
-            String devBoxName,
-            String upcomingActionId,
-            RequestOptions requestOptions) {
-        return this.client
-                .getUpcomingActionWithResponse(projectName, userId, devBoxName, upcomingActionId, requestOptions)
-                .block();
+    public Response<BinaryData> getActionWithResponse(
+            String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
+        return this.serviceClient.getActionWithResponse(projectName, userId, devBoxName, actionName, requestOptions);
     }
 
     /**
-     * Skips an Upcoming Action.
+     * Skips an occurrence of an action.
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param upcomingActionId The upcoming action id.
+     * @param actionName The name of an action that will take place on a Dev Box.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -646,30 +910,25 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> skipUpcomingActionWithResponse(
-            String projectName,
-            String userId,
-            String devBoxName,
-            String upcomingActionId,
-            RequestOptions requestOptions) {
-        return this.client
-                .skipUpcomingActionWithResponse(projectName, userId, devBoxName, upcomingActionId, requestOptions)
-                .block();
+    public Response<Void> skipActionWithResponse(
+            String projectName, String userId, String devBoxName, String actionName, RequestOptions requestOptions) {
+        return this.serviceClient.skipActionWithResponse(projectName, userId, devBoxName, actionName, requestOptions);
     }
 
     /**
-     * Delays an Upcoming Action.
+     * Delays the occurrence of an action.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     actionType: String(Stop) (Optional)
-     *     reason: String(Schedule) (Optional)
-     *     scheduledTime: OffsetDateTime (Optional)
-     *     originalScheduledTime: OffsetDateTime (Optional)
-     *     sourceId: String (Optional)
+     *     name: String (Required)
+     *     actionType: String(Stop) (Required)
+     *     sourceId: String (Required)
+     *     suspendedUntil: OffsetDateTime (Optional)
+     *     next (Optional): {
+     *         scheduledTime: OffsetDateTime (Required)
+     *     }
      * }
      * }</pre>
      *
@@ -677,27 +936,73 @@ public final class DevBoxesClient {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param devBoxName The name of a Dev Box.
-     * @param upcomingActionId The upcoming action id.
-     * @param delayUntil The delayed action time (UTC).
+     * @param actionName The name of an action that will take place on a Dev Box.
+     * @param until The time to delay the Dev Box action or actions until.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an upcoming Action along with {@link Response}.
+     * @return an action which will take place on a Dev Box along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> delayUpcomingActionWithResponse(
+    public Response<BinaryData> delayActionWithResponse(
             String projectName,
             String userId,
             String devBoxName,
-            String upcomingActionId,
-            OffsetDateTime delayUntil,
+            String actionName,
+            OffsetDateTime until,
             RequestOptions requestOptions) {
-        return this.client
-                .delayUpcomingActionWithResponse(
-                        projectName, userId, devBoxName, upcomingActionId, delayUntil, requestOptions)
-                .block();
+        return this.serviceClient.delayActionWithResponse(
+                projectName, userId, devBoxName, actionName, until, requestOptions);
+    }
+
+    /**
+     * Delays all actions.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Required)
+     *     result: String(Succeeded/Failed) (Required)
+     *     action (Optional): {
+     *         name: String (Required)
+     *         actionType: String(Stop) (Required)
+     *         sourceId: String (Required)
+     *         suspendedUntil: OffsetDateTime (Optional)
+     *         next (Optional): {
+     *             scheduledTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     *     context.
+     * @param devBoxName The name of a Dev Box.
+     * @param until The time to delay the Dev Box action or actions until.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the actions list result as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> delayAllActions(
+            String projectName, String userId, String devBoxName, OffsetDateTime until, RequestOptions requestOptions) {
+        return this.serviceClient.delayAllActions(projectName, userId, devBoxName, until, requestOptions);
     }
 }

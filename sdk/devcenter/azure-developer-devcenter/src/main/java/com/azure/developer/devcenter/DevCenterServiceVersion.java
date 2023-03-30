@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of DevCenterClient. */
 public enum DevCenterServiceVersion implements ServiceVersion {
-    /** Enum value 2022-11-11-preview. */
-    V2022_11_11_PREVIEW("2022-11-11-preview");
+    /** Enum value 2023-04-01. */
+    V2023_04_01("2023-04-01");
 
     private final String version;
 
@@ -29,6 +29,6 @@ public enum DevCenterServiceVersion implements ServiceVersion {
      * @return The latest {@link DevCenterServiceVersion}.
      */
     public static DevCenterServiceVersion getLatest() {
-        return V2022_11_11_PREVIEW;
+        return V2023_04_01;
     }
 }

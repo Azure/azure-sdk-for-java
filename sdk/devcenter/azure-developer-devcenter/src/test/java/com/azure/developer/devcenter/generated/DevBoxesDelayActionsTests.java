@@ -7,21 +7,23 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class DevBoxesListUpcomingActionsTests extends DevCenterClientTestBase {
+public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testDevBoxesListUpcomingActionsTests() {
+    public void testDevBoxesDelayActionsTests() {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
-                devBoxesClient.listUpcomingActions("myProject", "me", "myDevBox", requestOptions);
+                devBoxesClient.delayAllActions(
+                        "myProject", "me", "myDevBox", OffsetDateTime.parse("2022-09-30T17:00:00Z"), requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"actionType\":\"StopDevBox\",\"id\":\"cae4d1f4-94b8-75f2-406d-5f00ae4c1da7\",\"originalScheduledTime\":\"2021-09-30T12:00:00Z\",\"reason\":\"Schedule\",\"scheduledTime\":\"2022-09-30T17:00:00Z\",\"sourceId\":\"/projects/myProject/pools/myPool/schedules/mySchedule\"}")
+                                "{\"name\":\"schedule-default\",\"action\":{\"name\":\"schedule-default\",\"actionType\":\"Stop\",\"next\":{\"scheduledTime\":\"2022-09-30T17:00:00Z\"},\"sourceId\":\"/projects/myProject/pools/myPool/schedules/default\",\"suspendedUntil\":\"2022-09-30T17:00:00Z\"},\"result\":\"Succeeded\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }

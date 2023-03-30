@@ -79,6 +79,25 @@ public final class DevCentersImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/projects")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listProjectsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/projects/{projectName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -99,7 +118,7 @@ public final class DevCentersImpl {
                 RequestOptions requestOptions,
                 Context context);
 
-        @Get("/devboxes")
+        @Get("/projects/{projectName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -111,29 +130,10 @@ public final class DevCentersImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAllDevBoxes(
+        Response<BinaryData> getProjectSync(
                 @HostParam("endpoint") String endpoint,
+                @PathParam("projectName") String projectName,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("/users/{userId}/devboxes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAllDevBoxesByUser(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("userId") String userId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -169,26 +169,7 @@ public final class DevCentersImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAllDevBoxesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAllDevBoxesByUserNext(
+        Response<BinaryData> listProjectsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -214,8 +195,9 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -267,8 +249,9 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -309,8 +292,59 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return results of the project list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listProjectsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listProjectsSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Lists all projects.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -323,7 +357,14 @@ public final class DevCentersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listProjects(RequestOptions requestOptions) {
-        return new PagedIterable<>(listProjectsAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listProjectsSinglePage(requestOptions),
+                nextLink -> listProjectsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -333,8 +374,9 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -367,8 +409,9 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -382,465 +425,14 @@ public final class DevCentersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getProjectWithResponse(String projectName, RequestOptions requestOptions) {
-        return getProjectWithResponseAsync(projectName, requestOptions).block();
-    }
-
-    /**
-     * Lists Dev Boxes that the caller has access to in the DevCenter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listAllDevBoxesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAllDevBoxes(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Lists Dev Boxes that the caller has access to in the DevCenter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAllDevBoxesAsync(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listAllDevBoxesSinglePageAsync(requestOptions),
-                nextLink -> listAllDevBoxesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Lists Dev Boxes that the caller has access to in the DevCenter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAllDevBoxes(RequestOptions requestOptions) {
-        return new PagedIterable<>(listAllDevBoxesAsync(requestOptions));
-    }
-
-    /**
-     * Lists Dev Boxes in the Dev Center for a particular user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listAllDevBoxesByUserSinglePageAsync(
-            String userId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAllDevBoxesByUser(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        userId,
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Lists Dev Boxes in the Dev Center for a particular user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAllDevBoxesByUserAsync(String userId, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listAllDevBoxesByUserSinglePageAsync(userId, requestOptions),
-                nextLink -> listAllDevBoxesByUserNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Lists Dev Boxes in the Dev Center for a particular user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAllDevBoxesByUser(String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listAllDevBoxesByUserAsync(userId, requestOptions));
+        return service.getProjectSync(
+                this.client.getEndpoint(),
+                projectName,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -850,8 +442,9 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -891,40 +484,9 @@ public final class DevCentersImpl {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -935,97 +497,20 @@ public final class DevCentersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return results of the project list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listAllDevBoxesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listProjectsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAllDevBoxesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listAllDevBoxesByUserNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAllDevBoxesByUserNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        Response<BinaryData> res =
+                service.listProjectsNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

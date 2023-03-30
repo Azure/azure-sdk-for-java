@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsDeployEnvironmentActionTests extends DevCenterClientTestBase {
+public final class EnvironmentsCreateByEnvironmentDefinitionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsDeployEnvironmentActionTests() {
+    public void testEnvironmentsCreateByEnvironmentDefinitionTests() {
         BinaryData body =
                 BinaryData.fromString(
-                        "{\"actionId\":\"deploy\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"}}");
+                        "{\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"}}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                environmentsClient.beginDeployEnvironmentAction("myProject", "me", "mydevenv", body, requestOptions);
+                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
+                        "myProject", "me", "mydevenv", body, requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }

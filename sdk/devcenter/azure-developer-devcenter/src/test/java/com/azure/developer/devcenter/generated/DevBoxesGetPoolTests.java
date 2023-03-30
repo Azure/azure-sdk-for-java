@@ -16,11 +16,11 @@ public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
     @Disabled
     public void testDevBoxesGetPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = devBoxesClient.getPoolWithResponse("DevPool", "myProject", requestOptions);
+        Response<BinaryData> response = devBoxesClient.getPoolWithResponse("myProject", "DevPool", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"LargeDevWorkStationPool\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}}}")
+                                "{\"name\":\"LargeDevWorkStationPool\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"healthStatus\":\"Healthy\",\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"stopOnDisconnect\":{\"gracePeriodMinutes\":60,\"status\":\"Enabled\"},\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}}}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }

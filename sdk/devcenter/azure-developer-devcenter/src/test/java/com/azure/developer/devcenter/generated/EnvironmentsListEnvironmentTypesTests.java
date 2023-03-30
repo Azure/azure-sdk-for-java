@@ -16,10 +16,13 @@ public final class EnvironmentsListEnvironmentTypesTests extends DevCenterClient
     @Disabled
     public void testEnvironmentsListEnvironmentTypesTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = environmentsClient.listEnvironmentTypes("myProject", requestOptions);
+        PagedIterable<BinaryData> response =
+                deploymentEnvironmentsClient.listEnvironmentTypes("myProject", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"devtestenv\"}").toObject(Object.class),
+                BinaryData.fromString(
+                                "{\"name\":\"devtestenv\",\"deploymentTargetId\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"status\":\"Enabled\"}")
+                        .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }
 }

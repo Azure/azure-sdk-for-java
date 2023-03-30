@@ -87,16 +87,16 @@ public final class DevCenterClientImpl {
         return this.devBoxes;
     }
 
-    /** The EnvironmentsImpl object to access its operations. */
-    private final EnvironmentsImpl environments;
+    /** The DeploymentEnvironmentsImpl object to access its operations. */
+    private final DeploymentEnvironmentsImpl deploymentEnvironments;
 
     /**
-     * Gets the EnvironmentsImpl object to access its operations.
+     * Gets the DeploymentEnvironmentsImpl object to access its operations.
      *
-     * @return the EnvironmentsImpl object.
+     * @return the DeploymentEnvironmentsImpl object.
      */
-    public EnvironmentsImpl getEnvironments() {
-        return this.environments;
+    public DeploymentEnvironmentsImpl getDeploymentEnvironments() {
+        return this.deploymentEnvironments;
     }
 
     /**
@@ -145,6 +145,6 @@ public final class DevCenterClientImpl {
         this.serviceVersion = serviceVersion;
         this.devCenters = new DevCentersImpl(this);
         this.devBoxes = new DevBoxesImpl(this);
-        this.environments = new EnvironmentsImpl(this);
+        this.deploymentEnvironments = new DeploymentEnvironmentsImpl(this);
     }
 }

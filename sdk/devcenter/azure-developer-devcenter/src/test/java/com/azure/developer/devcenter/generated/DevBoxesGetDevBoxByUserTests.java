@@ -17,7 +17,7 @@ public final class DevBoxesGetDevBoxByUserTests extends DevCenterClientTestBase 
     public void testDevBoxesGetDevBoxByUserTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getDevBoxByUserWithResponse("myProject", "me", "MyDevBox", requestOptions);
+                devBoxesClient.getDevBoxWithResponse("myProject", "me", "MyDevBox", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

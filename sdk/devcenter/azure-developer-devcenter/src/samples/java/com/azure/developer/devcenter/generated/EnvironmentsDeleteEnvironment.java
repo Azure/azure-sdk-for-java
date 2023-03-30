@@ -7,22 +7,22 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.devcenter.EnvironmentsClient;
-import com.azure.developer.devcenter.EnvironmentsClientBuilder;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EnvironmentsDeleteEnvironment {
     public static void main(String[] args) {
-        EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
+        DeploymentEnvironmentsClient deploymentEnvironmentsClient =
+                new DeploymentEnvironmentsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.environmentsdeleteenvironment.environmentsdeleteenvironment
+        // BEGIN:com.azure.developer.devcenter.generated.deploymentenvironmentsdeleteenvironment.environmentsdeleteenvironment
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, Void> response =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv", requestOptions);
-        // END:com.azure.developer.devcenter.generated.environmentsdeleteenvironment.environmentsdeleteenvironment
+                deploymentEnvironmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv", requestOptions);
+        // END:com.azure.developer.devcenter.generated.deploymentenvironmentsdeleteenvironment.environmentsdeleteenvironment
     }
 }

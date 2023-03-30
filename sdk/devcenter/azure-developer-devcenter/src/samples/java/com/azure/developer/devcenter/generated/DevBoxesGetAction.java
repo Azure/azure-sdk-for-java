@@ -7,22 +7,22 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.EnvironmentsClient;
-import com.azure.developer.devcenter.EnvironmentsClientBuilder;
+import com.azure.developer.devcenter.DevBoxesClient;
+import com.azure.developer.devcenter.DevBoxesClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class EnvironmentsGetCatalogItem {
+public class DevBoxesGetAction {
     public static void main(String[] args) {
-        EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
+        DevBoxesClient devBoxesClient =
+                new DevBoxesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.environmentsgetcatalogitem.environmentsgetcatalogitem
+        // BEGIN:com.azure.developer.devcenter.generated.devboxesgetaction.devboxesgetaction
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.getCatalogItemWithResponse("myProject", "foo", requestOptions);
-        // END:com.azure.developer.devcenter.generated.environmentsgetcatalogitem.environmentsgetcatalogitem
+                devBoxesClient.getActionWithResponse("myProject", "me", "myDevBox", "schedule-default", requestOptions);
+        // END:com.azure.developer.devcenter.generated.devboxesgetaction.devboxesgetaction
     }
 }

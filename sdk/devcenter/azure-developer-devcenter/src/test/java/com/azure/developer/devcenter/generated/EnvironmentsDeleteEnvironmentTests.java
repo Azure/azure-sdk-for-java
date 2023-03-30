@@ -18,7 +18,7 @@ public final class EnvironmentsDeleteEnvironmentTests extends DevCenterClientTes
     public void testEnvironmentsDeleteEnvironmentTests() {
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, Void> response =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv", requestOptions);
+                deploymentEnvironmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv", requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }

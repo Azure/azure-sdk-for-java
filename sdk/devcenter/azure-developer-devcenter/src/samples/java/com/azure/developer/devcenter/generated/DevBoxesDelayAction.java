@@ -12,7 +12,7 @@ import com.azure.developer.devcenter.DevBoxesClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 
-public class DevBoxesDelayUpcomingAction {
+public class DevBoxesDelayAction {
     public static void main(String[] args) {
         DevBoxesClient devBoxesClient =
                 new DevBoxesClientBuilder()
@@ -20,16 +20,16 @@ public class DevBoxesDelayUpcomingAction {
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxesdelayupcomingaction.devboxesdelayupcomingaction
+        // BEGIN:com.azure.developer.devcenter.generated.devboxesdelayaction.devboxesdelayaction
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.delayUpcomingActionWithResponse(
+                devBoxesClient.delayActionWithResponse(
                         "myProject",
                         "me",
                         "myDevBox",
-                        "cae4d1f4-94b8-75f2-406d-5f00ae4c1da7",
+                        "schedule-default",
                         OffsetDateTime.parse("2022-09-30T17:00:00Z"),
                         requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxesdelayupcomingaction.devboxesdelayupcomingaction
+        // END:com.azure.developer.devcenter.generated.devboxesdelayaction.devboxesdelayaction
     }
 }
