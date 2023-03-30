@@ -100,31 +100,31 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getEnvironment().getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(s)),
 
-        AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "azure_data_lake_store_file_system_endpoint_suffix",
+        AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "azure-data-lake-store-file-system-endpoint-suffix",
             p -> p.getProfile().getEnvironment().getAzureDataLakeStoreFileSystemEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeStoreFileSystemEndpointSuffix(s)),
 
-        AZURE_LOG_ANALYTICS_ENDPOINT(ENVIRONMENT_PREFIX + "azure_log_analytics_endpoint",
+        AZURE_LOG_ANALYTICS_ENDPOINT(ENVIRONMENT_PREFIX + "azure-log-analytics-endpoint",
             p -> p.getProfile().getEnvironment().getAzureLogAnalyticsEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setAzureLogAnalyticsEndpoint(s)),
 
-        DATA_LAKE_ENDPOINT_RESOURCE_ID(ENVIRONMENT_PREFIX + "data_lake_endpoint_resource_id",
+        DATA_LAKE_ENDPOINT_RESOURCE_ID(ENVIRONMENT_PREFIX + "data-lake-endpoint-resource-id",
             p -> p.getProfile().getEnvironment().getDataLakeEndpointResourceId(),
             (p, s) -> p.getProfile().getEnvironment().setDataLakeEndpointResourceId(s)),
 
-        GALLERY_ENDPOINT(ENVIRONMENT_PREFIX + "gallery_endpoint",
+        GALLERY_ENDPOINT(ENVIRONMENT_PREFIX + "gallery-endpoint",
             p -> p.getProfile().getEnvironment().getGalleryEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setGalleryEndpoint(s)),
 
-        KEY_VAULT_DNS_SUFFIX(ENVIRONMENT_PREFIX + "key_vault_dns_suffix",
+        KEY_VAULT_DNS_SUFFIX(ENVIRONMENT_PREFIX + "key-vault-dns-suffix",
             p -> p.getProfile().getEnvironment().getKeyVaultDnsSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setKeyVaultDnsSuffix(s)),
 
-        MANAGEMENT_ENDPOINT(ENVIRONMENT_PREFIX + "management_endpoint",
+        MANAGEMENT_ENDPOINT(ENVIRONMENT_PREFIX + "management-endpoint",
             p -> p.getProfile().getEnvironment().getManagementEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setManagementEndpoint(s)),
 
-        MICROSOFT_GRAPH_ENDPOINT(ENVIRONMENT_PREFIX + "microsoft_graph_endpoint",
+        MICROSOFT_GRAPH_ENDPOINT(ENVIRONMENT_PREFIX + "microsoft-graph-endpoint",
             p -> p.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setMicrosoftGraphEndpoint(s)),
 
@@ -132,31 +132,31 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getEnvironment().getPortal(),
             (p, s) -> p.getProfile().getEnvironment().setPortal(s)),
 
-        PUBLISHING_PROFILE(ENVIRONMENT_PREFIX + "publishing_profile",
+        PUBLISHING_PROFILE(ENVIRONMENT_PREFIX + "publishing-profile",
             p -> p.getProfile().getEnvironment().getPublishingProfile(),
             (p, s) -> p.getProfile().getEnvironment().setPublishingProfile(s)),
 
-        RESOURCE_MANAGER_ENDPOINT(ENVIRONMENT_PREFIX + "resource_manager_endpoint",
+        RESOURCE_MANAGER_ENDPOINT(ENVIRONMENT_PREFIX + "resource-manager-endpoint",
             p -> p.getProfile().getEnvironment().getResourceManagerEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setResourceManagerEndpoint(s)),
 
-        SQL_MANAGEMENT_ENDPOINT(ENVIRONMENT_PREFIX + "sql_management_endpoint",
+        SQL_MANAGEMENT_ENDPOINT(ENVIRONMENT_PREFIX + "sql-management-endpoint",
             p -> p.getProfile().getEnvironment().getSqlManagementEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setSqlManagementEndpoint(s)),
 
-        SQL_SERVER_HOSTNAME_SUFFIX(ENVIRONMENT_PREFIX + "sql_server_hostname_suffix",
+        SQL_SERVER_HOSTNAME_SUFFIX(ENVIRONMENT_PREFIX + "sql-server-hostname-suffix",
             p -> p.getProfile().getEnvironment().getSqlServerHostnameSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setSqlServerHostnameSuffix(s)),
 
-        STORAGE_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "storage_endpoint_suffix",
+        STORAGE_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "storage-endpoint-suffix",
             p -> p.getProfile().getEnvironment().getStorageEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setStorageEndpointSuffix(s)),
 
-        SUBSCRIPTION_ID(PROFILE_PREFIX + "subscription_id",
+        SUBSCRIPTION_ID(PROFILE_PREFIX + "subscription-id",
             p -> p.getProfile().getSubscriptionId(),
             (p, s) -> p.getProfile().setSubscriptionId(s)),
 
-        TENANT_ID(PROFILE_PREFIX + "tenant_id",
+        TENANT_ID(PROFILE_PREFIX + "tenant-id",
             p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
