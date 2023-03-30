@@ -272,9 +272,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                                     .withCacheType(CacheType.ALL)
                                     .withCacheDuration("00:05:00")
                                     .withCacheBehavior(CacheBehavior.OVERRIDE)))
-                    .attach()
+                .attach()
             .attach()
-        .apply();
+            .apply();
 
         cdnProfile.refresh();
 
