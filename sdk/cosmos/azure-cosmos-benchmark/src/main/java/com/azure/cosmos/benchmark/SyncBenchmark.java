@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -127,14 +128,12 @@ abstract class SyncBenchmark<T> {
             .sendClientTelemetryToService(cfg.isClientTelemetryEnabled())
             .diagnosticsThresholds(
                 new CosmosDiagnosticsThresholds()
-                    .configureLatencyThresholds(
-                        cfg.getPointOperationThreshold(),
-                        cfg.getNonPointOperationThreshold()
-                    )
+                    .setPointOperationLatencyThreshold(cfg.getPointOperationThreshold())
+                    .setNonPointOperationLatencyThreshold(cfg.getNonPointOperationThreshold())
             );
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
-            telemetryConfig.diagnosticLogs();
+            telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
         }
 
         cosmosClient = cosmosClientBuilder.buildClient();
