@@ -13,6 +13,8 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
+
 /**
  * This class contains the customization code to customize the AutoRest generated code for App Configuration.
  */
@@ -30,9 +32,16 @@ public class AppConfigCustomization extends Customization {
     private void customizeSnapshot(ClassCustomization classCustomization) {
         classCustomization.getProperty("created").rename("createdAt");
         classCustomization.getProperty("expires").rename("expiresAt");
-        // Change `retentionPeriod` type to Duration
-
+        classCustomization.getProperty("itemsCount").rename("itemCount");
+        // Transfer Long to Duration internally
+        classCustomization.getMethod("getRetentionPeriod")
+            .setReturnType("Duration", "")
+            .replaceBody(
+                "return Duration.ofMillis(this.retentionPeriod);",
+                Arrays.asList("java.time.Duration"));
         // Remove JsonCreator
+        classCustomization.getConstructor("ConfigurationSettingSnapshot")
+            .removeAnnotation("JsonCreator");
     }
 
     private void customizeKeyValueFilter(ClassCustomization classCustomization) {
@@ -48,6 +57,7 @@ public class AppConfigCustomization extends Customization {
         classCustomization.getMethod("getLabel")
             .getJavadoc()
             .setDescription("Get the label property: Filters {@link ConfigurationSetting} by their label field.");
+        // Remove JsonCreator
         classCustomization.getConstructor("SnapshotSettingFilter")
             .removeAnnotation("JsonCreator");
     }
