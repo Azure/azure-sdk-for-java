@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TimeSeriesDatabaseConnections Get. */
 public final class TimeSeriesDatabaseConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/TimeSeriesDatabaseConnectionsGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/TimeSeriesDatabaseConnectionsGet_example.json
      */
     /**
      * Sample code: Get time series database connection for a DigitalTwins instance.
@@ -20,6 +18,6 @@ public final class TimeSeriesDatabaseConnectionsGetSamples {
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
         manager
             .timeSeriesDatabaseConnections()
-            .getWithResponse("resRg", "myDigitalTwinsService", "myConnection", Context.NONE);
+            .getWithResponse("resRg", "myDigitalTwinsService", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

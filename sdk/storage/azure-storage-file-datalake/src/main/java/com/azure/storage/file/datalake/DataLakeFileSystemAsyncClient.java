@@ -69,8 +69,6 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -865,8 +863,7 @@ public class DataLakeFileSystemAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
                 prefix, null, marker, maxResults,
-                null, ListBlobsShowOnly.DELETED, null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
+                null, ListBlobsShowOnly.DELETED, null, null, context), timeout);
     }
 
     /**
@@ -1666,8 +1663,7 @@ public class DataLakeFileSystemAsyncClient {
 
         // Initial rest call
         return blobDataLakeStoragePath.getPaths().undeleteWithResponseAsync(null,
-            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null, context)
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 // Construct the new client and final response from the undelete + getProperties responses
                 .map(response -> {

@@ -31,7 +31,7 @@ public final class AgentPoolsCreateSamples {
                 "myAgentPool",
                 new AgentPoolInner()
                     .withLocation("WESTUS")
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withCount(1)
                     .withTier("S1")
                     .withOs(OS.LINUX),
