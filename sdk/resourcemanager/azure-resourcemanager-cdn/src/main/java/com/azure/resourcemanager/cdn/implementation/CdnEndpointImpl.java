@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ class CdnEndpointImpl
     private List<CustomDomainInner> customDomainList;
     private List<CustomDomainInner> deletedCustomDomainList;
     // rule map for rules engine in Standard Microsoft SKU, indexed by rule name
-    private final Map<String, DeliveryRule> standardRulesEngineRuleMap = new ConcurrentHashMap<>();
+    private final Map<String, DeliveryRule> standardRulesEngineRuleMap = new HashMap<>();
 
     CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
@@ -591,6 +592,10 @@ class CdnEndpointImpl
     @Override
     @SuppressWarnings("unchecked")
     public CdnStandardRulesEngineRuleImpl defineNewStandardRulesEngineRule(String name) {
+        if (!isStandardMicrosoftSku()) {
+            throw new IllegalStateException(String.format("Standard rules engine only supports for Standard Microsoft SKU, "
+                + "current SKU is %s", parent().sku().name()));
+        }
         CdnStandardRulesEngineRuleImpl deliveryRule = new CdnStandardRulesEngineRuleImpl(this, name);
         this.standardRulesEngineRuleMap.put(name, deliveryRule.innerModel());
         return deliveryRule;
@@ -599,11 +604,19 @@ class CdnEndpointImpl
     @Override
     @SuppressWarnings("unchecked")
     public CdnStandardRulesEngineRuleImpl updateStandardRulesEngineRule(String name) {
+        if (!isStandardMicrosoftSku()) {
+            throw new IllegalStateException(String.format("Standard rules engine only supports for Standard Microsoft SKU, "
+                + "current SKU is %s", parent().sku().name()));
+        }
         return new CdnStandardRulesEngineRuleImpl(this, standardRulesEngineRules().get(name));
     }
 
     @Override
     public CdnEndpointImpl withoutStandardRulesEngineRule(String name) {
+        if (!isStandardMicrosoftSku()) {
+            throw new IllegalStateException(String.format("Standard rules engine only supports for Standard Microsoft SKU, "
+                + "current SKU is %s", parent().sku().name()));
+        }
         this.standardRulesEngineRuleMap.remove(name);
         return this;
     }

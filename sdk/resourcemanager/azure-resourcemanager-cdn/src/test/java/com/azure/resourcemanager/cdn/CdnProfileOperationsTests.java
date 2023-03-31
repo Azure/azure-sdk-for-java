@@ -16,11 +16,14 @@ import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.cdn.models.DeliveryRule;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleCacheExpirationAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
+import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestHeaderCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
 import com.azure.resourcemanager.cdn.models.RedirectType;
+import com.azure.resourcemanager.cdn.models.RequestHeaderMatchConditionParameters;
+import com.azure.resourcemanager.cdn.models.RequestHeaderOperator;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
@@ -194,6 +197,17 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
                 .withOrigin(originName1, "www.someDomain.net")
                 .withHttpAllowed(false)
                 .withHttpsAllowed(true)
+                // define Global rule
+                .defineNewStandardRulesEngineRule("Global")
+                    .withOrder(0)
+                    .withActions(
+                        new DeliveryRuleCacheExpirationAction()
+                            .withParameters(
+                                new CacheExpirationActionParameters()
+                                    .withCacheBehavior(CacheBehavior.SET_IF_MISSING)
+                                    .withCacheDuration("00:05:00")
+                                    .withCacheType(CacheType.ALL)))
+                    .attach()
                 .defineNewStandardRulesEngineRule(ruleName1)
                     .withOrder(1)
                     .withMatchConditions(
@@ -217,7 +231,11 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         CdnEndpoint endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
-        Assertions.assertEquals(1, endpoint.standardRulesEngineRules().size());
+        Assertions.assertEquals(2, endpoint.standardRulesEngineRules().size());
+
+        DeliveryRule globalRule = endpoint.standardRulesEngineRules().get("Global");
+        Assertions.assertNotNull(globalRule);
+
         DeliveryRule rule = endpoint.standardRulesEngineRules().get(ruleName1);
         Assertions.assertNotNull(rule);
         Assertions.assertEquals(1, rule.conditions().size());
@@ -281,7 +299,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         // endpoint1
         endpoint = cdnProfile.endpoints().get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
-        Assertions.assertEquals(2, endpoint.standardRulesEngineRules().size());
+        Assertions.assertEquals(3, endpoint.standardRulesEngineRules().size());
 
         // rule1
         rule = endpoint.standardRulesEngineRules().get(ruleName1);
@@ -313,6 +331,6 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         cdnProfile.refresh();
 
-        Assertions.assertEquals(1, cdnProfile.endpoints().get(cdnEndpointName).standardRulesEngineRules().size());
+        Assertions.assertEquals(2, cdnProfile.endpoints().get(cdnEndpointName).standardRulesEngineRules().size());
     }
 }

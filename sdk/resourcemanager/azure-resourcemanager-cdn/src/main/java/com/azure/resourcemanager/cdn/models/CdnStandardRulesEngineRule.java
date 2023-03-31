@@ -39,8 +39,17 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
              * @param order the order of the Standard rules engine rule
              * @return the next stage of the Standard rules engine rule definition
              */
-            WithMatchConditions<T> withOrder(int order);
+            WithMatchConditionsOrActions<T> withOrder(int order);
         }
+
+        /**
+         * The stage of a CDN Standard rules engine rule definition allowing to specify match conditions or actions.
+         * For Global rule(order=0), only actions can be specified.
+         * For the rest(order>0), both match conditions and actions must both be specified.
+         *
+         * @param <T> the stage of the parent CDN endpoint definition to return to after attaching this definition
+         */
+        interface WithMatchConditionsOrActions<T> extends WithMatchConditions<T>, WithActions<T> {}
 
         /**
          * The stage of a CDN Standard rules engine rule definition allowing to specify match conditions.
@@ -50,6 +59,7 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
         interface WithMatchConditions<T> {
             /**
              * Specify a list of conditions that must be matched for the actions to be executed.
+             * Must be left blank for Global rule(order=0). Required for the rest(order>0).
              *
              * @param matchConditions the conditions that must be matched for the actions to be executed
              * @return the next stage of the Standard rules engine rule definition
@@ -103,6 +113,7 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
         interface WithMatchConditions<T> {
             /**
              * Specify a list of conditions that must be matched for the actions to be executed.
+             * Must be left blank for Global rule(order=0). Required for the rest(order>0).
              *
              * @param matchConditions the conditions that must be matched for the actions to be executed
              * @return the next stage of the Standard rules engine rule update
@@ -133,8 +144,7 @@ public interface CdnStandardRulesEngineRule extends ChildResource<CdnEndpoint> {
      */
     interface Definition<ParentT>
         extends DefinitionStage.Blank<ParentT>,
-        DefinitionStage.WithMatchConditions<ParentT>,
-        DefinitionStage.WithActions<ParentT>,
+        DefinitionStage.WithMatchConditionsOrActions<ParentT>,
         Attachable<ParentT> {
     }
 
