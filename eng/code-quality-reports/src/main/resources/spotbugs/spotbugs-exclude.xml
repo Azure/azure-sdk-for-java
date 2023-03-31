@@ -566,8 +566,8 @@
 
   <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
   <Match>
-    <Class name="com.azure.core.http.rest.RestProxy"/>
-    <Method name="endTracingSpan"/>
+    <Class name="com.azure.core.implementation.http.rest.AsyncRestProxy"/>
+    <Method name="~(.*)\$endSpanWhenDone\$(.*)"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 

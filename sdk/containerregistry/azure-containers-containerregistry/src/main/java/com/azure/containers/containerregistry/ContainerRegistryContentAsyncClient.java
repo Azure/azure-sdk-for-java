@@ -182,6 +182,33 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsync -->
      *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadStreamAsync -->
+     * <pre>
+     * Flux.using&#40;
+     *         &#40;&#41; -&gt; new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;,
+     *         fileStream -&gt; contentClient.uploadBlob&#40;FluxUtil.toFluxByteBuffer&#40;fileStream, CHUNK_SIZE&#41;&#41;,
+     *         this::closeStream&#41;
+     *     .subscribe&#40;uploadResult -&gt;
+     *         System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
+     *             uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadStreamAsync -->
+     *
+     * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
+     * <pre>
+     * layerContent
+     *     .flatMap&#40;content -&gt; contentClient.uploadBlob&#40;content&#41;&#41;
+     *     .doOnError&#40;HttpResponseException.class, &#40;ex&#41; -&gt; &#123;
+     *         if &#40;ex.getCause&#40;&#41; instanceof AcrErrorsException&#41; &#123;
+     *             AcrErrorsException acrErrors = &#40;AcrErrorsException&#41; ex.getCause&#40;&#41;;
+     *             for &#40;AcrErrorInfo info : acrErrors.getValue&#40;&#41;.getErrors&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Uploaded blob failed: code '%s'&#92;n&quot;, info.getCode&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
+     *
      * Content is uploaded in chunks of up to 4MB size. Chunk size depends on passed {@link ByteBuffer}
      * sizes. Buffers that are bigger than 4MB are broken down into smaller chunks, but small buffers are not aggregated.
      * To decrease number of chunks for big content, use buffers of 4MB size.
