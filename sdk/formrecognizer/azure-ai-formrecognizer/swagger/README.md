@@ -35,6 +35,7 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
+custom-types: DocumentImage,DocumentFormula,DocumentFormulaKind,DocumentAnnotation,DocumentAnnotationKind,DocumentPageKind,DocumentBarCode,DocumentBarCodeKind
 required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}
