@@ -173,6 +173,8 @@ public final class CosmosDiagnosticsThresholds {
      * emitting diagnostics would be too high.
      * The first parameter will be the status code - the second parameter the subStatusCode. The returned boolean of the
      * function would indicate whether the operation should be considered as failure form a diagnostics perspective.
+     * @param isFailureHandler the function that will be used to determine whether a status code/sub-status code
+     * tuple should be considered a failure.
      * @return current CosmosDiagnosticsThresholds instance
      */
     public CosmosDiagnosticsThresholds setIsFailureHandler(BiFunction<Integer, Integer, Boolean> isFailureHandler) {

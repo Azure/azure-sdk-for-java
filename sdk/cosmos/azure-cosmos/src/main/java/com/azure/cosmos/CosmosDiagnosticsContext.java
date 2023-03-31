@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -400,8 +401,7 @@ public final class CosmosDiagnosticsContext {
 
     /**
      * A flag indicating whether the operation should be considered failed or not based on the status code handling
-     * rules in {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, Integer, boolean)} or
-     * {@link CosmosDiagnosticsThresholds#isFailureCondition(int, int)}
+     * rules in {@link CosmosDiagnosticsThresholds#setIsFailureHandler(BiFunction)}
      * @return a flag indicating whether the operation should be considered failed or not
      */
     public boolean isFailure() {
@@ -509,6 +509,15 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    /**
+     * Returns a json-string representation of the diagnostics context. This string uses json format for readability,
+     * but it should be treated as an opaque string - the format can and will change between SDK versions - for any
+     * automatic processing of the diagnostics information the get-properties of public API should be used.
+     * @return a json-string representation of the diagnostics context. This string uses json format for readability,
+     *      but it should be treated as an opaque string - the format can and will change between SDK versions -
+     *      for any
+     *      automatic processing of the diagnostics information the get-properties of public API should be used.
+     */
     public String toJson() {
         String snapshot = this.cachedRequestDiagnostics;
         if (snapshot != null) {
