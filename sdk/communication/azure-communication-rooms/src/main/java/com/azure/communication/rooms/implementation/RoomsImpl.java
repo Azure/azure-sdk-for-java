@@ -33,7 +33,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -67,7 +66,7 @@ public final class RoomsImpl {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomModel>> create(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateRoomRequest createRoomRequest,
                 @HeaderParam("Accept") String accept,
@@ -79,7 +78,7 @@ public final class RoomsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomsCollection>> list(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -88,7 +87,7 @@ public final class RoomsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomModel>> get(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -98,7 +97,7 @@ public final class RoomsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomModel>> update(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
@@ -109,7 +108,7 @@ public final class RoomsImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> delete(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -120,7 +119,7 @@ public final class RoomsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomsCollection>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -209,20 +208,6 @@ public final class RoomsImpl {
      * Creates a new room.
      *
      * @param createRoomRequest The create room request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the meeting room.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoomModel create(CreateRoomRequest createRoomRequest) {
-        return createAsync(createRoomRequest).block();
-    }
-
-    /**
-     * Creates a new room.
-     *
-     * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -232,6 +217,20 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> createWithResponse(CreateRoomRequest createRoomRequest, Context context) {
         return createWithResponseAsync(createRoomRequest, context).block();
+    }
+
+    /**
+     * Creates a new room.
+     *
+     * @param createRoomRequest The create room request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the meeting room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoomModel create(CreateRoomRequest createRoomRequest) {
+        return createWithResponse(createRoomRequest, Context.NONE).getValue();
     }
 
     /**
@@ -307,6 +306,32 @@ public final class RoomsImpl {
     public PagedFlux<RoomModel> listAsync(Context context) {
         return new PagedFlux<>(
                 () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Retrieves all created rooms.
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of rooms along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomModel> listSinglePage() {
+        return listSinglePageAsync().block();
+    }
+
+    /**
+     * Retrieves all created rooms.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of rooms along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomModel> listSinglePage(Context context) {
+        return listSinglePageAsync(context).block();
     }
 
     /**
@@ -401,20 +426,6 @@ public final class RoomsImpl {
      * Retrieves an existing room by id.
      *
      * @param roomId The id of the room requested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the meeting room.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoomModel get(String roomId) {
-        return getAsync(roomId).block();
-    }
-
-    /**
-     * Retrieves an existing room by id.
-     *
-     * @param roomId The id of the room requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -424,6 +435,20 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> getWithResponse(String roomId, Context context) {
         return getWithResponseAsync(roomId, context).block();
+    }
+
+    /**
+     * Retrieves an existing room by id.
+     *
+     * @param roomId The id of the room requested.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the meeting room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoomModel get(String roomId) {
+        return getWithResponse(roomId, Context.NONE).getValue();
     }
 
     /**
@@ -506,21 +531,6 @@ public final class RoomsImpl {
      *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the meeting room.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoomModel update(String roomId, UpdateRoomRequest updateRoomRequest) {
-        return updateAsync(roomId, updateRoomRequest).block();
-    }
-
-    /**
-     * Update a room with given changes.
-     *
-     * @param roomId The id of the room requested.
-     * @param updateRoomRequest The update room request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -530,6 +540,21 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> updateWithResponse(String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
         return updateWithResponseAsync(roomId, updateRoomRequest, context).block();
+    }
+
+    /**
+     * Update a room with given changes.
+     *
+     * @param roomId The id of the room requested.
+     * @param updateRoomRequest The update room request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the meeting room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoomModel update(String roomId, UpdateRoomRequest updateRoomRequest) {
+        return updateWithResponse(roomId, updateRoomRequest, Context.NONE).getValue();
     }
 
     /**
@@ -599,19 +624,6 @@ public final class RoomsImpl {
      * Delete a room.
      *
      * @param roomId The id of the room to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String roomId) {
-        deleteAsync(roomId).block();
-    }
-
-    /**
-     * Delete a room.
-     *
-     * @param roomId The id of the room to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -624,9 +636,23 @@ public final class RoomsImpl {
     }
 
     /**
+     * Delete a room.
+     *
+     * @param roomId The id of the room to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String roomId) {
+        deleteWithResponse(roomId, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -650,7 +676,8 @@ public final class RoomsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -670,5 +697,36 @@ public final class RoomsImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of rooms along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomModel> listNextSinglePage(String nextLink) {
+        return listNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of rooms along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomModel> listNextSinglePage(String nextLink, Context context) {
+        return listNextSinglePageAsync(nextLink, context).block();
     }
 }

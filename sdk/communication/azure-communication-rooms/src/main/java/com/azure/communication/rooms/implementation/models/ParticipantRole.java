@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParticipantRole. */
+/** The role of a room participant. The default value is Attendee. */
 public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole> {
     /** Static value Presenter for ParticipantRole. */
     public static final ParticipantRole PRESENTER = fromString("Presenter");

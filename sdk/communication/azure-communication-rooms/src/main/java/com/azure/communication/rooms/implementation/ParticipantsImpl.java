@@ -29,7 +29,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.net.URL;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Participants. */
@@ -62,7 +61,7 @@ public final class ParticipantsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ParticipantsCollection>> list(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -72,7 +71,7 @@ public final class ParticipantsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Object>> update(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") UpdateParticipantsRequest updateParticipantsRequest,
@@ -84,7 +83,7 @@ public final class ParticipantsImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ParticipantsCollection>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -173,6 +172,35 @@ public final class ParticipantsImpl {
     public PagedFlux<RoomParticipant> listAsync(String roomId, Context context) {
         return new PagedFlux<>(
                 () -> listSinglePageAsync(roomId, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get participants in a room.
+     *
+     * @param roomId The id of the room to get participants from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants in a room along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomParticipant> listSinglePage(String roomId) {
+        return listSinglePageAsync(roomId).block();
+    }
+
+    /**
+     * Get participants in a room.
+     *
+     * @param roomId The id of the room to get participants from.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants in a room along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomParticipant> listSinglePage(String roomId, Context context) {
+        return listSinglePageAsync(roomId, context).block();
     }
 
     /**
@@ -292,21 +320,6 @@ public final class ParticipantsImpl {
      *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object update(String roomId, UpdateParticipantsRequest updateParticipantsRequest) {
-        return updateAsync(roomId, updateParticipantsRequest).block();
-    }
-
-    /**
-     * Update participants in a room.
-     *
-     * @param roomId The id of the room to update the participants in.
-     * @param updateParticipantsRequest An updated set of participants of the room.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -320,9 +333,25 @@ public final class ParticipantsImpl {
     }
 
     /**
+     * Update participants in a room.
+     *
+     * @param roomId The id of the room to update the participants in.
+     * @param updateParticipantsRequest An updated set of participants of the room.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object update(String roomId, UpdateParticipantsRequest updateParticipantsRequest) {
+        return updateWithResponse(roomId, updateParticipantsRequest, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,7 +376,8 @@ public final class ParticipantsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -368,5 +398,36 @@ public final class ParticipantsImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of participants in a room along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomParticipant> listNextSinglePage(String nextLink) {
+        return listNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of participants in a room along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RoomParticipant> listNextSinglePage(String nextLink, Context context) {
+        return listNextSinglePageAsync(nextLink, context).block();
     }
 }

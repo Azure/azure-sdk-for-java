@@ -18,25 +18,28 @@ public final class RoomModel {
     private String id;
 
     /*
-     * The timestamp when the room was created at the server. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the room was created at the server. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "createdAt", required = true)
     private OffsetDateTime createdAt;
 
     /*
-     * The timestamp from when the room is open for joining. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "validFrom", required = true)
     private OffsetDateTime validFrom;
 
     /*
-     * The timestamp from when the room can no longer be joined. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "validUntil", required = true)
     private OffsetDateTime validUntil;
+
+    /** Creates an instance of RoomModel class. */
+    public RoomModel() {}
 
     /**
      * Get the id property: Unique identifier of a room. This id is server generated.

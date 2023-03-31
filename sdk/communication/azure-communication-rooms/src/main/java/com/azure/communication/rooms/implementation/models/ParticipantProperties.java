@@ -16,6 +16,9 @@ public final class ParticipantProperties {
     @JsonProperty(value = "role")
     private ParticipantRole role;
 
+    /** Creates an instance of ParticipantProperties class. */
+    public ParticipantProperties() {}
+
     /**
      * Get the role property: The role of a room participant. The default value is Attendee.
      *

@@ -5,13 +5,9 @@ package com.azure.communication.rooms;
 
 import com.azure.communication.common.CommunicationIdentifier;
 
-import com.azure.communication.rooms.implementation.models.RoomsCollection;
-import com.azure.communication.rooms.implementation.models.ParticipantProperties;
-import com.azure.communication.rooms.implementation.models.RoomModel;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.InvitedRoomParticipant;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
-import com.azure.communication.rooms.models.RoomJoinPolicy;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.communication.rooms.models.UpsertParticipantsResult;
 import com.azure.core.annotation.ReturnType;
@@ -19,7 +15,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.time.OffsetDateTime;
@@ -163,11 +158,12 @@ public final class RoomsClient {
      *
      * @param roomId The room id.
      * @param participants The participants list.
+     * @param context The context of key value pairs for http request.
      * @return response for a successful upsert participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UpsertParticipantsResult> upsertParticipantsWithResponse(String roomId, List<InvitedRoomParticipant> participants) {
-        return roomsAsyncClient.upsertParticipantsWithResponse(roomId, participants).block();
+    public Response<UpsertParticipantsResult> upsertParticipantsWithResponse(String roomId, List<InvitedRoomParticipant> participants, Context context) {
+        return roomsAsyncClient.upsertParticipantsWithResponse(roomId, participants, context).block();
     }
 
     /**
@@ -187,11 +183,12 @@ public final class RoomsClient {
      *
      * @param roomId The room id.
      * @param identifiers The communication identifiers list.
+     * @param context The context of key value pairs for http request.
      * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> identifiers) {
-        return roomsAsyncClient.removeParticipantsWithResponse(roomId, identifiers).block();
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> identifiers, Context context) {
+        return roomsAsyncClient.removeParticipantsWithResponse(roomId, identifiers, context).block();
     }
 
     /**

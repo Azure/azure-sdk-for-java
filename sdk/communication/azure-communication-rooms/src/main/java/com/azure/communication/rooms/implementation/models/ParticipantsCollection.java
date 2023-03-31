@@ -18,11 +18,13 @@ public final class ParticipantsCollection {
     private List<RoomParticipant> value;
 
     /*
-     * If there are more participants that can be retrieved, the next link will
-     * be populated.
+     * If there are more participants that can be retrieved, the next link will be populated.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ParticipantsCollection class. */
+    public ParticipantsCollection() {}
 
     /**
      * Get the value property: A collection of participants.

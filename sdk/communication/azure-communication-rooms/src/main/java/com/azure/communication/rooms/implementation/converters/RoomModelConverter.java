@@ -32,10 +32,10 @@ public final class RoomModelConverter {
         }
 
         com.azure.communication.rooms.implementation.models.RoomModel room = new com.azure.communication.rooms.implementation.models.RoomModel()
-        .setId(communicationRoom.getRoomId())
-        .setValidFrom(communicationRoom.getValidFrom())
-        .setValidUntil(communicationRoom.getValidUntil())
-        .setCreatedAt(communicationRoom.getCreatedAt());
+            .setId(communicationRoom.getRoomId())
+            .setValidFrom(communicationRoom.getValidFrom())
+            .setValidUntil(communicationRoom.getValidUntil())
+            .setCreatedAt(communicationRoom.getCreatedAt());
 
         return room;
 

@@ -14,7 +14,6 @@ import com.azure.communication.rooms.implementation.converters.RoomModelConverte
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
 import com.azure.communication.rooms.implementation.converters.RoomsErrorConverter;
 import com.azure.communication.rooms.implementation.models.RoomModel;
-import com.azure.communication.rooms.implementation.models.RoomsCollection;
 import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.InvitedRoomParticipant;
@@ -40,7 +39,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -234,13 +232,13 @@ public final class RoomsAsyncClient {
      *
      * @return The existing rooms.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CommunicationRoom> listRooms() {
         return listRooms(null);
     }
 
     PagedFlux<CommunicationRoom> listRooms(Context context) {
-       final Context serviceContext = context = context == null ? Context.NONE : context;
+        final Context serviceContext = context == null ? Context.NONE : context;
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
@@ -324,7 +322,7 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
-            Map<String, ParticipantProperties> participantMap = ConvertRoomParticipantsToMapForUpsert(participants);
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForUpsert(participants);
             UpdateParticipantsRequest updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap);
 
             return this.participantsClient
@@ -356,7 +354,7 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
-            Map<String, ParticipantProperties> participantMap = ConvertRoomParticipantsToMapForUpsert(participants);
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForUpsert(participants);
             UpdateParticipantsRequest updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap);
 
             return this.participantsClient
@@ -372,7 +370,7 @@ public final class RoomsAsyncClient {
      * Remove participants from an existing Room.
      *
      * @param roomId The room id.
-     * @param participants The participants list.
+     * @param communicationIdentifiers The communication identifier list.
      * @return response for a successful add participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -386,7 +384,7 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(communicationIdentifiers, "'communicationIdentifiers' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
-            Map<String, ParticipantProperties> participantMap = ConvertRoomIdentifiersToMapForRemove(communicationIdentifiers);
+            Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(communicationIdentifiers);
             UpdateParticipantsRequest updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap);
 
             return this.participantsClient
@@ -403,7 +401,7 @@ public final class RoomsAsyncClient {
      * Remove participants from an existing Room with response.
      *
      * @param roomId The room id.
-     * @param participants The participants list.
+     * @param communicationIdentifiers The communication identifier list.
      * @return response for a successful add participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -418,7 +416,7 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
 
-            Map<String, ParticipantProperties> participantMap = ConvertRoomIdentifiersToMapForRemove(communicationIdentifiers);
+            Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(communicationIdentifiers);
             UpdateParticipantsRequest updateRequest = new UpdateParticipantsRequest().setParticipants(participantMap);
 
             return this.participantsClient
@@ -436,18 +434,16 @@ public final class RoomsAsyncClient {
      * @param roomId The room Id.
      * @return The existing room.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<RoomParticipant> listParticipants (String roomId) {
-        return listParticipants (roomId, null);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RoomParticipant> listParticipants(String roomId) {
+        return listParticipants(roomId, null);
     }
 
-    PagedFlux<RoomParticipant> listParticipants (String roomId, Context context) {
+    PagedFlux<RoomParticipant> listParticipants(String roomId, Context context) {
+        final Context serviceContext = context == null ? Context.NONE : context;
 
-       final Context serviceContext = context = context == null ? Context.NONE : context;
-
-       try {
-
-        Objects.requireNonNull(roomId, "'roomId' cannot be null.");
+        try {
+            Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
             return pagedFluxConvert(new PagedFlux<>(
                 () -> this.participantsClient.listSinglePageAsync(roomId, serviceContext)
@@ -513,7 +509,7 @@ public final class RoomsAsyncClient {
         Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
 
         if (participants != null) {
-            roomParticipants = ConvertRoomParticipantsToMapForUpsert(participants);
+            roomParticipants = convertRoomParticipantsToMapForUpsert(participants);
         }
 
 
@@ -549,7 +545,7 @@ public final class RoomsAsyncClient {
      *
      * @return Map of participants.
      */
-    private Map<String, ParticipantProperties> ConvertRoomParticipantsToMapForUpsert(List<InvitedRoomParticipant> participants) {
+    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForUpsert(List<InvitedRoomParticipant> participants) {
         Map<String, ParticipantProperties> participantMap = new HashMap<>();
 
         if (participants != null) {
@@ -566,7 +562,7 @@ public final class RoomsAsyncClient {
      *
      * @return Map of participants.
      */
-    private Map<String, ParticipantProperties> ConvertRoomIdentifiersToMapForRemove(List<CommunicationIdentifier> identifiers) {
+    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(List<CommunicationIdentifier> identifiers) {
         Map<String, ParticipantProperties> participantMap = new HashMap<>();
 
         if (identifiers != null) {

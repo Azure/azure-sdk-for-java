@@ -11,19 +11,18 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import java.net.URL;
 
 /** Initializes a new instance of the AzureCommunicationRoomService type. */
 public final class AzureCommunicationRoomServiceImpl {
     /** The endpoint of the Azure Communication resource. */
-    private final URL endpoint;
+    private final String endpoint;
 
     /**
      * Gets The endpoint of the Azure Communication resource.
      *
      * @return the endpoint value.
      */
-    public URL getEndpoint() {
+    public String getEndpoint() {
         return this.endpoint;
     }
 
@@ -93,7 +92,7 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoomServiceImpl(URL endpoint, String apiVersion) {
+    AzureCommunicationRoomServiceImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -110,7 +109,7 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, URL endpoint, String apiVersion) {
+    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -123,7 +122,7 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationRoomServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, URL endpoint, String apiVersion) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

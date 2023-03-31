@@ -17,6 +17,9 @@ public final class UpdateParticipantsRequest {
     @JsonProperty(value = "participants")
     private Map<String, ParticipantProperties> participants;
 
+    /** Creates an instance of UpdateParticipantsRequest class. */
+    public UpdateParticipantsRequest() {}
+
     /**
      * Get the participants property: Participants to be updated.
      *

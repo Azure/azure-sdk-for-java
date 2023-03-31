@@ -18,11 +18,13 @@ public final class RoomsCollection {
     private List<RoomModel> value;
 
     /*
-     * If there are more rooms that can be retrieved, the next link will be
-     * populated.
+     * If there are more rooms that can be retrieved, the next link will be populated.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of RoomsCollection class. */
+    public RoomsCollection() {}
 
     /**
      * Get the value property: A collection of rooms.

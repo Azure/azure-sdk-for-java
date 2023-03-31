@@ -12,18 +12,21 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class UpdateRoomRequest {
     /*
-     * (Optional) The timestamp from when the room is open for joining. The
-     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * (Optional) The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "validFrom")
     private OffsetDateTime validFrom;
 
     /*
-     * (Optional) The timestamp from when the room can no longer be joined. The
-     * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * (Optional) The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "validUntil")
     private OffsetDateTime validUntil;
+
+    /** Creates an instance of UpdateRoomRequest class. */
+    public UpdateRoomRequest() {}
 
     /**
      * Get the validFrom property: (Optional) The timestamp from when the room is open for joining. The timestamp is in

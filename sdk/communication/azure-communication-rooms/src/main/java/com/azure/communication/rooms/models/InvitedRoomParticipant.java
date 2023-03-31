@@ -10,14 +10,13 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class InvitedRoomParticipant {
 
-    private CommunicationIdentifier communicationIdentifier;
+    private final CommunicationIdentifier communicationIdentifier;
     private ParticipantRole role;
 
     /**
      * The default constructor of InvitedRoomParticipant.
      *
-     * @param roomId The Room Id.
-     * @param validFrom The starting time point of the room.
+     * @param communicationIdentifier The communication identifier.
      */
     public InvitedRoomParticipant(CommunicationIdentifier communicationIdentifier) {
         this.communicationIdentifier = communicationIdentifier;

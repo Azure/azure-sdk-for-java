@@ -13,17 +13,15 @@ import java.util.Map;
 @Fluent
 public final class CreateRoomRequest {
     /*
-     * The timestamp from when the room is open for joining. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the
-     * current date time.
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      */
     @JsonProperty(value = "validFrom")
     private OffsetDateTime validFrom;
 
     /*
-     * The timestamp from when the room can no longer be joined. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the
-     * current date time plus 180 days.
+     * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      */
     @JsonProperty(value = "validUntil")
     private OffsetDateTime validUntil;
@@ -33,6 +31,9 @@ public final class CreateRoomRequest {
      */
     @JsonProperty(value = "participants")
     private Map<String, ParticipantProperties> participants;
+
+    /** Creates an instance of CreateRoomRequest class. */
+    public CreateRoomRequest() {}
 
     /**
      * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339

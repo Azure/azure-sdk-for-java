@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RoomParticipant {
     /*
-     * Raw ID representation of the communication identifier. Please refer to
-     * the following document for additional information on Raw ID. <br>
+     * Raw ID representation of the communication identifier. Please refer to the following document for additional
+     * information on Raw ID. <br>
      * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation
      */
     @JsonProperty(value = "rawId", required = true)
@@ -23,6 +23,9 @@ public final class RoomParticipant {
      */
     @JsonProperty(value = "role", required = true)
     private ParticipantRole role;
+
+    /** Creates an instance of RoomParticipant class. */
+    public RoomParticipant() {}
 
     /**
      * Get the rawId property: Raw ID representation of the communication identifier. Please refer to the following
