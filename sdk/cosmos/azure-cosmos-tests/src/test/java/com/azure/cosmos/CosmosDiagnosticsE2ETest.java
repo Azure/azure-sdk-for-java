@@ -250,33 +250,55 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         }
     }
 
-    private static class CapturingLogger extends CosmosDiagnosticsLogger {
+    private static class CapturingLogger implements CosmosDiagnosticsHandler {
         private final List<String> loggedMessages = new ArrayList<>();
         public CapturingLogger() {
             super();
         }
 
         @Override
-        protected boolean shouldLog(CosmosDiagnosticsContext diagnosticsContext) {
-            logger.info("--> should Log: ctx: {}", diagnosticsContext);
-            return true;
-        }
-
-        @Override
-        protected void log(CosmosDiagnosticsContext ctx) {
+        public void handleDiagnostics(CosmosDiagnosticsContext ctx, Context traceContext) {
             logger.info("--> log - ctx: {}", ctx);
             String msg = String.format(
-                    "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
-                    ctx.getAccountName(),
-                    ctx.getDatabaseName(),
-                    ctx.getContainerName(),
-                    ctx.getStatusCode(),
-                    ctx.getSubStatusCode(),
-                    ctx);
+                "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
+                ctx.getAccountName(),
+                ctx.getDatabaseName(),
+                ctx.getContainerName(),
+                ctx.getStatusCode(),
+                ctx.getSubStatusCode(),
+                ctx);
 
             this.loggedMessages.add(msg);
 
             logger.info(msg);
+        }
+
+        public List<String> getLoggedMessages() {
+            return this.loggedMessages;
+        }
+    }
+
+    private static class ConsoleOutLogger implements CosmosDiagnosticsHandler {
+        private final List<String> loggedMessages = new ArrayList<>();
+        public ConsoleOutLogger() {
+            super();
+        }
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext ctx, Context traceContext) {
+            logger.info("--> log - ctx: {}", ctx);
+            String msg = String.format(
+                "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
+                ctx.getAccountName(),
+                ctx.getDatabaseName(),
+                ctx.getContainerName(),
+                ctx.getStatusCode(),
+                ctx.getSubStatusCode(),
+                ctx);
+
+            this.loggedMessages.add(msg);
+
+            System.out.println(msg);
         }
 
         public List<String> getLoggedMessages() {
