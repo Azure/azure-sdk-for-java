@@ -238,7 +238,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        database.createContainer(properties);
+        database.createContainer(properties).block();
         logger.info("Finished truncating collection {}.", cosmosContainer.getId());
     }
 
