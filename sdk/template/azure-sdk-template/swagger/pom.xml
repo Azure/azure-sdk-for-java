@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <groupId>com.azure</groupId>
-    <artifactId>azure-maps-search-customization</artifactId>
-    <version>1.0.0-beta.1</version>
+  <artifactId>azure-template-customization</artifactId>
+  <version>1.0.0-beta.1</version>
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
