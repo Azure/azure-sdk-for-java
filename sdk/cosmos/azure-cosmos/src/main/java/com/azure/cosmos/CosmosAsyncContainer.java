@@ -67,6 +67,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -94,6 +95,10 @@ public class CosmosAsyncContainer {
 
     private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    private static final ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
+        ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
+
+
     private final CosmosAsyncDatabase database;
     private final String id;
     private final String link;
@@ -310,8 +315,66 @@ public class CosmosAsyncContainer {
         return withContext(context -> createItemInternal(item, requestOptions, context));
     }
 
-    private <T> Mono<CosmosItemResponse<T>> createItemWithRetriesInternal(T item, CosmosItemRequestOptions options) {
-        return createItemInternal(item, options);
+    private <T> Mono<CosmosItemResponse<T>> createItemWithRetriesInternal(
+        T item, CosmosItemRequestOptions options) {
+
+        return createItemInternal(item, options)
+            .onErrorResume(throwable -> {
+                Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
+
+                if (!(error instanceof CosmosException)) {
+
+                    Exception nonCosmosException =
+                        error instanceof Exception ? (Exception) error : new RuntimeException(error);
+                    return Mono.error(nonCosmosException);
+                }
+
+                assert error instanceof CosmosException;
+                CosmosException cosmosException = (CosmosException) error;
+
+                if (cosmosException.getStatusCode() != HttpConstants.StatusCodes.CONFLICT) {
+                    return Mono.error(cosmosException);
+                }
+
+                InternalObjectNode internalObjectNode = InternalObjectNode.fromObjectToInternalObjectNode(item);
+                String itemId = internalObjectNode.getId();
+                RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+                @SuppressWarnings("unchecked")
+                Class<T> itemType = (Class<T>) item.getClass();
+
+                Mono<CosmosItemResponse<T>> readMono =
+                    this.getDatabase().getDocClientWrapper()
+                        .readDocument(getItemLink(itemId), requestOptions)
+                        .map(response -> {
+                            CosmosDiagnostics responseDiagnostics = response.getDiagnostics();
+                            if (responseDiagnostics != null &&
+                                responseDiagnostics.getClientSideRequestStatisticsRaw() != null) {
+
+                                CosmosDiagnostics errorDiagnostics = cosmosException.getDiagnostics();
+                                if (errorDiagnostics != null) {
+                                    responseDiagnostics.clientSideRequestStatistics().recordContributingPointOperation(
+                                        errorDiagnostics.getClientSideRequestStatisticsRaw()
+                                    );
+                                }
+
+                                response.addRequestCharge(cosmosException.getRequestCharge());
+                            }
+                            return ModelBridgeInternal
+                                .createCosmosAsyncItemResponse(response, itemType, getItemDeserializer());
+                        })
+                        .single();
+
+                return readMono
+                    .onErrorMap(readThrowable -> cosmosException)
+                    .flatMap(readResponse -> {
+                        if (readResponse.getStatusCode() == 200) {
+                            return Mono.just(itemResponseAccessor.withRemappedStatusCode(
+                                readResponse, 201, cosmosException.getRequestCharge()));
+                        }
+
+                        return Mono.error(cosmosException);
+                    });
+            });
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options, Context context) {

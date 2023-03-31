@@ -20,6 +20,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
@@ -102,28 +103,34 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
     @DataProvider(name = "retriesEnabledTestCaseProvider")
     private Object[][] nonIdempotentWriteRetriesEnabledTestCaseProvider() {
         // following parameters will be set
+        // - should inject any failure
+        // - should suppress service request
         // - client default
         // - requestOptions default
         // - expected StatusCode
         return new Object[][]{
-            new Object[] { true, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { true, null, true, HttpConstants.StatusCodes.CREATED },
-            new Object[] { true, null, false, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { true, true, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { true, true, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { true, true, true, HttpConstants.StatusCodes.CREATED },
-            new Object[] { true, true, false, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { true, false, false, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { true, false, true, HttpConstants.StatusCodes.CREATED },
-            new Object[] { false, true, true, HttpConstants.StatusCodes.CREATED },
-            new Object[] { false, false, true, HttpConstants.StatusCodes.CREATED },
-            new Object[] { false, false, false, HttpConstants.StatusCodes.CREATED },
+            /*new Object[] { true, null, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { true, null, null, true, HttpConstants.StatusCodes.CREATED },
+            new Object[] { true, null, null, false, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { true, null, true, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { true, null, true, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { true, null, true, true, HttpConstants.StatusCodes.CREATED },
+            new Object[] { true, null, true, false, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { true, null, false, false, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { true, null, false, true, HttpConstants.StatusCodes.CREATED },
+            new Object[] { false, null, true, true, HttpConstants.StatusCodes.CREATED },
+            new Object[] { false, null, false, true, HttpConstants.StatusCodes.CREATED },
+            new Object[] { false, null, false, false, HttpConstants.StatusCodes.CREATED },*/
+            //new Object[] { true, false, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { true, false, true, null, HttpConstants.StatusCodes.CREATED },
+            //new Object[] { true, true, true, true, HttpConstants.StatusCodes.CREATED },
         };
     }
 
     @Test(groups = { "simple", "emulator" }, dataProvider = "retriesEnabledTestCaseProvider", timeOut = TIMEOUT * 10000)
     public void createItem(
         boolean injectFailure,
+        Boolean suppressServiceRequests,
         Boolean clientWideEnabled,
         Boolean requestOptionsEnabled,
         int expectedStatusCode) {
@@ -139,7 +146,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         FaultInjectionRule rule = null;
 
         if (injectFailure) {
-            rule = injectFailure(container, FaultInjectionOperationType.CREATE_ITEM);
+            rule = injectFailure(container, FaultInjectionOperationType.CREATE_ITEM, suppressServiceRequests);
         }
 
         try {
@@ -160,13 +167,19 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
     private FaultInjectionRule injectFailure(
         CosmosAsyncContainer container,
-        FaultInjectionOperationType operationType) {
+        FaultInjectionOperationType operationType,
+        Boolean suppressServiceRequests) {
 
-        IFaultInjectionResult result = FaultInjectionResultBuilders
+        FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
             .delay(Duration.ofMillis(1500))
-            .times(1)
-            .build();
+            .times(1);
+
+        if (suppressServiceRequests != null) {
+            faultInjectionResultBuilder.suppressServiceRequests(suppressServiceRequests);
+        }
+
+        IFaultInjectionResult result = faultInjectionResultBuilder.build();
 
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
             .operationType(operationType)

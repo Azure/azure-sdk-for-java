@@ -459,6 +459,10 @@ public class ImplementationBridgeHelpers {
                                                                byte[] contentAsByteArray, Class<T> classType,
                                                                ItemDeserializer itemDeserializer);
 
+
+            <T> CosmosItemResponse<T> withRemappedStatusCode(
+                CosmosItemResponse<T> originalResponse, int newStatusCode, double additionalRequestCharge);
+
             byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
 
             void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);

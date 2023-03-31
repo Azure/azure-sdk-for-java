@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -239,6 +240,155 @@ public class ClientSideRequestStatistics {
             resolutionStatistics.endTimeUTC = responseTime;
             resolutionStatistics.exceptionMessage = exceptionMessage;
             resolutionStatistics.inflightRequest = false;
+        }
+    }
+
+    private void mergeContactedReplicas(List<URI> otherContactedReplicas) {
+        if (otherContactedReplicas == null) {
+            return;
+        }
+
+        if (this.contactedReplicas == null || this.contactedReplicas.isEmpty()) {
+            this.contactedReplicas = otherContactedReplicas;
+            return;
+        }
+
+        LinkedHashSet<URI> totalContactedReplicas = new LinkedHashSet<>();
+        totalContactedReplicas.addAll(otherContactedReplicas);
+        totalContactedReplicas.addAll(this.contactedReplicas);
+
+        this.setContactedReplicas(new ArrayList(totalContactedReplicas));
+    }
+
+    private void mergeSupplementalResponses(List<StoreResponseStatistics> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.supplementalResponseStatisticsList == null || this.supplementalResponseStatisticsList.isEmpty()) {
+            this.supplementalResponseStatisticsList = other;
+            return;
+        }
+
+        this.supplementalResponseStatisticsList.addAll(other);
+    }
+
+    private void mergeResponseStatistics(List<StoreResponseStatistics> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.responseStatisticsList == null || this.responseStatisticsList.isEmpty()) {
+            this.responseStatisticsList = other;
+            return;
+        }
+
+        this.responseStatisticsList.addAll(other);
+    }
+
+    private void mergeAddressResolutionStatistics(
+        Map<String, AddressResolutionStatistics> otherAddressResolutionStatistics) {
+        if (otherAddressResolutionStatistics == null) {
+            return;
+        }
+
+        if (this.addressResolutionStatistics == null || this.addressResolutionStatistics.isEmpty()) {
+            this.addressResolutionStatistics = otherAddressResolutionStatistics;
+            return;
+        }
+
+
+        for (String key : otherAddressResolutionStatistics.keySet()) {
+            this.addressResolutionStatistics.putIfAbsent(key, otherAddressResolutionStatistics.get(key));
+        }
+    }
+
+    private void mergeFailedReplica(Set<URI> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.failedReplicas == null || this.failedReplicas.isEmpty()) {
+            this.failedReplicas = other;
+            return;
+        }
+
+        for (URI uri : other) {
+            this.failedReplicas.add(uri);
+        }
+    }
+
+    private void mergeLocationEndpointsContacted(Set<URI> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.locationEndpointsContacted == null || this.locationEndpointsContacted.isEmpty()) {
+            this.locationEndpointsContacted = other;
+            return;
+        }
+
+        for (URI uri : other) {
+            this.locationEndpointsContacted.add(uri);
+        }
+    }
+
+    private void mergeRegionsContacted(Set<String> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.regionsContacted == null || this.regionsContacted.isEmpty()) {
+            this.regionsContacted = other;
+            return;
+        }
+
+        for (String region : other) {
+            this.regionsContacted.add(region);
+        }
+    }
+
+    private void mergeStartTime(Instant other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.requestStartTimeUTC == null || this.requestStartTimeUTC.isAfter(other)) {
+            this.requestStartTimeUTC = other;
+        }
+    }
+
+    private void mergeEndTime(Instant other) {
+        if (other == null || this.requestEndTimeUTC == null) {
+            return;
+        }
+
+        if (this.requestEndTimeUTC.isBefore(other)) {
+            this.requestEndTimeUTC = other;
+        }
+    }
+
+    public void recordContributingPointOperation(ClientSideRequestStatistics other) {
+
+        if (other == null) {
+            return;
+        }
+
+        this.mergeAddressResolutionStatistics(other.addressResolutionStatistics);
+        this.mergeContactedReplicas(other.contactedReplicas);
+        this.mergeFailedReplica(other.failedReplicas);
+        this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
+        this.mergeRegionsContacted(other.regionsContacted);
+        this.mergeStartTime(other.requestStartTimeUTC);
+        this.mergeEndTime(other.requestEndTimeUTC);
+        this.mergeSupplementalResponses(other.supplementalResponseStatisticsList);
+        this.mergeResponseStatistics(other.responseStatisticsList);
+        this.requestPayloadSizeInBytes = Math.max(this.requestPayloadSizeInBytes, other.requestPayloadSizeInBytes);
+
+        if (this.retryContext == null) {
+            this.retryContext = other.retryContext;
+        } else {
+            this.retryContext.merge(other.retryContext);
         }
     }
 

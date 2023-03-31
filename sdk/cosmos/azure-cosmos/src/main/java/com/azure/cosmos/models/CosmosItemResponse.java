@@ -204,6 +204,14 @@ public class CosmosItemResponse<T> {
         return resourceResponse.getETag();
     }
 
+    CosmosItemResponse<T> withRemappedStatusCode(int statusCode, double additionalRequestCharge) {
+        ResourceResponse<Document> mappedResourceResponse =
+            this.resourceResponse.withRemappedStatusCode(statusCode, additionalRequestCharge);
+
+        return new CosmosItemResponse<>(
+            mappedResourceResponse, this.responseBodyAsByteArray, this.itemClassType, this.itemDeserializer);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -215,6 +223,15 @@ public class CosmosItemResponse<T> {
                                                                           Class<T> classType,
                                                                           ItemDeserializer itemDeserializer) {
                     return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+                }
+
+                @Override
+                public <T> CosmosItemResponse<T> withRemappedStatusCode(CosmosItemResponse<T> originalResponse,
+                                                                        int newStatusCode,
+                                                                        double additionalRequestCharge) {
+
+                    CosmosItemResponse<T> mappedItemResponse = originalResponse.withRemappedStatusCode(newStatusCode, additionalRequestCharge);
+                    return mappedItemResponse;
                 }
 
                 public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {

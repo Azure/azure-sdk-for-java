@@ -27,7 +27,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
     }
 
     @Override
-    public boolean injectRntbdServerResponseDelay(
+    public boolean injectRntbdServerResponseDelayBeforeProcessing(
         RntbdRequestRecord requestRecord,
         Consumer<Duration> writeRequestWithDelayConsumer) {
 
@@ -35,6 +35,43 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
         FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(request);
         if (serverResponseDelayRule != null) {
+
+            if (serverResponseDelayRule.getResult() != null &&
+                serverResponseDelayRule.getResult().getSuppressServiceRequests() != null &&
+                !serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
+
+                // delay will be injected after processing the request
+                return false;
+            }
+
+            request.faultInjectionRequestContext
+                .applyFaultInjectionRule(
+                    requestRecord.transportRequestId(),
+                    serverResponseDelayRule.getId());
+
+            writeRequestWithDelayConsumer.accept(serverResponseDelayRule.getResult().getDelay());
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean injectRntbdServerResponseDelayAfterProcessing(RntbdRequestRecord requestRecord,
+                                                                 Consumer<Duration> writeRequestWithDelayConsumer) {
+        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
+
+        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(request);
+        if (serverResponseDelayRule != null) {
+
+            if (serverResponseDelayRule.getResult() == null ||
+                serverResponseDelayRule.getResult().getSuppressServiceRequests() == null ||
+                serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
+
+                // delay was injected before processing the request
+                return false;
+            }
+
             request.faultInjectionRequestContext
                 .applyFaultInjectionRule(
                     requestRecord.transportRequestId(),

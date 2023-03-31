@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -208,5 +209,25 @@ public class StoreResponse {
 
     public void setFaultInjectionRuleId(String faultInjectionRuleId) {
         this.faultInjectionRuleId = faultInjectionRuleId;
+    }
+
+    public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+
+        Map<String, String> headers = new HashMap<>();
+        for (int i = 0; i < this.responseHeaderNames.length; i++) {
+            String headerName = this.responseHeaderNames[i];
+            if (headerName.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
+                double currentRequestCharge = this.getRequestCharge();
+                double newRequestCharge = currentRequestCharge + additionalRequestCharge;
+                headers.put(headerName, String.valueOf(newRequestCharge));
+            } else {
+                headers.put(headerName, this.responseHeaderValues[i]);
+            }
+        }
+
+        return new StoreResponse(
+            newStatusCode,
+            headers,
+            this.content);
     }
 }
