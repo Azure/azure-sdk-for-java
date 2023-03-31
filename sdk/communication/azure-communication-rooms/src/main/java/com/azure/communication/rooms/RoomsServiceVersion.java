@@ -10,16 +10,6 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum RoomsServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2021-04-07}
-     */
-    V2021_04_07("2021-04-07"),
-
-    /**
-     * Service version {@code 2022-02-01}
-     */
-    V2022_02_01("2022-02-01"),
-
-    /**
      * Service version {@code 2023-03-31}
      */
     V2023_03_31("2023-03-31-preview");

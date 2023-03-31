@@ -14,14 +14,14 @@ public final class ParticipantProperties {
      * The role of a room participant. The default value is Attendee.
      */
     @JsonProperty(value = "role")
-    private Role role;
+    private ParticipantRole role;
 
     /**
      * Get the role property: The role of a room participant. The default value is Attendee.
      *
      * @return the role value.
      */
-    public Role getRole() {
+    public ParticipantRole getRole() {
         return this.role;
     }
 
@@ -31,7 +31,7 @@ public final class ParticipantProperties {
      * @param role the role value to set.
      * @return the ParticipantProperties object itself.
      */
-    public ParticipantProperties setRole(Role role) {
+    public ParticipantProperties setRole(ParticipantRole role) {
         this.role = role;
         return this;
     }

@@ -1,12 +1,11 @@
 # Azure Communication Service room client library for Java
 
 > see https://aka.ms/autorest
-## Getting Started
 
+## Getting Started
 To build the SDK for Rooms Client, simply Install AutoRest and in this folder, run the below:
 
 ### Generation
-
 There is one swagger for Rooms management APIs.
 
 ```ps
@@ -38,8 +37,28 @@ service-interface-as-public: true
 generate-sync-async-clients: false
 sync-methods: all
 add-context-parameter: true
+url-as-string: true
 context-client-method-parameter: true
 required-parameter-client-methods: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
+```
+ 
+### Rename RoomModal to CommunicationRoom
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.Role["x-ms-enum"]
+    transform: >
+      $.name = "ParticipantRole";
+```
+
+
+### Rename RoomModal to CommunicationRoom
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RoleModal
+    transform: >
+      $.name = "CommunicationRoom";
 ```

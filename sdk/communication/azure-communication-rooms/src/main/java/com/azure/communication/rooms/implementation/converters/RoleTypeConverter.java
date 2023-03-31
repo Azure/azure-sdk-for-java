@@ -3,7 +3,7 @@
 
 package com.azure.communication.rooms.implementation.converters;
 
-import com.azure.communication.rooms.models.Role;
+import com.azure.communication.rooms.models.ParticipantRole;
 
 /**
  * A converter between {@link com.azure.communication.rooms.implementation.models.Role} and
@@ -13,52 +13,52 @@ public final class RoleTypeConverter {
     /**
      * Maps from {com.azure.communication.rooms.implementation.models.Role} to {@link Role}.
      */
-    public static Role convert(com.azure.communication.rooms.implementation.models.Role roleType) {
+    public static ParticipantRole convert(com.azure.communication.rooms.implementation.models.ParticipantRole roleType) {
         if (roleType == null) {
             return null;
         }
 
-        Role role = Role.ATTENDEE;
+        ParticipantRole role = ParticipantRole.ATTENDEE;
 
         switch (roleType.toString()) {
             case "Attendee":
-                role = Role.ATTENDEE;
+                role = ParticipantRole.ATTENDEE;
                 break;
             case "Consumer":
-                role = Role.CONSUMER;
+                role = ParticipantRole.CONSUMER;
                 break;
             case "Presenter":
-                role = Role.PRESENTER;
+                role = ParticipantRole.PRESENTER;
                 break;
             default:
-                role = Role.ATTENDEE;
+                role = ParticipantRole.ATTENDEE;
                 break;
         }
         return role;
     }
 
     /**
-     * Maps from {@link Role} to {com.azure.communication.rooms.implementation.models.Role}.
+     * Maps from {@link Role} to {com.azure.communication.rooms.implementation.models.ParticipantRole}.
     */
-    public static com.azure.communication.rooms.implementation.models.Role convert(Role roleType) {
+    public static com.azure.communication.rooms.implementation.models.ParticipantRole convert(ParticipantRole roleType) {
         if (roleType == null) {
             return null;
         }
 
-        com.azure.communication.rooms.implementation.models.Role role = com.azure.communication.rooms.implementation.models.Role.ATTENDEE;
+        com.azure.communication.rooms.implementation.models.ParticipantRole role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
 
         switch (roleType.toString()) {
             case "Attendee":
-                role = com.azure.communication.rooms.implementation.models.Role.ATTENDEE;
+                role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
                 break;
             case "Consumer":
-                role = com.azure.communication.rooms.implementation.models.Role.CONSUMER;
+                role = com.azure.communication.rooms.implementation.models.ParticipantRole.CONSUMER;
                 break;
             case "Presenter":
-                role = com.azure.communication.rooms.implementation.models.Role.PRESENTER;
+                role = com.azure.communication.rooms.implementation.models.ParticipantRole.PRESENTER;
                 break;
             default:
-                role = com.azure.communication.rooms.implementation.models.Role.ATTENDEE;
+                role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
                 break;
         }
         return role;

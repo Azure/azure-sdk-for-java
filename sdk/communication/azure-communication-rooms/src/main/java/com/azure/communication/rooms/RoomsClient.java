@@ -9,15 +9,19 @@ import com.azure.communication.rooms.implementation.models.RoomsCollection;
 import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.implementation.models.RoomModel;
 import com.azure.communication.rooms.models.CommunicationRoom;
-import com.azure.communication.rooms.models.ParticipantsCollection;
+import com.azure.communication.rooms.models.InvitedRoomParticipant;
+import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomJoinPolicy;
 import com.azure.communication.rooms.models.RoomParticipant;
+import com.azure.communication.rooms.models.UpsertParticipantsResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -41,7 +45,7 @@ public final class RoomsClient {
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, List<RoomParticipant> participants) {
+    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, List<InvitedRoomParticipant> participants) {
         return roomsAsyncClient.createRoom(validFrom, validUntil, participants).block();
     }
 
@@ -55,7 +59,7 @@ public final class RoomsClient {
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, List<RoomParticipant> participants, Context context) {
+    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, List<InvitedRoomParticipant> participants, Context context) {
         return roomsAsyncClient.createRoomWithResponse(validFrom, validUntil, participants, context).block();
     }
 
@@ -138,18 +142,8 @@ public final class RoomsClient {
      * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PagedFlux<RoomModel>> listRoomsWithResponse() {
-        return roomsAsyncClient.listRoomsWithResponse().block();
-    }
-
-    /**
-     * Lists all rooms with response.
-     *
-     * @return The existing rooms.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PagedFlux<RoomModel>> listRooms() {
-        return roomsAsyncClient.listRooms().block();
+    public PagedIterable<CommunicationRoom> listRooms() {
+        return new PagedIterable<>(roomsAsyncClient.listRooms());
     }
 
     /**
@@ -160,7 +154,7 @@ public final class RoomsClient {
      * @return response for a successful upsert participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object upsertParticipants(String roomId, List<RoomParticipant> participants) {
+    public UpsertParticipantsResult upsertParticipants(String roomId, List<InvitedRoomParticipant> participants) {
         return roomsAsyncClient.upsertParticipants(roomId, participants).block();
     }
 
@@ -172,7 +166,7 @@ public final class RoomsClient {
      * @return response for a successful upsert participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> upsertParticipantsWithResponse(String roomId, List<RoomParticipant> participants) {
+    public Response<UpsertParticipantsResult> upsertParticipantsWithResponse(String roomId, List<InvitedRoomParticipant> participants) {
         return roomsAsyncClient.upsertParticipantsWithResponse(roomId, participants).block();
     }
 
@@ -184,7 +178,7 @@ public final class RoomsClient {
      * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object removeParticipants(String roomId, List<CommunicationIdentifier> identifiers) {
+    public RemoveParticipantsResult removeParticipants(String roomId, List<CommunicationIdentifier> identifiers) {
         return roomsAsyncClient.removeParticipants(roomId, identifiers).block();
     }
 
@@ -196,7 +190,7 @@ public final class RoomsClient {
      * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> identifiers) {
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> identifiers) {
         return roomsAsyncClient.removeParticipantsWithResponse(roomId, identifiers).block();
     }
 
@@ -207,20 +201,8 @@ public final class RoomsClient {
      * @return Room Participants List
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<RoomParticipant> getParticipants(String roomId) {
-        return roomsAsyncClient.getParticipants(roomId).block();
-    }
-
-    /**
-     * List participants to an existing room with response.
-     *
-     * @param roomId The room id.
-     * @param context The context of key value pairs for http request.
-     * @return The Room Participants list.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PagedFlux<RoomParticipant>> getParticipantsWithResponse(String roomId, Context context) {
-        return roomsAsyncClient.getParticipantsWithResponse(roomId, context).block();
+    public PagedIterable<RoomParticipant> getParticipants(String roomId) {
+        return new PagedIterable<>(roomsAsyncClient.listParticipants(roomId));
     }
 
 }

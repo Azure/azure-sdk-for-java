@@ -3,40 +3,22 @@
 
 package com.azure.communication.rooms.implementation.converters;
 
-import com.azure.communication.rooms.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.rooms.implementation.models.CommunicationUserIdentifierModel;
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.UnknownIdentifier;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 
 public class CommunicationIdentifierConverter {
     /**
      * Convert rawId into CommunicationIdentifier
-     * @param rawId an acs rawID to be converted
+     * @param rawId rawId to be converted
      * @return CommunicationIdentifier
      */
     public static CommunicationIdentifier convert(String rawId) {
         Objects.requireNonNull(rawId);
         return new CommunicationUserIdentifier(rawId);
-    }
-
-    private static void assertSingleType(CommunicationIdentifierModel identifier) {
-        CommunicationUserIdentifierModel communicationUser = identifier.getCommunicationUser();
-
-        ArrayList<String> presentProperties = new ArrayList<String>();
-        if (communicationUser != null) {
-            presentProperties.add(communicationUser.getClass().getName());
-        }
-
-        if (presentProperties.size() > 1) {
-            throw new IllegalArgumentException(String.format("Only one of the identifier models in %s should be present.",
-                String.join(", ", presentProperties)));
-        }
     }
 
     /**
