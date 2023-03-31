@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/68aa92c941547dffe3e0d980a529cdc8688faff3/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingSnapshot,SnapshotStatus
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -61,11 +61,15 @@ directive:
   - rename-model:
       from: KeyValueFilter
       to: SnapshotSettingFilter
+  - rename-model:
+      from: Snapshot
+      to: ConfigurationSettingSnapshot
   - from: swagger-document
     where: $.parameters.KeyValueFields
     transform: >
       $.items["x-ms-enum"].name = "SettingFields"; 
 ```
+
 ### Modify SettingField enums
 ```yaml
 directive:

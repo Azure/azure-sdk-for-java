@@ -24,6 +24,15 @@ public class AppConfigCustomization extends Customization {
 
         customizeKeyValueFilter(models.getClass("SnapshotSettingFilter"));
         customizeKeyValueFields(models.getClass("SettingFields"));
+        customizeSnapshot(models.getClass("ConfigurationSettingSnapshot"));
+    }
+
+    private void customizeSnapshot(ClassCustomization classCustomization) {
+        classCustomization.getProperty("created").rename("createdAt");
+        classCustomization.getProperty("expires").rename("expiresAt");
+        // Change `retentionPeriod` type to Duration
+
+        // Remove JsonCreator
     }
 
     private void customizeKeyValueFilter(ClassCustomization classCustomization) {
