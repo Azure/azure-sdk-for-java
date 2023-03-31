@@ -6,9 +6,11 @@ package com.azure.communication.rooms;
 import com.azure.communication.common.CommunicationIdentifier;
 
 import com.azure.communication.rooms.models.CommunicationRoom;
+import com.azure.communication.rooms.models.CreateRoomOptions;
 import com.azure.communication.rooms.models.InvitedRoomParticipant;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomParticipant;
+import com.azure.communication.rooms.models.UpdateRoomOptions;
 import com.azure.communication.rooms.models.UpsertParticipantsResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -17,7 +19,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -34,55 +35,47 @@ public final class RoomsClient {
     /**
      * Create a new room.
      *
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
-     * @param participants the participants value to set.
+     * @param createRoomOptions the create room options.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, List<InvitedRoomParticipant> participants) {
-        return roomsAsyncClient.createRoom(validFrom, validUntil, participants).block();
+    public CommunicationRoom createRoom(CreateRoomOptions createRoomOptions) {
+        return roomsAsyncClient.createRoom(createRoomOptions).block();
     }
 
     /**
      * Create a new Room with response.
      *
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
-     * @param participants the participants value to set.
+     * @param createRoomOptions the create room options.
      * @param context The context of key value pairs for http request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, List<InvitedRoomParticipant> participants, Context context) {
-        return roomsAsyncClient.createRoomWithResponse(validFrom, validUntil, participants, context).block();
+    public Response<CommunicationRoom> createRoomWithResponse(CreateRoomOptions createRoomOptions, Context context) {
+        return roomsAsyncClient.createRoomWithResponse(createRoomOptions, context).block();
     }
 
     /**
      * Update an existing Room.
      *
-     * @param roomId The room id.
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
+     * @param updateRoomOptions the create room options.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil) {
-        return roomsAsyncClient.updateRoom(roomId, validFrom, validUntil).block();
+    public CommunicationRoom updateRoom(UpdateRoomOptions updateRoomOptions) {
+        return roomsAsyncClient.updateRoom(updateRoomOptions).block();
     }
 
     /**
      * Update an existing Room with response.
      *
-     * @param roomId The room id.
-     * @param validFrom the validFrom value to set.
-     * @param validUntil the validUntil value to set.
+     * @param updateRoomOptions the create room options.
      * @param context The context of key value pairs for http request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Context context) {
-        return roomsAsyncClient.updateRoomWithResponse(roomId, validFrom, validUntil, context).block();
+    public Response<CommunicationRoom> updateRoomWithResponse(UpdateRoomOptions updateRoomOptions, Context context) {
+        return roomsAsyncClient.updateRoomWithResponse(updateRoomOptions, context).block();
     }
 
     /**
