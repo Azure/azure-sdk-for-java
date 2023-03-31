@@ -440,8 +440,7 @@ public abstract class JsonReader implements Closeable {
      * @param objectReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
      * @return The read JSON object, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
-     * null.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the object cannot be read.
      */
     public final <T> T readObject(ReadValueCallback<JsonReader, T> objectReaderFunc) throws IOException {
@@ -507,8 +506,7 @@ public abstract class JsonReader implements Closeable {
      * @param valueReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
      * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
-     * null.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the map cannot be read.
      */
     public final <T> Map<String, T> readMap(ReadValueCallback<JsonReader, T> valueReaderFunc) throws IOException {
@@ -532,12 +530,14 @@ public abstract class JsonReader implements Closeable {
             currentToken = nextToken();
         }
 
+        // Reading maps and objects can begin in one of four states with the following outcomes:
+        // - JSON null token or no token: returns null
+        // - JSON start object or field name: reads the map or object
         if (currentToken == JsonToken.NULL || currentToken == null) {
             return null;
         } else if (currentToken != JsonToken.START_OBJECT) {
-            // Otherwise, this is an invalid state, throw an exception.
             String type = isMap ? "map" : "object";
-            throw new IllegalStateException("Unexpected token to begin " + type  + " deserialization: " + currentToken);
+            throw new IllegalStateException("Unexpected token to begin " + type + " deserialization: " + currentToken);
         }
 
         return valueReaderFunc.read(this);

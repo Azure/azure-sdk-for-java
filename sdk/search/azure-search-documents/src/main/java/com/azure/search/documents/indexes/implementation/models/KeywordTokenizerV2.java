@@ -109,10 +109,10 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        KeywordTokenizerV2 deserializedValue = new KeywordTokenizerV2(name);
-                        deserializedValue.maxTokenLength = maxTokenLength;
+                        KeywordTokenizerV2 deserializedKeywordTokenizerV2 = new KeywordTokenizerV2(name);
+                        deserializedKeywordTokenizerV2.maxTokenLength = maxTokenLength;
 
-                        return deserializedValue;
+                        return deserializedKeywordTokenizerV2;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

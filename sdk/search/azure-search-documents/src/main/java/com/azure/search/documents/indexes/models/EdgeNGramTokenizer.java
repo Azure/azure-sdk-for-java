@@ -173,12 +173,12 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        EdgeNGramTokenizer deserializedValue = new EdgeNGramTokenizer(name);
-                        deserializedValue.minGram = minGram;
-                        deserializedValue.maxGram = maxGram;
-                        deserializedValue.tokenChars = tokenChars;
+                        EdgeNGramTokenizer deserializedEdgeNGramTokenizer = new EdgeNGramTokenizer(name);
+                        deserializedEdgeNGramTokenizer.minGram = minGram;
+                        deserializedEdgeNGramTokenizer.maxGram = maxGram;
+                        deserializedEdgeNGramTokenizer.tokenChars = tokenChars;
 
-                        return deserializedValue;
+                        return deserializedEdgeNGramTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

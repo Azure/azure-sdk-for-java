@@ -318,18 +318,19 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        AzureMachineLearningSkill deserializedValue = new AzureMachineLearningSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.scoringUri = scoringUri;
-                        deserializedValue.authenticationKey = authenticationKey;
-                        deserializedValue.resourceId = resourceId;
-                        deserializedValue.timeout = timeout;
-                        deserializedValue.region = region;
-                        deserializedValue.degreeOfParallelism = degreeOfParallelism;
+                        AzureMachineLearningSkill deserializedAzureMachineLearningSkill =
+                                new AzureMachineLearningSkill(inputs, outputs);
+                        deserializedAzureMachineLearningSkill.setName(name);
+                        deserializedAzureMachineLearningSkill.setDescription(description);
+                        deserializedAzureMachineLearningSkill.setContext(context);
+                        deserializedAzureMachineLearningSkill.scoringUri = scoringUri;
+                        deserializedAzureMachineLearningSkill.authenticationKey = authenticationKey;
+                        deserializedAzureMachineLearningSkill.resourceId = resourceId;
+                        deserializedAzureMachineLearningSkill.timeout = timeout;
+                        deserializedAzureMachineLearningSkill.region = region;
+                        deserializedAzureMachineLearningSkill.degreeOfParallelism = degreeOfParallelism;
 
-                        return deserializedValue;
+                        return deserializedAzureMachineLearningSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

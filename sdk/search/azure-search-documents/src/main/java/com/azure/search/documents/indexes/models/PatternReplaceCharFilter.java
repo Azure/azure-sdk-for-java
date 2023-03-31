@@ -125,10 +125,10 @@ public final class PatternReplaceCharFilter extends CharFilter {
                         }
                     }
                     if (nameFound && patternFound && replacementFound) {
-                        PatternReplaceCharFilter deserializedValue =
+                        PatternReplaceCharFilter deserializedPatternReplaceCharFilter =
                                 new PatternReplaceCharFilter(name, pattern, replacement);
 
-                        return deserializedValue;
+                        return deserializedPatternReplaceCharFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

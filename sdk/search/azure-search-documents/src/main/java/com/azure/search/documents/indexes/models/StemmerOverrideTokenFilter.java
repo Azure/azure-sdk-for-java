@@ -103,9 +103,10 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && rulesFound) {
-                        StemmerOverrideTokenFilter deserializedValue = new StemmerOverrideTokenFilter(name, rules);
+                        StemmerOverrideTokenFilter deserializedStemmerOverrideTokenFilter =
+                                new StemmerOverrideTokenFilter(name, rules);
 
-                        return deserializedValue;
+                        return deserializedStemmerOverrideTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

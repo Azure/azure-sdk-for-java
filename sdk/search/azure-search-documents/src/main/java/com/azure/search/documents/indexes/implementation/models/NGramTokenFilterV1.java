@@ -135,11 +135,11 @@ public final class NGramTokenFilterV1 extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        NGramTokenFilterV1 deserializedValue = new NGramTokenFilterV1(name);
-                        deserializedValue.minGram = minGram;
-                        deserializedValue.maxGram = maxGram;
+                        NGramTokenFilterV1 deserializedNGramTokenFilterV1 = new NGramTokenFilterV1(name);
+                        deserializedNGramTokenFilterV1.minGram = minGram;
+                        deserializedNGramTokenFilterV1.maxGram = maxGram;
 
-                        return deserializedValue;
+                        return deserializedNGramTokenFilterV1;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

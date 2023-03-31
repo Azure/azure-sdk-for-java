@@ -181,14 +181,14 @@ public final class MergeSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        MergeSkill deserializedValue = new MergeSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.insertPreTag = insertPreTag;
-                        deserializedValue.insertPostTag = insertPostTag;
+                        MergeSkill deserializedMergeSkill = new MergeSkill(inputs, outputs);
+                        deserializedMergeSkill.setName(name);
+                        deserializedMergeSkill.setDescription(description);
+                        deserializedMergeSkill.setContext(context);
+                        deserializedMergeSkill.insertPreTag = insertPreTag;
+                        deserializedMergeSkill.insertPostTag = insertPostTag;
 
-                        return deserializedValue;
+                        return deserializedMergeSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {
