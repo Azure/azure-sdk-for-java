@@ -23,11 +23,11 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return TYPE;
     }
 
+    @JsonGetter
     public String getGroup() {
         return group;
     }
 
-    @JsonGetter
     public SendToGroupMessage setGroup(String group) {
         this.group = group;
         return this;

@@ -192,14 +192,6 @@ public class WebPubSubClient {
         eventHandlerCollection.removeEventHandler(REJOIN_GROUP_FAILED_EVENT, eventEventHandler);
     }
 
-//    /**
-//     * Closes the client.
-//     */
-//    @Override
-//    public void close() {
-//        client.close();
-//    }
-
     /**
      * Joins a group.
      *
