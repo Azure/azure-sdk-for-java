@@ -23,6 +23,7 @@ All of these samples need the endpoint to your Health Insights resource, and you
 |----------------|-------------|
 |[SampleInferCancerProfile.java][infer_cancer_profiling]|Get the inferred cancer staging|
 
-<!-- LINKS 
-[infer_cancer_profiling]: 
--->
+<!-- LINKS -->
+[infer_cancer_profiling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/samples/java/com/azure/health/insights/cancerprofiling/SampleInferCancerProfile.java
+
+

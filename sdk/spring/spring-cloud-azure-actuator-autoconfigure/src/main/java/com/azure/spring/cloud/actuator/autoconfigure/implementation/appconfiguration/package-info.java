@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure auto-configuration for actuator App Configuration concerns.
  */
-package com.azure.spring.cloud.actuator.autoconfigure.impl.appconfiguration;
+package com.azure.spring.cloud.actuator.autoconfigure.implementation.appconfiguration;
