@@ -319,10 +319,10 @@ public class WebPubSubClient {
         return client.sendEvent(eventName, content, dataType, options).block();
     }
 
+    // following API is for testing
     WebPubSubClientState getClientState() {
         return this.client.getClientState();
     }
-
     Session getWebsocketSession() {
         return this.client.getWebsocketSession();
     }
