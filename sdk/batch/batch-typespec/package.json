@@ -1,0 +1,13 @@
+{
+  "name": "batch-typespec-java",
+  "author": "Microsoft Corporation",
+  "description": "TypeSpec project for emitting java SDK",
+  "license": "MIT",
+  "dependencies": {
+    "@azure-tools/typespec-java": "latest",
+    "@typespec/compiler": "latest",
+    "@typespec/openapi": "latest",
+    "@azure-tools/typespec-autorest": "latest"
+  },
+  "private": true
+}
