@@ -30,9 +30,6 @@ public class AppConfigCustomization extends Customization {
     }
 
     private void customizeSnapshot(ClassCustomization classCustomization) {
-        classCustomization.getProperty("created").rename("createdAt");
-        classCustomization.getProperty("expires").rename("expiresAt");
-        classCustomization.getProperty("itemsCount").rename("itemCount");
         // Transfer Long to Duration internally
         classCustomization.getMethod("getRetentionPeriod")
             .setReturnType("Duration", "")
@@ -50,9 +47,6 @@ public class AppConfigCustomization extends Customization {
                 "this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();",
                 "return this;"
             ));
-        // Remove JsonCreator
-        classCustomization.getConstructor("ConfigurationSettingSnapshot")
-            .removeAnnotation("JsonCreator");
     }
 
     private void customizeKeyValueFilter(ClassCustomization classCustomization) {
@@ -68,9 +62,6 @@ public class AppConfigCustomization extends Customization {
         classCustomization.getMethod("getLabel")
             .getJavadoc()
             .setDescription("Get the label property: Filters {@link ConfigurationSetting} by their label field.");
-        // Remove JsonCreator
-        classCustomization.getConstructor("SnapshotSettingFilter")
-            .removeAnnotation("JsonCreator");
     }
 
     private void customizeKeyValueFields(ClassCustomization classCustomization) {

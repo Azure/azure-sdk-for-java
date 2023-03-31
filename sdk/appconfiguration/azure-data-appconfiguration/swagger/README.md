@@ -30,7 +30,7 @@ autorest
 ```yaml
 namespace: com.azure.data.appconfiguration
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/68aa92c941547dffe3e0d980a529cdc8688faff3/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2ac8dec9cbc4ad4db7537de603339f069d482078/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingSnapshot,SnapshotStatus
@@ -53,6 +53,17 @@ add-context-parameter: true
 context-client-method-parameter: true
 generic-response-type: true
 default-http-exception-type: com.azure.core.exception.HttpResponseException
+```
+
+### Renames properties
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Snapshot.properties
+  transform: >
+    $["items_count"]["x-ms-client-name"] = "item_count";
+    $["created"]["x-ms-client-name"] = "createdAt"; 
+    $["expires"]["x-ms-client-name"] = "expiresAt";
 ```
 
 ### Renames
