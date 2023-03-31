@@ -62,7 +62,6 @@ import com.azure.data.appconfiguration.implementation.models.GetSnapshotsNextHea
 import com.azure.data.appconfiguration.implementation.models.Key;
 import com.azure.data.appconfiguration.implementation.models.KeyListResult;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.implementation.models.KeyValueListResult;
 import com.azure.data.appconfiguration.implementation.models.Label;
 import com.azure.data.appconfiguration.implementation.models.LabelFields;
@@ -76,6 +75,7 @@ import com.azure.data.appconfiguration.implementation.models.SnapshotListResult;
 import com.azure.data.appconfiguration.implementation.models.SnapshotStatus;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
+import com.azure.data.appconfiguration.models.SettingFields;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -1247,7 +1247,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1302,7 +1302,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
@@ -1355,7 +1355,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         return new PagedFlux<>(
                 () -> getKeyValuesSinglePageAsync(key, label, after, acceptDatetime, select, snapshot),
@@ -1385,7 +1385,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         return new PagedFlux<>(
@@ -1415,7 +1415,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1467,7 +1467,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
@@ -1519,7 +1519,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         return new PagedIterable<>(
                 () -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot, Context.NONE),
@@ -1549,7 +1549,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         return new PagedIterable<>(
@@ -1578,7 +1578,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         String selectConverted =
                 (select == null)
@@ -1621,7 +1621,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         String selectConverted =
@@ -1662,7 +1662,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         return checkKeyValuesWithResponseAsync(key, label, after, acceptDatetime, select, snapshot)
                 .flatMap(ignored -> Mono.empty());
@@ -1690,7 +1690,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         return checkKeyValuesWithResponseAsync(key, label, after, acceptDatetime, select, snapshot, context)
@@ -1719,7 +1719,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot,
             Context context) {
         String selectConverted =
@@ -1759,7 +1759,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             String snapshot) {
         checkKeyValuesWithResponse(key, label, after, acceptDatetime, select, snapshot, Context.NONE);
     }
@@ -1786,7 +1786,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select) {
+            List<SettingFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1831,7 +1831,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
         String selectConverted =
@@ -1874,7 +1874,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select) {
+            List<SettingFields> select) {
         return getKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1902,7 +1902,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         return getKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1931,7 +1931,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
         String selectConverted =
@@ -1974,7 +1974,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select) {
+            List<SettingFields> select) {
         return getKeyValueWithResponse(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, Context.NONE)
                 .getValue();
     }
@@ -2278,7 +2278,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select) {
+            List<SettingFields> select) {
         String selectConverted =
                 (select == null)
                         ? null
@@ -2321,7 +2321,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         String selectConverted =
                 (select == null)
@@ -2362,7 +2362,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select) {
+            List<SettingFields> select) {
         return checkKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -2390,7 +2390,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         return checkKeyValueWithResponseAsync(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, context)
                 .flatMap(ignored -> Mono.empty());
@@ -2419,7 +2419,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         String selectConverted =
                 (select == null)
@@ -2459,7 +2459,7 @@ public final class AzureAppConfigurationImpl {
             String acceptDatetime,
             String ifMatch,
             String ifNoneMatch,
-            List<KeyValueFields> select) {
+            List<SettingFields> select) {
         checkKeyValueWithResponse(key, label, acceptDatetime, ifMatch, ifNoneMatch, select, Context.NONE);
     }
 
@@ -4092,7 +4092,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -4143,7 +4143,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -4188,7 +4188,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyValue> getRevisionsAsync(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         return new PagedFlux<>(
                 () -> getRevisionsSinglePageAsync(key, label, after, acceptDatetime, select),
                 nextLink -> getRevisionsNextSinglePageAsync(nextLink, acceptDatetime));
@@ -4215,7 +4215,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         return new PagedFlux<>(
                 () -> getRevisionsSinglePageAsync(key, label, after, acceptDatetime, select, context),
@@ -4238,7 +4238,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsSinglePage(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -4286,7 +4286,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -4330,7 +4330,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         return new PagedIterable<>(
                 () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, Context.NONE),
                 nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime));
@@ -4357,7 +4357,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         return new PagedIterable<>(
                 () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, context),
@@ -4380,7 +4380,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<CheckRevisionsHeaders, Void>> checkRevisionsWithResponseAsync(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         String selectConverted =
                 (select == null)
                         ? null
@@ -4420,7 +4420,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         String selectConverted =
                 (select == null)
@@ -4454,7 +4454,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> checkRevisionsAsync(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         return checkRevisionsWithResponseAsync(key, label, after, acceptDatetime, select)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -4480,7 +4480,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         return checkRevisionsWithResponseAsync(key, label, after, acceptDatetime, select, context)
                 .flatMap(ignored -> Mono.empty());
@@ -4507,7 +4507,7 @@ public final class AzureAppConfigurationImpl {
             String label,
             String after,
             String acceptDatetime,
-            List<KeyValueFields> select,
+            List<SettingFields> select,
             Context context) {
         String selectConverted =
                 (select == null)
@@ -4540,7 +4540,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions(
-            String key, String label, String after, String acceptDatetime, List<KeyValueFields> select) {
+            String key, String label, String after, String acceptDatetime, List<SettingFields> select) {
         checkRevisionsWithResponse(key, label, after, acceptDatetime, select, Context.NONE);
     }
 

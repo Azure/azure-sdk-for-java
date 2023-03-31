@@ -5,6 +5,8 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -29,7 +31,7 @@ public final class Snapshot {
      * A list of filters used to filter the key-values included in the snapshot.
      */
     @JsonProperty(value = "filters", required = true)
-    private List<KeyValueFilter> filters;
+    private List<SnapshotSettingFilter> filters;
 
     /*
      * The composition type describes how the key-values within the snapshot are composed. The 'all' composition type
@@ -83,8 +85,15 @@ public final class Snapshot {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of Snapshot class. */
-    public Snapshot() {}
+    /**
+     * Creates an instance of Snapshot class.
+     *
+     * @param filters the filters value to set.
+     */
+    @JsonCreator
+    public Snapshot(@JsonProperty(value = "filters", required = true) List<SnapshotSettingFilter> filters) {
+        this.filters = filters;
+    }
 
     /**
      * Get the name property: The name of the snapshot.
@@ -109,19 +118,8 @@ public final class Snapshot {
      *
      * @return the filters value.
      */
-    public List<KeyValueFilter> getFilters() {
+    public List<SnapshotSettingFilter> getFilters() {
         return this.filters;
-    }
-
-    /**
-     * Set the filters property: A list of filters used to filter the key-values included in the snapshot.
-     *
-     * @param filters the filters value to set.
-     * @return the Snapshot object itself.
-     */
-    public Snapshot setFilters(List<KeyValueFilter> filters) {
-        this.filters = filters;
-        return this;
     }
 
     /**

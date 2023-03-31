@@ -20,7 +20,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
@@ -132,7 +131,7 @@ public final class ContainerRegistryClient {
         }
 
         try {
-            return this.registriesImplClient.getRepositoriesSinglePage(null, pageSize, enableSync(context));
+            return this.registriesImplClient.getRepositoriesSinglePage(null, pageSize, context);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -140,7 +139,7 @@ public final class ContainerRegistryClient {
 
     private PagedResponse<String> listRepositoryNamesNextSinglePageSync(String nextLink, Context context) {
         try {
-            return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink, enableSync(context));
+            return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink, context);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -194,7 +193,7 @@ public final class ContainerRegistryClient {
 
         try {
             return UtilsImpl.deleteResponseToSuccess(
-                this.registriesImplClient.deleteRepositoryWithResponse(repositoryName, enableSync(context)));
+                this.registriesImplClient.deleteRepositoryWithResponse(repositoryName, context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }

@@ -16,12 +16,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.implementation.models.Snapshot;
 import com.azure.data.appconfiguration.implementation.models.SnapshotStatus;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
@@ -29,12 +29,14 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -51,8 +53,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETagSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSettingSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFilter;
+import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
 
 /**
@@ -786,8 +787,7 @@ public final class ConfigurationAsyncClient {
         final String keyFilter = selector == null ? null : selector.getKeyFilter();
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        final List<KeyValueFields> keyValueFields = selector == null ? null
-                                                        : toKeyValueFieldsList(selector.getFields());
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getKeyValuesSinglePageAsync(
@@ -795,7 +795,7 @@ public final class ConfigurationAsyncClient {
                     labelFilter,
                     null,
                     acceptDateTime,
-                    keyValueFields,
+                    settingFields,
                     null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
@@ -839,8 +839,7 @@ public final class ConfigurationAsyncClient {
         final String keyFilter = selector == null ? null : selector.getKeyFilter();
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        final List<KeyValueFields> keyValueFields = selector == null ? null
-                                                        : toKeyValueFieldsList(selector.getFields());
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getRevisionsSinglePageAsync(
@@ -848,7 +847,7 @@ public final class ConfigurationAsyncClient {
                     labelFilter,
                     null,
                     acceptDateTime,
-                    keyValueFields,
+                    settingFields,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
@@ -880,11 +879,13 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSettingSnapshot>> createSnapShotWithResponse(String name,
         ConfigurationSettingSnapshot snapshot) {
+        final IterableStream<SnapshotSettingFilter> filters = snapshot.getFilters();
+        List<SnapshotSettingFilter> snapshotSettingFilters = new ArrayList<>(filters.stream().count());
+        filters.stream().forEach(filter -> {
+            snapshotSettingFilters.add(filter);
+        });
         return serviceClient.createSnapshotWithResponseAsync(name,
-            new Snapshot()
-                .setFilters(toKeyValueFilter(snapshot.getFilters()))
-                .setTags(snapshot.getTags()),
-            null)
+            new Snapshot(snapshotSettingFilters).setTags(snapshot.getTags()), null)
                    .map(response -> new SimpleResponse<>(response,
                        toConfigurationSettingSnapshot(response.getValue())));
     }
