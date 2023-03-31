@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -183,7 +182,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @param operationSpecificThresholds the diagnostic threshold override for this operation
      * @return the CosmosQueryRequestOptions.
      */
-    public CosmosChangeFeedRequestOptions configureDiagnosticsThresholds(
+    public CosmosChangeFeedRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
 
         this.thresholds = operationSpecificThresholds;

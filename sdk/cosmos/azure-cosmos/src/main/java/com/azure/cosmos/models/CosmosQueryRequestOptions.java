@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
@@ -531,8 +530,7 @@ public class CosmosQueryRequestOptions {
             this.thresholds = new CosmosDiagnosticsThresholds();
         }
 
-        this.thresholds.configureLatencyThresholds(
-            thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds),
+        this.thresholds.setNonPointOperationLatencyThreshold(
             thresholdForDiagnosticsOnTracer
         );
 
@@ -544,7 +542,7 @@ public class CosmosQueryRequestOptions {
      * @param operationSpecificThresholds the diagnostic threshold override for this operation
      * @return the CosmosQueryRequestOptions.
      */
-    public CosmosQueryRequestOptions configureDiagnosticsThresholds(
+    public CosmosQueryRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
 
         this.thresholds = operationSpecificThresholds;

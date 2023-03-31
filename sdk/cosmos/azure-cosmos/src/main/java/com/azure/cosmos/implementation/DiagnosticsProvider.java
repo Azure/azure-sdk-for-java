@@ -404,7 +404,7 @@ public final class DiagnosticsProvider {
 
         if (context != null && this.isRealTracer()) {
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("Diagnostics", cosmosCtx.toString());
+            attributes.put("Diagnostics", cosmosCtx.toJson());
 
             this.tracer.addEvent("SlowFeedResponseConsumer", attributes, OffsetDateTime.now(), context);
             return;
@@ -424,7 +424,7 @@ public final class DiagnosticsProvider {
         // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(context, cosmosCtx);
+                handler.handleDiagnostics(cosmosCtx, context);
             }
         }
     }
@@ -1045,7 +1045,8 @@ public final class DiagnosticsProvider {
                     .setAttribute("user_agent.original", this.userAgent)
                     .setAttribute("db.cosmosdb.connection_mode", this.connectionMode);
 
-                if (!cosmosCtx.getOperationId().isEmpty() && !cosmosCtx.getOperationId().equals(cosmosCtx.getSpanName())) {
+                if (!cosmosCtx.getOperationId().isEmpty() &&
+                    !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
                 }
 
@@ -1076,7 +1077,7 @@ public final class DiagnosticsProvider {
 
                 if (finalError instanceof CosmosException) {
                     CosmosException cosmosException = (CosmosException) finalError;
-                    errorMessage = cosmosException.getMessageWithoutDiagnostics();
+                    errorMessage = cosmosException.getShortMessage();
                 } else {
                     errorMessage = finalError.getMessage();
                 }
@@ -1089,7 +1090,7 @@ public final class DiagnosticsProvider {
 
             if (cosmosCtx.isFailure() || cosmosCtx.isThresholdViolated()) {
                 Map<String, Object> attributes = new HashMap<>();
-                attributes.put("Diagnostics", cosmosCtx.toString());
+                attributes.put("Diagnostics", cosmosCtx.toJson());
 
                 if (cosmosCtx.isFailure()) {
                     tracer.addEvent("failure", attributes, OffsetDateTime.now(), context);

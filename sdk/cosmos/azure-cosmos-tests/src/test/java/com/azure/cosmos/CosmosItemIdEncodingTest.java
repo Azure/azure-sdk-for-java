@@ -55,6 +55,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     @AfterClass(groups = {"simple", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
+        if (this.container != null) {
+            container.delete();
+        }
         this.client.close();
     }
 

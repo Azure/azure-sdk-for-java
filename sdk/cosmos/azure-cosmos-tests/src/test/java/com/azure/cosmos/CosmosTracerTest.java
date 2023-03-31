@@ -5,6 +5,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor;
 import com.azure.cosmos.implementation.LifeCycleUtils;
@@ -80,6 +82,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
@@ -101,10 +104,16 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple", "emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = getClientBuilder().buildAsyncClient();
-        cosmosAsyncDatabase = getSharedCosmosDatabase(client);
-        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
-        cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+        try {
+            client = getClientBuilder().buildAsyncClient();
+            cosmosAsyncDatabase = getSharedCosmosDatabase(client);
+            cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
+            cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+        } catch (Throwable error) {
+            logger.error("BeforeClass of CosmosTracerTest failed unexpectedly", error);
+            error.printStackTrace();
+            throw error;
+        }
     }
 
     @Override
@@ -1172,7 +1181,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         if (error != null) {
             assertThat(attributes.get("exception.type")).isEqualTo("com.azure.cosmos.CosmosException");
-            assertThat(attributes.get("exception.message")).isEqualTo(error.getMessageWithoutDiagnostics());
+            assertThat(attributes.get("exception.message")).isEqualTo(error.getShortMessage());
 
             StringWriter stackWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stackWriter);
@@ -1624,25 +1633,55 @@ public class CosmosTracerTest extends TestSuiteBase {
                                                                        boolean forceThresholdViolations) {
         CosmosDiagnosticsThresholds thresholds = forceThresholdViolations ?
             new CosmosDiagnosticsThresholds()
-                .configureLatencyThresholds(Duration.ZERO, Duration.ZERO)
+                .setPointOperationLatencyThreshold(Duration.ZERO)
+                .setNonPointOperationLatencyThreshold(Duration.ZERO)
             : new CosmosDiagnosticsThresholds()
-                .configureLatencyThresholds(Duration.ofDays(1), Duration.ofDays(1));
+                .setPointOperationLatencyThreshold(Duration.ofDays(1))
+                .setNonPointOperationLatencyThreshold(Duration.ofDays(1));
 
-        thresholds.configureStatusCodeHandling(404, 404, true);
+        thresholds.setIsFailureHandler ((statusCode, subStatusCode) -> {
+            checkNotNull(statusCode, "Argument 'statusCode' must not be null." );
+            checkNotNull(subStatusCode, "Argument 'subStatusCode' must not be null." );
+            if (statusCode >= 500) {
+                return true;
+            }
+
+            if (statusCode == 404) {
+                return true;
+            }
+
+            if (subStatusCode == 0 &&
+                (statusCode == HttpConstants.StatusCodes.CONFLICT ||
+                    statusCode == HttpConstants.StatusCodes.PRECONDITION_FAILED)) {
+
+                return false;
+            }
+
+            if (statusCode == 429 &&
+                (subStatusCode == HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE ||
+                    subStatusCode == HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE)) {
+                return false;
+            }
+
+            return statusCode >= 400;
+        });
 
         CosmosClientTelemetryConfig clientTelemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsThresholds(thresholds);
 
-
-        if (useLegacyTracing) {
-            clientTelemetryConfig.useLegacyOpenTelemetryTracing();
-        }
+        ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .setUseLegacyTracing(clientTelemetryConfig, useLegacyTracing);
 
         if (enableRequestLevelTracing) {
             clientTelemetryConfig.enableTransportLevelTracing();
         }
 
-        clientTelemetryConfig.tracer(mockTracer);
+        ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+                .setTracer(clientTelemetryConfig, mockTracer);
 
         DiagnosticsProvider tracerProvider = new DiagnosticsProvider(
             clientTelemetryConfig,

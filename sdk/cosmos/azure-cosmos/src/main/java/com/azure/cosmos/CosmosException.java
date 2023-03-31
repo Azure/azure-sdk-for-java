@@ -278,7 +278,7 @@ public class CosmosException extends AzureException {
      * be impossible to determine the root cause of an error.
      * @return the error message without any diagnostics
      */
-    public String getMessageWithoutDiagnostics() {
+    public String getShortMessage() {
         return innerErrorMessage();
     }
 

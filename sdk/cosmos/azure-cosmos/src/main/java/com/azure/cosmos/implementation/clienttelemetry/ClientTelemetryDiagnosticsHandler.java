@@ -46,7 +46,7 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
     }
 
     @Override
-    public void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
+    public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
         checkNotNull(traceContext, "Argument 'traceContext' must not be null.");
 
         this.ensureInitialized();

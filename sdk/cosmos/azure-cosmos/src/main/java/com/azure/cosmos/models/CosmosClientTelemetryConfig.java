@@ -10,7 +10,6 @@ import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -60,10 +59,8 @@ public final class CosmosClientTelemetryConfig {
     private boolean isClientMetricsEnabled = false;
     private final HashSet<CosmosDiagnosticsHandler> customDiagnosticHandlers;
     private final CopyOnWriteArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
-    private boolean useLegacyOpenTelemetryTracing = false;
-    private boolean isDiagnosticsLoggerEnabled = false;
+    private boolean useLegacyOpenTelemetryTracing = Configs.useLegacyTracing();
     private boolean isTransportLevelTracingEnabled = false;
-    private CosmosDiagnosticsLoggerConfig diagnosticsLoggerConfig = new CosmosDiagnosticsLoggerConfig();
     private Tag clientCorrelationTag;
     private String accountName;
     private ClientTelemetry clientTelemetry;
@@ -127,6 +124,10 @@ public final class CosmosClientTelemetryConfig {
 
     Tag getClientCorrelationTag() {
         return this.clientCorrelationTag;
+    }
+
+    void setUseLegacyOpenTelemetryTracing(boolean useLegacyTracing) {
+        this.useLegacyOpenTelemetryTracing = useLegacyTracing;
     }
 
     /**
@@ -210,7 +211,7 @@ public final class CosmosClientTelemetryConfig {
      * @param tracer The Tracer instance.
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig tracer(Tracer tracer) {
+    CosmosClientTelemetryConfig tracer(Tracer tracer) {
         this.tracer = tracer;
         return this;
     }
@@ -364,37 +365,6 @@ public final class CosmosClientTelemetryConfig {
     }
 
     /**
-     * Enables diagnostic logging with default parameters
-     * @return current CosmosClientTelemetryConfig
-     */
-    public CosmosClientTelemetryConfig diagnosticLogs() {
-        this.isDiagnosticsLoggerEnabled = true;
-        return this;
-    }
-
-    /**
-     * Enables or disables diagnostic logging with default parameters
-     * @param isEnabled flag indicating whether diagnostic logging should be enabled
-     * @return current CosmosClientTelemetryConfig
-     */
-    public CosmosClientTelemetryConfig diagnosticLogs(boolean isEnabled) {
-        this.isDiagnosticsLoggerEnabled = isEnabled;
-        return this;
-    }
-
-    /**
-     * Enables diagnostic logging with custom logging config
-     * @param loggerConfig the logging configuration determining when to log diagnostics for an operation
-     * @return current CosmosClientTelemetryConfig
-     */
-    public CosmosClientTelemetryConfig diagnosticLogs(CosmosDiagnosticsLoggerConfig loggerConfig) {
-        checkNotNull(loggerConfig, "Argument 'loggerConfig' must not be null.");
-        this.isDiagnosticsLoggerEnabled = true;
-        this.diagnosticsLoggerConfig = loggerConfig;
-        return this;
-    }
-
-    /**
      * Injects a custom diagnostics handler
      * @param handler the custom diagnostics handler.
      * @return current CosmosClientTelemetryConfig
@@ -406,20 +376,7 @@ public final class CosmosClientTelemetryConfig {
     }
 
     /**
-     * Enables  old OpenTelemetry traces instead of the publicly documented events consistent with .Net SDK for
-     * backwards compatibility reasons
-     * @return current CosmosClientTelemetryConfig
-     * @deprecated The old trace events are only kept for backwards compatibility reasons temporarily. Please consider
-     * switching to the publicly documented tracing following the OpenTelemetry semantic profile for Cosmos DB soon.
-     */
-    @Deprecated
-    public CosmosClientTelemetryConfig useLegacyOpenTelemetryTracing() {
-        this.useLegacyOpenTelemetryTracing = true;
-        return this;
-    }
-
-    /**
-     * Enables transport level tracing. By default transport-level tracing is not enabled - but
+     * Enables transport level tracing. By default, transport-level tracing is not enabled - but
      * when operations fail or exceed thresholds the diagnostics are traced. Enabling transport level tracing
      * can be useful when latency is still beneath the defined thresholds.
      * @return current CosmosClientTelemetryConfig
@@ -594,19 +551,9 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public boolean isDiagnosticsLogsEnabled(CosmosClientTelemetryConfig config) {
-                    return config.isDiagnosticsLoggerEnabled;
-                }
-
-                @Override
                 public void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
 
                     config.resetIsSendClientTelemetryToServiceEnabled();
-                }
-
-                @Override
-                public CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config) {
-                    return config.diagnosticsLoggerConfig;
                 }
 
                 @Override
@@ -627,6 +574,18 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public Tracer getOrCreateTracer(CosmosClientTelemetryConfig config) {
                     return config.getOrCreateTracer();
+                }
+
+                @Override
+                public void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing) {
+                    config.setUseLegacyOpenTelemetryTracing(useLegacyTracing);
+                }
+
+                @Override
+                public void setTracer(CosmosClientTelemetryConfig config, Tracer tracer) {
+                    if (tracer != null) {
+                        config.tracer = tracer;
+                    }
                 }
             });
     }
