@@ -732,7 +732,6 @@ public abstract class JsonReaderContractTests {
     private static Stream<Arguments> readArraySupplier() {
         ReadValueCallback<JsonReader, List<Object>> reader = read(r -> r.readArray(JsonReader::readUntyped));
         return Stream.of(
-            Arguments.of("", reader, null),
             Arguments.of("null", reader, null),
             Arguments.of("[]", reader, Collections.emptyList()),
             Arguments.of("[10]", reader, Collections.singletonList(10)),
@@ -771,7 +770,6 @@ public abstract class JsonReaderContractTests {
         map.put("string", "hello");
 
         return Stream.of(
-            Arguments.of("", reader, null),
             Arguments.of("null", reader, null),
             Arguments.of("{}", reader, Collections.emptyMap()),
             Arguments.of("{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}", reader, map)

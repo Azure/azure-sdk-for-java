@@ -688,6 +688,8 @@ public abstract class JsonReader implements Closeable {
                 return getFieldName();
 
             case BOOLEAN:
+                return String.valueOf(getBoolean());
+
             case NUMBER:
             case STRING:
                 return getString();
