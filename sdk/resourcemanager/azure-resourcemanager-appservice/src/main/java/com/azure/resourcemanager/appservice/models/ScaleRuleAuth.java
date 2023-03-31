@@ -22,6 +22,10 @@ public final class ScaleRuleAuth {
     @JsonProperty(value = "triggerParameter")
     private String triggerParameter;
 
+    /** Creates an instance of ScaleRuleAuth class. */
+    public ScaleRuleAuth() {
+    }
+
     /**
      * Get the secretRef property: Name of the Container App secret from which to pull the auth params.
      *

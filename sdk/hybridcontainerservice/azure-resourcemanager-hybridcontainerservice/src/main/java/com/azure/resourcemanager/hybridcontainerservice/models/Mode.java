@@ -23,6 +23,15 @@ public final class Mode extends ExpandableStringEnum<Mode> {
     public static final Mode USER = fromString("User");
 
     /**
+     * Creates a new instance of Mode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Mode() {
+    }
+
+    /**
      * Creates or finds a Mode from its string representation.
      *
      * @param name a name to look for.

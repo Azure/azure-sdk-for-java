@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StopHostsWhen. */
+/** Specifies when to stop hosts during ramp down period. */
 public final class StopHostsWhen extends ExpandableStringEnum<StopHostsWhen> {
     /** Static value ZeroSessions for StopHostsWhen. */
     public static final StopHostsWhen ZERO_SESSIONS = fromString("ZeroSessions");
 
     /** Static value ZeroActiveSessions for StopHostsWhen. */
     public static final StopHostsWhen ZERO_ACTIVE_SESSIONS = fromString("ZeroActiveSessions");
+
+    /**
+     * Creates a new instance of StopHostsWhen value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StopHostsWhen() {
+    }
 
     /**
      * Creates or finds a StopHostsWhen from its string representation.

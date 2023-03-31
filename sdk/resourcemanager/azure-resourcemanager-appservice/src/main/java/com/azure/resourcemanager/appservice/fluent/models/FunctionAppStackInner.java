@@ -26,6 +26,10 @@ public final class FunctionAppStackInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private FunctionAppStackProperties innerProperties;
 
+    /** Creates an instance of FunctionAppStackInner class. */
+    public FunctionAppStackInner() {
+    }
+
     /**
      * Get the location property: Function App stack location.
      *

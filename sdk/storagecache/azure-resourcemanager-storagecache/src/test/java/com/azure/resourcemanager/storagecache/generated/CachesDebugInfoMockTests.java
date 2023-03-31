@@ -56,6 +56,6 @@ public final class CachesDebugInfoMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.caches().debugInfo("omgkopkwho", "v", com.azure.core.util.Context.NONE);
+        manager.caches().debugInfo("foakgg", "fpagaowpulp", com.azure.core.util.Context.NONE);
     }
 }

@@ -94,29 +94,25 @@ public final class ManifestList extends Manifest {
     public static ManifestList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Integer schemaVersion = null;
-                    String mediaType = null;
-                    List<ManifestListAttributes> manifests = null;
+                    ManifestList deserializedManifestList = new ManifestList();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            schemaVersion = reader.getNullable(JsonReader::getInt);
+                            deserializedManifestList.setSchemaVersion(reader.getNullable(JsonReader::getInt));
                         } else if ("mediaType".equals(fieldName)) {
-                            mediaType = reader.getString();
+                            deserializedManifestList.mediaType = reader.getString();
                         } else if ("manifests".equals(fieldName)) {
-                            manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                            List<ManifestListAttributes> manifests =
+                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                            deserializedManifestList.manifests = manifests;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    ManifestList deserializedValue = new ManifestList();
-                    deserializedValue.setSchemaVersion(schemaVersion);
-                    deserializedValue.mediaType = mediaType;
-                    deserializedValue.manifests = manifests;
 
-                    return deserializedValue;
+                    return deserializedManifestList;
                 });
     }
 }

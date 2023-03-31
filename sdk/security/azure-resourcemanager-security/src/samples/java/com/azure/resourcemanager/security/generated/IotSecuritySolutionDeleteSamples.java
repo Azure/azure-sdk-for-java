@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolution Delete. */
 public final class IotSecuritySolutionDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class IotSecuritySolutionDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteAnIoTSecuritySolution(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutions().deleteByResourceGroupWithResponse("MyGroup", "default", Context.NONE);
+        manager
+            .iotSecuritySolutions()
+            .deleteByResourceGroupWithResponse("MyGroup", "default", com.azure.core.util.Context.NONE);
     }
 }

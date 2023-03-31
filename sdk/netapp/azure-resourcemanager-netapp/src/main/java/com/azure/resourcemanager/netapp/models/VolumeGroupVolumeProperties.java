@@ -36,6 +36,10 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private VolumeProperties innerProperties = new VolumeProperties();
 
+    /** Creates an instance of VolumeGroupVolumeProperties class. */
+    public VolumeGroupVolumeProperties() {
+    }
+
     /**
      * Get the name property: Resource name.
      *
@@ -154,7 +158,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      * Get the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -166,7 +170,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      * Set the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -863,6 +867,16 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
+     * Get the fileAccessLogs property: Flag indicating whether file access logs are enabled for the volume, based on
+     * active diagnostic settings present on the volume.
+     *
+     * @return the fileAccessLogs value.
+     */
+    public FileAccessLogs fileAccessLogs() {
+        return this.innerProperties() == null ? null : this.innerProperties().fileAccessLogs();
+    }
+
+    /**
      * Get the avsDataStore property: avsDataStore
      *
      * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
@@ -887,6 +901,17 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
         }
         this.innerProperties().withAvsDataStore(avsDataStore);
         return this;
+    }
+
+    /**
+     * Get the dataStoreResourceId property: dataStoreResourceId
+     *
+     * <p>Data store resource unique identifier.
+     *
+     * @return the dataStoreResourceId value.
+     */
+    public List<String> dataStoreResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataStoreResourceId();
     }
 
     /**
@@ -1118,6 +1143,45 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withEnableSubvolumes(enableSubvolumes);
+        return this;
+    }
+
+    /**
+     * Get the provisionedAvailabilityZone property: Provisioned Availability Zone
+     *
+     * <p>The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+     * volume resides.
+     *
+     * @return the provisionedAvailabilityZone value.
+     */
+    public String provisionedAvailabilityZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisionedAvailabilityZone();
+    }
+
+    /**
+     * Get the isLargeVolume property: Is Large Volume
+     *
+     * <p>Specifies whether volume is a Large Volume or Regular Volume.
+     *
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLargeVolume();
+    }
+
+    /**
+     * Set the isLargeVolume property: Is Large Volume
+     *
+     * <p>Specifies whether volume is a Large Volume or Regular Volume.
+     *
+     * @param isLargeVolume the isLargeVolume value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withIsLargeVolume(Boolean isLargeVolume) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withIsLargeVolume(isLargeVolume);
         return this;
     }
 

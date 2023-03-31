@@ -31,6 +31,19 @@ public final class EmailClient {
      * Queues an email message to be sent to one or more recipients.
      *
      * @param message Message payload for sending an email.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of status of the long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EmailSendResult, EmailSendResult> beginSend(EmailMessage message) {
+        return beginSend(message, Context.NONE);
+    }
+
+    /**
+     * Queues an email message to be sent to one or more recipients.
+     *
+     * @param message Message payload for sending an email.
      * @param context The context to associate with this operation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

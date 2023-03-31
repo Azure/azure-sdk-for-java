@@ -201,19 +201,6 @@ public interface VirtualMachineImageTemplatesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual machine image template.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageTemplateInner getByResourceGroup(String resourceGroupName, String imageTemplateName);
-
-    /**
-     * Get information about a virtual machine image template.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,6 +210,19 @@ public interface VirtualMachineImageTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ImageTemplateInner> getByResourceGroupWithResponse(
         String resourceGroupName, String imageTemplateName, Context context);
+
+    /**
+     * Get information about a virtual machine image template.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageTemplateName The name of the image Template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a virtual machine image template.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ImageTemplateInner getByResourceGroup(String resourceGroupName, String imageTemplateName);
 
     /**
      * Delete a virtual machine image template.
@@ -413,20 +413,6 @@ public interface VirtualMachineImageTemplatesClient {
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified run output for the specified image template resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RunOutputInner getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName);
-
-    /**
-     * Get the specified run output for the specified image template resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageTemplateName The name of the image Template.
-     * @param runOutputName The name of the run output.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -436,4 +422,18 @@ public interface VirtualMachineImageTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RunOutputInner> getRunOutputWithResponse(
         String resourceGroupName, String imageTemplateName, String runOutputName, Context context);
+
+    /**
+     * Get the specified run output for the specified image template resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param imageTemplateName The name of the image Template.
+     * @param runOutputName The name of the run output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified run output for the specified image template resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RunOutputInner getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName);
 }

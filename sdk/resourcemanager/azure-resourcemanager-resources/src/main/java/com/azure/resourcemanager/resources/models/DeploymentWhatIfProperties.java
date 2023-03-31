@@ -16,6 +16,10 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     @JsonProperty(value = "whatIfSettings")
     private DeploymentWhatIfSettings whatIfSettings;
 
+    /** Creates an instance of DeploymentWhatIfProperties class. */
+    public DeploymentWhatIfProperties() {
+    }
+
     /**
      * Get the whatIfSettings property: Optional What-If operation settings.
      *

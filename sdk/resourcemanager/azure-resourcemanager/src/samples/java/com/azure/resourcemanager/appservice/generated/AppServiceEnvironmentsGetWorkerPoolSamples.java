@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetWorkerPool. */
 public final class AppServiceEnvironmentsGetWorkerPoolSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetWorkerPool.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_GetWorkerPool.json
      */
     /**
      * Sample code: Get properties of a worker pool.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsGetWorkerPoolSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getWorkerPoolWithResponse("test-rg", "test-ase", "workerPool1", Context.NONE);
+            .getWorkerPoolWithResponse("test-rg", "test-ase", "workerPool1", com.azure.core.util.Context.NONE);
     }
 }

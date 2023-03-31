@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Accounts CreateOrUpdate. */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -18,6 +18,19 @@ public final class AccountsCreateOrUpdateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.accounts().define("account1").withRegion("eastus").withExistingResourceGroup("myRG").create();
+    }
+
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_CreateOrUpdateAD.json
+     */
+    /**
+     * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
+     *
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void accountsCreateOrUpdateWithActiveDirectory(
+        com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         manager
             .accounts()
             .define("account1")
@@ -28,7 +41,7 @@ public final class AccountsCreateOrUpdateSamples {
                     .asList(
                         new ActiveDirectory()
                             .withUsername("ad_user_name")
-                            .withPassword("ad_password")
+                            .withPassword("fakeTokenPlaceholder")
                             .withDomain("10.10.10.3")
                             .withDns("10.10.10.3, 10.10.10.4")
                             .withSmbServerName("SMBServer")

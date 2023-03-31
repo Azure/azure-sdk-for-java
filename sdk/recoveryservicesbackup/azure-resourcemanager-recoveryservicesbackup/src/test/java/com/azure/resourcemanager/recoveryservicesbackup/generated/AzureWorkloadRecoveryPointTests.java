@@ -24,57 +24,61 @@ public final class AzureWorkloadRecoveryPointTests {
         AzureWorkloadRecoveryPoint model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadRecoveryPoint\",\"recoveryPointTimeInUTC\":\"2021-05-17T21:24:33Z\",\"type\":\"Differential\",\"recoveryPointTierDetails\":[{\"type\":\"Invalid\",\"status\":\"Valid\",\"extendedInfo\":{\"bklftidgfcwqmpim\":\"eitpkxztmo\",\"yhohujswtwkozzwc\":\"qxzhem\"}}],\"recoveryPointMoveReadinessInfo\":{\"uktalhsnvkcdmxz\":{\"isReadyForMove\":true,\"additionalInfo\":\"pfajnjwltlwtjj\"}},\"recoveryPointProperties\":{\"expiryTime\":\"aimlnwiaaom\",\"ruleName\":\"weazul\"}}")
+                    "{\"objectType\":\"AzureWorkloadRecoveryPoint\",\"recoveryPointTimeInUTC\":\"2021-10-20T18:11:07Z\",\"type\":\"Incremental\",\"recoveryPointTierDetails\":[{\"type\":\"HardenedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"dgfcwqmp\":\"tpkxztmoobklft\"}}],\"recoveryPointMoveReadinessInfo\":{\"ohu\":{\"isReadyForMove\":false,\"additionalInfo\":\"hemjy\"},\"culkbawpfaj\":{\"isReadyForMove\":false,\"additionalInfo\":\"wkozz\"},\"kcdmxzrpoaimln\":{\"isReadyForMove\":true,\"additionalInfo\":\"tlwtjjguktalhsn\"}},\"recoveryPointProperties\":{\"expiryTime\":\"aomylwea\",\"ruleName\":\"lcsethwwnpj\",\"isSoftDeleted\":false}}")
                 .toObject(AzureWorkloadRecoveryPoint.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T21:24:33Z"), model.recoveryPointTimeInUtc());
-        Assertions.assertEquals(RestorePointType.DIFFERENTIAL, model.type());
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.recoveryPointTierDetails().get(0).type());
-        Assertions.assertEquals(RecoveryPointTierStatus.VALID, model.recoveryPointTierDetails().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T18:11:07Z"), model.recoveryPointTimeInUtc());
+        Assertions.assertEquals(RestorePointType.INCREMENTAL, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.recoveryPointTierDetails().get(0).type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.recoveryPointTierDetails().get(0).status());
         Assertions
-            .assertEquals("eitpkxztmo", model.recoveryPointTierDetails().get(0).extendedInfo().get("bklftidgfcwqmpim"));
-        Assertions.assertEquals(true, model.recoveryPointMoveReadinessInfo().get("uktalhsnvkcdmxz").isReadyForMove());
-        Assertions
-            .assertEquals(
-                "pfajnjwltlwtjj", model.recoveryPointMoveReadinessInfo().get("uktalhsnvkcdmxz").additionalInfo());
-        Assertions.assertEquals("aimlnwiaaom", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("weazul", model.recoveryPointProperties().ruleName());
+            .assertEquals("tpkxztmoobklft", model.recoveryPointTierDetails().get(0).extendedInfo().get("dgfcwqmp"));
+        Assertions.assertEquals(false, model.recoveryPointMoveReadinessInfo().get("ohu").isReadyForMove());
+        Assertions.assertEquals("hemjy", model.recoveryPointMoveReadinessInfo().get("ohu").additionalInfo());
+        Assertions.assertEquals("aomylwea", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("lcsethwwnpj", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadRecoveryPoint model =
             new AzureWorkloadRecoveryPoint()
-                .withRecoveryPointTimeInUtc(OffsetDateTime.parse("2021-05-17T21:24:33Z"))
-                .withType(RestorePointType.DIFFERENTIAL)
+                .withRecoveryPointTimeInUtc(OffsetDateTime.parse("2021-10-20T18:11:07Z"))
+                .withType(RestorePointType.INCREMENTAL)
                 .withRecoveryPointTierDetails(
                     Arrays
                         .asList(
                             new RecoveryPointTierInformationV2()
-                                .withType(RecoveryPointTierType.INVALID)
-                                .withStatus(RecoveryPointTierStatus.VALID)
-                                .withExtendedInfo(
-                                    mapOf("bklftidgfcwqmpim", "eitpkxztmo", "yhohujswtwkozzwc", "qxzhem"))))
+                                .withType(RecoveryPointTierType.HARDENED_RP)
+                                .withStatus(RecoveryPointTierStatus.DISABLED)
+                                .withExtendedInfo(mapOf("dgfcwqmp", "tpkxztmoobklft"))))
                 .withRecoveryPointMoveReadinessInfo(
                     mapOf(
-                        "uktalhsnvkcdmxz",
+                        "ohu",
+                        new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("hemjy"),
+                        "culkbawpfaj",
+                        new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("wkozz"),
+                        "kcdmxzrpoaimln",
                         new RecoveryPointMoveReadinessInfo()
                             .withIsReadyForMove(true)
-                            .withAdditionalInfo("pfajnjwltlwtjj")))
+                            .withAdditionalInfo("tlwtjjguktalhsn")))
                 .withRecoveryPointProperties(
-                    new RecoveryPointProperties().withExpiryTime("aimlnwiaaom").withRuleName("weazul"));
+                    new RecoveryPointProperties()
+                        .withExpiryTime("aomylwea")
+                        .withRuleName("lcsethwwnpj")
+                        .withIsSoftDeleted(false));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadRecoveryPoint.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T21:24:33Z"), model.recoveryPointTimeInUtc());
-        Assertions.assertEquals(RestorePointType.DIFFERENTIAL, model.type());
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.recoveryPointTierDetails().get(0).type());
-        Assertions.assertEquals(RecoveryPointTierStatus.VALID, model.recoveryPointTierDetails().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T18:11:07Z"), model.recoveryPointTimeInUtc());
+        Assertions.assertEquals(RestorePointType.INCREMENTAL, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.recoveryPointTierDetails().get(0).type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.recoveryPointTierDetails().get(0).status());
         Assertions
-            .assertEquals("eitpkxztmo", model.recoveryPointTierDetails().get(0).extendedInfo().get("bklftidgfcwqmpim"));
-        Assertions.assertEquals(true, model.recoveryPointMoveReadinessInfo().get("uktalhsnvkcdmxz").isReadyForMove());
-        Assertions
-            .assertEquals(
-                "pfajnjwltlwtjj", model.recoveryPointMoveReadinessInfo().get("uktalhsnvkcdmxz").additionalInfo());
-        Assertions.assertEquals("aimlnwiaaom", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("weazul", model.recoveryPointProperties().ruleName());
+            .assertEquals("tpkxztmoobklft", model.recoveryPointTierDetails().get(0).extendedInfo().get("dgfcwqmp"));
+        Assertions.assertEquals(false, model.recoveryPointMoveReadinessInfo().get("ohu").isReadyForMove());
+        Assertions.assertEquals("hemjy", model.recoveryPointMoveReadinessInfo().get("ohu").additionalInfo());
+        Assertions.assertEquals("aomylwea", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("lcsethwwnpj", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 
     @SuppressWarnings("unchecked")

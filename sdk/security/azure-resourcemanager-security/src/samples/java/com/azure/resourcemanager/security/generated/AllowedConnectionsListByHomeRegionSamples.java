@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AllowedConnections ListByHomeRegion. */
 public final class AllowedConnectionsListByHomeRegionSamples {
     /*
@@ -18,6 +16,6 @@ public final class AllowedConnectionsListByHomeRegionSamples {
      */
     public static void getAllowedConnectionsOnASubscriptionFromSecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.allowedConnections().listByHomeRegion("centralus", Context.NONE);
+        manager.allowedConnections().listByHomeRegion("centralus", com.azure.core.util.Context.NONE);
     }
 }

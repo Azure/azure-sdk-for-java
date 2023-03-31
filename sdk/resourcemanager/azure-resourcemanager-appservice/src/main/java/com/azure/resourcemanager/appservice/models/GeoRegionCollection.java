@@ -25,6 +25,10 @@ public final class GeoRegionCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GeoRegionCollection class. */
+    public GeoRegionCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

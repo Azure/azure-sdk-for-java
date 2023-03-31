@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParameterType. */
+/** The data type of the parameter. */
 public final class ParameterType extends ExpandableStringEnum<ParameterType> {
     /** Static value String for ParameterType. */
     public static final ParameterType STRING = fromString("String");
@@ -30,6 +30,15 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
 
     /** Static value DateTime for ParameterType. */
     public static final ParameterType DATE_TIME = fromString("DateTime");
+
+    /**
+     * Creates a new instance of ParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ParameterType() {
+    }
 
     /**
      * Creates or finds a ParameterType from its string representation.

@@ -3,12 +3,16 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,20 +23,31 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.Objects;
 import java.util.regex.Pattern;
+
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -53,7 +68,10 @@ public final class BuilderHelper {
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
-     * @param credentialPolicySupplier Supplier for credentials in the pipeline.
+     * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param azureSasCredential {@link AzureSasCredential} if present.
+     * @param sasToken SAS token if present.
      * @param retryOptions Storage retry options to set in the retry policy.
      * @param coreRetryOptions Core retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
@@ -65,11 +83,14 @@ public final class BuilderHelper {
      * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
-        RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
-        HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
-        Configuration configuration, ClientLogger logger) {
+    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, String endpoint,
+        RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
+        ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, ClientLogger logger) {
+
+        CredentialValidator.validateSingleCredentialIsPresent(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -91,7 +112,20 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        HttpPipelinePolicy credentialPolicy = credentialPolicySupplier.get();
+        HttpPipelinePolicy credentialPolicy;
+        if (storageSharedKeyCredential != null) {
+            credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
+        } else if (tokenCredential != null) {
+            httpsValidation(tokenCredential, "bearer token", endpoint, logger);
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
+        } else if (azureSasCredential != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
+        } else if (sasToken != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
+        } else {
+            credentialPolicy =  null;
+        }
+
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
@@ -110,6 +144,7 @@ public final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
+            .tracer(createTracer(clientOptions))
             .build();
     }
 
@@ -183,5 +218,215 @@ public final class BuilderHelper {
                 return host.substring(0, accountNameIndex);
             }
         }
+    }
+
+    /**
+     * Validates that the client is properly configured to use https.
+     *
+     * @param objectToCheck The object to check for.
+     * @param objectName The name of the object.
+     * @param endpoint The endpoint for the client.
+     * @param logger {@link ClientLogger} used to log any exception.
+     */
+    public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
+        if (objectToCheck != null && !parseEndpoint(endpoint, logger).getScheme().equals(Constants.HTTPS)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Using a(n) " + objectName + " requires https"));
+        }
+    }
+
+    /**
+     * Parses the given endpoint url into a ShareUrlParts.
+     *
+     * @param endpoint The endpoint url to be parsed.
+     * @param logger {@link ClientLogger}
+     * @return A {@link ShareUrlParts} object containing all the components of a ShareURL.
+     * @throws IllegalArgumentException If the endpoint is malformed.
+     */
+    public static ShareUrlParts parseEndpoint(String endpoint, ClientLogger logger) {
+        Objects.requireNonNull(endpoint);
+        try {
+            URL url = new URL(endpoint);
+            ShareUrlParts parts = new ShareUrlParts().setScheme(url.getProtocol());
+
+            if (determineAuthorityIsIpStyle(url.getAuthority())) {
+                // URL is using an IP pattern of http://127.0.0.1:10000/accountName/shareName
+                // or http://localhost:10000/accountName/shareName
+                String path = url.getPath();
+                if (!CoreUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
+                    path = path.substring(1);
+                }
+
+                String[] pathPieces = path.split("/", 2);
+                parts.setAccountName(pathPieces[0]);
+
+                if (pathPieces.length == 2) {
+                    parts.setShareName(pathPieces[1]);
+                }
+
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority() + "/" + parts.getAccountName());
+            } else {
+                // URL is using a pattern of http://accountName.file.core.windows.net/shareName
+                String host = url.getHost();
+
+                String accountName = null;
+                if (!CoreUtils.isNullOrEmpty(host)) {
+                    int accountNameIndex = host.indexOf('.');
+                    if (accountNameIndex == -1) {
+                        accountName = host;
+                    } else {
+                        accountName = host.substring(0, accountNameIndex);
+                    }
+                }
+
+                parts.setAccountName(accountName);
+
+                String[] pathSegments = url.getPath().split("/", 2);
+                if (pathSegments.length == 2 && !CoreUtils.isNullOrEmpty(pathSegments[1])) {
+                    parts.setShareName(pathSegments[1]);
+                }
+
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
+            }
+
+            // Attempt to get the SAS token from the URL passed
+            String sasToken = new CommonSasQueryParameters(
+                SasImplUtils.parseQueryString(url.getQuery()), false).encode();
+            if (!CoreUtils.isNullOrEmpty(sasToken)) {
+                parts.setSasToken(sasToken);
+            }
+
+            return parts;
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage Share endpoint url is malformed.", ex));
+        }
+    }
+
+    /**
+     * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
+     *
+     * @param authority The authority of a URL.
+     * @throws MalformedURLException If the authority is malformed.
+     * @return Whether the authority is IP style.
+     */
+    public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
+        return new URL("http://" +  authority).getPort() != -1;
+    }
+
+    /**
+     * This class represents the components that make up an Azure Storage Share URL.
+     */
+    public static class ShareUrlParts {
+        private String scheme;
+        private String endpoint;
+        private String accountName;
+        private String shareName;
+        private String sasToken;
+
+        /**
+         * Gets the URL scheme, ex. "https".
+         *
+         * @return the URL scheme.
+         */
+        public String getScheme() {
+            return scheme;
+        }
+
+        /**
+         * Sets the URL scheme, ex. "https".
+         *
+         * @param scheme The URL scheme.
+         * @return the updated ShareUrlParts object.
+         */
+        public ShareUrlParts setScheme(String scheme) {
+            this.scheme = scheme;
+            return this;
+        }
+
+        /**
+         * Gets the endpoint for the share service based on the parsed URL.
+         *
+         * @return The endpoint for the share service.
+         */
+        public String getEndpoint() {
+            return endpoint;
+        }
+
+        /**
+         * Sets the endpoint for the share service.
+         *
+         * @return the updated ShareUrlParts object.
+         */
+        public ShareUrlParts setEndpoint(String endpoint) {
+            this.endpoint = endpoint;
+            return this;
+        }
+
+        /**
+         * Gets the accountname, ex. "myaccountname".
+         *
+         * @return the account name.
+         */
+        public String getAccountName() {
+            return accountName;
+        }
+
+        /**
+         * Sets the account name.
+         *
+         * @param accountName The account name.
+         * @return the updated ShareUrlParts object.
+         */
+        public ShareUrlParts setAccountName(String accountName) {
+            this.accountName = accountName;
+            return this;
+        }
+
+        /**
+         * Gets the share name that will be used as part of the URL path.
+         *
+         * @return the share name.
+         */
+        public String getShareName() {
+            return shareName;
+        }
+
+        /**
+         * Sets the share name that will be used as part of the URL path.
+         *
+         * @param shareName The share nme.
+         * @return the updated ShareUrlParts object.
+         */
+        ShareUrlParts setShareName(String shareName) {
+            this.shareName = shareName;
+            return this;
+        }
+
+        /**
+         * Gets the sas token that will be used as part of the URL path.
+         *
+         * @return the sas token.
+         */
+        public String getSasToken() {
+            return sasToken;
+        }
+
+        /**
+         * Sets the sas token that will be used as part of the URL path.
+         *
+         * @param sasToken the sas token.
+         * @return the updated ShareUrlParts object.
+         */
+        public ShareUrlParts setSasToken(String sasToken) {
+            this.sasToken = sasToken;
+            return this;
+        }
+    }
+
+    private static Tracer createTracer(ClientOptions clientOptions) {
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, STORAGE_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 }

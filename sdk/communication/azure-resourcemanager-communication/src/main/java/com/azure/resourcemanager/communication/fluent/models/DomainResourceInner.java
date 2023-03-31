@@ -30,6 +30,10 @@ public final class DomainResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of DomainResourceInner class. */
+    public DomainResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a Domains resource.
      *
@@ -137,31 +141,6 @@ public final class DomainResourceInner extends Resource {
      */
     public DomainPropertiesVerificationRecords verificationRecords() {
         return this.innerProperties() == null ? null : this.innerProperties().verificationRecords();
-    }
-
-    /**
-     * Get the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @return the validSenderUsernames value.
-     */
-    public Map<String, String> validSenderUsernames() {
-        return this.innerProperties() == null ? null : this.innerProperties().validSenderUsernames();
-    }
-
-    /**
-     * Set the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @param validSenderUsernames the validSenderUsernames value to set.
-     * @return the DomainResourceInner object itself.
-     */
-    public DomainResourceInner withValidSenderUsernames(Map<String, String> validSenderUsernames) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DomainProperties();
-        }
-        this.innerProperties().withValidSenderUsernames(validSenderUsernames);
-        return this;
     }
 
     /**

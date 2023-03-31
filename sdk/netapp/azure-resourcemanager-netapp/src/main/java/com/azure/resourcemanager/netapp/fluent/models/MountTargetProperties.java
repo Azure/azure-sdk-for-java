@@ -43,6 +43,10 @@ public final class MountTargetProperties {
     @JsonProperty(value = "smbServerFqdn")
     private String smbServerFqdn;
 
+    /** Creates an instance of MountTargetProperties class. */
+    public MountTargetProperties() {
+    }
+
     /**
      * Get the mountTargetId property: mountTargetId
      *

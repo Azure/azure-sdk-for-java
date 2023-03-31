@@ -6,6 +6,7 @@ package com.azure.resourcemanager.orbital.implementation;
 
 import com.azure.resourcemanager.orbital.fluent.models.AvailableGroundStationInner;
 import com.azure.resourcemanager.orbital.models.AvailableGroundStation;
+import com.azure.resourcemanager.orbital.models.ReleaseMode;
 
 public final class AvailableGroundStationImpl implements AvailableGroundStation {
     private AvailableGroundStationInner innerObject;
@@ -32,6 +33,30 @@ public final class AvailableGroundStationImpl implements AvailableGroundStation 
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String city() {
+        return this.innerModel().city();
+    }
+
+    public String providerName() {
+        return this.innerModel().providerName();
+    }
+
+    public Float longitudeDegrees() {
+        return this.innerModel().longitudeDegrees();
+    }
+
+    public Float latitudeDegrees() {
+        return this.innerModel().latitudeDegrees();
+    }
+
+    public Float altitudeMeters() {
+        return this.innerModel().altitudeMeters();
+    }
+
+    public ReleaseMode releaseMode() {
+        return this.innerModel().releaseMode();
     }
 
     public AvailableGroundStationInner innerModel() {

@@ -56,7 +56,7 @@ autorest --java --use:@autorest/java@4.1.*
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.13'
+use: '@autorest/java@4.1.15'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
@@ -94,6 +94,15 @@ directive:
   transform: >
     $["x-ms-enum"].name = "ArtifactManifestOrder";
     $["x-ms-enum"].modelAsString = true;
+```
+
+### Remove "Authentication_GetAcrAccessTokenFromLogin" operation as the service team discourage using username/password to authenticate.
+```yaml
+directive:
+  - from: swagger-document
+    where: $["paths"]["/oauth2/token"]
+    transform: >
+      delete $.get
 ```
 
 ### Update the field names for RepositoryChangeableAttributes
@@ -163,6 +172,9 @@ directive:
 ```
 
 ### Set readonly flag to properties of TagAttributesBase
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -176,6 +188,9 @@ directive:
 ```
 
 ### Update the field names for TagChangeableAttributes
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -186,6 +201,7 @@ directive:
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
+
 # Add content-type parameter
 ```yaml
 directive:
@@ -226,12 +242,14 @@ directive:
   where: $.definitions.OCIManifest
   transform: >
     $["x-ms-client-name"] = "OciImageManifest";
+    $.required = ["schemaVersion"];
     delete $["x-accessibility"];
     delete $["allOf"];
     $.properties["schemaVersion"] = {
           "type": "integer",
           "description": "Schema version"
         };
+    $.properties.config["x-ms-client-name"] = "configuration";
 ```
 
 # Take stream as manifest body
@@ -246,7 +264,10 @@ directive:
       }
 ```
 
-# Replace ManifestWrapper with stream response to calculate MD5
+# Replace ManifestWrapper with stream response to calculate SHA256
+
+<!-- Java specific -->
+
 ```yaml
 directive:
   from: swagger-document
@@ -255,16 +276,7 @@ directive:
       $.schema = {
           "type": "string",
           "format": "binary"
-        }
-```
-
-# Rename ArtifactBlobDescriptor.size to sizeInBytes
-```yaml
-directive:
-  from: swagger-document
-  where: $.definitions.Descriptor
-  transform: >
-    $.properties.size["x-ms-client-name"] = "sizeInBytes";
+      };
 ```
 
 # Rename ArtifactBlobDescriptor to OciDescriptor
@@ -274,6 +286,7 @@ directive:
   where: $.definitions.Descriptor
   transform: >
     $["x-ms-client-name"] = "OciDescriptor";
+    $.properties.size["x-ms-client-name"] = "sizeInBytes";      
     delete $["x-accessibility"]
 ```
 
@@ -285,4 +298,28 @@ directive:
   transform: >
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
+```
+
+# Rename created to createdOn in OciAnnotations
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Annotations
+  transform: >
+    $.properties["org.opencontainers.image.created"] = {
+      "description": "Date and time on which the image was built (string, date-time as defined by https://tools.ietf.org/html/rfc3339#section-5.6)",
+      "type": "string",
+      "format": "date-time",
+      "x-ms-client-name": "CreatedOn"
+    };
+```
+
+# Remove security definitions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.
+  transform: >
+    delete $["securityDefinitions"];
+    delete $["security"];
 ```

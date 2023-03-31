@@ -10,11 +10,10 @@ import com.azure.resourcemanager.webpubsub.models.WebPubSubHubList;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WebPubSubHubListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WebPubSubHubList model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class WebPubSubHubListTests {
         Assertions.assertEquals("rmcqiby", model.value().get(0).properties().anonymousConnectPolicy());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WebPubSubHubList model =
             new WebPubSubHubList()
                 .withValue(

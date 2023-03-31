@@ -7,7 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed bug that disallowed empty strings as partition and row keys
+- Fixed handling of paging headers when Table Storage returned a `x-ms-continuation-NextPartitionKey` but no `x-ms-continuation-NextRowKey`. This was causing the subsequent pages are not fetched.
 ### Other Changes
 
 ## 12.3.9 (2023-03-08)
@@ -88,7 +89,7 @@
 
 #### Dependency Updates
 - Upgraded `azure-core` dependency to `1.29.1`
-- Upgraded `azure-core-http-netty` dependency to `1.12.2` 
+- Upgraded `azure-core-http-netty` dependency to `1.12.2`
 
 ## 12.3.0 (2022-05-11)
 
@@ -121,7 +122,7 @@
 ## 12.2.0 (2022-02-10)
 
 ### Features added
-- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java. 
+- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ### Other Changes
 
@@ -132,12 +133,12 @@
 ## 12.1.5 (2022-01-11)
 
 ### Bugs fixed
-- Fixed issue that made it so single quotes in entity names were not properly escaped according to OData standards. [[25066]](https://github.com/Azure/azure-sdk-for-java/pull/25066) 
+- Fixed issue that made it so single quotes in entity names were not properly escaped according to OData standards. [[25066]](https://github.com/Azure/azure-sdk-for-java/pull/25066)
 
 #### Dependency Updates
 - Upgraded `azure-core` dependency to `1.24.1`
 - Upgraded `azure-core-http-netty` dependency to `1.11.6`
-    
+
 ## 12.1.4 (2021-11-19)
 
 ### Other Changes

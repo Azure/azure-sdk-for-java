@@ -17,6 +17,9 @@ public final class DimensionGroupIdentity {
     @JsonProperty(value = "dimension", required = true)
     private Map<String, String> dimension;
 
+    /** Creates an instance of DimensionGroupIdentity class. */
+    public DimensionGroupIdentity() {}
+
     /**
      * Get the dimension property: dimension specified for series group.
      *

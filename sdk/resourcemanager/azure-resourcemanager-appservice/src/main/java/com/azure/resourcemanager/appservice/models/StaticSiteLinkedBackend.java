@@ -35,6 +35,10 @@ public final class StaticSiteLinkedBackend {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of StaticSiteLinkedBackend class. */
+    public StaticSiteLinkedBackend() {
+    }
+
     /**
      * Get the backendResourceId property: The resource id of the backend linked to the static site.
      *

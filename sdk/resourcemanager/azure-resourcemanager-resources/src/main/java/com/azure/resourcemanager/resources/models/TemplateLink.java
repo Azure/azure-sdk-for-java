@@ -11,25 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TemplateLink {
     /*
-     * The URI of the template to deploy. Use either the uri or id property,
-     * but not both.
+     * The URI of the template to deploy. Use either the uri or id property, but not both.
      */
     @JsonProperty(value = "uri")
     private String uri;
 
     /*
-     * The resource id of a Template Spec. Use either the id or uri property,
-     * but not both.
+     * The resource id of a Template Spec. Use either the id or uri property, but not both.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The relativePath property can be used to deploy a linked template at a
-     * location relative to the parent. If the parent template was linked with
-     * a TemplateSpec, this will reference an artifact in the TemplateSpec.  If
-     * the parent was linked with a URI, the child deployment will be a
-     * combination of the parent and relativePath URIs
+     * The relativePath property can be used to deploy a linked template at a location relative to the parent. If the
+     * parent template was linked with a TemplateSpec, this will reference an artifact in the TemplateSpec.  If the
+     * parent was linked with a URI, the child deployment will be a combination of the parent and relativePath URIs
      */
     @JsonProperty(value = "relativePath")
     private String relativePath;
@@ -41,11 +37,14 @@ public final class TemplateLink {
     private String contentVersion;
 
     /*
-     * The query string (for example, a SAS token) to be used with the
-     * templateLink URI.
+     * The query string (for example, a SAS token) to be used with the templateLink URI.
      */
     @JsonProperty(value = "queryString")
     private String queryString;
+
+    /** Creates an instance of TemplateLink class. */
+    public TemplateLink() {
+    }
 
     /**
      * Get the uri property: The URI of the template to deploy. Use either the uri or id property, but not both.

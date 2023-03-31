@@ -20,6 +20,10 @@ public final class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CustomHostnameAnalysisResultProperties innerProperties;
 
+    /** Creates an instance of CustomHostnameAnalysisResultInner class. */
+    public CustomHostnameAnalysisResultInner() {
+    }
+
     /**
      * Get the innerProperties property: CustomHostnameAnalysisResult resource specific properties.
      *

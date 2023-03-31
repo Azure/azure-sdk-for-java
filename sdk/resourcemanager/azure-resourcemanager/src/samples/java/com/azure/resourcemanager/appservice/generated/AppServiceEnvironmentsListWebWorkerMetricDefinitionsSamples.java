@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListWebWorkerMetricDefinitions. */
 public final class AppServiceEnvironmentsListWebWorkerMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListWebWorkerMetricDefinitions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListWebWorkerMetricDefinitions.json
      */
     /**
      * Sample code: Get metric definitions for a worker pool of an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListWebWorkerMetricDefinitionsSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listWebWorkerMetricDefinitions("test-rg", "test-ase", "0", Context.NONE);
+            .listWebWorkerMetricDefinitions("test-rg", "test-ase", "0", com.azure.core.util.Context.NONE);
     }
 }

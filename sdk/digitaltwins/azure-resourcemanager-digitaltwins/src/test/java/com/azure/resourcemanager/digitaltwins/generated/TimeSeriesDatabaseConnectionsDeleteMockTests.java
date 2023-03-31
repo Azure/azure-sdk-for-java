@@ -11,8 +11,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
+import com.azure.resourcemanager.digitaltwins.models.CleanupConnectionArtifacts;
 import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
 import java.nio.ByteBuffer;
@@ -33,7 +33,7 @@ public final class TimeSeriesDatabaseConnectionsDeleteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Succeeded\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"tbhjpglkfgohdneu\"}},\"id\":\"fphsdyhtozfikdow\",\"name\":\"quuvxzxcl\",\"type\":\"ithhqzon\"}";
+            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Succeeded\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ggkzzlvmbmpa\"}},\"id\":\"odfvuefywsbp\",\"name\":\"vmwy\",\"type\":\"rfouyftaakcpw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,16 @@ public final class TimeSeriesDatabaseConnectionsDeleteMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TimeSeriesDatabaseConnection response =
-            manager.timeSeriesDatabaseConnections().delete("cjefuzmu", "pbttdum", "rp", Context.NONE);
+            manager
+                .timeSeriesDatabaseConnections()
+                .delete(
+                    "ld",
+                    "mgxcxrslpm",
+                    "twuoegrpkhjwni",
+                    CleanupConnectionArtifacts.TRUE,
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.properties().identity().type());
-        Assertions.assertEquals("tbhjpglkfgohdneu", response.properties().identity().userAssignedIdentity());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.properties().identity().type());
+        Assertions.assertEquals("ggkzzlvmbmpa", response.properties().identity().userAssignedIdentity());
     }
 }

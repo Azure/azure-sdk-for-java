@@ -15,20 +15,20 @@ public final class ReservationSplitPropertiesTests {
         ReservationSplitProperties model =
             BinaryData
                 .fromString(
-                    "{\"splitDestinations\":[\"vtpgvdfgiotkf\",\"utqxlngx\",\"efgugnxk\"],\"splitSource\":\"dqmidtt\"}")
+                    "{\"splitDestinations\":[\"pmng\",\"zscxaqwo\",\"chcbonqvpkvlrxnj\",\"ase\"],\"splitSource\":\"heoflokeyyienjbd\"}")
                 .toObject(ReservationSplitProperties.class);
-        Assertions.assertEquals("vtpgvdfgiotkf", model.splitDestinations().get(0));
-        Assertions.assertEquals("dqmidtt", model.splitSource());
+        Assertions.assertEquals("pmng", model.splitDestinations().get(0));
+        Assertions.assertEquals("heoflokeyyienjbd", model.splitSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReservationSplitProperties model =
             new ReservationSplitProperties()
-                .withSplitDestinations(Arrays.asList("vtpgvdfgiotkf", "utqxlngx", "efgugnxk"))
-                .withSplitSource("dqmidtt");
+                .withSplitDestinations(Arrays.asList("pmng", "zscxaqwo", "chcbonqvpkvlrxnj", "ase"))
+                .withSplitSource("heoflokeyyienjbd");
         model = BinaryData.fromObject(model).toObject(ReservationSplitProperties.class);
-        Assertions.assertEquals("vtpgvdfgiotkf", model.splitDestinations().get(0));
-        Assertions.assertEquals("dqmidtt", model.splitSource());
+        Assertions.assertEquals("pmng", model.splitDestinations().get(0));
+        Assertions.assertEquals("heoflokeyyienjbd", model.splitSource());
     }
 }

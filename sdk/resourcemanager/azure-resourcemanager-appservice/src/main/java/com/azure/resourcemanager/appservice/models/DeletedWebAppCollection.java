@@ -25,6 +25,10 @@ public final class DeletedWebAppCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DeletedWebAppCollection class. */
+    public DeletedWebAppCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

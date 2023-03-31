@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceCertificateOrders VerifyDomainOwnership. */
 public final class AppServiceCertificateOrdersVerifyDomainOwnershipSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/VerifyDomainOwnership.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/VerifyDomainOwnership.json
      */
     /**
      * Sample code: Verify Domain Ownership.
@@ -22,6 +20,7 @@ public final class AppServiceCertificateOrdersVerifyDomainOwnershipSamples {
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .verifyDomainOwnershipWithResponse("testrg123", "SampleCertificateOrderName", Context.NONE);
+            .verifyDomainOwnershipWithResponse(
+                "testrg123", "SampleCertificateOrderName", com.azure.core.util.Context.NONE);
     }
 }

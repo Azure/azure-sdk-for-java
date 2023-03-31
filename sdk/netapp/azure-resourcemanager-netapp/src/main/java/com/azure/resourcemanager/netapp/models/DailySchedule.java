@@ -34,6 +34,10 @@ public final class DailySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
+    /** Creates an instance of DailySchedule class. */
+    public DailySchedule() {
+    }
+
     /**
      * Get the snapshotsToKeep property: Daily snapshot count to keep.
      *

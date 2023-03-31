@@ -51,15 +51,6 @@ public final class SpacecraftsImpl implements Spacecrafts {
         return Utils.mapPage(inner, inner1 -> new SpacecraftImpl(inner1, this.manager()));
     }
 
-    public Spacecraft getByResourceGroup(String resourceGroupName, String spacecraftName) {
-        SpacecraftInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, spacecraftName);
-        if (inner != null) {
-            return new SpacecraftImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Spacecraft> getByResourceGroupWithResponse(
         String resourceGroupName, String spacecraftName, Context context) {
         Response<SpacecraftInner> inner =
@@ -70,6 +61,15 @@ public final class SpacecraftsImpl implements Spacecrafts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SpacecraftImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Spacecraft getByResourceGroup(String resourceGroupName, String spacecraftName) {
+        SpacecraftInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, spacecraftName);
+        if (inner != null) {
+            return new SpacecraftImpl(inner, this.manager());
         } else {
             return null;
         }

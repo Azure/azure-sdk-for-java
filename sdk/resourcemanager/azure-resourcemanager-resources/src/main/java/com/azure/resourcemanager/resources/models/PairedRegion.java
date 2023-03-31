@@ -29,6 +29,10 @@ public final class PairedRegion {
     @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
+    /** Creates an instance of PairedRegion class. */
+    public PairedRegion() {
+    }
+
     /**
      * Get the name property: The name of the paired region.
      *

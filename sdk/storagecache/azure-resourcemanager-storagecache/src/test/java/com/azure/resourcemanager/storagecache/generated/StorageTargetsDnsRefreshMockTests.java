@@ -56,6 +56,8 @@ public final class StorageTargetsDnsRefreshMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.storageTargets().dnsRefresh("kcdyhbpk", "pwdreqnovvqf", "vljxywsu", com.azure.core.util.Context.NONE);
+        manager
+            .storageTargets()
+            .dnsRefresh("uwjuetaeburuvdmo", "s", "zlxwabmqoefkifr", com.azure.core.util.Context.NONE);
     }
 }

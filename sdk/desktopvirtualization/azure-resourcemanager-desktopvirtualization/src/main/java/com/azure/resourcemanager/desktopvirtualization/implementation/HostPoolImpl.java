@@ -10,14 +10,14 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolInner;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.RegistrationInfoInner;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdatePatchProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfo;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfoPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
@@ -172,16 +172,12 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
         return this.innerModel().startVMOnConnect();
     }
 
-    public MigrationRequestProperties migrationRequest() {
-        return this.innerModel().migrationRequest();
-    }
-
     public Boolean cloudPcResource() {
         return this.innerModel().cloudPcResource();
     }
 
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerModel().publicNetworkAccess();
+    public AgentUpdateProperties agentUpdate() {
+        return this.innerModel().agentUpdate();
     }
 
     public Region region() {
@@ -296,14 +292,14 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
         return this;
     }
 
-    public RegistrationInfo retrieveRegistrationToken() {
-        return serviceManager.hostPools().retrieveRegistrationToken(resourceGroupName, hostPoolName);
-    }
-
     public Response<RegistrationInfo> retrieveRegistrationTokenWithResponse(Context context) {
         return serviceManager
             .hostPools()
             .retrieveRegistrationTokenWithResponse(resourceGroupName, hostPoolName, context);
+    }
+
+    public RegistrationInfo retrieveRegistrationToken() {
+        return serviceManager.hostPools().retrieveRegistrationToken(resourceGroupName, hostPoolName);
     }
 
     public HostPoolImpl withRegion(Region location) {
@@ -511,23 +507,18 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
         }
     }
 
-    public HostPoolImpl withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        this.innerModel().withMigrationRequest(migrationRequest);
+    public HostPoolImpl withAgentUpdate(AgentUpdateProperties agentUpdate) {
+        this.innerModel().withAgentUpdate(agentUpdate);
         return this;
-    }
-
-    public HostPoolImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        if (isInCreateMode()) {
-            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
-            return this;
-        } else {
-            this.updateHostPool.withPublicNetworkAccess(publicNetworkAccess);
-            return this;
-        }
     }
 
     public HostPoolImpl withRegistrationInfo(RegistrationInfoPatch registrationInfo) {
         this.updateHostPool.withRegistrationInfo(registrationInfo);
+        return this;
+    }
+
+    public HostPoolImpl withAgentUpdate(AgentUpdatePatchProperties agentUpdate) {
+        this.updateHostPool.withAgentUpdate(agentUpdate);
         return this;
     }
 

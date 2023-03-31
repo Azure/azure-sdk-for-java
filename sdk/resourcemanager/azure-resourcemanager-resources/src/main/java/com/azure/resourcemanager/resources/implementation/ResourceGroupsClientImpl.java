@@ -32,7 +32,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
@@ -70,7 +69,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
-    private interface ResourceGroupsService {
+    public interface ResourceGroupsService {
         @Headers({"Content-Type: application/json"})
         @Head("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({204, 404})
@@ -271,25 +270,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Checks whether a resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistence(String resourceGroupName) {
-        Boolean value = checkExistenceAsync(resourceGroupName).block();
-        if (value != null) {
-            return value;
-        } else {
-            throw LOGGER.logExceptionAsError(new NullPointerException());
-        }
-    }
-
-    /**
-     * Checks whether a resource group exists.
-     *
-     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -299,6 +279,20 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceWithResponse(String resourceGroupName, Context context) {
         return checkExistenceWithResponseAsync(resourceGroupName, context).block();
+    }
+
+    /**
+     * Checks whether a resource group exists.
+     *
+     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean checkExistence(String resourceGroupName) {
+        return checkExistenceWithResponse(resourceGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -428,23 +422,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
      * @param parameters Parameters supplied to the create or update a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a resource group.
-     *
-     * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
-     *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
-     *     characters.
-     * @param parameters Parameters supplied to the create or update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,8 +435,27 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Creates or updates a resource group.
+     *
+     * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
+     *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
+     *     characters.
+     * @param parameters Parameters supplied to the create or update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource group information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -505,8 +501,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -550,8 +548,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -571,8 +571,32 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName) {
+        final String forceDeletionTypes = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, forceDeletionTypes);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -594,25 +618,28 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String forceDeletionTypes) {
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
+        final String forceDeletionTypes = null;
+        return this.beginDeleteAsync(resourceGroupName, forceDeletionTypes).getSyncPoller();
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -626,12 +653,14 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String forceDeletionTypes, Context context) {
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, forceDeletionTypes, context).getSyncPoller();
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -649,8 +678,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,8 +698,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -687,24 +720,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
      *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String forceDeletionTypes) {
-        deleteAsync(resourceGroupName, forceDeletionTypes).block();
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -718,8 +737,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
+     * Deletes a resource group.
+     *
+     * <p>When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
+     * of its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
      * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
@@ -834,20 +855,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Gets a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupInner get(String resourceGroupName) {
-        return getAsync(resourceGroupName).block();
-    }
-
-    /**
-     * Gets a resource group.
-     *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -860,8 +867,24 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is
-     * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+     * Gets a resource group.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceGroupInner get(String resourceGroupName) {
+        return getWithResponse(resourceGroupName, Context.NONE).getValue();
+    }
+
+    /**
+     * Updates a resource group.
+     *
+     * <p>Resource groups can be updated through a simple PATCH operation to a group address. The format of the request
+     * is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
      * @param parameters Parameters supplied to update a resource group.
@@ -911,8 +934,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is
-     * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+     * Updates a resource group.
+     *
+     * <p>Resource groups can be updated through a simple PATCH operation to a group address. The format of the request
+     * is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
      * @param parameters Parameters supplied to update a resource group.
@@ -960,8 +985,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is
-     * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+     * Updates a resource group.
+     *
+     * <p>Resource groups can be updated through a simple PATCH operation to a group address. The format of the request
+     * is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
      * @param parameters Parameters supplied to update a resource group.
@@ -976,24 +1003,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     }
 
     /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is
-     * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+     * Updates a resource group.
      *
-     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Parameters supplied to update a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupInner update(String resourceGroupName, ResourceGroupPatchable parameters) {
-        return updateAsync(resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is
-     * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+     * <p>Resource groups can be updated through a simple PATCH operation to a group address. The format of the request
+     * is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
      * @param parameters Parameters supplied to update a resource group.
@@ -1007,6 +1020,24 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     public Response<ResourceGroupInner> updateWithResponse(
         String resourceGroupName, ResourceGroupPatchable parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates a resource group.
+     *
+     * <p>Resource groups can be updated through a simple PATCH operation to a group address. The format of the request
+     * is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
+     *
+     * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
+     * @param parameters Parameters supplied to update a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource group information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceGroupInner update(String resourceGroupName, ResourceGroupPatchable parameters) {
+        return updateWithResponse(resourceGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1170,7 +1201,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
         String resourceGroupName, ExportTemplateRequest parameters) {
-        return beginExportTemplateAsync(resourceGroupName, parameters).getSyncPoller();
+        return this.beginExportTemplateAsync(resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
@@ -1187,7 +1218,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
         String resourceGroupName, ExportTemplateRequest parameters, Context context) {
-        return beginExportTemplateAsync(resourceGroupName, parameters, context).getSyncPoller();
+        return this.beginExportTemplateAsync(resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1441,7 +1472,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1476,7 +1508,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1508,6 +1541,4 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         res.getValue().nextLink(),
                         null));
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceGroupsClientImpl.class);
 }

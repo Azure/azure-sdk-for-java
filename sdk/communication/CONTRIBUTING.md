@@ -36,7 +36,7 @@ You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variabl
 
 RECORD mode is similar to LIVE mode because it also hits an actual resource. In addition to hitting the resource, RECORD mode will also record the successful calls to the service in json format. As mentioned, the recordings are stored in the package root folder under `target/test-classes/session-records`.
 
-These newly generated files will have to be copied to the previosly mentioned `resources/session-records` after completion to make sure the PLAYBACK tests run with an updated version of the calls we made. Make sure to change the name of the recording files to match the names of the ones that are already in the `resources/session-records` folder. 
+These newly generated files will have to be copied to the previously mentioned `resources/session-records` after completion to make sure the PLAYBACK tests run with an updated version of the calls we made. Make sure to change the name of the recording files to match the names of the ones that are already in the `resources/session-records` folder. 
 
 If you would like to generate new recordings for a single test, setting `AZURE_TEST_MODE` to `RECORD`, reopen Visual Studio, and run the test in Visual Studio normally.
 ### Managed Identity Tests
@@ -52,6 +52,10 @@ Another way to authenticate is to set up 3 environment variables called `AZURE_C
 If you are testing against a personal resource, you can check the [Managed Identity Quickstart Guide for ACS](https://docs.microsoft.com/azure/communication-services/quickstarts/managed-identity-from-cli) for an easy ramp-up process.
 
 For a more in-depth look on how to authenticate using managed identity, refer to the [Azure Identity client library for Java](https://docs.microsoft.com/java/api/overview/azure/identity-readme) documentation. This document also has more ways for you to authenticate using the DefaultAzureCredential object besides the ones we discussed in this contributing file.
+
+### Running the New-TestResources and Remove-TestResources Scripts
+
+You may want to run the `New-TestResources.ps1` or `Remove-TestResources.ps1` scripts to test resource deployments in the SDK Live Test pipelines locally. You will need to add the additional `-TestResourcesDirectory` parameter when running these scripts. If you are using the shared `test-resources.json` you can point to `communication/test-resources/`. If you are using a custom `test-resources.json`, you can point to `communication/<package-name>/test-resources.json`.
 
 ### Samples and building
 

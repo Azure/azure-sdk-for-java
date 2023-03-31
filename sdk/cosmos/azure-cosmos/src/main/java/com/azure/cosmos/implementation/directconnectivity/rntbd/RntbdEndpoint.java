@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -31,14 +30,9 @@ public interface RntbdEndpoint extends AutoCloseable {
     int channelsAcquiredMetric();
 
     /**
-     * @return total number of acquired channels.
+     * @return durable monotonic counters for total acquired/closed channels.
      */
-    int totalChannelsAcquiredMetric();
-
-    /**
-     * @return total number of closed channels.
-     */
-    int totalChannelsClosedMetric();
+    RntbdDurableEndpointMetrics durableEndpointMetrics();
 
     /**
      * @return approximate number of available channels.
@@ -98,7 +92,7 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     RntbdRequestRecord request(RntbdRequestArgs requestArgs);
 
-    OpenConnectionRntbdRequestRecord openConnection(Uri addressUri);
+    OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs requestArgs);
 
     // endregion
 

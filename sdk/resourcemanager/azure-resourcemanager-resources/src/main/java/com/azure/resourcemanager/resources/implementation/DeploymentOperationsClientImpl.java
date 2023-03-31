@@ -56,7 +56,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
-    private interface DeploymentOperationsService {
+    public interface DeploymentOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
@@ -109,8 +109,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/operations/{operationId}")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationInner>> getAtManagementGroupScope(
@@ -124,8 +123,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/operations")
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScope(
@@ -139,8 +137,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationInner>> getAtSubscriptionScope(
@@ -167,8 +164,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationInner>> get(
@@ -183,8 +179,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}"
-                + "/operations")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationsListResult>> listByResourceGroup(
@@ -359,22 +354,6 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner getAtScope(String scope, String deploymentName, String operationId) {
-        return getAtScopeAsync(scope, deploymentName, operationId).block();
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param scope The resource scope.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -385,6 +364,22 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     public Response<DeploymentOperationInner> getAtScopeWithResponse(
         String scope, String deploymentName, String operationId, Context context) {
         return getAtScopeWithResponseAsync(scope, deploymentName, operationId, context).block();
+    }
+
+    /**
+     * Gets a deployments operation.
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentOperationInner getAtScope(String scope, String deploymentName, String operationId) {
+        return getAtScopeWithResponse(scope, deploymentName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -667,21 +662,6 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner getAtTenantScope(String deploymentName, String operationId) {
-        return getAtTenantScopeAsync(deploymentName, operationId).block();
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -692,6 +672,21 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     public Response<DeploymentOperationInner> getAtTenantScopeWithResponse(
         String deploymentName, String operationId, Context context) {
         return getAtTenantScopeWithResponseAsync(deploymentName, operationId, context).block();
+    }
+
+    /**
+     * Gets a deployments operation.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentOperationInner getAtTenantScope(String deploymentName, String operationId) {
+        return getAtTenantScopeWithResponse(deploymentName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -978,23 +973,6 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner getAtManagementGroupScope(
-        String groupId, String deploymentName, String operationId) {
-        return getAtManagementGroupScopeAsync(groupId, deploymentName, operationId).block();
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1005,6 +983,23 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     public Response<DeploymentOperationInner> getAtManagementGroupScopeWithResponse(
         String groupId, String deploymentName, String operationId, Context context) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId, context).block();
+    }
+
+    /**
+     * Gets a deployments operation.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentOperationInner getAtManagementGroupScope(
+        String groupId, String deploymentName, String operationId) {
+        return getAtManagementGroupScopeWithResponse(groupId, deploymentName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -1307,21 +1302,6 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner getAtSubscriptionScope(String deploymentName, String operationId) {
-        return getAtSubscriptionScopeAsync(deploymentName, operationId).block();
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1332,6 +1312,21 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     public Response<DeploymentOperationInner> getAtSubscriptionScopeWithResponse(
         String deploymentName, String operationId, Context context) {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName, operationId, context).block();
+    }
+
+    /**
+     * Gets a deployments operation.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentOperationInner getAtSubscriptionScope(String deploymentName, String operationId) {
+        return getAtSubscriptionScopeWithResponse(deploymentName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -1653,22 +1648,6 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployments operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
-        return getAsync(resourceGroupName, deploymentName, operationId).block();
-    }
-
-    /**
-     * Gets a deployments operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of the deployment.
-     * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1679,6 +1658,22 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     public Response<DeploymentOperationInner> getWithResponse(
         String resourceGroupName, String deploymentName, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, operationId, context).block();
+    }
+
+    /**
+     * Gets a deployments operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param operationId The ID of the operation to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
+        return getWithResponse(resourceGroupName, deploymentName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -1895,7 +1890,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1930,7 +1926,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1967,7 +1964,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2002,7 +2000,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2039,7 +2038,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2076,7 +2076,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2113,7 +2114,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2149,7 +2151,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2186,7 +2189,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2221,7 +2225,8 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

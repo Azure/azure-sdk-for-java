@@ -27,6 +27,10 @@ public final class ScalingPlanPatch {
     @JsonProperty(value = "properties")
     private ScalingPlanPatchProperties innerProperties;
 
+    /** Creates an instance of ScalingPlanPatch class. */
+    public ScalingPlanPatch() {
+    }
+
     /**
      * Get the tags property: tags to be updated.
      *

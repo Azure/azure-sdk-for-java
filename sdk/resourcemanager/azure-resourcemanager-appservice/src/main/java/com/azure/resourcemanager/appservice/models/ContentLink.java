@@ -40,6 +40,10 @@ public final class ContentLink {
     @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private Object metadata;
 
+    /** Creates an instance of ContentLink class. */
+    public ContentLink() {
+    }
+
     /**
      * Get the uri property: The content link URI.
      *
