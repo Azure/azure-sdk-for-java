@@ -3,12 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -17,6 +18,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * high RU consumption or high payload sizes.
  */
 public final class CosmosDiagnosticsThresholds {
+    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnosticsThresholds.class);
+
      /**
      * The default request charge (RU) threshold to determine whether to include request diagnostics or not
      */
@@ -43,9 +46,31 @@ public final class CosmosDiagnosticsThresholds {
     private Duration nonPointOperationLatencyThreshold;
     private float requestChargeThreshold;
     private int payloadSizeInBytesThreshold;
-    private final ConcurrentLinkedQueue<StatusCodeHandling> statusCodeHandling = new ConcurrentLinkedQueue<>(
-        getDefaultStatusCodeHandling()
-    );
+
+    private BiFunction<Integer, Integer, Boolean> isFailureHandler = (statusCode, subStatusCode) -> {
+        checkNotNull(statusCode, "Argument 'statusCode' must not be null." );
+        checkNotNull(subStatusCode, "Argument 'subStatusCode' must not be null." );
+        if (statusCode >= 500) {
+            return true;
+        }
+
+        if (subStatusCode == 0 &&
+            (statusCode == HttpConstants.StatusCodes.NOTFOUND ||
+                statusCode == HttpConstants.StatusCodes.CONFLICT ||
+                statusCode == HttpConstants.StatusCodes.PRECONDITION_FAILED)) {
+
+            return false;
+        }
+
+        if (statusCode == 429 &&
+            (subStatusCode == HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE ||
+                subStatusCode == HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE)) {
+            return false;
+        }
+
+        return statusCode >= 400;
+    };
+
 
     /**
      * Creates an instance of the CosmosDiagnosticsThresholds class with default values
@@ -67,22 +92,38 @@ public final class CosmosDiagnosticsThresholds {
      * {@link CosmosDiagnosticsThresholds#DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD}.
      * @param pointOperationLatencyThreshold the latency threshold for point operations (ReadItem, CreateItem,
      * UpsertItem, ReplaceItem, PatchItem or DeleteItem)
-     * @param nonPointOperationLatencyThreshold the latency threshold for all other operations. The latency threshold
-     * for these will usually be significantly higher because responses to bulk, change feed or query can contain large
-     * payloads.
      * @return current CosmosDiagnosticsThresholds instance
      */
-    public CosmosDiagnosticsThresholds configureLatencyThresholds(
-        Duration pointOperationLatencyThreshold,
-        Duration nonPointOperationLatencyThreshold) {
+    public CosmosDiagnosticsThresholds setPointOperationLatencyThreshold(
+        Duration pointOperationLatencyThreshold) {
 
         checkNotNull(
             pointOperationLatencyThreshold,
             "Argument 'pointOperationLatencyThreshold' must not be null.");
+
+        this.pointOperationLatencyThreshold = pointOperationLatencyThreshold;
+
+        return this;
+    }
+
+    /**
+     * Can be used to define custom latency thresholds. When the latency threshold is exceeded more detailed
+     * diagnostics will be emitted (including the request diagnostics). There is some overhead of emitting the
+     * more detailed diagnostics - so recommendation is to choose latency thresholds that reduce the noise level
+     * and only emit detailed diagnostics when there is really business impact seen.
+     * The default value for the point operation latency threshold is
+     * {@link CosmosDiagnosticsThresholds#DEFAULT_POINT_OPERATION_LATENCY_THRESHOLD}, for non-point operations
+     * {@link CosmosDiagnosticsThresholds#DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD}.
+     * @param nonPointOperationLatencyThreshold the latency threshold for all operations except (ReadItem, CreateItem,
+     * UpsertItem, ReplaceItem, PatchItem or DeleteItem)
+     * @return current CosmosDiagnosticsThresholds instance
+     */
+    public CosmosDiagnosticsThresholds setNonPointOperationLatencyThreshold(
+        Duration nonPointOperationLatencyThreshold) {
+
         checkNotNull(nonPointOperationLatencyThreshold,
             "Argument 'nonPointOperationLatencyThreshold' must not be null.");
 
-        this.pointOperationLatencyThreshold = pointOperationLatencyThreshold;
         this.nonPointOperationLatencyThreshold = nonPointOperationLatencyThreshold;
 
         return this;
@@ -125,51 +166,19 @@ public final class CosmosDiagnosticsThresholds {
     /**
      * Can be used to customize the logic determining whether the outcome of an operation (based on statusCode +
      * subStatusCode) is considered a failure (and diagnostics will be emitted) or not.
-     * By default all status codes >= 400 except for (404/0 - item not found,
+     * By default, all status codes >= 400 except for (404/0 - item not found,
      * 409/0 - conflict, document with same id+pk already exists, 412/0 - (etag) pre-condition failure and
-     * 429/3200 - throttling due to provisioned RU exceeded) are considered failures. Those exception can happen
-     * very frequently are are usually expected under certain circumstances by applications - so the noise-level for
+     * 429/3200 - throttling due to provisioned RU exceeded) are considered failures. Those exceptions can happen
+     * very frequently and are usually expected under certain circumstances by applications - so, the noise-level for
      * emitting diagnostics would be too high.
-     * Any custom rule applied via this method
-     * or {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, Integer, boolean)} will override previous
-     * rules - so, the last applicable rule will override any previous one.
-     * @param minStatusCode min status code for a status code range
-     * @param maxStatusCode max status code for a status code range
-     * @param isFailureCondition a flag indicating whether this status code range should be considered as a failure
+     * The first parameter will be the status code - the second parameter the subStatusCode. The returned boolean of the
+     * function would indicate whether the operation should be considered as failure form a diagnostics perspective.
      * @return current CosmosDiagnosticsThresholds instance
      */
-    public CosmosDiagnosticsThresholds configureStatusCodeHandling(
-        int minStatusCode, int maxStatusCode, boolean isFailureCondition) {
-
-        this.statusCodeHandling.add(
-            new StatusCodeHandling(minStatusCode, maxStatusCode, null, isFailureCondition));
-
-        return this;
-    }
-
-    /**
-     * Can be used to customize the logic determining whether the outcome of an operation (based on statusCode +
-     * subStatusCode) is considered a failure (and diagnostics will be emitted) or not.
-     * By default all status codes >= 400 except for (404/0 - item not found,
-     * 409/0 - conflict, document with same id+pk already exists, 412/0 - (etag) pre-condition failure and
-     * 429/3200 - throttling due to provisioned RU exceeded) are considered failures. Those exception can happen
-     * very frequently are are usually expected under certain circumstances by applications - so the noise-level for
-     * emitting diagnostics would be too high.
-     * Any custom rule applied via {@link CosmosDiagnosticsThresholds#configureStatusCodeHandling(int, int, boolean)}
-     * or this method will override previous
-     * rules - so, the last applicable rule will override any previous one.
-     * @param statusCode the status code
-     * @param subStatusCode the sub status code - null means all sub status codes, a specific value means this rule
-     * is only applicable when status code and sub status Code match.
-     * @param isFailureCondition a flag indicating whether this status code range should be considered as a failure
-     * @return current CosmosDiagnosticsThresholds instance
-     */
-    public CosmosDiagnosticsThresholds configureStatusCodeHandling(
-        int statusCode, Integer subStatusCode, boolean isFailureCondition) {
-
-        this.statusCodeHandling.add(
-            new StatusCodeHandling(statusCode, statusCode, subStatusCode, isFailureCondition));
-
+    public CosmosDiagnosticsThresholds setIsFailureHandler(BiFunction<Integer, Integer, Boolean> isFailureHandler) {
+        checkNotNull(nonPointOperationLatencyThreshold,
+            "Argument 'isFailureHandler' must not be null.");
+        this.isFailureHandler = isFailureHandler;
         return this;
     }
 
@@ -190,42 +199,11 @@ public final class CosmosDiagnosticsThresholds {
     }
 
     boolean isFailureCondition(int statusCode, int subStatusCode) {
-        boolean isFailure = false;
-        for (StatusCodeHandling s: this.statusCodeHandling) {
-            if (statusCode >= s.minStatusCode &&
-                statusCode <= s.maxStatusCode &&
-                (s.subStatusCode == null || s.subStatusCode == subStatusCode)) {
-
-                isFailure = s.isFailureCondition;
-            }
-        }
-
-        return isFailure;
-    }
-
-    private static List<StatusCodeHandling> getDefaultStatusCodeHandling() {
-        ArrayList<StatusCodeHandling> result = new ArrayList<>();
-        result.add(new StatusCodeHandling(500, Integer.MAX_VALUE, null, true));
-        result.add(new StatusCodeHandling(400, 499, null,  true));
-        result.add(new StatusCodeHandling(404, 404, 0,  false));
-        result.add(new StatusCodeHandling(409, 409, 0,  false));
-        result.add(new StatusCodeHandling(412, 412, 0,  false));
-        result.add(new StatusCodeHandling(429, 429, 3200,  false));
-
-        return result;
-    }
-
-    private final static class StatusCodeHandling {
-        private final int minStatusCode;
-        private final int maxStatusCode;
-        private final Integer subStatusCode;
-        private final boolean isFailureCondition;
-
-        public StatusCodeHandling(int minStatusCode, int maxStatusCode, Integer subStatusCode, boolean isFailureCondition) {
-            this.minStatusCode = minStatusCode;
-            this.maxStatusCode = maxStatusCode;
-            this.isFailureCondition = isFailureCondition;
-            this.subStatusCode = subStatusCode;
+        try {
+            return this.isFailureHandler.apply(statusCode, subStatusCode);
+        } catch (Exception error) {
+            LOGGER.error("Execution of custom isFailureHandler failed - treating operation as failure.", error);
+            return false;
         }
     }
 

@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -372,10 +371,7 @@ public class CosmosItemRequestOptions {
      * @return the CosmosItemRequestOptions
      */
     public CosmosItemRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholds.configureLatencyThresholds(
-            thresholdForDiagnosticsOnTracer,
-            thresholdsAccessor.getNonPointReadLatencyThreshold(this.thresholds)
-        );
+        this.thresholds.setPointOperationLatencyThreshold(thresholdForDiagnosticsOnTracer);
 
         return this;
     }
@@ -401,7 +397,7 @@ public class CosmosItemRequestOptions {
      * @param operationSpecificThresholds the diagnostic threshold override for this operation
      * @return the CosmosItemRequestOptions.
      */
-    public CosmosItemRequestOptions configureDiagnosticsThresholds(
+    public CosmosItemRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
 
         this.thresholds = operationSpecificThresholds;

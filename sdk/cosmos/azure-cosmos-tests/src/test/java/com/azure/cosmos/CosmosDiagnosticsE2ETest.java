@@ -101,7 +101,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             .getClientBuilder()
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
-                    .diagnosticLogs()
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
             );
         CosmosContainer container = this.getContainer(builder);
         executeTestCase(container);
@@ -119,10 +119,11 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                 new CosmosClientTelemetryConfig()
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
-                            .configureLatencyThresholds(Duration.ofMillis(100), Duration.ofMillis(2000))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(100))
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(2000))
                             .setRequestChargeThreshold(100)
                     )
-                    .diagnosticLogs()
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
             );
         CosmosContainer container = this.getContainer(builder);
         executeTestCase(container);
@@ -135,7 +136,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void onlyCustomLoggerWithCustomConfig() {
 
-        CapturingLogger capturingLogger = new CapturingLogger(new CosmosDiagnosticsLoggerConfig());
+        CapturingLogger capturingLogger = new CapturingLogger();
 
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -143,7 +144,8 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                 new CosmosClientTelemetryConfig()
                     .diagnosticsThresholds(
                         new CosmosDiagnosticsThresholds()
-                            .configureLatencyThresholds(Duration.ofMillis(100), Duration.ofMillis(2000))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(100))
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(2000))
                             .setRequestChargeThreshold(100)
                     )
                     .diagnosticsHandler(capturingLogger)
@@ -163,7 +165,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             .getClientBuilder()
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
-                    .diagnosticLogs()
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
                     .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(meterRegistry))
             );
         CosmosContainer container = this.getContainer(builder);
@@ -179,12 +181,12 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerWithLegacyOpenTelemetryTraces() {
+        System.setProperty("COSMOS.USE_LEGACY_TRACING", "true");
         CosmosClientBuilder builder = this
             .getClientBuilder()
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
-                    .diagnosticLogs()
-                    .useLegacyOpenTelemetryTracing()
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
             );
         CosmosContainer container = this.getContainer(builder);
         executeTestCase(container);
@@ -192,6 +194,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // no assertions here - invocations for diagnostics handler are validated above
         // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
         // with custom appender
+        System.setProperty("COSMOS.USE_LEGACY_TRACING", "false");
     }
 
     private void executeTestCase(CosmosContainer container) {
@@ -238,7 +241,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         private final ArrayList<CosmosDiagnosticsContext> diagnosticsContexts = new ArrayList<>();
 
         @Override
-        public void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
+        public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
             diagnosticsContexts.add(diagnosticsContext);
         }
 
@@ -249,8 +252,8 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     private static class CapturingLogger extends CosmosDiagnosticsLogger {
         private final List<String> loggedMessages = new ArrayList<>();
-        public CapturingLogger(CosmosDiagnosticsLoggerConfig config) {
-            super(config);
+        public CapturingLogger() {
+            super();
         }
 
         @Override

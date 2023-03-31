@@ -65,7 +65,7 @@ public final class CosmosBatchRequestOptions {
      * @param operationSpecificThresholds the diagnostic threshold override for this operation
      * @return the TransactionalBatchRequestOptions.
      */
-    public CosmosBatchRequestOptions configureDiagnosticsThresholds(
+    public CosmosBatchRequestOptions setDiagnosticsThresholds(
         CosmosDiagnosticsThresholds operationSpecificThresholds) {
 
         this.thresholds = operationSpecificThresholds;

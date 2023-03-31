@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -25,7 +24,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
     }
 
     @Override
-    public void handleDiagnostics(Context traceContext, CosmosDiagnosticsContext diagnosticsContext) {
+    public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
         checkNotNull(traceContext, "Argument 'traceContext' must not be null.");
 
         ClientTelemetryMetrics.recordOperation(

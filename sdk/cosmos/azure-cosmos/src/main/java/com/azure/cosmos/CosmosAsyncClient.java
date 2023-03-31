@@ -216,15 +216,6 @@ public final class CosmosAsyncClient implements Closeable {
             );
         }
 
-        if (telemetryConfigAccessor.isDiagnosticsLogsEnabled(effectiveTelemetryConfig)) {
-            telemetryConfigAccessor.addDiagnosticsHandler(
-                effectiveTelemetryConfig,
-                new CosmosDiagnosticsLogger(
-                    telemetryConfigAccessor.getDiagnosticsLoggerConfig(effectiveTelemetryConfig)
-                )
-            );
-        }
-
         this.diagnosticsProvider = new DiagnosticsProvider(
             effectiveTelemetryConfig,
             effectiveClientCorrelationId,

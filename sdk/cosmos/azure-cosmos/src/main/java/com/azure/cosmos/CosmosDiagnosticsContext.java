@@ -201,7 +201,7 @@ public final class CosmosDiagnosticsContext {
      * The span name as a logical identifier for an operation
      * @return the span name as a logical identifier for an operation
      */
-    public String getSpanName() {
+    String getSpanName() {
         return this.spanName;
     }
 
@@ -509,8 +509,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    @Override
-    public String toString() {
+    public String toJson() {
         String snapshot = this.cachedRequestDiagnostics;
         if (snapshot != null) {
             return snapshot;
@@ -650,6 +649,12 @@ public final class CosmosDiagnosticsContext {
                     public Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getDistinctCombinedClientSideRequestStatistics();
+                    }
+
+                    @Override
+                    public String getSpanName(CosmosDiagnosticsContext ctx) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        return ctx.getSpanName();
                     }
                 });
     }

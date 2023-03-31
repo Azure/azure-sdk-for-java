@@ -775,6 +775,8 @@ public class ImplementationBridgeHelpers {
             String getEndpoint(CosmosDiagnosticsContext ctx);
 
             Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics(CosmosDiagnosticsContext ctx);
+
+            String getSpanName(CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -1322,12 +1324,13 @@ public class ImplementationBridgeHelpers {
             void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry);
             ClientTelemetry getClientTelemetry(CosmosClientTelemetryConfig config);
             void addDiagnosticsHandler(CosmosClientTelemetryConfig config, CosmosDiagnosticsHandler handler);
-            boolean isDiagnosticsLogsEnabled(CosmosClientTelemetryConfig config);
-            CosmosDiagnosticsLoggerConfig getDiagnosticsLoggerConfig(CosmosClientTelemetryConfig config);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config);
             boolean isLegacyTracingEnabled(CosmosClientTelemetryConfig config);
             boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config);
             Tracer getOrCreateTracer(CosmosClientTelemetryConfig config);
+            void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
+
+            void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
         }
     }
 
