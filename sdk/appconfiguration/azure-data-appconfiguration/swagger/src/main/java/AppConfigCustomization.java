@@ -36,9 +36,20 @@ public class AppConfigCustomization extends Customization {
         // Transfer Long to Duration internally
         classCustomization.getMethod("getRetentionPeriod")
             .setReturnType("Duration", "")
-            .replaceBody(
-                "return Duration.ofMillis(this.retentionPeriod);",
+            .replaceBody(joinWithNewline(
+                "if (this.retentionPeriod == null) {",
+                "    return null;",
+                "}",
+                "return Duration.ofSeconds(this.retentionPeriod);"
+                ),
                 Arrays.asList("java.time.Duration"));
+
+        classCustomization.getMethod("setRetentionPeriod")
+            .replaceParameters("Duration retentionPeriod")
+            .replaceBody(joinWithNewline(
+                "this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();",
+                "return this;"
+            ));
         // Remove JsonCreator
         classCustomization.getConstructor("ConfigurationSettingSnapshot")
             .removeAnnotation("JsonCreator");
