@@ -257,7 +257,7 @@ public class ClientSideRequestStatistics {
         totalContactedReplicas.addAll(otherContactedReplicas);
         totalContactedReplicas.addAll(this.contactedReplicas);
 
-        this.setContactedReplicas(new ArrayList(totalContactedReplicas));
+        this.setContactedReplicas(new ArrayList<>(totalContactedReplicas));
     }
 
     private void mergeSupplementalResponses(List<StoreResponseStatistics> other) {

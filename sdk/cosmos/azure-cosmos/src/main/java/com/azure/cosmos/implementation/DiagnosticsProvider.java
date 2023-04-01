@@ -1110,7 +1110,9 @@ public final class DiagnosticsProvider {
 
                 tracer.setAttribute("exception.escaped", Boolean.toString(cosmosCtx.isFailure()), context);
                 tracer.setAttribute("exception.type", exceptionType, context);
-                tracer.setAttribute("exception.message", errorMessage, context);
+                if (errorMessage != null) {
+                    tracer.setAttribute("exception.message", errorMessage, context);
+                }
                 tracer.setAttribute("exception.stacktrace", prettifyCallstack(finalError), context);
             }
 

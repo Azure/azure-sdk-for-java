@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -125,6 +126,8 @@ public class CosmosClientBuilder implements
     private boolean readRequestsFallbackEnabled = true;
 
     private Boolean nonIdempotentWriteRetriesEnabled = null;
+
+    private boolean useTrackingIds = false;
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
@@ -193,8 +196,8 @@ public class CosmosClientBuilder implements
 
     /**
      * Enables connections sharing across multiple Cosmos Clients. The default is false.
-     *
-     *
+     * <br/>
+     * <br/>
      * <pre>
      * {@code
      * CosmosAsyncClient client1 = new CosmosClientBuilder()
@@ -214,13 +217,13 @@ public class CosmosClientBuilder implements
      * // when configured this way client1 and client2 will share connections when possible.
      * }
      * </pre>
-     *
+     * <br/>
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
-     *
+     * <br/>
      * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout
      * config) of the first instantiated client will be used for all other client instances.
-     *
+     * <br/>
      * @param connectionSharingAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
@@ -231,10 +234,10 @@ public class CosmosClientBuilder implements
 
     /**
      * Indicates whether connection sharing is enabled. The default is false.
-     *
+     * <br/>
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
-     *
+     * <br/>
      * @return the connection sharing across multiple clients
      */
     boolean isConnectionSharingAcrossClientsEnabled() {
@@ -243,7 +246,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Gets the token resolver
-     *
+     * <br/>
      * @return the token resolver
      */
     CosmosAuthorizationTokenResolver getAuthorizationTokenResolver() {
@@ -397,9 +400,9 @@ public class CosmosClientBuilder implements
 
     /**
      * Gets the {@link ConsistencyLevel} to be used
-     *
+     * <br/>
      * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
-     *
+     * <br/>
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel() {
@@ -408,7 +411,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the {@link ConsistencyLevel} to be used
-     *
+     * <br/>
      * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
      *
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
@@ -465,11 +468,11 @@ public class CosmosClientBuilder implements
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <br/>
      * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it
      * on the client.
-     *
+     * <br/>
      * By-default, this is false.
      *
      * @return a boolean indicating whether payload will be included in the response or not
@@ -481,12 +484,12 @@ public class CosmosClientBuilder implements
     /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <br/>
      * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
+     * <br/>
      * This feature does not impact RU usage for read or write operations.
-     *
+     * <br/>
      * By-default, this is false.
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included in the response or not
@@ -520,7 +523,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the default DIRECT connection configuration to be used.
-     *
+     * <br/>
      * By default, the builder is initialized with directMode()
      *
      * @return current CosmosClientBuilder
@@ -532,7 +535,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the DIRECT connection configuration to be used.
-     *
+     * <br/>
      * By default, the builder is initialized with directMode()
      *
      * @param directConnectionConfig direct connection configuration
@@ -546,9 +549,9 @@ public class CosmosClientBuilder implements
     /**
      * Sets the DIRECT connection configuration to be used.
      * gatewayConnectionConfig - represents basic configuration to be used for gateway client.
-     *
+     * <br/>
      * Even in direct connection mode, some of the meta data operations go through gateway client,
-     *
+     * <br/>
      * Setting gateway connection config in this API doesn't affect the connection mode,
      * which will be Direct in this case.
      *
@@ -705,17 +708,33 @@ public class CosmosClientBuilder implements
      * a retry is "safe" for a patch operation really depends on the set of patch instructions. The documentation
      * for the patch operation has more details.
      *
-     * @param nonIdempotentWriteRetriesEnabled a flag indicating whether write operations should by default be retried
-     * when idempotency cannot eb guaranteed
+     * @param useTrackingIdProperty a flag indicating whether write operations can use the trackingId system
+     * property '/_trackingId' to allow identification of conflicts and pre-condition failures due to retries. If
+     * enabled, each document being created or replaced will have an additional '/_trackingId' property for which
+     * the value will be updated by the SDK. If it is not desired to add this new json property (for example due
+     * to the RU-increase based on the payload size or because it causes documents to exceed the 2 MB upper limit), the
+     * usage of this system property can be disabled by setting this parameter to false. This means there could be
+     * a higher level of 409/312 due to retries - and applications would need to handle them gracefully on their own.
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder enableNonIdempotentWriteRetries() {
+    public CosmosClientBuilder enableNonIdempotentWriteRetries(boolean useTrackingIdProperty) {
         this.nonIdempotentWriteRetriesEnabled = true;
+        this.useTrackingIds = useTrackingIdProperty;
         return this;
     }
 
-    Boolean getNonIdempotentWriteRetriesEnabled() {
-        return this.nonIdempotentWriteRetriesEnabled;
+    WriteRetryPolicy getNonIdempotentWriteRetryPolicy()
+    {
+        if (this.nonIdempotentWriteRetriesEnabled == null) {
+            return WriteRetryPolicy.DISABLED;
+        }
+        return new WriteRetryPolicy(this.nonIdempotentWriteRetriesEnabled, this.useTrackingIds);
+    }
+
+    void resetNonIdempotentWriteRetryPolicy()
+    {
+        this.nonIdempotentWriteRetriesEnabled = null;
+        this.useTrackingIds = false;
     }
 
     /**

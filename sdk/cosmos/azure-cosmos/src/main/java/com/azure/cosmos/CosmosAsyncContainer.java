@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
@@ -380,14 +381,14 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options, Context context) {
         checkNotNull(options, "Argument 'options' must not be null.");
 
-        boolean shouldRetryWithoutIdempotencyGuarantee = itemOptionsAccessor
+        WriteRetryPolicy nonIdempotentWriteRetryPolicy = itemOptionsAccessor
             .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
                 options,
-                this.database.getClient().getNonIdempotentWriteRetriesEnabled(),
+                this.database.getClient().getNonIdempotentWriteRetryPolicy(),
                 true);
 
         Mono<CosmosItemResponse<T>> responseMono;
-        if (shouldRetryWithoutIdempotencyGuarantee) {
+        if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             responseMono = createItemWithRetriesInternal(item, options);
         } else {
             responseMono = createItemInternal(item, options);

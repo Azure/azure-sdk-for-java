@@ -16,7 +16,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -345,9 +344,9 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
-            boolean calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+            WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
                 CosmosItemRequestOptions cosmosItemRequestOptions,
-                Boolean clientDefault,
+                WriteRetryPolicy clientDefault,
                 boolean operationDefault);
         }
     }
