@@ -116,7 +116,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControl(OperationType operationType) {
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -169,7 +169,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosAsyncContainer testContainer = client.getDatabase(database.getId()).getContainer(container.getId());
 
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -227,7 +227,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControlCanUpdateConfig(OperationType operationType) {
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -403,7 +403,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     @Test(groups = {"emulator"}, dataProvider = "allowRequestToContinueOnInitErrorProvider", timeOut = TIMEOUT)
     public void throughputControlContinueOnInitError(boolean continueOnInitError) {
         // Purposely not creating the throughput control container so to test allowRequestContinueOnInitError
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         GlobalThroughputControlConfig globalControlConfig =
                 this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
                         .setControlItemRenewInterval(Duration.ofSeconds(5))
@@ -443,7 +443,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     public void throughputGlobalControlMultipleClients() throws InterruptedException {
         List<CosmosAsyncClient> clients = new ArrayList<>();
         // and do not enable ttl on the container so to test how many items are created.
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -501,7 +501,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     public void enableSameGroupMultipleTimes() {
         // This test is to validate even though same groups have been enabled multiple times, no new client item will be created
 
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(

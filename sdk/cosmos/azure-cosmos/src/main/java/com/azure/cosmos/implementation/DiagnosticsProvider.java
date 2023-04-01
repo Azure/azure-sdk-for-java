@@ -683,7 +683,8 @@ public final class DiagnosticsProvider {
                     scope.close();
                 } catch (Exception e) {
                     // can't happen
-                    assert false : "Exception should never occur here.";
+                    LOGGER.error("Unexpected failure closing tracer scope.", e);
+                    throw new IllegalStateException("Unexpected failure closing tracer scope.", e);
                 }
             }
         } else {
