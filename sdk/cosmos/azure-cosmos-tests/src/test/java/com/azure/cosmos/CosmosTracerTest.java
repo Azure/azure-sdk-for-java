@@ -352,7 +352,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 
-        FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay")
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay" + UUID.randomUUID())
             .condition(condition)
             .result(result)
             .build();
