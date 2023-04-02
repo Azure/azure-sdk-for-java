@@ -387,6 +387,14 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
             fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 
     /**
+     * Creates a new instance of BlobErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobErrorCode() {}
+
+    /**
      * Creates or finds a BlobErrorCode from its string representation.
      *
      * @param name a name to look for.

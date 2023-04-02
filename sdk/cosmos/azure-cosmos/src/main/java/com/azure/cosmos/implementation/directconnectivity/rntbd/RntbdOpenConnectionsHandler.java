@@ -79,7 +79,6 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         RxDocumentServiceRequest openConnectionRequest =
             RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
         openConnectionRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
-        openConnectionRequest.requestContext.storePhysicalAddressUri = addressUri;
         openConnectionRequest.requestContext.resolvedCollectionRid = collectionRid;
         openConnectionRequest.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
 
