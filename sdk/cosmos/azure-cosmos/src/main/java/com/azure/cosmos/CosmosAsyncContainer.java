@@ -1836,8 +1836,22 @@ public class CosmosAsyncContainer {
      * @param groupConfig A {@link ThroughputControlGroupConfig}.
      */
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
-        LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
-        this.database.getClient().enableThroughputControlGroup(localControlGroup, null);
+        this.enableLocalThroughputControlGroup(groupConfig, null);
+    }
+
+    /***
+     * Only used internally.
+     *
+     * @param groupConfig A {@link ThroughputControlGroupConfig}.
+     * @param throughputQueryMono The throughput query mono.
+     */
+    void enableLocalThroughputControlGroup(
+        ThroughputControlGroupConfig groupConfig,
+        Mono<Integer> throughputQueryMono) {
+
+        LocalThroughputControlGroup localControlGroup =
+            ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
+        this.database.getClient().enableThroughputControlGroup(localControlGroup, throughputQueryMono);
     }
 
     /**
@@ -1921,6 +1935,15 @@ public class CosmosAsyncContainer {
                     CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                     Class<T> classType) {
                     return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
+                }
+
+                @Override
+                public void enableLocalThroughputControlGroup(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    ThroughputControlGroupConfig groupConfig,
+                    Mono<Integer> throughputQueryMono) {
+
+                    cosmosAsyncContainer.enableLocalThroughputControlGroup(groupConfig, throughputQueryMono);
                 }
 
                 @Override

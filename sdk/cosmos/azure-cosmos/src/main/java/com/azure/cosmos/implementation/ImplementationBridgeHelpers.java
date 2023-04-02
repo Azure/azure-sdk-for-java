@@ -711,6 +711,11 @@ public class ImplementationBridgeHelpers {
                 CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                 Class<T> classType);
 
+            void enableLocalThroughputControlGroup(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                ThroughputControlGroupConfig groupConfig,
+                Mono<Integer> throughputQueryMono);
+
             void enableGlobalThroughputControlGroup(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 ThroughputControlGroupConfig groupConfig,

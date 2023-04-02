@@ -114,6 +114,58 @@ public class ThroughputControlTests extends TestSuiteBase {
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void throughputLocalControlWithThroughputQuery() {
+        // Will need to use a new client here to make sure the throughput query mono will be passed down to throughputContainerController
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer testContainer = client.getDatabase(database.getId()).getContainer(container.getId());
+
+            // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + UUID.randomUUID())
+                    .targetThroughputThreshold(0.9)
+                    .build();
+
+            AtomicInteger throughputQueryMonoCalledCount = new AtomicInteger(0);
+            Mono<Integer> throughputQueryMono =
+                Mono.just(6).doOnSuccess(throughput -> throughputQueryMonoCalledCount.incrementAndGet());
+
+            ImplementationBridgeHelpers
+                .CosmosAsyncContainerHelper
+                .getCosmosAsyncContainerAccessor()
+                .enableLocalThroughputControlGroup(testContainer, groupConfig, throughputQueryMono);
+
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setContentResponseOnWriteEnabled(true);
+            requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+            CosmosItemResponse<TestItem> createItemResponse = testContainer.createItem(getDocumentDefinition(), requestOptions).block();
+            TestItem createdItem = createItemResponse.getItem();
+            this.validateRequestNotThrottled(
+                createItemResponse.getDiagnostics().toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            // second request to group-1. which will get throttled
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, OperationType.Read, createdItem, groupConfig.getGroupName());
+            this.validateRequestThrottled(
+                cosmosDiagnostics.toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            assertThat(throughputQueryMonoCalledCount.get()).isGreaterThanOrEqualTo(1);
+        } finally {
+            if (client != null){
+                client.close();
+            }
+        }
+    }
+
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControl(OperationType operationType) {
         String controlContainerId = "throughputControlContainer";
@@ -181,7 +233,7 @@ public class ThroughputControlTests extends TestSuiteBase {
             ThroughputControlGroupConfig groupConfig =
                 new ThroughputControlGroupConfigBuilder()
                     .groupName("group-" + UUID.randomUUID())
-                    .targetThroughput(6)
+                    .targetThroughputThreshold(0.9)
                     .build();
 
             GlobalThroughputControlConfig globalControlConfig = this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
@@ -213,7 +265,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 cosmosDiagnostics.toString(),
                 BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-            assertThat(throughputQueryMonoCalledCount.get()).isEqualTo(1);
+            assertThat(throughputQueryMonoCalledCount.get()).isGreaterThanOrEqualTo(1);
         } finally {
             controlContainer
                 .delete()
