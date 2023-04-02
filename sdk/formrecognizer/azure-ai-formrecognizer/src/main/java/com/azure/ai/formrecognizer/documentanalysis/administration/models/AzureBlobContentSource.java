@@ -12,7 +12,7 @@ public final class AzureBlobContentSource {
     /*
      * Azure Blob Storage container URL.
      */
-    private String containerUrl;
+    private final String containerUrl;
 
     /*
      * Blob name prefix.

@@ -12,12 +12,12 @@ public final class AzureBlobFileListSource {
     /*
      * Azure Blob Storage container URL.
      */
-    private String containerUrl;
+    private final String containerUrl;
 
     /*
      * Path to a JSONL file within the container specifying a subset of documents for training.
      */
-    private String fileList;
+    private final String fileList;
 
     /**
      * Creates an instance of AzureBlobFileListSource class.
