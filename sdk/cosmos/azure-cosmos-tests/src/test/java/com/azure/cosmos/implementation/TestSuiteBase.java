@@ -166,7 +166,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     protected static void truncateCollection(DocumentCollection collection) {
-        logger.info("Truncating collection {} ...", collection.getId());
+        logger.info("Truncating DocumentCollection {} ...", collection.getId());
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
@@ -176,7 +176,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
-            logger.info("Truncating collection {} documents ...", collection.getId());
+            logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
             houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options, Document.class)
                               .publishOn(Schedulers.parallel())
@@ -197,7 +197,7 @@ public class TestSuiteBase extends DocumentClientTest {
                         return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
                     }).then().block();
 
-            logger.info("Truncating collection {} triggers ...", collection.getId());
+            logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
 
             houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
@@ -213,7 +213,7 @@ public class TestSuiteBase extends DocumentClientTest {
                         return houseKeepingClient.deleteTrigger(trigger.getSelfLink(), requestOptions);
                     }).then().block();
 
-            logger.info("Truncating collection {} storedProcedures ...", collection.getId());
+            logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
             houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
@@ -229,7 +229,7 @@ public class TestSuiteBase extends DocumentClientTest {
                         return houseKeepingClient.deleteStoredProcedure(storedProcedure.getSelfLink(), requestOptions);
                     }).then().block();
 
-            logger.info("Truncating collection {} udfs ...", collection.getId());
+            logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
 
             houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", options)
                               .publishOn(Schedulers.parallel())
@@ -249,7 +249,7 @@ public class TestSuiteBase extends DocumentClientTest {
             houseKeepingClient.close();
         }
 
-        logger.info("Finished truncating collection {}.", collection.getId());
+        logger.info("Finished truncating DocumentCollection {}.", collection.getId());
     }
 
     @SuppressWarnings("fallthrough")

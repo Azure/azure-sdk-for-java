@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
@@ -19,7 +20,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -179,8 +179,12 @@ public class ReflectionUtils {
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }
 
-    public static void setTracerProvider(CosmosAsyncClient cosmosAsyncClient, TracerProvider tracerProvider){
-        set(cosmosAsyncClient, tracerProvider, "tracerProvider");
+    public static void setDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient, DiagnosticsProvider tracerProvider){
+        set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
+    }
+
+    public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
+        set(cosmosAsyncClient, cfg, "clientTelemetryConfig");
     }
 
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){

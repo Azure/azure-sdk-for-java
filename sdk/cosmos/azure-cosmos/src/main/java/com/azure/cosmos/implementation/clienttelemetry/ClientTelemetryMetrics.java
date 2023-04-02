@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -41,6 +41,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -127,38 +128,64 @@ public final class ClientTelemetryMetrics {
     }
 
     public static void recordOperation(
-        CosmosAsyncClient cosmosAsyncClient,
-        CosmosDiagnostics cosmosDiagnostics,
+        CosmosAsyncClient client,
+        CosmosDiagnosticsContext diagnosticsContext
+    ) {
+        recordOperation(
+            client,
+            diagnosticsContext,
+            diagnosticsContext.getStatusCode(),
+            diagnosticsContext.getMaxItemCount(),
+            diagnosticsContext.getActualItemCount(),
+            diagnosticsContext.getContainerName(),
+            diagnosticsContext.getDatabaseName(),
+            diagnosticsContext.getOperationType(),
+            diagnosticsContext.isPointOperation(),
+            diagnosticsContext.getResourceType(),
+            diagnosticsContext.getEffectiveConsistencyLevel(),
+            diagnosticsContext.getOperationId(),
+            diagnosticsContext.getTotalRequestCharge(),
+            diagnosticsContext.getDuration()
+        );
+    }
+
+
+    private static void recordOperation(
+        CosmosAsyncClient client,
+        CosmosDiagnosticsContext diagnosticsContext,
         int statusCode,
         Integer maxItemCount,
         Integer actualItemCount,
         String containerId,
         String databaseId,
-        OperationType operationType,
-        ResourceType resourceType,
+        String operationType,
+        boolean isPointOperation,
+        String resourceType,
         ConsistencyLevel consistencyLevel,
         String operationId,
         float requestCharge,
         Duration latency
     ) {
+        boolean isClientTelemetryMetricsEnabled = clientAccessor.shouldEnableEmptyPageDiagnostics(client);
+
         if (compositeRegistry.getRegistries().isEmpty() ||
-            !clientAccessor.isClientTelemetryMetricsEnabled(cosmosAsyncClient)) {
+            !isClientTelemetryMetricsEnabled) {
             return;
         }
 
-        boolean isPointOperation = maxItemCount == null || maxItemCount < 0;
+        Tag clientCorrelationTag = clientAccessor.getClientCorrelationTag(client);
+        String accountTagValue = clientAccessor.getAccountTagValue(client);
 
-        EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(cosmosAsyncClient);
-        EnumSet<MetricCategory> metricCategories = clientAccessor.getMetricCategories(cosmosAsyncClient);
+        EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(client);
+        EnumSet<MetricCategory> metricCategories = clientAccessor.getMetricCategories(client);
 
         Set<String> contactedRegions = Collections.emptySet();
         if (metricCategories.contains(MetricCategory.OperationDetails)) {
-            contactedRegions = cosmosDiagnostics.getContactedRegionNames();
+            contactedRegions = diagnosticsContext.getContactedRegionNames();
         }
 
         Tags operationTags = createOperationTags(
             metricTagNames,
-            cosmosAsyncClient,
             statusCode,
             containerId,
             databaseId,
@@ -167,17 +194,19 @@ public final class ClientTelemetryMetrics {
             consistencyLevel,
             operationId,
             isPointOperation,
-            contactedRegions
+            contactedRegions,
+            clientCorrelationTag,
+            accountTagValue
         );
 
         OperationMetricProducer metricProducer = new OperationMetricProducer(metricCategories, metricTagNames, operationTags);
         metricProducer.recordOperation(
-            cosmosAsyncClient,
+            client,
             requestCharge,
             latency,
             maxItemCount == null ? -1 : maxItemCount,
-            actualItemCount,
-            cosmosDiagnostics,
+            actualItemCount == null ? -1: actualItemCount,
+            diagnosticsContext,
             contactedRegions
         );
     }
@@ -194,7 +223,7 @@ public final class ClientTelemetryMetrics {
         CosmosMeterOptions cpuOptions,
         CosmosMeterOptions memoryOptions) {
         if (registryRefCount
-            .computeIfAbsent(registry, (meterRegistry) -> { return new AtomicLong(0); })
+            .computeIfAbsent(registry, (meterRegistry) -> new AtomicLong(0))
             .incrementAndGet() == 1L) {
             ClientTelemetryMetrics
                 .compositeRegistry
@@ -233,26 +262,28 @@ public final class ClientTelemetryMetrics {
 
     private static Tags createOperationTags(
         EnumSet<TagName> metricTagNames,
-        CosmosAsyncClient cosmosAsyncClient,
         int statusCode,
         String containerId,
         String databaseId,
-        OperationType operationType,
-        ResourceType resourceType,
+        String operationType,
+        String resourceType,
         ConsistencyLevel consistencyLevel,
         String operationId,
         boolean isPointOperation,
-        Set<String> contactedRegions) {
+        Set<String> contactedRegions,
+        Tag clientCorrelationTag,
+        String accountTagValue) {
+
         List<Tag> effectiveTags = new ArrayList<>();
 
         if (metricTagNames.contains(TagName.ClientCorrelationId)) {
-            effectiveTags.add(clientAccessor.getClientCorrelationTag(cosmosAsyncClient));
+            effectiveTags.add(clientCorrelationTag);
         }
 
         if (metricTagNames.contains(TagName.Container)) {
             String containerTagValue = String.format(
                 "%s/%s/%s",
-                escape(clientAccessor.getAccountTagValue(cosmosAsyncClient)),
+                escape(accountTagValue),
                 databaseId != null ? escape(databaseId) : "NONE",
                 containerId != null ? escape(containerId) : "NONE"
             );
@@ -262,8 +293,8 @@ public final class ClientTelemetryMetrics {
 
         if (metricTagNames.contains(TagName.Operation)) {
             String operationTagValue = !isPointOperation && !Strings.isNullOrWhiteSpace(operationId)
-                ? String.format("%s/%s/%s", resourceType.toString(), operationType.toString(), escape(operationId))
-                : String.format("%s/%s", resourceType.toString(), operationType.toString());
+                ? String.format("%s/%s/%s", resourceType, operationType, escape(operationId))
+                : String.format("%s/%s", resourceType, operationType);
 
             effectiveTags.add(Tag.of(TagName.Operation.toString(), operationTagValue));
         }
@@ -273,11 +304,10 @@ public final class ClientTelemetryMetrics {
         }
 
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {
+            assert consistencyLevel != null : "ConsistencyLevel must never be null here.";
             effectiveTags.add(Tag.of(
                 TagName.ConsistencyLevel.toString(),
-                consistencyLevel == null ?
-                    BridgeInternal.getContextClient(cosmosAsyncClient).getConsistencyLevel().toString() :
-                    consistencyLevel.toString()
+                consistencyLevel.toString()
             ));
         }
 
@@ -332,7 +362,7 @@ public final class ClientTelemetryMetrics {
             Duration latency,
             int maxItemCount,
             int actualItemCount,
-            CosmosDiagnostics diagnostics,
+            CosmosDiagnosticsContext diagnosticsContext,
             Set<String> contactedRegions) {
 
             CosmosMeterOptions callsOptions = clientAccessor.getMeterOptions(
@@ -402,38 +432,40 @@ public final class ClientTelemetryMetrics {
                 latencyMeter.record(latency);
             }
 
-            List<ClientSideRequestStatistics> clientSideRequestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
+            for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
+                Collection<ClientSideRequestStatistics> clientSideRequestStatistics =
+                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
 
-            if (clientSideRequestStatistics != null) {
-                for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
+                if (clientSideRequestStatistics != null) {
+                    for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
 
-                    recordStoreResponseStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getResponseStatisticsList());
-                    recordStoreResponseStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getSupplementalResponseStatisticsList());
-                    recordGatewayStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
-                    recordAddressResolutionStatistics(
-                        cosmosAsyncClient,
-                        requestStatistics.getAddressResolutionStatistics());
+                        recordStoreResponseStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getResponseStatisticsList());
+                        recordStoreResponseStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getSupplementalResponseStatisticsList());
+                        recordGatewayStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
+                        recordAddressResolutionStatistics(
+                            cosmosAsyncClient,
+                            requestStatistics.getAddressResolutionStatistics());
+                    }
                 }
+
+                FeedResponseDiagnostics feedDiagnostics = diagnosticsAccessor
+                    .getFeedResponseDiagnostics(diagnostics);
+
+                if (feedDiagnostics == null) {
+                    continue;
+                }
+
+                QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
+                    feedDiagnostics.getQueryPlanDiagnosticsContext();
+
+                recordQueryPlanDiagnostics(cosmosAsyncClient, queryPlanDiagnostics);
             }
-
-            FeedResponseDiagnostics feedDiagnostics = diagnosticsAccessor
-                .getFeedResponseDiagnostics(diagnostics);
-
-            if (feedDiagnostics == null) {
-                return;
-            }
-
-            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
-                feedDiagnostics.getQueryPlanDiagnosticsContext();
-
-            recordQueryPlanDiagnostics(cosmosAsyncClient, queryPlanDiagnostics);
         }
 
         private void recordQueryPlanDiagnostics(
@@ -570,8 +602,8 @@ public final class ClientTelemetryMetrics {
             String pkRangeId,
             int statusCode,
             int subStatusCode,
-            ResourceType resourceType,
-            OperationType operationType,
+            String resourceType,
+            String operationType,
             String regionName,
             String serviceEndpoint,
             String serviceAddress
@@ -592,7 +624,7 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestOperationType.toString(),
-                    String.format("%s/%s", resourceType.toString(), operationType.toString())));
+                    String.format("%s/%s", resourceType, operationType)));
             }
 
             if (metricTagNames.contains(TagName.RegionName)) {
@@ -772,8 +804,8 @@ public final class ClientTelemetryMetrics {
                         storeResponseDiagnostics.getPartitionKeyRangeId(),
                         storeResponseDiagnostics.getStatusCode(),
                         storeResponseDiagnostics.getSubStatusCode(),
-                        responseStatistics.getRequestResourceType(),
-                        responseStatistics.getRequestOperationType(),
+                        responseStatistics.getRequestResourceType().toString(),
+                        responseStatistics.getRequestOperationType().toString(),
                         responseStatistics.getRegionName(),
                         storeResultDiagnostics.getStorePhysicalAddressEscapedAuthority(),
                         storeResultDiagnostics.getStorePhysicalAddressEscapedPath())
@@ -888,8 +920,8 @@ public final class ClientTelemetryMetrics {
                     gatewayStatistics.getPartitionKeyRangeId(),
                     gatewayStatistics.getStatusCode(),
                     gatewayStatistics.getSubStatusCode(),
-                    gatewayStatistics.getResourceType(),
-                    gatewayStatistics.getOperationType(),
+                    gatewayStatistics.getResourceType().toString(),
+                    gatewayStatistics.getOperationType().toString(),
                     null,
                     null,
                     null)
