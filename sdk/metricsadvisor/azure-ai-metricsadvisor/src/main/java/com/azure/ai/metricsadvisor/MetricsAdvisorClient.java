@@ -86,7 +86,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.metricsadvisor.implementation.util.Utility.enableSync;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.getEnrichmentStatusQueryOptions;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.getListAnomaliesDetectedOptions;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.getListAnomalyDimensionValuesOptions;
@@ -214,7 +213,7 @@ public final class MetricsAdvisorClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitions(String metricId,
         OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
-        return listMetricSeriesDefinitionsSync(metricId, activeSince, options, enableSync(context));
+        return listMetricSeriesDefinitionsSync(metricId, activeSince, options, context);
     }
 
     private PagedIterable<MetricSeriesDefinition> listMetricSeriesDefinitionsSync(String metricId,
@@ -344,7 +343,7 @@ public final class MetricsAdvisorClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesData> listMetricSeriesData(String metricId, List<DimensionKey> seriesKeys,
         OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
-        return listMetricSeriesDataSync(metricId, seriesKeys, startTime, endTime, enableSync(context));
+        return listMetricSeriesDataSync(metricId, seriesKeys, startTime, endTime, context);
     }
 
     private PagedIterable<MetricSeriesData> listMetricSeriesDataSync(String metricId, List<DimensionKey> seriesKeys,
@@ -440,7 +439,7 @@ public final class MetricsAdvisorClient {
     public PagedIterable<EnrichmentStatus> listMetricEnrichmentStatus(
         String metricId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
-        return listMetricEnrichmentStatusSync(metricId, startTime, endTime, options, enableSync(context));
+        return listMetricEnrichmentStatusSync(metricId, startTime, endTime, options, context);
     }
 
     private PagedIterable<EnrichmentStatus> listMetricEnrichmentStatusSync(
@@ -563,7 +562,7 @@ public final class MetricsAdvisorClient {
                                                                      Context context) {
         return new PagedIterable<>(() -> listMetricEnrichedSeriesDataInternal(detectionConfigurationId,
             seriesKeys,
-            startTime, endTime, enableSync(context)), null);
+            startTime, endTime, context), null);
     }
 
     private PagedResponse<MetricEnrichedSeriesData>
@@ -664,7 +663,7 @@ public final class MetricsAdvisorClient {
             seriesKeys,
             startTime,
             endTime,
-            enableSync(context));
+            context);
     }
 
     /**
@@ -770,7 +769,7 @@ public final class MetricsAdvisorClient {
             startTime,
             endTime,
             options,
-            enableSync(context));
+            context);
     }
 
     private PagedIterable<DataPointAnomaly> listAnomaliesForDetectionConfigSync(
@@ -917,7 +916,7 @@ public final class MetricsAdvisorClient {
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
         return listIncidentsForDetectionConfigSync(detectionConfigurationId,
-            startTime, endTime, options, enableSync(context));
+            startTime, endTime, options, context);
     }
 
     private PagedIterable<AnomalyIncident> listIncidentsForDetectionConfigSync(
@@ -1037,7 +1036,7 @@ public final class MetricsAdvisorClient {
     public PagedIterable<IncidentRootCause> listIncidentRootCauses(
         String detectionConfigurationId,
         String incidentId, Context context) {
-        return listIncidentRootCausesSync(detectionConfigurationId, incidentId, enableSync(context));
+        return listIncidentRootCausesSync(detectionConfigurationId, incidentId, context);
     }
 
     private PagedIterable<IncidentRootCause> listIncidentRootCausesSync(
@@ -1088,7 +1087,7 @@ public final class MetricsAdvisorClient {
     }
 
     private PagedIterable<IncidentRootCause> listIncidentRootCausesSync(AnomalyIncident anomalyIncident, Context context) {
-        return new PagedIterable<>(() -> listIncidentRootCausesInternal(anomalyIncident, enableSync(context)), null);
+        return new PagedIterable<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
     }
 
     private PagedResponse<IncidentRootCause> listIncidentRootCausesInternal(AnomalyIncident anomalyIncident,
@@ -1195,7 +1194,7 @@ public final class MetricsAdvisorClient {
         OffsetDateTime startTime, OffsetDateTime endTime,
         ListAnomalyDimensionValuesOptions options, Context context) {
         return listAnomalyDimensionValuesSync(detectionConfigurationId,
-            dimensionName, startTime, endTime, options, enableSync(context));
+            dimensionName, startTime, endTime, options, context);
     }
 
     private PagedIterable<String> listAnomalyDimensionValuesSync(
@@ -1343,7 +1342,7 @@ public final class MetricsAdvisorClient {
     public PagedIterable<AnomalyAlert> listAlerts(
         String alertConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options, Context context) {
-        return listAlertsSync(alertConfigurationId, startTime, endTime, options, enableSync(context));
+        return listAlertsSync(alertConfigurationId, startTime, endTime, options, context);
     }
 
     private PagedIterable<AnomalyAlert> listAlertsSync(
@@ -1488,7 +1487,7 @@ public final class MetricsAdvisorClient {
         return listAnomaliesForAlertSync(alertConfigurationId,
             alertId,
             options,
-            enableSync(context));
+            context);
     }
 
     private PagedIterable<DataPointAnomaly> listAnomaliesForAlertSync(
@@ -1642,7 +1641,7 @@ public final class MetricsAdvisorClient {
         ListIncidentsAlertedOptions options, Context context) {
         return listIncidentsForAlertSync(alertConfigurationId,
             alertId,
-            options, enableSync(context));
+            options, context);
     }
 
     private PagedIterable<AnomalyIncident> listIncidentsForAlertSync(
@@ -1760,7 +1759,7 @@ public final class MetricsAdvisorClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricFeedback> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
                                                             Context context) {
-        return addFeedbackWithResponseSync(metricId, metricFeedback, enableSync(context));
+        return addFeedbackWithResponseSync(metricId, metricFeedback, context);
     }
 
     private Response<MetricFeedback> addFeedbackWithResponseSync(String metricId, MetricFeedback metricFeedback,
@@ -1913,7 +1912,7 @@ public final class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricFeedback> getFeedbackWithResponse(String feedbackId, Context context) {
-        return getFeedbackWithResponseSync(feedbackId, enableSync(context));
+        return getFeedbackWithResponseSync(feedbackId, context);
     }
 
     private Response<MetricFeedback> getFeedbackWithResponseSync(String feedbackId, Context context) {
@@ -2036,7 +2035,7 @@ public final class MetricsAdvisorClient {
     public PagedIterable<MetricFeedback> listFeedback(
         String metricId,
         ListMetricFeedbackOptions options, Context context) {
-        return listFeedbackSync(metricId, options, enableSync(context));
+        return listFeedbackSync(metricId, options, context);
     }
 
     private PagedIterable<MetricFeedback> listFeedbackSync(String metricId, ListMetricFeedbackOptions options, Context context) {
@@ -2139,7 +2138,7 @@ public final class MetricsAdvisorClient {
         String metricId,
         String dimensionName,
         ListMetricDimensionValuesOptions options, Context context) {
-        return listMetricDimensionValuesSync(metricId, dimensionName, options, enableSync(context));
+        return listMetricDimensionValuesSync(metricId, dimensionName, options, context);
     }
 
     private PagedIterable<String> listMetricDimensionValuesSync(final String metricId, final String dimensionName,

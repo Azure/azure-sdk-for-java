@@ -71,7 +71,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.CUSTOM;
-import static com.azure.ai.metricsadvisor.implementation.util.Utility.enableSync;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeedIngestionProgress;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeedIngestionStatus;
@@ -199,7 +198,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeed> createDataFeedWithResponse(DataFeed dataFeed, Context context) {
-        return createDataFeedWithResponseSync(dataFeed, enableSync(context));
+        return createDataFeedWithResponseSync(dataFeed, context);
     }
 
     Response<DataFeed> createDataFeedWithResponseSync(DataFeed dataFeed, Context context) {
@@ -342,7 +341,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeed> getDataFeedWithResponse(String dataFeedId, Context context) {
-        return getDataFeedWithResponseSync(dataFeedId, enableSync(context));
+        return getDataFeedWithResponseSync(dataFeedId, context);
     }
 
     Response<DataFeed> getDataFeedWithResponseSync(String dataFeedId, Context context) {
@@ -404,7 +403,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeed> updateDataFeedWithResponse(DataFeed dataFeed, Context context) {
-        return updateDataFeedWithResponseSync(dataFeed, enableSync(context));
+        return updateDataFeedWithResponseSync(dataFeed, context);
     }
 
     Response<DataFeed> updateDataFeedWithResponseSync(DataFeed dataFeed, Context context) {
@@ -510,7 +509,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataFeedWithResponse(String dataFeedId, Context context) {
-        return deleteDataFeedWithResponseSync(dataFeedId, enableSync(context));
+        return deleteDataFeedWithResponseSync(dataFeedId, context);
     }
 
     Response<Void> deleteDataFeedWithResponseSync(String dataFeedId, Context context) {
@@ -573,7 +572,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeed> listDataFeeds(ListDataFeedOptions options, Context context) {
-        return listDataFeedsSync(options, enableSync(context));
+        return listDataFeedsSync(options, context);
     }
 
     PagedIterable<DataFeed> listDataFeedsSync(ListDataFeedOptions options, Context context) {
@@ -694,7 +693,7 @@ public final class MetricsAdvisorAdministrationClient {
     public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(
         String dataFeedId,
         ListDataFeedIngestionOptions options, Context context) {
-        return listDataFeedIngestionStatusSync(dataFeedId, options, enableSync(context));
+        return listDataFeedIngestionStatusSync(dataFeedId, options, context);
     }
 
     PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatusSync(
@@ -829,7 +828,7 @@ public final class MetricsAdvisorAdministrationClient {
         return refreshDataFeedIngestionWithResponseSync(dataFeedId,
             startTime,
             endTime,
-            enableSync(context));
+            context);
     }
 
     Response<Void> refreshDataFeedIngestionWithResponseSync(
@@ -897,7 +896,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeedIngestionProgress> getDataFeedIngestionProgressWithResponse(String dataFeedId,
                                                                                         Context context) {
-        return getDataFeedIngestionProgressWithResponseSync(dataFeedId, enableSync(context));
+        return getDataFeedIngestionProgressWithResponseSync(dataFeedId, context);
     }
 
     Response<DataFeedIngestionProgress> getDataFeedIngestionProgressWithResponseSync(String dataFeedId,
@@ -1034,7 +1033,7 @@ public final class MetricsAdvisorAdministrationClient {
         AnomalyDetectionConfiguration detectionConfiguration,
         Context context) {
         return createDetectionConfigWithResponseSync(metricId, detectionConfiguration,
-            enableSync(context));
+            context);
     }
 
     Response<AnomalyDetectionConfiguration> createDetectionConfigWithResponseSync(
@@ -1437,7 +1436,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyDetectionConfiguration> getDetectionConfigWithResponse(
         String detectionConfigurationId, Context context) {
-        return getDetectionConfigWithResponseSync(detectionConfigurationId, enableSync(context));
+        return getDetectionConfigWithResponseSync(detectionConfigurationId, context);
     }
 
     Response<AnomalyDetectionConfiguration> getDetectionConfigWithResponseSync(
@@ -1542,7 +1541,7 @@ public final class MetricsAdvisorAdministrationClient {
     public Response<AnomalyDetectionConfiguration> updateDetectionConfigWithResponse(
         AnomalyDetectionConfiguration detectionConfiguration,
         Context context) {
-        return updateDetectionConfigWithResponseSync(detectionConfiguration, enableSync(context));
+        return updateDetectionConfigWithResponseSync(detectionConfiguration, context);
     }
 
     Response<AnomalyDetectionConfiguration> updateDetectionConfigWithResponseSync(
@@ -1617,7 +1616,7 @@ public final class MetricsAdvisorAdministrationClient {
     public Response<Void> deleteDetectionConfigWithResponse(
         String detectionConfigurationId,
         Context context) {
-        return deleteDetectionConfigWithResponseSync(detectionConfigurationId, enableSync(context));
+        return deleteDetectionConfigWithResponseSync(detectionConfigurationId, context);
     }
 
     Response<Void> deleteDetectionConfigWithResponseSync(String detectionConfigurationId,
@@ -1694,7 +1693,7 @@ public final class MetricsAdvisorAdministrationClient {
         String metricId,
         ListDetectionConfigsOptions options,
         Context context) {
-        return listDetectionConfigsSync(metricId, options, enableSync(context));
+        return listDetectionConfigsSync(metricId, options, context);
     }
 
     PagedIterable<AnomalyDetectionConfiguration> listDetectionConfigsSync(
@@ -1802,7 +1801,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHook> createHookWithResponse(NotificationHook notificationHook, Context context) {
-        return createHookWithResponseSync(notificationHook, enableSync(context));
+        return createHookWithResponseSync(notificationHook, context);
     }
 
     Response<NotificationHook> createHookWithResponseSync(NotificationHook notificationHook, Context context) {
@@ -1893,7 +1892,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHook> getHookWithResponse(String hookId, Context context) {
-        return getHookWithResponseSync(hookId, enableSync(context));
+        return getHookWithResponseSync(hookId, context);
     }
 
     Response<NotificationHook> getHookWithResponseSync(String hookId, Context context) {
@@ -1977,7 +1976,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHook> updateHookWithResponse(NotificationHook notificationHook, Context context) {
-        return updateHookWithResponseSync(notificationHook, enableSync(context));
+        return updateHookWithResponseSync(notificationHook, context);
     }
 
     Response<NotificationHook> updateHookWithResponseSync(NotificationHook notificationHook, Context context) {
@@ -2035,7 +2034,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteHookWithResponse(String hookId, Context context) {
-        return deleteHookWithResponseSync(hookId, enableSync(context));
+        return deleteHookWithResponseSync(hookId, context);
     }
 
     Response<Void> deleteHookWithResponseSync(String hookId, Context context) {
@@ -2123,7 +2122,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotificationHook> listHooks(ListHookOptions options, Context context) {
-        return listHooksSync(options, enableSync(context));
+        return listHooksSync(options, context);
     }
 
     PagedIterable<NotificationHook> listHooksSync(ListHookOptions options, Context context) {
@@ -2245,7 +2244,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyAlertConfiguration> createAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration, Context context) {
-        return createAlertConfigWithResponseSync(alertConfiguration, enableSync(context));
+        return createAlertConfigWithResponseSync(alertConfiguration, context);
     }
 
     Response<AnomalyAlertConfiguration> createAlertConfigWithResponseSync(
@@ -2343,7 +2342,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyAlertConfiguration> getAlertConfigWithResponse(
         String alertConfigurationId, Context context) {
-        return getAlertConfigWithResponseSync(alertConfigurationId, enableSync(context));
+        return getAlertConfigWithResponseSync(alertConfigurationId, context);
     }
 
     Response<AnomalyAlertConfiguration> getAlertConfigWithResponseSync(
@@ -2443,7 +2442,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyAlertConfiguration> updateAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration, Context context) {
-        return updateAlertConfigWithResponseSync(alertConfiguration, enableSync(context));
+        return updateAlertConfigWithResponseSync(alertConfiguration, context);
     }
 
     Response<AnomalyAlertConfiguration> updateAlertConfigWithResponseSync(
@@ -2515,7 +2514,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAlertConfigWithResponse(String alertConfigurationId, Context context) {
-        return deleteAlertConfigWithResponseSync(alertConfigurationId, enableSync(context));
+        return deleteAlertConfigWithResponseSync(alertConfigurationId, context);
     }
 
     Response<Void> deleteAlertConfigWithResponseSync(String alertConfigurationId, Context context) {
@@ -2594,7 +2593,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertConfiguration> listAlertConfigs(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
-        return listAlertConfigsSync(detectionConfigurationId, options, enableSync(context));
+        return listAlertConfigsSync(detectionConfigurationId, options, context);
     }
 
     PagedIterable<AnomalyAlertConfiguration> listAlertConfigsSync(
@@ -2724,7 +2723,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponse(
             DataSourceCredentialEntity dataSourceCredential, Context context) {
-        return createDataSourceCredentialWithResponseSync(dataSourceCredential, enableSync(context));
+        return createDataSourceCredentialWithResponseSync(dataSourceCredential, context);
     }
 
     Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponseSync(
@@ -2824,7 +2823,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponse(String credentialId,
                                                                                     Context context) {
-        return getDataSourceCredentialWithResponseSync(credentialId, enableSync(context));
+        return getDataSourceCredentialWithResponseSync(credentialId, context);
     }
 
     Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponseSync(String credentialId,
@@ -2915,7 +2914,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponse(
             DataSourceCredentialEntity dataSourceCredential, Context context) {
-        return updateDataSourceCredentialWithResponseSync(dataSourceCredential, enableSync(context));
+        return updateDataSourceCredentialWithResponseSync(dataSourceCredential, context);
     }
 
     Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponseSync(
@@ -2982,7 +2981,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
-        return deleteDataSourceCredentialWithResponseSync(credentialId, enableSync(context));
+        return deleteDataSourceCredentialWithResponseSync(credentialId, context);
     }
 
     Response<Void> deleteDataSourceCredentialWithResponseSync(String credentialId, Context context) {
@@ -3063,7 +3062,7 @@ public final class MetricsAdvisorAdministrationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials(
         ListCredentialEntityOptions options, Context context) {
-        return listDataSourceCredentialsSync(options, enableSync(context));
+        return listDataSourceCredentialsSync(options, context);
     }
 
     PagedIterable<DataSourceCredentialEntity> listDataSourceCredentialsSync(ListCredentialEntityOptions options,

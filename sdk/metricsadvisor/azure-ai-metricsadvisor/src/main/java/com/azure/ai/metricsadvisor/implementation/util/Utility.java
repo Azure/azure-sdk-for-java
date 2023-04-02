@@ -71,14 +71,6 @@ public final class Utility {
         return obj != null ? obj.toString() : null;
     }
 
-    public static Context enableSync(Context context) {
-        if (context == null || context == Context.NONE) {
-            return CONTEXT_WITH_SYNC;
-        }
-
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-
     public static List<DataFeedIngestionStatus> toDataFeedIngestionStatus(List<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> ingestionStatusList) {
         return ingestionStatusList
             .stream()
