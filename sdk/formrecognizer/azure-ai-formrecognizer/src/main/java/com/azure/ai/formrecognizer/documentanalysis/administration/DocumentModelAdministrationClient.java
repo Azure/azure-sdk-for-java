@@ -1059,9 +1059,9 @@ public final class DocumentModelAdministrationClient {
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
      * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
-     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040D&#41;&#41;&#41;;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
      * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
-     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
      *
      * DocumentClassifierDetails classifierDetails
      *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes&#41;
@@ -1105,9 +1105,9 @@ public final class DocumentModelAdministrationClient {
      * String blobContainerUrl1040A = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
      * HashMap&lt;String, ClassifierDocumentTypeDetails&gt; docTypes = new HashMap&lt;&gt;&#40;&#41;;
      * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
-     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040D&#41;&#41;&#41;;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;blobContainerUrl1040D&#41;&#41;&#41;;
      * docTypes.put&#40;&quot;1040-D&quot;, new ClassifierDocumentTypeDetails&#40;&#41;
-     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;blobContainerUrl1040A&#41;&#41;&#41;;
+     *     .setAzureBlobSource&#40;new AzureBlobContentSource&#40;blobContainerUrl1040A&#41;&#41;&#41;;
      *
      * DocumentClassifierDetails classifierDetails
      *     = documentModelAdministrationClient.beginBuildDocumentClassifier&#40;docTypes,
