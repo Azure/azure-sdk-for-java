@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Blob Storage content. */
 @Fluent
@@ -13,17 +12,21 @@ public final class AzureBlobContentSource {
     /*
      * Azure Blob Storage container URL.
      */
-    @JsonProperty(value = "containerUrl", required = true)
-    private String containerUrl;
+    private final String containerUrl;
 
     /*
      * Blob name prefix.
      */
-    @JsonProperty(value = "prefix")
     private String prefix;
 
-    /** Creates an instance of AzureBlobContentSource class. */
-    public AzureBlobContentSource() {}
+    /**
+     * Creates an instance of AzureBlobContentSource class.
+     *
+     * @param containerUrl the containerUrl value to set.
+     */
+    public AzureBlobContentSource(String containerUrl) {
+        this.containerUrl = containerUrl;
+    }
 
     /**
      * Get the containerUrl property: Azure Blob Storage container URL.
@@ -32,17 +35,6 @@ public final class AzureBlobContentSource {
      */
     public String getContainerUrl() {
         return this.containerUrl;
-    }
-
-    /**
-     * Set the containerUrl property: Azure Blob Storage container URL.
-     *
-     * @param containerUrl the containerUrl value to set.
-     * @return the AzureBlobContentSource object itself.
-     */
-    public AzureBlobContentSource setContainerUrl(String containerUrl) {
-        this.containerUrl = containerUrl;
-        return this;
     }
 
     /**

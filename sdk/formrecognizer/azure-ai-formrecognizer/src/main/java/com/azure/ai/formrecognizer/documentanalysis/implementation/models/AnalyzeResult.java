@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -77,8 +78,28 @@ public final class AnalyzeResult {
     @JsonProperty(value = "documents")
     private List<Document> documents;
 
-    /** Creates an instance of AnalyzeResult class. */
-    public AnalyzeResult() {}
+    /**
+     * Creates an instance of AnalyzeResult class.
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @param modelId the modelId value to set.
+     * @param stringIndexType the stringIndexType value to set.
+     * @param content the content value to set.
+     * @param pages the pages value to set.
+     */
+    @JsonCreator
+    public AnalyzeResult(
+            @JsonProperty(value = "apiVersion", required = true) String apiVersion,
+            @JsonProperty(value = "modelId", required = true) String modelId,
+            @JsonProperty(value = "stringIndexType", required = true) StringIndexType stringIndexType,
+            @JsonProperty(value = "content", required = true) String content,
+            @JsonProperty(value = "pages", required = true) List<DocumentPage> pages) {
+        this.apiVersion = apiVersion;
+        this.modelId = modelId;
+        this.stringIndexType = stringIndexType;
+        this.content = content;
+        this.pages = pages;
+    }
 
     /**
      * Get the apiVersion property: API version used to produce this result.
@@ -87,17 +108,6 @@ public final class AnalyzeResult {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Set the apiVersion property: API version used to produce this result.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /**
@@ -110,34 +120,12 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the modelId property: Document model ID used to produce this result.
-     *
-     * @param modelId the modelId value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
-    }
-
-    /**
      * Get the stringIndexType property: Method used to compute string offset and length.
      *
      * @return the stringIndexType value.
      */
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
-    }
-
-    /**
-     * Set the stringIndexType property: Method used to compute string offset and length.
-     *
-     * @param stringIndexType the stringIndexType value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
-        return this;
     }
 
     /**
@@ -150,34 +138,12 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the content property: Concatenate string representation of all textual and visual elements in reading order.
-     *
-     * @param content the content value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the pages property: Analyzed pages.
      *
      * @return the pages value.
      */
     public List<DocumentPage> getPages() {
         return this.pages;
-    }
-
-    /**
-     * Set the pages property: Analyzed pages.
-     *
-     * @param pages the pages value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setPages(List<DocumentPage> pages) {
-        this.pages = pages;
-        return this;
     }
 
     /**

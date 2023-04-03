@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -47,8 +48,19 @@ public final class BuildDocumentModelRequest {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of BuildDocumentModelRequest class. */
-    public BuildDocumentModelRequest() {}
+    /**
+     * Creates an instance of BuildDocumentModelRequest class.
+     *
+     * @param modelId the modelId value to set.
+     * @param buildMode the buildMode value to set.
+     */
+    @JsonCreator
+    public BuildDocumentModelRequest(
+            @JsonProperty(value = "modelId", required = true) String modelId,
+            @JsonProperty(value = "buildMode", required = true) DocumentBuildMode buildMode) {
+        this.modelId = modelId;
+        this.buildMode = buildMode;
+    }
 
     /**
      * Get the modelId property: Unique document model name.
@@ -57,17 +69,6 @@ public final class BuildDocumentModelRequest {
      */
     public String getModelId() {
         return this.modelId;
-    }
-
-    /**
-     * Set the modelId property: Unique document model name.
-     *
-     * @param modelId the modelId value to set.
-     * @return the BuildDocumentModelRequest object itself.
-     */
-    public BuildDocumentModelRequest setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
     }
 
     /**
@@ -97,17 +98,6 @@ public final class BuildDocumentModelRequest {
      */
     public DocumentBuildMode getBuildMode() {
         return this.buildMode;
-    }
-
-    /**
-     * Set the buildMode property: Custom document model build mode.
-     *
-     * @param buildMode the buildMode value to set.
-     * @return the BuildDocumentModelRequest object itself.
-     */
-    public BuildDocumentModelRequest setBuildMode(DocumentBuildMode buildMode) {
-        this.buildMode = buildMode;
-        return this;
     }
 
     /**
