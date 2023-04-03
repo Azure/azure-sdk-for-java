@@ -15,8 +15,7 @@ public interface IOpenConnectionsHandler {
         String collectionRid,
         URI serviceEndpoint,
         List<Uri> addresses,
-        int minConnectionsRequiredForEndpoint,
-        OpenConnectionAggressivenessHint hint
+        int minConnectionsRequiredForEndpoint
     );
 
     Flux<OpenConnectionResponse> openConnections(

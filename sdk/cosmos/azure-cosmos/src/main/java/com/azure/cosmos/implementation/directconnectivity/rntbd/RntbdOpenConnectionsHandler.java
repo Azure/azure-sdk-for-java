@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -30,17 +31,14 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
     private final RntbdEndpoint.Provider endpointProvider;
     private static final Map<OpenConnectionAggressivenessHint, SemaphoreConfig> openConnectionsSemaphoreRegistry = new HashMap<>();
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
-    static {
-        openConnectionsSemaphoreRegistry.put(OpenConnectionAggressivenessHint.DEFENSIVE, new SemaphoreConfig(Configs.getCPUCnt(), 10));
-        openConnectionsSemaphoreRegistry.put(OpenConnectionAggressivenessHint.AGGRESSIVE, new SemaphoreConfig(Configs.getCPUCnt(), 30));
-    }
-
-    public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider) {
+    public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
 
         checkNotNull(endpointProvider, "Argument 'endpointProvider' can not be null");
 
         this.endpointProvider = endpointProvider;
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     @Override
@@ -48,8 +46,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
             String collectionRid,
             URI serviceEndpoint,
             List<Uri> addresses,
-            int minConnectionsRequiredForEndpoint,
-            OpenConnectionAggressivenessHint hint
+            int minConnectionsRequiredForEndpoint
     ) {
         // collectionRid may not always be available, especially for open connection flows
         // from the RntbdConnectionsStateListener, hence there is no null check for collectionRid
@@ -62,27 +59,15 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                     StringUtils.join(addresses, ","));
         }
 
-        SemaphoreConfig semaphoreConfig = openConnectionsSemaphoreRegistry
-                .getOrDefault(
-                        hint,
-                        openConnectionsSemaphoreRegistry.get(OpenConnectionAggressivenessHint.AGGRESSIVE)
-                );
-
-        Semaphore semaphore = semaphoreConfig.semaphore;
-        int timeoutInMin = semaphoreConfig.timeoutInMin;
-
         return Flux.fromIterable(addresses)
                 .flatMap(addressUri -> {
-                    try {
-                        if (semaphore.tryAcquire(timeoutInMin, TimeUnit.MINUTES)) {
-
                             RxDocumentServiceRequest openConnectionRequest =
                                     this.getOpenConnectionRequest(collectionRid, serviceEndpoint, addressUri);
 
                             final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
                             final RntbdEndpoint endpoint =
                                     this.endpointProvider.createIfAbsent(
-                                            openConnectionRequest.requestContext.locationEndpointToRoute,
+                                            serviceEndpoint,
                                             addressUri.getURI(),
                                             minConnectionsRequiredForEndpoint
                                     );
@@ -93,39 +78,49 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             // container for the same endpoint has a higher
                             // value for minConnectionsRequired and choose the higher
                             // value
-                            int minConnectionsRequired = endpoint.getMinChannelsRequired();
-                            int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredForEndpoint);
+                            final int minConnectionsRequired = endpoint.getMinChannelsRequired();
+                            final int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredForEndpoint);
 
                             endpoint.setMinChannelsRequired(newMinConnectionsRequired);
 
-                            int connectionsOpened = endpoint.channelsMetrics();
+                            final int connectionsOpened = endpoint.channelsMetrics();
 
                             if (connectionsOpened < newMinConnectionsRequired) {
-                                return Mono.defer(() -> Mono.fromFuture(endpoint.openConnection(requestArgs)))
-                                        .onErrorResume(throwable -> {
-                                            if (hint == OpenConnectionAggressivenessHint.DEFENSIVE) {
-                                                return Mono.error(throwable);
+                                OpenConnectionRntbdRequestRecord requestRecord = endpoint.openConnection(requestArgs);
+                                return Mono.defer(() -> Mono.fromFuture(requestRecord).doFinally(signalType -> {
+                                    if (signalType.equals(SignalType.CANCEL)) {
+                                        requestRecord.cancel(true);
+                                    }
+                                        }))
+                                        .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
+                                        .flatMap(openConnectionResponse -> {
+                                            if (!openConnectionResponse.isConnected()) {
+                                                return Mono.error(openConnectionResponse.getException());
                                             }
-                                            return Mono.just(new OpenConnectionResponse(addressUri, false, throwable));
+                                            return Mono.just(openConnectionResponse);
                                         })
                                         .doOnNext(response -> {
+
                                             if (logger.isDebugEnabled()) {
                                                 logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
                                             }
-                                        })
-                                        .doOnTerminate(() -> semaphore.release());
-                            }
 
-                            semaphore.release();
+                                            if (response.isConnected() && endpoint.channelsMetrics() < newMinConnectionsRequired) {
+                                                OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
+                                                        this,
+                                                        collectionRid,
+                                                        serviceEndpoint,
+                                                        addressUri,
+                                                        minConnectionsRequiredForEndpoint
+                                                );
+
+                                                this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
+                                            }
+                                        });
+                            }
                             return Mono.just(new OpenConnectionResponse(addressUri, true, null));
                         }
-
-                    } catch (InterruptedException e) {
-                        logger.warn("Acquire connection semaphore failed", e);
-                    }
-
-                    return Mono.just(new OpenConnectionResponse(addressUri, false, new IllegalStateException("Unable to acquire semaphore")));
-                });
+                );
     }
 
     @Override
@@ -134,8 +129,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                 collectionRid,
                 serviceEndpoint,
                 addresses,
-                Configs.getMinConnectionPoolSizePerEndpoint(),
-                OpenConnectionAggressivenessHint.AGGRESSIVE
+                Configs.getMinConnectionPoolSizePerEndpoint()
         );
     }
 

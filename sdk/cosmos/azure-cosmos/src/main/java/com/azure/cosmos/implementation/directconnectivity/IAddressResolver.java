@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 
 public interface IAddressResolver {
 

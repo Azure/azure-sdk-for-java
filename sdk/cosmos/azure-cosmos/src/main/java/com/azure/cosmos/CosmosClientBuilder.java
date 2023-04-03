@@ -699,6 +699,21 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
+     * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
+     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}.
+     *
+     * <p>
+     *     Use the {@link CosmosContainerProactiveInitConfigBuilder} class to instantiate {@link CosmosContainerProactiveInitConfig} class
+     * </p>
+     * @param proactiveContainerInitConfig which encapsulates a list of container identities and no of
+     *                                     proactive connection regions
+     * @param connectionWarmUpTimeout a {@link Duration} type parameter which denotes the time window within
+     *                                which connections will be opened aggressively and in a blocking manner and outside
+     *                                which connections will be opened defensively and in a non-blocking manner
+     * @return current CosmosClientBuilder
+     * */
     public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, Duration connectionWarmUpTimeout) {
         this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         this.connectionWarmUpTimeout = connectionWarmUpTimeout;
@@ -858,10 +873,12 @@ public class CosmosClientBuilder implements
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
-        if (connectionWarmUpTimeout != null) {
-            cosmosAsyncClient.openConnectionsAndInitCaches(connectionWarmUpTimeout);
-        } else {
-            cosmosAsyncClient.openConnectionsAndInitCaches();
+        if (proactiveContainerInitConfig != null) {
+            if (connectionWarmUpTimeout != null) {
+                cosmosAsyncClient.openConnectionsAndInitCaches(connectionWarmUpTimeout);
+            } else {
+                cosmosAsyncClient.openConnectionsAndInitCaches();
+            }
         }
         logStartupInfo(stopwatch, cosmosAsyncClient);
         return cosmosAsyncClient;

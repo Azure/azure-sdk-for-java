@@ -30,6 +30,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -1676,7 +1677,9 @@ public interface AsyncDocumentClient {
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
      * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
-     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and
+     *                                     no. of proactive connection regions
+     * @param hint
      * @return A flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(

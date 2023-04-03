@@ -2,45 +2,64 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.*;
-import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.query.TriFunction;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
+    private Sinks.Many<OpenConnectionOperation> openConnectionsTaskSink;
+    private Sinks.Many<OpenConnectionOperation> openConnectionsTaskSinkBackUp;
+    private ConcurrentHashMap<String, Integer> tasksInSink;
+    private static final int MaxConnectionsToOpenAcrossAllEndpoints = 50_000;
+    private final AtomicInteger totalEstablishedConnections;
+    private final AtomicReference<OpenConnectionAggressivenessHint> aggressivenessHint;
+    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+    private ParallelFlux<OpenConnectionResponse> parallelFlux;
 
-    private final Sinks.Many<Mono<OpenConnectionResponse>> openConnectionsTaskSink;
-    private final List<Sinks.Many<OpenConnectionOperation>> openConnectionsOperationSinks;
-    private static final int MaxOpenConnectionOpsToBufferAndShuffle = 100;
-    private final Random random;
-
-    public ProactiveOpenConnectionsProcessor(int distributionFactor) {
-        this.openConnectionsTaskSink = Sinks.unsafe().many().multicast().onBackpressureBuffer();
-        this.openConnectionsOperationSinks = new ArrayList<>();
-        this.random = new Random();
-
-        for (int i = 0; i < distributionFactor; i++) {
-            this.openConnectionsOperationSinks.add(Sinks.unsafe().many().unicast().onBackpressureBuffer());
-        }
+    public ProactiveOpenConnectionsProcessor() {
+        this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
+        this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
+        this.aggressivenessHint = new AtomicReference<>(OpenConnectionAggressivenessHint.AGGRESSIVE);
+        this.totalEstablishedConnections = new AtomicInteger(0);
+        this.tasksInSink = new ConcurrentHashMap<>();
+        this.scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(Configs.getCPUCnt());
     }
 
-    public void submitOpenConnectionsTask(OpenConnectionOperation openConnectionOperation) {
-        int sinkId = random.nextInt(this.openConnectionsOperationSinks.size());
-        Sinks.Many<OpenConnectionOperation> sink = this.openConnectionsOperationSinks.get(sinkId);
-        sink.tryEmitNext(openConnectionOperation);
+    public synchronized void submitOpenConnectionsTask(OpenConnectionOperation openConnectionOperation) {
+
+        String addressUriAsString = openConnectionOperation.getAddressUri().getURIAsString();
+
+        boolean isEndpointTaskInSink = tasksInSink.get(addressUriAsString) != null;
+
+        tasksInSink.putIfAbsent(addressUriAsString, openConnectionOperation.getMinConnectionsRequiredForEndpoint());
+        tasksInSink.computeIfPresent(addressUriAsString, (s, min) -> {
+            openConnectionOperation.setMinConnectionsRequiredForEndpoint(Math.max(openConnectionOperation.getMinConnectionsRequiredForEndpoint(), min));
+            return Math.max(openConnectionOperation.getMinConnectionsRequiredForEndpoint(), min);
+        });
+
+        if (!isEndpointTaskInSink) {
+            openConnectionsTaskSink.tryEmitNext(openConnectionOperation);
+            openConnectionsTaskSinkBackUp.tryEmitNext(openConnectionOperation);
+        }
     }
 
     @Override
@@ -48,68 +67,95 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     }
 
-    public Flux<OpenConnectionResponse> getOpenConnectionsPublisher() {
-        return openConnectionsTaskSink
-                .asFlux()
-                .flatMap(listMono -> listMono);
+    public synchronized void toggleOpenConnectionsAggressiveness() {
+        System.out.println("Toggle executor aggressiveness");
+        if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.AGGRESSIVE) {
+            aggressivenessHint.set(OpenConnectionAggressivenessHint.DEFENSIVE);
+            scheduledThreadPoolExecutor.setCorePoolSize(1);
+        } else {
+            aggressivenessHint.set(OpenConnectionAggressivenessHint.AGGRESSIVE);
+            scheduledThreadPoolExecutor.setCorePoolSize(Configs.getCPUCnt());
+        }
     }
 
-    public Flux<OpenConnectionResponse> getOpenConnectionsPublisherFromOpenConnectionOperation() {
-        return Flux.range(0, openConnectionsOperationSinks.size())
-                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .flatMap(integer -> openConnectionsOperationSinks.get(integer).asFlux().subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC))
-                .buffer(MaxOpenConnectionOpsToBufferAndShuffle)
-                .flatMap(openConnectionOperations -> {
-                    Collections.shuffle(openConnectionOperations);
-                    return Mono.just(openConnectionOperations);
+    public ParallelFlux<OpenConnectionResponse> getFlux() {
+        return parallelFlux;
+    }
+
+    public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisherFromOpenConnectionOperation() {
+        // steady-state concurrency
+        int concurrency = Configs.getCPUCnt();
+
+        // background execution concurrency
+        if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.DEFENSIVE) {
+            concurrency = 1;
+        }
+
+        return Flux.from(openConnectionsTaskSink.asFlux())
+                .parallel(concurrency)
+                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).log("Line 90")
+                .flatMap(openConnectionOperation -> {
+                    if (totalEstablishedConnections.get() < MaxConnectionsToOpenAcrossAllEndpoints) {
+                        tasksInSink.remove(openConnectionOperation.getAddressUri().getURIAsString());
+                        IOpenConnectionsHandler openConnectionsHandler = openConnectionOperation.getOpenConnectionsHandler();
+                        Uri addressUri = openConnectionOperation.getAddressUri();
+                        URI serviceEndpoint = openConnectionOperation.getServiceEndpoint();
+                        int minConnectionsForEndpoint = openConnectionOperation.getMinConnectionsRequiredForEndpoint();
+                        OpenConnectionAggressivenessHint hint = aggressivenessHint.get();
+                        String collectionRid = openConnectionOperation.getCollectionRid();
+
+                        return Flux.zip(Mono.just(openConnectionOperation), openConnectionsHandler.openConnections(
+                                collectionRid,
+                                serviceEndpoint,
+                                Arrays.asList(addressUri),
+                                minConnectionsForEndpoint
+                        ));
+                    }
+                    return Flux.empty();
                 })
-                .flatMapIterable(openConnectionOperations -> openConnectionOperations)
-                .flatMap(openConnectionOperation -> BackoffRetryUtility.fluxExecuteRetry(openConnectionOperation.getOpenConnectionCallable()
-                        , new ProactiveOpenConnectionsRetryPolicy()), 1, 1)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC);
+                .flatMap(openConnectionOpToResponse -> {
+                    OpenConnectionOperation openConnectionOperation = openConnectionOpToResponse.getT1();
+                    OpenConnectionResponse openConnectionResponse = openConnectionOpToResponse.getT2();
+
+                    if (openConnectionResponse.isConnected()) {
+                        totalEstablishedConnections.incrementAndGet();
+                        return Mono.empty();
+                    }
+
+                    return openConnectionOperation
+                            .getRetryPolicy()
+                            .shouldRetry((Exception) openConnectionResponse.getException())
+                            .flatMap(shouldRetryResult -> {
+                                if (shouldRetryResult.shouldRetry) {
+                                    return enqueueOpenConnectionOpsForRetry(openConnectionOperation, shouldRetryResult);
+                                }
+                                return Mono.empty();
+                            });
+                });
     }
 
-    private static class ProactiveOpenConnectionsRetryPolicy implements IRetryPolicy {
-
-        private static final int MaxRetryAttempts = 4;
-        private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(10);
-        private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(500);
-        private static final int BackoffMultiplier = 2;
-        private Duration currentBackoff;
-        private final TimeoutHelper waitTimeTimeoutHelper;
-        private final AtomicInteger retryCount;
-
-        private ProactiveOpenConnectionsRetryPolicy() {
-            this.waitTimeTimeoutHelper = new TimeoutHelper(InitialOpenConnectionReattemptBackOffInMs);
-            this.retryCount = new AtomicInteger(0);
+    private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(
+        OpenConnectionOperation op,
+        ShouldRetryResult retryResult
+    ) {
+        if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {
+            this.submitOpenConnectionsTask(op);
+            return Mono.empty();
+        } else {
+            return Mono
+                    .delay(retryResult.backOffTime)
+                    .flatMap(ignore -> {
+                        this.submitOpenConnectionsTask(op);
+                        return Mono.empty();
+                    });
         }
+    }
 
-        @Override
-        public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-
-            if (this.waitTimeTimeoutHelper.isElapsed() || this.retryCount.get() >= MaxRetryAttempts) {
-                return Mono.just(ShouldRetryResult.noRetry());
-            }
-
-            this.retryCount.incrementAndGet();
-
-            Duration effectiveBackoff = getEffectiveBackoff(this.currentBackoff, this.waitTimeTimeoutHelper.getRemainingTime());
-            this.currentBackoff = getEffectiveBackoff(Duration.ofMillis(this.currentBackoff.toMillis() * BackoffMultiplier), MaxFailedOpenConnectionRetryWindowInMs);
-
-            return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
-        }
-
-        @Override
-        public RetryContext getRetryContext() {
-            return null;
-        }
-
-        private static Duration getEffectiveBackoff(Duration backoff, Duration remainingTime) {
-            if (backoff.compareTo(remainingTime) > 0) {
-                return remainingTime;
-            }
-
-            return backoff;
-        }
+    // when the flux associated with openConnectionsTaskSink is cancelled
+    // this method provides for a way to resume emitting pushed tasks to
+    // the sink
+    public synchronized void instantiateOpenConnectionsPublisher() {
+        openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
+        openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
 }

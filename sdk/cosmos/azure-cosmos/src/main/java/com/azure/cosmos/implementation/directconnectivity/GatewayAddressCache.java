@@ -47,8 +47,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.query.PentaFunction;
-import com.azure.cosmos.implementation.query.TriFunction;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import io.netty.handler.codec.http.HttpMethod;
@@ -914,8 +912,7 @@ public class GatewayAddressCache implements IAddressCache {
                             collectionRid,
                             this.serviceEndpoint,
                             addressesNeedToValidation,
-                            Configs.getMinConnectionPoolSizePerEndpoint(),
-                            OpenConnectionAggressivenessHint.AGGRESSIVE
+                            Configs.getMinConnectionPoolSizePerEndpoint()
                     )
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
@@ -945,7 +942,7 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     public Flux<ImmutablePair<ImmutablePair<String, DocumentCollection> , AddressInformation>> resolveAddressesAndInitCaches(
-            String collectionLink,
+            String containerLink,
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             OpenConnectionAggressivenessHint hint
@@ -1020,7 +1017,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 AddressInformation[] addressInfosForPkr = partitionKeyRangeIdentityPair.getRight();
                                 return Flux.fromArray(addressInfosForPkr);
                             })
-                            .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(collectionLink, collection), addressInformation)));
+                            .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(containerLink, collection), addressInformation)));
                 });
 
     }
@@ -1037,35 +1034,16 @@ public class GatewayAddressCache implements IAddressCache {
             int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
                     Configs.getMinConnectionPoolSizePerEndpoint());
 
-            if (isBackgroundFlow) {
-                for (int i = 0; i < connectionsRequiredForEndpoint; i++) {
-                    Callable<Flux<OpenConnectionResponse>> openConnectionsFunc =
-                            () -> this.openConnectionsHandler.openConnections(
-                                    documentCollection.getResourceId(),
-                                    serviceEndpoint,
-                                    Arrays.asList(address.getPhysicalUri()),
-                                    connectionsRequiredForEndpoint,
-                                    hint
-                            );
-
-                    OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                            openConnectionsFunc,
-                            this.serviceEndpoint,
-                            address.getPhysicalUri(),
-                            hint);
-
-                    this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
-                }
-                return Flux.empty();
-            }
-
-            return this.openConnectionsHandler.openConnections(
+            OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
+                    this.openConnectionsHandler,
                     documentCollection.getResourceId(),
                     this.serviceEndpoint,
-                    Arrays.asList(address.getPhysicalUri()),
-                    connectionsRequiredForEndpoint,
-                    hint
-            ).repeat(connectionsRequiredForEndpoint - 1);
+                    address.getPhysicalUri(),
+                    connectionsRequiredForEndpoint);
+
+            this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
+
+            return Flux.empty();
         }
 
         return Flux.empty();

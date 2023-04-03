@@ -15,9 +15,11 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
@@ -30,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ParallelFlux;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -113,135 +116,87 @@ public class GlobalAddressResolver implements IAddressResolver {
 
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/",
-        //  some use path with stripped leading "/",
+        // some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
-        List<Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>>> addressResolutionFluxList
-                = new ArrayList<>();
+        return Flux.fromIterable(proactiveContainerInitConfig.getCosmosContainerIdentities())
+                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .flatMap(cosmosContainerIdentity ->
+                        this
+                                .collectionCache
+                                .resolveByNameAsync(
+                                        null,
+                                        ImplementationBridgeHelpers
+                                                .CosmosContainerIdentityHelper
+                                                .getCosmosContainerIdentityAccessor()
+                                                .getContainerLink(cosmosContainerIdentity),
+                                        null)
+                                .flatMapMany(collection -> {
+                                    if (collection == null) {
+                                        logger.warn("Can not find the collection, no connections will be opened");
+                                        return Flux.empty();
+                                    }
 
-        for (CosmosContainerIdentity containerIdentity : proactiveContainerInitConfig.getCosmosContainerIdentities()) {
-            Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> addressResolutionFlux = Flux.just(containerIdentity)
-                    .flatMap(cosmosContainerIdentity ->
-                            this
-                                    .collectionCache
-                                    .resolveByNameAsync(
-                                            null,
-                                            ImplementationBridgeHelpers
-                                                    .CosmosContainerIdentityHelper
-                                                    .getCosmosContainerIdentityAccessor()
-                                                    .getContainerLink(cosmosContainerIdentity),
-                                            null)
-                                    .flatMapMany(collection -> {
-                                        if (collection == null) {
-                                            logger.warn("Can not find the collection, no connections will be opened");
-                                            return Mono.empty();
-                                        }
+                                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
+                                                    null,
+                                                    collection.getResourceId(),
+                                                    PartitionKeyInternalHelper.FullRange,
+                                                    true,
+                                                    null)
+                                            .flatMap(valueHolder -> {
 
-                                        return this.routingMapProvider.tryGetOverlappingRangesAsync(
-                                                        null,
-                                                        collection.getResourceId(),
-                                                        PartitionKeyInternalHelper.FullRange,
-                                                        true,
-                                                        null)
-                                                .map(valueHolder -> {
+                                                String containerLink = ImplementationBridgeHelpers
+                                                        .CosmosContainerIdentityHelper
+                                                        .getCosmosContainerIdentityAccessor()
+                                                        .getContainerLink(cosmosContainerIdentity);
 
-                                                    if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
-                                                        logger.warn(
-                                                                "There is no pkRanges found for collection {}, no connections will be opened",
-                                                                collection.getResourceId());
-                                                        return new ArrayList<PartitionKeyRangeIdentity>();
-                                                    }
+                                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                                    logger.warn(
+                                                            "There is no pkRanges found for collection {}, no connections will be opened",
+                                                            collection.getResourceId());
+                                                    return Mono.just(new ImmutablePair<>(containerLink, new ArrayList<PartitionKeyRangeIdentity>()));
+                                                }
 
-                                                    return valueHolder.v
-                                                            .stream()
-                                                            .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
-                                                            .collect(Collectors.toList());
-                                                })
-                                                .flatMapMany(pkRangeIdentities -> {
+                                                List<PartitionKeyRangeIdentity> pkrs = valueHolder.v
+                                                        .stream()
+                                                        .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
+                                                        .collect(Collectors.toList());
 
-                                                    String containerLink = ImplementationBridgeHelpers
-                                                            .CosmosContainerIdentityHelper
-                                                            .getCosmosContainerIdentityAccessor()
-                                                            .getContainerLink(containerIdentity);
-
-                                                    return this.resolveAddressesPerCollection(
-                                                            containerLink,
+                                                return Mono.just(new ImmutablePair<String, List<PartitionKeyRangeIdentity>>(containerLink, pkrs));
+                                            })
+                                            .flatMapMany(containerLinkToPkrs -> this.resolveAddressesPerCollection(
+                                                            containerLinkToPkrs.left,
                                                             collection,
-                                                            pkRangeIdentities,
+                                                            containerLinkToPkrs.right,
                                                             proactiveContainerInitConfig,
                                                             hint
-                                                    );
-                                                        }
+                                                    )
+                                            ).flatMap(collectionToAddresses -> {
+                                                ImmutablePair<String, DocumentCollection> containerLinkToCollection
+                                                        = collectionToAddresses.left;
+                                                AddressInformation addressInformation =
+                                                        collectionToAddresses.right;
+
+                                                Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
+                                                        .CosmosContainerProactiveInitConfigHelper
+                                                        .getCosmosContainerIdentityAccessor()
+                                                        .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
+
+                                                int connectionsPerReplicaCountForContainer = containerLinkToMinConnectionsMap
+                                                        .getOrDefault(
+                                                                containerLinkToCollection.left,
+                                                                Configs.getMinConnectionPoolSizePerEndpoint()
+                                                        );
+
+                                                return this.openConnectionInternal(
+                                                        addressInformation,
+                                                        containerLinkToCollection.getRight(),
+                                                        proactiveContainerInitConfig,
+                                                        connectionsPerReplicaCountForContainer,
+                                                        hint,
+                                                        isBackgroundFlow
                                                 );
-                                    }), 1, 1);
-
-            addressResolutionFluxList.add(addressResolutionFlux);
-        }
-
-        Comparator<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> comparator = (o1, o2) -> {
-            if (o1 == null || o2 == null) return -1;
-
-            ImmutablePair<String, DocumentCollection> containerLinkToColl1 = o1.getLeft();
-            ImmutablePair<String, DocumentCollection> containerLinkToColl2 = o2.getLeft();
-
-            return containerLinkToColl1.getLeft().compareTo(containerLinkToColl2.getLeft());
-        };
-
-        List<Flux<OpenConnectionResponse>> openConnectionTasks = new ArrayList<>();
-
-        for (int i = 0; i < addressResolutionFluxList.size(); i++) {
-
-            int startIdx = i;
-            int endIdx = Math.min(i + MaxContainerCountToBatch, addressResolutionFluxList.size());
-
-            Flux<OpenConnectionResponse> openConnectionTask = getMergeCompareFluxOfVariousPublisherCount(startIdx, endIdx, comparator, addressResolutionFluxList)
-                    .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                    .buffer(MaxAddressesToBuffer)
-                    .flatMap(immutablePairs -> {
-                        Collections.shuffle(immutablePairs);
-                        return Mono.just(immutablePairs);
-                    })
-                    .flatMapIterable(immutablePairs -> immutablePairs)
-                    .flatMap(collectionToAddressPair -> {
-
-                                ImmutablePair<String, DocumentCollection> containerLinkToCollection = collectionToAddressPair.left;
-
-                                String containerLink = containerLinkToCollection.left;
-                                DocumentCollection collection = containerLinkToCollection.right;
-                                AddressInformation address = collectionToAddressPair.right;
-
-                                Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
-                                        .CosmosContainerProactiveInitConfigHelper
-                                        .getCosmosContainerIdentityAccessor()
-                                        .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
-
-                                int connectionsPerReplicaCountForContainer = containerLinkToMinConnectionsMap
-                                        .getOrDefault(containerLink, Configs.getMinConnectionPoolSizePerEndpoint());
-
-                                return this.openConnectionInternal(
-                                        address,
-                                        collection,
-                                        proactiveContainerInitConfig,
-                                        connectionsPerReplicaCountForContainer,
-                                        hint,
-                                        isBackgroundFlow
-                                );
-                    }
-                    )
-                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC);
-
-            openConnectionTasks.add(openConnectionTask);
-        }
-
-        return Flux.mergeSequential(openConnectionTasks);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> getMergeCompareFluxOfVariousPublisherCount(
-            int startIdx,
-            int endIdx,
-            Comparator<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> comparator,
-            List<Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>>> addressResolutionFluxList) {
-        return Flux.mergeComparing(1, comparator, addressResolutionFluxList.subList(startIdx, endIdx).toArray(new Flux[0]));
+                                            });
+                                }));
     }
 
     private Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> resolveAddressesPerCollection(
@@ -266,7 +221,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     );
                         }
                         return Flux.empty();
-                    }, 1);
+                    });
         }
 
         return Flux.empty();
@@ -296,7 +251,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     );
                         }
                         return Flux.empty();
-                    }, 1);
+                    });
         }
 
         return Flux.empty();

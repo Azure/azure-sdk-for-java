@@ -685,8 +685,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.clientTelemetry = clientTelemetry;
-            this.rntbdOpenConnectionsHandler = new RntbdOpenConnectionsHandler(this);
             this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
+            this.rntbdOpenConnectionsHandler = new RntbdOpenConnectionsHandler(this, this.proactiveOpenConnectionsProcessor);
             this.serverErrorInjector = serverErrorInjector;
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
@@ -776,7 +776,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                     );
 
                     durableEndpointMetrics.setEndpoint(endpoint);
-
 
                     return endpoint;
                 });

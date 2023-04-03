@@ -108,9 +108,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
-
-    private static final String AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
-    private static final String DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     static {
@@ -121,8 +118,6 @@ public final class CosmosAsyncClient implements Closeable {
         } else {
             TRACER = null;
         }
-        AGGRESSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE = "AGGRESSIVE";
-        DEFENSIVE_OPEN_CONNECTIONS_CONCURRENCY_MODE = "DEFENSIVE";
     }
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -157,7 +152,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.apiType = builder.apiType();
         this.clientCorrelationId =  telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(20);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor();
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -635,130 +630,47 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        blockListVoidResponse(
-                openConnectionsAndInitCachesInternal(new HashSet<>())
-                        .flatMap(tuples -> Mono.just(new ArrayList<>())));
-    }
-
-    void openConnectionsAndInitCaches(Duration timeout) {
-        Set<String> warmedUpContainerLinks = new HashSet<>();
-
-        blockListVoidResponseWithTimeout(
-                openConnectionsAndInitCachesInternal(warmedUpContainerLinks)
-                        .flatMap(tuples -> Mono.just(new ArrayList<>())), timeout);
-
-        openConnectionsInBackground(warmedUpContainerLinks);
-    }
-
-    private Mono<List<Tuple2<CosmosAsyncContainer, ImmutablePair<Long, Long>>>> openConnectionsAndInitCachesInternal(Set<String> warmedUpContainerLinks) {
-        int concurrency = 1;
-        int prefetch = 1;
-
-        if (this.proactiveContainerInitConfig != null) {
-            return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
-                    .flatMap(
-                            cosmosContainerIdentity -> Mono.just(this
-                                    .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                                    .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
-                            concurrency,
-                            prefetch
-                    )
-                    .flatMap(cosmosAsyncContainer -> {
-
-                                Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
-                                        .CosmosContainerProactiveInitConfigHelper
-                                        .getCosmosContainerIdentityAccessor()
-                                        .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
-
-                                return Mono.zip(
-                                        Mono.just(cosmosAsyncContainer),
-                                        cosmosAsyncContainer
-                                                .openConnectionsAndInitCachesInternal(
-                                                        this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount(),
-                                                        containerLinkToMinConnectionsMap
-                                                                .getOrDefault(
-                                                                        cosmosAsyncContainer.getLinkWithoutTrailingSlash(),
-                                                                        Configs.getMinConnectionPoolSizePerEndpoint()
-                                                                ),
-                                                        OpenConnectionAggressivenessHint.AGGRESSIVE,
-                                                        false
-                                                )
-                                );
-                            },
-                            concurrency,
-                            prefetch
-                    )
-                    .doOnNext(objects -> {
-                                long endpointsConnectedCount = objects.getT2().left;
-                                long endpointsConnectionFailedCount = objects.getT2().right;
-
-                                if (endpointsConnectedCount > 0 && endpointsConnectionFailedCount == 0) {
-                                    warmedUpContainerLinks.add(objects.getT1().getLink());
-                                }
-                            }
-                    )
-                    .collectList();
-        }
-        return Mono.empty();
-    }
-
-    private void openConnectionsInBackground(Set<String> warmedUpContainerLinks) {
-
-        int concurrency = 1;
-        int prefetch = 1;
-
-        // prioritized containers for which no endpoints have been created
-        List<CosmosContainerIdentity> nonWarmedUpContainerIdentities = this.proactiveContainerInitConfig
-                .getCosmosContainerIdentities()
-                .stream()
-                .filter(cosmosContainerIdentity -> !warmedUpContainerLinks.contains("/".concat(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))))
-                .collect(Collectors.toList());
-
-        // redo warmup of remaining endpoints in case any are remaining
-        List<CosmosContainerIdentity> warmedUpContainerIdenties = this.proactiveContainerInitConfig
-                .getCosmosContainerIdentities()
-                .stream()
-                .filter(cosmosContainerIdentity -> warmedUpContainerLinks.contains("/".concat(containerIdentityAccessor.getContainerLink(cosmosContainerIdentity))))
-                .collect(Collectors.toList());
+        proactiveOpenConnectionsProcessor
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .subscribe();
 
         asyncDocumentClient.openConnectionsAndInitCaches(
                         proactiveContainerInitConfig,
-                        OpenConnectionAggressivenessHint.DEFENSIVE,
-                        true
+                        OpenConnectionAggressivenessHint.AGGRESSIVE,
+                        false
+                )
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .blockLast()
+        ;
+    }
+
+    void openConnectionsAndInitCaches(Duration timeout) {
+        asyncDocumentClient.openConnectionsAndInitCaches(
+                        proactiveContainerInitConfig,
+                        OpenConnectionAggressivenessHint.AGGRESSIVE,
+                        false
                 )
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
 
-        this.proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisherFromOpenConnectionOperation()
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+        Flux
+                .just(1)
+                .delayElements(timeout)
+                .doOnComplete(() -> {
+                            proactiveOpenConnectionsProcessor.toggleOpenConnectionsAggressiveness();
+                            proactiveOpenConnectionsProcessor.instantiateOpenConnectionsPublisher();
+                            proactiveOpenConnectionsProcessor
+                                    .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                                    .subscribe();
+                }
+                        )
                 .subscribe();
-    }
 
-    private void blockListVoidResponse(Mono<List<Void>> voidListMono) {
-        try {
-            voidListMono.block();
-        } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw Exceptions.propagate(throwable);
-            }
-        }
-    }
-
-    private void blockListVoidResponseWithTimeout(Mono<List<Void>> voidListMono, Duration timeout) {
-        try {
-            voidListMono.block(timeout);
-        } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            }
-        }
+        proactiveOpenConnectionsProcessor
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .sequential()
+                .take(timeout)
+                .subscribe();
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
@@ -90,28 +89,18 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        Callable<Flux<OpenConnectionResponse>> openConnectionsCallable = () -> this.rntbdOpenConnectionsHandler.openConnections(
-                "",
-                this.endpoint.serviceEndpoint(),
-                Arrays.asList(this.addressUris.stream().findFirst().get()),
-                this.endpoint.getMinChannelsRequired(),
-                OpenConnectionAggressivenessHint.DEFENSIVE
+        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
+                new OpenConnectionOperation(
+                        rntbdOpenConnectionsHandler,
+                        "",
+                        endpoint.serviceEndpoint(),
+                        this.addressUris.stream().findFirst().get(),
+                        this.endpoint.getMinChannelsRequired()
+                )
         );
 
-        for (int i = 0; i < endpoint.getMinChannelsRequired(); i++) {
-            this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
-                    new OpenConnectionOperation(
-                            openConnectionsCallable,
-                            endpoint.serviceEndpoint(),
-                            this.addressUris.stream().findFirst().get(),
-                            OpenConnectionAggressivenessHint.DEFENSIVE
-                    )
-            );
-        }
-
         this.proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
                 .subscribe();
     }
     // endregion
