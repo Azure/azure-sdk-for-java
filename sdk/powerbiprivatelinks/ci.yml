@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/powerbiprivatelinks/ci.yml
+      - sdk/powerbiprivatelinks/azure-resourcemanager-powerbiprivatelinks/
+    exclude:
+      - sdk/powerbiprivatelinks/pom.xml
+      - sdk/powerbiprivatelinks/azure-resourcemanager-powerbiprivatelinks/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/powerbiprivatelinks/ci.yml
+      - sdk/powerbiprivatelinks/azure-resourcemanager-powerbiprivatelinks/
+    exclude:
+      - sdk/powerbiprivatelinks/pom.xml
+      - sdk/powerbiprivatelinks/azure-resourcemanager-powerbiprivatelinks/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerpowerbiprivatelinks
+    displayName: azure-resourcemanager-powerbiprivatelinks
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: powerbiprivatelinks
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-powerbiprivatelinks
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerpowerbiprivatelinks
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerpowerbiprivatelinks }}
