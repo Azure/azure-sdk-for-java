@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * The options for updating a room.
  */
-public class UpdateRoomOptions {
+public final class UpdateRoomOptions {
 
     /**
      * The Room Id.

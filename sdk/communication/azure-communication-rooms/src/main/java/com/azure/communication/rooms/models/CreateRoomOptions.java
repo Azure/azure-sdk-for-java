@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * The options for creating a room.
  */
-public class CreateRoomOptions {
+public final class CreateRoomOptions {
 
     /**
      * The starting time point of the room.

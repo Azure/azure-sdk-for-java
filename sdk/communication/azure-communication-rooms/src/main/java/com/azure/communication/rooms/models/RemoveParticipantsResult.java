@@ -6,6 +6,6 @@ package com.azure.communication.rooms.models;
 /**
  * Represents the result of an remove operation for participants in a room.
  */
-public class RemoveParticipantsResult {
+public final class RemoveParticipantsResult {
 
 }
