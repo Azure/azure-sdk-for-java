@@ -692,16 +692,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
         if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
-
-            context.executor().schedule(
-                () -> {
-
-                    rntbdRequestRecord.expire();
-                },
-                delay.toNanos(),
-                TimeUnit.NANOSECONDS
-            );
-
             return;
         }
 
@@ -723,16 +713,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
         if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
-
-            context.executor().schedule(
-                () -> {
-
-                    rntbdRequestRecord.expire();
-                },
-                delay.toNanos(),
-                TimeUnit.NANOSECONDS
-            );
-
             return;
         }
 

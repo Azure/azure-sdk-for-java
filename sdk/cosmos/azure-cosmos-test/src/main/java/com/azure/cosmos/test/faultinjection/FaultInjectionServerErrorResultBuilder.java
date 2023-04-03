@@ -59,6 +59,9 @@ public final class FaultInjectionServerErrorResultBuilder {
      * if the delay exceeds the network request timeout the request is not even sent to the service. This property
      * can be used to override the behavior.
      *
+     * NOTE: If suppressServiceRequests == true the injected delay will not be reported in the transit time
+     * request pipeline step but in the received pipeline step.
+     *
      * @param suppressServiceRequests a flag indicating whether to send the requests to the service.
      * @return the builder.
      */
