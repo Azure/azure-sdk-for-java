@@ -1,6 +1,6 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTextTranslator.json#",
-    "contentVersion": "1.0.0.0",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTextTranslator.json#",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "baseName": {
       "type": "string",
