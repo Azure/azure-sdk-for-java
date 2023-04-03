@@ -312,7 +312,7 @@ public class ClientSideRequestStatistics {
         for (Map.Entry<String, AddressResolutionStatistics> pair : otherAddressResolutionStatistics.entrySet()) {
             this.addressResolutionStatistics.putIfAbsent(
                 pair.getKey(),
-                otherAddressResolutionStatistics.get(pair.getValue()));
+                pair.getValue());
         }
     }
 
