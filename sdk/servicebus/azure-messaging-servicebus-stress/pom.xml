@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>applicationinsights-core</artifactId>
-      <version>3.4.1</version>  <!-- {x-version-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
+      <version>3.4.10</version>  <!-- {x-version-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
     </dependency>
 
     <!-- Enable SDK metrics -->
@@ -85,7 +85,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:applicationinsights-core:[3.4.1]</include> <!-- {x-include-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.7.13]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.codehaus.janino:janino:[3.1.9]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
               </includes>

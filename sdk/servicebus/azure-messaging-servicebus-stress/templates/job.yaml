@@ -2,9 +2,9 @@
 {{- define "stress.java-servicebus" -}}
 metadata:
   labels:
-    testInstance: "servicebus-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
     testName: servicebus-stress-test
-    chaos: "true"
+    chaos: "{{ default false .Stress.chaos }}"
 spec:
   containers:
     - name: sender
@@ -17,7 +17,7 @@ spec:
           source $ENV_FILE &&
           export CONTAINER_NAME=sender &&
           export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.10.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=MessageSender
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -38,7 +38,7 @@ spec:
           source $ENV_FILE &&
           export CONTAINER_NAME=receiver &&
           export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.10.jar \
           -Dreactor.schedulers.defaultBoundedElasticSize=100 \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=MessageProcessor
@@ -50,4 +50,40 @@ spec:
         limits:
           memory: "2G"
           cpu: "2"
+{{- end -}}
+
+{{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}
+{{- define "stress.network-chaos" -}}
+# basically: every 5 minutes do 10s of network loss
+kind: Schedule
+apiVersion: chaos-mesh.org/v1alpha1
+spec:
+  schedule: "*/5 * * * *"
+  type: NetworkChaos
+  historyLimit: 10
+  concurrencyPolicy: Allow
+  networkChaos:
+    selector:
+      namespaces:
+        - "{{ .Release.Namespace }}"
+      labelSelectors:
+        testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+        chaos: "true"
+    mode: all
+    action: loss
+    duration: 45s
+    loss:
+      loss: '100'
+      correlation: '100'
+    direction: to
+    target:
+      selector:
+        namespaces:
+          - {{ .Release.Namespace }}
+        labelSelectors:
+          testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
+          chaos: "true"
+      mode: all
+    externalTargets:
+      - {{ .Stress.BaseName }}.servicebus.windows.net
 {{- end -}}
