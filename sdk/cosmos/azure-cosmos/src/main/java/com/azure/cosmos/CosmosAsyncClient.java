@@ -663,10 +663,6 @@ public final class CosmosAsyncClient implements Closeable {
                 .subscribe();
     }
 
-    private void verifyProactiveContainerInitConfig() {
-
-    }
-
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryDatabases";

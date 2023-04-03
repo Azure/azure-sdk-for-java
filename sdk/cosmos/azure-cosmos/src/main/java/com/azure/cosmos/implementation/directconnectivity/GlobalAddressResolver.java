@@ -257,7 +257,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
 
         // setup proactiveOpenConnectionsProcessor for existing address cache
-        // For the new ones added later, the openConnectionHandler will pass through constructor
+        // For the new ones added later, the proactiveOpenConnectionsProcessor will pass through constructor
         for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
             endpointCache.addressCache.setOpenConnectionsProcessor(this.proactiveOpenConnectionsProcessor);
         }

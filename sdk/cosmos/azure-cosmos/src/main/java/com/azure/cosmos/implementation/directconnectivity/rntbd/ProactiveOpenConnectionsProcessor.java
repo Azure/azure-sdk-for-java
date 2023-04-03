@@ -140,12 +140,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // when the flux associated with openConnectionsTaskSink is cancelled
     // this method provides for a way to resume emitting pushed tasks to
     // the sink
-    public synchronized void instantiateOpenConnectionsPublisher() {
+    private synchronized void instantiateOpenConnectionsPublisher() {
         openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
         openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
 
-    public synchronized void toggleOpenConnectionsAggressiveness() {
+    private synchronized void toggleOpenConnectionsAggressiveness() {
         if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.AGGRESSIVE) {
             aggressivenessHint.set(OpenConnectionAggressivenessHint.DEFENSIVE);
         } else {
