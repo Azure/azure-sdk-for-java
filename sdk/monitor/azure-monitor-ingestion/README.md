@@ -17,6 +17,40 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-monitor-ingestion</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 [//]: # ({x-version-update-start;com.azure:azure-monitor-ingestion;current})
 ```xml
 <dependency>
@@ -30,11 +64,12 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 ### Create the client
 
 An authenticated client is required to upload logs to Azure Monitor. The library includes both synchronous and asynchronous forms of the clients. To authenticate, 
-the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://search.maven.org/artifact/com.azure/azure-identity) package.
+the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity/1.9.0-beta.2/versions) package.
 
 #### Authenticating using Azure Active Directory
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
+
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
