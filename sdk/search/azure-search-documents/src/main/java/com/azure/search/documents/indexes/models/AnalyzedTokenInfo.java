@@ -144,10 +144,10 @@ public final class AnalyzedTokenInfo implements JsonSerializable<AnalyzedTokenIn
                         }
                     }
                     if (tokenFound && startOffsetFound && endOffsetFound && positionFound) {
-                        AnalyzedTokenInfo deserializedValue =
+                        AnalyzedTokenInfo deserializedAnalyzedTokenInfo =
                                 new AnalyzedTokenInfo(token, startOffset, endOffset, position);
 
-                        return deserializedValue;
+                        return deserializedAnalyzedTokenInfo;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!tokenFound) {

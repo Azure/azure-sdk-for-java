@@ -104,9 +104,9 @@ public final class MappingCharFilter extends CharFilter {
                         }
                     }
                     if (nameFound && mappingsFound) {
-                        MappingCharFilter deserializedValue = new MappingCharFilter(name, mappings);
+                        MappingCharFilter deserializedMappingCharFilter = new MappingCharFilter(name, mappings);
 
-                        return deserializedValue;
+                        return deserializedMappingCharFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of a long running operation. */
@@ -28,8 +29,19 @@ public final class OperationDetails {
     @JsonProperty(value = "error")
     private ErrorDetail error;
 
-    /** Creates an instance of OperationDetails class. */
-    public OperationDetails() {}
+    /**
+     * Creates an instance of OperationDetails class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     */
+    @JsonCreator
+    public OperationDetails(
+            @JsonProperty(value = "id", required = true) String id,
+            @JsonProperty(value = "status", required = true) State status) {
+        this.id = id;
+        this.status = status;
+    }
 
     /**
      * Get the id property: The unique id of the operation.
@@ -41,34 +53,12 @@ public final class OperationDetails {
     }
 
     /**
-     * Set the id property: The unique id of the operation.
-     *
-     * @param id the id value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the status property: The current status of the operation.
      *
      * @return the status value.
      */
     public State getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The current status of the operation.
-     *
-     * @param status the status value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setStatus(State status) {
-        this.status = status;
-        return this;
     }
 
     /**

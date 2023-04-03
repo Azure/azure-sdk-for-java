@@ -211,15 +211,15 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                         }
                     }
                     if (resultsFound) {
-                        SearchDocumentsResult deserializedValue = new SearchDocumentsResult(results);
-                        deserializedValue.count = count;
-                        deserializedValue.coverage = coverage;
-                        deserializedValue.facets = facets;
-                        deserializedValue.answers = answers;
-                        deserializedValue.nextPageParameters = nextPageParameters;
-                        deserializedValue.nextLink = nextLink;
+                        SearchDocumentsResult deserializedSearchDocumentsResult = new SearchDocumentsResult(results);
+                        deserializedSearchDocumentsResult.count = count;
+                        deserializedSearchDocumentsResult.coverage = coverage;
+                        deserializedSearchDocumentsResult.facets = facets;
+                        deserializedSearchDocumentsResult.answers = answers;
+                        deserializedSearchDocumentsResult.nextPageParameters = nextPageParameters;
+                        deserializedSearchDocumentsResult.nextLink = nextLink;
 
-                        return deserializedValue;
+                        return deserializedSearchDocumentsResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!resultsFound) {

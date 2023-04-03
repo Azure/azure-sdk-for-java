@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -35,8 +36,19 @@ public final class ErrorDetail {
     @JsonProperty(value = "innererror")
     private InnerError innererror;
 
-    /** Creates an instance of ErrorDetail class. */
-    public ErrorDetail() {}
+    /**
+     * Creates an instance of ErrorDetail class.
+     *
+     * @param code the code value to set.
+     * @param message the message value to set.
+     */
+    @JsonCreator
+    public ErrorDetail(
+            @JsonProperty(value = "code", required = true) String code,
+            @JsonProperty(value = "message", required = true) String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     /**
      * Get the code property: One of a server-defined set of error codes.
@@ -48,34 +60,12 @@ public final class ErrorDetail {
     }
 
     /**
-     * Set the code property: One of a server-defined set of error codes.
-     *
-     * @param code the code value to set.
-     * @return the ErrorDetail object itself.
-     */
-    public ErrorDetail setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: A human-readable representation of the error.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: A human-readable representation of the error.
-     *
-     * @param message the message value to set.
-     * @return the ErrorDetail object itself.
-     */
-    public ErrorDetail setMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     /**

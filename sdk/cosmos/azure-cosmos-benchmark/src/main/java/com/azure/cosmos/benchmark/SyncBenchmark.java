@@ -9,10 +9,13 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
@@ -108,6 +111,7 @@ abstract class SyncBenchmark<T> {
             .endpoint(cfg.getServiceEndpoint())
             .preferredRegions(cfg.getPreferredRegionsList())
             .key(cfg.getMasterKey())
+            .userAgentSuffix(configuration.getApplicationName())
             .consistencyLevel(cfg.getConsistencyLevel())
             .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
@@ -119,6 +123,19 @@ abstract class SyncBenchmark<T> {
             gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
+
+        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+            .sendClientTelemetryToService(cfg.isClientTelemetryEnabled())
+            .diagnosticsThresholds(
+                new CosmosDiagnosticsThresholds()
+                    .setPointOperationLatencyThreshold(cfg.getPointOperationThreshold())
+                    .setNonPointOperationLatencyThreshold(cfg.getNonPointOperationThreshold())
+            );
+
+        if (configuration.isDefaultLog4jLoggerEnabled()) {
+            telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
+        }
+
         cosmosClient = cosmosClientBuilder.buildClient();
         try {
             cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());

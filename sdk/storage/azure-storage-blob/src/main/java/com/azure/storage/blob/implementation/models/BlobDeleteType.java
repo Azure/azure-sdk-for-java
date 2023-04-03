@@ -14,6 +14,14 @@ public final class BlobDeleteType extends ExpandableStringEnum<BlobDeleteType> {
     public static final BlobDeleteType PERMANENT = fromString("Permanent");
 
     /**
+     * Creates a new instance of BlobDeleteType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobDeleteType() {}
+
+    /**
      * Creates or finds a BlobDeleteType from its string representation.
      *
      * @param name a name to look for.

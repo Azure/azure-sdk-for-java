@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SnapshotSamples {
@@ -52,17 +53,16 @@ public class SnapshotSamples {
         // ConfigurationSetting Snapshots properties
         CompositionType compositionType = snapShot.getCompositionType();
         Duration retentionPeriod = snapShot.getRetentionPeriod();
-        IterableStream<SnapshotSettingFilter> filters = snapShot.getFilters();
+        List<SnapshotSettingFilter> filters = snapShot.getFilters();
         Map<String, String> tags1 = snapShot.getTags();
         // Ready-only
         String name = snapShot.getName();
-        String eTag = snapShot.getETag();
+        String eTag = snapShot.getEtag();
         OffsetDateTime createdAt = snapShot.getCreatedAt();
         OffsetDateTime expiresAt = snapShot.getExpiresAt();
         Long size = snapShot.getSize();
         SnapshotStatus status = snapShot.getStatus();
         Long itemCount = snapShot.getItemCount();
-        Integer statusCode = snapShot.getStatusCode();
 
         // 2. Get single snapshot
         ConfigurationSettingSnapshot getSnapshotByName = client.getSnapShot(name);

@@ -64,22 +64,20 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
     public static RequestOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    UUID xMsClientRequestId = null;
+                    RequestOptions deserializedRequestOptions = new RequestOptions();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("x-ms-client-request-id".equals(fieldName)) {
-                            xMsClientRequestId =
+                            deserializedRequestOptions.xMsClientRequestId =
                                     reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    RequestOptions deserializedValue = new RequestOptions();
-                    deserializedValue.xMsClientRequestId = xMsClientRequestId;
 
-                    return deserializedValue;
+                    return deserializedRequestOptions;
                 });
     }
 }

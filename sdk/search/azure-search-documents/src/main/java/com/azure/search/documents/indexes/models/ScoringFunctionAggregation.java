@@ -8,19 +8,19 @@ package com.azure.search.documents.indexes.models;
 
 /** Defines the aggregation function used to combine the results of all the scoring functions in a scoring profile. */
 public enum ScoringFunctionAggregation {
-    /** Enum value sum. */
+    /** Boost scores by the sum of all scoring function results. */
     SUM("sum"),
 
-    /** Enum value average. */
+    /** Boost scores by the average of all scoring function results. */
     AVERAGE("average"),
 
-    /** Enum value minimum. */
+    /** Boost scores by the minimum of all scoring function results. */
     MINIMUM("minimum"),
 
-    /** Enum value maximum. */
+    /** Boost scores by the maximum of all scoring function results. */
     MAXIMUM("maximum"),
 
-    /** Enum value firstMatching. */
+    /** Boost scores using the first applicable scoring function in the scoring profile. */
     FIRST_MATCHING("firstMatching");
 
     /** The actual serialized value for a ScoringFunctionAggregation instance. */

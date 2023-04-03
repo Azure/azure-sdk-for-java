@@ -90,25 +90,22 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
     public static SearchIndexerCache fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String storageConnectionString = null;
-                    Boolean enableReprocessing = null;
+                    SearchIndexerCache deserializedSearchIndexerCache = new SearchIndexerCache();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("storageConnectionString".equals(fieldName)) {
-                            storageConnectionString = reader.getString();
+                            deserializedSearchIndexerCache.storageConnectionString = reader.getString();
                         } else if ("enableReprocessing".equals(fieldName)) {
-                            enableReprocessing = reader.getNullable(JsonReader::getBoolean);
+                            deserializedSearchIndexerCache.enableReprocessing =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SearchIndexerCache deserializedValue = new SearchIndexerCache();
-                    deserializedValue.storageConnectionString = storageConnectionString;
-                    deserializedValue.enableReprocessing = enableReprocessing;
 
-                    return deserializedValue;
+                    return deserializedSearchIndexerCache;
                 });
     }
 }

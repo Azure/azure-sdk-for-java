@@ -20,6 +20,14 @@ public final class RehydratePriority extends ExpandableStringEnum<RehydratePrior
     public static final RehydratePriority STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of RehydratePriority value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RehydratePriority() {}
+
+    /**
      * Creates or finds a RehydratePriority from its string representation.
      *
      * @param name a name to look for.

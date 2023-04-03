@@ -4,15 +4,12 @@
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.data.appconfiguration.implementation.models.CompositionType;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.Snapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,23 +37,6 @@ public class Utility {
      * Represents any value in Etag.
      */
     public static final String ETAG_ANY = "*";
-
-    public static ConfigurationSettingSnapshot toConfigurationSettingSnapshot(Snapshot snapshot) {
-        List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
-        pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
-
-        return new ConfigurationSettingSnapshot(toSnapshotFilters(snapshot.getFilters()))
-                   .setTags(snapshot.getTags())
-                   .setCompositionType(com.azure.data.appconfiguration.models.CompositionType.fromString(snapshot.getCompositionType().toString()))
-                   .setRetentionPeriod(Duration.ofSeconds(snapshot.getRetentionPeriod()));
-    }
-
-    public static Snapshot toSnapshot(ConfigurationSettingSnapshot configurationSettingSnapshot) {
-        return new Snapshot(configurationSettingSnapshot.getFilters().)
-                   .setCompositionType(CompositionType.fromString(configurationSettingSnapshot.getCompositionType().toString()))
-                   .setTags(configurationSettingSnapshot.getTags())
-                   .setRetentionPeriod(configurationSettingSnapshot.getRetentionPeriod().getSeconds());
-    }
 
     /*
      * Translate public ConfigurationSetting to KeyValue autorest generated class.
@@ -111,12 +91,8 @@ public class Utility {
         return isEtagRequired ? getETagValue(setting.getETag()) : null;
     }
 
-    public static String getIfMatchETagSnapshot(boolean ifUnchanged, ConfigurationSettingSnapshot snapshot) {
-        return ifUnchanged ? getETagValue(snapshot.getETag()) : null;
-    }
-
-    public static String getIfNoneMatchETagSnapshot(boolean onlyIfChanged, ConfigurationSettingSnapshot snapshot) {
-        return onlyIfChanged ? getETagValue(snapshot.getETag()) : null;
+    public static String getEtagSnapshot(boolean isEtagRequired, ConfigurationSettingSnapshot snapshot) {
+        return isEtagRequired ? getETagValue(snapshot.getEtag()) : null;
     }
 
     /*

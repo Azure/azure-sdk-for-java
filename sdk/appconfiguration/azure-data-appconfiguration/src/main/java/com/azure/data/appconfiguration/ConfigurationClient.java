@@ -28,8 +28,6 @@ import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
-import com.azure.data.appconfiguration.implementation.models.Snapshot;
-import com.azure.data.appconfiguration.implementation.models.SnapshotStatus;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -39,9 +37,11 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -50,11 +50,9 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
-import static com.azure.data.appconfiguration.implementation.Utility.getIfMatchETagSnapshot;
-import static com.azure.data.appconfiguration.implementation.Utility.toConfigurationSettingSnapshot;
+import static com.azure.data.appconfiguration.implementation.Utility.getEtagSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
-import static com.azure.data.appconfiguration.implementation.Utility.toSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
@@ -931,7 +929,7 @@ public final class ConfigurationClient {
      * @return snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingSnapshot createSnapShot(String name, Iterable<SnapshotSettingFilter> filters) {
+    public ConfigurationSettingSnapshot createSnapShot(String name, List<SnapshotSettingFilter> filters) {
         return createSnapShotWithResponse(name, new ConfigurationSettingSnapshot(filters), Context.NONE).getValue();
     }
 
@@ -945,9 +943,9 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> createSnapShotWithResponse(String name,
         ConfigurationSettingSnapshot snapshot, Context context) {
-        final ResponseBase<CreateSnapshotHeaders, Snapshot> response = serviceClient.createSnapshotWithResponse(
-            name, toSnapshot(snapshot), context);
-        return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
+        final ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.createSnapshotWithResponse(name, snapshot, context);
+        return new SimpleResponse<>(response, response.getValue());
     }
 
     /**
@@ -970,9 +968,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> getSnapShotWithResponse(String name, Context context) {
-        final ResponseBase<GetSnapshotHeaders, Snapshot> response = serviceClient.getSnapshotWithResponse(
-            name, null, null, null, context);
-        return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
+        final ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.getSnapshotWithResponse(name, null, null, null, context);
+        return new SimpleResponse<>(response, response.getValue());
     }
 
     /**
@@ -991,7 +989,7 @@ public final class ConfigurationClient {
      * Archiving snapshot from Ready status.
      *
      * @param snapshot name of snapshots
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()}  ETag} is
      * used as a IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return snapshots.
@@ -999,10 +997,11 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> archiveSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
         boolean ifUnchanged, Context context) {
-        final ResponseBase<UpdateSnapshotHeaders, Snapshot> response = serviceClient.updateSnapshotWithResponse(
-            snapshot.getName(), new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
-            getIfMatchETagSnapshot(ifUnchanged, snapshot), null, context);
-        return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.updateSnapshotWithResponse(snapshot.getName(),
+                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
+                getEtagSnapshot(ifUnchanged, snapshot), null, context);
+        return new SimpleResponse<>(response, response.getValue());
     }
 
 
@@ -1021,7 +1020,7 @@ public final class ConfigurationClient {
      * recovering snapshot from archived status.
      *
      * @param snapshot snapshots.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()}  ETag} is
      * used as a IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return snapshots.
@@ -1029,10 +1028,11 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> recoverSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
         boolean ifUnchanged, Context context) {
-        final ResponseBase<UpdateSnapshotHeaders, Snapshot> response = serviceClient.updateSnapshotWithResponse(
-            snapshot.getName(), new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
-            getIfMatchETagSnapshot(ifUnchanged, snapshot), null, context);
-        return new SimpleResponse<>(response, toConfigurationSettingSnapshot(response.getValue()));
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.updateSnapshotWithResponse(snapshot.getName(),
+                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
+                getEtagSnapshot(ifUnchanged, snapshot), null, context);
+        return new SimpleResponse<>(response, response.getValue());
     }
 
     /**
@@ -1057,7 +1057,7 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSettingSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
         return new PagedIterable<>(
             () -> {
-                final PagedResponse<Snapshot> pagedResponse = serviceClient.getSnapshotsSinglePage(
+                final PagedResponse<ConfigurationSettingSnapshot> pagedResponse = serviceClient.getSnapshotsSinglePage(
                     selector.getName(),
                     null,
                     null,
@@ -1069,21 +1069,21 @@ public final class ConfigurationClient {
                     pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(snapshot -> toConfigurationSettingSnapshot(snapshot))
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(),
                     null);
             },
             nextLink -> {
-                final PagedResponse<Snapshot> pagedResponse = serviceClient.getSnapshotsNextSinglePage(nextLink,
-                    enableSyncRestProxy(addTracingNamespace(context)));
+                final PagedResponse<ConfigurationSettingSnapshot> pagedResponse =
+                    serviceClient.getSnapshotsNextSinglePage(nextLink,
+                        enableSyncRestProxy(addTracingNamespace(context)));
                 return new PagedResponseBase<>(
                     pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(),
                     pagedResponse.getHeaders(),
                     pagedResponse.getValue()
                         .stream()
-                        .map(snapshot -> toConfigurationSettingSnapshot(snapshot)).collect(Collectors.toList()),
+                        .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(),
                     null);
             }

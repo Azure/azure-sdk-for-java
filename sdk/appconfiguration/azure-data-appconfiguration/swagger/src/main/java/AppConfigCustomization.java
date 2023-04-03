@@ -13,6 +13,8 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
+
 /**
  * This class contains the customization code to customize the AutoRest generated code for App Configuration.
  */
@@ -24,6 +26,27 @@ public class AppConfigCustomization extends Customization {
 
         customizeKeyValueFilter(models.getClass("SnapshotSettingFilter"));
         customizeKeyValueFields(models.getClass("SettingFields"));
+        customizeSnapshot(models.getClass("ConfigurationSettingSnapshot"));
+    }
+
+    private void customizeSnapshot(ClassCustomization classCustomization) {
+        // Transfer Long to Duration internally
+        classCustomization.getMethod("getRetentionPeriod")
+            .setReturnType("Duration", "")
+            .replaceBody(joinWithNewline(
+                "if (this.retentionPeriod == null) {",
+                "    return null;",
+                "}",
+                "return Duration.ofSeconds(this.retentionPeriod);"
+                ),
+                Arrays.asList("java.time.Duration"));
+
+        classCustomization.getMethod("setRetentionPeriod")
+            .replaceParameters("Duration retentionPeriod")
+            .replaceBody(joinWithNewline(
+                "this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();",
+                "return this;"
+            ));
     }
 
     private void customizeKeyValueFilter(ClassCustomization classCustomization) {
@@ -39,8 +62,6 @@ public class AppConfigCustomization extends Customization {
         classCustomization.getMethod("getLabel")
             .getJavadoc()
             .setDescription("Get the label property: Filters {@link ConfigurationSetting} by their label field.");
-        classCustomization.getConstructor("SnapshotSettingFilter")
-            .removeAnnotation("JsonCreator");
     }
 
     private void customizeKeyValueFields(ClassCustomization classCustomization) {

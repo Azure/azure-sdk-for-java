@@ -11,7 +11,7 @@ import java.util.Collection;
 
 /** Details the status of an individual indexer execution. */
 public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<IndexerExecutionStatusDetail> {
-    /** Static value resetDocs for IndexerExecutionStatusDetail. */
+    /** Indicates that the reset that occurred was for a call to ResetDocs. */
     public static final IndexerExecutionStatusDetail RESET_DOCS = fromString("resetDocs");
 
     /**

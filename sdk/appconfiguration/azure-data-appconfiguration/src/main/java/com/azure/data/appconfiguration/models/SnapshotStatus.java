@@ -6,10 +6,9 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
-/** The current status of the snapshot. */
+/** The desired status of the snapshot. */
 public final class SnapshotStatus extends ExpandableStringEnum<SnapshotStatus> {
     /** Static value provisioning for SnapshotStatus. */
     public static final SnapshotStatus PROVISIONING = fromString("provisioning");
@@ -22,6 +21,14 @@ public final class SnapshotStatus extends ExpandableStringEnum<SnapshotStatus> {
 
     /** Static value failed for SnapshotStatus. */
     public static final SnapshotStatus FAILED = fromString("failed");
+
+    /**
+     * Creates a new instance of SnapshotStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnapshotStatus() {}
 
     /**
      * Creates or finds a SnapshotStatus from its string representation.

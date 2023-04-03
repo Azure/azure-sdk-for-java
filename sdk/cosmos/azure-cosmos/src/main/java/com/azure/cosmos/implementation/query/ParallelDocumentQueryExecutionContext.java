@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -33,6 +32,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,6 +52,9 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap;
@@ -377,8 +380,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                 }
 
                 DocumentProducer<T>.DocumentProducerFeedResponse page;
-                page = current;
-                page = this.addCompositeContinuationToken(page,
+                page = this.addCompositeContinuationToken(current,
                         compositeContinuationToken);
 
                 return page;
@@ -403,8 +405,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         UUID correlatedActivityId,
         String activityId,
         Supplier<String> operationContextTextProvider) {
-        List<ClientSideRequestStatistics> requestStatistics =
-            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+        Collection<ClientSideRequestStatistics> requestStatistics =
+            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {
