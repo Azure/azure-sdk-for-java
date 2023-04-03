@@ -36,11 +36,13 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis.administration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <graalvm.disable>false</graalvm.disable>
+    <nativeImage.buildArgs></nativeImage.buildArgs>
+
   </properties>
 
   <dependencies>

@@ -1,0 +1,16 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
+    parameters:
+      ServiceDirectory: formrecognizer
+      timeoutInMinutes: 150 # how long to run the job before automatically cancelling
+      Artifacts:
+        - name: azure-ai-formrecognizer
+          groupId: com.azure
+          safeName: azureaiformrecognizer
+      CloudConfig:
+        Public:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          Location: 'eastus'
+      SupportedClouds: 'Public'
