@@ -297,10 +297,16 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
                         getErrorContext()));
                 } else if (failure instanceof TimeoutException) {
-                    return Mono.empty(); // Retry always
+                    return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    return Mono.empty(); // Retry always
+                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
+                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
+                    //
+                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
+                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
+                    //
+                    return Mono.delay(Duration.ZERO);
                 } else {
                     final long id = System.nanoTime();
                     LOGGER.atInfo()
