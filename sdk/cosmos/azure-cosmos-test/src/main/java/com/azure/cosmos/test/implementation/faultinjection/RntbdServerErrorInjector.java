@@ -36,9 +36,9 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
         if (serverResponseDelayRule != null) {
 
-            if (serverResponseDelayRule.getResult() != null &&
-                serverResponseDelayRule.getResult().getSuppressServiceRequests() != null &&
-                !serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
+            if (serverResponseDelayRule.getResult() != null
+                && serverResponseDelayRule.getResult().getSuppressServiceRequests() != null
+                && !serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
 
                 // delay will be injected after processing the request
                 return false;
@@ -64,9 +64,9 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
         if (serverResponseDelayRule != null) {
 
-            if (serverResponseDelayRule.getResult() == null ||
-                serverResponseDelayRule.getResult().getSuppressServiceRequests() == null ||
-                serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
+            if (serverResponseDelayRule.getResult() == null
+                || serverResponseDelayRule.getResult().getSuppressServiceRequests() == null
+                || serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
 
                 // delay was injected before processing the request
                 return false;

@@ -92,9 +92,12 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         CosmosItemRequestOptions options = null;
         if (requestOptionsWriteRetryPolicy != null) {
             options = new CosmosItemRequestOptions();
-            options.setNonIdempotentWriteRetriesEnabled(
-                requestOptionsWriteRetryPolicy.isEnabled(),
-                requestOptionsWriteRetryPolicy.useTrackingIdProperty());
+            if (requestOptionsWriteRetryPolicy.isEnabled()) {
+                options.enableNonIdempotentWriteRetriesEnabled(
+                    requestOptionsWriteRetryPolicy.useTrackingIdProperty());
+            } else {
+                options.disableNonIdempotentWriteRetriesEnabled();
+            }
         }
 
         return options;

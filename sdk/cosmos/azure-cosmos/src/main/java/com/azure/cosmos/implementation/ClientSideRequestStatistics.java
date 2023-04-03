@@ -297,9 +297,10 @@ public class ClientSideRequestStatistics {
             return;
         }
 
-
-        for (String key : otherAddressResolutionStatistics.keySet()) {
-            this.addressResolutionStatistics.putIfAbsent(key, otherAddressResolutionStatistics.get(key));
+        for (Map.Entry<String, AddressResolutionStatistics> pair : otherAddressResolutionStatistics.entrySet()) {
+            this.addressResolutionStatistics.putIfAbsent(
+                pair.getKey(),
+                otherAddressResolutionStatistics.get(pair.getValue()));
         }
     }
 
