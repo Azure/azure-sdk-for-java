@@ -1859,9 +1859,20 @@ public class CosmosAsyncContainer {
         Context context,
         Class<T> itemType) {
 
+        WriteRetryPolicy nonIdempotentWriteRetryPolicy = itemOptionsAccessor
+            .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                options,
+                this.database.getClient().getNonIdempotentWriteRetryPolicy(),
+                false);
+
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+        if (nonIdempotentWriteRetryPolicy.isEnabled()) {
+            requestOptions.setNonIdempotentWriteRetriesEnabled(true);
+        }
+
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .patchDocument(getItemLink(itemId), cosmosPatchOperations, ModelBridgeInternal.toRequestOptions(options))
+            .patchDocument(getItemLink(itemId), cosmosPatchOperations, requestOptions)
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
         CosmosAsyncClient client = database

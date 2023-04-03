@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
@@ -104,6 +106,21 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         CosmosItemRequestOptions options = null;
         if (requestOptionsWriteRetryPolicy != null) {
             options = new CosmosItemRequestOptions();
+            if (requestOptionsWriteRetryPolicy.isEnabled()) {
+                options.enableNonIdempotentWriteRetriesEnabled(
+                    requestOptionsWriteRetryPolicy.useTrackingIdProperty());
+            } else {
+                options.disableNonIdempotentWriteRetriesEnabled();
+            }
+        }
+
+        return options;
+    }
+
+    public CosmosPatchItemRequestOptions createPatchRequestOptions(WriteRetryPolicy requestOptionsWriteRetryPolicy) {
+        CosmosPatchItemRequestOptions options = null;
+        if (requestOptionsWriteRetryPolicy != null) {
+            options = new CosmosPatchItemRequestOptions();
             if (requestOptionsWriteRetryPolicy.isEnabled()) {
                 options.enableNonIdempotentWriteRetriesEnabled(
                     requestOptionsWriteRetryPolicy.useTrackingIdProperty());
@@ -300,6 +317,33 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             new Object[] { NO_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.OK },
             new Object[] { WITH_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.PRECONDITION_FAILED },
             new Object[] { NO_PRECONDITION_CHECK, CONTENT_RESPONSE_ENABLED, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+        };
+    }
+
+    @DataProvider(name = "patchItemTestCaseProvider")
+    private Object[][] patchItemTestCaseProvider() {
+        // following parameters will be set
+        // - should inject any failure?
+        // - should suppress service request?
+        // - client write retry policy
+        // - requestOptions retry policy
+        // - expected StatusCode
+        return new Object[][]{
+            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
         };
     }
 
@@ -512,6 +556,50 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             executeAndValidateForDelete (
                 () -> container.deleteItem(id, new PartitionKey(id), options),
                 expectedStatusCode);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+                container.getDatabase().getClient().close();
+                logger.info("JSON-Traces: {}", this.mockTracer.toJson());
+            }
+        }
+    }
+
+    @Test(groups = { "simple", "emulator" }, dataProvider = "patchItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    public void patchItem(
+        boolean injectFailure,
+        Boolean suppressServiceRequests,
+        WriteRetryPolicy clientWideWriteRetryPolicy,
+        WriteRetryPolicy requestOptionsWriteRetryPolicy,
+        int expectedStatusCode) {
+
+        if (injectFailure &&
+            this.getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        String id = UUID.randomUUID().toString();
+        this.createTestDocument(id);
+
+        CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
+        CosmosPatchItemRequestOptions options = createPatchRequestOptions(requestOptionsWriteRetryPolicy);
+        FaultInjectionRule rule = null;
+
+        if (injectFailure) {
+            rule = injectFailure(container, FaultInjectionOperationType.PATCH_ITEM, suppressServiceRequests);
+        }
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create()
+            .set("/dummy2", UUID.randomUUID().toString());
+
+        try {
+            executeAndValidate(() -> container.patchItem(
+                    id, new PartitionKey(id), patchOperations, options, ObjectNode.class),
+                id,
+                expectedStatusCode,
+                false,
+                true);
         } finally {
             if (rule != null) {
                 rule.disable();
