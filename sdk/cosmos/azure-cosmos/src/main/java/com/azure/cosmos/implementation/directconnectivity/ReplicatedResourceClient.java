@@ -24,10 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -194,12 +192,11 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<Void> openConnectionsAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     ) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
+        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

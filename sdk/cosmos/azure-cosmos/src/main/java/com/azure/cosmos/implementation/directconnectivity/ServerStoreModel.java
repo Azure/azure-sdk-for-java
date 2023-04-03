@@ -20,9 +20,6 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
-
-import java.util.List;
 
 public class ServerStoreModel implements RxStoreModel {
     private final StoreClient storeClient;
@@ -62,12 +59,11 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     ) {
-        return this.storeClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
+        return this.storeClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
     }
 
     @Override

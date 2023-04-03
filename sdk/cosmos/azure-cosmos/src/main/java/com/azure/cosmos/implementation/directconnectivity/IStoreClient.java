@@ -11,9 +11,7 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
-import java.util.List;
 import java.util.function.Function;
 
 public interface IStoreClient {
@@ -40,9 +38,8 @@ public interface IStoreClient {
         return processMessageAsync(request, null, null);
     }
 
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     );
 }

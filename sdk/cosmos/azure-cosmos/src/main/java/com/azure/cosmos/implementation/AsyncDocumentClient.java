@@ -30,7 +30,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -1682,10 +1681,9 @@ public interface AsyncDocumentClient {
      * @param hint
      * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     );
 
     /***

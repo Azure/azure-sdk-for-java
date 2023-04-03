@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -124,7 +125,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
-    public void openConnectionsAndInitCachesWithCosmosClient(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int ignore) {
+    public void openConnectionsAndInitCachesWithCosmosClient(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int ignore, Duration ignoreParam5) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
 
@@ -224,7 +225,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
-    public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredParam3, int ignoredParam4) {
+    public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredParam3, int ignoredParam4, Duration ignore) {
         CosmosAsyncClient asyncClient = null;
 
         try {
@@ -320,7 +321,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughSystemConfig(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignore) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
 
@@ -427,7 +428,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignore) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
 
@@ -464,7 +465,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .directMode()
                     .buildAsyncClient();
 
-            Thread.sleep(45_000);
+            Thread.sleep(10_000);
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
@@ -528,10 +529,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 totalConnectionCountForAllEndpoints += endpoint.channelsMetrics();
             }
 
-            System.out.println("Total connection count : " + totalConnectionCountForAllEndpoints);
-            System.out.println("Correct connection count : " + (endpoints.size() * minConnectionPoolSizePerEndpoint));
             assertThat(totalConnectionCountForAllEndpoints).isGreaterThanOrEqualTo(endpoints.size() * minConnectionPoolSizePerEndpoint);
 
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minConnectionPoolSizePerEndpoint));
 
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
@@ -546,7 +546,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration connectionWarmUpTimeout) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
 
@@ -579,11 +579,11 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .key(TestConfigurations.MASTER_KEY)
                     .endpointDiscoveryEnabled(true)
                     .preferredRegions(preferredRegions)
-                    .openConnectionsAndInitCaches(proactiveContainerInitConfig, Duration.ofSeconds(7))
+                    .openConnectionsAndInitCaches(proactiveContainerInitConfig, connectionWarmUpTimeout)
                     .directMode()
                     .buildAsyncClient();
 
-            Thread.sleep(50_000);
+            Thread.sleep(10_000);
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
@@ -647,10 +647,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 totalConnectionCountForAllEndpoints += endpoint.channelsMetrics();
             }
 
+            // TODO: Investigate why some extra connections are being created
             assertThat(totalConnectionCountForAllEndpoints).isGreaterThanOrEqualTo(endpoints.size() * minConnectionPoolSizePerEndpoint);
 
-            System.out.println("Connections to create : " + (endpoints.size() * minConnectionPoolSizePerEndpoint));
-            System.out.println("Total connections for all endpoints : " + totalConnectionCountForAllEndpoints);
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minConnectionPoolSizePerEndpoint));
 
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
@@ -676,7 +676,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint
         return new Object[][] {
-                new Object[]{preferredLocations, 2, 79, 1},
+                new Object[]{preferredLocations, 1, 2, 3, Duration.ofMillis(800)},
+                new Object[]{preferredLocations, 2, 10, 4, Duration.ofMillis(900)},
+                new Object[]{preferredLocations, 2, 13, 5, Duration.ofSeconds(1)},
+                new Object[]{preferredLocations, 2, 16, 6, Duration.ofSeconds(2)},
+                new Object[]{preferredLocations, 2, 20, 7, Duration.ofSeconds(3)},
+                new Object[]{preferredLocations, 2, 25, 8, Duration.ofSeconds(4)}
         };
     }
 

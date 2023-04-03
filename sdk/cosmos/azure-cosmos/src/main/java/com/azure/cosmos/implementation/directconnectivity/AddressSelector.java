@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
 import java.util.Arrays;
 import java.util.List;
@@ -88,11 +87,10 @@ public class AddressSelector {
         );
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     ) {
-        return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
+        return this.addressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
     }
 }

@@ -139,12 +139,11 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     ) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint, isBackgroundFlow);
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

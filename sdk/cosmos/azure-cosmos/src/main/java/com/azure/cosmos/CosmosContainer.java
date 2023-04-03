@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -793,7 +795,7 @@ public class CosmosContainer {
      *
      */
     public void openConnectionsAndInitCaches() {
-        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
+        this.asyncContainer.openConnectionsAndInitCaches().subscribe();
     }
 
     /***
@@ -808,7 +810,8 @@ public class CosmosContainer {
      * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
      */
     public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
-        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
+        this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions)
+                .subscribe();
     }
 
     private void blockVoidResponse(Mono<Void> voidMono) {

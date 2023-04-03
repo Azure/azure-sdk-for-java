@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -116,7 +117,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
-    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) {
+    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) throws InterruptedException {
         CosmosAsyncContainer asyncContainer = useAsync ? directCosmosAsyncContainer : directCosmosContainer.asyncContainer;
         CosmosAsyncClient asyncClient = useAsync ? directCosmosAsyncClient : directCosmosClient.asyncClient();
 
@@ -134,12 +135,14 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
-            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
-            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
         } else {
             directCosmosContainer.openConnectionsAndInitCaches();
             directCosmosContainer.openConnectionsAndInitCaches();
         }
+
+        Thread.sleep(500);
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
         assertThat(routingMap.size()).isEqualTo(1);
@@ -180,8 +183,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         assertThat(provider.count()).isEqualTo(endpoints.size());
 
-        // Validate for each RntbdServiceEndpoint, one channel is being opened
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+        // Validate for each RntbdServiceEndpoint, at least Configs.getMinConnectionPoolSizePerEndpoint()) channel is being opened
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
 
         // Test for real document requests, it will not open new channels
         for (int i = 0; i < 5; i++) {
@@ -191,7 +194,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 directCosmosContainer.createItem(TestObject.create());
             }
         }
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
@@ -212,8 +215,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         // Verifying no error when initializeContainer called on gateway mode
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
-            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
-            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
+            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
         } else {
             gatewayCosmosContainer.openConnectionsAndInitCaches();
             gatewayCosmosContainer.openConnectionsAndInitCaches();

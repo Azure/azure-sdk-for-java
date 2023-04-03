@@ -14,44 +14,34 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-
 public class GlobalAddressResolver implements IAddressResolver {
     private static final Logger logger = LoggerFactory.getLogger(GlobalAddressResolver.class);
 
     private final static int MaxBackupReadRegions = 3;
-    private final static int MaxContainerCountToBatch = 5;
-    private final static int MaxAddressesToBuffer = 100;
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager endpointManager;
     private final Protocol protocol;
@@ -107,11 +97,9 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     ) {
 
         // Strip the leading "/", which follows the same format for document requests
@@ -192,11 +180,10 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         containerLinkToCollection.getRight(),
                                                         proactiveContainerInitConfig,
                                                         connectionsPerReplicaCountForContainer,
-                                                        hint,
-                                                        isBackgroundFlow
+                                                        hint
                                                 );
                                             });
-                                }));
+                                }), Configs.getCPUCnt(), Configs.getCPUCnt());
     }
 
     private Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> resolveAddressesPerCollection(
@@ -227,13 +214,12 @@ public class GlobalAddressResolver implements IAddressResolver {
         return Flux.empty();
     }
 
-    private Flux<OpenConnectionResponse> openConnectionInternal(
+    private Flux<Void> openConnectionInternal(
             AddressInformation address,
             DocumentCollection documentCollection,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             int connectionPerEndpointCount,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
+            OpenConnectionAggressivenessHint hint
     ) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
@@ -245,9 +231,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     .openConnections(
                                             address,
                                             documentCollection,
-                                            hint,
-                                            connectionPerEndpointCount,
-                                            isBackgroundFlow
+                                            connectionPerEndpointCount
                                     );
                         }
                         return Flux.empty();

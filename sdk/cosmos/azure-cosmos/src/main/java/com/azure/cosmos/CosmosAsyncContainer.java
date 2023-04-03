@@ -71,7 +71,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -491,8 +490,7 @@ public class CosmosAsyncContainer {
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    OpenConnectionAggressivenessHint.AGGRESSIVE,
-                    false
+                    OpenConnectionAggressivenessHint.AGGRESSIVE
             )
                     .flatMap(openResult -> {
                         logger.info("OpenConnectionsAndInitCaches: {}", openResult);
@@ -555,8 +553,7 @@ public class CosmosAsyncContainer {
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    OpenConnectionAggressivenessHint.AGGRESSIVE,
-                    false
+                    OpenConnectionAggressivenessHint.AGGRESSIVE
             )
                     .flatMap(
                         openResult -> {
@@ -583,14 +580,20 @@ public class CosmosAsyncContainer {
      */
     private Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-        OpenConnectionAggressivenessHint hint,
-        boolean isBackgroundFlow
+        OpenConnectionAggressivenessHint hint
     ) {
-        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(
+        this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(
                         proactiveContainerInitConfig,
-                        hint,
-                        isBackgroundFlow
+                        hint
                 )
+                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .subscribe();
+
+        return database
+                .getClient()
+                .getProactiveOpenConnectionsProcessor()
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .sequential()
                 .collectList()
                 .flatMap(openConnectionResponses -> {
                     // Generate a simple statistics string for open connections
@@ -615,52 +618,6 @@ public class CosmosAsyncContainer {
                     return Mono.just(new ImmutablePair<>(endpointsConnected, endPointOpenConnectionsStatistics.size() - endpointsConnected));
                 });
     }
-
-    Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
-            int numProactiveConnectionRegions,
-            int minConnectionsPerEndpointForContainer,
-            OpenConnectionAggressivenessHint hint,
-            boolean isBackgroundFlow
-    ) {
-
-        List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());
-        boolean endpointDiscoveryEnabled = clientAccessor.isEndpointDiscoveryEnabled(this.database.getClient());
-
-        checkArgument(numProactiveConnectionRegions > 0, "no. of proactive connection regions should be greater than 0");
-
-        if (numProactiveConnectionRegions > 1) {
-            checkArgument(
-                    endpointDiscoveryEnabled,
-                    "endpoint discovery should be enabled when no. " +
-                            "of proactive regions is greater than 1");
-            checkArgument(
-                    preferredRegions != null && preferredRegions.size() >= numProactiveConnectionRegions,
-                    "no. of proactive connection " +
-                            "regions should be lesser than the no. of preferred regions.");
-        }
-
-        if (isInitialized.compareAndSet(false, true)) {
-
-            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(database.getId(), this.id);
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
-                    new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
-                            .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
-                            .withMinConnectionsPerReplicaForContainer(cosmosContainerIdentity, minConnectionsPerEndpointForContainer)
-                            .build();
-
-            return openConnectionsAndInitCachesInternal(
-                    proactiveContainerInitConfig,
-                    hint,
-                    isBackgroundFlow
-            );
-        } else {
-            logger.warn(
-                    "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",
-                    this.getId());
-            return Mono.empty();
-        }
-    }
-
 
     /**
      * Query for items in the current container using a string.

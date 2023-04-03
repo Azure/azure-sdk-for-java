@@ -1350,7 +1350,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                     .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
                     .thenReturn(Flux.just(new OpenConnectionResponse(new Uri("http://localhost:8081"), true)));
 
-            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, OpenConnectionAggressivenessHint.AGGRESSIVE, connectionsPerEndpoint, isBackgroundFlow))
+            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, connectionsPerEndpoint))
                     .expectNextCount(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig))
                     .verifyComplete();
 
@@ -1362,7 +1362,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
             Mockito.doNothing().when(proactiveOpenConnectionsProcessorMock).submitOpenConnectionsTask(Mockito.any(OpenConnectionOperation.class));
 
-            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, OpenConnectionAggressivenessHint.AGGRESSIVE, connectionsPerEndpoint, isBackgroundFlow))
+            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, connectionsPerEndpoint))
                     .expectNextCount(0)
                     .verifyComplete();
 

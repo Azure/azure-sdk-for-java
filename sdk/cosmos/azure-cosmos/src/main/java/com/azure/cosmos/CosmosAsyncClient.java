@@ -18,7 +18,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -30,7 +29,6 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -48,23 +46,20 @@ import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.io.Closeable;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -597,6 +592,10 @@ public final class CosmosAsyncClient implements Closeable {
         return this.tracerProvider;
     }
 
+    ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+        return this.proactiveOpenConnectionsProcessor;
+    }
+
     /***
      * Enable throughput control group.
      *
@@ -634,10 +633,9 @@ public final class CosmosAsyncClient implements Closeable {
                 .getOpenConnectionsPublisherFromOpenConnectionOperation()
                 .subscribe();
 
-        asyncDocumentClient.openConnectionsAndInitCaches(
+        asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(
                         proactiveContainerInitConfig,
-                        OpenConnectionAggressivenessHint.AGGRESSIVE,
-                        false
+                        OpenConnectionAggressivenessHint.AGGRESSIVE
                 )
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .blockLast()
@@ -645,10 +643,9 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches(Duration timeout) {
-        asyncDocumentClient.openConnectionsAndInitCaches(
+        asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(
                         proactiveContainerInitConfig,
-                        OpenConnectionAggressivenessHint.AGGRESSIVE,
-                        false
+                        OpenConnectionAggressivenessHint.AGGRESSIVE
                 )
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
@@ -656,21 +653,18 @@ public final class CosmosAsyncClient implements Closeable {
         Flux
                 .just(1)
                 .delayElements(timeout)
-                .doOnComplete(() -> {
-                            proactiveOpenConnectionsProcessor.toggleOpenConnectionsAggressiveness();
-                            proactiveOpenConnectionsProcessor.instantiateOpenConnectionsPublisher();
-                            proactiveOpenConnectionsProcessor
-                                    .getOpenConnectionsPublisherFromOpenConnectionOperation()
-                                    .subscribe();
-                }
-                        )
+                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiatePublisherAndSubscribe)
                 .subscribe();
 
         proactiveOpenConnectionsProcessor
                 .getOpenConnectionsPublisherFromOpenConnectionOperation()
                 .sequential()
-                .take(timeout)
                 .subscribe();
+    }
+
+    private void verifyProactiveContainerInitConfig() {
+
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
