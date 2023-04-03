@@ -9,7 +9,6 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -107,26 +106,28 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient) {
+    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
-        return getBlobClientBuilder(repositoryName, httpClient, credential);
+        return getContentClientBuilder(repositoryName, httpClient, credential);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential) {
-        return getBlobClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
+        return getContentClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient,
+    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential, String endpoint) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        return new ContainerRegistryBlobClientBuilder()
+        return new ContainerRegistryContentClientBuilder()
             .endpoint(getEndpoint(endpoint))
-            .repository(repositoryName)
+            .repositoryName(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addAllowedHeaderName("Range")
+                .addAllowedHeaderName("Content-Range"))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
             .credential(credential);
     }

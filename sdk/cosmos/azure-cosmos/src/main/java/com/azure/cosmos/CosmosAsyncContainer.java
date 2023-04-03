@@ -99,7 +99,6 @@ public class CosmosAsyncContainer {
     private static final ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
         ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
-
     private final CosmosAsyncDatabase database;
     private final String id;
     private final String link;

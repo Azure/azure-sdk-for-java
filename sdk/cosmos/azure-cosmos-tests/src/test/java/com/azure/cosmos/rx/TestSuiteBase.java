@@ -229,18 +229,93 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
-        logger.info("Truncating collection {} ...", cosmosContainer.getId());
-        CosmosAsyncDatabase database = cosmosContainer.getDatabase();
-        CosmosContainerResponse response = cosmosContainer.read().block();
-        CosmosContainerProperties properties = response.getProperties();
-        cosmosContainer.delete().block();
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        database.createContainer(properties).block();
-        logger.info("Finished truncating collection {}.", cosmosContainer.getId());
+        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
+        String cosmosContainerId = cosmosContainerProperties.getId();
+        logger.info("Truncating collection {} ...", cosmosContainerId);
+        List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(-1);
+        int maxItemCount = 100;
+
+        logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
+
+        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(doc -> {
+
+                           PartitionKey partitionKey = null;
+
+                           Object propertyValue = null;
+                           if (paths != null && !paths.isEmpty()) {
+                               List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                               propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                               if (propertyValue == null) {
+                                   partitionKey = PartitionKey.NONE;
+                               } else {
+                                   partitionKey = new PartitionKey(propertyValue);
+                               }
+                           } else {
+                               partitionKey = new PartitionKey(null);
+                           }
+
+                           return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                       }).then().block();
+        logger.info("Truncating collection {} triggers ...", cosmosContainerId);
+
+        cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(trigger -> {
+                           //                    if (paths != null && !paths.isEmpty()) {
+                           //                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                           //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                           //                        Object propertyValue = getTrigger.getObjectByPath(PathParser.getPathParts(getPaths.get(0)));
+                           //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
+                           //                    }
+
+                           return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
+                       }).then().block();
+
+        logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
+
+        cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(storedProcedure -> {
+
+                           //                    if (getPaths != null && !getPaths.isEmpty()) {
+                           //                    if (paths != null && !paths.isEmpty()) {
+                           //                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                           //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                           //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
+                           //                    }
+
+                           return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
+                       }).then().block();
+
+        logger.info("Truncating collection {} udfs ...", cosmosContainerId);
+
+        cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(udf -> {
+
+                           //                    if (getPaths != null && !getPaths.isEmpty()) {
+                           //                    if (paths != null && !paths.isEmpty()) {
+                           //                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                           //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                           //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
+                           //                    }
+
+                           return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                       }).then().block();
+
+        logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
 
     @SuppressWarnings({"fallthrough"})

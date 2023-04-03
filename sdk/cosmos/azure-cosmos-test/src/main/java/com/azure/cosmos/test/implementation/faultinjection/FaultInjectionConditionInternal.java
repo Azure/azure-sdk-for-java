@@ -4,8 +4,8 @@
 package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -62,13 +62,13 @@ public class FaultInjectionConditionInternal {
         }
     }
 
-    public boolean isApplicable(RxDocumentServiceRequest request) {
-        return this.validators.stream().allMatch(validator -> validator.isApplicable(request));
+    public boolean isApplicable(RntbdRequestArgs requestArgs) {
+        return this.validators.stream().allMatch(validator -> validator.isApplicable(requestArgs));
     }
 
     // region ConditionValidators
     interface IFaultInjectionConditionValidator {
-        boolean isApplicable(RxDocumentServiceRequest request);
+        boolean isApplicable(RntbdRequestArgs requestArgs);
     }
 
     static class RegionEndpointValidator implements IFaultInjectionConditionValidator {
@@ -77,8 +77,8 @@ public class FaultInjectionConditionInternal {
             this.regionEndpoints = regionEndpoints;
         }
         @Override
-        public boolean isApplicable(RxDocumentServiceRequest request) {
-            return this.regionEndpoints.contains(request.faultInjectionRequestContext.getLocationEndpointToRoute());
+        public boolean isApplicable(RntbdRequestArgs requestArgs) {
+            return this.regionEndpoints.contains(requestArgs.serviceRequest().faultInjectionRequestContext.getLocationEndpointToRoute());
         }
     }
 
@@ -89,8 +89,8 @@ public class FaultInjectionConditionInternal {
         }
 
         @Override
-        public boolean isApplicable(RxDocumentServiceRequest request) {
-            return request.getOperationType() == operationType;
+        public boolean isApplicable(RntbdRequestArgs requestArgs) {
+            return requestArgs.serviceRequest().getOperationType() == operationType;
         }
     }
 
@@ -102,8 +102,8 @@ public class FaultInjectionConditionInternal {
         }
 
         @Override
-        public boolean isApplicable(RxDocumentServiceRequest request) {
-            return StringUtils.equals(this.containerResourceId, request.requestContext.resolvedCollectionRid);
+        public boolean isApplicable(RntbdRequestArgs requestArgs) {
+            return StringUtils.equals(this.containerResourceId, requestArgs.serviceRequest().requestContext.resolvedCollectionRid);
         }
     }
 
@@ -114,12 +114,12 @@ public class FaultInjectionConditionInternal {
         }
 
         @Override
-        public boolean isApplicable(RxDocumentServiceRequest request) {
+        public boolean isApplicable(RntbdRequestArgs requestArgs) {
             if (addresses != null
                 && addresses.size() > 0) {
                 return this.addresses
                     .stream()
-                    .anyMatch(address -> request.requestContext.storePhysicalAddressUri.getURIAsString().startsWith(address.toString()));
+                    .anyMatch(address -> requestArgs.physicalAddressUri().getURIAsString().startsWith(address.toString()));
             }
 
             return true;
@@ -128,8 +128,8 @@ public class FaultInjectionConditionInternal {
 
     static class PrimaryAddressValidator implements IFaultInjectionConditionValidator {
         @Override
-        public boolean isApplicable(RxDocumentServiceRequest request) {
-            return request.requestContext.storePhysicalAddressUri.isPrimary();
+        public boolean isApplicable(RntbdRequestArgs requestArgs) {
+            return requestArgs.physicalAddressUri().isPrimary();
         }
     }
     //endregion

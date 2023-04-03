@@ -355,7 +355,6 @@ public class CosmosItemRequestOptions {
     }
 
     RequestOptions toRequestOptions() {
-        //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
