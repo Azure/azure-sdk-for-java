@@ -155,11 +155,11 @@ public final class CustomNormalizer extends LexicalNormalizer {
                         }
                     }
                     if (nameFound) {
-                        CustomNormalizer deserializedValue = new CustomNormalizer(name);
-                        deserializedValue.tokenFilters = tokenFilters;
-                        deserializedValue.charFilters = charFilters;
+                        CustomNormalizer deserializedCustomNormalizer = new CustomNormalizer(name);
+                        deserializedCustomNormalizer.tokenFilters = tokenFilters;
+                        deserializedCustomNormalizer.charFilters = charFilters;
 
-                        return deserializedValue;
+                        return deserializedCustomNormalizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

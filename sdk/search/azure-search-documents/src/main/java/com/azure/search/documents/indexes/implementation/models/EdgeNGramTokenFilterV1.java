@@ -169,12 +169,12 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        EdgeNGramTokenFilterV1 deserializedValue = new EdgeNGramTokenFilterV1(name);
-                        deserializedValue.minGram = minGram;
-                        deserializedValue.maxGram = maxGram;
-                        deserializedValue.side = side;
+                        EdgeNGramTokenFilterV1 deserializedEdgeNGramTokenFilterV1 = new EdgeNGramTokenFilterV1(name);
+                        deserializedEdgeNGramTokenFilterV1.minGram = minGram;
+                        deserializedEdgeNGramTokenFilterV1.maxGram = maxGram;
+                        deserializedEdgeNGramTokenFilterV1.side = side;
 
-                        return deserializedValue;
+                        return deserializedEdgeNGramTokenFilterV1;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

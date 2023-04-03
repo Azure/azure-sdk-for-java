@@ -362,17 +362,18 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
                         }
                     }
                     if (searchTextFound && suggesterNameFound) {
-                        AutocompleteRequest deserializedValue = new AutocompleteRequest(searchText, suggesterName);
-                        deserializedValue.autocompleteMode = autocompleteMode;
-                        deserializedValue.filter = filter;
-                        deserializedValue.useFuzzyMatching = useFuzzyMatching;
-                        deserializedValue.highlightPostTag = highlightPostTag;
-                        deserializedValue.highlightPreTag = highlightPreTag;
-                        deserializedValue.minimumCoverage = minimumCoverage;
-                        deserializedValue.searchFields = searchFields;
-                        deserializedValue.top = top;
+                        AutocompleteRequest deserializedAutocompleteRequest =
+                                new AutocompleteRequest(searchText, suggesterName);
+                        deserializedAutocompleteRequest.autocompleteMode = autocompleteMode;
+                        deserializedAutocompleteRequest.filter = filter;
+                        deserializedAutocompleteRequest.useFuzzyMatching = useFuzzyMatching;
+                        deserializedAutocompleteRequest.highlightPostTag = highlightPostTag;
+                        deserializedAutocompleteRequest.highlightPreTag = highlightPreTag;
+                        deserializedAutocompleteRequest.minimumCoverage = minimumCoverage;
+                        deserializedAutocompleteRequest.searchFields = searchFields;
+                        deserializedAutocompleteRequest.top = top;
 
-                        return deserializedValue;
+                        return deserializedAutocompleteRequest;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!searchTextFound) {

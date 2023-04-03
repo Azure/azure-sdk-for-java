@@ -311,51 +311,36 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
     public static SuggestOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String filter = null;
-                    Boolean useFuzzyMatching = null;
-                    String highlightPostTag = null;
-                    String highlightPreTag = null;
-                    Double minimumCoverage = null;
-                    List<String> orderBy = null;
-                    List<String> searchFields = null;
-                    List<String> select = null;
-                    Integer top = null;
+                    SuggestOptions deserializedSuggestOptions = new SuggestOptions();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("$filter".equals(fieldName)) {
-                            filter = reader.getString();
+                            deserializedSuggestOptions.filter = reader.getString();
                         } else if ("UseFuzzyMatching".equals(fieldName)) {
-                            useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
+                            deserializedSuggestOptions.useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
                         } else if ("highlightPostTag".equals(fieldName)) {
-                            highlightPostTag = reader.getString();
+                            deserializedSuggestOptions.highlightPostTag = reader.getString();
                         } else if ("highlightPreTag".equals(fieldName)) {
-                            highlightPreTag = reader.getString();
+                            deserializedSuggestOptions.highlightPreTag = reader.getString();
                         } else if ("minimumCoverage".equals(fieldName)) {
-                            minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                            deserializedSuggestOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
                         } else if ("OrderBy".equals(fieldName)) {
-                            orderBy = reader.readArray(reader1 -> reader1.getString());
+                            List<String> orderBy = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSuggestOptions.orderBy = orderBy;
                         } else if ("searchFields".equals(fieldName)) {
-                            searchFields = reader.readArray(reader1 -> reader1.getString());
+                            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSuggestOptions.searchFields = searchFields;
                         } else if ("$select".equals(fieldName)) {
-                            select = reader.readArray(reader1 -> reader1.getString());
+                            List<String> select = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSuggestOptions.select = select;
                         } else if ("$top".equals(fieldName)) {
-                            top = reader.getNullable(JsonReader::getInt);
+                            deserializedSuggestOptions.top = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SuggestOptions deserializedValue = new SuggestOptions();
-                    deserializedValue.filter = filter;
-                    deserializedValue.useFuzzyMatching = useFuzzyMatching;
-                    deserializedValue.highlightPostTag = highlightPostTag;
-                    deserializedValue.highlightPreTag = highlightPreTag;
-                    deserializedValue.minimumCoverage = minimumCoverage;
-                    deserializedValue.orderBy = orderBy;
-                    deserializedValue.searchFields = searchFields;
-                    deserializedValue.select = select;
-                    deserializedValue.top = top;
-                    return deserializedValue;
+                    return deserializedSuggestOptions;
                 });
     }
 

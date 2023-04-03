@@ -130,10 +130,11 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && keywordsFound) {
-                        KeywordMarkerTokenFilter deserializedValue = new KeywordMarkerTokenFilter(name, keywords);
-                        deserializedValue.caseIgnored = caseIgnored;
+                        KeywordMarkerTokenFilter deserializedKeywordMarkerTokenFilter =
+                                new KeywordMarkerTokenFilter(name, keywords);
+                        deserializedKeywordMarkerTokenFilter.caseIgnored = caseIgnored;
 
-                        return deserializedValue;
+                        return deserializedKeywordMarkerTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

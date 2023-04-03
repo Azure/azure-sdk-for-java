@@ -11,10 +11,10 @@ import java.util.Collection;
 
 /** A string indicating which domain-specific details to return. */
 public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
-    /** Static value celebrities for ImageDetail. */
+    /** Details recognized as celebrities. */
     public static final ImageDetail CELEBRITIES = fromString("celebrities");
 
-    /** Static value landmarks for ImageDetail. */
+    /** Details recognized as landmarks. */
     public static final ImageDetail LANDMARKS = fromString("landmarks");
 
     /**

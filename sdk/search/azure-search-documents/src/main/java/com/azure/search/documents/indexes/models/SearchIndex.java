@@ -521,23 +521,23 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                         }
                     }
                     if (nameFound) {
-                        SearchIndex deserializedValue = new SearchIndex(name);
-                        deserializedValue.fields = fields;
-                        deserializedValue.scoringProfiles = scoringProfiles;
-                        deserializedValue.defaultScoringProfile = defaultScoringProfile;
-                        deserializedValue.corsOptions = corsOptions;
-                        deserializedValue.suggesters = suggesters;
-                        deserializedValue.analyzers = analyzers;
-                        deserializedValue.tokenizers = tokenizers;
-                        deserializedValue.tokenFilters = tokenFilters;
-                        deserializedValue.charFilters = charFilters;
-                        deserializedValue.normalizers = normalizers;
-                        deserializedValue.encryptionKey = encryptionKey;
-                        deserializedValue.similarity = similarity;
-                        deserializedValue.semanticSettings = semanticSettings;
-                        deserializedValue.eTag = eTag;
+                        SearchIndex deserializedSearchIndex = new SearchIndex(name);
+                        deserializedSearchIndex.fields = fields;
+                        deserializedSearchIndex.scoringProfiles = scoringProfiles;
+                        deserializedSearchIndex.defaultScoringProfile = defaultScoringProfile;
+                        deserializedSearchIndex.corsOptions = corsOptions;
+                        deserializedSearchIndex.suggesters = suggesters;
+                        deserializedSearchIndex.analyzers = analyzers;
+                        deserializedSearchIndex.tokenizers = tokenizers;
+                        deserializedSearchIndex.tokenFilters = tokenFilters;
+                        deserializedSearchIndex.charFilters = charFilters;
+                        deserializedSearchIndex.normalizers = normalizers;
+                        deserializedSearchIndex.encryptionKey = encryptionKey;
+                        deserializedSearchIndex.similarity = similarity;
+                        deserializedSearchIndex.semanticSettings = semanticSettings;
+                        deserializedSearchIndex.eTag = eTag;
 
-                        return deserializedValue;
+                        return deserializedSearchIndex;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

@@ -546,6 +546,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Field additionallyAllowedTenants is not set in constructor and can be changed using the builder option. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.identity.DefaultAzureCredentialBuilder"/>
 
-<suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
 
 </suppressions>

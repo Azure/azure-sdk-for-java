@@ -3,6 +3,7 @@
 
 package com.azure.json.reflect;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
 
@@ -14,6 +15,6 @@ import java.io.IOException;
 public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
-        return JsonProviderFactory.getJacksonJsonProvider().createReader(json);
+        return JsonProviderFactory.getJacksonJsonProvider().createReader(json, new JsonOptions());
     }
 }
