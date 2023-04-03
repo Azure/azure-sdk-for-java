@@ -44,7 +44,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
                 return false;
             }
 
-            request.faultInjectionRequestContext
+            requestArgs.serviceRequest().faultInjectionRequestContext
                 .applyFaultInjectionRule(
                     requestRecord.transportRequestId(),
                     serverResponseDelayRule.getId());
@@ -59,9 +59,9 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
     @Override
     public boolean injectRntbdServerResponseDelayAfterProcessing(RntbdRequestRecord requestRecord,
                                                                  Consumer<Duration> writeRequestWithDelayConsumer) {
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
+        RntbdRequestArgs requestArgs = requestRecord.args();
 
-        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(request);
+        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
         if (serverResponseDelayRule != null) {
 
             if (serverResponseDelayRule.getResult() == null ||
@@ -72,7 +72,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
                 return false;
             }
 
-            request.faultInjectionRequestContext
+            requestArgs.serviceRequest().faultInjectionRequestContext
                 .applyFaultInjectionRule(
                     requestRecord.transportRequestId(),
                     serverResponseDelayRule.getId());
