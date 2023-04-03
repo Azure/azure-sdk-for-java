@@ -51,6 +51,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.fail;
 
 public class ThroughputControlTests extends TestSuiteBase {
     // Delete collections in emulator is not instant,
@@ -89,6 +90,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControl(OperationType operationType) {
+        this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
@@ -168,7 +170,8 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControl(OperationType operationType) {
-        String controlContainerId = "throughputControlContainer";
+        this.ensureContainer();
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -213,6 +216,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void throughputGlobalControlWithThroughputQuery() {
+        this.ensureContainer();
         // Will need to use a new client here to make sure the throughput query mono will be passed down to throughputContainerController
         CosmosAsyncClient client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -221,7 +225,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         CosmosAsyncContainer testContainer = client.getDatabase(database.getId()).getContainer(container.getId());
 
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -279,7 +283,8 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControlCanUpdateConfig(OperationType operationType) {
-        String controlContainerId = "throughputControlContainer";
+        this.ensureContainer();
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -352,6 +357,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControlForContainerCreateDeleteWithSameName(OperationType operationType) throws InterruptedException {
+        this.ensureContainer();
         ConnectionMode connectionMode = BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode();
         if (connectionMode == ConnectionMode.GATEWAY) {
             // for gateway connection mode, gateway will handle the 410/1000 and retry. Hence the collection cache and container controller will not be refreshed.
@@ -419,6 +425,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void throughputLocalControl_createItem() throws InterruptedException {
+        this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
@@ -454,8 +461,9 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, dataProvider = "allowRequestToContinueOnInitErrorProvider", timeOut = TIMEOUT)
     public void throughputControlContinueOnInitError(boolean continueOnInitError) {
+        this.ensureContainer();
         // Purposely not creating the throughput control container so to test allowRequestContinueOnInitError
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         GlobalThroughputControlConfig globalControlConfig =
                 this.client.createGlobalThroughputControlConfigBuilder(this.database.getId(), controlContainerId)
                         .setControlItemRenewInterval(Duration.ofSeconds(5))
@@ -493,9 +501,10 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
     public void throughputGlobalControlMultipleClients() throws InterruptedException {
+        this.ensureContainer();
         List<CosmosAsyncClient> clients = new ArrayList<>();
         // and do not enable ttl on the container so to test how many items are created.
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -551,9 +560,11 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
     public void enableSameGroupMultipleTimes() {
+        this.ensureContainer();
+
         // This test is to validate even though same groups have been enabled multiple times, no new client item will be created
 
-        String controlContainerId = "throughputControlContainer";
+        String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
         database
             .createContainerIfNotExists(
@@ -626,9 +637,28 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ThroughputBudgetControllerTest() {
+        this.ensureContainer();
+    }
+
+    private void ensureContainer() {
         client = getClientBuilder().buildAsyncClient();
         database = getSharedCosmosDatabase(client);
         container = getSharedMultiPartitionCosmosContainer(client);
+
+        try {
+            try {
+                container.read().block();
+            } catch (CosmosException error) {
+                if (error.getStatusCode() == 404) {
+                    TestSuiteBase.beforeSuite();
+                }
+
+                throw error;
+            }
+        } catch (CosmosException stillError) {
+            logger.error("Can't get shared container '{}'", container.getId(), stillError);
+            fail("Can't get shared container.");
+        }
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = TIMEOUT, alwaysRun = true)
