@@ -1,8 +1,9 @@
 # Release History
 
-## 1.0.0-beta.3 (2022-05-17)
+## 1.0.0-beta.3 (2023-04-04)
 
 ### Other Changes
+- Marked this library as deprecated.
 
 #### Dependency Updates
 - Updated `azure-aot-graalvm-support` version to 1.0.0-beta.3

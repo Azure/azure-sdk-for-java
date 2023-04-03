@@ -1,5 +1,9 @@
 # Azure GraalVM Netty Support client library for Java
 
+> **IMPORTANT** Please note that this package is deprecated and will no longer be updated. The necessary configuration files to support
+> native image compilation using GraalVM is now directly available on respective client libraries. It is no longer required
+> to add this package as a dependency to build native images with Azure SDK for Java.
+
 The Azure GraalVM Netty Support client library provides support for applications using
 [Azure client libraries](https://azure.github.io/azure-sdk/releases/latest/java.html) that take a dependency on
 [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) to be
