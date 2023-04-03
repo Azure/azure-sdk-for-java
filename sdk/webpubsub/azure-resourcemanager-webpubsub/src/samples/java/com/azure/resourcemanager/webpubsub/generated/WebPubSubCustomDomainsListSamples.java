@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSubCustomDomains List. */
 public final class WebPubSubCustomDomainsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubCustomDomains_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_List.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_List.
@@ -17,6 +15,8 @@ public final class WebPubSubCustomDomainsListSamples {
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubCustomDomainsList(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubCustomDomains().list("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager
+            .webPubSubCustomDomains()
+            .list("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

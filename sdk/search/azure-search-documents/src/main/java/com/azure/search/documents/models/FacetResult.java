@@ -89,14 +89,14 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     public static FacetResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Long count = null;
+                    FacetResult deserializedFacetResult = new FacetResult();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("count".equals(fieldName)) {
-                            count = reader.getNullable(JsonReader::getLong);
+                            deserializedFacetResult.count = reader.getNullable(JsonReader::getLong);
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -105,11 +105,9 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    FacetResult deserializedValue = new FacetResult();
-                    deserializedValue.count = count;
-                    deserializedValue.additionalProperties = additionalProperties;
+                    deserializedFacetResult.additionalProperties = additionalProperties;
 
-                    return deserializedValue;
+                    return deserializedFacetResult;
                 });
     }
 }

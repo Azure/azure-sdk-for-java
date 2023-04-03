@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.NameAvailability;
 import com.azure.resourcemanager.webpubsub.models.NameAvailabilityParameters;
@@ -66,7 +65,7 @@ public final class WebPubSubsCheckNameAvailabilityWithResponseMockTests {
                 .checkNameAvailabilityWithResponse(
                     "ynpcdpumnzgmwznm",
                     new NameAvailabilityParameters().withType("biknsorgjhxbld").withName("lwwrl"),
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(false, response.nameAvailable());

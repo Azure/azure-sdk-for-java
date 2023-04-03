@@ -11,25 +11,25 @@ import java.util.Collection;
 
 /** The strings indicating what visual feature types to return. */
 public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
-    /** Static value adult for VisualFeature. */
+    /** Visual features recognized as adult persons. */
     public static final VisualFeature ADULT = fromString("adult");
 
-    /** Static value brands for VisualFeature. */
+    /** Visual features recognized as commercial brands. */
     public static final VisualFeature BRANDS = fromString("brands");
 
-    /** Static value categories for VisualFeature. */
+    /** Categories. */
     public static final VisualFeature CATEGORIES = fromString("categories");
 
-    /** Static value description for VisualFeature. */
+    /** Description. */
     public static final VisualFeature DESCRIPTION = fromString("description");
 
-    /** Static value faces for VisualFeature. */
+    /** Visual features recognized as people faces. */
     public static final VisualFeature FACES = fromString("faces");
 
-    /** Static value objects for VisualFeature. */
+    /** Visual features recognized as objects. */
     public static final VisualFeature OBJECTS = fromString("objects");
 
-    /** Static value tags for VisualFeature. */
+    /** Tags. */
     public static final VisualFeature TAGS = fromString("tags");
 
     /**

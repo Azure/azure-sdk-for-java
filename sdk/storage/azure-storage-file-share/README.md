@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.17.1</version>
+  <version>12.18.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -415,7 +415,7 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with data of "defa
 ```java readme-sample-uploadDataToStorageBiggerThan4MB
 byte[] data = "Hello, data sample!".getBytes(StandardCharsets.UTF_8);
 
-long chunkSize = ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE;
+long chunkSize = 4 * 1024 * 1024L;
 if (data.length > chunkSize) {
     for (int offset = 0; offset < data.length; offset += chunkSize) {
         try {

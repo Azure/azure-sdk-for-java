@@ -54,6 +54,7 @@ public class RntbdConnectionErrorInjector {
             .flatMapMany(t -> {
                 //check whether the rule still valid
                 if (this.isEffectiveRule(rule)) {
+                    rule.applyRule();
 
                     // Inject connect error to rntbd endpoint with matching physical addresses
                     if (rule.getAddresses() != null && rule.getAddresses().size() > 0) {

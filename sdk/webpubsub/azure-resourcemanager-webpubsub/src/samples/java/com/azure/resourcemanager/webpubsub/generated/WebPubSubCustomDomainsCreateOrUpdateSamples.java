@@ -9,7 +9,7 @@ import com.azure.resourcemanager.webpubsub.models.ResourceReference;
 /** Samples for WebPubSubCustomDomains CreateOrUpdate. */
 public final class WebPubSubCustomDomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubCustomDomains_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubCustomDomains_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubCustomDomains_CreateOrUpdate.

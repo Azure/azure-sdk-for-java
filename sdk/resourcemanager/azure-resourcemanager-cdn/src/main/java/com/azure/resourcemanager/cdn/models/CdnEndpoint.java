@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -184,6 +185,12 @@ public interface CdnEndpoint extends
      * @return list of quotas and usages of geo filters and custom domains under the current endpoint
      */
     PagedIterable<ResourceUsage> listResourceUsage();
+
+    /**
+     * @return the map of the Standard rules engine rules, indexed by rule name
+     *         (note: this is only available for Standard Microsoft CDN Sku endpoints)
+     */
+    Map<String, DeliveryRule> standardRulesEngineRules();
 
     /**
      * Grouping of CDN profile endpoint definition stages as a part of parent CDN profile definition.
@@ -371,6 +378,16 @@ public interface CdnEndpoint extends
              * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
+
+            /**
+             * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
+             * Supports {@link SkuName#STANDARD_MICROSOFT}.
+             *
+             * @param name name of the rule
+             * @param <T> the next stage of the endpoint definition
+             * @return the first stage of the rule definition
+             */
+            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
         }
 
         /** The final stage of the CDN profile Premium Verizon endpoint definition.
@@ -652,6 +669,16 @@ public interface CdnEndpoint extends
              * @return the next stage of the definition
              */
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
+
+            /**
+             * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
+             * Supports {@link SkuName#STANDARD_MICROSOFT}.
+             *
+             * @param name name of the rule
+             * @param <T> the next stage of the endpoint definition
+             * @return the first stage of the delivery rule definition
+             */
+            <T extends WithStandardAttach<ParentT>> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
         }
 
         /**
@@ -907,6 +934,35 @@ public interface CdnEndpoint extends
          * @return the next stage of the endpoint update
          */
         UpdateStandardEndpoint withoutCustomDomain(String hostName);
+
+        /**
+         * Begins the definition of the Standard rules engine rule to be attached to the endpoint.
+         * Supports {@link SkuName#STANDARD_MICROSOFT}.
+         *
+         * @param name name of the rule
+         * @param <T> the next stage of the endpoint update
+         * @return the first stage of the delivery rule update
+         */
+        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.DefinitionStage.Blank<T> defineNewStandardRulesEngineRule(String name);
+
+        /**
+         * Begins the update of the Standard rules engine rule.
+         * Supports {@link SkuName#STANDARD_MICROSOFT}.
+         *
+         * @param name name of the rule to update
+         * @param <T> the next stage of the endpoint update
+         * @return the first stage of the delivery rule update
+         */
+        <T extends UpdateStandardEndpoint> CdnStandardRulesEngineRule.Update<T> updateStandardRulesEngineRule(String name);
+
+        /**
+         * Removes the rule from the endpoint's Standard rules engine.
+         * Supports {@link SkuName#STANDARD_MICROSOFT}.
+         *
+         * @param name name of the rule to remove
+         * @return the next stage of the endpoint update
+         */
+        UpdateStandardEndpoint withoutStandardRulesEngineRule(String name);
     }
 
     /**

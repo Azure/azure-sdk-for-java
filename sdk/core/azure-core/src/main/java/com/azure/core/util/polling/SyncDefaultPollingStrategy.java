@@ -11,6 +11,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * The default synchronous polling strategy to use with Azure data plane services. The default polling strategy will
@@ -81,6 +82,22 @@ public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrate
             new SyncOperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
             new SyncLocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
             new SyncStatusCheckPollingStrategy<>(serializer)));
+    }
+
+    /**
+     * Creates a chained polling strategy with 3 known polling strategies, {@link SyncOperationResourcePollingStrategy},
+     * {@link SyncLocationPollingStrategy}, and {@link SyncStatusCheckPollingStrategy}, in this order, with a custom
+     * serializer.
+     *
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
+     */
+    public SyncDefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(Arrays.asList(
+            new SyncOperationResourcePollingStrategy<>(null, pollingStrategyOptions),
+            new SyncLocationPollingStrategy<>(pollingStrategyOptions),
+            new SyncStatusCheckPollingStrategy<>(pollingStrategyOptions.getSerializer())));
     }
 
     @Override

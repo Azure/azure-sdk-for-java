@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DigitalTwinsEndpoint Delete. */
 public final class DigitalTwinsEndpointDeleteSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsEndpointDelete_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsEndpointDelete_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance endpoint.
@@ -18,11 +16,13 @@ public final class DigitalTwinsEndpointDeleteSamples {
      */
     public static void deleteADigitalTwinsInstanceEndpoint(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwinsEndpoints().delete("resRg", "myDigitalTwinsService", "myendpoint", Context.NONE);
+        manager
+            .digitalTwinsEndpoints()
+            .delete("resRg", "myDigitalTwinsService", "myendpoint", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsEndpointDelete_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsEndpointDelete_WithIdentity_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance endpoint with identity.
@@ -31,6 +31,8 @@ public final class DigitalTwinsEndpointDeleteSamples {
      */
     public static void deleteADigitalTwinsInstanceEndpointWithIdentity(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwinsEndpoints().delete("resRg", "myDigitalTwinsService", "myendpoint", Context.NONE);
+        manager
+            .digitalTwinsEndpoints()
+            .delete("resRg", "myDigitalTwinsService", "myendpoint", com.azure.core.util.Context.NONE);
     }
 }

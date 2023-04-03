@@ -106,6 +106,10 @@ public class Configs {
     private static final String QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = "COSMOS.QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED";
     private static final boolean DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = false;
 
+    // whether to use old tracing format instead of semantic profile
+    private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
+    private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
+
     // whether to enable replica addresses validation
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
     private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
@@ -285,6 +289,12 @@ public class Configs {
         return getJVMConfigAsBoolean(
             QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED,
             DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED);
+    }
+
+    public static boolean useLegacyTracing() {
+        return getJVMConfigAsBoolean(
+            USE_LEGACY_TRACING,
+            DEFAULT_USE_LEGACY_TRACING);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

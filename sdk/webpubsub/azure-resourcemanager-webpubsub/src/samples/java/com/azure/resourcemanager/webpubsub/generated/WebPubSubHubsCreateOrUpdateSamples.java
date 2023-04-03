@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for WebPubSubHubs CreateOrUpdate. */
 public final class WebPubSubHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubHubs_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubHubs_CreateOrUpdate.

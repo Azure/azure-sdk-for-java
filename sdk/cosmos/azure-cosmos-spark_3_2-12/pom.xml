@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.24.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.25.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -110,6 +110,12 @@
     </dependency>
 
     <!-- Test -->
+    <dependency>
+      <groupId>com.globalmentor</groupId>
+      <artifactId>hadoop-bare-naked-local-fs</artifactId>
+      <version>0.1.0</version> <!-- {x-version-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -224,6 +230,7 @@
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.8]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
+                <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -334,6 +341,7 @@
             <configuration>
               <source>11</source>
               <target>11</target>
+              <scalaVersion>2.12.10</scalaVersion>
             </configuration>
             <executions>
               <execution>

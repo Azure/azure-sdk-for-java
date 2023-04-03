@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.CustomDomain;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class WebPubSubCustomDomainsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CustomDomain response =
-            manager.webPubSubCustomDomains().getWithResponse("wrv", "ldgmfpgvmpip", "slthaq", Context.NONE).getValue();
+            manager
+                .webPubSubCustomDomains()
+                .getWithResponse("wrv", "ldgmfpgvmpip", "slthaq", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("mwutwbdsre", response.domainName());
         Assertions.assertEquals("drhneuyow", response.customCertificate().id());

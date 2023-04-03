@@ -22,23 +22,18 @@ import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
@@ -57,7 +52,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
-
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     private static final int JAVA_VERSION = getJavaVersion();
@@ -66,7 +60,6 @@ public class Utils {
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
-    public static final Base64.Decoder Base64UrlDecoder = Base64.getUrlDecoder();
 
     private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
         createAndInitializeObjectMapper(true);
@@ -142,10 +135,6 @@ public class Utils {
 
     }
 
-    public static byte[] getUtf16Bytes(String str) {
-        return str.getBytes(StandardCharsets.UTF_16LE);
-    }
-
     public static String encodeBase64String(byte[] binaryData) {
         String encodedString = Base64Encoder.encodeToString(binaryData);
 
@@ -190,92 +179,6 @@ public class Utils {
     }
 
     /**
-     * Checks whether the specified link is Name based or not
-     *
-     * @param link the link to analyze.
-     * @return true or false
-     */
-    public static boolean isNameBased(String link) {
-        if (StringUtils.isEmpty(link)) {
-            return false;
-        }
-
-        // trimming the leading "/"
-        if (link.startsWith("/") && link.length() > 1) {
-            link = link.substring(1);
-        }
-
-        // Splitting the link(separated by "/") into parts
-        String[] parts = StringUtils.split(link, "/");
-
-        // First part should be "dbs"
-        if (parts.length == 0 || StringUtils.isEmpty(parts[0])
-                || !parts[0].equalsIgnoreCase(Paths.DATABASES_PATH_SEGMENT)) {
-            return false;
-        }
-
-        // The second part is the database id(ResourceID or Name) and cannot be
-        // empty
-        if (parts.length < 2 || StringUtils.isEmpty(parts[1])) {
-            return false;
-        }
-
-        // Either ResourceID or database name
-        String databaseID = parts[1];
-
-        // Length of databaseID(in case of ResourceID) is always 8
-        if (databaseID.length() != 8) {
-            return true;
-        }
-
-        // Decoding the databaseID
-        byte[] buffer = ResourceId.fromBase64String(databaseID);
-
-        // Length of decoded buffer(in case of ResourceID) is always 4
-        if (buffer.length != 4) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks whether the specified link is a Database Self Link or a Database
-     * ID based link
-     *
-     * @param link the link to analyze.
-     * @return true or false
-     */
-    public static boolean isDatabaseLink(String link) {
-        if (StringUtils.isEmpty(link)) {
-            return false;
-        }
-
-        // trimming the leading and trailing "/" from the input string
-        link = trimBeginningAndEndingSlashes(link);
-
-        // Splitting the link(separated by "/") into parts
-        String[] parts = StringUtils.split(link, "/");
-
-        if (parts.length != 2) {
-            return false;
-        }
-
-        // First part should be "dbs"
-        if (StringUtils.isEmpty(parts[0]) || !parts[0].equalsIgnoreCase(Paths.DATABASES_PATH_SEGMENT)) {
-            return false;
-        }
-
-        // The second part is the database id(ResourceID or Name) and cannot be
-        // empty
-        if (StringUtils.isEmpty(parts[1])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Joins the specified paths by appropriately padding them with '/'
      *
      * @param path1 the first path segment to join.
@@ -314,19 +217,6 @@ public class Utils {
         }
 
         return path;
-    }
-
-    public static Map<String, String> paramEncode(Map<String, String> queryParams) {
-        // TODO: this is not performant revisit
-        HashMap<String, String> map = new HashMap<>();
-        for(Map.Entry<String, String> paramEntry: queryParams.entrySet()) {
-            try {
-                map.put(paramEntry.getKey(), URLEncoder.encode(paramEntry.getValue(), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-        return map;
     }
 
     public static String createQuery(Map<String, String> queryParameters) {
@@ -396,16 +286,6 @@ public class Utils {
         return collection.size();
     }
 
-    public static Boolean isCollectionPartitioned(DocumentCollection collection) {
-        if (collection == null) {
-            throw new IllegalArgumentException("collection");
-        }
-
-        return collection.getPartitionKey() != null
-                && collection.getPartitionKey().getPaths() != null
-                && collection.getPartitionKey().getPaths().size() > 0;
-    }
-
     public static boolean isCollectionChild(ResourceType type) {
         return type == ResourceType.Document || type == ResourceType.Attachment || type == ResourceType.Conflict
                 || type == ResourceType.StoredProcedure || type == ResourceType.Trigger || type == ResourceType.UserDefinedFunction;
@@ -414,15 +294,6 @@ public class Utils {
     public static boolean isWriteOperation(OperationType operationType) {
         return operationType == OperationType.Create || operationType == OperationType.Upsert || operationType == OperationType.Delete || operationType == OperationType.Replace
                 || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch;
-    }
-
-    public static boolean isFeedRequest(OperationType requestOperationType) {
-        return requestOperationType == OperationType.Create ||
-                requestOperationType == OperationType.Upsert ||
-                requestOperationType == OperationType.ReadFeed ||
-                requestOperationType == OperationType.Query ||
-                requestOperationType == OperationType.SqlQuery ||
-                requestOperationType == OperationType.HeadFeed;
     }
 
     private static String addTrailingSlash(String path) {
@@ -482,7 +353,7 @@ public class Utils {
             osName = "Unknown";
         }
         osName = SPACE_PATTERN.matcher(osName).replaceAll("");
-        String userAgent = String.format("%s%s/%s %s/%s JRE/%s",
+        return String.format("%s%s/%s %s/%s JRE/%s",
                 UserAgentContainer.AZSDK_USERAGENT_PREFIX,
                 sdkName,
                 sdkVersion,
@@ -490,7 +361,6 @@ public class Utils {
                 System.getProperty("os.version"),
                 System.getProperty("java.version")
                 );
-        return userAgent;
     }
 
     public static ObjectMapper getSimpleObjectMapper() {
@@ -512,16 +382,12 @@ public class Utils {
         return TIME_BASED_GENERATOR.generate();
     }
 
-    public static String zonedDateTimeAsUTCRFC1123(OffsetDateTime offsetDateTime){
-        return Utils.RFC_1123_DATE_TIME.format(offsetDateTime.atZoneSameInstant(GMT_ZONE_ID));
-    }
-
     public static String instantAsUTCRFC1123(Instant instant){
         return Utils.RFC_1123_DATE_TIME.format(instant.atZone(GMT_ZONE_ID));
     }
 
     public static int getValueOrDefault(Integer val, int defaultValue) {
-        return val != null ? val.intValue() : defaultValue;
+        return val != null ? val : defaultValue;
     }
 
     public static void checkStateOrThrow(boolean value, String argumentName, String message) throws IllegalArgumentException {
@@ -572,15 +438,6 @@ public class Utils {
         return new NullPointerException(String.format("argumentName: %s, message: %s", argumentName, String.format(messageTemplate, messageTemplateParams)));
     }
 
-    public static BadRequestException checkRequestOrReturnException(boolean value, String argumentName, String message) {
-
-        if (value) {
-            return null;
-        }
-
-        return new BadRequestException(String.format("argumentName: %s, message: %s", argumentName, message));
-    }
-
     public static BadRequestException checkRequestOrReturnException(boolean value, String argumentName, String messageTemplate, Object... messageTemplateParams) {
         if (value) {
             return null;
@@ -607,18 +464,8 @@ public class Utils {
         return Collections.EMPTY_LIST;
     }
 
-    public static <V> List<V> immutableListOf(V v1) {
-        List<V> list = new ArrayList<>();
-        list.add(v1);
-        return Collections.unmodifiableList(list);
-    }
-
-    public static <K, V> Map<K, V>immutableMapOf() {
-        return Collections.emptyMap();
-    }
-
     public static <K, V> Map<K, V>immutableMapOf(K k1, V v1) {
-        Map<K, V> map = new HashMap<K ,V>();
+        Map<K, V> map = new HashMap<>();
         map.put(k1,  v1);
         map = Collections.unmodifiableMap(map);
         return map;
@@ -639,7 +486,7 @@ public class Utils {
         public V v;
 
         public static <T> ValueHolder<T> initialize(T v) {
-            return new ValueHolder<T>(v);
+            return new ValueHolder<>(v);
         }
     }
 
@@ -724,6 +571,18 @@ public class Utils {
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
+        } else {
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .applyMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions);
+
+            // if query request options also don't have maxItemCount set, apply defaults
+            if (pagedFluxOptions.getMaxItemCount() == null) {
+                ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
+                    cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+                pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
+            }
         }
     }
 
@@ -772,23 +631,12 @@ public class Utils {
         return bytes;
     }
 
-    public static ByteBuffer toByteBuffer(byte[] bytes) {
-        return ByteBuffer.wrap(bytes);
-    }
-
     public static String toJson(ObjectMapper mapper, ObjectNode object) {
         try {
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
-    }
-
-    public static byte[] serializeObjectToByteArray(Object obj) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream os = new ObjectOutputStream(out);
-        os.writeObject(obj);
-        return out.toByteArray();
     }
 
     public static long getMaxIntegratedCacheStalenessInMillis(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {

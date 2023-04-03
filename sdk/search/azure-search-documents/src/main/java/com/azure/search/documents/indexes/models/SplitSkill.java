@@ -204,15 +204,15 @@ public final class SplitSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        SplitSkill deserializedValue = new SplitSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.textSplitMode = textSplitMode;
-                        deserializedValue.maximumPageLength = maximumPageLength;
+                        SplitSkill deserializedSplitSkill = new SplitSkill(inputs, outputs);
+                        deserializedSplitSkill.setName(name);
+                        deserializedSplitSkill.setDescription(description);
+                        deserializedSplitSkill.setContext(context);
+                        deserializedSplitSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedSplitSkill.textSplitMode = textSplitMode;
+                        deserializedSplitSkill.maximumPageLength = maximumPageLength;
 
-                        return deserializedValue;
+                        return deserializedSplitSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

@@ -118,10 +118,11 @@ public final class TagScoringFunction extends ScoringFunction {
                         }
                     }
                     if (fieldNameFound && boostFound && parametersFound) {
-                        TagScoringFunction deserializedValue = new TagScoringFunction(fieldName, boost, parameters);
-                        deserializedValue.setInterpolation(interpolation);
+                        TagScoringFunction deserializedTagScoringFunction =
+                                new TagScoringFunction(fieldName, boost, parameters);
+                        deserializedTagScoringFunction.setInterpolation(interpolation);
 
-                        return deserializedValue;
+                        return deserializedTagScoringFunction;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!fieldNameFound) {
