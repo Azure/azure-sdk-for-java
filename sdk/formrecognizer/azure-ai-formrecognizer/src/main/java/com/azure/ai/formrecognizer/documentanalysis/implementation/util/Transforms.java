@@ -243,21 +243,17 @@ public class Transforms {
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,
-                                                                         DocumentModelBuildMode buildMode, String modelId, String prefix, String jsonList, BuildDocumentModelOptions buildDocumentModelOptions) {
-        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
-            .setModelId(modelId)
-            .setBuildMode(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
+                                                                         DocumentModelBuildMode buildMode, String modelId, String prefix, String fileList, BuildDocumentModelOptions buildDocumentModelOptions) {
+        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest(modelId,
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
                 .fromString(buildMode.toString()))
             .setDescription(buildDocumentModelOptions.getDescription())
             .setTags(buildDocumentModelOptions.getTags());
-        if (jsonList == null) {
-            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource()
-                .setContainerUrl(blobContainerUrl)
+        if (fileList == null) {
+            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(blobContainerUrl)
                 .setPrefix(prefix));
         } else {
-            buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListSource()
-                .setContainerUrl(blobContainerUrl)
-                .setFileList(jsonList));
+            buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListSource(blobContainerUrl, fileList));
         }
         return buildDocumentModelRequest;
     }
@@ -284,13 +280,14 @@ public class Transforms {
     }
 
     public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
+        ErrorResponseException errorResponseException = throwable;
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-        if (throwable.getValue() != null && throwable.getValue().getError() != null) {
-            error = (throwable.getValue().getError());
+        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+            error = (errorResponseException.getValue().getError());
         }
         return new HttpResponseException(
-            throwable.getMessage(),
-            throwable.getResponse(),
+            errorResponseException.getMessage(),
+            errorResponseException.getResponse(),
             toResponseError(error)
         );
     }
@@ -678,30 +675,31 @@ public class Transforms {
     }
 
     public static AuthorizeCopyRequest getAuthorizeCopyRequest(CopyAuthorizationOptions copyAuthorizationOptions,
-        String modelId) {
+                                                               String modelId) {
         return new AuthorizeCopyRequest(modelId)
             .setDescription(copyAuthorizationOptions.getDescription())
             .setTags(copyAuthorizationOptions.getTags());
     }
 
     public static ComposeDocumentModelRequest getComposeDocumentModelRequest(List<String> componentModelIds,
-                                                                              ComposeDocumentModelOptions composeDocumentModelOptions,
-                                                                              String modelId) {
+                                                                             ComposeDocumentModelOptions composeDocumentModelOptions,
+                                                                             String modelId) {
         return new ComposeDocumentModelRequest(modelId, componentModelIds.stream()
-                .map(modelIdString -> new ComponentDocumentModelDetails(modelIdString))
-                .collect(Collectors.toList()))
+            .map(modelIdString -> new ComponentDocumentModelDetails(modelIdString))
+            .collect(Collectors.toList()))
             .setDescription(composeDocumentModelOptions.getDescription())
             .setTags(composeDocumentModelOptions.getTags());
     }
 
     public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
-        return new CopyAuthorization()
-        .setTargetModelLocation(target.getTargetModelLocation())
-        .setTargetResourceId(target.getTargetResourceId())
-        .setTargetResourceRegion(target.getTargetResourceRegion())
-        .setTargetModelId(target.getTargetModelId())
-        .setAccessToken(target.getAccessToken())
-        .setExpirationDateTime(target.getExpiresOn());
+        CopyAuthorization copyRequest
+            = new CopyAuthorization(target.getTargetResourceId(),
+            target.getTargetModelLocation(),
+            target.getTargetModelId(),
+            target.getTargetResourceRegion(),
+            target.getAccessToken(),
+            target.getExpiresOn());
+        return copyRequest;
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
@@ -751,7 +749,7 @@ public class Transforms {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
                         classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl())
-                    .setPrefix(classifierDocumentTypeDetails.getAzureBlobSource().getPrefix()));
+                        .setPrefix(classifierDocumentTypeDetails.getAzureBlobSource().getPrefix()));
             }
             innerTags.put(key, innerClassifyDocTypeDetails);
         });
