@@ -8,7 +8,7 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown on rooms specific errors
  */
-public class RoomsErrorResponseException extends HttpResponseException {
+public final class RoomsErrorResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the RoomsErrorResponseException class.
      *
