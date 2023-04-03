@@ -37,7 +37,7 @@ public final class TableItemAccessHelper {
                 Class.forName(TableItem.class.getName(), true, TableItemAccessHelper.class.getClassLoader());
             } catch (ReflectiveOperationException ex) {
                 throw new ClientLogger(TableItemAccessHelper.class).logExceptionAsError(
-                    new IllegalStateException("Failed to load 'TableItem' class within 'TableItemAccessHelper'."));
+                    new IllegalStateException("Failed to load 'TableItem' class within 'TableItemAccessHelper'.", ex));
             }
         }
 

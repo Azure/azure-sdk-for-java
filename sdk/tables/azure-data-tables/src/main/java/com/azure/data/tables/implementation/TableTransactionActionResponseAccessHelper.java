@@ -71,7 +71,7 @@ public final class TableTransactionActionResponseAccessHelper {
         } catch (ReflectiveOperationException ex) {
             throw new ClientLogger(TableTransactionActionResponseAccessHelper.class).logExceptionAsError(
                 new IllegalStateException("Failed to load 'TableTransactionActionResponse' class within "
-                    + "'TableTransactionActionResponseAccessHelper'."));
+                    + "'TableTransactionActionResponseAccessHelper'.", ex));
         }
     }
 
