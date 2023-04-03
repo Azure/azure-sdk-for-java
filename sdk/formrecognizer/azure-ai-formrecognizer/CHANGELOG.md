@@ -4,8 +4,8 @@
 
 ### Features Added
 - Added support for analyzing new document types
-- Added support for AzureBlobList source type when building document modes.
-
+- Added support for AzureBlobList source type when building document models
+- Added support for building, getting, listing and deleting classifiers
 ### Breaking Changes
 
 ### Bugs Fixed

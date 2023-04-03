@@ -30,7 +30,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -364,14 +363,12 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled
-    public void beginBuildModelWithJsonLrainingSet(HttpClient httpClient,
+    public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient,
                                                            DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        // change this once doc classifer data/training url is in
-        multipageTrainingRunner(trainingFilesUrl -> {
+        selectionMarkTrainingRunner(trainingFilesUrl -> {
             SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "filelist.jsonl")
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
