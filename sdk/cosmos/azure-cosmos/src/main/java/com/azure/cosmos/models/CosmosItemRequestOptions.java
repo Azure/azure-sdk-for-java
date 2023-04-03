@@ -555,18 +555,22 @@ public class CosmosItemRequestOptions {
                     }
 
                     if (!operationDefault) {
-                        cosmosItemRequestOptions.setNonIdempotentWriteRetriesEnabled(
-                            false, false);
+                        cosmosItemRequestOptions.disableNonIdempotentWriteRetriesEnabled();
                         return WriteRetryPolicy.DISABLED;
                     }
 
                     if (clientDefault != null) {
-                        cosmosItemRequestOptions.setNonIdempotentWriteRetriesEnabled(
-                            clientDefault.isEnabled(), clientDefault.useTrackingIdProperty());
+                        if (clientDefault.isEnabled()) {
+                            cosmosItemRequestOptions.enableNonIdempotentWriteRetriesEnabled(
+                                clientDefault.useTrackingIdProperty());
+                        } else {
+                            cosmosItemRequestOptions.disableNonIdempotentWriteRetriesEnabled();
+                        }
+
                         return clientDefault;
                     }
 
-                    cosmosItemRequestOptions.setNonIdempotentWriteRetriesEnabled(false, false);
+                    cosmosItemRequestOptions.disableNonIdempotentWriteRetriesEnabled();
                     return WriteRetryPolicy.DISABLED;
                 }
             }

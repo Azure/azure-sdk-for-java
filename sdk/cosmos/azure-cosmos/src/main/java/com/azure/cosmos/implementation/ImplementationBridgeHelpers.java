@@ -460,7 +460,10 @@ public class ImplementationBridgeHelpers {
 
 
             <T> CosmosItemResponse<T> withRemappedStatusCode(
-                CosmosItemResponse<T> originalResponse, int newStatusCode, double additionalRequestCharge);
+                CosmosItemResponse<T> originalResponse,
+                int newStatusCode,
+                double additionalRequestCharge,
+                boolean isContentResponseOnWriteEnabled);
 
             byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
 
@@ -1178,6 +1181,9 @@ public class ImplementationBridgeHelpers {
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
+            boolean isEffectiveContentResponseOnWriteEnabled(
+                CosmosAsyncClient client,
+                Boolean requestOptionsContentResponseEnabled);
 
             ConsistencyLevel getEffectiveConsistencyLevel(
                 CosmosAsyncClient client,

@@ -284,6 +284,18 @@ public class ClientSideRequestStatistics {
         }
 
         this.responseStatisticsList.addAll(other);
+        this.responseStatisticsList.sort(
+            (StoreResponseStatistics left, StoreResponseStatistics right) -> {
+                if (left == null || left.requestStartTimeUTC == null) {
+                    return -1;
+                }
+
+                if (right == null || right.requestStartTimeUTC == null) {
+                    return 1;
+                }
+                return left.requestStartTimeUTC.compareTo(right.requestStartTimeUTC);
+            }
+        );
     }
 
     private void mergeAddressResolutionStatistics(

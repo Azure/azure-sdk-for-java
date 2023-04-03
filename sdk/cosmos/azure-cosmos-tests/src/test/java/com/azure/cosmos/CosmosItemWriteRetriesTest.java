@@ -112,11 +112,13 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         return "WithoutResponse";
     }
 
-    @DataProvider(name = "retriesEnabledTestCaseProvider")
-    private Object[][] nonIdempotentWriteRetriesEnabledTestCaseProvider() {
+    @DataProvider(name = "createItemTestCaseProvider")
+    private Object[][] createItemTestCaseProvider() {
 
         final boolean WITH_INJECTION = true;
         final boolean NO_INJECTION = false;
+        final boolean CONTENT_RESPONSE_ENABLED = true;
+        final boolean NO_CONTENT_RESPONSE = false;
         final Boolean DEFAULT_REQUEST_SUPPRESSION = null;
         final Boolean ENFORCED_REQUEST_SUPPRESSION = true;
         final Boolean NO_REQUEST_SUPPRESSION = false;
@@ -126,52 +128,64 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
 
         // following parameters will be set
-        // - should inject any failure
-        // - should suppress service request
+        // - is content response on write enabled?
+        // - should inject any failure?
+        // - should suppress service request?
         // - client write retry policy
         // - requestOptions retry policy
         // - expected StatusCode
         return new Object[][]{
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CONFLICT },
-            new Object[] { NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CONFLICT },
-            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { CONTENT_RESPONSE_ENABLED, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CONFLICT },
+            new Object[] { NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { CONTENT_RESPONSE_ENABLED, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CONFLICT },
+            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
         };
     }
 
-    @Test(groups = { "simple", "emulator" }, dataProvider = "retriesEnabledTestCaseProvider", timeOut = TIMEOUT * 10000)
+    @Test(groups = { "simple", "emulator" }, dataProvider = "createItemTestCaseProvider", timeOut = TIMEOUT * 10000)
     public void createItem(
+        boolean isContentResponseOnWriteEnabled,
         boolean injectFailure,
         Boolean suppressServiceRequests,
         WriteRetryPolicy clientWideWriteRetryPolicy,
         WriteRetryPolicy requestOptionsWriteRetryPolicy,
         int expectedStatusCode) {
 
+        CosmosClientBuilder clientBuilder = this.getClientBuilder();
+        if (requestOptionsWriteRetryPolicy == null) {
+            clientBuilder.contentResponseOnWriteEnabled(isContentResponseOnWriteEnabled);
+        }
+
         if (injectFailure &&
-            this.getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            clientBuilder.buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
 
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
         CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
         CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        if (options != null) {
+            options.setContentResponseOnWriteEnabled(isContentResponseOnWriteEnabled);
+        }
         FaultInjectionRule rule = null;
 
         if (injectFailure) {
@@ -184,7 +198,8 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
                 getDocumentDefinition(id), new PartitionKey(id), options),
                 id,
                 expectedStatusCode,
-                false);
+                false,
+                isContentResponseOnWriteEnabled);
         } finally {
             if (rule != null) {
                 rule.disable();
@@ -232,19 +247,25 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         Supplier<Mono<CosmosItemResponse<ObjectNode>>> call,
         String expectedId,
         int expectedStatusCode,
-        boolean expectTrackingId) {
+        boolean expectTrackingId,
+        boolean contentResponseOnWriteEnabled) {
 
         String activityId;
         if (expectedStatusCode <= 299) {
             CosmosItemResponse<ObjectNode> response = call.get().block();
             assertThat(response.getStatusCode()).isEqualTo(expectedStatusCode);
-            assertThat(response.getItem().get("id").asText()).isEqualTo(expectedId);
-            assertThat(response.getItem().get("mypk").asText()).isEqualTo(expectedId);
             activityId = response.getActivityId();
             assertThat(activityId).isNotNull();
             if (expectTrackingId) {
                 assertThat(response.getItem().get("_trackingId")).isNotNull();
                 assertThat(response.getItem().get("_trackingId")).isEqualTo(activityId);
+            }
+            if (contentResponseOnWriteEnabled) {
+                assertThat(response.getItem().get("id").asText()).isEqualTo(expectedId);
+                assertThat(response.getItem().get("mypk").asText()).isEqualTo(expectedId);
+                assertThat(response.getItem()).isNotNull();
+            } else {
+                assertThat(response.getItem()).isNull();
             }
         } else {
             try {

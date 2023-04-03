@@ -365,16 +365,47 @@ public class CosmosAsyncContainer {
                         .single();
 
                 return readMono
-                    .onErrorMap(readThrowable -> cosmosException)
+                    .onErrorMap(readThrowable -> {
+                        if (readThrowable instanceof CosmosException) {
+                            CosmosException readCosmosError = (CosmosException)readThrowable;
+                            CosmosDiagnostics readDiagnostics = readCosmosError.getDiagnostics();
+                            if (readDiagnostics != null && readDiagnostics.getClientSideRequestStatisticsRaw() != null) {
+                                CosmosDiagnostics errorDiagnostics = cosmosException.getDiagnostics();
+                                if (errorDiagnostics == null
+                                    || errorDiagnostics.getClientSideRequestStatisticsRaw() == null) {
+
+                                    cosmosException.setDiagnostics(readDiagnostics);
+                                } else {
+                                    errorDiagnostics.clientSideRequestStatistics().recordContributingPointOperation(
+                                        readDiagnostics.getClientSideRequestStatisticsRaw()
+                                    );
+                                }
+                            }
+                        }
+                        return cosmosException;
+                    })
                     .flatMap(readResponse -> {
                         if (readResponse.getStatusCode() == 200) {
                             return Mono.just(itemResponseAccessor.withRemappedStatusCode(
-                                readResponse, 201, cosmosException.getRequestCharge()));
+                                readResponse,
+                                201,
+                                cosmosException.getRequestCharge(),
+                                this.isContentResponseOnWriteEffectivelyEnabled(options)));
                         }
 
                         return Mono.error(cosmosException);
                     });
             });
+    }
+
+    private boolean isContentResponseOnWriteEffectivelyEnabled(CosmosItemRequestOptions options) {
+        Boolean requestOptionsContentResponseEnabled = null;
+        if (options != null) {
+            requestOptionsContentResponseEnabled = options.isContentResponseOnWriteEnabled();
+        }
+
+        return clientAccessor.isEffectiveContentResponseOnWriteEnabled(
+            this.database.getClient(), requestOptionsContentResponseEnabled);
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options, Context context) {

@@ -204,12 +204,21 @@ public class CosmosItemResponse<T> {
         return resourceResponse.getETag();
     }
 
-    CosmosItemResponse<T> withRemappedStatusCode(int statusCode, double additionalRequestCharge) {
+    CosmosItemResponse<T> withRemappedStatusCode(
+        int statusCode,
+        double additionalRequestCharge,
+        boolean isContentResponseOnWriteEnabled) {
+
         ResourceResponse<Document> mappedResourceResponse =
             this.resourceResponse.withRemappedStatusCode(statusCode, additionalRequestCharge);
 
+        byte[] payload = null;
+        if (isContentResponseOnWriteEnabled) {
+            payload = this.responseBodyAsByteArray;
+        }
+
         return new CosmosItemResponse<>(
-            mappedResourceResponse, this.responseBodyAsByteArray, this.itemClassType, this.itemDeserializer);
+            mappedResourceResponse, payload, this.itemClassType, this.itemDeserializer);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -228,9 +237,11 @@ public class CosmosItemResponse<T> {
                 @Override
                 public <T> CosmosItemResponse<T> withRemappedStatusCode(CosmosItemResponse<T> originalResponse,
                                                                         int newStatusCode,
-                                                                        double additionalRequestCharge) {
+                                                                        double additionalRequestCharge,
+                                                                        boolean isContentResponseOnWriteEnabled) {
 
-                    CosmosItemResponse<T> mappedItemResponse = originalResponse.withRemappedStatusCode(newStatusCode, additionalRequestCharge);
+                    CosmosItemResponse<T> mappedItemResponse = originalResponse
+                        .withRemappedStatusCode(newStatusCode, additionalRequestCharge, isContentResponseOnWriteEnabled);
                     return mappedItemResponse;
                 }
 

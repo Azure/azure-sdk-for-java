@@ -842,6 +842,16 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
+                public boolean isEffectiveContentResponseOnWriteEnabled(CosmosAsyncClient client,
+                                                                        Boolean requestOptionsContentResponseEnabled) {
+                    if (requestOptionsContentResponseEnabled != null) {
+                        return requestOptionsContentResponseEnabled;
+                    }
+
+                    return client.asyncDocumentClient.isContentResponseOnWriteEnabled();
+                }
+
+                @Override
                 public ConsistencyLevel getEffectiveConsistencyLevel(
                     CosmosAsyncClient client,
                     OperationType operationType,
