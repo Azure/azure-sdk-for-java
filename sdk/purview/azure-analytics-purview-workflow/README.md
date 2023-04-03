@@ -46,6 +46,7 @@ PurviewWorkflowClient purviewWorkflowClient = new PurviewWorkflowClientBuilder()
         .password(Configuration.getGlobalConfiguration().get("PASSWORD", "password"))
         .build())
     .buildClient();
+
 ```
 
 ## Examples
