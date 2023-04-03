@@ -427,6 +427,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
+
         return request;
     }
 

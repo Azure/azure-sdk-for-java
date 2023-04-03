@@ -52,7 +52,7 @@ public final class CosmosDiagnosticsContext {
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
     private final String operationId;
-
+    private final String trackingId;
     private Throwable finalError;
     private Instant startTime = null;
     private Duration duration = null;
@@ -76,7 +76,8 @@ public final class CosmosDiagnosticsContext {
         String operationId,
         ConsistencyLevel consistencyLevel,
         Integer maxItemCount,
-        CosmosDiagnosticsThresholds thresholds) {
+        CosmosDiagnosticsThresholds thresholds,
+        String trackingId) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -100,6 +101,7 @@ public final class CosmosDiagnosticsContext {
         this.consistencyLevel = consistencyLevel;
         this.maxItemCount = maxItemCount;
         this.thresholds = thresholds;
+        this.trackingId = trackingId;
     }
 
     /**
@@ -146,6 +148,15 @@ public final class CosmosDiagnosticsContext {
      */
     public String getOperationType() {
         return this.operationTypeString;
+    }
+
+    /**
+     * The trackingId of a write operation. Will be null for read-/query- or feed operations or when non-idempotent
+     * writes are disabled for writes or only enabled without trackingId propagation.
+     * @return the trackingId of an operation
+     */
+    public String getTrackingId() {
+        return this.trackingId;
     }
 
     /**
@@ -463,6 +474,9 @@ public final class CosmosDiagnosticsContext {
         if (!this.operationId.isEmpty()) {
             ctxNode.put("operationId", this.operationId);
         }
+        if (this.trackingId != null && !this.trackingId.isEmpty()) {
+            ctxNode.put("trackingId", this.trackingId);
+        }
         ctxNode.put("consistency", this.consistencyLevel.toString());
         ctxNode.put("status", this.statusCode);
         if (this.subStatusCode != 0) {
@@ -551,7 +565,7 @@ public final class CosmosDiagnosticsContext {
                                                            ResourceType resourceType, OperationType operationType,
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
-                                                           CosmosDiagnosticsThresholds thresholds) {
+                                                           CosmosDiagnosticsThresholds thresholds, String trackingId) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -564,7 +578,8 @@ public final class CosmosDiagnosticsContext {
                             operationId,
                             consistencyLevel,
                             maxItemCount,
-                            thresholds);
+                            thresholds,
+                            trackingId);
                     }
 
                     @Override

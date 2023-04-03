@@ -470,6 +470,8 @@ public class ImplementationBridgeHelpers {
             void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
+
+            boolean hasTrackingId(CosmosItemResponse<?> response, String candidate);
         }
     }
 
@@ -702,6 +704,9 @@ public class ImplementationBridgeHelpers {
             void addClientSideDiagnosticsToFeed(
                 CosmosDiagnostics cosmosDiagnostics,
                 Collection<ClientSideRequestStatistics> requestStatistics);
+
+            void setTrackingId(CosmosDiagnostics cosmosDiagnostics, String candidate);
+
         }
     }
 
@@ -748,7 +753,8 @@ public class ImplementationBridgeHelpers {
                 String operationId,
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
-                CosmosDiagnosticsThresholds thresholds);
+                CosmosDiagnosticsThresholds thresholds,
+                String trackingId);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 

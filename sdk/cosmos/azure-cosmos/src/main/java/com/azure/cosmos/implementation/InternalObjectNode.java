@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.type.MapType;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,17 +105,42 @@ public class InternalObjectNode extends Resource {
         }
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper, String trackingId) {
         if (cosmosItem instanceof InternalObjectNode) {
-            return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
+            InternalObjectNode internalObjectNode = ((InternalObjectNode) cosmosItem);
+            if (trackingId != null) {
+                internalObjectNode.set("_trackingId", trackingId);
+            }
+            return internalObjectNode.serializeJsonToByteBuffer();
         } else if (cosmosItem instanceof Document) {
-            return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
+            Document doc = (Document) cosmosItem;
+            if (trackingId != null) {
+                doc.set("_trackingId", trackingId);
+            }
+            return ModelBridgeInternal.serializeJsonToByteBuffer(doc);
         } else if (cosmosItem instanceof ObjectNode) {
-            return (new InternalObjectNode((ObjectNode)cosmosItem).serializeJsonToByteBuffer());
+            ObjectNode objectNode = (ObjectNode)cosmosItem;
+            if (trackingId != null) {
+                objectNode.put("_trackingId", trackingId);
+            }
+            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer());
         } else if (cosmosItem instanceof byte[]) {
+            if (trackingId != null) {
+                InternalObjectNode internalObjectNode = new InternalObjectNode((byte[]) cosmosItem);
+                internalObjectNode.set("_trackingId", trackingId);
+                return internalObjectNode.serializeJsonToByteBuffer();
+            }
             return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
-            return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
+            Object effectivePayload = cosmosItem;
+            if (trackingId != null) {
+                MapType mapType = objectMapper.getTypeFactory().constructMapType(LinkedHashMap.class,
+                    String.class, Object.class);
+                LinkedHashMap<String, Object> node = objectMapper.convertValue(cosmosItem, mapType);
+                node.put("_trackingId", trackingId);
+                effectivePayload = node;
+            }
+            return Utils.serializeJsonToByteBuffer(objectMapper, effectivePayload);
         }
     }
 

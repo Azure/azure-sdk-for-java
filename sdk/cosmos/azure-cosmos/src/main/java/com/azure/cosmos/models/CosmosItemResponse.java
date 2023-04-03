@@ -15,6 +15,9 @@ import com.azure.cosmos.implementation.Utils;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * The type Cosmos item response. This contains the item and response methods
@@ -30,6 +33,10 @@ public class CosmosItemResponse<T> {
     private volatile T item;
     final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
+
+    private AtomicBoolean hasTrackingIdCalculated = new AtomicBoolean(false);
+
+    private boolean hasTrackingId;
 
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
         this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
@@ -221,6 +228,27 @@ public class CosmosItemResponse<T> {
             mappedResourceResponse, payload, this.itemClassType, this.itemDeserializer);
     }
 
+    boolean hasTrackingId(String candidate) {
+        if (this.hasTrackingIdCalculated.compareAndSet(false, true)) {
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+            Instant serializationStartTime = Instant.now();
+            InternalObjectNode itemNode = getProperties();
+            Instant serializationEndTime = Instant.now();
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics =
+                new SerializationDiagnosticsContext.SerializationDiagnostics(
+                    serializationStartTime,
+                    serializationEndTime,
+                    SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+
+            return this.hasTrackingId = (itemNode != null && candidate.equals(itemNode.get("_trackingId")));
+        } else {
+            return this.hasTrackingId;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -255,6 +283,14 @@ public class CosmosItemResponse<T> {
 
                 public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
                     return response.resourceResponse;
+                }
+
+                @Override
+                public boolean hasTrackingId(CosmosItemResponse<?> response, String candidate) {
+                    checkNotNull(response, "Argument 'response' must not be null.");
+                    checkNotNull(candidate, "Argument 'candidate' must not be null.");
+
+                    return response.hasTrackingId(candidate);
                 }
             });
     }

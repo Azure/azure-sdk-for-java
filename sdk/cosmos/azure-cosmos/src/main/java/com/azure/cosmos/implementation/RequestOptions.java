@@ -42,6 +42,7 @@ public class RequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private CosmosDiagnosticsThresholds thresholds;
 
+    private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
 
     /**
@@ -171,6 +172,14 @@ public class RequestOptions {
      */
     public void setIndexingDirective(IndexingDirective indexingDirective) {
         this.indexingDirective = indexingDirective;
+    }
+
+    public void setTrackingId(String trackingId) {
+        this.trackingId = trackingId;
+    }
+
+    public String getTrackingId() {
+        return this.trackingId;
     }
 
     /**
