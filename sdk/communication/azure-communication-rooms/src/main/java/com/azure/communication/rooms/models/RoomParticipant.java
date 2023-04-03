@@ -16,14 +16,21 @@ public final class RoomParticipant {
      * model must be interpreted as a union: Apart from rawId, at most one
      * further property may be set.
      */
-    @JsonProperty(value = "communicationIdentifier", required = true)
     private CommunicationIdentifier communicationIdentifier;
 
     /*
      * The Role of a room participant.
      */
-    @JsonProperty(value = "role")
     private ParticipantRole role;
+
+    /**
+     * Default constructor for Room Participant
+     */
+
+     public RoomParticipant(CommunicationIdentifier communicationIdentifier, ParticipantRole role){
+        this.communicationIdentifier = communicationIdentifier;
+        this.role = role;
+     }
 
     /**
      * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
@@ -37,35 +44,11 @@ public final class RoomParticipant {
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
-     * from rawId, at most one further property may be set.
-     *
-     * @param communicationIdentifier the communicationIdentifier value to set.
-     * @return the RoomParticipant object itself.
-     */
-    public  RoomParticipant setCommunicationIdentifier(CommunicationIdentifier communicationIdentifier) {
-        this.communicationIdentifier = communicationIdentifier;
-        return this;
-    }
-
-    /**
      * Get the role property: The Role of a room participant.
      *
      * @return the role value.
      */
     public ParticipantRole getRole() {
         return this.role;
-    }
-
-    /**
-     * Set the role property: The Role of a room participant.
-     *
-     * @param role the role value to set.
-     * @return the RoomParticipant object itself.
-     */
-    public RoomParticipant setRole(ParticipantRole role) {
-        this.role = role;
-        return this;
     }
 }
