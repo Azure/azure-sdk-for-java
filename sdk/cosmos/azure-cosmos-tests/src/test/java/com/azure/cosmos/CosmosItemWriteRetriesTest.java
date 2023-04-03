@@ -199,6 +199,59 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "upsertItemTestCaseProvider")
+    private Object[][] upsertItemTestCaseProvider() {
+
+        final boolean DOC_EXISTS = true;
+        final boolean NO_DOC_YET = false;
+
+        // following parameters will be set
+        // - does the document already exist when issuing upsert operation?
+        // - should inject any failure?
+        // - should suppress service request?
+        // - client write retry policy
+        // - requestOptions retry policy
+        // - expected StatusCode
+        return new Object[][]{
+            new Object[] { DOC_EXISTS, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, NO_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { DOC_EXISTS, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+
+            new Object[] { NO_DOC_YET, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+
+            // Request to use trackingIds is ignored for upsert
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.OK },
+
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.OK },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, NO_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_DOC_YET, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+
+        };
+    }
+
     @DataProvider(name = "replaceItemTestCaseProvider")
     private Object[][] replaceItemTestCaseProvider() {
         // following parameters will be set
@@ -373,6 +426,53 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
                 expectedStatusCode,
                 shouldExpectTrackingId(requestOptionsWriteRetryPolicy, clientWideWriteRetryPolicy),
                 isContentResponseOnWriteEnabled);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+                container.getDatabase().getClient().close();
+                logger.info("JSON-Traces: {}", this.mockTracer.toJson());
+            }
+        }
+    }
+
+    @Test(groups = { "simple", "emulator" }, dataProvider = "upsertItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    public void upsertItem(
+        boolean itemExistsAlready,
+        boolean injectFailure,
+        Boolean suppressServiceRequests,
+        WriteRetryPolicy clientWideWriteRetryPolicy,
+        WriteRetryPolicy requestOptionsWriteRetryPolicy,
+        int expectedStatusCode) {
+
+        if (injectFailure &&
+            this.getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        String id = UUID.randomUUID().toString();
+        if (itemExistsAlready) {
+            this.createTestDocument(id);
+        }
+
+        CosmosClientBuilder clientBuilder = this.getClientBuilder();
+        CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
+        CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        FaultInjectionRule rule = null;
+
+        if (injectFailure) {
+            rule = injectFailure(container, FaultInjectionOperationType.UPSERT_ITEM, suppressServiceRequests);
+        }
+
+        try {
+            final CosmosItemRequestOptions finalOptions = options;
+
+            executeAndValidate(() -> container.upsertItem(
+                    getDocumentDefinition(id), new PartitionKey(id), finalOptions),
+                id,
+                expectedStatusCode,
+                false,
+                true);
         } finally {
             if (rule != null) {
                 rule.disable();

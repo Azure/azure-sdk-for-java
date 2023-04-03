@@ -1885,11 +1885,23 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
+
+        WriteRetryPolicy nonIdempotentWriteRetryPolicy = itemOptionsAccessor
+            .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                options,
+                this.database.getClient().getNonIdempotentWriteRetryPolicy(),
+                true);
+
+        CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
+
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(effectiveOptions);
+
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
             .upsertDocument(this.getLink(), item,
-                ModelBridgeInternal.toRequestOptions(options),
+                requestOptions,
                 true)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(
+                response, itemType, getItemDeserializer()))
             .single();
         CosmosAsyncClient client = database
             .getClient();
@@ -1902,10 +1914,11 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 database.getId(),
                 client,
-                ModelBridgeInternal.getConsistencyLevel(options),
+                ModelBridgeInternal.getConsistencyLevel(effectiveOptions),
                 OperationType.Upsert,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(itemOptionsAccessor.getDiagnosticsThresholds(options)),
+                client.getEffectiveDiagnosticsThresholds(
+                    itemOptionsAccessor.getDiagnosticsThresholds(effectiveOptions)),
                 null);
     }
 
