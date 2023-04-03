@@ -2104,6 +2104,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
+
+            if (options.getNonIdempotentWriteRetriesEnabled()) {
+                request.setNonIdempotentWriteRetriesEnabled(true);
+            }
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }

@@ -496,11 +496,13 @@ public class CosmosAsyncContainer {
 
         Mono<CosmosItemResponse<T>> responseMono;
         String trackingId = null;
+        CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
+
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUID.randomUUID().toString();
-            responseMono = createItemWithRetriesInternal(item, options, trackingId);
+            responseMono = createItemWithRetriesInternal(item, effectiveOptions, trackingId);
         } else {
-            responseMono = createItemInternalCore(item, options, trackingId);
+            responseMono = createItemInternalCore(item, effectiveOptions, trackingId);
         }
 
         CosmosAsyncClient client = database
@@ -514,10 +516,11 @@ public class CosmosAsyncContainer {
                 getId(),
                 database.getId(),
                 database.getClient(),
-                ModelBridgeInternal.getConsistencyLevel(options),
+                ModelBridgeInternal.getConsistencyLevel(effectiveOptions),
                 OperationType.Create,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(itemOptionsAccessor.getDiagnosticsThresholds(options)),
+                client.getEffectiveDiagnosticsThresholds(
+                    itemOptionsAccessor.getDiagnosticsThresholds(effectiveOptions)),
                 trackingId);
     }
 
@@ -1501,8 +1504,8 @@ public class CosmosAsyncContainer {
             options = new CosmosItemRequestOptions();
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return withContext(context -> deleteItemInternal(itemId, null, requestOptions, context));
+        final  CosmosItemRequestOptions finalOptions = options;
+        return withContext(context -> deleteItemInternal(itemId, null, finalOptions, context));
     }
 
     /**
@@ -1541,9 +1544,10 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+        final CosmosItemRequestOptions finalOptions = options;
         InternalObjectNode internalObjectNode = InternalObjectNode.fromObjectToInternalObjectNode(item);
-        return withContext(context -> deleteItemInternal(internalObjectNode.getId(), internalObjectNode, requestOptions, context));
+        return withContext(context -> deleteItemInternal(
+            internalObjectNode.getId(), internalObjectNode, finalOptions, context));
     }
 
     private String getItemLink(String itemId) {
@@ -1698,6 +1702,25 @@ public class CosmosAsyncContainer {
     private Mono<CosmosItemResponse<Object>> deleteItemInternal(
         String itemId,
         InternalObjectNode internalObjectNode,
+        CosmosItemRequestOptions options,
+        Context context) {
+
+        WriteRetryPolicy nonIdempotentWriteRetryPolicy = itemOptionsAccessor
+            .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                options,
+                this.database.getClient().getNonIdempotentWriteRetryPolicy(),
+                true);
+
+        CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
+
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(effectiveOptions);
+
+        return this.deleteItemInternalCore(itemId, internalObjectNode, requestOptions, context);
+    }
+
+    private Mono<CosmosItemResponse<Object>> deleteItemInternalCore(
+        String itemId,
+        InternalObjectNode internalObjectNode,
         RequestOptions requestOptions,
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
@@ -1765,6 +1788,24 @@ public class CosmosAsyncContainer {
                    .single();
     }
 
+    private CosmosItemRequestOptions getEffectiveOptions(
+        WriteRetryPolicy nonIdempotentWriteRetryPolicy,
+        CosmosItemRequestOptions options) {
+
+        CosmosItemRequestOptions effectiveOptions = ImplementationBridgeHelpers
+            .CosmosItemRequestOptionsHelper
+            .getCosmosItemRequestOptionsAccessor()
+            .clone(options);
+        effectiveOptions.setConsistencyLevel(null);
+        if (nonIdempotentWriteRetryPolicy.isEnabled()) {
+            effectiveOptions
+                .enableNonIdempotentWriteRetriesEnabled(nonIdempotentWriteRetryPolicy.useTrackingIdProperty());
+        } else {
+            effectiveOptions.disableNonIdempotentWriteRetriesEnabled();
+        }
+
+        return effectiveOptions;
+    }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
         Class<T> itemType,
@@ -1780,13 +1821,16 @@ public class CosmosAsyncContainer {
                 options,
                 this.database.getClient().getNonIdempotentWriteRetryPolicy(),
                 true);
+
+        CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
+
         Mono<CosmosItemResponse<T>> responseMono;
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUID.randomUUID().toString();
-            responseMono = this.replaceItemWithRetriesInternal(itemType, itemId, doc, options, trackingId);
+            responseMono = this.replaceItemWithRetriesInternal(itemType, itemId, doc, effectiveOptions, trackingId);
         } else {
-            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, options, trackingId);
+            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, trackingId);
         }
 
         CosmosAsyncClient client = database
@@ -1800,10 +1844,11 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 database.getId(),
                 client,
-                ModelBridgeInternal.getConsistencyLevel(options),
+                ModelBridgeInternal.getConsistencyLevel(effectiveOptions),
                 OperationType.Replace,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(itemOptionsAccessor.getDiagnosticsThresholds(options)),
+                client.getEffectiveDiagnosticsThresholds(
+                    itemOptionsAccessor.getDiagnosticsThresholds(effectiveOptions)),
                 trackingId);
     }
 

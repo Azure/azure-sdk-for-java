@@ -172,6 +172,33 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "deleteItemTestCaseProvider")
+    private Object[][] deleteItemTestCaseProvider() {
+        // following parameters will be set
+        // - should inject any failure?
+        // - should suppress service request?
+        // - client write retry policy
+        // - requestOptions retry policy
+        // - expected StatusCode
+        return new Object[][]{
+            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.NO_CONTENT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.NOTFOUND },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.NO_CONTENT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.NOTFOUND },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.NO_CONTENT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_INJECTION, NO_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.NOTFOUND },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.NO_CONTENT },
+            new Object[] { WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, NO_RETRIES, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+        };
+    }
+
     @DataProvider(name = "replaceItemTestCaseProvider")
     private Object[][] replaceItemTestCaseProvider() {
         // following parameters will be set
@@ -207,6 +234,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             new Object[] { NO_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.OK },
             new Object[] { NO_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
             new Object[] { WITH_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.PRECONDITION_FAILED },
+            new Object[] { WITH_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.OK },
             new Object[] { NO_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.OK },
             new Object[] { NO_PRECONDITION_CHECK, CONTENT_RESPONSE_ENABLED, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.OK },
             new Object[] { NO_PRECONDITION_CHECK, NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.OK },
@@ -354,6 +382,45 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "simple", "emulator" }, dataProvider = "deleteItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    public void deleteItem(
+        boolean injectFailure,
+        Boolean suppressServiceRequests,
+        WriteRetryPolicy clientWideWriteRetryPolicy,
+        WriteRetryPolicy requestOptionsWriteRetryPolicy,
+        int expectedStatusCode) {
+
+        if (injectFailure &&
+            this.getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        String id = UUID.randomUUID().toString();
+        String etag = this.createTestDocument(id);
+
+        CosmosClientBuilder clientBuilder = this.getClientBuilder();
+        CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
+        CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        FaultInjectionRule rule = null;
+
+        if (injectFailure) {
+            rule = injectFailure(container, FaultInjectionOperationType.DELETE_ITEM, suppressServiceRequests);
+        }
+
+        try {
+            executeAndValidateForDelete (
+                () -> container.deleteItem(id, new PartitionKey(id), options),
+                expectedStatusCode);
+        } finally {
+            if (rule != null) {
+                rule.disable();
+                container.getDatabase().getClient().close();
+                logger.info("JSON-Traces: {}", this.mockTracer.toJson());
+            }
+        }
+    }
+
     private FaultInjectionRule injectFailure(
         CosmosAsyncContainer container,
         FaultInjectionOperationType operationType,
@@ -428,11 +495,33 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
                 fail("Should never have reached here but seen exception");
             } catch (CosmosException cosmosError) {
                 assertThat(cosmosError.getStatusCode()).isEqualTo(expectedStatusCode);
-                activityId = cosmosError.getActivityId();
-                //assertThat(activityId).isNotNull();
             }
         }
     }
+
+    private void executeAndValidateForDelete(
+        Supplier<Mono<CosmosItemResponse<Object>>> call,
+        int expectedStatusCode) {
+
+        String activityId;
+        if (expectedStatusCode <= 299) {
+            CosmosItemResponse<Object> response = call.get().block();
+            assertThat(response.getStatusCode()).isEqualTo(expectedStatusCode);
+            activityId = response.getActivityId();
+            assertThat(activityId).isNotNull();
+            String trackingId = response.getDiagnostics().getDiagnosticsContext().getTrackingId();
+            assertThat(trackingId).isNull();
+        } else {
+            try {
+                call.get().block();
+                fail("Should never have reached here but seen exception");
+            } catch (CosmosException cosmosError) {
+                assertThat(cosmosError.getStatusCode()).isEqualTo(expectedStatusCode);
+            }
+        }
+    }
+
+
 
     private ObjectNode getDocumentDefinition(String documentId) {
         String json = String.format(
