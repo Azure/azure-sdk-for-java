@@ -38,7 +38,6 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -1350,7 +1349,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                     .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
                     .thenReturn(Flux.just(new OpenConnectionResponse(new Uri("http://localhost:8081"), true)));
 
-            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, connectionsPerEndpoint))
+            StepVerifier.create(cache.submitOpenConnectionTask(addressInformation, documentCollection, connectionsPerEndpoint))
                     .expectNextCount(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig))
                     .verifyComplete();
 
@@ -1360,15 +1359,15 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         } else {
 
-            Mockito.doNothing().when(proactiveOpenConnectionsProcessorMock).submitOpenConnectionsTask(Mockito.any(OpenConnectionOperation.class));
+            Mockito.doNothing().when(proactiveOpenConnectionsProcessorMock).submitOpenConnectionTask(Mockito.any(OpenConnectionOperation.class));
 
-            StepVerifier.create(cache.openConnections(addressInformation, documentCollection, connectionsPerEndpoint))
+            StepVerifier.create(cache.submitOpenConnectionTask(addressInformation, documentCollection, connectionsPerEndpoint))
                     .expectNextCount(0)
                     .verifyComplete();
 
             Mockito
                     .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig)))
-                    .submitOpenConnectionsTask(Mockito.any(OpenConnectionOperation.class));
+                    .submitOpenConnectionTask(Mockito.any(OpenConnectionOperation.class));
         }
         System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
     }

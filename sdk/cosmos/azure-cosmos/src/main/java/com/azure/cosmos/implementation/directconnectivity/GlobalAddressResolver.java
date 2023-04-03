@@ -175,7 +175,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                                 Configs.getMinConnectionPoolSizePerEndpoint()
                                                         );
 
-                                                return this.openConnectionInternal(
+                                                return this.submitOpenConnectionInternal(
                                                         addressInformation,
                                                         containerLinkToCollection.getRight(),
                                                         proactiveContainerInitConfig,
@@ -214,7 +214,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         return Flux.empty();
     }
 
-    private Flux<Void> openConnectionInternal(
+    private Flux<Void> submitOpenConnectionInternal(
             AddressInformation address,
             DocumentCollection documentCollection,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
@@ -228,7 +228,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
                             return this.addressCacheByEndpoint.get(readEndpoint)
                                     .addressCache
-                                    .openConnections(
+                                    .submitOpenConnectionTask(
                                             address,
                                             documentCollection,
                                             connectionPerEndpointCount

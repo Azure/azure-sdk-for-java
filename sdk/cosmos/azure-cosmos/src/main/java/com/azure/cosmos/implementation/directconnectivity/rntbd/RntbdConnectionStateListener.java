@@ -3,20 +3,14 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -89,7 +83,7 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(
+        this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
                 new OpenConnectionOperation(
                         rntbdOpenConnectionsHandler,
                         "",

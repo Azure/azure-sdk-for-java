@@ -654,12 +654,11 @@ public final class CosmosAsyncClient implements Closeable {
                 .just(1)
                 .delayElements(timeout)
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiatePublisherAndSubscribe)
+                .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiateOpenConnectionsPublisherAndSubscribe)
                 .subscribe();
 
         proactiveOpenConnectionsProcessor
                 .getOpenConnectionsPublisherFromOpenConnectionOperation()
-                .sequential()
                 .subscribe();
     }
 

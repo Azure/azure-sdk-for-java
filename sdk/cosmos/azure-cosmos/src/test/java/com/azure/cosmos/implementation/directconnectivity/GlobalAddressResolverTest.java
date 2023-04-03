@@ -28,14 +28,12 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -207,7 +205,7 @@ public class GlobalAddressResolverTest {
                         .thenReturn(Flux.fromIterable(collectionToAddresses));
 
         Mockito
-                .when(gatewayAddressCache.openConnections(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint()))
+                .when(gatewayAddressCache.submitOpenConnectionTask(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint()))
                 .thenReturn(Flux.empty());
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
@@ -236,6 +234,6 @@ public class GlobalAddressResolverTest {
 
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .openConnections(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint());
+                .submitOpenConnectionTask(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint());
     }
 }

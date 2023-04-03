@@ -23,7 +23,6 @@ import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -68,7 +67,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -1013,12 +1011,12 @@ public class GatewayAddressCache implements IAddressCache {
 
     }
 
-    public Flux<Void> openConnections(
+    public Flux<Void> submitOpenConnectionTask(
             AddressInformation address,
             DocumentCollection documentCollection,
             int connectionsPerEndpointCount
     ) {
-        if (this.openConnectionsHandler != null) {
+        if (this.openConnectionsHandler != null && this.proactiveOpenConnectionsProcessor != null) {
 
             int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
                     Configs.getMinConnectionPoolSizePerEndpoint());
@@ -1030,10 +1028,13 @@ public class GatewayAddressCache implements IAddressCache {
                     address.getPhysicalUri(),
                     connectionsRequiredForEndpoint);
 
-            this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
+            this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(openConnectionOperation);
 
             return Flux.empty();
         }
+
+        checkArgument(this.openConnectionsHandler != null, "openConnectionsHandler should not be null");
+        checkArgument(this.proactiveOpenConnectionsProcessor != null, "proactiveOpenConnectionsProcessor should not be null");
 
         return Flux.empty();
     }

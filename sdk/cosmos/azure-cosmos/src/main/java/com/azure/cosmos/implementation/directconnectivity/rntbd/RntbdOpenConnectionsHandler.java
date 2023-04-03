@@ -19,7 +19,6 @@ import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -103,7 +102,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                                         minConnectionsRequiredForEndpoint
                                                 );
 
-                                                this.proactiveOpenConnectionsProcessor.submitOpenConnectionsTask(openConnectionOperation);
+                                                this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(openConnectionOperation);
                                             }
                                         });
                             }

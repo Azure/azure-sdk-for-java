@@ -39,7 +39,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.endpointToMinConnections = new ConcurrentHashMap<>();
     }
 
-    public synchronized void submitOpenConnectionsTask(OpenConnectionOperation openConnectionOperation) {
+    public synchronized void submitOpenConnectionTask(OpenConnectionOperation openConnectionOperation) {
 
         String addressUriAsString = openConnectionOperation.getAddressUri().getURIAsString();
 
@@ -114,7 +114,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 });
     }
 
-    public void reinstantiatePublisherAndSubscribe() {
+    public void reinstantiateOpenConnectionsPublisherAndSubscribe() {
         this.toggleOpenConnectionsAggressiveness();
         this.instantiateOpenConnectionsPublisher();
         this.getOpenConnectionsPublisherFromOpenConnectionOperation().subscribe();
@@ -125,13 +125,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             ShouldRetryResult retryResult
     ) {
         if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {
-            this.submitOpenConnectionsTask(op);
+            this.submitOpenConnectionTask(op);
             return Mono.empty();
         } else {
             return Mono
                     .delay(retryResult.backOffTime)
                     .flatMap(ignore -> {
-                        this.submitOpenConnectionsTask(op);
+                        this.submitOpenConnectionTask(op);
                         return Mono.empty();
                     });
         }
