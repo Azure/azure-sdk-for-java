@@ -63,10 +63,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisherFromOpenConnectionOperation() {
-        // steady-state concurrency
+        // aggressive concurrency
         int concurrency = Configs.getCPUCnt();
 
-        // background execution concurrency
+        // defensive concurrency
         if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.DEFENSIVE) {
             concurrency = 1;
         }
