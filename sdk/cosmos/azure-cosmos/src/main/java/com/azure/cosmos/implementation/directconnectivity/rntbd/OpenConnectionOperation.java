@@ -28,7 +28,8 @@ public final class OpenConnectionOperation {
 
     public OpenConnectionOperation(
             IOpenConnectionsHandler openConnectionsHandler,
-            String collectionRid, URI serviceEndpoint,
+            String collectionRid,
+            URI serviceEndpoint,
             Uri addressUri,
             int minConnectionsRequiredForEndpoint
     ) {

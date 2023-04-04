@@ -83,6 +83,8 @@ public class RntbdConnectionStateListener {
             return;
         }
 
+        this.proactiveOpenConnectionsProcessor.decrementTotalConnectionCount();
+
         this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
                 new OpenConnectionOperation(
                         rntbdOpenConnectionsHandler,

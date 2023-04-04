@@ -77,6 +77,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionOperation -> {
                     if (totalEstablishedConnections.get() < MaxConnectionsToOpenAcrossAllEndpoints) {
+
                         endpointToMinConnections.remove(openConnectionOperation.getAddressUri().getURIAsString());
                         IOpenConnectionsHandler openConnectionsHandler = openConnectionOperation.getOpenConnectionsHandler();
                         Uri addressUri = openConnectionOperation.getAddressUri();
@@ -152,5 +153,9 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         } else {
             aggressivenessHint.set(OpenConnectionAggressivenessHint.AGGRESSIVE);
         }
+    }
+
+    public void decrementTotalConnectionCount() {
+        totalEstablishedConnections.decrementAndGet();
     }
 }
