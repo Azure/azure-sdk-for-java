@@ -17,8 +17,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class CryptographyClientTestBase extends TestBase {
+public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     protected boolean isHsmEnabled = false;

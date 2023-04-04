@@ -15,6 +15,7 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
+public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     protected static final boolean IS_MANAGED_HSM_DEPLOYED =
