@@ -17,6 +17,14 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
     public static final BlobCopySourceTagsMode COPY = fromString("COPY");
 
     /**
+     * Creates a new instance of BlobCopySourceTags value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobCopySourceTagsMode() {}
+
+    /**
      * Creates or finds a BlobCopySourceTags from its string representation.
      *
      * @param name a name to look for.

@@ -19,6 +19,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -47,6 +48,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.UserDelegationKey;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
@@ -107,6 +109,34 @@ public final class ServicesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Put("/")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") BlobServiceProperties blobServiceProperties,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<Void> setPropertiesNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") BlobServiceProperties blobServiceProperties,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
@@ -136,6 +166,32 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties> getPropertiesSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<BlobServiceProperties> getPropertiesNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics>> getStatistics(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -150,6 +206,32 @@ public final class ServicesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<Response<BlobServiceStatistics>> getStatisticsNoCustomHeaders(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics> getStatisticsSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<BlobServiceStatistics> getStatisticsNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -191,6 +273,38 @@ public final class ServicesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> listBlobContainersSegmentSync(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String listBlobContainersIncludeType,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<BlobContainersSegment> listBlobContainersSegmentNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String listBlobContainersIncludeType,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
@@ -219,6 +333,34 @@ public final class ServicesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> getUserDelegationKeySync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") KeyInfo keyInfo,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") KeyInfo keyInfo,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
@@ -234,6 +376,28 @@ public final class ServicesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<Response<Void>> getAccountInfoNoCustomHeaders(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesGetAccountInfoHeaders, Void> getAccountInfoSync(
+                @HostParam("url") String url,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<Void> getAccountInfoNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -290,6 +454,36 @@ public final class ServicesImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<StreamResponse> submitBatchNoCustomHeaders(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Type") String multipartContentType,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesSubmitBatchHeaders, InputStream> submitBatchSync(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Type") String multipartContentType,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<InputStream> submitBatchNoCustomHeadersSync(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @HeaderParam("Content-Length") long contentLength,
@@ -333,6 +527,38 @@ public final class ServicesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment> filterBlobsSync(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("where") String where,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String include,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<FilterBlobSegment> filterBlobsNoCustomHeadersSync(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("where") String where,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String include,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
@@ -349,6 +575,29 @@ public final class ServicesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<Response<BlobContainersSegment>> listBlobContainersSegmentNextNoCustomHeaders(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("url") String url,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment>
+                listBlobContainersSegmentNextSync(
+                        @PathParam(value = "nextLink", encoded = true) String nextLink,
+                        @HostParam("url") String url,
+                        @HeaderParam("x-ms-version") String version,
+                        @HeaderParam("x-ms-client-request-id") String requestId,
+                        @HeaderParam("Accept") String accept,
+                        Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Response<BlobContainersSegment> listBlobContainersSegmentNextNoCustomHeadersSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -541,6 +790,93 @@ public final class ServicesImpl {
     }
 
     /**
+     * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param blobServiceProperties The StorageService properties.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesWithResponse(
+            BlobServiceProperties blobServiceProperties, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.setPropertiesSync(
+                this.client.getUrl(),
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                blobServiceProperties,
+                accept,
+                context);
+    }
+
+    /**
+     * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param blobServiceProperties The StorageService properties.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setProperties(BlobServiceProperties blobServiceProperties, Integer timeout, String requestId) {
+        setPropertiesWithResponse(blobServiceProperties, timeout, requestId, Context.NONE);
+    }
+
+    /**
+     * Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param blobServiceProperties The StorageService properties.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setPropertiesNoCustomHeadersWithResponse(
+            BlobServiceProperties blobServiceProperties, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.setPropertiesNoCustomHeadersSync(
+                this.client.getUrl(),
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                blobServiceProperties,
+                accept,
+                context);
+    }
+
+    /**
      * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
      *
@@ -705,6 +1041,78 @@ public final class ServicesImpl {
     }
 
     /**
+     * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties> getPropertiesWithResponse(
+            Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.getPropertiesSync(
+                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobServiceProperties getProperties(Integer timeout, String requestId) {
+        return getPropertiesWithResponse(timeout, requestId, Context.NONE).getValue();
+    }
+
+    /**
+     * gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobServiceProperties> getPropertiesNoCustomHeadersWithResponse(
+            Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.getPropertiesNoCustomHeadersSync(
+                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the storage account.
      *
@@ -857,6 +1265,75 @@ public final class ServicesImpl {
         final String comp = "stats";
         final String accept = "application/xml";
         return service.getStatisticsNoCustomHeaders(
+                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the storage account.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the storage service along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics> getStatisticsWithResponse(
+            Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "stats";
+        final String accept = "application/xml";
+        return service.getStatisticsSync(
+                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the storage account.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the storage service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobServiceStatistics getStatistics(Integer timeout, String requestId) {
+        return getStatisticsWithResponse(timeout, requestId, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Blob service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the storage account.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the storage service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobServiceStatistics> getStatisticsNoCustomHeadersWithResponse(
+            Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "stats";
+        final String accept = "application/xml";
+        return service.getStatisticsNoCustomHeadersSync(
                 this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
     }
 
@@ -1297,6 +1774,446 @@ public final class ServicesImpl {
     }
 
     /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String listBlobContainersIncludeTypeConverted =
+                (listBlobContainersIncludeType == null)
+                        ? null
+                        : listBlobContainersIncludeType.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> res =
+                service.listBlobContainersSegmentSync(
+                        this.client.getUrl(),
+                        comp,
+                        prefix,
+                        marker,
+                        maxresults,
+                        listBlobContainersIncludeTypeConverted,
+                        timeout,
+                        this.client.getVersion(),
+                        requestId,
+                        accept,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                res.getDeserializedHeaders());
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String listBlobContainersIncludeTypeConverted =
+                (listBlobContainersIncludeType == null)
+                        ? null
+                        : listBlobContainersIncludeType.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> res =
+                service.listBlobContainersSegmentSync(
+                        this.client.getUrl(),
+                        comp,
+                        prefix,
+                        marker,
+                        maxresults,
+                        listBlobContainersIncludeTypeConverted,
+                        timeout,
+                        this.client.getVersion(),
+                        requestId,
+                        accept,
+                        context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                res.getDeserializedHeaders());
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobContainerItem> listBlobContainersSegment(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId) {
+        return new PagedIterable<>(
+                () ->
+                        listBlobContainersSegmentSinglePage(
+                                prefix,
+                                marker,
+                                maxresults,
+                                listBlobContainersIncludeType,
+                                timeout,
+                                requestId,
+                                Context.NONE),
+                nextLink -> listBlobContainersSegmentNextSinglePage(nextLink, requestId));
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobContainerItem> listBlobContainersSegment(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        return new PagedIterable<>(
+                () ->
+                        listBlobContainersSegmentSinglePage(
+                                prefix, marker, maxresults, listBlobContainersIncludeType, timeout, requestId, context),
+                nextLink -> listBlobContainersSegmentNextSinglePage(nextLink, requestId, context));
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNoCustomHeadersSinglePage(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String listBlobContainersIncludeTypeConverted =
+                (listBlobContainersIncludeType == null)
+                        ? null
+                        : listBlobContainersIncludeType.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        Response<BlobContainersSegment> res =
+                service.listBlobContainersSegmentNoCustomHeadersSync(
+                        this.client.getUrl(),
+                        comp,
+                        prefix,
+                        marker,
+                        maxresults,
+                        listBlobContainersIncludeTypeConverted,
+                        timeout,
+                        this.client.getVersion(),
+                        requestId,
+                        accept,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                null);
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNoCustomHeadersSinglePage(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String comp = "list";
+        final String accept = "application/xml";
+        String listBlobContainersIncludeTypeConverted =
+                (listBlobContainersIncludeType == null)
+                        ? null
+                        : listBlobContainersIncludeType.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
+        Response<BlobContainersSegment> res =
+                service.listBlobContainersSegmentNoCustomHeadersSync(
+                        this.client.getUrl(),
+                        comp,
+                        prefix,
+                        marker,
+                        maxresults,
+                        listBlobContainersIncludeTypeConverted,
+                        timeout,
+                        this.client.getVersion(),
+                        requestId,
+                        accept,
+                        context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                null);
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobContainerItem> listBlobContainersSegmentNoCustomHeaders(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId) {
+        return new PagedIterable<>(
+                () ->
+                        listBlobContainersSegmentNoCustomHeadersSinglePage(
+                                prefix,
+                                marker,
+                                maxresults,
+                                listBlobContainersIncludeType,
+                                timeout,
+                                requestId,
+                                Context.NONE),
+                nextLink -> listBlobContainersSegmentNextSinglePage(nextLink, requestId));
+    }
+
+    /**
+     * The List Containers Segment operation returns a list of the containers under the specified account.
+     *
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned
+     *     as part of the response body.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobContainerItem> listBlobContainersSegmentNoCustomHeaders(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        return new PagedIterable<>(
+                () ->
+                        listBlobContainersSegmentNoCustomHeadersSinglePage(
+                                prefix, marker, maxresults, listBlobContainersIncludeType, timeout, requestId, context),
+                nextLink -> listBlobContainersSegmentNextSinglePage(nextLink, requestId, context));
+    }
+
+    /**
      * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
      * authentication.
      *
@@ -1479,6 +2396,94 @@ public final class ServicesImpl {
     }
 
     /**
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> getUserDelegationKeyWithResponse(
+            KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "userdelegationkey";
+        final String accept = "application/xml";
+        return service.getUserDelegationKeySync(
+                this.client.getUrl(),
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                keyInfo,
+                accept,
+                context);
+    }
+
+    /**
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout, String requestId) {
+        return getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersWithResponse(
+            KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "userdelegationkey";
+        final String accept = "application/xml";
+        return service.getUserDelegationKeyNoCustomHeadersSync(
+                this.client.getUrl(),
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                keyInfo,
+                accept,
+                context);
+    }
+
+    /**
      * Returns the sku name and account kind.
      *
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -1572,6 +2577,53 @@ public final class ServicesImpl {
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getAccountInfoNoCustomHeaders(
+                this.client.getUrl(), restype, comp, this.client.getVersion(), accept, context);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetAccountInfoHeaders, Void> getAccountInfoWithResponse(Context context) {
+        final String restype = "account";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.getAccountInfoSync(
+                this.client.getUrl(), restype, comp, this.client.getVersion(), accept, context);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getAccountInfo() {
+        getAccountInfoWithResponse(Context.NONE);
+    }
+
+    /**
+     * Returns the sku name and account kind.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getAccountInfoNoCustomHeadersWithResponse(Context context) {
+        final String restype = "account";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.getAccountInfoNoCustomHeadersSync(
                 this.client.getUrl(), restype, comp, this.client.getVersion(), accept, context);
     }
 
@@ -1996,6 +3048,112 @@ public final class ServicesImpl {
     }
 
     /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
+     *     Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param body Initial data.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesSubmitBatchHeaders, InputStream> submitBatchWithResponse(
+            long contentLength,
+            String multipartContentType,
+            BinaryData body,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String comp = "batch";
+        final String accept = "application/xml";
+        return service.submitBatchSync(
+                this.client.getUrl(),
+                comp,
+                contentLength,
+                multipartContentType,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
+     *     Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param body Initial data.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputStream submitBatch(
+            long contentLength, String multipartContentType, BinaryData body, Integer timeout, String requestId) {
+        return submitBatchWithResponse(contentLength, multipartContentType, body, timeout, requestId, Context.NONE)
+                .getValue();
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
+     *     Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param body Initial data.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InputStream> submitBatchNoCustomHeadersWithResponse(
+            long contentLength,
+            String multipartContentType,
+            BinaryData body,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String comp = "batch";
+        final String accept = "application/xml";
+        return service.submitBatchNoCustomHeadersSync(
+                this.client.getUrl(),
+                comp,
+                contentLength,
+                multipartContentType,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                body,
+                accept,
+                context);
+    }
+
+    /**
      * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
      * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
      * expression to a single container.
@@ -2308,6 +3466,158 @@ public final class ServicesImpl {
     }
 
     /**
+     * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
+     * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
+     * expression to a single container.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param where Filters the results to return only to return only blobs whose tags match the specified expression.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a Filter Blobs API call along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment> filterBlobsWithResponse(
+            Integer timeout,
+            String requestId,
+            String where,
+            String marker,
+            Integer maxresults,
+            List<FilterBlobsIncludeItem> include,
+            Context context) {
+        final String comp = "blobs";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.filterBlobsSync(
+                this.client.getUrl(),
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                where,
+                marker,
+                maxresults,
+                includeConverted,
+                accept,
+                context);
+    }
+
+    /**
+     * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
+     * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
+     * expression to a single container.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param where Filters the results to return only to return only blobs whose tags match the specified expression.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a Filter Blobs API call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FilterBlobSegment filterBlobs(
+            Integer timeout,
+            String requestId,
+            String where,
+            String marker,
+            Integer maxresults,
+            List<FilterBlobsIncludeItem> include) {
+        return filterBlobsWithResponse(timeout, requestId, where, marker, maxresults, include, Context.NONE).getValue();
+    }
+
+    /**
+     * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
+     * expression. Filter blobs searches across all containers within a storage account but can be scoped within the
+     * expression to a single container.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param where Filters the results to return only to return only blobs whose tags match the specified expression.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a Filter Blobs API call along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FilterBlobSegment> filterBlobsNoCustomHeadersWithResponse(
+            Integer timeout,
+            String requestId,
+            String where,
+            String marker,
+            Integer maxresults,
+            List<FilterBlobsIncludeItem> include,
+            Context context) {
+        final String comp = "blobs";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.filterBlobsNoCustomHeadersSync(
+                this.client.getUrl(),
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                where,
+                marker,
+                maxresults,
+                includeConverted,
+                accept,
+                context);
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items
@@ -2437,5 +3747,118 @@ public final class ServicesImpl {
                                         res.getValue().getBlobContainerItems(),
                                         res.getValue().getNextMarker(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId) {
+        final String accept = "application/xml";
+        ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment> res =
+                service.listBlobContainersSegmentNextSync(
+                        nextLink, this.client.getUrl(), this.client.getVersion(), requestId, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                res.getDeserializedHeaders());
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(
+            String nextLink, String requestId, Context context) {
+        final String accept = "application/xml";
+        ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment> res =
+                service.listBlobContainersSegmentNextSync(
+                        nextLink, this.client.getUrl(), this.client.getVersion(), requestId, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                res.getDeserializedHeaders());
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextNoCustomHeadersSinglePage(
+            String nextLink, String requestId) {
+        final String accept = "application/xml";
+        Response<BlobContainersSegment> res =
+                service.listBlobContainersSegmentNextNoCustomHeadersSync(
+                        nextLink, this.client.getUrl(), this.client.getVersion(), requestId, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of containers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextNoCustomHeadersSinglePage(
+            String nextLink, String requestId, Context context) {
+        final String accept = "application/xml";
+        Response<BlobContainersSegment> res =
+                service.listBlobContainersSegmentNextNoCustomHeadersSync(
+                        nextLink, this.client.getUrl(), this.client.getVersion(), requestId, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getBlobContainerItems(),
+                res.getValue().getNextMarker(),
+                null);
     }
 }

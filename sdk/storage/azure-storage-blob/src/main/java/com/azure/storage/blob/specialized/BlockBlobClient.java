@@ -7,24 +7,24 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockList;
-import com.azure.storage.blob.models.BlockListType;
-import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.*;
+import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
@@ -35,19 +35,28 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-import java.nio.ByteBuffer;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+import static com.azure.storage.common.implementation.StorageImplUtils.*;
+
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -60,8 +69,43 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
+    private final BlockBlobAsyncClient asyncClient;
 
-    private final BlockBlobAsyncClient client;
+    //TODO: these variables should bubble to BlobClientBase once all Storage clients support sync stack.
+    /**
+     * Backing REST client for the blob client.
+     */
+    final AzureBlobStorageImpl azureBlobStorage;
+
+    private final String snapshot;
+    private final String versionId;
+    private final CpkInfo customerProvidedKey;
+
+    /**
+     * Encryption scope of the blob.
+     */
+    final EncryptionScope encryptionScope;
+
+    /**
+     * Storage account name that contains the blob.
+     */
+    final String accountName;
+
+    /**
+     * Container name that contains the blob.
+     */
+    final String containerName;
+
+    /**
+     * Name of the blob.
+     */
+    final String blobName;
+
+    /**
+     * Storage REST API version used in requests to the Storage service.
+     */
+    final BlobServiceVersion serviceVersion;
+
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -89,13 +133,52 @@ public final class BlockBlobClient extends BlobClientBase {
     public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
      *
-     * @param client the async block blob client
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
-    BlockBlobClient(BlockBlobAsyncClient client) {
-        super(client);
-        this.client = client;
+    BlockBlobClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+                             String accountName, String containerName, String blobName, String snapshot,
+                             CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId,
+                             BlockBlobAsyncClient blockBlobAsyncClient) {
+        super(blockBlobAsyncClient);
+        if (snapshot != null && versionId != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
+        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+        this.serviceVersion = serviceVersion;
+
+        this.accountName = accountName;
+        this.containerName = containerName;
+        this.blobName = Utility.urlDecode(blobName);
+        this.snapshot = snapshot;
+        this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+        this.versionId = versionId;
+        this.asyncClient = blockBlobAsyncClient;
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobUrl());
+        } catch (IllegalArgumentException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -106,7 +189,13 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new BlockBlobClient(azureBlobStorage.getHttpPipeline(), azureBlobStorage.getUrl(), serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey, finalEncryptionScope, versionId,
+            asyncClient);
     }
 
     /**
@@ -118,7 +207,16 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @Override
     public BlockBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new BlockBlobClient(azureBlobStorage.getHttpPipeline(), azureBlobStorage.getUrl(), serviceVersion,
+            accountName, containerName, blobName, snapshot, finalCustomerProvidedKey, encryptionScope,
+            versionId, asyncClient);
     }
 
     /**
@@ -480,12 +578,51 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
+
+        Supplier<Response<BlockBlobItem>> operation = () ->
+            uploadWithResponseSync(options, enableSyncRestProxy(context));
+
         try {
-            return blockWithOptionalTimeout(upload, timeout);
+            return timeout != null
+                ? THREAD_POOL.submit(() -> operation.get()).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : operation.get();
         } catch (UncheckedIOException e) {
             throw LOGGER.logExceptionAsError(e);
+        } catch (ExecutionException | TimeoutException | InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    Response<BlockBlobItem> uploadWithResponseSync(BlockBlobSimpleUploadOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
+        context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+        BinaryData data = options.getData();
+        if (data == null) {
+            if (options.getDataStream() != null) {
+                data = BinaryData.fromStream(options.getDataStream());
+            } else {
+                data = BinaryData.fromFlux(options.getDataFlux()).block();
+            }
+        }
+        ResponseBase<BlockBlobsUploadHeaders, Void> response = this.azureBlobStorage.getBlockBlobs()
+            .uploadWithResponse(containerName, blobName,
+                options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
+                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
+                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+
+        BlockBlobsUploadHeaders hd = response.getDeserializedHeaders();
+        BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+            hd.getXMsVersionId());
+        return new SimpleResponse<>(response, item);
     }
 
     /**
@@ -594,12 +731,47 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
                                                              Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadFromUrlWithResponse(options, context);
+        return StorageImplUtils.executeOperation(() -> uploadFromUrlWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
+    }
+
+    Response<BlockBlobItem> uploadFromUrlWithResponseSync(BlobUploadFromUrlOptions options, Context context) {
+        BlobRequestConditions destinationRequestConditions =
+            options.getDestinationRequestConditions() == null ? new BlobRequestConditions()
+                : options.getDestinationRequestConditions();
+        BlobRequestConditions sourceRequestConditions =
+            options.getSourceRequestConditions() == null ? new BlobRequestConditions()
+                : options.getSourceRequestConditions();
+        context = context == null ? Context.NONE : context;
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
+
         try {
-            return blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw LOGGER.logExceptionAsError(e);
+            new URL(options.getSourceUrl());
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
+
+        // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
+        ResponseBase<BlockBlobsPutBlobFromUrlHeaders, Void> response = this.azureBlobStorage.getBlockBlobs().putBlobFromUrlWithResponse(
+            containerName, blobName, 0, options.getSourceUrl(), null, null, null,
+            destinationRequestConditions.getLeaseId(), options.getTier(),
+            destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
+            destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
+            destinationRequestConditions.getTagsConditions(),
+            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
+            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
+            sourceRequestConditions.getTagsConditions(),
+            null, options.getContentMd5(), tagsToString(options.getTags()),
+            options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+
+        BlockBlobsPutBlobFromUrlHeaders hd = response.getDeserializedHeaders();
+        BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+            hd.getXMsVersionId());
+        return new SimpleResponse<>(response, item);
     }
 
     /**
@@ -691,12 +863,20 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
+        return executeOperation(() -> stageBlockWithResponseSync(base64BlockId,
+            BinaryData.fromStream(data, length), contentMd5, leaseId, enableSyncRestProxy(context)), timeout);
+    }
 
-        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId,
-            context);
-        return blockWithOptionalTimeout(response, timeout);
+    Response<Void> stageBlockWithResponseSync(String base64BlockId, BinaryData data,
+                                              byte[] contentMd5, String leaseId, Context context) {
+        Objects.requireNonNull(data, "data must not be null");
+        Objects.requireNonNull(data.getLength(), "data must have defined length");
+        context = context == null ? Context.NONE : context;
+        ResponseBase<BlockBlobsStageBlockHeaders, Void> response = this.azureBlobStorage.getBlockBlobs().stageBlockWithResponse(containerName, blobName,
+            base64BlockId, data.getLength(), data, contentMd5, null, null,
+            leaseId, null, getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+        return new SimpleResponse<>(response, null);
     }
 
     /**
@@ -730,9 +910,10 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(
-            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
-        return blockWithOptionalTimeout(response, timeout);
+
+        return executeOperation(() -> stageBlockWithResponseSync(
+            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(),
+                enableSyncRestProxy(context)), timeout);
     }
 
     /**
@@ -839,8 +1020,31 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
-        return blockWithOptionalTimeout(response, timeout);
+        return executeOperation(() -> stageBlockFromUrlWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
+    }
+
+    Response<Void> stageBlockFromUrlWithResponseSync(BlockBlobStageBlockFromUrlOptions options, Context context) {
+        BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
+        BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getSourceRequestConditions();
+
+        try {
+            new URL(options.getSourceUrl());
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
+        }
+        context = context == null ? Context.NONE : context;
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
+
+        ResponseBase<BlockBlobsStageBlockFromURLHeaders, Void> response = this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponse(containerName, blobName,
+            options.getBase64BlockId(), 0, options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
+            options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
+            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+            sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+        return new SimpleResponse<>(response, null);
     }
 
     /**
@@ -933,7 +1137,17 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
-        return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
+        return executeOperation(() -> listBlocksWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
+    }
+
+    Response<BlockList> listBlocksWithResponseSync(BlockBlobListBlocksOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+
+        ResponseBase<BlockBlobsGetBlockListHeaders, BlockList> response = this.azureBlobStorage.getBlockBlobs().getBlockListWithResponse(
+            containerName, blobName, options.getType(), getSnapshotId(), null, options.getLeaseId(),
+            options.getIfTagsMatch(), null, context);
+        return new SimpleResponse<>(response, response.getValue());
     }
 
     /**
@@ -1088,9 +1302,227 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
-            options, context);
+        return executeOperation(() -> commitBlockListWithResponseSync(options, enableSyncRestProxy(context)),
+            timeout);
+    }
 
-        return blockWithOptionalTimeout(response, timeout);
+    Response<BlockBlobItem> commitBlockListWithResponseSync(BlockBlobCommitBlockListOptions options,
+                                                            Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
+        context = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+
+        ResponseBase<BlockBlobsCommitBlockListHeaders, Void> response = this.azureBlobStorage.getBlockBlobs().commitBlockListWithResponse(containerName, blobName,
+            new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
+            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+
+        BlockBlobsCommitBlockListHeaders hd = response.getDeserializedHeaders();
+        BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+            hd.getXMsVersionId());
+        return new SimpleResponse<>(response, item);
+    }
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return asyncClient.getAccountUrl();
+    }
+
+    /**
+     * Gets the URL of the blob represented by this client.
+     *
+     * @return the URL.
+     */
+    public String getBlobUrl() {
+        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
+        if (this.isSnapshot()) {
+            blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
+        }
+        if (this.getVersionId() != null) {
+            blobUrl = Utility.appendQueryParameter(blobUrl, "versionid", getVersionId());
+        }
+        return blobUrl;
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Gets a client pointing to the parent container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.getContainerClient -->
+     * <pre>
+     * BlobContainerClient containerClient = client.getContainerClient&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the container is &quot; + containerClient.getBlobContainerName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.getContainerClient -->
+     *
+     * @return {@link BlobContainerClient}
+     */
+    public BlobContainerClient getContainerClient() {
+        return getContainerClientBuilder().buildClient();
+    }
+
+    BlobContainerClientBuilder getContainerClientBuilder() {
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobContainerClientBuilder()
+            .endpoint(this.getBlobUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .customerProvidedKey(encryptionKey)
+            .encryptionScope(this.getEncryptionScope());
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the {@link CpkInfo} used to encrypt this blob's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CpkInfo getCustomerProvidedKey() {
+        return customerProvidedKey;
+    }
+
+    /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public BlobServiceVersion getServiceVersion() {
+        return serviceVersion;
+    }
+
+    /**
+     * Gets the snapshotId for a blob resource
+     *
+     * @return A string that represents the snapshotId of the snapshot blob
+     */
+    public String getSnapshotId() {
+        return this.snapshot;
+    }
+
+    /**
+     * Gets the versionId for a blob resource
+     *
+     * @return A string that represents the versionId of the snapshot blob
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Determines if a blob is a snapshot
+     *
+     * @return A boolean that indicates if a blob is a snapshot
+     */
+    public boolean isSnapshot() {
+        return this.snapshot != null;
+    }
+
+    String tagsToString(Map<String, String> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            try {
+                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
+                sb.append("=");
+                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
+                sb.append("&");
+            } catch (UnsupportedEncodingException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            }
+        }
+
+        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
+        return sb.toString();
+    }
+
+    /**
+     * Returns the blob's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * BlobProperties properties = client.getPropertiesWithResponse&#40;requestConditions, timeout,
+     *     new Context&#40;key2, value2&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Type: %s, Size: %d%n&quot;, properties.getBlobType&#40;&#41;, properties.getBlobSize&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The blob properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> getPropertiesWithResponse(BlobRequestConditions requestConditions, Duration timeout,
+                                                              Context context) {
+        return getPropertiesWithResponse(requestConditions, context);
+//        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    Response<BlobProperties> getPropertiesWithResponse(BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
+
+        ResponseBase<BlobsGetPropertiesHeaders, Void> rb = this.azureBlobStorage.getBlobs().getPropertiesWithResponse(
+            containerName, blobName, snapshot, versionId, null, requestConditions.getLeaseId(),
+            requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+
+        return new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
+            .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders())));
     }
 }

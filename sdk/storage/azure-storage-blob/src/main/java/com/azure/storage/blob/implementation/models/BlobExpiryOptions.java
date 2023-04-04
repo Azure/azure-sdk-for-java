@@ -23,6 +23,14 @@ public final class BlobExpiryOptions extends ExpandableStringEnum<BlobExpiryOpti
     public static final BlobExpiryOptions ABSOLUTE = fromString("Absolute");
 
     /**
+     * Creates a new instance of BlobExpiryOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobExpiryOptions() {}
+
+    /**
      * Creates or finds a BlobExpiryOptions from its string representation.
      *
      * @param name a name to look for.

@@ -147,7 +147,16 @@ public final class SpecializedBlobClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlockBlobClient buildBlockBlobClient() {
-        return new BlockBlobClient(buildBlockBlobAsyncClient());
+        validateConstruction();
+        String containerName = getContainerName();
+
+        HttpPipeline pipeline = getHttpPipeline();
+        BlobServiceVersion serviceVersion = getServiceVersion();
+        BlockBlobAsyncClient asyncClient = new BlockBlobAsyncClient(pipeline, endpoint, serviceVersion,
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+
+        return new BlockBlobClient(pipeline, endpoint, serviceVersion, accountName, containerName,
+            blobName, snapshot, customerProvidedKey, encryptionScope, versionId, asyncClient);
     }
 
     /**

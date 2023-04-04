@@ -527,7 +527,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
 
         when:
-        blockBlob.uploadWithResponse(new BlockBlobSimpleUploadOptions(data.defaultFlux, data.defaultDataSize)
+        blockBlob.uploadWithResponse(new BlockBlobSimpleUploadOptions(data.defaultInputStream, data.defaultDataSize)
             .setImmutabilityPolicy(immutabilityPolicy)
             .setLegalHold(true), null, null)
 
