@@ -94,7 +94,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         ));
                     }
                     return Flux.empty();
-                }).log("Line 98")
+                })
                 .flatMap(openConnectionOpToResponse -> {
                     OpenConnectionOperation openConnectionOperation = openConnectionOpToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionOpToResponse.getT2();
