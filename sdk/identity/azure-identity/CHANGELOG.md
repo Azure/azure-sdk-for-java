@@ -5,6 +5,7 @@
 ### Features Added
 - Added CAE support to service principal authentication.
 - Pass more detailed refresh policy for managed identity tokens to MSAL.
+- Add configurable timeout for developer credentials (Azure CLI, Azure Developer CLI)
 
 ### Bugs Fixed
 - Fixed detection logic for az/azd.
