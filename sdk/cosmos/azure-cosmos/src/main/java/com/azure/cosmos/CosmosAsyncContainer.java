@@ -502,7 +502,7 @@ public class CosmosAsyncContainer {
             trackingId = UUID.randomUUID().toString();
             responseMono = createItemWithRetriesInternal(item, effectiveOptions, trackingId);
         } else {
-            responseMono = createItemInternalCore(item, effectiveOptions, trackingId);
+            responseMono = createItemInternalCore(item, effectiveOptions, null);
         }
 
         CosmosAsyncClient client = database
@@ -1830,7 +1830,7 @@ public class CosmosAsyncContainer {
             trackingId = UUID.randomUUID().toString();
             responseMono = this.replaceItemWithRetriesInternal(itemType, itemId, doc, effectiveOptions, trackingId);
         } else {
-            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, trackingId);
+            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, null);
         }
 
         CosmosAsyncClient client = database

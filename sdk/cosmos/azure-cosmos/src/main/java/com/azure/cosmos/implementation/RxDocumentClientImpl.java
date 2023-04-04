@@ -1996,7 +1996,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
-        if (options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (retryPolicyInstance != null) {
