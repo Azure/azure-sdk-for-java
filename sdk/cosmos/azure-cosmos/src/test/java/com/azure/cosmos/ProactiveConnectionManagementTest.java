@@ -674,7 +674,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             preferredLocations.add(accountLocation.getName());
         }
 
-        // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint
+        // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
         return new Object[][] {
                 new Object[]{preferredLocations, 1, 2, 3, Duration.ofMillis(800)},
                 new Object[]{preferredLocations, 2, 10, 4, Duration.ofMillis(900)},
