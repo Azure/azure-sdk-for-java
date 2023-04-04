@@ -30,7 +30,6 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -195,8 +194,8 @@ public final class DocumentAnalysisAsyncClient {
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
-                                Collections.emptyList(),
-                                Collections.emptyList(),
+                                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                                finalAnalyzeDocumentOptions.getQueryFields(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
                             .map(analyzeDocumentResponse ->
@@ -355,8 +354,8 @@ public final class DocumentAnalysisAsyncClient {
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
-                            Collections.emptyList(),
-                            Collections.emptyList(),
+                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                            finalAnalyzeDocumentOptions.getQueryFields(),
                             document,
                             document.getLength(),
                             context)

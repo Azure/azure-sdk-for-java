@@ -6,6 +6,9 @@
 - Added support for analyzing new document types
 - Added support for AzureBlobList source type when building document models
 - Added support for building, getting, listing and deleting classifiers
+- Added support for queryFields premium feature when performing analysis operations
+
+>>>>>>> 19172fee9bb (support query fields)
 ### Breaking Changes
 
 ### Bugs Fixed

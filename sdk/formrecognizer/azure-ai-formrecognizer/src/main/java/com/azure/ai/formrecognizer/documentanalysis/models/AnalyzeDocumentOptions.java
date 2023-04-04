@@ -15,6 +15,9 @@ public final class AnalyzeDocumentOptions {
     private List<String> pages;
     private String locale;
 
+    private List<String> queryFields;
+    private List<DocumentAnalysisFeature> documentAnalysisFeatures;
+
     /**
      * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
      * pages you want to get the recognized result for.
@@ -60,6 +63,41 @@ public final class AnalyzeDocumentOptions {
      */
     public AnalyzeDocumentOptions setLocale(String locale) {
         this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * @return List of additional fields to extract from analysis.
+     */
+    public List<String> getQueryFields() {
+        return queryFields;
+    }
+
+    /**
+     * Set the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
+     * @param queryFields List of additional fields to extract from analysis.
+     */
+    public AnalyzeDocumentOptions setQueryFields(List<String> queryFields) {
+        this.queryFields = queryFields;
+        return this;
+    }
+
+    /**
+     * Get the list of optional analysis features.
+     * @return List of optional analysis features.
+     */
+    public List<DocumentAnalysisFeature> getDocumentAnalysisFeatures() {
+        return documentAnalysisFeatures;
+    }
+
+    /**
+     * Set the list of optional analysis features.
+     * @param documentAnalysisFeatures List of optional analysis features.
+     * @return the list of optional analysis features.
+     */
+    public AnalyzeDocumentOptions setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
+        this.documentAnalysisFeatures = documentAnalysisFeatures;
         return this;
     }
 }
