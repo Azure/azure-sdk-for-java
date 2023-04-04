@@ -9,61 +9,79 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A selection mark object representing check boxes, radio buttons, and other elements indicating a selection. */
+/** A barcode object. */
 @Fluent
-public final class DocumentSelectionMark {
+public final class DocumentBarcode {
     /*
-     * State of the selection mark.
+     * Barcode kind.
      */
-    @JsonProperty(value = "state", required = true)
-    private SelectionMarkState state;
+    @JsonProperty(value = "kind", required = true)
+    private DocumentBarcodeKind kind;
 
     /*
-     * Bounding polygon of the selection mark.
+     * Barcode value
+     */
+    @JsonProperty(value = "value", required = true)
+    private String value;
+
+    /*
+     * Bounding polygon of the barcode.
      */
     @JsonProperty(value = "polygon")
     private List<Float> polygon;
 
     /*
-     * Location of the selection mark in the reading order concatenated content.
+     * Location of the barcode in the reading order concatenated content.
      */
     @JsonProperty(value = "span", required = true)
     private DocumentSpan span;
 
     /*
-     * Confidence of correctly extracting the selection mark.
+     * Confidence of correctly extracting the barcode.
      */
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
     /**
-     * Creates an instance of DocumentSelectionMark class.
+     * Creates an instance of DocumentBarcode class.
      *
-     * @param state the state value to set.
+     * @param kind the kind value to set.
+     * @param value the value value to set.
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentSelectionMark(
-            @JsonProperty(value = "state", required = true) SelectionMarkState state,
+    public DocumentBarcode(
+            @JsonProperty(value = "kind", required = true) DocumentBarcodeKind kind,
+            @JsonProperty(value = "value", required = true) String value,
             @JsonProperty(value = "span", required = true) DocumentSpan span,
             @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.state = state;
+        this.kind = kind;
+        this.value = value;
         this.span = span;
         this.confidence = confidence;
     }
 
     /**
-     * Get the state property: State of the selection mark.
+     * Get the kind property: Barcode kind.
      *
-     * @return the state value.
+     * @return the kind value.
      */
-    public SelectionMarkState getState() {
-        return this.state;
+    public DocumentBarcodeKind getKind() {
+        return this.kind;
     }
 
     /**
-     * Get the polygon property: Bounding polygon of the selection mark.
+     * Get the value property: Barcode value.
+     *
+     * @return the value value.
+     */
+    public String getValue() {
+        return this.value;
+    }
+
+    /**
+     * Get the polygon property: Bounding polygon of the barcode.
      *
      * @return the polygon value.
      */
@@ -72,18 +90,18 @@ public final class DocumentSelectionMark {
     }
 
     /**
-     * Set the polygon property: Bounding polygon of the selection mark.
+     * Set the polygon property: Bounding polygon of the barcode.
      *
      * @param polygon the polygon value to set.
-     * @return the DocumentSelectionMark object itself.
+     * @return the DocumentBarcode object itself.
      */
-    public DocumentSelectionMark setPolygon(List<Float> polygon) {
+    public DocumentBarcode setPolygon(List<Float> polygon) {
         this.polygon = polygon;
         return this;
     }
 
     /**
-     * Get the span property: Location of the selection mark in the reading order concatenated content.
+     * Get the span property: Location of the barcode in the reading order concatenated content.
      *
      * @return the span value.
      */
@@ -92,7 +110,7 @@ public final class DocumentSelectionMark {
     }
 
     /**
-     * Get the confidence property: Confidence of correctly extracting the selection mark.
+     * Get the confidence property: Confidence of correctly extracting the barcode.
      *
      * @return the confidence value.
      */

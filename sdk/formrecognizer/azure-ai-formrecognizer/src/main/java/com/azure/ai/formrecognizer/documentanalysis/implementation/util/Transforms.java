@@ -38,8 +38,12 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentImage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage;
@@ -90,7 +94,7 @@ public class Transforms {
                     AnalyzedDocumentHelper.setConfidence(analyzedDocument, document.getConfidence());
                     AnalyzedDocumentHelper.setDocType(analyzedDocument, document.getDocType());
                     AnalyzedDocumentHelper.setFields(analyzedDocument, toDocumentFields(document.getFields()));
-                    AnalyzedDocumentHelper.setSpans(analyzedDocument, document.getSpans());
+                    AnalyzedDocumentHelper.setSpans(analyzedDocument, toDocumentSpans(document.getSpans()));
                     return analyzedDocument;
                 })
                 .collect(Collectors.toList()));
@@ -101,7 +105,13 @@ public class Transforms {
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getLanguages())) {
             AnalyzeResultHelper.setLanguages(analyzeResult, innerAnalyzeResult.getLanguages()
                 .stream()
-                .map(innerLanguage -> new DocumentLanguage(innerLanguage.getLocale(), innerLanguage.getSpans(), innerLanguage.getConfidence()))
+                .map(innerLanguage -> {
+                    DocumentLanguage documentLanguage = new DocumentLanguage();
+                    DocumentLanguageHelper.setLocale(documentLanguage, innerLanguage.getLocale());
+                    DocumentLanguageHelper.setSpans(documentLanguage, toDocumentSpans(innerLanguage.getSpans()));
+                    DocumentLanguageHelper.setConfidence(documentLanguage, innerLanguage.getConfidence());
+                    return documentLanguage;
+                })
                 .collect(Collectors.toList()));
         }
 
@@ -115,7 +125,7 @@ public class Transforms {
                 DocumentPageHelper.setPageNumber(documentPage, innerDocumentPage.getPageNumber());
                 DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
                     ? null : DocumentPageLengthUnit.fromString(innerDocumentPage.getUnit().toString()));
-                DocumentPageHelper.setSpans(documentPage, innerDocumentPage.getSpans());
+                DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
 
                 DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
                     ? null
@@ -128,7 +138,7 @@ public class Transforms {
                         DocumentSelectionMarkHelper.setConfidence(documentSelectionMark,
                             innerSelectionMark.getConfidence());
                         DocumentSelectionMarkHelper.setSpan(documentSelectionMark,
-                            innerSelectionMark.getSpan());
+                            getDocumentSpan(innerSelectionMark.getSpan()));
                         DocumentSelectionMarkHelper.setState(documentSelectionMark,
                             DocumentSelectionMarkState.fromString(innerSelectionMark.getState().toString()));
                         return documentSelectionMark;
@@ -142,7 +152,7 @@ public class Transforms {
                             DocumentLineHelper.setBoundingPolygon(documentLine,
                                 toPolygonPoints(innerDocumentLine.getPolygon()));
                             DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
-                            DocumentLineHelper.setSpans(documentLine, innerDocumentLine.getSpans());
+                            DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
                             DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
                             return documentLine;
                         })
@@ -150,10 +160,10 @@ public class Transforms {
                 DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
                 DocumentPageHelper.setKind(documentPage,
                     innerDocumentPage.getKind() == null ? null : DocumentPageKind.fromString(innerDocumentPage.getKind().toString()));
-                DocumentPageHelper.setAnnotations(documentPage, innerDocumentPage.getAnnotations());
-                DocumentPageHelper.setFormulas(documentPage, innerDocumentPage.getFormulas());
-                DocumentPageHelper.setBarcodes(documentPage, innerDocumentPage.getBarcodes());
-                DocumentPageHelper.setImages(documentPage, innerDocumentPage.getImages());
+                DocumentPageHelper.setAnnotations(documentPage, fromInnerAnnotations(innerDocumentPage.getAnnotations()));
+                DocumentPageHelper.setFormulas(documentPage, fromInnerFormulas(innerDocumentPage.getFormulas()));
+                DocumentPageHelper.setBarcodes(documentPage, fromInnerBarcodes(innerDocumentPage.getBarcodes()));
+                DocumentPageHelper.setImages(documentPage, fromInnerImages(innerDocumentPage.getImages()));
                 return documentPage;
             })
             .collect(Collectors.toList()));
@@ -182,7 +192,7 @@ public class Transforms {
                     DocumentStyle documentStyle = new DocumentStyle();
                     DocumentStyleHelper.setConfidence(documentStyle, innerDocumentStyle.getConfidence());
                     DocumentStyleHelper.setIsHandwritten(documentStyle, innerDocumentStyle.isHandwritten());
-                    DocumentStyleHelper.setSpans(documentStyle, innerDocumentStyle.getSpans());
+                    DocumentStyleHelper.setSpans(documentStyle, toDocumentSpans(innerDocumentStyle.getSpans()));
                     return documentStyle;
                 })
                 .collect(Collectors.toList()));
@@ -200,7 +210,7 @@ public class Transforms {
                     DocumentParagraphHelper.setBoundingRegions(documentParagraph,
                         toBoundingRegions(innerParagraph.getBoundingRegions()));
                     DocumentParagraphHelper.setSpans(documentParagraph,
-                        innerParagraph.getSpans());
+                        toDocumentSpans(innerParagraph.getSpans()));
                     return documentParagraph;
                 })
                 .collect(Collectors.toList()));
@@ -219,7 +229,7 @@ public class Transforms {
                             DocumentTableCellHelper.setBoundingRegions(documentTableCell,
                                 toBoundingRegions(innerDocumentTable.getBoundingRegions()));
                             DocumentTableCellHelper.setSpans(documentTableCell,
-                                innerDocumentTable.getSpans());
+                                toDocumentSpans(innerDocumentTable.getSpans()));
                             DocumentTableCellHelper.setContent(documentTableCell, innerDocumentCell.getContent());
                             DocumentTableCellHelper.setColumnIndex(documentTableCell,
                                 innerDocumentCell.getColumnIndex());
@@ -234,7 +244,7 @@ public class Transforms {
                         .collect(Collectors.toList()));
                     DocumentTableHelper.setBoundingRegions(documentTable,
                         toBoundingRegions(innerDocumentTable.getBoundingRegions()));
-                    DocumentTableHelper.setSpans(documentTable, innerDocumentTable.getSpans());
+                    DocumentTableHelper.setSpans(documentTable, toDocumentSpans(innerDocumentTable.getSpans()));
                     DocumentTableHelper.setColumnCount(documentTable, innerDocumentTable.getColumnCount());
                     DocumentTableHelper.setRowCount(documentTable, innerDocumentTable.getRowCount());
                     return documentTable;
@@ -243,6 +253,24 @@ public class Transforms {
         }
 
         return analyzeResult;
+    }
+
+    private static List<DocumentImage> fromInnerImages(List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentImage> images) {
+    }
+
+    private static List<DocumentBarcode> fromInnerBarcodes(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBarcode> barcodes) {
+        return null;
+    }
+
+    private static List<DocumentFormula> fromInnerFormulas(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFormula> formulas) {
+        return null;
+    }
+
+    private static List<DocumentAnnotation> fromInnerAnnotations(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnnotation> annotations) {
+        return null;
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,
@@ -426,7 +454,8 @@ public class Transforms {
         DocumentKeyValueElementHelper.setContent(documentKeyValueElement, innerDocKeyValElement.getContent());
         DocumentKeyValueElementHelper.setBoundingRegions(documentKeyValueElement,
             toBoundingRegions(innerDocKeyValElement.getBoundingRegions()));
-        DocumentKeyValueElementHelper.setSpans(documentKeyValueElement, innerDocKeyValElement.getSpans());
+        DocumentKeyValueElementHelper.setSpans(documentKeyValueElement,
+            toDocumentSpans(innerDocKeyValElement.getSpans()));
         return documentKeyValueElement;
     }
 
@@ -447,7 +476,7 @@ public class Transforms {
         DocumentFieldHelper.setBoundingRegions(documentField,
             toBoundingRegions(innerDocumentField.getBoundingRegions()));
         DocumentFieldHelper.setContent(documentField, innerDocumentField.getContent());
-        DocumentFieldHelper.setSpans(documentField, innerDocumentField.getSpans());
+        DocumentFieldHelper.setSpans(documentField, toDocumentSpans(innerDocumentField.getSpans()));
         DocumentFieldHelper.setConfidence(documentField, innerDocumentField.getConfidence());
         setDocumentFieldValue(innerDocumentField, documentField);
         return documentField;
@@ -548,25 +577,25 @@ public class Transforms {
         }
     }
 
-    // private static List<DocumentSpan>
-    //     List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSpan> innerDocumentSpans) {
-    //     if (!CoreUtils.isNullOrEmpty(innerDocumentSpans)) {
-    //         return innerDocumentSpans
-    //             .stream()
-    //             .map(Transforms::getDocumentSpan)
-    //             .collect(Collectors.toList());
-    //     } else {
-    //         return null;
-    //     }
-    // }
+    private static List<DocumentSpan> toDocumentSpans(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSpan> innerDocumentSpans) {
+        if (!CoreUtils.isNullOrEmpty(innerDocumentSpans)) {
+            return innerDocumentSpans
+                .stream()
+                .map(Transforms::getDocumentSpan)
+                .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
 
-    // private static DocumentSpan
-    //     com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSpan innerDocumentSpan) {
-    //     DocumentSpan documentSpan = new DocumentSpan();
-    //     DocumentSpanHelper.setLength(documentSpan, innerDocumentSpan.getLength());
-    //     DocumentSpanHelper.setOffset(documentSpan, innerDocumentSpan.getOffset());
-    //     return documentSpan;
-    // }
+    private static DocumentSpan getDocumentSpan(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentSpan innerDocumentSpan) {
+        DocumentSpan documentSpan = new DocumentSpan();
+        DocumentSpanHelper.setLength(documentSpan, innerDocumentSpan.getLength());
+        DocumentSpanHelper.setOffset(documentSpan, innerDocumentSpan.getOffset());
+        return documentSpan;
+    }
 
     private static List<BoundingRegion> toBoundingRegions(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.BoundingRegion> innerBoundingRegions) {
@@ -732,7 +761,7 @@ public class Transforms {
                 DocumentWordHelper.setBoundingPolygon(documentWord,
                     toPolygonPoints(innerDocumentWord.getPolygon()));
                 DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
-                DocumentWordHelper.setSpan(documentWord, innerDocumentWord.getSpan());
+                DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
                 DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
                 return documentWord;
             })

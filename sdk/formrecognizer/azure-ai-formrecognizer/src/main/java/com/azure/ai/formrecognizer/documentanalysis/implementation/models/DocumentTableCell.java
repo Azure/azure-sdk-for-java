@@ -4,7 +4,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCellKind;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
