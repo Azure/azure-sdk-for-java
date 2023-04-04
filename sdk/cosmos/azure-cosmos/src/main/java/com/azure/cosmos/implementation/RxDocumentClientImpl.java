@@ -1525,7 +1525,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (operationType.isWriteOperation() && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
@@ -2055,7 +2055,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
@@ -2109,7 +2109,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
-            if (options.getNonIdempotentWriteRetriesEnabled()) {
+            if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
 
