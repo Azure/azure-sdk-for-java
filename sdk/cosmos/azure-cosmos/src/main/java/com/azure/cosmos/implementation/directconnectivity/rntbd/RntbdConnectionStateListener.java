@@ -96,7 +96,7 @@ public class RntbdConnectionStateListener {
         );
 
         this.proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .getOpenConnectionsPublisher()
                 .subscribe();
     }
     // endregion

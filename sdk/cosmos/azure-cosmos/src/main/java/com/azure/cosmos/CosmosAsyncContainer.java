@@ -592,7 +592,7 @@ public class CosmosAsyncContainer {
         return database
                 .getClient()
                 .getProactiveOpenConnectionsProcessor()
-                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .getOpenConnectionsPublisher()
                 .sequential()
                 .collectList()
                 .flatMap(openConnectionResponses -> {

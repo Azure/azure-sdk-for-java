@@ -636,7 +636,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     void openConnectionsAndInitCaches() {
         proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .getOpenConnectionsPublisher()
                 .subscribe();
 
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(
@@ -656,7 +656,7 @@ public final class CosmosAsyncClient implements Closeable {
                 .subscribe();
 
         proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .getOpenConnectionsPublisher()
                 .subscribe();
 
         Flux

@@ -63,7 +63,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         openConnectionsTaskSinkBackUp.tryEmitComplete();
     }
 
-    public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisherFromOpenConnectionOperation() {
+    public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisher() {
         // aggressive concurrency
         int concurrency = Configs.getCPUCnt();
 
@@ -119,7 +119,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     public void reinstantiateOpenConnectionsPublisherAndSubscribe() {
         this.toggleOpenConnectionsAggressiveness();
         this.instantiateOpenConnectionsPublisher();
-        this.getOpenConnectionsPublisherFromOpenConnectionOperation().subscribe();
+        this.getOpenConnectionsPublisher().subscribe();
     }
 
     private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(
