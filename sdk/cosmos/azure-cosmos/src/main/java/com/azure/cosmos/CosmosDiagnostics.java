@@ -189,7 +189,7 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getContactedRegionNames();
     }
 
-    public String getTrackingId() {
+    String getTrackingId() {
         return this.trackingId.get();
     }
 
