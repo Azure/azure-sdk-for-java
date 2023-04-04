@@ -154,7 +154,7 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
-/sdk/loganalytics/microsoft-azure-loganalytics/      @divyajay @alongafni
+/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
