@@ -218,7 +218,7 @@ public final class CosmosClient implements Closeable {
     /**
      * Close this {@link CosmosClient} instance.
      */
-    public void close() throws IOException {
+    public void close() {
         asyncClientWrapper.close();
     }
 

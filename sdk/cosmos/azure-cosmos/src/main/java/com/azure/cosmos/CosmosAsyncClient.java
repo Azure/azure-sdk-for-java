@@ -582,12 +582,16 @@ public final class CosmosAsyncClient implements Closeable {
      * Close this {@link CosmosAsyncClient} instance and cleans up the resources.
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (this.clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
         asyncDocumentClient.close();
-        proactiveOpenConnectionsProcessor.close();
+        try {
+            proactiveOpenConnectionsProcessor.close();
+        } catch (IOException ex) {
+            // Swallow the IOException
+        }
     }
 
     TracerProvider getTracerProvider(){
