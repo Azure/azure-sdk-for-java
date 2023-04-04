@@ -1,28 +1,40 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/settings?api-version=7.4",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)"
-    },
-    "Response" : {
-      "content-length" : "97",
-      "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20230228-2-c856e15e-develop",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-server-latency" : "1",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "content-security-policy" : "default-src 'self'",
-      "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northcentralus",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "140cf348-c3d2-11ed-9aa5-000d3a6149b5",
-      "Body" : "{\"settings\":[{\"name\":\"AllowKeyManagementOperationsThroughARM\",\"type\":\"boolean\",\"value\":\"false\"}]}"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/settings?api-version=7.4",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-build-version": "1.0.20230327-1-a3099803-develop",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "northcentralus",
+        "x-ms-request-id": "03ec7396-d2a3-11ed-a778-0022488dd761",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": {
+        "settings": [
+          {
+            "name": "AllowKeyManagementOperationsThroughARM",
+            "type": "boolean",
+            "value": "false"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

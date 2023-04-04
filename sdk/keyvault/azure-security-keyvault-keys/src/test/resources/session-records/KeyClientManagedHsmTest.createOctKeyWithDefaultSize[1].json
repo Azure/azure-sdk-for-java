@@ -1,28 +1,72 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey777033b/create?api-version=7.4",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "436",
-      "x-frame-options" : "SAMEORIGIN",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-server-latency" : "218",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "content-security-policy" : "default-src 'self'",
-      "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northcentralus",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "341c74f4-c3d4-11ed-ae04-000d3a612dea",
-      "Body" : "{\"attributes\":{\"created\":1678955169,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1678955169},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azsdktestshsm.managedhsm.azure.net/keys/testoctkey777033b/8be009b6c16f4ae3066819548feb3573\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "testoctkey777033b" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/keys/testoctkey0392356/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "106",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "oct-HSM",
+        "attributes": {
+          "nbf": 949237199,
+          "exp": 2527113600
+        },
+        "tags": {
+          "foo": "baz"
+        },
+        "public_exponent": 0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "434",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "northcentralus",
+        "x-ms-request-id": "e1254b08-d284-11ed-ad77-000d3a610397",
+        "x-ms-server-latency": "272"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1680570367,
+          "enabled": true,
+          "exp": 2527113600,
+          "exportable": false,
+          "nbf": 949237199,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1680570367
+        },
+        "key": {
+          "key_ops": [
+            "deriveKey",
+            "wrapKey",
+            "verify",
+            "sign",
+            "unwrapKey",
+            "encrypt",
+            "decrypt"
+          ],
+          "kid": "https://azkvrecordtestshsm.managedhsm.azure.net/keys/testoctkey0392356/c2f89c70325c4eed27f36aecccbd9712",
+          "kty": "oct-HSM"
+        },
+        "tags": {
+          "foo": "baz"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "testoctkey0392356"
+  }
 }
