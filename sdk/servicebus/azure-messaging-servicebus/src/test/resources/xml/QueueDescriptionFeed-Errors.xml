@@ -2240,8 +2240,8 @@
                             <AccessRights>Send</AccessRights>
                         </Rights>
                         <KeyName>test-rule</KeyName>
-                        <PrimaryKey>Z+GSmhioxexYFe7fqfIrB5dg/RyRwpKn0iGGrzfnhws=</PrimaryKey>
-                        <SecondaryKey>9ouBO/zaARAMrW72kOWC8XnbpSaNoW+1j+KOCe7j1S4=</SecondaryKey>
+                        <PrimaryKey>foo</PrimaryKey>
+                        <SecondaryKey>bar</SecondaryKey>
                     </AuthorizationRule>
                 </AuthorizationRules>
                 <Status>Active</Status>
@@ -2345,8 +2345,8 @@
                             <AccessRights>Send</AccessRights>
                         </Rights>
                         <KeyName>test-rule</KeyName>
-                        <PrimaryKey>7hETnwHaoMsonC+fUfVtiflXInem828lvhUaElCgTgY=</PrimaryKey>
-                        <SecondaryKey>26rVGevcNoMzG30mYMSFwZ6UABdavHtIWfnlevnubRM=</SecondaryKey>
+                        <PrimaryKey>foo</PrimaryKey>
+                        <SecondaryKey>bar</SecondaryKey>
                     </AuthorizationRule>
                 </AuthorizationRules>
                 <Status>Active</Status>
