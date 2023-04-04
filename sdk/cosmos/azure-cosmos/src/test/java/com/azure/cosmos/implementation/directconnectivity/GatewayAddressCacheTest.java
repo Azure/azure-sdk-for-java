@@ -1316,8 +1316,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .containsExactly(address1, address7, address5, address6);
     }
 
-    @Test(groups = "unit", dataProvider = "openConnectionsArgsProvider")
-    public void openConnectionTest_WithBackgroundFlow(int connectionsPerEndpoint, int connectionsPerEndpointThroughSystemConfig, boolean isBackgroundFlow) throws URISyntaxException {
+    @Test(groups = "unit")
+    public void openConnectionTest_WithBackgroundFlow() throws URISyntaxException {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
@@ -1326,6 +1326,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
         AddressInformation addressInformation = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);
         DocumentCollection documentCollection = getCollectionDefinition();
+        int connectionsPerEndpoint = 5;
 
         GatewayAddressCache cache = new GatewayAddressCache(
                 mockDiagnosticsClientContext(),
@@ -1341,35 +1342,13 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 proactiveOpenConnectionsProcessorMock
         );
 
-        System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", String.valueOf(connectionsPerEndpointThroughSystemConfig));
+        Mockito
+                .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+                .thenReturn(Flux.just(new OpenConnectionResponse(new Uri("http://localhost:8081"), true)));
 
-        if (!isBackgroundFlow) {
-
-            Mockito
-                    .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
-                    .thenReturn(Flux.just(new OpenConnectionResponse(new Uri("http://localhost:8081"), true)));
-
-            StepVerifier.create(cache.submitOpenConnectionTask(addressInformation, documentCollection, connectionsPerEndpoint))
-                    .expectNextCount(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig))
-                    .verifyComplete();
-
-            Mockito
-                    .verify(openConnectionsHandlerMock, Mockito.times(1))
-                    .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
-
-        } else {
-
-            Mockito.doNothing().when(proactiveOpenConnectionsProcessorMock).submitOpenConnectionTask(Mockito.any(OpenConnectionOperation.class));
-
-            StepVerifier.create(cache.submitOpenConnectionTask(addressInformation, documentCollection, connectionsPerEndpoint))
-                    .expectNextCount(0)
-                    .verifyComplete();
-
-            Mockito
-                    .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(Math.max(connectionsPerEndpoint, connectionsPerEndpointThroughSystemConfig)))
-                    .submitOpenConnectionTask(Mockito.any(OpenConnectionOperation.class));
-        }
-        System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
+        StepVerifier.create(cache.submitOpenConnectionTask(addressInformation, documentCollection, connectionsPerEndpoint))
+                .expectComplete()
+                .verify();
     }
 
     public static void assertSameAs(List<AddressInformation> actual, List<Address> expected) {

@@ -28,12 +28,14 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -130,8 +132,8 @@ public class GlobalAddressResolverTest {
         assertThat(urlsBeforeResolve.contains(testUrl)).isTrue();//New endpoint will be added in addressCacheByEndpoint
     }
 
-    @Test(groups = "unit", enabled = false)
-    public void openConnectionAndInitCaches() {
+    @Test(groups = "unit")
+    public void submitOpenConnectionTasksAndInitCaches() {
         GlobalAddressResolver globalAddressResolver =
                 new GlobalAddressResolver(
                         mockDiagnosticsClientContext(),
@@ -212,10 +214,10 @@ public class GlobalAddressResolverTest {
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
-//        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, OpenConnectionAggressivenessHint.AGGRESSIVE))
-//                        .expectNext(response1)
-//                        .expectNext(response2)
-//                        .verifyComplete();
+        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, OpenConnectionAggressivenessHint.AGGRESSIVE))
+                .expectComplete()
+                .verify();
+
         Mockito
                 .verify(collectionCache, Mockito.times(1))
                 .resolveByNameAsync(null, documentCollection.getSelfLink(), null);
@@ -230,7 +232,6 @@ public class GlobalAddressResolverTest {
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
                 .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.any());
-
 
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
