@@ -26,21 +26,21 @@ import com.azure.messaging.servicebus.administration.implementation.EntityHelper
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
-import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -68,6 +68,7 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.TOPICS_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.addSupplementaryAuthHeader;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.extractPage;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateQueueBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateSubscriptionBody;
@@ -80,7 +81,6 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopicProperties;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopics;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateSubscriptionBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
@@ -234,9 +234,9 @@ public final class ServiceBusAdministrationClient {
         if (forwardDlq != null) {
             queueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
-        final CreateQueueBody createEntity =
+        final CreateQueueBodyImpl createEntity =
             getCreateQueueBody(EntityHelper.getQueueDescription(queueOptions));
-        return deserializeQueue(entityClient.putSyncWithResponse(queueName, createEntity, null,
+        return deserializeQueue(entityClient.putWithResponse(queueName, createEntity, null,
             contextWithHeaders));
     }
 
@@ -308,9 +308,9 @@ public final class ServiceBusAdministrationClient {
         if (ruleOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'ruleOptions' cannot be null."));
         }
-        final CreateRuleBody createEntity = getCreateRuleBody(ruleName, ruleOptions);
+        final CreateRuleBodyImpl createEntity = getCreateRuleBody(ruleName, ruleOptions);
         return deserializeRule(
-            managementClient.getRules().putSyncWithResponse(topicName, subscriptionName, ruleName, createEntity,
+            managementClient.getRules().putWithResponse(topicName, subscriptionName, ruleName, createEntity,
                 null, enableSyncContext(context)));
     }
 
@@ -422,10 +422,10 @@ public final class ServiceBusAdministrationClient {
             subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
 
-        final CreateSubscriptionBody createEntity =
+        final CreateSubscriptionBodyImpl createEntity =
             getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
         return deserializeSubscription(topicName,
-            managementClient.getSubscriptions().putSyncWithResponse(topicName, subscriptionName, createEntity,
+            managementClient.getSubscriptions().putWithResponse(topicName, subscriptionName, createEntity,
                 null, contextWithHeaders));
 
     }
@@ -461,7 +461,7 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'CreateRuleOptions' cannot be null."));
         }
         Objects.requireNonNull(ruleOptions.getFilter(), "'RuleFilter' cannot be null.");
-        final RuleDescription rule = new RuleDescription()
+        final RuleDescriptionImpl rule = new RuleDescriptionImpl()
             .setAction(ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
             .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
             .setName(ruleName);
@@ -534,8 +534,8 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
         }
 
-        final CreateTopicBody createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
-        return deserializeTopic(entityClient.putSyncWithResponse(topicName, createEntity, null,
+        final CreateTopicBodyImpl createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
+        return deserializeTopic(entityClient.putWithResponse(topicName, createEntity, null,
             enableSyncContext(context)));
     }
 
@@ -571,7 +571,7 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
         validateQueueName(queueName);
-        Response<Object> response = entityClient.deleteSyncWithResponse(queueName, enableSyncContext(context));
+        Response<Object> response = entityClient.deleteWithResponse(queueName, enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), null);
     }
@@ -617,7 +617,7 @@ public final class ServiceBusAdministrationClient {
         validateRuleName(ruleName);
 
         final Response<Object> response =
-            rulesClient.deleteSyncWithResponse(topicName, subscriptionName, ruleName, enableSyncContext(context));
+            rulesClient.deleteWithResponse(topicName, subscriptionName, ruleName, enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), null);
     }
@@ -658,7 +658,7 @@ public final class ServiceBusAdministrationClient {
         validateSubscriptionName(subscriptionName);
         validateTopicName(topicName);
         final Response<Object> response =
-            managementClient.getSubscriptions().deleteSyncWithResponse(topicName, subscriptionName,
+            managementClient.getSubscriptions().deleteWithResponse(topicName, subscriptionName,
                 enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), null);
@@ -696,7 +696,7 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTopicWithResponse(String topicName, Context context) {
         validateTopicName(topicName);
-        final Response<Object> response = entityClient.deleteSyncWithResponse(topicName, enableSyncContext(context));
+        final Response<Object> response = entityClient.deleteWithResponse(topicName, enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), null);
     }
@@ -746,13 +746,13 @@ public final class ServiceBusAdministrationClient {
 
     private Response<QueueProperties> getQueueInternal(String queueName, Context context) {
         validateQueueName(queueName);
-        final Response<Object> response = entityClient.getSyncWithResponse(queueName, true,
+        final Response<Object> response = entityClient.getWithResponse(queueName, true,
             enableSyncContext(context));
         return deserializeQueue(response);
     }
 
     /**
-     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     * Gets whether a queue with {@code queueName} exists in the Service Bus namespace.
      *
      * @param queueName Name of the queue.
      * @return {@code true} if the queue exists; otherwise {@code false}.
@@ -768,7 +768,7 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets whether or not a queue with {@code queueName} exists in the Service Bus namespace.
+     * Gets whether a queue with {@code queueName} exists in the Service Bus namespace.
      *
      * @param queueName Name of the queue.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -844,9 +844,9 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceProperties> getNamespacePropertiesWithResponse(Context context) {
-        final Response<NamespacePropertiesEntry> response
-            = managementClient.getNamespaces().getSyncWithResponse(enableSyncContext(context));
-        final NamespacePropertiesEntry entry = response.getValue();
+        final Response<NamespacePropertiesEntryImpl> response
+            = managementClient.getNamespaces().getWithResponse(enableSyncContext(context));
+        final NamespacePropertiesEntryImpl entry = response.getValue();
         if (entry == null || entry.getContent() == null) {
             throw LOGGER.logExceptionAsError(new AzureException(
                 "There was no content inside namespace response. Entry: " + response));
@@ -888,7 +888,7 @@ public final class ServiceBusAdministrationClient {
     public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName,
                                                         String ruleName, Context context) {
         final Response<Object> objectResponse =
-            rulesClient.getSyncWithResponse(topicName, subscriptionName, ruleName, true,
+            rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true,
                 enableSyncContext(context));
         return deserializeRule(objectResponse);
     }
@@ -937,7 +937,7 @@ public final class ServiceBusAdministrationClient {
         validateSubscriptionName(subscriptionName);
 
         final Response<Object> response = managementClient.getSubscriptions()
-            .getSyncWithResponse(topicName, subscriptionName, true, enableSyncContext(context));
+            .getWithResponse(topicName, subscriptionName, true, enableSyncContext(context));
         return deserializeSubscription(topicName, response);
     }
 
@@ -1070,7 +1070,7 @@ public final class ServiceBusAdministrationClient {
 
     private Response<TopicProperties> getTopicInternal(String topicName, Context context) {
         validateTopicName(topicName);
-        final Response<Object> response = entityClient.getSyncWithResponse(topicName,
+        final Response<Object> response = entityClient.getWithResponse(topicName,
             true, enableSyncContext(context));
         return deserializeTopic(response);
     }
@@ -1197,9 +1197,9 @@ public final class ServiceBusAdministrationClient {
 
     private PagedResponse<QueueProperties> listQueues(int skip, Context context) {
         final Response<Object> response =
-            managementClient.listEntitiesSyncWithResponse(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
+            managementClient.listEntitiesWithResponse(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final QueueDescriptionFeed feed = deserialize(response.getValue(), QueueDescriptionFeed.class);
+        final QueueDescriptionFeedImpl feed = deserialize(response.getValue(), QueueDescriptionFeedImpl.class);
         if (feed == null) {
             LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
                 NUMBER_OF_ELEMENTS);
@@ -1263,9 +1263,9 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<RuleProperties> listRules(String topicName, String subscriptionName, int skip,
                                                     Context context) {
         final Response<Object> response =
-            managementClient.listRulesSyncWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
+            managementClient.listRulesWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final RuleDescriptionFeed feed = deserialize(response.getValue(), RuleDescriptionFeed.class);
+        final RuleDescriptionFeedImpl feed = deserialize(response.getValue(), RuleDescriptionFeedImpl.class);
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
@@ -1328,9 +1328,9 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<SubscriptionProperties> listSubscriptions(String topicName, int skip,
                                                                     Context context) {
         final Response<Object> response =
-            managementClient.listSubscriptionsSyncWithResponse(topicName, skip, NUMBER_OF_ELEMENTS,
+            managementClient.listSubscriptionsWithResponse(topicName, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final SubscriptionDescriptionFeed feed = deserialize(response.getValue(), SubscriptionDescriptionFeed.class);
+        final SubscriptionDescriptionFeedImpl feed = deserialize(response.getValue(), SubscriptionDescriptionFeedImpl.class);
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
@@ -1389,9 +1389,9 @@ public final class ServiceBusAdministrationClient {
 
     private PagedResponse<TopicProperties> listTopics(int skip, Context context) {
         final Response<Object> response =
-            managementClient.listEntitiesSyncWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
+            managementClient.listEntitiesWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final TopicDescriptionFeed feed = deserialize(response.getValue(), TopicDescriptionFeed.class);
+        final TopicDescriptionFeedImpl feed = deserialize(response.getValue(), TopicDescriptionFeedImpl.class);
         if (feed == null) {
             LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
                 NUMBER_OF_ELEMENTS);
@@ -1409,7 +1409,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all of the properties are replaced. If a property is not set the service default value is used.
+     * all the properties are replaced. If a property is not set the service default value is used.
      * The suggested flow is:
      * <ol>
      *     <li>{@link #getQueue(String) Get queue description.}</li>
@@ -1445,7 +1445,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all of the properties are replaced. If a property is not set the service default value is used.
+     * all the properties are replaced. If a property is not set the service default value is used.
      * The suggested flow is:
      * <ol>
      *     <li>{@link #getQueue(String) Get queue description.}</li>
@@ -1494,12 +1494,12 @@ public final class ServiceBusAdministrationClient {
             queue.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
 
-        final CreateQueueBody createEntity =
+        final CreateQueueBodyImpl createEntity =
             getCreateQueueBody(EntityHelper.toImplementation(queue));
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response =
-            entityClient.putSyncWithResponse(queue.getName(), createEntity, "*", contextWithHeaders);
+            entityClient.putWithResponse(queue.getName(), createEntity, "*", contextWithHeaders);
         return deserializeQueue(response);
     }
 
@@ -1564,14 +1564,14 @@ public final class ServiceBusAdministrationClient {
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response =
-            managementClient.getRules().putSyncWithResponse(topicName, subscriptionName, rule.getName(),
+            managementClient.getRules().putWithResponse(topicName, subscriptionName, rule.getName(),
                 getUpdateRuleBody(rule), "*", enableSyncContext(context));
         return deserializeRule(response);
     }
 
     /**
      * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
-     * fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * fully populated as all the properties are replaced. If a property is not set the service default value is
      * used.
      * The suggested flow is:
      * <ol>
@@ -1607,7 +1607,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
-     * fully populated as all of the properties are replaced. If a property is not set the service default value is
+     * fully populated as all the properties are replaced. If a property is not set the service default value is
      * used.
      * The suggested flow is:
      * <ol>
@@ -1660,19 +1660,19 @@ public final class ServiceBusAdministrationClient {
 
         final String topicName = subscription.getTopicName();
 
-        final CreateSubscriptionBody createEntity = getUpdateSubscriptionBody(subscription);
+        final CreateSubscriptionBodyImpl createEntity = getUpdateSubscriptionBody(subscription);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         Response<Object> response =
             managementClient.getSubscriptions()
-                .putSyncWithResponse(topicName, subscription.getSubscriptionName(), createEntity,
+                .putWithResponse(topicName, subscription.getSubscriptionName(), createEntity,
                     "*", contextWithHeaders);
         return deserializeSubscription(topicName, response);
     }
 
     /**
      * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
-     * all of the properties are replaced. If a property is not set the service default value is used.
+     * all the properties are replaced. If a property is not set the service default value is used.
      * The suggested flow is:
      * <ol>
      *     <li>{@link #getTopic(String) Get topic description.}</li>
@@ -1708,7 +1708,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
-     * all of the properties are replaced. If a property is not set the service default value is used.
+     * all the properties are replaced. If a property is not set the service default value is used.
      * The suggested flow is:
      * <ol>
      *     <li>{@link #getTopic(String) Get topic description.}</li>
@@ -1743,16 +1743,16 @@ public final class ServiceBusAdministrationClient {
         if (topic == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topic' cannot be null"));
         }
-        final CreateTopicBody createEntity = getUpdateTopicBody(topic);
+        final CreateTopicBodyImpl createEntity = getUpdateTopicBody(topic);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-        final Response<Object> response = entityClient.putSyncWithResponse(topic.getName(), createEntity, "*",
+        final Response<Object> response = entityClient.putWithResponse(topic.getName(), createEntity, "*",
             enableSyncContext(context));
         return deserializeTopic(response);
     }
 
     private Response<QueueProperties> deserializeQueue(Response<Object> response) {
-        final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
+        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
 
         // This was an empty response (ie. 204).
         if (entry == null) {
@@ -1761,7 +1761,7 @@ public final class ServiceBusAdministrationClient {
             LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getQueueDescription() == null) {
-            final TopicDescriptionEntry entryTopic = deserialize(response.getValue(), TopicDescriptionEntry.class);
+            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
             if (entryTopic != null && entryTopic.getContent() != null
                 && entryTopic.getContent().getTopicDescription() != null) {
                 LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
@@ -1775,18 +1775,18 @@ public final class ServiceBusAdministrationClient {
     }
 
     private Response<RuleProperties> deserializeRule(Response<Object> response) {
-        final RuleDescriptionEntry entry = deserialize(response.getValue(), RuleDescriptionEntry.class);
+        final RuleDescriptionEntryImpl entry = deserialize(response.getValue(), RuleDescriptionEntryImpl.class);
 
         return getRulePropertiesSimpleResponse(response, entry);
     }
 
     private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
-        final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
+        final SubscriptionDescriptionEntryImpl entry = deserialize(response.getValue(), SubscriptionDescriptionEntryImpl.class);
         return getSubscriptionPropertiesSimpleResponse(topicName, response, entry);
     }
 
     private Response<TopicProperties> deserializeTopic(Response<Object> response) {
-        final TopicDescriptionEntry entry = deserialize(response.getValue(), TopicDescriptionEntry.class);
+        final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
 
         // This was an empty response (ie. 204).
         if (entry == null) {
@@ -1795,7 +1795,7 @@ public final class ServiceBusAdministrationClient {
             LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getTopicDescription() == null) {
-            final QueueDescriptionEntry entryQueue = deserialize(response.getValue(), QueueDescriptionEntry.class);
+            final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
             if (entryQueue != null && entryQueue.getContent() != null
                 && entryQueue.getContent().getQueueDescription() != null) {
                 LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
