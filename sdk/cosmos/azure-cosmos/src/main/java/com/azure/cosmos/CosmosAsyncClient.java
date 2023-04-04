@@ -644,8 +644,7 @@ public final class CosmosAsyncClient implements Closeable {
                         OpenConnectionAggressivenessHint.AGGRESSIVE
                 )
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .blockLast()
-        ;
+                .blockLast();
     }
 
     void openConnectionsAndInitCaches(Duration timeout) {
@@ -656,16 +655,16 @@ public final class CosmosAsyncClient implements Closeable {
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
 
+        proactiveOpenConnectionsProcessor
+                .getOpenConnectionsPublisherFromOpenConnectionOperation()
+                .subscribe();
+
         Flux
                 .just(1)
                 .delayElements(timeout)
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiateOpenConnectionsPublisherAndSubscribe)
-                .subscribe();
-
-        proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisherFromOpenConnectionOperation()
-                .subscribe();
+                .blockLast();
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
