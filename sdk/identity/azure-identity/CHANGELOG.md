@@ -2,13 +2,11 @@
 
 ## 1.9.0-beta.3 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
+- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
 ### Other Changes
+- Removed feature from previous betas to compute refresh values for managed identity tokens.
 
 ## 1.9.0-beta.2 (2023-03-16)
 
@@ -19,7 +17,6 @@
 
 ### Bugs Fixed
 - Fixed detection logic for az/azd.
-- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
 ## 1.8.1 (2023-03-06)
 
