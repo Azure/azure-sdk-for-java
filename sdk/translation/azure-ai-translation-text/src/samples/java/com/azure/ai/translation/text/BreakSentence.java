@@ -10,7 +10,7 @@ import com.azure.ai.translation.text.models.BreakSentenceItem;
 import com.azure.ai.translation.text.models.InputTextItem;
 
 /**
- * Break Sentence API simple call.
+ * Break Sentence API call.
  */
 public class BreakSentence {
     /**
