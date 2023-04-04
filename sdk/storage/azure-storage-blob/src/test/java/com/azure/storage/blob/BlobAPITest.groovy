@@ -3420,16 +3420,12 @@ class BlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") != null
         response.getValue().getAccountKind() != null
         response.getValue().getSkuName() != null
+        response.getValue().isHnsEnabled() != null
     }
 
     def "Get account info min"() {
         expect:
         bc.getAccountInfoWithResponse(null, null).getStatusCode() == 200
-    }
-
-    def "Get account info hns enabled"() {
-        expect:
-        primaryBlobServiceClient.getAccountInfo().isHnsEnabled()
     }
 
     def "Get Container Name"() {
