@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
@@ -32,7 +31,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private static final ClientLogger LOGGER = new ClientLogger(SynchronousMessageSubscriber.class);
     private static final RuntimeException CLIENT_TERMINATED_ERROR = new RuntimeException("The receiver client is terminated. Re-create the client to continue receive attempt.");
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicReference<Throwable> disposalReason = new AtomicReference<>();
+    private volatile Throwable disposalReason;
     private final AtomicInteger wip = new AtomicInteger();
     private final ConcurrentLinkedQueue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
     private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
@@ -135,8 +134,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     void queueWork(SynchronousReceiveWork work) {
         Objects.requireNonNull(work, "'work' cannot be null");
 
-        if (isDisposed.get() || isUpstreamCancelled()) {
-            Throwable reason = disposalReason.get();
+        if (isTerminated()) {
+            Throwable reason = disposalReason;
             if (reason == null) {
                 reason = CLIENT_TERMINATED_ERROR;
             }
@@ -276,11 +275,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     private boolean isTerminated() {
-        return isUpstreamCancelled() || isDisposed.get();
-    }
+        if (UPSTREAM.get(this) == Operators.cancelledSubscription()) {
+            return true;
+        }
 
-    private boolean isUpstreamCancelled() {
-        return UPSTREAM.get(this) == Operators.cancelledSubscription();
+        return isDisposed.get();
     }
 
     /**
@@ -373,7 +372,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         if (isDisposed.getAndSet(true)) {
             return;
         }
-        disposalReason.set(throwable);
+        disposalReason = throwable;
 
         synchronized (currentWorkLock) {
             if (currentWork != null) {
