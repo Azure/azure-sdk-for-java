@@ -1983,7 +1983,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String trackingId = options.getTrackingId();
 
             if (trackingId != null && !trackingId.isEmpty()) {
-                document.set("_trackingId", trackingId);
+                document.set(Constants.Properties.TRACKING_ID, trackingId);
             }
         }
 

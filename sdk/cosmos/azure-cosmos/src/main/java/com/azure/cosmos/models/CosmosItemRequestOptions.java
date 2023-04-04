@@ -304,19 +304,21 @@ public class CosmosItemRequestOptions {
      * a retry is "safe" for a patch operation really depends on the set of patch instructions. The documentation
      * for the patch operation has more details.
      *
-     * @param useTrackingIdProperty a flag indicating whether write operations can use the trackingId system
-     * property '/_trackingId' to allow identification of conflicts and pre-condition failures due to retries.
-     * If enabled, each document being created or replaced will have an additional '/_trackingId' property for which
-     * the value will be updated by the SDK. If it is not desired to add this new json property (for example due
-     * to the RU-increase based on the payload size or because it causes documents to exceed the max payload size upper
-     * limit), the usage of this system property can be disabled by setting this parameter to false. This means there
-     * could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully on
-     * their own.
+     * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
+     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
+     * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
+     * for which the value will be updated by the SDK. If it is not desired to add this new json property (for example
+     * due to the RU-increase based on the payload size or because it causes documents to exceed the max payload size
+     * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
+     * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
+     * on their own.
      * @return the CosmosItemRequestOptions.
      */
-    public CosmosItemRequestOptions enableNonIdempotentWriteRetriesEnabled(boolean useTrackingIdProperty) {
+    public CosmosItemRequestOptions enableNonIdempotentWriteRetriesEnabled(
+        boolean useTrackingIdPropertyForCreateAndReplace) {
+
         this.nonIdempotentWriteRetriesEnabled = true;
-        this.useTrackingIds = useTrackingIdProperty;
+        this.useTrackingIds = useTrackingIdPropertyForCreateAndReplace;
 
         return this;
     }

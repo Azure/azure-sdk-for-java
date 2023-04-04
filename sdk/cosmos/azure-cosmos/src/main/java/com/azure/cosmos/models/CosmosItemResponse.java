@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -243,7 +244,7 @@ public class CosmosItemResponse<T> {
                 );
             serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
 
-            return this.hasTrackingId = (itemNode != null && candidate.equals(itemNode.get("_trackingId")));
+            return this.hasTrackingId = (itemNode != null && candidate.equals(itemNode.get(Constants.Properties.TRACKING_ID)));
         } else {
             return this.hasTrackingId;
         }

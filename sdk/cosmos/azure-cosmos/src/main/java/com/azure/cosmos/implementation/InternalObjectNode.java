@@ -109,25 +109,25 @@ public class InternalObjectNode extends Resource {
         if (cosmosItem instanceof InternalObjectNode) {
             InternalObjectNode internalObjectNode = ((InternalObjectNode) cosmosItem);
             if (trackingId != null) {
-                internalObjectNode.set("_trackingId", trackingId);
+                internalObjectNode.set(Constants.Properties.TRACKING_ID, trackingId);
             }
             return internalObjectNode.serializeJsonToByteBuffer();
         } else if (cosmosItem instanceof Document) {
             Document doc = (Document) cosmosItem;
             if (trackingId != null) {
-                doc.set("_trackingId", trackingId);
+                doc.set(Constants.Properties.TRACKING_ID, trackingId);
             }
             return ModelBridgeInternal.serializeJsonToByteBuffer(doc);
         } else if (cosmosItem instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode)cosmosItem;
             if (trackingId != null) {
-                objectNode.put("_trackingId", trackingId);
+                objectNode.put(Constants.Properties.TRACKING_ID, trackingId);
             }
             return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer());
         } else if (cosmosItem instanceof byte[]) {
             if (trackingId != null) {
                 InternalObjectNode internalObjectNode = new InternalObjectNode((byte[]) cosmosItem);
-                internalObjectNode.set("_trackingId", trackingId);
+                internalObjectNode.set(Constants.Properties.TRACKING_ID, trackingId);
                 return internalObjectNode.serializeJsonToByteBuffer();
             }
             return ByteBuffer.wrap((byte[]) cosmosItem);
@@ -137,7 +137,7 @@ public class InternalObjectNode extends Resource {
                 MapType mapType = objectMapper.getTypeFactory().constructMapType(LinkedHashMap.class,
                     String.class, Object.class);
                 LinkedHashMap<String, Object> node = objectMapper.convertValue(cosmosItem, mapType);
-                node.put("_trackingId", trackingId);
+                node.put(Constants.Properties.TRACKING_ID, trackingId);
                 effectivePayload = node;
             }
             return Utils.serializeJsonToByteBuffer(objectMapper, effectivePayload);
