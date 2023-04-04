@@ -64,6 +64,41 @@ import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesV
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxOrderCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriApplicationDataChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriAttachmentChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriBiomassModelJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriBoundaryChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriCropChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriCropProductChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriDeviceChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriDeviceDataModelChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriFarmChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriFarmOperationDataIngestionJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriFieldChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriHarvestDataChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriImageProcessingRasterizeJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriInsightAttachmentChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriInsightChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriManagementZoneChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriNutrientAnalysisChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriPartyChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriPlantTissueAnalysisChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriPlantingDataChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriPrescriptionChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriPrescriptionMapChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSatelliteDataIngestionJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSeasonChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSeasonalFieldChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSensorChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSensorDataModelChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSensorMappingChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSensorPartnerIntegrationChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSensorPlacementModelJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriSoilMoistureModelJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriTillageDataChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriWeatherDataIngestionJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriWeatherDataRefresherJobStatusChangedV2EventData;
+import com.azure.messaging.eventgrid.systemevents.DataManagerForAgriZoneChangedV2EventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageDeletedEventData;
@@ -150,6 +185,8 @@ import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventDa
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageLifecyclePolicyCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskQueuedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
@@ -428,6 +465,182 @@ public final class SystemEventNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted event. */
     public static final String DATA_BOX_ORDER_COMPLETED = "Microsoft.DataBox.OrderCompleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.ApplicationDataChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_APPLICATION_DATA_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.ApplicationDataChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.AttachmentChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_ATTACHMENT_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.AttachmentChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.BiomassModelJobStatusChanged.V2
+     * event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_BIOMASS_MODEL_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.BiomassModelJobStatusChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.BoundaryChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_BOUNDARY_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.BoundaryChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.CropChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_CROP_CHANGED = "Microsoft.AgFoodPlatform.CropChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.CropProductChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_CROP_PRODUCT_CHANGED =
+            "Microsoft.AgFoodPlatform.CropProductChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.DeviceChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_DEVICE_CHANGED = "Microsoft.AgFoodPlatform.DeviceChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.DeviceDataModelChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_DEVICE_DATA_MODEL_CHANGED =
+            "Microsoft.AgFoodPlatform.DeviceDataModelChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.FarmChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_FARM_CHANGED_V2 = "Microsoft.AgFoodPlatform.FarmChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.FarmOperationDataIngestionJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_FARM_OPERATION_DATA_INGESTION_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.FarmOperationDataIngestionJobStatusChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.FieldChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_FIELD_CHANGED_V2 = "Microsoft.AgFoodPlatform.FieldChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.HarvestDataChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_HARVEST_DATA_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.HarvestDataChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.ImageProcessingRasterizeJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_IMAGE_PROCESSING_RASTERIZE_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.ImageProcessingRasterizeJobStatusChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.InsightAttachmentChanged.V2
+     * event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_INSIGHT_ATTACHMENT_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.InsightAttachmentChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.InsightChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_INSIGHT_CHANGED_V2 = "Microsoft.AgFoodPlatform.InsightChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.ManagementZoneChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_MANAGEMENT_ZONE_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.ManagementZoneChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.NutrientAnalysisChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_NUTRIENT_ANALYSIS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.NutrientAnalysisChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.PartyChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_PARTY_CHANGED = "Microsoft.AgFoodPlatform.PartyChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.PlantTissueAnalysisChanged.V2
+     * event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_PLANT_TISSUE_ANALYSIS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.PlantTissueAnalysisChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.PlantingDataChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_PLANTING_DATA_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.PlantingDataChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.PrescriptionChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_PRESCRIPTION_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.PrescriptionChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.PrescriptionMapChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_PRESCRIPTION_MAP_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.PrescriptionMapChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.SatelliteDataIngestionJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_SATELLITE_DATA_INGESTION_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.SatelliteDataIngestionJobStatusChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SeasonChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_SEASON_CHANGED = "Microsoft.AgFoodPlatform.SeasonChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SeasonalFieldChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_SEASONAL_FIELD_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.SeasonalFieldChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SensorChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_SENSOR_CHANGED = "Microsoft.AgFoodPlatform.SensorChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SensorDataModelChanged event. */
+    public static final String DATA_MANAGER_FOR_AGRI_SENSOR_DATA_MODEL_CHANGED =
+            "Microsoft.AgFoodPlatform.SensorDataModelChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SensorMappingChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_SENSOR_MAPPING_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.SensorMappingChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.SensorPartnerIntegrationChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_SENSOR_PARTNER_INTEGRATION_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.SensorPartnerIntegrationChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.SensorPlacementModelJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_SENSOR_PLACEMENT_MODEL_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.SensorPlacementModelJobStatusChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.SoilMoistureModelJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_SOIL_MOISTURE_MODEL_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.SoilMoistureModelJobStatusChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.TillageDataChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_TILLAGE_DATA_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.TillageDataChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.WeatherDataIngestionJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_WEATHER_DATA_INGESTION_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.WeatherDataIngestionJobStatusChanged.V2";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.WeatherDataRefresherJobStatusChanged.V2 event.
+     */
+    public static final String DATA_MANAGER_FOR_AGRI_WEATHER_DATA_REFRESHER_JOB_STATUS_CHANGED_V2 =
+            "Microsoft.AgFoodPlatform.WeatherDataRefresherJobStatusChanged.V2";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.ZoneChanged.V2 event. */
+    public static final String DATA_MANAGER_FOR_AGRI_ZONE_CHANGED_V2 = "Microsoft.AgFoodPlatform.ZoneChanged.V2";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
@@ -823,6 +1036,12 @@ public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.LifecyclePolicyCompleted event. */
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event. */
+    public static final String STORAGE_TASK_COMPLETED = "Microsoft.Storage.StorageTaskCompleted";
+
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskQueued event. */
+    public static final String STORAGE_TASK_QUEUED = "Microsoft.Storage.StorageTaskQueued";
+
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent event. */
     public static final String EVENT_GRID_SUBSCRIPTION_DELETED = "Microsoft.EventGrid.SubscriptionDeletedEvent";
 
@@ -970,6 +1189,91 @@ public final class SystemEventNames {
                     put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
                     put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
                     put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_APPLICATION_DATA_CHANGED_V2,
+                            DataManagerForAgriApplicationDataChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_ATTACHMENT_CHANGED_V2,
+                            DataManagerForAgriAttachmentChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_BIOMASS_MODEL_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriBiomassModelJobStatusChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_BOUNDARY_CHANGED_V2, DataManagerForAgriBoundaryChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_CROP_CHANGED, DataManagerForAgriCropChangedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_CROP_PRODUCT_CHANGED,
+                            DataManagerForAgriCropProductChangedEventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_DEVICE_CHANGED, DataManagerForAgriDeviceChangedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_DEVICE_DATA_MODEL_CHANGED,
+                            DataManagerForAgriDeviceDataModelChangedEventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_FARM_CHANGED_V2, DataManagerForAgriFarmChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_FARM_OPERATION_DATA_INGESTION_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriFarmOperationDataIngestionJobStatusChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_FIELD_CHANGED_V2, DataManagerForAgriFieldChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_HARVEST_DATA_CHANGED_V2,
+                            DataManagerForAgriHarvestDataChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_IMAGE_PROCESSING_RASTERIZE_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriImageProcessingRasterizeJobStatusChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_INSIGHT_ATTACHMENT_CHANGED_V2,
+                            DataManagerForAgriInsightAttachmentChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_INSIGHT_CHANGED_V2, DataManagerForAgriInsightChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_MANAGEMENT_ZONE_CHANGED_V2,
+                            DataManagerForAgriManagementZoneChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_NUTRIENT_ANALYSIS_CHANGED_V2,
+                            DataManagerForAgriNutrientAnalysisChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_PARTY_CHANGED, DataManagerForAgriPartyChangedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_PLANT_TISSUE_ANALYSIS_CHANGED_V2,
+                            DataManagerForAgriPlantTissueAnalysisChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_PLANTING_DATA_CHANGED_V2,
+                            DataManagerForAgriPlantingDataChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_PRESCRIPTION_CHANGED_V2,
+                            DataManagerForAgriPrescriptionChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_PRESCRIPTION_MAP_CHANGED_V2,
+                            DataManagerForAgriPrescriptionMapChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SATELLITE_DATA_INGESTION_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriSatelliteDataIngestionJobStatusChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_SEASON_CHANGED, DataManagerForAgriSeasonChangedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SEASONAL_FIELD_CHANGED_V2,
+                            DataManagerForAgriSeasonalFieldChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_SENSOR_CHANGED, DataManagerForAgriSensorChangedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SENSOR_DATA_MODEL_CHANGED,
+                            DataManagerForAgriSensorDataModelChangedEventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SENSOR_MAPPING_CHANGED_V2,
+                            DataManagerForAgriSensorMappingChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SENSOR_PARTNER_INTEGRATION_CHANGED_V2,
+                            DataManagerForAgriSensorPartnerIntegrationChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SENSOR_PLACEMENT_MODEL_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriSensorPlacementModelJobStatusChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_SOIL_MOISTURE_MODEL_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriSoilMoistureModelJobStatusChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_TILLAGE_DATA_CHANGED_V2,
+                            DataManagerForAgriTillageDataChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_WEATHER_DATA_INGESTION_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriWeatherDataIngestionJobStatusChangedV2EventData.class);
+                    put(
+                            DATA_MANAGER_FOR_AGRI_WEATHER_DATA_REFRESHER_JOB_STATUS_CHANGED_V2,
+                            DataManagerForAgriWeatherDataRefresherJobStatusChangedV2EventData.class);
+                    put(DATA_MANAGER_FOR_AGRI_ZONE_CHANGED_V2, DataManagerForAgriZoneChangedV2EventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);
@@ -1080,6 +1384,8 @@ public final class SystemEventNames {
                     put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
                     put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
                     put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
+                    put(STORAGE_TASK_COMPLETED, StorageTaskCompletedEventData.class);
+                    put(STORAGE_TASK_QUEUED, StorageTaskQueuedEventData.class);
                     put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
                     put(EVENT_GRID_SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
                     put(WEB_APP_SERVICE_PLAN_UPDATED, WebAppServicePlanUpdatedEventData.class);
