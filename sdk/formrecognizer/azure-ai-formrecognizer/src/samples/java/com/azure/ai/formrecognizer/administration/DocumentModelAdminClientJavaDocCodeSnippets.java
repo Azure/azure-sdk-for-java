@@ -108,6 +108,31 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildDocumentModel(String, DocumentModelBuildMode, String)}
+     */
+    public void beginBuildModelWithFileList() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String fileList = "";
+
+        DocumentModelDetails documentModelDetails
+            = documentModelAdministrationClient.beginBuildDocumentModel(blobContainerUrl,
+                DocumentModelBuildMode.TEMPLATE, fileList)
+            .getFinalResult();
+
+        System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
+        System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                System.out.printf("Field: %s", field);
+                System.out.printf("Field type: %s", documentFieldSchema.getType());
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+            });
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String
+    }
+
+    /**
      * Code snippet for {@link DocumentModelAdministrationClient#getResourceDetails()}
      */
     public void getResourceInfo() {

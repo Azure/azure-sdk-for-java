@@ -149,6 +149,10 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
+    void selectionMarkTrainingRunner(Consumer<String> testRunner) {
+        TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
     private String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"

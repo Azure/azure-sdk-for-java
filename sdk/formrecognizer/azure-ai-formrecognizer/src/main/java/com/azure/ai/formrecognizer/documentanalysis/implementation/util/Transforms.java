@@ -243,14 +243,18 @@ public class Transforms {
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,
-        DocumentModelBuildMode buildMode, String modelId, String prefix, BuildDocumentModelOptions buildDocumentModelOptions) {
-        BuildDocumentModelRequest buildDocumentModelRequest
-            = new BuildDocumentModelRequest(modelId, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
-            .fromString(buildMode.toString()))
-            .setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(blobContainerUrl)
-                .setPrefix(prefix))
+                                                                         DocumentModelBuildMode buildMode, String modelId, String prefix, String fileList, BuildDocumentModelOptions buildDocumentModelOptions) {
+        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest(modelId,
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
+                .fromString(buildMode.toString()))
             .setDescription(buildDocumentModelOptions.getDescription())
             .setTags(buildDocumentModelOptions.getTags());
+        if (fileList == null) {
+            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(blobContainerUrl)
+                .setPrefix(prefix));
+        } else {
+            buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListSource(blobContainerUrl, fileList));
+        }
         return buildDocumentModelRequest;
     }
 
@@ -671,18 +675,18 @@ public class Transforms {
     }
 
     public static AuthorizeCopyRequest getAuthorizeCopyRequest(CopyAuthorizationOptions copyAuthorizationOptions,
-        String modelId) {
+                                                               String modelId) {
         return new AuthorizeCopyRequest(modelId)
             .setDescription(copyAuthorizationOptions.getDescription())
             .setTags(copyAuthorizationOptions.getTags());
     }
 
     public static ComposeDocumentModelRequest getComposeDocumentModelRequest(List<String> componentModelIds,
-                                                                              ComposeDocumentModelOptions composeDocumentModelOptions,
-                                                                              String modelId) {
+                                                                             ComposeDocumentModelOptions composeDocumentModelOptions,
+                                                                             String modelId) {
         return new ComposeDocumentModelRequest(modelId, componentModelIds.stream()
-                .map(modelIdString -> new ComponentDocumentModelDetails(modelIdString))
-                .collect(Collectors.toList()))
+            .map(modelIdString -> new ComponentDocumentModelDetails(modelIdString))
+            .collect(Collectors.toList()))
             .setDescription(composeDocumentModelOptions.getDescription())
             .setTags(composeDocumentModelOptions.getTags());
     }
@@ -745,7 +749,7 @@ public class Transforms {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
                         classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl())
-                    .setPrefix(classifierDocumentTypeDetails.getAzureBlobSource().getPrefix()));
+                        .setPrefix(classifierDocumentTypeDetails.getAzureBlobSource().getPrefix()));
             }
             innerTags.put(key, innerClassifyDocTypeDetails);
         });
