@@ -14,11 +14,8 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -34,7 +31,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
@@ -471,26 +472,4 @@ public class StorageImplUtils {
         });
         Runtime.getRuntime().addShutdownHook(hook);
     }
-
-    public static String tagsToString(Map<String, String> tags) {
-        if (tags == null || tags.isEmpty()) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : tags.entrySet()) {
-            try {
-                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
-                sb.append("=");
-                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
-                sb.append("&");
-            } catch (UnsupportedEncodingException e) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-            }
-        }
-
-        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
-        return sb.toString();
-    }
-
-
 }

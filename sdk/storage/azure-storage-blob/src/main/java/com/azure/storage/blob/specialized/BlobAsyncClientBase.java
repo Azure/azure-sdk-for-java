@@ -89,10 +89,13 @@ import reactor.core.publisher.SignalType;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -116,7 +119,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
-import static com.azure.storage.common.implementation.StorageImplUtils.tagsToString;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -766,6 +768,26 @@ public class BlobAsyncClientBase {
                     headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
                     headers.getXMsVersionId());
             });
+    }
+
+    String tagsToString(Map<String, String> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
+            try {
+                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
+                sb.append("=");
+                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
+                sb.append("&");
+            } catch (UnsupportedEncodingException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            }
+        }
+
+        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
+        return sb.toString();
     }
 
     private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
