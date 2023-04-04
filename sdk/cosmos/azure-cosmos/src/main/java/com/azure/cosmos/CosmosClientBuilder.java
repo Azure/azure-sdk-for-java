@@ -701,8 +701,8 @@ public class CosmosClientBuilder implements
      * <p>
      * DEFAULT value is false.
      * <p>
-     * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for all write operations
-     * (except patch operations). It can be overridden on per-request base in the request options. For patch
+     * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
+     * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch
      * operations by default (unless overridden in the request options) retries are always disabled by default
      * when the retry can't be guaranteed to be idempotent. The exception for patch is used because whether
      * a retry is "safe" for a patch operation really depends on the set of patch instructions. The documentation
