@@ -72,7 +72,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             concurrency = 1;
         }
 
-        return Flux.from(openConnectionsTaskSink.asFlux())
+        return openConnectionsTaskSink.asFlux()
                 .parallel(concurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionOperation -> {
@@ -94,7 +94,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         ));
                     }
                     return Flux.empty();
-                })
+                }).log("Line 98")
                 .flatMap(openConnectionOpToResponse -> {
                     OpenConnectionOperation openConnectionOperation = openConnectionOpToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionOpToResponse.getT2();
