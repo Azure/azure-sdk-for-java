@@ -110,7 +110,7 @@ com.azure:azure-developer-devcenter;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.8.1;1.9.0-beta.2
+com.azure:azure-identity;1.8.1;1.9.0-beta.3
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.5;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
@@ -280,7 +280,7 @@ com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0;1.1.0-beta
 com.azure.resourcemanager:azure-resourcemanager-hybridkubernetes;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-iothub;1.1.0;1.2.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.4;1.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-communication;1.0.0;2.0.0
+com.azure.resourcemanager:azure-resourcemanager-communication;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-apimanagement;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0;1.1.0-beta.1
@@ -415,6 +415,7 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 unreleased_com.azure:azure-core;1.38.0-beta.1
+unreleased_com.azure:azure-core-test;1.16.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

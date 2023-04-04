@@ -64,7 +64,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
         final AtomicReference<List<String>> expectedAnomalyAlertIdList = new AtomicReference<List<String>>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
             listAnomalyAlertRunner(inputAnomalyAlertList -> {
                 List<AnomalyAlertConfiguration> actualAnomalyAlertList = new ArrayList<>();
@@ -150,7 +150,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
             creatAnomalyAlertRunner(inputAnomalyAlertConfiguration -> {
                 final AnomalyAlertConfiguration createdAnomalyAlert =
@@ -187,7 +187,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
            // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             creatAnomalyAlertRunner(inputAnomalyAlert ->
 
                 // Act & Assert
@@ -214,7 +214,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @Disabled
     public void deleteAnomalyAlertWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
             final AnomalyAlertConfiguration createdAnomalyAlert =
                 client.createAlertConfig(inputAnomalyAlertConfig).block();
@@ -247,7 +247,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             creatAnomalyAlertRunner(inputAnomalyAlert -> {
                 // Arrange
                 final AnomalyAlertConfiguration createdAnomalyAlert =
@@ -301,7 +301,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     // public void updateAnomalyAlertConfigDescription(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
     //     // Arrange
-    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
     //     final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
     //     creatAnomalyAlertRunner(inputAnomalyAlert -> {
     //         // Arrange
@@ -334,7 +334,7 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigId = new AtomicReference<>();
         // Arrange
         try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
             creatAnomalyAlertRunner(inputAnomalyAlert -> {
                 // Arrange
                 final AnomalyAlertConfiguration createdAnomalyAlert =

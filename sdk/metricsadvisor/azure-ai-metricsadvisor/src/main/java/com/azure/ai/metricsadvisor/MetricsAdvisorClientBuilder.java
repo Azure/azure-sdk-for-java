@@ -182,7 +182,29 @@ public final class MetricsAdvisorClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public MetricsAdvisorClient buildClient() {
-        return new MetricsAdvisorClient(buildAsyncClient());
+        // Endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+
+        // Global Env configuration store
+        final Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service Version
+        final MetricsAdvisorServiceVersion serviceVersion =
+            version != null ? version : MetricsAdvisorServiceVersion.getLatest();
+
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
+        }
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
+            new MetricsAdvisorImplBuilder()
+                .endpoint(endpoint)
+                .pipeline(pipeline)
+                .buildClient();
+
+        return new MetricsAdvisorClient(advisorRestAPIOpenAPIV2, serviceVersion);
     }
 
     /**
