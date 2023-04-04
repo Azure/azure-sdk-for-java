@@ -9,6 +9,9 @@
 - Fixed detection logic for az/azd.
 - Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
+### Other Changes
+- Removed feature from previous betas to compute refresh values for managed identity tokens.
+
 ## 1.8.1 (2023-03-06)
 
 #### Dependency Updates
