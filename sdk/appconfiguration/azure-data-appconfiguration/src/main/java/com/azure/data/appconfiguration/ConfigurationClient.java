@@ -38,7 +38,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.addTracingN
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
@@ -808,7 +808,7 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getLabelFilter(),
                     null,
                     selector == null ? null : selector.getAcceptDateTime(),
-                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
                     null,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
@@ -895,7 +895,7 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getLabelFilter(),
                     null,
                     acceptDateTime,
-                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },

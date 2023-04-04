@@ -392,19 +392,20 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        WordDelimiterTokenFilter deserializedValue = new WordDelimiterTokenFilter(name);
-                        deserializedValue.generateWordParts = generateWordParts;
-                        deserializedValue.generateNumberParts = generateNumberParts;
-                        deserializedValue.wordsCatenated = wordsCatenated;
-                        deserializedValue.numbersCatenated = numbersCatenated;
-                        deserializedValue.catenateAll = catenateAll;
-                        deserializedValue.splitOnCaseChange = splitOnCaseChange;
-                        deserializedValue.preserveOriginal = preserveOriginal;
-                        deserializedValue.splitOnNumerics = splitOnNumerics;
-                        deserializedValue.stemEnglishPossessive = stemEnglishPossessive;
-                        deserializedValue.protectedWords = protectedWords;
+                        WordDelimiterTokenFilter deserializedWordDelimiterTokenFilter =
+                                new WordDelimiterTokenFilter(name);
+                        deserializedWordDelimiterTokenFilter.generateWordParts = generateWordParts;
+                        deserializedWordDelimiterTokenFilter.generateNumberParts = generateNumberParts;
+                        deserializedWordDelimiterTokenFilter.wordsCatenated = wordsCatenated;
+                        deserializedWordDelimiterTokenFilter.numbersCatenated = numbersCatenated;
+                        deserializedWordDelimiterTokenFilter.catenateAll = catenateAll;
+                        deserializedWordDelimiterTokenFilter.splitOnCaseChange = splitOnCaseChange;
+                        deserializedWordDelimiterTokenFilter.preserveOriginal = preserveOriginal;
+                        deserializedWordDelimiterTokenFilter.splitOnNumerics = splitOnNumerics;
+                        deserializedWordDelimiterTokenFilter.stemEnglishPossessive = stemEnglishPossessive;
+                        deserializedWordDelimiterTokenFilter.protectedWords = protectedWords;
 
-                        return deserializedValue;
+                        return deserializedWordDelimiterTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

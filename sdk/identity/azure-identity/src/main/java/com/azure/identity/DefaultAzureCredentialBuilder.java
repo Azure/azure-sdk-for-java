@@ -230,6 +230,17 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
+     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     *
+     * @return An updated instance of this builder with instance discovery disabled.
+     */
+    public DefaultAzureCredentialBuilder disableInstanceDiscovery() {
+        this.identityClientOptions.disableInstanceDisovery();
+        return this;
+    }
+
+    /**
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.

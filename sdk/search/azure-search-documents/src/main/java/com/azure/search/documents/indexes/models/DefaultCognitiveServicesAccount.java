@@ -50,7 +50,8 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     public static DefaultCognitiveServicesAccount fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String description = null;
+                    DefaultCognitiveServicesAccount deserializedDefaultCognitiveServicesAccount =
+                            new DefaultCognitiveServicesAccount();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -66,15 +67,13 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
                                                 + "'.");
                             }
                         } else if ("description".equals(fieldName)) {
-                            description = reader.getString();
+                            deserializedDefaultCognitiveServicesAccount.setDescription(reader.getString());
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    DefaultCognitiveServicesAccount deserializedValue = new DefaultCognitiveServicesAccount();
-                    deserializedValue.setDescription(description);
 
-                    return deserializedValue;
+                    return deserializedDefaultCognitiveServicesAccount;
                 });
     }
 }

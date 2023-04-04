@@ -177,13 +177,14 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
                         }
                     }
                     if (errorMessageFound && statusCodeFound) {
-                        SearchIndexerError deserializedValue = new SearchIndexerError(errorMessage, statusCode);
-                        deserializedValue.key = key;
-                        deserializedValue.name = name;
-                        deserializedValue.details = details;
-                        deserializedValue.documentationLink = documentationLink;
+                        SearchIndexerError deserializedSearchIndexerError =
+                                new SearchIndexerError(errorMessage, statusCode);
+                        deserializedSearchIndexerError.key = key;
+                        deserializedSearchIndexerError.name = name;
+                        deserializedSearchIndexerError.details = details;
+                        deserializedSearchIndexerError.documentationLink = documentationLink;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerError;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!errorMessageFound) {

@@ -3,7 +3,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableItemAccessHelper;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 
 /**
@@ -18,7 +18,7 @@ public final class TableItem {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        ModelHelper.setItemCreator(TableItem::new);
+        TableItemAccessHelper.setTableItemCreator(TableItem::new);
     }
 
     /**

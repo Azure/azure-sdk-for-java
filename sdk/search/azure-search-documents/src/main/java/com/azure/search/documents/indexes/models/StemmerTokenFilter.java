@@ -99,9 +99,9 @@ public final class StemmerTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && languageFound) {
-                        StemmerTokenFilter deserializedValue = new StemmerTokenFilter(name, language);
+                        StemmerTokenFilter deserializedStemmerTokenFilter = new StemmerTokenFilter(name, language);
 
-                        return deserializedValue;
+                        return deserializedStemmerTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

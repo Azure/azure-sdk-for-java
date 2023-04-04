@@ -807,117 +807,71 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     public static SearchRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Boolean includeTotalResultCount = null;
-                    List<String> facets = null;
-                    String filter = null;
-                    String highlightFields = null;
-                    String highlightPostTag = null;
-                    String highlightPreTag = null;
-                    Double minimumCoverage = null;
-                    String orderBy = null;
-                    QueryType queryType = null;
-                    ScoringStatistics scoringStatistics = null;
-                    String sessionId = null;
-                    List<String> scoringParameters = null;
-                    String scoringProfile = null;
-                    String semanticConfiguration = null;
-                    String searchText = null;
-                    String searchFields = null;
-                    SearchMode searchMode = null;
-                    QueryLanguage queryLanguage = null;
-                    QuerySpellerType speller = null;
-                    String answers = null;
-                    String select = null;
-                    Integer skip = null;
-                    Integer top = null;
-                    String captions = null;
-                    String semanticFields = null;
+                    SearchRequest deserializedSearchRequest = new SearchRequest();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("count".equals(fieldName)) {
-                            includeTotalResultCount = reader.getNullable(JsonReader::getBoolean);
+                            deserializedSearchRequest.includeTotalResultCount =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("facets".equals(fieldName)) {
-                            facets = reader.readArray(reader1 -> reader1.getString());
+                            List<String> facets = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchRequest.facets = facets;
                         } else if ("filter".equals(fieldName)) {
-                            filter = reader.getString();
+                            deserializedSearchRequest.filter = reader.getString();
                         } else if ("highlight".equals(fieldName)) {
-                            highlightFields = reader.getString();
+                            deserializedSearchRequest.highlightFields = reader.getString();
                         } else if ("highlightPostTag".equals(fieldName)) {
-                            highlightPostTag = reader.getString();
+                            deserializedSearchRequest.highlightPostTag = reader.getString();
                         } else if ("highlightPreTag".equals(fieldName)) {
-                            highlightPreTag = reader.getString();
+                            deserializedSearchRequest.highlightPreTag = reader.getString();
                         } else if ("minimumCoverage".equals(fieldName)) {
-                            minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                            deserializedSearchRequest.minimumCoverage = reader.getNullable(JsonReader::getDouble);
                         } else if ("orderby".equals(fieldName)) {
-                            orderBy = reader.getString();
+                            deserializedSearchRequest.orderBy = reader.getString();
                         } else if ("queryType".equals(fieldName)) {
-                            queryType = QueryType.fromString(reader.getString());
+                            deserializedSearchRequest.queryType = QueryType.fromString(reader.getString());
                         } else if ("scoringStatistics".equals(fieldName)) {
-                            scoringStatistics = ScoringStatistics.fromString(reader.getString());
+                            deserializedSearchRequest.scoringStatistics =
+                                    ScoringStatistics.fromString(reader.getString());
                         } else if ("sessionId".equals(fieldName)) {
-                            sessionId = reader.getString();
+                            deserializedSearchRequest.sessionId = reader.getString();
                         } else if ("scoringParameters".equals(fieldName)) {
-                            scoringParameters = reader.readArray(reader1 -> reader1.getString());
+                            List<String> scoringParameters = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSearchRequest.scoringParameters = scoringParameters;
                         } else if ("scoringProfile".equals(fieldName)) {
-                            scoringProfile = reader.getString();
+                            deserializedSearchRequest.scoringProfile = reader.getString();
                         } else if ("semanticConfiguration".equals(fieldName)) {
-                            semanticConfiguration = reader.getString();
+                            deserializedSearchRequest.semanticConfiguration = reader.getString();
                         } else if ("search".equals(fieldName)) {
-                            searchText = reader.getString();
+                            deserializedSearchRequest.searchText = reader.getString();
                         } else if ("searchFields".equals(fieldName)) {
-                            searchFields = reader.getString();
+                            deserializedSearchRequest.searchFields = reader.getString();
                         } else if ("searchMode".equals(fieldName)) {
-                            searchMode = SearchMode.fromString(reader.getString());
+                            deserializedSearchRequest.searchMode = SearchMode.fromString(reader.getString());
                         } else if ("queryLanguage".equals(fieldName)) {
-                            queryLanguage = QueryLanguage.fromString(reader.getString());
+                            deserializedSearchRequest.queryLanguage = QueryLanguage.fromString(reader.getString());
                         } else if ("speller".equals(fieldName)) {
-                            speller = QuerySpellerType.fromString(reader.getString());
+                            deserializedSearchRequest.speller = QuerySpellerType.fromString(reader.getString());
                         } else if ("answers".equals(fieldName)) {
-                            answers = reader.getString();
+                            deserializedSearchRequest.answers = reader.getString();
                         } else if ("select".equals(fieldName)) {
-                            select = reader.getString();
+                            deserializedSearchRequest.select = reader.getString();
                         } else if ("skip".equals(fieldName)) {
-                            skip = reader.getNullable(JsonReader::getInt);
+                            deserializedSearchRequest.skip = reader.getNullable(JsonReader::getInt);
                         } else if ("top".equals(fieldName)) {
-                            top = reader.getNullable(JsonReader::getInt);
+                            deserializedSearchRequest.top = reader.getNullable(JsonReader::getInt);
                         } else if ("captions".equals(fieldName)) {
-                            captions = reader.getString();
+                            deserializedSearchRequest.captions = reader.getString();
                         } else if ("semanticFields".equals(fieldName)) {
-                            semanticFields = reader.getString();
+                            deserializedSearchRequest.semanticFields = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SearchRequest deserializedValue = new SearchRequest();
-                    deserializedValue.includeTotalResultCount = includeTotalResultCount;
-                    deserializedValue.facets = facets;
-                    deserializedValue.filter = filter;
-                    deserializedValue.highlightFields = highlightFields;
-                    deserializedValue.highlightPostTag = highlightPostTag;
-                    deserializedValue.highlightPreTag = highlightPreTag;
-                    deserializedValue.minimumCoverage = minimumCoverage;
-                    deserializedValue.orderBy = orderBy;
-                    deserializedValue.queryType = queryType;
-                    deserializedValue.scoringStatistics = scoringStatistics;
-                    deserializedValue.sessionId = sessionId;
-                    deserializedValue.scoringParameters = scoringParameters;
-                    deserializedValue.scoringProfile = scoringProfile;
-                    deserializedValue.semanticConfiguration = semanticConfiguration;
-                    deserializedValue.searchText = searchText;
-                    deserializedValue.searchFields = searchFields;
-                    deserializedValue.searchMode = searchMode;
-                    deserializedValue.queryLanguage = queryLanguage;
-                    deserializedValue.speller = speller;
-                    deserializedValue.answers = answers;
-                    deserializedValue.select = select;
-                    deserializedValue.skip = skip;
-                    deserializedValue.top = top;
-                    deserializedValue.captions = captions;
-                    deserializedValue.semanticFields = semanticFields;
 
-                    return deserializedValue;
+                    return deserializedSearchRequest;
                 });
     }
 }

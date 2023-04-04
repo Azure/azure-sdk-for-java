@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A component of a composed document model. */
-@Fluent
+@Immutable
 public final class ComponentDocumentModelDetails {
     /*
      * Unique document model name.
@@ -16,8 +17,15 @@ public final class ComponentDocumentModelDetails {
     @JsonProperty(value = "modelId", required = true)
     private String modelId;
 
-    /** Creates an instance of ComponentDocumentModelDetails class. */
-    public ComponentDocumentModelDetails() {}
+    /**
+     * Creates an instance of ComponentDocumentModelDetails class.
+     *
+     * @param modelId the modelId value to set.
+     */
+    @JsonCreator
+    public ComponentDocumentModelDetails(@JsonProperty(value = "modelId", required = true) String modelId) {
+        this.modelId = modelId;
+    }
 
     /**
      * Get the modelId property: Unique document model name.
@@ -26,16 +34,5 @@ public final class ComponentDocumentModelDetails {
      */
     public String getModelId() {
         return this.modelId;
-    }
-
-    /**
-     * Set the modelId property: Unique document model name.
-     *
-     * @param modelId the modelId value to set.
-     * @return the ComponentDocumentModelDetails object itself.
-     */
-    public ComponentDocumentModelDetails setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
     }
 }

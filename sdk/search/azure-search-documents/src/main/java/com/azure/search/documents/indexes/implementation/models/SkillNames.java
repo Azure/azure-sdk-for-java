@@ -63,21 +63,20 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
     public static SkillNames fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<String> skillNames = null;
+                    SkillNames deserializedSkillNames = new SkillNames();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("skillNames".equals(fieldName)) {
-                            skillNames = reader.readArray(reader1 -> reader1.getString());
+                            List<String> skillNames = reader.readArray(reader1 -> reader1.getString());
+                            deserializedSkillNames.skillNames = skillNames;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SkillNames deserializedValue = new SkillNames();
-                    deserializedValue.skillNames = skillNames;
 
-                    return deserializedValue;
+                    return deserializedSkillNames;
                 });
     }
 }

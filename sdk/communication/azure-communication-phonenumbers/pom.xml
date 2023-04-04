@@ -96,7 +96,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.22</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.31</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -134,6 +134,7 @@
         <configuration>
           <includes>
             <include>com/azure/communication/phonenumbers/*.class</include>
+            <include>com/azure/communication/phonenumbers/siprouting/*.class</include>
           </includes>
         </configuration>
         <executions>

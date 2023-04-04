@@ -138,7 +138,6 @@ public final class ConfigurationClientBuilder implements
 
     private ClientOptions clientOptions;
     private String connectionString;
-    private ConfigurationClientCredentials credential;
     private TokenCredential tokenCredential;
 
     private String endpoint;
@@ -210,7 +209,7 @@ public final class ConfigurationClientBuilder implements
      * authentication per builder instance.
      */
     private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
-        String endpointLocal = null;
+        String endpointLocal = endpoint;
         ConfigurationClientCredentials credentialsLocal = null;
         TokenCredential tokenCredentialLocal = null;
         // validate the authentication setup

@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for EmailServices Update. */
 public final class EmailServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-03-01-preview/examples/emailServices/update.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/emailServices/update.json
      */
     /**
      * Sample code: Update EmailService resource.
