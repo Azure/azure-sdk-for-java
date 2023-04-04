@@ -1230,8 +1230,9 @@ public final class CosmosEncryptionAsyncContainer {
 
     boolean isIncorrectContainerRid(CosmosException cosmosException) {
         return cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
+            cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS) != null &&
             cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
-                .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS);
+                           .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS);
     }
 
     static {
