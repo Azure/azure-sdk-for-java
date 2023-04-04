@@ -3,8 +3,10 @@
 
 package com.azure.ai.translation.text;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -14,9 +16,9 @@ import reactor.core.publisher.Mono;
 /**
  * Adds MT custom authentication headers to the requests.
  */
-public class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy {
+class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy {
 
-    private static final String REGION_HEADER_NAME = "Ocp-Apim-Subscription-Region";
+    private static final HttpHeaderName REGION_HEADER_NAME = HttpHeaderName.fromString("Ocp-Apim-Subscription-Region");
 
     private final String region;
 
@@ -37,5 +39,13 @@ public class TranslatorRegionAuthenticationPolicy implements HttpPipelinePolicy 
             request.setHeader(REGION_HEADER_NAME, this.region);
 
         }).then(nextPolicy.process());
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy nextPolicy) {
+        HttpRequest request = context.getHttpRequest();
+        request.setHeader(REGION_HEADER_NAME, this.region);
+
+        return nextPolicy.processSync();
     }
 }

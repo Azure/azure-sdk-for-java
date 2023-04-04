@@ -5,7 +5,7 @@
 package com.azure.ai.translation.text;
 
 /** Utilities to check the Translator Custom endpoint. */
-public final class CustomEndpointUtils {
+final class CustomEndpointUtils {
     private static final String PLATFORM_HOST = "cognitiveservices";
 
     /**

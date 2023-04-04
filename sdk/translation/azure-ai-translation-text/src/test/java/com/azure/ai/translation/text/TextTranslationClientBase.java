@@ -11,8 +11,14 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
-import java.net.*;
-import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.HttpURLConnection;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class TextTranslationClientBase extends TestBase {
     private final String defaultEndpoint = "https://fakeEndpoint.cognitive.microsofttranslator.com";
