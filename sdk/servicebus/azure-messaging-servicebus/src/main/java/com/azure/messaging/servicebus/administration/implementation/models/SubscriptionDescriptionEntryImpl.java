@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -23,8 +24,8 @@ public final class SubscriptionDescriptionEntryImpl {
     /*
      * The name of the subscription
      */
-    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
-    private String title;
+    @JsonProperty(value = "title")
+    private Object title;
 
     /*
      * The timestamp for when this subscription was published
@@ -78,7 +79,7 @@ public final class SubscriptionDescriptionEntryImpl {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -88,7 +89,7 @@ public final class SubscriptionDescriptionEntryImpl {
      * @param title the title value to set.
      * @return the SubscriptionDescriptionEntry object itself.
      */
-    public SubscriptionDescriptionEntryImpl setTitle(String title) {
+    public SubscriptionDescriptionEntryImpl setTitle(Object title) {
         this.title = title;
         return this;
     }

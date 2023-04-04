@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -23,8 +24,8 @@ public final class NamespacePropertiesEntryImpl {
     /*
      * The name of the namespace.
      */
-    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
-    private String title;
+    @JsonProperty(value = "title", required = true)
+    private Object title;
 
     /*
      * The timestamp for when this namespace was last updated
@@ -78,7 +79,7 @@ public final class NamespacePropertiesEntryImpl {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -88,7 +89,7 @@ public final class NamespacePropertiesEntryImpl {
      * @param title the title value to set.
      * @return the NamespacePropertiesEntry object itself.
      */
-    public NamespacePropertiesEntryImpl setTitle(String title) {
+    public NamespacePropertiesEntryImpl setTitle(Object title) {
         this.title = title;
         return this;
     }
