@@ -48,6 +48,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -581,11 +582,12 @@ public final class CosmosAsyncClient implements Closeable {
      * Close this {@link CosmosAsyncClient} instance and cleans up the resources.
      */
     @Override
-    public void close() {
+    public void close() throws IOException {
         if (this.clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
         asyncDocumentClient.close();
+        proactiveOpenConnectionsProcessor.close();
     }
 
     TracerProvider getTracerProvider(){

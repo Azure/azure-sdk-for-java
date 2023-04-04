@@ -59,7 +59,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     @Override
     public void close() throws IOException {
-
+        openConnectionsTaskSink.tryEmitComplete();
+        openConnectionsTaskSinkBackUp.tryEmitComplete();
     }
 
     public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisherFromOpenConnectionOperation() {
