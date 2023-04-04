@@ -158,4 +158,46 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
       }
     }
   }
+
+  "spark throughput control" should "limit throughput usage without dedicated throughput container" in {
+
+    val testContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(UUID.randomUUID().toString)
+    cosmosClient
+        .getDatabase(cosmosDatabase)
+        .createContainerIfNotExists(testContainer.getId, "/id")
+        .block()
+
+    try {
+        val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+            "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> testContainer.getId,
+            "spark.cosmos.read.inferSchema.enabled" -> "true",
+            "spark.cosmos.throughputControl.enabled" -> "true",
+            "spark.cosmos.throughputControl.globalControl.useDedicatedContainer" -> "false",
+            "spark.cosmos.throughputControl.name" -> "sparkTest",
+            "spark.cosmos.throughputControl.targetThroughput" -> "6",
+            "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
+            "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000"
+        )
+
+        val newSpark = getSpark
+
+        // scalastyle:off underscore.import
+        // scalastyle:off import.grouping
+        import spark.implicits._
+        val spark = newSpark
+        // scalastyle:on underscore.import
+        // scalastyle:on import.grouping
+
+        val df = Seq(
+            ("Quark", "Quark", "Red", 1.0 / 2)
+        ).toDF("particle name", "id", "color", "spin")
+
+        df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+        spark.read.format("cosmos.oltp").options(cfg).load()
+    }  finally {
+        testContainer.delete().block()
+    }
+  }
 }

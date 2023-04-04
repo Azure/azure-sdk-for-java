@@ -111,3 +111,4 @@ Used to influence the json serialization/deserialization behavior
 | `spark.cosmos.throughputControl.globalControl.container`      | None    | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
 | `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected   |
+| `spark.cosmos.throughputControl.globalControl.useDedicatedContainer`      | `true`  | Flag to indicat when configured with throughput control, whether dedicated throughput control container will be provided.  |
