@@ -59,6 +59,9 @@ public class CosmosItemRequestOptions {
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         nonIdempotentWriteRetriesEnabled = options.nonIdempotentWriteRetriesEnabled;
         useTrackingIds = options.useTrackingIds;
+        if (options.customOptions != null) {
+            this.customOptions = new HashMap<>(options.customOptions);
+        }
     }
 
 
@@ -314,48 +317,14 @@ public class CosmosItemRequestOptions {
      * on their own.
      * @return the CosmosItemRequestOptions.
      */
-    public CosmosItemRequestOptions enableNonIdempotentWriteRetriesEnabled(
+    CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+        boolean nonIdempotentWriteRetriesEnabled,
         boolean useTrackingIdPropertyForCreateAndReplace) {
 
-        this.nonIdempotentWriteRetriesEnabled = true;
+        this.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
         this.useTrackingIds = useTrackingIdPropertyForCreateAndReplace;
 
         return this;
-    }
-
-    /**
-     * Disables automatic retries for write operations when the SDK can't
-     * guarantee that they are idempotent. This is an override of the
-     * {@link CosmosClientBuilder#enableNonIdempotentWriteRetries(boolean)} behavior for a specific request/operation.
-     * Retries are for example not guaranteed to be idempotent, when retrying a createItem operation
-     * after the initial attempt timed-out after writing the request payload on the network connection. It is
-     * unclear whether the initial request ever reached the service and was processed there or not. The retry
-     * could return a 409-Conflict response simply because the initial attempt was processed.
-     * When enabling write retries even when idempotency is not guaranteed the SDK will apply a few extra
-     * steps to minimize the risk for the caller of facing these idempotency issues due to retries. If enabled.
-     * the SDK will use a system property "_trackingId" which will be stored in the documents to help
-     * filter out failure conditions caused simply by retries for requests that have actually been processed
-     * already by the service. For example a 409 on a retry would be mapped back to a 201 if the document has the same
-     * _trackingId value the initial attempt to create the document used.
-     <p>
-     * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
-     * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch
-     * operations by default (unless overridden in the request options) retries are always disabled by default
-     * when the retry can't be guaranteed to be idempotent. The exception for patch is used because whether
-     * a retry is "safe" for a patch operation really depends on the set of patch instructions. The documentation
-     * for the patch operation has more details.
-     *
-     * @return the CosmosItemRequestOptions.
-     */
-    public CosmosItemRequestOptions disableNonIdempotentWriteRetriesEnabled() {
-        this.nonIdempotentWriteRetriesEnabled = false;
-        this.useTrackingIds = false;
-
-        return this;
-    }
-
-    private Boolean getNonIdempotentWriteRetriesEnabled() {
-        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     /**
@@ -545,34 +514,50 @@ public class CosmosItemRequestOptions {
                 }
 
                 @Override
+                public CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+                    CosmosItemRequestOptions cosmosItemRequestOptions,
+                    boolean enabled,
+                    boolean useTrackingIds) {
+
+                    return cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(enabled, useTrackingIds);
+                }
+
+                @Override
                 public WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
                     CosmosItemRequestOptions cosmosItemRequestOptions,
                     WriteRetryPolicy clientDefault,
                     boolean operationDefault) {
 
-                    if (cosmosItemRequestOptions.getNonIdempotentWriteRetriesEnabled() != null) {
+                    if (cosmosItemRequestOptions.nonIdempotentWriteRetriesEnabled != null) {
                         return new WriteRetryPolicy(
-                            cosmosItemRequestOptions.getNonIdempotentWriteRetriesEnabled(),
+                            cosmosItemRequestOptions.nonIdempotentWriteRetriesEnabled,
                             cosmosItemRequestOptions.useTrackingIds);
                     }
 
                     if (!operationDefault) {
-                        cosmosItemRequestOptions.disableNonIdempotentWriteRetriesEnabled();
+                        cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                            false,
+                            false);
                         return WriteRetryPolicy.DISABLED;
                     }
 
                     if (clientDefault != null) {
                         if (clientDefault.isEnabled()) {
-                            cosmosItemRequestOptions.enableNonIdempotentWriteRetriesEnabled(
+                            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                                true,
                                 clientDefault.useTrackingIdProperty());
                         } else {
-                            cosmosItemRequestOptions.disableNonIdempotentWriteRetriesEnabled();
+                            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                                false,
+                                false);
                         }
 
                         return clientDefault;
                     }
 
-                    cosmosItemRequestOptions.disableNonIdempotentWriteRetriesEnabled();
+                    cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                        false,
+                        false);
                     return WriteRetryPolicy.DISABLED;
                 }
             }

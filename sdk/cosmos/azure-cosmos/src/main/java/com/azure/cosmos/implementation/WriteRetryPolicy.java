@@ -5,6 +5,10 @@ package com.azure.cosmos.implementation;
 
 public class WriteRetryPolicy {
     public static final WriteRetryPolicy DISABLED = new WriteRetryPolicy(false, false);
+
+    public static final WriteRetryPolicy WITH_RETRIES = new WriteRetryPolicy(true, false);
+
+    public static final WriteRetryPolicy WITH_TRACKING_ID = new WriteRetryPolicy(true, true);
     private final boolean enabled;
     private final boolean useTrackingIds;
 

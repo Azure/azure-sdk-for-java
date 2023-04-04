@@ -125,9 +125,7 @@ public class CosmosClientBuilder implements
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
 
-    private Boolean nonIdempotentWriteRetriesEnabled = null;
-
-    private boolean useTrackingIds = false;
+    private WriteRetryPolicy writeRetryPolicy = WriteRetryPolicy.DISABLED;
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
@@ -143,6 +141,7 @@ public class CosmosClientBuilder implements
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
+        this.resetNonIdempotentWriteRetryPolicy();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -718,23 +717,35 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     CosmosClientBuilder enableNonIdempotentWriteRetries(boolean useTrackingIdPropertyForCreateAndReplace) {
-        this.nonIdempotentWriteRetriesEnabled = true;
-        this.useTrackingIds = useTrackingIdPropertyForCreateAndReplace;
+        if (useTrackingIdPropertyForCreateAndReplace) {
+            this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
+        } else {
+            this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
+        }
         return this;
     }
 
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy()
     {
-        if (this.nonIdempotentWriteRetriesEnabled == null) {
-            return WriteRetryPolicy.DISABLED;
-        }
-        return new WriteRetryPolicy(this.nonIdempotentWriteRetriesEnabled, this.useTrackingIds);
+        return this.writeRetryPolicy;
     }
 
     void resetNonIdempotentWriteRetryPolicy()
     {
-        this.nonIdempotentWriteRetriesEnabled = null;
-        this.useTrackingIds = false;
+        String writePolicyName = Configs.getNonIdempotentWriteRetryPolicy();
+        if (writePolicyName != null) {
+            if (writePolicyName.equalsIgnoreCase("NO_RETRIES")) {
+                this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
+                return;
+            } else if (writePolicyName.equalsIgnoreCase("WITH_TRACKING_ID")) {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
+                return;
+            } else if (writePolicyName.equalsIgnoreCase("WITH_RETRIES")) {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
+                return;
+            }
+        }
+        this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
     }
 
     /**

@@ -1792,16 +1792,20 @@ public class CosmosAsyncContainer {
         WriteRetryPolicy nonIdempotentWriteRetryPolicy,
         CosmosItemRequestOptions options) {
 
-        CosmosItemRequestOptions effectiveOptions = ImplementationBridgeHelpers
-            .CosmosItemRequestOptionsHelper
-            .getCosmosItemRequestOptionsAccessor()
-            .clone(options);
+        CosmosItemRequestOptions effectiveOptions = itemOptionsAccessor.clone(options);
         effectiveOptions.setConsistencyLevel(null);
         if (nonIdempotentWriteRetryPolicy.isEnabled()) {
-            effectiveOptions
-                .enableNonIdempotentWriteRetriesEnabled(nonIdempotentWriteRetryPolicy.useTrackingIdProperty());
+            itemOptionsAccessor
+                .setNonIdempotentWriteRetryPolicy(
+                    effectiveOptions,
+                    true,
+                    nonIdempotentWriteRetryPolicy.useTrackingIdProperty());
         } else {
-            effectiveOptions.disableNonIdempotentWriteRetriesEnabled();
+            itemOptionsAccessor
+                .setNonIdempotentWriteRetryPolicy(
+                    effectiveOptions,
+                    false,
+                    false);
         }
 
         return effectiveOptions;

@@ -6,15 +6,20 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosCreateItemRequestOptions;
+import com.azure.cosmos.models.CosmosDeleteItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosReplaceItemRequestOptions;
+import com.azure.cosmos.models.CosmosUpsertItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
@@ -102,15 +107,58 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         return getSharedMultiPartitionCosmosContainer(builder.buildAsyncClient());
     }
 
-    public CosmosItemRequestOptions createRequestOptions(WriteRetryPolicy requestOptionsWriteRetryPolicy) {
-        CosmosItemRequestOptions options = null;
+    public CosmosCreateItemRequestOptions createCreateRequestOptions(WriteRetryPolicy requestOptionsWriteRetryPolicy) {
+        CosmosCreateItemRequestOptions options = null;
         if (requestOptionsWriteRetryPolicy != null) {
-            options = new CosmosItemRequestOptions();
+            options = new CosmosCreateItemRequestOptions();
             if (requestOptionsWriteRetryPolicy.isEnabled()) {
-                options.enableNonIdempotentWriteRetriesEnabled(
+                options.enableNonIdempotentWriteRetries(
                     requestOptionsWriteRetryPolicy.useTrackingIdProperty());
             } else {
-                options.disableNonIdempotentWriteRetriesEnabled();
+                options.disableNonIdempotentWriteRetries();
+            }
+        }
+
+        return options;
+    }
+
+    public CosmosReplaceItemRequestOptions createReplaceRequestOptions(WriteRetryPolicy requestOptionsWriteRetryPolicy) {
+        CosmosReplaceItemRequestOptions options = null;
+        if (requestOptionsWriteRetryPolicy != null) {
+            options = new CosmosReplaceItemRequestOptions();
+            if (requestOptionsWriteRetryPolicy.isEnabled()) {
+                options.enableNonIdempotentWriteRetries(
+                    requestOptionsWriteRetryPolicy.useTrackingIdProperty());
+            } else {
+                options.disableNonIdempotentWriteRetries();
+            }
+        }
+
+        return options;
+    }
+
+    public CosmosUpsertItemRequestOptions createUpsertRequestOptions(WriteRetryPolicy requestOptionsWriteRetryPolicy) {
+        CosmosUpsertItemRequestOptions options = null;
+        if (requestOptionsWriteRetryPolicy != null) {
+            options = new CosmosUpsertItemRequestOptions();
+            if (requestOptionsWriteRetryPolicy.isEnabled()) {
+                options.enableNonIdempotentWriteRetries();
+            } else {
+                options.disableNonIdempotentWriteRetries();
+            }
+        }
+
+        return options;
+    }
+
+    public CosmosDeleteItemRequestOptions createDeleteRequestOptions(WriteRetryPolicy requestOptionsWriteRetryPolicy) {
+        CosmosDeleteItemRequestOptions options = null;
+        if (requestOptionsWriteRetryPolicy != null) {
+            options = new CosmosDeleteItemRequestOptions();
+            if (requestOptionsWriteRetryPolicy.isEnabled()) {
+                options.enableNonIdempotentWriteRetries();
+            } else {
+                options.disableNonIdempotentWriteRetries();
             }
         }
 
@@ -122,10 +170,9 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         if (requestOptionsWriteRetryPolicy != null) {
             options = new CosmosPatchItemRequestOptions();
             if (requestOptionsWriteRetryPolicy.isEnabled()) {
-                options.enableNonIdempotentWriteRetriesEnabled(
-                    requestOptionsWriteRetryPolicy.useTrackingIdProperty());
+                options.enableNonIdempotentWriteRetries();
             } else {
-                options.disableNonIdempotentWriteRetriesEnabled();
+                options.disableNonIdempotentWriteRetries();
             }
         }
 
@@ -368,7 +415,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         }
 
         CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
-        CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        CosmosItemRequestOptions options = createCreateRequestOptions(requestOptionsWriteRetryPolicy);
         if (options != null) {
             options.setContentResponseOnWriteEnabled(isContentResponseOnWriteEnabled);
         }
@@ -402,7 +449,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             .createItem(
                 getDocumentDefinition(id),
                 new PartitionKey(id),
-                new CosmosItemRequestOptions().disableNonIdempotentWriteRetriesEnabled())
+                new CosmosCreateItemRequestOptions().disableNonIdempotentWriteRetries())
             .block();
         assertThat(createResponse).isNotNull();
         assertThat(createResponse.getStatusCode()).isEqualTo(201);
@@ -442,7 +489,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             clientBuilder.contentResponseOnWriteEnabled(isContentResponseOnWriteEnabled);
         }
         CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
-        CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        CosmosItemRequestOptions options = createReplaceRequestOptions(requestOptionsWriteRetryPolicy);
         if (options != null) {
             options.setContentResponseOnWriteEnabled(isContentResponseOnWriteEnabled);
         }
@@ -501,7 +548,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
         CosmosClientBuilder clientBuilder = this.getClientBuilder();
         CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
-        CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        CosmosItemRequestOptions options = createUpsertRequestOptions(requestOptionsWriteRetryPolicy);
         FaultInjectionRule rule = null;
 
         if (injectFailure) {
@@ -545,7 +592,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
         CosmosClientBuilder clientBuilder = this.getClientBuilder();
         CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
-        CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
+        CosmosItemRequestOptions options = createDeleteRequestOptions(requestOptionsWriteRetryPolicy);
         FaultInjectionRule rule = null;
 
         if (injectFailure) {
@@ -641,6 +688,49 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         injectorProvider.configureFaultInjectionRules(Arrays.asList(rule)).block();
 
         return rule;
+    }
+
+    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
+    public void writePolicy() {
+        CosmosClientBuilder builder = new CosmosClientBuilder();
+        WriteRetryPolicy policy = builder.getNonIdempotentWriteRetryPolicy();
+        assertThat(policy).isNotNull();
+        assertThat(policy.isEnabled()).isEqualTo(false);
+        assertThat(policy.useTrackingIdProperty()).isEqualTo(false);
+
+        try {
+            System.setProperty(Configs.NON_IDEMPOTENT_WRITE_RETRY_POLICY, "WITH_TRACKING_ID");
+            builder = new CosmosClientBuilder();
+            policy = builder.getNonIdempotentWriteRetryPolicy();
+            assertThat(policy).isNotNull();
+            assertThat(policy.isEnabled()).isEqualTo(true);
+            assertThat(policy.useTrackingIdProperty()).isEqualTo(true);
+        } finally {
+            System.clearProperty(Configs.NON_IDEMPOTENT_WRITE_RETRY_POLICY);
+        }
+
+        try {
+            System.setProperty(Configs.NON_IDEMPOTENT_WRITE_RETRY_POLICY, "NO_RETRIES");
+            builder = new CosmosClientBuilder();
+            policy = builder.getNonIdempotentWriteRetryPolicy();
+            assertThat(policy).isNotNull();
+            assertThat(policy.isEnabled()).isEqualTo(false);
+            assertThat(policy.useTrackingIdProperty()).isEqualTo(false);
+        } finally {
+            System.clearProperty(Configs.NON_IDEMPOTENT_WRITE_RETRY_POLICY);
+        }
+
+
+        try {
+            System.setProperty(Configs.NON_IDEMPOTENT_WRITE_RETRY_POLICY, "WITH_RETRIES");
+            builder = new CosmosClientBuilder();
+            policy = builder.getNonIdempotentWriteRetryPolicy();
+            assertThat(policy).isNotNull();
+            assertThat(policy.isEnabled()).isEqualTo(true);
+            assertThat(policy.useTrackingIdProperty()).isEqualTo(false);
+        } finally {
+            System.clearProperty(Configs.NON_IDEMPOTENT_WRITE_RETRY_POLICY);
+        }
     }
 
     private void executeAndValidate(

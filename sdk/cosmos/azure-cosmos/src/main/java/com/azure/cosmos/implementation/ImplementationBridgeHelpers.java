@@ -344,6 +344,10 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
+            CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+                CosmosItemRequestOptions options,
+                boolean enabled,
+                boolean useTrackingIds);
             WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
                 CosmosItemRequestOptions cosmosItemRequestOptions,
                 WriteRetryPolicy clientDefault,
