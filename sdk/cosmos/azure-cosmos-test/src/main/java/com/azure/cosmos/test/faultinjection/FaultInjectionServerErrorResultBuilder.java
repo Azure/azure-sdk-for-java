@@ -55,7 +55,7 @@ public final class FaultInjectionServerErrorResultBuilder {
      * This is only used for Server_Response_Delay error tye.
      *
      * For SERVER_RESPONSE_DELAY, it controls whether the original request should be sent to the service.
-     * The default is that the request will be sent when the delay is smaller than the network request timeout, but
+     * The default is that the request will be sent when the delay is lower than the network request timeout, but
      * if the delay exceeds the network request timeout the request is not even sent to the service. This property
      * can be used to override the behavior.
      *

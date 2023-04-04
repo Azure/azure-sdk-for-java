@@ -71,7 +71,6 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
     private static CosmosClientBuilder clientBuilderWithReducedNetworkRequestTimeout(
         CosmosClientBuilder clientBuilder) {
 
-        clientBuilder.isContentResponseOnWriteEnabled();
         if (clientBuilder.buildConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             if (clientBuilder.getDirectConnectionConfig() == null) {
                 clientBuilder.directMode();

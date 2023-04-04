@@ -57,8 +57,8 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
 
     /***
      * Get a flag indicating whether service requests should be suppressed. If not specified (null) the default
-     * behavior is applied  - only sending the request to the service when the delay is smaller
-     * than the network request timeout).
+     * behavior is applied - only sending the request to the service when the delay is lower
+     * than the network request timeout.
      * @return a flag indicating whether service requests should be suppressed.
      */
     public Boolean getSuppressServiceRequests() {

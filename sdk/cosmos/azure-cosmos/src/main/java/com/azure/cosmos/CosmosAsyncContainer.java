@@ -355,11 +355,11 @@ public class CosmosAsyncContainer {
         }
     }
 
-    private <T> Mono<CosmosItemResponse<T>> replaceItemWithRetriesInternal(Class<T> itemType,
-                                                                           String itemId,
-                                                                           Document doc,
-                                                                           CosmosItemRequestOptions options,
-                                                                           String trackingId) {
+    private <T> Mono<CosmosItemResponse<T>> replaceItemWithTrackingId(Class<T> itemType,
+                                                                      String itemId,
+                                                                      Document doc,
+                                                                      CosmosItemRequestOptions options,
+                                                                      String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
         return replaceItemInternalCore(itemType, itemId, doc, options, trackingId)
@@ -414,7 +414,7 @@ public class CosmosAsyncContainer {
             });
     }
 
-    private <T> Mono<CosmosItemResponse<T>> createItemWithRetriesInternal(
+    private <T> Mono<CosmosItemResponse<T>> createItemWithTrackingId(
         T item, CosmosItemRequestOptions options, String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
@@ -500,7 +500,7 @@ public class CosmosAsyncContainer {
 
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUID.randomUUID().toString();
-            responseMono = createItemWithRetriesInternal(item, effectiveOptions, trackingId);
+            responseMono = createItemWithTrackingId(item, effectiveOptions, trackingId);
         } else {
             responseMono = createItemInternalCore(item, effectiveOptions, null);
         }
@@ -1832,7 +1832,7 @@ public class CosmosAsyncContainer {
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUID.randomUUID().toString();
-            responseMono = this.replaceItemWithRetriesInternal(itemType, itemId, doc, effectiveOptions, trackingId);
+            responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, effectiveOptions, trackingId);
         } else {
             responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, null);
         }

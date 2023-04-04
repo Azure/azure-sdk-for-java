@@ -108,13 +108,13 @@ public class AsyncCacheNonBlockingTest {
 
         cache.refresh(cacheKey, refreshFuncWithDelay);
         //since the refresh happens asynchronously, so wait for sometime
-        Thread.sleep(100);
+        Thread.sleep(500);
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
 
         // start another refresh, since there is a refresh in progress, so it will not start a new one
         cache.refresh(cacheKey, refreshFunc);
         //since the refresh happens asynchronously, so wait for sometime
-        Thread.sleep(100);
+        Thread.sleep(500);
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
     }
 }
