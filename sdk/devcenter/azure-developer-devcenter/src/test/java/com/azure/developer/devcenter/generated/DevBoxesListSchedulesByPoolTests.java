@@ -16,7 +16,7 @@ public final class DevBoxesListSchedulesByPoolTests extends DevCenterClientTestB
     @Disabled
     public void testDevBoxesListSchedulesByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listSchedulesByPool("myProject", "DevPool", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listSchedules("myProject", "DevPool", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

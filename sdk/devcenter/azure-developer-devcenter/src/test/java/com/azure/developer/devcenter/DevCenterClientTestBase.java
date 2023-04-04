@@ -20,7 +20,7 @@ class DevCenterClientTestBase extends TestBase {
 
     protected DevBoxesClient devBoxesClient;
 
-    protected EnvironmentsClient environmentsClient;
+    protected DeploymentEnvironmentsClient environmentsClient;
 
     @Override
     protected void beforeTest() {
@@ -60,8 +60,8 @@ class DevCenterClientTestBase extends TestBase {
         }
         devBoxesClient = devBoxesClientbuilder.buildClient();
 
-        EnvironmentsClientBuilder environmentsClientbuilder =
-                new EnvironmentsClientBuilder()
+        DeploymentEnvironmentsClientBuilder environmentsClientbuilder =
+                new DeploymentEnvironmentsClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-sdk-dc-na4b3zkj5hmeo.eastus.devcenter.azure.com/"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));

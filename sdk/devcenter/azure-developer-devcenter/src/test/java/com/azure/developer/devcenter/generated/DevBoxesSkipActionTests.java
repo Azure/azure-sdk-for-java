@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class DevBoxesSkipUpcomingActionTests extends DevCenterClientTestBase {
+public final class DevBoxesSkipActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testDevBoxesSkipUpcomingActionTests() {
+    public void testDevBoxesSkipActionTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                devBoxesClient.skipUpcomingActionWithResponse(
-                        "myProject", "me", "myDevBox", "cae4d1f4-94b8-75f2-406d-5f00ae4c1da7", requestOptions);
+                devBoxesClient.skipActionWithResponse(
+                        "myProject", "me", "myDevBox", "schedule-default", requestOptions);
         Assertions.assertEquals(204, response.getStatusCode());
     }
 }

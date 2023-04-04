@@ -17,7 +17,7 @@ public final class DevBoxesGetScheduleByPoolTests extends DevCenterClientTestBas
     public void testDevBoxesGetScheduleByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getScheduleByPoolWithResponse("myProject", "DevPool", "default", requestOptions);
+                devBoxesClient.getScheduleWithResponse("myProject", "DevPool", "default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

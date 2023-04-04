@@ -16,7 +16,7 @@ public final class DevBoxesListDevBoxesByUserTests extends DevCenterClientTestBa
     @Disabled
     public void testDevBoxesListDevBoxesByUserTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxesByUser("myProject", "me", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxes("myProject", "me", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

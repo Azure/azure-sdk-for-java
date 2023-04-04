@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsListEnvironmentsByUserTests extends DevCenterClientTestBase {
+public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsListEnvironmentsByUserTests() {
+    public void testDevBoxesListActionsTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response =
-                deploymentEnvironmentsClient.listEnvironments("myProject", "me", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listActions("myProject", "me", "myDevBox", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
+                                "{\"name\":\"idle-hibernateondisconnect\",\"actionType\":\"Stop\",\"next\":{\"scheduledTime\":\"2022-09-30T15:23:00Z\"},\"sourceId\":\"/projects/myProject/pools/myPool\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }

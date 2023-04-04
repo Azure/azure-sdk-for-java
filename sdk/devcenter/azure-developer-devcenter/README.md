@@ -84,15 +84,15 @@ devBoxDeleteResponse.waitForCompletion();
 
 ### Environments Scenarios
 ```java com.azure.developer.devcenter.readme.environments
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
+DeploymentEnvironmentsClient environmentsClient =
+                new DeploymentEnvironmentsClientBuilder()
                         .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
 // Fetch available catalog items and environment types
-PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
-for (BinaryData p: catalogItemListResponse) {
+PagedIterable<BinaryData> environmentDefinitionListResponse = environmentsClient.listEnvironmentDefinitions("myProject", null);
+for (BinaryData p: environmentDefinitionListResponse) {
     System.out.println(p);
 }
 

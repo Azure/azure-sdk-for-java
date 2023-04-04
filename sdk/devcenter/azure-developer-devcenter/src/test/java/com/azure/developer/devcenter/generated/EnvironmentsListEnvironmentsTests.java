@@ -16,11 +16,12 @@ public final class EnvironmentsListEnvironmentsTests extends DevCenterClientTest
     @Disabled
     public void testEnvironmentsListEnvironmentsTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = environmentsClient.listEnvironments("myProject", requestOptions);
+        PagedIterable<BinaryData> response =
+                deploymentEnvironmentsClient.listAllEnvironments("myProject", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"description\":\"Personal Dev Environment 2\",\"catalogItemName\":\"helloworld\",\"catalogName\":\"main\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
+                                "{\"name\":\"mydevenv\",\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }

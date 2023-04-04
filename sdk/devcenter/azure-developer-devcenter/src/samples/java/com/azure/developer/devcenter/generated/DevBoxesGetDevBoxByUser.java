@@ -19,10 +19,10 @@ public class DevBoxesGetDevBoxByUser {
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxesgetdevboxbyuser.devboxesgetdevboxbyuser
+        // BEGIN:com.azure.developer.devcenter.generated.devboxesgetdevbox.devboxesgetdevboxbyuser
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getDevBoxByUserWithResponse("myProject", "me", "MyDevBox", requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxesgetdevboxbyuser.devboxesgetdevboxbyuser
+                devBoxesClient.getDevBoxWithResponse("myProject", "me", "MyDevBox", requestOptions);
+        // END:com.azure.developer.devcenter.generated.devboxesgetdevbox.devboxesgetdevboxbyuser
     }
 }

@@ -17,20 +17,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsImpl;
 
 /** Initializes a new instance of the synchronous DevCenterClient type. */
-@ServiceClient(builder = EnvironmentsClientBuilder.class)
-public final class EnvironmentsClient {
-    @Generated private final EnvironmentsAsyncClient client;
+@ServiceClient(builder = DeploymentEnvironmentsClientBuilder.class)
+public final class DeploymentEnvironmentsClient {
+    @Generated private final DeploymentEnvironmentsImpl serviceClient;
 
     /**
-     * Initializes an instance of EnvironmentsClient class.
+     * Initializes an instance of DeploymentEnvironmentsClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    EnvironmentsClient(EnvironmentsAsyncClient client) {
-        this.client = client;
+    DeploymentEnvironmentsClient(DeploymentEnvironmentsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -50,25 +51,22 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
      *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
      *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * }
      * }</pre>
      *
@@ -82,8 +80,8 @@ public final class EnvironmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listEnvironments(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listEnvironments(projectName, requestOptions));
+    public PagedIterable<BinaryData> listAllEnvironments(String projectName, RequestOptions requestOptions) {
+        return this.serviceClient.listAllEnvironments(projectName, requestOptions);
     }
 
     /**
@@ -103,25 +101,22 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
      *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
      *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * }
      * }</pre>
      *
@@ -137,9 +132,9 @@ public final class EnvironmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listEnvironmentsByUser(
+    public PagedIterable<BinaryData> listEnvironments(
             String projectName, String userId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listEnvironmentsByUser(projectName, userId, requestOptions));
+        return this.serviceClient.listEnvironments(projectName, userId, requestOptions);
     }
 
     /**
@@ -149,25 +144,22 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
      *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
      *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * }
      * }</pre>
      *
@@ -184,11 +176,9 @@ public final class EnvironmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnvironmentByUserWithResponse(
+    public Response<BinaryData> getEnvironmentWithResponse(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return this.client
-                .getEnvironmentByUserWithResponse(projectName, userId, environmentName, requestOptions)
-                .block();
+        return this.serviceClient.getEnvironmentWithResponse(projectName, userId, environmentName, requestOptions);
     }
 
     /**
@@ -198,25 +188,22 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
      *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
      *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * }
      * }</pre>
      *
@@ -224,25 +211,22 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
      *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
      *     name: String (Optional)
      *     environmentType: String (Required)
      *     user: String (Optional)
      *     provisioningState: String (Optional)
      *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * }
      * }</pre>
      *
@@ -250,7 +234,7 @@ public final class EnvironmentsClient {
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
      * @param environmentName The name of the environment.
-     * @param body Represents a environment.
+     * @param body Represents an environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -262,85 +246,32 @@ public final class EnvironmentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdateEnvironment(
             String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateOrUpdateEnvironment(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
-    }
-
-    /**
-     * Partially updates an environment.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
-     *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     description: String (Optional)
-     *     catalogName: String (Optional)
-     *     catalogItemName: String (Optional)
-     *     parameters: Object (Optional)
-     *     scheduledTasks (Optional): {
-     *         String (Optional): {
-     *             type: String(AutoExpire) (Required)
-     *             enabled: String(Enabled/Disabled) (Optional)
-     *             startTime: OffsetDateTime (Required)
-     *         }
-     *     }
-     *     tags (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     name: String (Optional)
-     *     environmentType: String (Required)
-     *     user: String (Optional)
-     *     provisioningState: String (Optional)
-     *     resourceGroupId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param body Updatable environment properties.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return properties of an environment along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateEnvironmentWithResponse(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .updateEnvironmentWithResponse(projectName, userId, environmentName, body, requestOptions)
-                .block();
+        return this.serviceClient.beginCreateOrUpdateEnvironment(
+                projectName, userId, environmentName, body, requestOptions);
     }
 
     /**
      * Deletes an environment and all its associated resources.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     status: String (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Float (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      *     context.
@@ -350,83 +281,17 @@ public final class EnvironmentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteEnvironment(
             String projectName, String userId, String environmentName, RequestOptions requestOptions) {
-        return this.client.beginDeleteEnvironment(projectName, userId, environmentName, requestOptions).getSyncPoller();
+        return this.serviceClient.beginDeleteEnvironment(projectName, userId, environmentName, requestOptions);
     }
 
     /**
-     * Executes a deploy action.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     actionId: String (Required)
-     *     parameters: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param body Action properties overriding the environment's default values.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeployEnvironmentAction(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .beginDeployEnvironmentAction(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
-    }
-
-    /**
-     * Executes a custom action.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     actionId: String (Required)
-     *     parameters: Object (Optional)
-     * }
-     * }</pre>
-     *
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param environmentName The name of the environment.
-     * @param body Action properties overriding the environment's default values.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCustomEnvironmentAction(
-            String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
-        return this.client
-                .beginCustomEnvironmentAction(projectName, userId, environmentName, body, requestOptions)
-                .getSyncPoller();
-    }
-
-    /**
-     * Lists latest version of all catalog items available for a project.
+     * Lists all of the catalogs available for a project.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -442,9 +307,7 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     catalogName: String (Optional)
+     *     name: String (Required)
      * }
      * }</pre>
      *
@@ -454,45 +317,43 @@ public final class EnvironmentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog item list operation as paginated response with {@link PagedIterable}.
+     * @return results of the catalog list operation as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCatalogItems(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listCatalogItems(projectName, requestOptions));
+    public PagedIterable<BinaryData> listCatalogs(String projectName, RequestOptions requestOptions) {
+        return this.serviceClient.listCatalogs(projectName, requestOptions);
     }
 
     /**
-     * Get a catalog item from a project.
+     * Gets the specified catalog within the project.
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     catalogName: String (Optional)
+     *     name: String (Required)
      * }
      * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogItemId The unique id of the catalog item.
+     * @param catalogName The name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a catalog item from a project along with {@link Response}.
+     * @return the specified catalog within the project along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCatalogItemWithResponse(
-            String projectName, String catalogItemId, RequestOptions requestOptions) {
-        return this.client.getCatalogItemWithResponse(projectName, catalogItemId, requestOptions).block();
+    public Response<BinaryData> getCatalogWithResponse(
+            String projectName, String catalogName, RequestOptions requestOptions) {
+        return this.serviceClient.getCatalogWithResponse(projectName, catalogName, requestOptions);
     }
 
     /**
-     * List all versions of a catalog item from a project.
+     * Lists all environment definitions available for a project.
      *
      * <p><strong>Query Parameters</strong>
      *
@@ -508,130 +369,145 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     catalogItemId: String (Optional)
-     *     catalogItemName: String (Optional)
-     *     catalogName: String (Optional)
-     *     version: String (Optional)
-     *     summary: String (Optional)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     catalogName: String (Required)
      *     description: String (Optional)
-     *     templatePath: String (Optional)
-     *     parametersSchema: String (Optional)
      *     parameters (Optional): [
      *          (Optional){
-     *             id: String (Optional)
+     *             id: String (Required)
      *             name: String (Optional)
      *             description: String (Optional)
-     *             default: Object (Optional)
-     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             default: String (Optional)
+     *             type: String(array/boolean/integer/number/object/string) (Required)
      *             readOnly: Boolean (Optional)
-     *             required: Boolean (Optional)
+     *             required: boolean (Required)
      *             allowed (Optional): [
-     *                 Object (Optional)
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     actions (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             parametersSchema: String (Optional)
-     *             parameters (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             type: String(Custom/Deploy/Delete) (Optional)
-     *             typeName: String (Optional)
-     *             runner: String (Optional)
-     *         }
-     *     ]
-     *     runner: String (Optional)
-     *     status: String(Enabled/Disabled) (Optional)
-     *     eligibleForLatestVersion: Boolean (Optional)
+     *     parametersSchema: String (Optional)
+     *     templatePath: String (Optional)
      * }
      * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogItemId The unique id of the catalog item.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog item list operation as paginated response with {@link PagedIterable}.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCatalogItemVersions(
-            String projectName, String catalogItemId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listCatalogItemVersions(projectName, catalogItemId, requestOptions));
+    public PagedIterable<BinaryData> listEnvironmentDefinitions(String projectName, RequestOptions requestOptions) {
+        return this.serviceClient.listEnvironmentDefinitions(projectName, requestOptions);
     }
 
     /**
-     * Get a specific catalog item version from a project.
+     * Lists all environment definitions available within a catalog.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     catalogItemId: String (Optional)
-     *     catalogItemName: String (Optional)
-     *     catalogName: String (Optional)
-     *     version: String (Optional)
-     *     summary: String (Optional)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     catalogName: String (Required)
      *     description: String (Optional)
-     *     templatePath: String (Optional)
-     *     parametersSchema: String (Optional)
      *     parameters (Optional): [
      *          (Optional){
-     *             id: String (Optional)
+     *             id: String (Required)
      *             name: String (Optional)
      *             description: String (Optional)
-     *             default: Object (Optional)
-     *             type: String(array/boolean/integer/null/number/object/string) (Optional)
+     *             default: String (Optional)
+     *             type: String(array/boolean/integer/number/object/string) (Required)
      *             readOnly: Boolean (Optional)
-     *             required: Boolean (Optional)
+     *             required: boolean (Required)
      *             allowed (Optional): [
-     *                 Object (Optional)
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     actions (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             parametersSchema: String (Optional)
-     *             parameters (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             type: String(Custom/Deploy/Delete) (Optional)
-     *             typeName: String (Optional)
-     *             runner: String (Optional)
-     *         }
-     *     ]
-     *     runner: String (Optional)
-     *     status: String(Enabled/Disabled) (Optional)
-     *     eligibleForLatestVersion: Boolean (Optional)
+     *     parametersSchema: String (Optional)
+     *     templatePath: String (Optional)
      * }
      * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogItemId The unique id of the catalog item.
-     * @param version The version of the catalog item.
+     * @param catalogName The name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific catalog item version from a project along with {@link Response}.
+     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listEnvironmentDefinitionsByCatalog(
+            String projectName, String catalogName, RequestOptions requestOptions) {
+        return this.serviceClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions);
+    }
+
+    /**
+     * Get an environment definition from a catalog.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     catalogName: String (Required)
+     *     description: String (Optional)
+     *     parameters (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             default: String (Optional)
+     *             type: String(array/boolean/integer/number/object/string) (Required)
+     *             readOnly: Boolean (Optional)
+     *             required: boolean (Required)
+     *             allowed (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     *     parametersSchema: String (Optional)
+     *     templatePath: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param catalogName The name of the catalog.
+     * @param definitionName The name of the environment definition.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an environment definition from a catalog along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCatalogItemVersionWithResponse(
-            String projectName, String catalogItemId, String version, RequestOptions requestOptions) {
-        return this.client
-                .getCatalogItemVersionWithResponse(projectName, catalogItemId, version, requestOptions)
-                .block();
+    public Response<BinaryData> getEnvironmentDefinitionWithResponse(
+            String projectName, String catalogName, String definitionName, RequestOptions requestOptions) {
+        return this.serviceClient.getEnvironmentDefinitionWithResponse(
+                projectName, catalogName, definitionName, requestOptions);
     }
 
     /**
@@ -651,9 +527,9 @@ public final class EnvironmentsClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
-     *     deploymentTargetId: String (Optional)
-     *     status: String(Enabled/Disabled) (Optional)
+     *     name: String (Required)
+     *     deploymentTargetId: String (Required)
+     *     status: String(Enabled/Disabled) (Required)
      * }
      * }</pre>
      *
@@ -668,6 +544,6 @@ public final class EnvironmentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentTypes(String projectName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listEnvironmentTypes(projectName, requestOptions));
+        return this.serviceClient.listEnvironmentTypes(projectName, requestOptions);
     }
 }

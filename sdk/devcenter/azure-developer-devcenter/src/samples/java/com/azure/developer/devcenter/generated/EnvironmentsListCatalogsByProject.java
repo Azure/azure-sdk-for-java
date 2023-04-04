@@ -7,21 +7,21 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.DevBoxesClient;
-import com.azure.developer.devcenter.DevBoxesClientBuilder;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
+import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class DevCenterListAllDevBoxes {
+public class EnvironmentsListCatalogsByProject {
     public static void main(String[] args) {
-        DevBoxesClient devBoxesClient =
-                new DevBoxesClientBuilder()
+        DeploymentEnvironmentsClient deploymentEnvironmentsClient =
+                new DeploymentEnvironmentsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxeslistalldevboxes.devcenterlistalldevboxes
+        // BEGIN:com.azure.developer.devcenter.generated.deploymentenvironmentslistcatalogs.environmentslistcatalogsbyproject
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listAllDevBoxes(requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxeslistalldevboxes.devcenterlistalldevboxes
+        PagedIterable<BinaryData> response = deploymentEnvironmentsClient.listCatalogs("myProject", requestOptions);
+        // END:com.azure.developer.devcenter.generated.deploymentenvironmentslistcatalogs.environmentslistcatalogsbyproject
     }
 }

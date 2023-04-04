@@ -52,8 +52,9 @@ public final class DevCenterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -77,8 +78,9 @@ public final class DevCenterAsyncClient {
      *
      * <pre>{@code
      * {
-     *     name: String (Optional)
+     *     name: String (Required)
      *     description: String (Optional)
+     *     maxDevBoxesPerUser: Integer (Optional)
      * }
      * }</pre>
      *
@@ -94,143 +96,5 @@ public final class DevCenterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getProjectWithResponse(String projectName, RequestOptions requestOptions) {
         return this.serviceClient.getProjectWithResponseAsync(projectName, requestOptions);
-    }
-
-    /**
-     * Lists Dev Boxes that the caller has access to in the DevCenter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAllDevBoxes(RequestOptions requestOptions) {
-        return this.serviceClient.listAllDevBoxesAsync(requestOptions);
-    }
-
-    /**
-     * Lists Dev Boxes in the Dev Center for a particular user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>An OData filter clause to apply to the operation.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of resources to return from the operation. Example: 'top=10'.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     projectName: String (Optional)
-     *     poolName: String (Required)
-     *     hibernateSupport: String(Disabled/Enabled) (Optional)
-     *     provisioningState: String (Optional)
-     *     actionState: String (Optional)
-     *     powerState: String(Unknown/Deallocated/PoweredOff/Running/Hibernated) (Optional)
-     *     uniqueId: String (Optional)
-     *     errorDetails (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *     }
-     *     location: String (Optional)
-     *     osType: String(Windows) (Optional)
-     *     user: String (Optional)
-     *     hardwareProfile (Optional): {
-     *         skuName: String (Optional)
-     *         vCPUs: Integer (Optional)
-     *         memoryGB: Integer (Optional)
-     *     }
-     *     storageProfile (Optional): {
-     *         osDisk (Optional): {
-     *             diskSizeGB: Integer (Optional)
-     *         }
-     *     }
-     *     imageReference (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         operatingSystem: String (Optional)
-     *         osBuildNumber: String (Optional)
-     *         publishedDate: OffsetDateTime (Optional)
-     *     }
-     *     createdTime: OffsetDateTime (Optional)
-     *     localAdministrator: String(Enabled/Disabled) (Optional)
-     * }
-     * }</pre>
-     *
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     *     context.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAllDevBoxesByUser(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.listAllDevBoxesByUserAsync(userId, requestOptions);
     }
 }

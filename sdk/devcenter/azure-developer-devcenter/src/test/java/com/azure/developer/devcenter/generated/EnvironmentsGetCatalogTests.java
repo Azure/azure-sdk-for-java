@@ -11,14 +11,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsUpdateEnvironmentTests extends DevCenterClientTestBase {
+public final class EnvironmentsGetCatalogTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsUpdateEnvironmentTests() {
-        BinaryData body = BinaryData.fromString("{\"description\":\"Personal Dev Environment 2\"}");
+    public void testEnvironmentsGetCatalogTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.updateEnvironmentWithResponse("myProject", "me", "mydevenv", body, requestOptions);
+                deploymentEnvironmentsClient.getCatalogWithResponse("myProject", "foo", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(
+                BinaryData.fromString("{\"name\":\"foo\"}").toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

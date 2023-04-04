@@ -7,21 +7,23 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class EnvironmentsListEnvironmentsByUserTests extends DevCenterClientTestBase {
+public final class DevBoxesDelayActionsWithErrorTests extends DevCenterClientTestBase {
     @Test
     @Disabled
-    public void testEnvironmentsListEnvironmentsByUserTests() {
+    public void testDevBoxesDelayActionsWithErrorTests() {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
-                deploymentEnvironmentsClient.listEnvironments("myProject", "me", requestOptions);
+                devBoxesClient.delayAllActions(
+                        "myProject", "me", "myDevBox", OffsetDateTime.parse("2022-09-30T17:00:00Z"), requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
+                                "{\"name\":\"schedule-default\",\"error\":{\"code\":\"DelayOverMaxTime\",\"message\":\"The schedule cannot be delayed more than 8 hours from the original invocation time.\"},\"result\":\"Failed\"}")
                         .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }

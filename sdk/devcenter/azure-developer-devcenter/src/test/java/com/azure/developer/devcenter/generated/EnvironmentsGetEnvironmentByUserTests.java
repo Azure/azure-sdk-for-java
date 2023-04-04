@@ -17,11 +17,11 @@ public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClient
     public void testEnvironmentsGetEnvironmentByUserTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                environmentsClient.getEnvironmentByUserWithResponse("myProject", "me", "mydevenv", requestOptions);
+                deploymentEnvironmentsClient.getEnvironmentWithResponse("myProject", "me", "mydevenv", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"description\":\"Personal Dev Environment 2\",\"catalogItemName\":\"helloworld\",\"catalogName\":\"main\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
+                                "{\"name\":\"mydevenv\",\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }

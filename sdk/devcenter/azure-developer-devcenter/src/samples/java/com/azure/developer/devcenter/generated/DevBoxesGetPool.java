@@ -21,7 +21,7 @@ public class DevBoxesGetPool {
                         .buildClient();
         // BEGIN:com.azure.developer.devcenter.generated.devboxesgetpool.devboxesgetpool
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = devBoxesClient.getPoolWithResponse("DevPool", "myProject", requestOptions);
+        Response<BinaryData> response = devBoxesClient.getPoolWithResponse("myProject", "DevPool", requestOptions);
         // END:com.azure.developer.devcenter.generated.devboxesgetpool.devboxesgetpool
     }
 }
