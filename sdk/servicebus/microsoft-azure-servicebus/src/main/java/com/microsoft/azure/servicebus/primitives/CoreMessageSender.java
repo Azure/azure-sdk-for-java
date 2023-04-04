@@ -3,26 +3,12 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
-
 import com.microsoft.azure.servicebus.TransactionContext;
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.DispatchHandler;
+import com.microsoft.azure.servicebus.amqp.IAmqpSender;
+import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
+import com.microsoft.azure.servicebus.amqp.SessionHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -50,11 +36,24 @@ import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.microsoft.azure.servicebus.amqp.AmqpConstants;
-import com.microsoft.azure.servicebus.amqp.DispatchHandler;
-import com.microsoft.azure.servicebus.amqp.IAmqpSender;
-import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
-import com.microsoft.azure.servicebus.amqp.SessionHandler;
+import java.io.IOException;
+import java.io.Serializable;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -329,12 +328,12 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
         // Set partition identifier properties of the first message on batch message
         batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
-        if (StringUtil.isNullOrWhiteSpace((String)firstMessage.getMessageId())) {
-        	batchMessage.setMessageId(firstMessage.getMessageId());
+        if (!StringUtil.isNullOrWhiteSpace((String)firstMessage.getMessageId())) {
+            batchMessage.setMessageId(firstMessage.getMessageId());
         }
 
-        if (StringUtil.isNullOrWhiteSpace(firstMessage.getGroupId())) {
-        	batchMessage.setGroupId(firstMessage.getGroupId());
+        if (!StringUtil.isNullOrWhiteSpace(firstMessage.getGroupId())) {
+            batchMessage.setGroupId(firstMessage.getGroupId());
         }
 
         byte[] bytes = null;
