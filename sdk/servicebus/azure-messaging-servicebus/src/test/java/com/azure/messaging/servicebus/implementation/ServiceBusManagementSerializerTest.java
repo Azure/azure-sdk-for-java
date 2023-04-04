@@ -69,6 +69,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ServiceBusManagementSerializerTest {
+    private static final String TITLE_KEY = "";
+
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
 
     /**
@@ -142,7 +144,7 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry.getContent());
 
         // The entry title is the name of the queue.
-        assertEquals(queueName, entry.getTitle());
+        assertTitle(queueName, entry.getTitle());
 
         final QueueDescriptionImpl actual = entry.getContent().getQueueDescription();
         assertQueueEquals(expected, EntityStatus.DELETING, actual);
@@ -235,7 +237,7 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionEntryImpl entry1 = new QueueDescriptionEntryImpl()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2021-05")
-            .setTitle("q-0")
+            .setTitle(getResponseTitle("q-0"))
             .setPublished(OffsetDateTime.parse("2020-03-05T07:17:04Z"))
             .setUpdated(OffsetDateTime.parse("2020-01-05T07:17:04Z"))
             .setAuthor(new ResponseAuthorImpl().setName("sb-java"))
@@ -245,7 +247,7 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionEntryImpl entry2 = new QueueDescriptionEntryImpl()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2021-05")
-            .setTitle("q-1")
+            .setTitle(getResponseTitle("q-1"))
             .setPublished(OffsetDateTime.parse("2020-06-10T07:16:25Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-15T07:16:25Z"))
             .setAuthor(new ResponseAuthorImpl().setName("sb-java2"))
@@ -255,7 +257,7 @@ class ServiceBusManagementSerializerTest {
         final QueueDescriptionEntryImpl entry3 = new QueueDescriptionEntryImpl()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2021-05")
-            .setTitle("q-2")
+            .setTitle(getResponseTitle("q-2"))
             .setPublished(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setAuthor(new ResponseAuthorImpl().setName("sb-java3"))
@@ -301,7 +303,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expected.getId(), actual.getId());
             assertNotNull(actual.getTitle());
 
-            assertEquals(expectedEntry.getTitle(), actualEntry.getTitle());
+            assertResponseTitle(expectedEntry.getTitle(), actualEntry.getTitle());
             assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
             assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
@@ -331,8 +333,8 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry);
         assertNotNull(entry.getContent());
 
-        // The entry title is the name of the queue.
-        assertEquals(name, entry.getTitle());
+        // The entry title is the name of the service bus instance.
+        assertTitle(name, entry.getTitle());
 
         final NamespaceProperties actual = entry.getContent().getNamespaceProperties();
         assertEquals(name, actual.getName());
@@ -476,7 +478,7 @@ class ServiceBusManagementSerializerTest {
 
         final SubscriptionDescriptionEntryImpl entry1 = new SubscriptionDescriptionEntryImpl()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2021-05")
-            .setTitle(subscriptionName1)
+            .setTitle(getResponseTitle(subscriptionName1))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-23T23:47:53Z"))
             .setLink(new ResponseLinkImpl().setRel("self").setHref("Subscriptions/subscription-0?api-version=2021-05"))
@@ -485,7 +487,7 @@ class ServiceBusManagementSerializerTest {
                 .setSubscriptionDescription(subscription1));
         final SubscriptionDescriptionEntryImpl entry2 = new SubscriptionDescriptionEntryImpl()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2021-05")
-            .setTitle(subscriptionName2)
+            .setTitle(getResponseTitle(subscriptionName2))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-05-22T23:47:53Z"))
             .setLink(new ResponseLinkImpl().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2021-05"))
@@ -494,7 +496,7 @@ class ServiceBusManagementSerializerTest {
                 .setSubscriptionDescription(subscription2));
         final SubscriptionDescriptionEntryImpl entry3 = new SubscriptionDescriptionEntryImpl()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2021-05")
-            .setTitle(subscriptionName3)
+            .setTitle(getResponseTitle(subscriptionName3))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:54Z"))
             .setUpdated(OffsetDateTime.parse("2020-04-22T23:47:54Z"))
             .setLink(new ResponseLinkImpl().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2021-05"))
@@ -545,7 +547,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expected.getId(), actual.getId());
             assertNotNull(actual.getTitle());
 
-            assertEquals(expectedEntry.getTitle(), actualEntry.getTitle());
+            assertResponseTitle(expectedEntry.getTitle(), actualEntry.getTitle());
             assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
 
@@ -934,6 +936,25 @@ class ServiceBusManagementSerializerTest {
         }
 
         assertTrue(actualMap.isEmpty());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void assertTitle(String expectedTitle, Object responseTitle) {
+        assertTrue(responseTitle instanceof LinkedHashMap);
+
+        final LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) responseTitle;
+        assertTrue(map.containsKey(TITLE_KEY));
+        assertEquals(expectedTitle, map.get(TITLE_KEY));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void assertResponseTitle(Object expectedResponseTitle, Object actualResponseTitle) {
+        assertTrue(actualResponseTitle instanceof LinkedHashMap);
+
+        final LinkedHashMap<String, String> actualMap = (LinkedHashMap<String, String>) actualResponseTitle;
+
+        assertTrue(actualMap.containsKey(TITLE_KEY));
+        assertTitle(actualMap.get(TITLE_KEY), expectedResponseTitle);
     }
 
     private static LinkedHashMap<String, String> getResponseTitle(String entityName) {
