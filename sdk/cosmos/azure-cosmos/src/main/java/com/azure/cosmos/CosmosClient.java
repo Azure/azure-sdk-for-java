@@ -18,6 +18,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -217,7 +218,7 @@ public final class CosmosClient implements Closeable {
     /**
      * Close this {@link CosmosClient} instance.
      */
-    public void close() {
+    public void close() throws IOException {
         asyncClientWrapper.close();
     }
 
