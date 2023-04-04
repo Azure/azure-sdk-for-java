@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -192,7 +191,7 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<Void> openConnectionsAndInitCaches(
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             OpenConnectionAggressivenessHint hint
     ) {

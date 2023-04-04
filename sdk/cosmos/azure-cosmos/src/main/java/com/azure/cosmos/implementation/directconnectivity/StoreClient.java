@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
@@ -27,7 +26,6 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
@@ -35,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -143,7 +140,7 @@ public class StoreClient implements IStoreClient {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             OpenConnectionAggressivenessHint hint
     ) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig, hint);
+        return this.replicatedResourceClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

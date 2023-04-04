@@ -1672,14 +1672,19 @@ public interface AsyncDocumentClient {
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
     /**
-     * Warm up caches and open connections for containers specified by
-     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * Submits open connection tasks represented by {@link com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionOperation}
+     * and warms up caches for replicas for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} and in
      * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and
      *                                     no. of proactive connection regions
-     * @param hint
-     * @return A flux of {@link OpenConnectionResponse}.
+     * @param hint an aggressiveness hint which can be used by any class in some context-specific way which that class can make sense of.
+     *             An example could be :
+     *             <p>
+     *             {@link ProactiveOpenConnectionsProcessor} can make use of the hint to determine the concurrency associated
+     *             with processing open connection tasks.
+     *             </p>
      */
     Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
