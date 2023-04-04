@@ -14,6 +14,15 @@ public final class EventListenerFilterDiscriminator extends ExpandableStringEnum
     public static final EventListenerFilterDiscriminator EVENT_NAME = fromString("EventName");
 
     /**
+     * Creates a new instance of EventListenerFilterDiscriminator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventListenerFilterDiscriminator() {
+    }
+
+    /**
      * Creates or finds a EventListenerFilterDiscriminator from its string representation.
      *
      * @param name a name to look for.

@@ -60,8 +60,7 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
     public interface RegulatoryComplianceControlsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
-                + "/{regulatoryComplianceStandardName}/regulatoryComplianceControls")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegulatoryComplianceControlList>> list(
@@ -75,8 +74,7 @@ public final class RegulatoryComplianceControlsClientImpl implements RegulatoryC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
-                + "/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegulatoryComplianceControlInner>> get(

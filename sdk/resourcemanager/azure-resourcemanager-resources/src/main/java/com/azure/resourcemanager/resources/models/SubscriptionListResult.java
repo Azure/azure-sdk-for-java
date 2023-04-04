@@ -25,6 +25,10 @@ public final class SubscriptionListResult {
     @JsonProperty(value = "nextLink", required = true)
     private String nextLink;
 
+    /** Creates an instance of SubscriptionListResult class. */
+    public SubscriptionListResult() {
+    }
+
     /**
      * Get the value property: An array of subscriptions.
      *

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +43,22 @@ public final class Document {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of Document class. */
-    public Document() {}
+    /**
+     * Creates an instance of Document class.
+     *
+     * @param docType the docType value to set.
+     * @param spans the spans value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public Document(
+            @JsonProperty(value = "docType", required = true) String docType,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.docType = docType;
+        this.spans = spans;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the docType property: Document type.
@@ -52,17 +67,6 @@ public final class Document {
      */
     public String getDocType() {
         return this.docType;
-    }
-
-    /**
-     * Set the docType property: Document type.
-     *
-     * @param docType the docType value to set.
-     * @return the Document object itself.
-     */
-    public Document setDocType(String docType) {
-        this.docType = docType;
-        return this;
     }
 
     /**
@@ -95,17 +99,6 @@ public final class Document {
     }
 
     /**
-     * Set the spans property: Location of the document in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the Document object itself.
-     */
-    public Document setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
-    }
-
-    /**
      * Get the fields property: Dictionary of named field values.
      *
      * @return the fields value.
@@ -132,16 +125,5 @@ public final class Document {
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the document.
-     *
-     * @param confidence the confidence value to set.
-     * @return the Document object itself.
-     */
-    public Document setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

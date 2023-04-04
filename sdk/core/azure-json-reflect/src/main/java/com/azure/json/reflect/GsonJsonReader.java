@@ -312,7 +312,7 @@ final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean resetSupported() {
+    public boolean isResetSupported() {
         return resetSupported;
     }
 

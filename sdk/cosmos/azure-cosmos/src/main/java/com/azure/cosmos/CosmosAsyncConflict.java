@@ -3,8 +3,10 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosConflictRequestOptions;
 import com.azure.cosmos.models.CosmosConflictResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -16,8 +18,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Read and delete conflicts
  */
 public final class CosmosAsyncConflict {
-
     private final CosmosAsyncContainer container;
+
+    @SuppressWarnings("EnforceFinalFields")
     private String id;
 
     /**
@@ -98,24 +101,35 @@ public final class CosmosAsyncConflict {
     }
 
     String getLink() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getParentLink());
-        builder.append("/");
-        builder.append(getURIPathSegment());
-        builder.append("/");
-        builder.append(getId());
-        return builder.toString();
+        return getParentLink()
+            + "/"
+            + getURIPathSegment()
+            + "/"
+            + getId();
     }
 
     private Mono<CosmosConflictResponse> readInternal(RequestOptions options, Context context) {
         String spanName = "readConflict." + getId();
         Mono<CosmosConflictResponse> responseMono =
             this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), options)
-            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName,
-            this.container.getDatabase().getId(),
-            this.container.getDatabase().getClient().getServiceEndpoint());
+                          .map(ModelBridgeInternal::createCosmosConflictResponse).single();
+
+        CosmosAsyncClient client = this.container.getDatabase().getClient();
+
+        return client
+            .getDiagnosticsProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                spanName,
+                this.container.getDatabase().getId(),
+                this.container.getId(),
+                client,
+                null,
+                OperationType.Read,
+                ResourceType.Conflict,
+                client.getEffectiveDiagnosticsThresholds(
+                    options != null ? options.getDiagnosticsThresholds() : null));
 
     }
 
@@ -123,10 +137,23 @@ public final class CosmosAsyncConflict {
         String spanName = "deleteConflict." + getId();
         Mono<CosmosConflictResponse> responseMono =
             this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), options)
-            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName,
-            this.container.getDatabase().getId(),
-            this.container.getDatabase().getClient().getServiceEndpoint());
+                          .map(ModelBridgeInternal::createCosmosConflictResponse).single();
+
+        CosmosAsyncClient client = this.container.getDatabase().getClient();
+
+        return client
+            .getDiagnosticsProvider()
+            .traceEnabledCosmosResponsePublisher(
+                responseMono,
+                context,
+                spanName,
+                this.container.getDatabase().getId(),
+                this.container.getId(),
+                client,
+                null,
+                OperationType.Delete,
+                ResourceType.Conflict,
+                client.getEffectiveDiagnosticsThresholds(
+                    options != null ? options.getDiagnosticsThresholds() : null));
     }
 }

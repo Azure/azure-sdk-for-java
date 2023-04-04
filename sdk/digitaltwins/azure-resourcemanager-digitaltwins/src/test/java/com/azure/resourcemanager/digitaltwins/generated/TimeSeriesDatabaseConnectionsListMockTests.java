@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
@@ -34,7 +33,7 @@ public final class TimeSeriesDatabaseConnectionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Disabled\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"dkwobdagx\"}},\"id\":\"bqdxbx\",\"name\":\"akbogqxndlkzgxh\",\"type\":\"ripl\"}]}";
+            "{\"value\":[{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Canceled\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"hhqzonosgg\"}},\"id\":\"c\",\"name\":\"hfwdsjnkaljutiis\",\"type\":\"acffgdkzzewkfvhq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +62,11 @@ public final class TimeSeriesDatabaseConnectionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TimeSeriesDatabaseConnection> response =
-            manager.timeSeriesDatabaseConnections().list("konzmnsik", "mkqzeqqkdltfzxmh", Context.NONE);
+            manager.timeSeriesDatabaseConnections().list("fikdowwqu", "v", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.iterator().next().properties().identity().type());
-        Assertions.assertEquals("dkwobdagx", response.iterator().next().properties().identity().userAssignedIdentity());
+        Assertions
+            .assertEquals(IdentityType.SYSTEM_ASSIGNED, response.iterator().next().properties().identity().type());
+        Assertions
+            .assertEquals("hhqzonosgg", response.iterator().next().properties().identity().userAssignedIdentity());
     }
 }

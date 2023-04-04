@@ -20,4 +20,5 @@ credential-scopes: https://monitor.azure.com//.default
 client-side-validations: true
 artifact-id: azure-monitor-ingestion
 data-plane: true
+enable-sync-stack: true
 ```

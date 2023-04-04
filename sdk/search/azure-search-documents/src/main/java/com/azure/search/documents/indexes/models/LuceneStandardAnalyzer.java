@@ -137,11 +137,11 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
                         }
                     }
                     if (nameFound) {
-                        LuceneStandardAnalyzer deserializedValue = new LuceneStandardAnalyzer(name);
-                        deserializedValue.maxTokenLength = maxTokenLength;
-                        deserializedValue.stopwords = stopwords;
+                        LuceneStandardAnalyzer deserializedLuceneStandardAnalyzer = new LuceneStandardAnalyzer(name);
+                        deserializedLuceneStandardAnalyzer.maxTokenLength = maxTokenLength;
+                        deserializedLuceneStandardAnalyzer.stopwords = stopwords;
 
-                        return deserializedValue;
+                        return deserializedLuceneStandardAnalyzer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

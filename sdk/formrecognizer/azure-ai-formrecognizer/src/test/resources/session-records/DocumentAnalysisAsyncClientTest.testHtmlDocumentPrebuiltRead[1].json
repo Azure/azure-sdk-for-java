@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8c54e545-929d-46ce-9a60-292fe9c41749",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "59",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "401a0f65-eddc-4e0f-8015-4e84d0977ab1",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/401a0f65-eddc-4e0f-8015-4e84d0977ab1?api-version=2023-02-28-preview",
+      "Date" : "Thu, 23 Mar 2023 20:22:01 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/401a0f65-eddc-4e0f-8015-4e84d0977ab1?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d142b238-2050-40e7-9cc6-8b48a2e5202b"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "24",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "58967579-13c8-4f8a-8a79-401fd0c59338",
+      "retry-after" : "0",
+      "Content-Length" : "1863",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:22:02Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:22:02Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"This is a html example.\\nrow 1, cell 1\\nrow 1, cell 2\\nrow 2, cell 2\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":5,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":8,\"length\":1}},{\"content\":\"html\",\"confidence\":1,\"span\":{\"offset\":10,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":8}},{\"content\":\"row\",\"confidence\":1,\"span\":{\"offset\":24,\"length\":3}},{\"content\":\"1,\",\"confidence\":1,\"span\":{\"offset\":28,\"length\":2}},{\"content\":\"cell\",\"confidence\":1,\"span\":{\"offset\":31,\"length\":4}},{\"content\":\"1\",\"confidence\":1,\"span\":{\"offset\":36,\"length\":1}},{\"content\":\"row\",\"confidence\":1,\"span\":{\"offset\":38,\"length\":3}},{\"content\":\"1,\",\"confidence\":1,\"span\":{\"offset\":42,\"length\":2}},{\"content\":\"cell\",\"confidence\":1,\"span\":{\"offset\":45,\"length\":4}},{\"content\":\"2\",\"confidence\":1,\"span\":{\"offset\":50,\"length\":1}},{\"content\":\"row\",\"confidence\":1,\"span\":{\"offset\":52,\"length\":3}},{\"content\":\"2,\",\"confidence\":1,\"span\":{\"offset\":56,\"length\":2}},{\"content\":\"cell\",\"confidence\":1,\"span\":{\"offset\":59,\"length\":4}},{\"content\":\"2\",\"confidence\":1,\"span\":{\"offset\":64,\"length\":1}}],\"spans\":[{\"offset\":0,\"length\":65}],\"kind\":\"document\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"content\":\"This is a html example.\"},{\"spans\":[{\"offset\":24,\"length\":13}],\"content\":\"row 1, cell 1\"},{\"spans\":[{\"offset\":38,\"length\":13}],\"content\":\"row 1, cell 2\"},{\"spans\":[{\"offset\":52,\"length\":13}],\"content\":\"row 2, cell 2\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"locale\":\"en\",\"confidence\":1}]}}",
+      "Date" : "Thu, 23 Mar 2023 20:22:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/401a0f65-eddc-4e0f-8015-4e84d0977ab1?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ebd6628e-1582-48b7-b35c-4c09ca9210b1"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "36",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "ae09492b-a518-473c-9acf-f6b4679bc36c",
+      "retry-after" : "0",
+      "Content-Length" : "1863",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:22:02Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:22:02Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"This is a html example.\\nrow 1, cell 1\\nrow 1, cell 2\\nrow 2, cell 2\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":5,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":8,\"length\":1}},{\"content\":\"html\",\"confidence\":1,\"span\":{\"offset\":10,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":8}},{\"content\":\"row\",\"confidence\":1,\"span\":{\"offset\":24,\"length\":3}},{\"content\":\"1,\",\"confidence\":1,\"span\":{\"offset\":28,\"length\":2}},{\"content\":\"cell\",\"confidence\":1,\"span\":{\"offset\":31,\"length\":4}},{\"content\":\"1\",\"confidence\":1,\"span\":{\"offset\":36,\"length\":1}},{\"content\":\"row\",\"confidence\":1,\"span\":{\"offset\":38,\"length\":3}},{\"content\":\"1,\",\"confidence\":1,\"span\":{\"offset\":42,\"length\":2}},{\"content\":\"cell\",\"confidence\":1,\"span\":{\"offset\":45,\"length\":4}},{\"content\":\"2\",\"confidence\":1,\"span\":{\"offset\":50,\"length\":1}},{\"content\":\"row\",\"confidence\":1,\"span\":{\"offset\":52,\"length\":3}},{\"content\":\"2,\",\"confidence\":1,\"span\":{\"offset\":56,\"length\":2}},{\"content\":\"cell\",\"confidence\":1,\"span\":{\"offset\":59,\"length\":4}},{\"content\":\"2\",\"confidence\":1,\"span\":{\"offset\":64,\"length\":1}}],\"spans\":[{\"offset\":0,\"length\":65}],\"kind\":\"document\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"content\":\"This is a html example.\"},{\"spans\":[{\"offset\":24,\"length\":13}],\"content\":\"row 1, cell 1\"},{\"spans\":[{\"offset\":38,\"length\":13}],\"content\":\"row 1, cell 2\"},{\"spans\":[{\"offset\":52,\"length\":13}],\"content\":\"row 2, cell 2\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"locale\":\"en\",\"confidence\":1}]}}",
+      "Date" : "Thu, 23 Mar 2023 20:22:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

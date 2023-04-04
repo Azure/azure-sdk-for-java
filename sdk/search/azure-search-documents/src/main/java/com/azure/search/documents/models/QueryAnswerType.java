@@ -16,10 +16,13 @@ import java.util.Collection;
  * 'extractive|count-3'. Default count is 1.
  */
 public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType> {
-    /** Static value none for QueryAnswerType. */
+    /** Do not return answers for the query. */
     public static final QueryAnswerType NONE = fromString("none");
 
-    /** Static value extractive for QueryAnswerType. */
+    /**
+     * Extracts answer candidates from the contents of the documents returned in response to a query expressed as a
+     * question in natural language.
+     */
     public static final QueryAnswerType EXTRACTIVE = fromString("extractive");
 
     /**

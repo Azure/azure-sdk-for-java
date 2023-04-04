@@ -88,6 +88,8 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         Thread.sleep(Duration.ofSeconds(2).toMillis());
         // validate the connection is closed
         provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(0));
+        long ruleHitCount = connectionErrorRule.getHitCount();
+        assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
 
         // do another request to open a new connection
         singlePartitionContainer.createItem(TestItem.createNewItem()).block();
@@ -96,6 +98,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         // the configured connection rule should have disabled after 2s, so the connection will remain open
         // Due to the open connection flow,eventually we might get 1 or 2 channels.
         provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isLessThanOrEqualTo(2));
+        assertThat(ruleHitCount).isEqualTo(ruleHitCount);
 
         connectionErrorRule.disable();
     }

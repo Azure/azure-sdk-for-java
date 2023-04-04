@@ -33,7 +33,7 @@ public final class QuotasListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"limit\":647279453,\"currentValue\":730644177,\"unit\":\"ebjvewzcjzn\",\"name\":{\"value\":\"pmguaadraufac\",\"localizedValue\":\"ahzovajjziuxxp\"},\"resourceType\":\"serviceSpecific\",\"quotaPeriod\":\"e\",\"properties\":\"datalfg\"},\"id\":\"lqubkwdlen\",\"name\":\"d\",\"type\":\"utujba\"}]}";
+            "{\"value\":[{\"properties\":{\"limit\":874924204,\"currentValue\":201174669,\"unit\":\"rr\",\"name\":{\"value\":\"gl\",\"localizedValue\":\"zgkrvqe\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"epr\",\"properties\":\"datat\"},\"id\":\"wytpzdmovz\",\"name\":\"fvaawzqa\",\"type\":\"f\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class QuotasListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CurrentQuotaLimitBase> response =
-            manager.quotas().list("ehwagoh", "uffkmrqemvvh", "xtdr", com.azure.core.util.Context.NONE);
+            manager.quotas().list("kuziycsle", "ufuztcktyhjtq", "dcgzul", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(647279453, response.iterator().next().properties().limit());
-        Assertions.assertEquals("ebjvewzcjzn", response.iterator().next().properties().unit());
-        Assertions.assertEquals("pmguaadraufac", response.iterator().next().properties().name().value());
-        Assertions.assertEquals(ResourceType.SERVICE_SPECIFIC, response.iterator().next().properties().resourceType());
+        Assertions.assertEquals(874924204, response.iterator().next().properties().limit());
+        Assertions.assertEquals("rr", response.iterator().next().properties().unit());
+        Assertions.assertEquals("gl", response.iterator().next().properties().name().value());
+        Assertions.assertEquals(ResourceType.DEDICATED, response.iterator().next().properties().resourceType());
     }
 }

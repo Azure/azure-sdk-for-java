@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceHealthMetadata ListBySiteSlot. */
 public final class ResourceHealthMetadataListBySiteSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListResourceHealthMetadataBySite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListResourceHealthMetadataBySite.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a site.
@@ -22,6 +20,7 @@ public final class ResourceHealthMetadataListBySiteSlotSamples {
             .manager()
             .serviceClient()
             .getResourceHealthMetadatas()
-            .listBySiteSlot("Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", "Production", Context.NONE);
+            .listBySiteSlot(
+                "Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", "Production", com.azure.core.util.Context.NONE);
     }
 }

@@ -110,8 +110,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     public static BM25SimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Double k1 = null;
-                    Double b = null;
+                    BM25SimilarityAlgorithm deserializedBM25SimilarityAlgorithm = new BM25SimilarityAlgorithm();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -127,18 +126,15 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
                                                 + "'.");
                             }
                         } else if ("k1".equals(fieldName)) {
-                            k1 = reader.getNullable(JsonReader::getDouble);
+                            deserializedBM25SimilarityAlgorithm.k1 = reader.getNullable(JsonReader::getDouble);
                         } else if ("b".equals(fieldName)) {
-                            b = reader.getNullable(JsonReader::getDouble);
+                            deserializedBM25SimilarityAlgorithm.b = reader.getNullable(JsonReader::getDouble);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    BM25SimilarityAlgorithm deserializedValue = new BM25SimilarityAlgorithm();
-                    deserializedValue.k1 = k1;
-                    deserializedValue.b = b;
 
-                    return deserializedValue;
+                    return deserializedBM25SimilarityAlgorithm;
                 });
     }
 }

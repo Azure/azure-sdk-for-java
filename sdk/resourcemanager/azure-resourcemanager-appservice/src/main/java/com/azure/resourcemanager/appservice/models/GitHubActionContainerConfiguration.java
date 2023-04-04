@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GitHubActionContainerConfiguration {
     /*
-     * The server URL for the container registry where the build will be
-     * hosted.
+     * The server URL for the container registry where the build will be hosted.
      */
     @JsonProperty(value = "serverUrl")
     private String serverUrl;
@@ -34,6 +33,10 @@ public final class GitHubActionContainerConfiguration {
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /** Creates an instance of GitHubActionContainerConfiguration class. */
+    public GitHubActionContainerConfiguration() {
+    }
 
     /**
      * Get the serverUrl property: The server URL for the container registry where the build will be hosted.

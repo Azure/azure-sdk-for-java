@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.16.4 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.15.2` to version `5.15.3`.
+- Upgraded `azure-storage-blob` from `12.20.3` to version `12.21.1`.
+
 ## 1.16.3 (2023-02-13)
 
 ### Other Changes

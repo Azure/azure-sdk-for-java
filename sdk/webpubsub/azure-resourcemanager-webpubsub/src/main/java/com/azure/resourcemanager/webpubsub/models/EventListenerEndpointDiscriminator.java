@@ -14,6 +14,15 @@ public final class EventListenerEndpointDiscriminator extends ExpandableStringEn
     public static final EventListenerEndpointDiscriminator EVENT_HUB = fromString("EventHub");
 
     /**
+     * Creates a new instance of EventListenerEndpointDiscriminator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventListenerEndpointDiscriminator() {
+    }
+
+    /**
      * Creates or finds a EventListenerEndpointDiscriminator from its string representation.
      *
      * @param name a name to look for.

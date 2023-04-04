@@ -59,6 +59,14 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     public static final AccessTier COLD = fromString("Cold");
 
     /**
+     * Creates a new instance of AccessTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessTier() {}
+
+    /**
      * Creates or finds a AccessTier from its string representation.
      *
      * @param name a name to look for.

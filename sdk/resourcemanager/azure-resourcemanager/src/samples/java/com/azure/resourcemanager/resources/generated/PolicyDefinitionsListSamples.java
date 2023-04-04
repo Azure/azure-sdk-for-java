@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyDefinitions List. */
 public final class PolicyDefinitionsListSamples {
     /*
@@ -17,6 +15,11 @@ public final class PolicyDefinitionsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPolicyDefinitionsBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.genericResources().manager().policyClient().getPolicyDefinitions().list(null, null, Context.NONE);
+        azure
+            .genericResources()
+            .manager()
+            .policyClient()
+            .getPolicyDefinitions()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 }

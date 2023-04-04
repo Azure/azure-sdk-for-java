@@ -462,7 +462,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
 
         OpenChannelPromise openChannelPromise =
-                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime());
+                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime(), requestRecord);
 
         try {
             // Compared to the normal request flow
@@ -1379,15 +1379,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
         return null;
     }
 
-    public void injectConnectionErrors(double threshold, Class<?> eventType) {
+    public void injectConnectionErrors(String faultInjectionRuleId, double threshold, Class<?> eventType) {
         if (this.executor.inEventLoop()) {
-            this.injectConnectionErrorsInternal(threshold, eventType);
+            this.injectConnectionErrorsInternal(faultInjectionRuleId, threshold, eventType);
         } else {
-            this.executor.submit(() -> this.injectConnectionErrorsInternal(threshold, eventType)).awaitUninterruptibly(); // block until complete
+            this.executor.submit(() -> this.injectConnectionErrorsInternal(faultInjectionRuleId, threshold, eventType)).awaitUninterruptibly(); // block until complete
         }
     }
 
-    private void injectConnectionErrorsInternal(double threshold, Class<?> eventType) {
+    private void injectConnectionErrorsInternal(String faultInjectionRuleId, double threshold, Class<?> eventType) {
 
         // Calculate how many connections is going to be closed
         int channelsToBeClosed = (int) Math.ceil(this.channels(false) * threshold);
@@ -1408,12 +1408,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 channel
                     .pipeline()
                     .firstContext()
-                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent());
+                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionCloseEvent(faultInjectionRuleId));
             } else if (eventType == RntbdFaultInjectionConnectionResetEvent.class) {
                 channel
                     .pipeline()
                     .firstContext()
-                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent());
+                    .fireUserEventTriggered(new RntbdFaultInjectionConnectionResetEvent(faultInjectionRuleId));
             } else {
                 throw new IllegalStateException("ConnectionEventType " + eventType + " is not supported");
             }

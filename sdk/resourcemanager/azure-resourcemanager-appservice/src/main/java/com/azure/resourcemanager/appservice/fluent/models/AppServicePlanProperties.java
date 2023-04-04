@@ -34,15 +34,13 @@ public final class AppServicePlanProperties {
     private String subscription;
 
     /*
-     * Specification for the App Service Environment to use for the App Service
-     * plan.
+     * Specification for the App Service Environment to use for the App Service plan.
      */
     @JsonProperty(value = "hostingEnvironmentProfile")
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /*
-     * Maximum number of instances that can be assigned to this App Service
-     * plan.
+     * Maximum number of instances that can be assigned to this App Service plan.
      */
     @JsonProperty(value = "maximumNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximumNumberOfWorkers;
@@ -60,24 +58,20 @@ public final class AppServicePlanProperties {
     private String geoRegion;
 
     /*
-     * If <code>true</code>, apps assigned to this App Service plan can be
-     * scaled independently.
-     * If <code>false</code>, apps assigned to this App Service plan will scale
-     * to all instances of the plan.
+     * If <code>true</code>, apps assigned to this App Service plan can be scaled independently.
+     * If <code>false</code>, apps assigned to this App Service plan will scale to all instances of the plan.
      */
     @JsonProperty(value = "perSiteScaling")
     private Boolean perSiteScaling;
 
     /*
-     * ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku
+     * ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
      */
     @JsonProperty(value = "elasticScaleEnabled")
     private Boolean elasticScaleEnabled;
 
     /*
-     * Maximum number of total workers allowed for this ElasticScaleEnabled App
-     * Service Plan
+     * Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
      */
     @JsonProperty(value = "maximumElasticWorkerCount")
     private Integer maximumElasticWorkerCount;
@@ -95,8 +89,7 @@ public final class AppServicePlanProperties {
     private Boolean isSpot;
 
     /*
-     * The time when the server farm expires. Valid only if it is a spot server
-     * farm.
+     * The time when the server farm expires. Valid only if it is a spot server farm.
      */
     @JsonProperty(value = "spotExpirationTime")
     private OffsetDateTime spotExpirationTime;
@@ -114,22 +107,19 @@ public final class AppServicePlanProperties {
     private String resourceGroup;
 
     /*
-     * If Linux app service plan <code>true</code>, <code>false</code>
-     * otherwise.
+     * If Linux app service plan <code>true</code>, <code>false</code> otherwise.
      */
     @JsonProperty(value = "reserved")
     private Boolean reserved;
 
     /*
-     * Obsolete: If Hyper-V container app service plan <code>true</code>,
-     * <code>false</code> otherwise.
+     * Obsolete: If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
      */
     @JsonProperty(value = "isXenon")
     private Boolean isXenon;
 
     /*
-     * If Hyper-V container app service plan <code>true</code>,
-     * <code>false</code> otherwise.
+     * If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
      */
     @JsonProperty(value = "hyperV")
     private Boolean hyperV;
@@ -153,20 +143,21 @@ public final class AppServicePlanProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * Specification for the Kubernetes Environment to use for the App Service
-     * plan.
+     * Specification for the Kubernetes Environment to use for the App Service plan.
      */
     @JsonProperty(value = "kubeEnvironmentProfile")
     private KubeEnvironmentProfile kubeEnvironmentProfile;
 
     /*
-     * If <code>true</code>, this App Service Plan will perform availability
-     * zone balancing.
-     * If <code>false</code>, this App Service Plan will not perform
-     * availability zone balancing.
+     * If <code>true</code>, this App Service Plan will perform availability zone balancing.
+     * If <code>false</code>, this App Service Plan will not perform availability zone balancing.
      */
     @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
+
+    /** Creates an instance of AppServicePlanProperties class. */
+    public AppServicePlanProperties() {
+    }
 
     /**
      * Get the workerTierName property: Target worker tier assigned to the App Service plan.

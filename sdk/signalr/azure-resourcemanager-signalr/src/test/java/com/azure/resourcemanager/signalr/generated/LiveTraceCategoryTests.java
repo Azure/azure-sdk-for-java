@@ -7,11 +7,10 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.LiveTraceCategory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LiveTraceCategoryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         LiveTraceCategory model =
             BinaryData
                 .fromString("{\"name\":\"plrbpbewtghf\",\"enabled\":\"lcgwxzvlvqh\"}")
@@ -20,8 +19,8 @@ public final class LiveTraceCategoryTests {
         Assertions.assertEquals("lcgwxzvlvqh", model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         LiveTraceCategory model = new LiveTraceCategory().withName("plrbpbewtghf").withEnabled("lcgwxzvlvqh");
         model = BinaryData.fromObject(model).toObject(LiveTraceCategory.class);
         Assertions.assertEquals("plrbpbewtghf", model.name());

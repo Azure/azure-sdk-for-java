@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters used to update a snapshot. */

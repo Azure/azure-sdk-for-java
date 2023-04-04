@@ -116,12 +116,12 @@ public final class ConditionalSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        ConditionalSkill deserializedValue = new ConditionalSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
+                        ConditionalSkill deserializedConditionalSkill = new ConditionalSkill(inputs, outputs);
+                        deserializedConditionalSkill.setName(name);
+                        deserializedConditionalSkill.setDescription(description);
+                        deserializedConditionalSkill.setContext(context);
 
-                        return deserializedValue;
+                        return deserializedConditionalSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

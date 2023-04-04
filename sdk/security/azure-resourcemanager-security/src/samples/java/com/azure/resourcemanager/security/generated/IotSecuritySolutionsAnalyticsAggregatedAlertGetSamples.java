@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolutionsAnalyticsAggregatedAlert Get. */
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertGetSamples {
             com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-            .getWithResponse("MyGroup", "default", "IoT_Bruteforce_Fail/2019-02-02", Context.NONE);
+            .getWithResponse("MyGroup", "default", "IoT_Bruteforce_Fail/2019-02-02", com.azure.core.util.Context.NONE);
     }
 }

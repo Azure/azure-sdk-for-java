@@ -34,6 +34,10 @@ public final class VnetParametersProperties {
     @JsonProperty(value = "subnetResourceId")
     private String subnetResourceId;
 
+    /** Creates an instance of VnetParametersProperties class. */
+    public VnetParametersProperties() {
+    }
+
     /**
      * Get the vnetResourceGroup property: The Resource Group of the VNET to be validated.
      *

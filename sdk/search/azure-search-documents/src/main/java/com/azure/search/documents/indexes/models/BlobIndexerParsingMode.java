@@ -11,22 +11,27 @@ import java.util.Collection;
 
 /** Represents the parsing mode for indexing from an Azure blob data source. */
 public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndexerParsingMode> {
-    /** Static value default for BlobIndexerParsingMode. */
+    /** Set to default for normal file processing. */
     public static final BlobIndexerParsingMode DEFAULT = fromString("default");
 
-    /** Static value text for BlobIndexerParsingMode. */
+    /** Set to text to improve indexing performance on plain text files in blob storage. */
     public static final BlobIndexerParsingMode TEXT = fromString("text");
 
-    /** Static value delimitedText for BlobIndexerParsingMode. */
+    /** Set to delimitedText when blobs are plain CSV files. */
     public static final BlobIndexerParsingMode DELIMITED_TEXT = fromString("delimitedText");
 
-    /** Static value json for BlobIndexerParsingMode. */
+    /** Set to json to extract structured content from JSON files. */
     public static final BlobIndexerParsingMode JSON = fromString("json");
 
-    /** Static value jsonArray for BlobIndexerParsingMode. */
+    /**
+     * Set to jsonArray to extract individual elements of a JSON array as separate documents in Azure Cognitive Search.
+     */
     public static final BlobIndexerParsingMode JSON_ARRAY = fromString("jsonArray");
 
-    /** Static value jsonLines for BlobIndexerParsingMode. */
+    /**
+     * Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents in Azure
+     * Cognitive Search.
+     */
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
 
     /**

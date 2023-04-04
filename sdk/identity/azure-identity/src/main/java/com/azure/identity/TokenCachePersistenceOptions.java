@@ -6,6 +6,11 @@ import com.azure.core.annotation.Fluent;
 
 /**
  * Represents the Persistence Token Cache options used to setup the persistent access token cache.
+ * It allows users to enable the persistent token cache and optionally configure its name. The
+ * TokenCachePersistenceOptions can be configured directly on the Token Credential builders for the Token Credentials
+ * that support it.
+ *
+ * @see com.azure.identity
  */
 @Fluent
 public final class TokenCachePersistenceOptions {

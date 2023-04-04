@@ -27,6 +27,15 @@ public final class EndOfSupportStatus extends ExpandableStringEnum<EndOfSupportS
         fromString("upcomingVersionNoLongerSupported");
 
     /**
+     * Creates a new instance of EndOfSupportStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndOfSupportStatus() {
+    }
+
+    /**
      * Creates or finds a EndOfSupportStatus from its string representation.
      *
      * @param name a name to look for.

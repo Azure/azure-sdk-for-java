@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** The managed identity for the DigitalTwinsInstance. */
 @Fluent
-public class DigitalTwinsIdentity {
+public final class DigitalTwinsIdentity {
     /*
      * The type of Managed Identity used by the DigitalTwinsInstance.
      */

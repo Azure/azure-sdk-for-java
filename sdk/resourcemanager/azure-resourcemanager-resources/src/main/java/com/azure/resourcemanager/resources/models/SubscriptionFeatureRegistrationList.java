@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class SubscriptionFeatureRegistrationList {
     /*
-     * The link used to get the next page of subscription feature registrations
-     * list.
+     * The link used to get the next page of subscription feature registrations list.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -24,6 +23,10 @@ public final class SubscriptionFeatureRegistrationList {
      */
     @JsonProperty(value = "value")
     private List<SubscriptionFeatureRegistrationInner> value;
+
+    /** Creates an instance of SubscriptionFeatureRegistrationList class. */
+    public SubscriptionFeatureRegistrationList() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of subscription feature registrations list.

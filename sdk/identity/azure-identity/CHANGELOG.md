@@ -18,6 +18,7 @@
 
 ### Bugs Fixed
 - Fixed detection logic for az/azd.
+- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
 ## 1.8.1 (2023-03-06)
 

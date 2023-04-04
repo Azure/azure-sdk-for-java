@@ -65,7 +65,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
         AtomicReference<List<String>> expectedAnomalyAlertIdList = new AtomicReference<List<String>>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
             listAnomalyAlertRunner(inputAnomalyAlertList -> {
                 List<AnomalyAlertConfiguration> actualAnomalyAlertList = new ArrayList<>();
@@ -148,7 +148,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
             listAnomalyAlertRunner(anomalyAlertConfigurationList -> {
                 final AnomalyAlertConfiguration inputAnomalyAlertConfiguration = anomalyAlertConfigurationList.get(0);
@@ -181,7 +181,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
                 // Act & Assert
                 AnomalyAlertConfiguration createdAnomalyAlertConfig =
@@ -205,7 +205,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     @Disabled
     public void deleteAnomalyAlertWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         creatAnomalyAlertRunner(inputAnomalyAlertConfig -> {
             final AnomalyAlertConfiguration createdAnomalyAlert =
                 client.createAlertConfig(inputAnomalyAlertConfig);
@@ -236,7 +236,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
             creatAnomalyAlertRunner(inputAnomalyAlert -> {
                 // Arrange
@@ -285,7 +285,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     // public void updateAnomalyAlertConfigDescription(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
     //     // Arrange
-    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
     //     final AtomicReference<String> inputAnomalyAlertConfigId = new AtomicReference<>();
     //     creatAnomalyAlertRunner(inputAnomalyAlert -> {
     //         // Arrange
@@ -321,7 +321,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
         try {
             // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
             creatAnomalyAlertRunner(inputAnomalyAlert -> {
                 // Arrange
                 final AnomalyAlertConfiguration createdAnomalyAlert =

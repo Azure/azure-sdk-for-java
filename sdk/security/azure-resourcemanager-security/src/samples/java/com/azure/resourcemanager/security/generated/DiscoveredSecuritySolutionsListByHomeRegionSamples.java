@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiscoveredSecuritySolutions ListByHomeRegion. */
 public final class DiscoveredSecuritySolutionsListByHomeRegionSamples {
     /*
@@ -18,6 +16,6 @@ public final class DiscoveredSecuritySolutionsListByHomeRegionSamples {
      */
     public static void getDiscoveredSecuritySolutionsFromASecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.discoveredSecuritySolutions().listByHomeRegion("centralus", Context.NONE);
+        manager.discoveredSecuritySolutions().listByHomeRegion("centralus", com.azure.core.util.Context.NONE);
     }
 }

@@ -109,6 +109,10 @@ public class Configuration {
     @Parameter(names = "-encryptionEnabled", description = "Control switch to enable the encryption operation")
     private boolean encryptionEnabled = false;
 
+    @Parameter(names = "-defaultLog4jLoggerEnabled", description = "Control switch to enable the default log4j logger in 4.42 and above")
+    private String defaultLog4jLoggerEnabled = String.valueOf(false);
+
+
     @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
     private int tupleSize = 1;
 
@@ -189,6 +193,9 @@ public class Configuration {
     @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
     private String testScenario = "GET";
 
+    @Parameter(names = "-applicationName", description = "The application name suffix in the user agent header")
+    private String applicationName = "";
+
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
 
@@ -200,6 +207,12 @@ public class Configuration {
 
     @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
     private String clientTelemetryEndpoint;
+
+    @Parameter(names = "-pointLatencyThresholdMs", description = "Latency threshold for point operations")
+    private int pointLatencyThresholdMs = -1;
+
+    @Parameter(names = "-nonPointLatencyThresholdMs", description = "Latency threshold for non-point operations")
+    private int nonPointLatencyThresholdMs = -1;
 
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
@@ -346,6 +359,10 @@ public class Configuration {
 
     public String getMasterKey() {
         return masterKey;
+    }
+
+    public String getApplicationName() {
+        return applicationName;
     }
 
     public boolean isHelp() {
@@ -510,6 +527,10 @@ public class Configuration {
         return Boolean.parseBoolean(clientTelemetryEnabled);
     }
 
+    public boolean isDefaultLog4jLoggerEnabled() {
+        return Boolean.parseBoolean(defaultLog4jLoggerEnabled);
+    }
+
     public String getClientTelemetryEndpoint() {
         return clientTelemetryEndpoint;
     }
@@ -520,6 +541,22 @@ public class Configuration {
 
     public Integer getTupleSize() {
         return tupleSize;
+    }
+
+    public Duration getPointOperationThreshold() {
+        if (this.pointLatencyThresholdMs < 0) {
+            return Duration.ofDays(300);
+        }
+
+        return Duration.ofMillis(this.pointLatencyThresholdMs);
+    }
+
+    public Duration getNonPointOperationThreshold() {
+        if (this.nonPointLatencyThresholdMs < 0) {
+            return Duration.ofDays(300);
+        }
+
+        return Duration.ofMillis(this.nonPointLatencyThresholdMs);
     }
 
     public void tryGetValuesFromSystem() {

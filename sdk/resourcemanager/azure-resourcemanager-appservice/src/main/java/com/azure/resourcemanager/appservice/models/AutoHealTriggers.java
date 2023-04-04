@@ -47,6 +47,10 @@ public final class AutoHealTriggers {
     @JsonProperty(value = "statusCodesRange")
     private List<StatusCodesRangeBasedTrigger> statusCodesRange;
 
+    /** Creates an instance of AutoHealTriggers class. */
+    public AutoHealTriggers() {
+    }
+
     /**
      * Get the requests property: A rule based on total requests.
      *

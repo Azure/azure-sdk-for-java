@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Contacts Delete. */
 public final class ContactsDeleteSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactDelete.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactDelete.json
      */
     /**
      * Sample code: Delete Contact.
@@ -17,6 +15,6 @@ public final class ContactsDeleteSamples {
      * @param manager Entry point to OrbitalManager.
      */
     public static void deleteContact(com.azure.resourcemanager.orbital.OrbitalManager manager) {
-        manager.contacts().delete("contoso-Rgp", "CONTOSO_SAT", "contact1", Context.NONE);
+        manager.contacts().delete("contoso-Rgp", "CONTOSO_SAT", "contact1", com.azure.core.util.Context.NONE);
     }
 }

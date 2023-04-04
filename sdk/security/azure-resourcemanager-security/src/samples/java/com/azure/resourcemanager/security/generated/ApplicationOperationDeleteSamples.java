@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationOperation Delete. */
 public final class ApplicationOperationDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class ApplicationOperationDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteSecurityApplication(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.applicationOperations().deleteWithResponse("ad9a8e26-29d9-4829-bb30-e597a58cdbb8", Context.NONE);
+        manager
+            .applicationOperations()
+            .deleteWithResponse("ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
     }
 }

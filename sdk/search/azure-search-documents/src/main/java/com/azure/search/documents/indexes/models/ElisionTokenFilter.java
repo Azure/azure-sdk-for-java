@@ -108,10 +108,10 @@ public final class ElisionTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        ElisionTokenFilter deserializedValue = new ElisionTokenFilter(name);
-                        deserializedValue.articles = articles;
+                        ElisionTokenFilter deserializedElisionTokenFilter = new ElisionTokenFilter(name);
+                        deserializedElisionTokenFilter.articles = articles;
 
-                        return deserializedValue;
+                        return deserializedElisionTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

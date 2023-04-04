@@ -37,6 +37,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -155,16 +156,25 @@ public class FaultInjectionRuleProcessor {
                 }
 
                 List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
-                effectiveCondition.setRegionEndpoints(regionEndpoints);
+
+                if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
+                    // if region is not specific configured, then also add the defaultEndpoint
+                    List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
+                    regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
+                    effectiveCondition.setRegionEndpoints(regionEndpointsWithDefault);
+                } else {
+                    effectiveCondition.setRegionEndpoints(regionEndpoints);
+                }
 
                 // TODO: add handling for gateway mode
 
                 // Direct connection mode, populate physical addresses
+                boolean primaryAddressesOnly = this.isWriteOnly(rule.getCondition());
                 return BackoffRetryUtility.executeRetry(
                         () -> this.resolvePhysicalAddresses(
                             regionEndpoints,
                             rule.getCondition().getEndpoints(),
-                            this.isWriteOnlyEndpoint(rule.getCondition()),
+                            primaryAddressesOnly,
                             documentCollection),
                         new FaultInjectionRuleProcessorRetryPolicy(this.retryOptions)
                     )
@@ -178,7 +188,7 @@ public class FaultInjectionRuleProcessor {
                                     .collect(Collectors.toList());
                         }
 
-                        effectiveCondition.setAddresses(effectiveAddresses);
+                        effectiveCondition.setAddresses(effectiveAddresses, primaryAddressesOnly);
                         return effectiveCondition;
                     });
             })
@@ -218,7 +228,7 @@ public class FaultInjectionRuleProcessor {
                 return this.resolvePhysicalAddresses(
                         regionEndpoints,
                         rule.getCondition().getEndpoints(),
-                        this.isWriteOnlyEndpoint(rule.getCondition()),
+                        this.isWriteOnly(rule.getCondition()),
                         documentCollection)
                     .map(physicalAddresses -> {
                         List<URI> effectiveAddresses =
@@ -250,7 +260,7 @@ public class FaultInjectionRuleProcessor {
      * @return the region service endpoints.
      */
     private List<URI> getRegionEndpoints(FaultInjectionCondition condition) {
-        boolean isWriteOnlyEndpoints = this.isWriteOnlyEndpoint(condition);
+        boolean isWriteOnlyEndpoints = this.isWriteOnly(condition);
 
         if (StringUtils.isNotEmpty(condition.getRegion())) {
             return Arrays.asList(
@@ -354,7 +364,7 @@ public class FaultInjectionRuleProcessor {
             .collectList();
     }
 
-    private boolean isWriteOnlyEndpoint(FaultInjectionCondition condition) {
+    private boolean isWriteOnly(FaultInjectionCondition condition) {
         return condition.getOperationType() != null
             && this.getEffectiveOperationType(condition.getOperationType()).isWriteOperation();
     }

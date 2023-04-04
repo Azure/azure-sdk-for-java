@@ -24,21 +24,6 @@ public interface EmailServicesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the EmailService and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EmailServiceResourceInner getByResourceGroup(String resourceGroupName, String emailServiceName);
-
-    /**
-     * Get
-     *
-     * <p>Get the EmailService and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,6 +33,21 @@ public interface EmailServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EmailServiceResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String emailServiceName, Context context);
+
+    /**
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the EmailService and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EmailServiceResourceInner getByResourceGroup(String resourceGroupName, String emailServiceName);
 
     /**
      * Create Or Update
@@ -313,18 +313,6 @@ public interface EmailServicesClient {
      *
      * <p>Get a list of domains that are fully verified in Exchange Online.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains that are fully verified in Exchange Online.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<String> listVerifiedExchangeOnlineDomains();
-
-    /**
-     * List Verified Domains From Exchange Online
-     *
-     * <p>Get a list of domains that are fully verified in Exchange Online.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -333,4 +321,16 @@ public interface EmailServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context);
+
+    /**
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains that are fully verified in Exchange Online.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> listVerifiedExchangeOnlineDomains();
 }

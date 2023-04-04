@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Channels. */
+/** List of channels that this recommendation can apply. */
 public enum Channels {
     /** Enum value Notification. */
     NOTIFICATION("Notification"),
@@ -39,6 +39,9 @@ public enum Channels {
      */
     @JsonCreator
     public static Channels fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Channels[] items = Channels.values();
         for (Channels item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum Channels {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
