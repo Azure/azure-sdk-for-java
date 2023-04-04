@@ -4,7 +4,6 @@
 
 ### Features Added
 - Added CAE support to service principal authentication.
-- Pass more detailed refresh policy for managed identity tokens to MSAL.
 
 ### Bugs Fixed
 - Fixed detection logic for az/azd.
