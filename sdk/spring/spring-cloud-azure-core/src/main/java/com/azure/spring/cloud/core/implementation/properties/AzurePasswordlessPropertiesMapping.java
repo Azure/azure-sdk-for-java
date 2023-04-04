@@ -75,8 +75,16 @@ public enum AzurePasswordlessPropertiesMapping {
     AUTHORITY_HOST(p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
         (p, s) -> p.setProperty(AuthProperty.AUTHORITY_HOST.getPropertyKey(), s));
 
-    public Function<PasswordlessProperties, String> getter;
-    public BiConsumer<Properties, String> setter;
+    private Function<PasswordlessProperties, String> getter;
+    private BiConsumer<Properties, String> setter;
+
+    public Function<PasswordlessProperties, String> getGetter() {
+        return getter;
+    }
+
+    public BiConsumer<Properties, String> getSetter() {
+        return setter;
+    }
 
     AzurePasswordlessPropertiesMapping(Function<PasswordlessProperties, String> getter, BiConsumer<Properties,
         String> setter) {
