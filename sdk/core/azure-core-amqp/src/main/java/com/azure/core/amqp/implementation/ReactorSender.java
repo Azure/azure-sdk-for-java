@@ -13,6 +13,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -271,6 +272,17 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 final Message batchMessage = Proton.message();
                 batchMessage.setMessageAnnotations(firstMessage.getMessageAnnotations());
 
+                // Set partition identifier properties of the first message on batch message
+                if ((firstMessage.getMessageId() instanceof String)
+                    && !CoreUtils.isNullOrEmpty((String) firstMessage.getMessageId())) {
+
+                    batchMessage.setMessageId(firstMessage.getMessageId());
+                }
+
+                if (!CoreUtils.isNullOrEmpty(firstMessage.getGroupId())) {
+                    batchMessage.setGroupId(firstMessage.getGroupId());
+                }
+
                 final int maxMessageSizeTemp = maxMessageSize;
 
                 final byte[] bytes = new byte[maxMessageSizeTemp];
@@ -344,7 +356,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             }
 
             return RetryUtil.withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-                retryOptions, activeTimeoutMessage)
+                    retryOptions, activeTimeoutMessage)
                 .then(Mono.fromCallable(() -> {
                     final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
                     if (remoteMaxMessageSize != null) {
@@ -415,20 +427,20 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         };
 
         return Mono.fromRunnable(() -> {
-            try {
-                reactorProvider.getReactorDispatcher().invoke(closeWork);
-            } catch (IOException e) {
-                logger.warning("Could not schedule close work. Running manually. And completing close.", e);
+                try {
+                    reactorProvider.getReactorDispatcher().invoke(closeWork);
+                } catch (IOException e) {
+                    logger.warning("Could not schedule close work. Running manually. And completing close.", e);
 
-                closeWork.run();
-                handleClose();
-            } catch (RejectedExecutionException e) {
-                logger.info("RejectedExecutionException scheduling close work. And completing close.");
+                    closeWork.run();
+                    handleClose();
+                } catch (RejectedExecutionException e) {
+                    logger.info("RejectedExecutionException scheduling close work. And completing close.");
 
-                closeWork.run();
-                handleClose();
-            }
-        }).then(isClosedMono.asMono())
+                    closeWork.run();
+                    handleClose();
+                }
+            }).then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
     }
 
