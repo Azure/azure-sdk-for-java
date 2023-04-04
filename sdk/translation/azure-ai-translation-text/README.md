@@ -79,7 +79,7 @@ TextTranslationClient client = new TextTranslationClientBuilder()
 
 A `TextTranslationClient` is the primary interface for developers using the Text Translator client library. It provides both synchronous operations to access a specific use of text translator, such as get supported languages detection or text translation.
 
-For asychronous operations use `TextTranslationAsyncClient`.
+For asynchronous operations use `TextTranslationAsyncClient`.
 
 ### Input
 
@@ -241,13 +241,13 @@ Samples are provided for each main functional area, and for each area, samples a
 * [Translation with Custom Dictionary][sample_translatedictionary]
 * [Translation with NoTranslate tag][sample_translatenotranslate]
 * [Translation with Alignments][sample_translatealignments]
-* [Translation with Sentence Boundaries][sample_translatesentecelength]
+* [Translation with Sentence Boundaries][sample_translatesentencelength]
 * [Handling translation of HTML text][sample_translatetexttypes]
 * [Transliteration][sample_transliterate]
 * [Get Languages][sample_getlanguages]
 * [Get Localized Languages][sample_getlanguagesaccept]
 * [Get Scoped Languages][sample_getlanguagesscope]
-* [Find Sentence Boudnaries][sample_breaksentence]
+* [Find Sentence Boundaries][sample_breaksentence]
 * [Lookup Dictionary Examples][sample_dictionaryexamples]
 * [Lookup Dictionary Entries][sample_dictionarylookup]
 
@@ -296,7 +296,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_translatetargets]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateMultipleTargets.java
 [sample_translatenotranslate]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateNoTranslate.java
 [sample_translateprofanity]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateProfanity.java
-[sample_translatesentecelength]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateSentenceLength.java
+[sample_translatesentencelength]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateSentenceLength.java
 [sample_translatetexttypes]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateTextType.java
 [sample_translatetransliteration]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateWithTransliteration.java
 [sample_transliterate]: https://aka.ms/https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/Transliterate.java
