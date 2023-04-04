@@ -1074,7 +1074,8 @@ public final class BlobServiceAsyncClient {
         return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(context)
             .map(rb -> {
                 ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(),
+                    hd.isXMsIsHnsEnabled()));
             });
     }
 

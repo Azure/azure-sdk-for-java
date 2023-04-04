@@ -3,6 +3,7 @@
 ## 12.22.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added new method `StorageAccountInfo.isHnsEnabled()` to determine whether storage account has hierarchical namespace enabled.  
 
 ### Breaking Changes
 

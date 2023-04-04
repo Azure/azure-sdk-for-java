@@ -3427,6 +3427,11 @@ class BlobAPITest extends APISpec {
         bc.getAccountInfoWithResponse(null, null).getStatusCode() == 200
     }
 
+    def "Get account info hns enabled"() {
+        expect:
+        primaryBlobServiceClient.getAccountInfo().isHnsEnabled()
+    }
+
     def "Get Container Name"() {
         expect:
         containerName == bc.getContainerName()
