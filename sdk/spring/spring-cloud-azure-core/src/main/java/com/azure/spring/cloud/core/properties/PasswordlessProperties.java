@@ -49,8 +49,8 @@ public interface PasswordlessProperties extends TokenCredentialOptionsProvider, 
     default Properties toPasswordlessProperties() {
         Properties target = new Properties();
         for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
-            if (m.getter.apply(this) != null) {
-                m.setter.accept(target, m.getter.apply(this));
+            if (m.getGetter().apply(this) != null) {
+                m.getSetter().accept(target, m.getGetter().apply(this));
             }
         }
         return target;
