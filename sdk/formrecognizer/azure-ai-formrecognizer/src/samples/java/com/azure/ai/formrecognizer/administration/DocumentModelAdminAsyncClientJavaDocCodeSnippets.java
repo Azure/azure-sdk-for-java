@@ -127,7 +127,6 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-<<<<<<< HEAD
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentClassifier(Map)}
      */
     public void beginBuildDocumentClassifier() {
