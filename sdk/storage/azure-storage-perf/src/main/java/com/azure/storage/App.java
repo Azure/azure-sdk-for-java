@@ -4,15 +4,7 @@
 package com.azure.storage;
 
 import com.azure.perf.test.core.PerfStressProgram;
-import com.azure.storage.blob.perf.DownloadBlobTest;
-import com.azure.storage.blob.perf.DownloadBlobToFileTest;
-import com.azure.storage.blob.perf.ListBlobsTest;
-import com.azure.storage.blob.perf.DownloadBlobNonSharedClientTest;
-import com.azure.storage.blob.perf.UploadBlobNoLengthTest;
-import com.azure.storage.blob.perf.UploadBlobTest;
-import com.azure.storage.blob.perf.UploadBlockBlobTest;
-import com.azure.storage.blob.perf.UploadFromFileTest;
-import com.azure.storage.blob.perf.UploadOutputStreamTest;
+import com.azure.storage.blob.perf.*;
 import com.azure.storage.file.datalake.perf.AppendFileDatalakeTest;
 import com.azure.storage.file.datalake.perf.ReadFileDatalakeTest;
 import com.azure.storage.file.datalake.perf.UploadFileDatalakeTest;
@@ -35,6 +27,7 @@ import com.azure.storage.file.share.perf.UploadFromFileShareTest;
 public class App {
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{
+            GetPropertiesTest.class,
             DownloadBlobTest.class,
             DownloadBlobToFileTest.class,
             ListBlobsTest.class,

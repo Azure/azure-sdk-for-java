@@ -22,26 +22,9 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHeaders;
-import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlockLookupList;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockList;
-import com.azure.storage.blob.models.BlockListType;
-import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.*;
+import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
@@ -52,6 +35,7 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
@@ -71,9 +55,7 @@ import java.util.function.Supplier;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
-import static com.azure.storage.common.implementation.StorageImplUtils.enableSyncRestProxy;
-import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
-import static com.azure.storage.common.implementation.StorageImplUtils.executeOperation;
+import static com.azure.storage.common.implementation.StorageImplUtils.*;
 
 
 /**
@@ -1496,5 +1478,51 @@ public final class BlockBlobClient extends BlobClientBase {
 
         sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
         return sb.toString();
+    }
+
+    /**
+     * Returns the blob's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * BlobProperties properties = client.getPropertiesWithResponse&#40;requestConditions, timeout,
+     *     new Context&#40;key2, value2&#41;&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Type: %s, Size: %d%n&quot;, properties.getBlobType&#40;&#41;, properties.getBlobSize&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.getPropertiesWithResponse#BlobRequestConditions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The blob properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> getPropertiesWithResponse(BlobRequestConditions requestConditions, Duration timeout,
+                                                              Context context) {
+        return getPropertiesWithResponse(requestConditions, context);
+//        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    Response<BlobProperties> getPropertiesWithResponse(BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
+
+        ResponseBase<BlobsGetPropertiesHeaders, Void> rb = this.azureBlobStorage.getBlobs().getPropertiesWithResponse(
+            containerName, blobName, snapshot, versionId, null, requestConditions.getLeaseId(),
+            requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE));
+
+        return new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
+            .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders())));
     }
 }

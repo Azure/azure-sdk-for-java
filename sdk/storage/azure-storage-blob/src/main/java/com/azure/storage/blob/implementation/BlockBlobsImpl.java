@@ -2783,7 +2783,7 @@ public final class BlockBlobsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<BlockBlobsUploadHeaders, Void>  uploadWithResponse(
+    public ResponseBase<BlockBlobsUploadHeaders, Void> uploadWithResponse(
             String containerName,
             String blob,
             long contentLength,
