@@ -1,21 +1,21 @@
 // Databricks notebook source
-val cosmosEndpoint_source = "" //enter your Cosmos DB Account URI
-val cosmosMasterKey_source = "" //enter your Cosmos DB Account PRIMARY KEY
+val cosmosEndpoint_cf = "" //enter your Cosmos DB Account URI
+val cosmosMasterKey_cf = "" //enter your Cosmos DB Account PRIMARY KEY
 
 // Databricks notebook target
-val cosmosEndpoint_target = "" //enter your Cosmos DB Account URI
-val cosmosMasterKey_target = "" //enter your Cosmos DB Account PRIMARY KEY
+val cosmosEndpoint_write = "" //enter your Cosmos DB Account URI
+val cosmosMasterKey_write = "" //enter your Cosmos DB Account PRIMARY KEY
 
 // COMMAND ----------
 
 spark.conf.set("spark.sql.catalog.cosmosCatalogSrc", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.accountEndpoint", cosmosEndpoint_source)
-spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.accountKey", cosmosMasterKey_source)
+spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.accountEndpoint", cosmosEndpoint_cf)
+spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.accountKey", cosmosMasterKey_cf)
 spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.views.repositoryPath", "/viewDefinitions" +  java.util.UUID.randomUUID.toString)
 
 spark.conf.set("spark.sql.catalog.cosmosCatalogTgt", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.accountEndpoint", cosmosEndpoint_target)
-spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.accountKey", cosmosMasterKey_target)
+spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.accountEndpoint", cosmosEndpoint_write)
+spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.accountKey", cosmosMasterKey_write)
 spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.views.repositoryPath", "/viewDefinitions" +  java.util.UUID.randomUUID.toString)
 
 // COMMAND ----------
