@@ -3,23 +3,23 @@
 
 /**
  * <p>The Azure JSON library provides interfaces for stream-style JSON reading and writing. Stream-style reading and
- * writing has the type itself defines how to read JSON to create and instance of itself and how it writes JSON.
- * Azure JSON also provides the ability to provide implementations for JSON reading and writing by offering a service
- * provider interface to load implementations from the classpath, the library provides a default implementation if
- * one cannot be found on the classpath.</p>
+ * writing has the type itself define how to read JSON to create and instance of itself and how it writes JSON.
+ * Azure JSON also offers the ability to provide implementations for JSON reading and writing by offering a service
+ * provider interface to load implementations from the classpath. The library provides a default implementation if
+ * one can't be found on the classpath.</p>
  *
  * <h2>Getting Started</h2>
  *
- * <p>{@link com.azure.json.JsonSerializable} is the base of Azure JSON, it is the interface that types implement to
+ * <p>{@link com.azure.json.JsonSerializable} is the base of Azure JSON, it's the interface that types implement to
  * provide stream-style JSON reading and writing functionality. The interface has a single implementable method
- * {@link com.azure.json.JsonSerializable#toJson(com.azure.json.JsonWriter)} that defines how the object will be written
- * as JSON, to the {@link com.azure.json.JsonWriter}, and an over-writable static method
- * {@link com.azure.json.JsonSerializable#fromJson(com.azure.json.JsonReader)} that defines how to read an instance of
- * the object from JSON, being read from the {@link com.azure.json.JsonReader}. The default implementation of
- * {@link com.azure.json.JsonSerializable#fromJson(com.azure.json.JsonReader)} will throw an
- * {@link java.lang.UnsupportedOperationException} if the static method isn't overwritten. Given that the type itself
- * manages JSON serialization the type can be fluent, immutable, or a mix of fluent and immutable, it does not matter
- * as all logic is self-encapsulated.</p>
+ * {@link com.azure.json.JsonSerializable#toJson(com.azure.json.JsonWriter) toJson(JsonWriter)} that defines how the
+ * object is written as JSON, to the {@link com.azure.json.JsonWriter}, and an over-writable static method
+ * {@link com.azure.json.JsonSerializable#fromJson(com.azure.json.JsonReader) fromJson(JsonReader)} that defines how to
+ * read an instance of the object from JSON, being read from the {@link com.azure.json.JsonReader}. The default
+ * implementation of {@link com.azure.json.JsonSerializable#fromJson(com.azure.json.JsonReader) fromJson(JsonReader)}
+ * throws an {@link java.lang.UnsupportedOperationException} if the static method isn't overwritten. Given that the
+ * type itself manages JSON serialization the type can be fluent, immutable, or a mix of fluent and immutable, it 
+ * doesn't matter as all logic is self-encapsulated.</p>
  *
  * <p><strong>Sample: Fluent JsonSerializable</strong></p>
  *

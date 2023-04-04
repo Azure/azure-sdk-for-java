@@ -14,7 +14,7 @@ Azure JSON provides shared primitives, abstractions, and helpers for JSON.
 
 #### Include direct dependency
 
-If you want to take dependency on a particular version of the library that is not present in the BOM,
+If you want to take dependency on a particular version of the library that isn't present in the BOM,
 add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-json;current})
@@ -33,8 +33,8 @@ add the direct dependency to your project as follows.
 
 `JsonSerializable` is used to define how an object is JSON serialized and deserialized using stream-style serialization
 where the object itself manages the logic for how it's handled. The interface provides an instance-based `toJson` API 
-which handles writing the object to a `JsonWriter` and a static `fromJson` API which implementations must override to 
-define how an object is created by reading from a `JsonReader`.
+that handles writing the object to a `JsonWriter` and a static `fromJson` API which implementations must overwrite to 
+define how to create an object by reading from a `JsonReader`.
 
 ### JsonToken
 
@@ -52,69 +52,69 @@ could be called indefinitely returning the same integer without error until `nex
 forward.
 
 `JsonReader` allows for type conversion between JSON types, such as trying to convert a JSON string to a number or vice
-versa, and for commonly used non-standard JSON values, such as `NaN`, `INF`, `-INF`, `Infinity`, and `-Infinity`.
+versa, and for commonly used nonstandard JSON values, such as `NaN`, `INF`, `-INF`, `Infinity`, and `-Infinity`.
 
-`JsonReader` doesn't take ownership of the JSON input source and therefore won't close any resources if the JSON is 
+`JsonReader` doesn't take ownership of the JSON input source and therefore doesn't close any resources if the JSON is 
 provided using an `InputStream` or `Reader`.
 
 #### Nesting Limits
 
-To prevent `StackOverflowError`s `JsonReader`'s generic `readUntyped` API tracks how deeply nested the object being read
-is, if the nesting passes the threshold of `1000` an `IllegalStateException` will be thrown in an attempt to prevent
-the stack from overflowing.
+To prevent `StackOverflowError`s, `JsonReader`'s generic `readUntyped` API tracks how deeply nested the object being read
+is, if the nesting passes the threshold of `1000` an `IllegalStateException` is thrown in an attempt to prevent the stack 
+from overflowing.
 
 ### JsonWriter
 
 `JsonWriter` provides both basic, writing primitives and boxed primitive types, and convenience, writing arrays, maps,
 and objects, APIs for writing JSON. `JsonWriter` is provided to allow for any underlying JSON writer to implement it,
-such as Jackson or GSON, as long as the implementation passes the tests provided by this package's test-jar
+such as Jackson or GSON, as long as the implementation passes the tests provided by the package's test-jar
 (`JsonWriterContractTests`).
 
-`JsonWriter` allows for commonly used non-standard JSON values, such as `NaN`, `INF`, `-INF`, `Infinity`, and 
+`JsonWriter` allows for commonly used nonstandard JSON values, such as `NaN`, `INF`, `-INF`, `Infinity`, and 
 `-Infinity`, to be written using `writeNumberField` or `writeRawValue`.
 
-`JsonWriter` won't write null `byte[]`, `Boolean`, `Number`, or `String` values when written as a field, 
+`JsonWriter` doesn't write null `byte[]`, `Boolean`, `Number`, or `String` values when written as a field, 
 `writeBinaryField`, `writeBooleanField`, `writeNumberField`, or `writeStringField`, if a null field needs to be written
 use `writeNullField`.
 
-`JsonWriter` must be periodically flushed to ensure content written to it is flushed to the underlying container type,
+`JsonWriter` must be periodically flushed to ensure content written to it's flushed to the underlying container type,
 generally an `OutputStream` or `Writer`. Failing to flush may result in content being lost. Closing the `JsonWriter`
-will also flush content, so it's best practice to use `JsonWriter` in a try-with-resources block where the `JsonWriter` 
-will be closed once it's finished being used.
+flushes content, so it's best practice to use `JsonWriter` in a try-with-resources block where the `JsonWriter` is 
+closed once it's finished being used.
 
-`JsonWriter` doesn't take ownership of the JSON output source and therefore won't close any resources if the JSON is
+`JsonWriter` doesn't take ownership of the JSON output source and therefore doesn't close any resources if the JSON is
 being written to an `OutputSteam` or `Writer`.
 
 #### JSON State Management
 
-To ensure that the JSON being written is valid `JsonWriter` will maintain the state of the JSON using `JsonWriteContext`
-and on each attempt to write it will validate whether the operation is valid. The implementation of `JsonWriter` must
-ensure this is tracked correctly, for example when nothing has been written the JSON state must be `ROOT` and `ROOT`
+To ensure that the JSON being written is valid, `JsonWriter` maintains the state of the JSON using `JsonWriteContext`
+and on each attempt to write it validates whether the operation is valid. The implementation of `JsonWriter` must
+ensure state is tracked correctly, for example when nothing has been written the JSON state must be `ROOT` and `ROOT`
 doesn't allow for JSON field names to be written.
 
 ### JsonProvider
 
-`JsonProvider` is a service provider interface which allows for `JsonReader`s and `JsonWriter`s to be created using
-implementations found on the classpath. `JsonProvider` can also create the default implementations which are provided
+`JsonProvider` is a service provider interface that allows for `JsonReader`s and `JsonWriter`s to be created using
+implementations found on the classpath. `JsonProvider` can also create the default implementations that are provided
 by this package if an implementation isn't found on the classpath.
 
 #### JsonOptions
 
-`JsonOptions` contains configurations that are respected by all implementations of `JsonReader`s and `JsonWriter`s. At
-this time there is only one configuration for determining whether non-numeric numbers, `NaN`, `INF`, `-INF`, `Infinity`, 
+`JsonOptions` contains configurations that must be respected by all implementations of `JsonReader`s and `JsonWriter`s. 
+At this time, there's only one configuration for determining whether non-numeric numbers, `NaN`, `INF`, `-INF`, `Infinity`, 
 and `-Infinity` are supported in JSON reading and writing with a default setting of `true`, that non-numeric numbers 
 are allowed.
 
 ### Providing an SPI implementation
 
 `JsonReader` and `JsonWriter` are service provider interfaces used by `JsonProvider` and `JsonProviders` to enable
-implementations to be loaded from the class path. The Azure JSON package provides a default implementation that will be
+implementations to be loaded from the class path. The Azure JSON package provides a default implementation that is
 used if one can't be found on the class path. To provide a custom implementation, implement `JsonReader`, `JsonWriter`,
 and `JsonProvider` in your own package and indicate that the package provides an instance of `JsonProvider`. To ensure
-that your implementations are correct include the `test` scoped dependency of Azure JSON and extend the
+that your implementations are correct, include the `test` scoped dependency of Azure JSON and extend the
 `JsonReaderContractTests`, `JsonWriterContractTests`, and `JsonProviderContractTests`. These tests outline all basic
-contract requirements set forth by `JsonReader`, `JsonWriter`, and `JsonProvider` as well as testing a few complex
-scenarios to provide validation of any implementation.
+contract requirements set forth by `JsonReader`, `JsonWriter`, and `JsonProvider` and testing a few complex scenarios 
+to provide validation of any implementation.
 
 ## Examples
 

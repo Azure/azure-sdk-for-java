@@ -23,6 +23,11 @@ Please refer to the [Getting Started][sdk_readme_getting_started] section of the
 
 ## Examples
 
+- [Basic JsonSerializable][sample_basic_json_serializable]
+- [JsonSerializable with Required Properties][sample_json_serializable_with_required_properties]
+- [JsonSerializable with Additional Properties][sample_json_serializable_with_additional_properties]
+- [JsonSerializable with Flattened Properties][sample_json_serializable_with_flattened_properties]
+
 ## Troubleshooting
 
 See the [Troubleshooting][sdk_readme_troubleshooting] section of the library's root README. 
@@ -37,6 +42,10 @@ See the [Contributing][sdk_readme_contributing] section of the library's root RE
 
 <!-- Links -->
 
+[sample_basic_json_serializable]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/src/samples/java/com/azure/json/BasicJsonSerializable.java
+[sample_json_serializable_with_required_properties]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/src/samples/java/com/azure/json/RequiredPropertiesJsonSerializable.java
+[sample_json_serializable_with_additional_properties]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/src/samples/java/com/azure/json/AdditionalPropertiesJsonSerializable.java
+[sample_json_serializable_with_flattened_properties]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/src/samples/java/com/azure/json/FlattenedPropertiesJsonSerializable.java
 [sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/README.md#key-concepts
 [sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/README.md#getting-started
 [sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/README.md#troubleshooting
