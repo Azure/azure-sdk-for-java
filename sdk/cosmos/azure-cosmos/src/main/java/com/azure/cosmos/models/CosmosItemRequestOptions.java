@@ -317,6 +317,9 @@ public class CosmosItemRequestOptions {
      * - any CosmosClient wide configuration will be ignored.
      * <br/>
      * Bulk/Delete by PK/Transactional Batch/Stroed Procedure execution: No automatic retries are supported.
+     * @param nonIdempotentWriteRetriesEnabled  a flag indicating whether the SDK should enable automatic retries for
+     * an operation when idempotency can't be guaranteed because for the previous attempt a request has been sent
+     * on the network.
      * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
      * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
      * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property

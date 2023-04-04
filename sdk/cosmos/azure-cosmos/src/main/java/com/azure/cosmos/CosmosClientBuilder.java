@@ -686,41 +686,62 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets a flag indicating whether to allow retries for write operations when the SDK can't guarantee that
-     * the retry won't impact idempotency. This is for example the case, when retrying a createItem operation
-     * after the initial attempt timed-out after writing the request payload on the network connection. It is
-     * unclear whether the initial request ever reached the service and was processed there or not. The retry
-     * could return a 409-Conflict response simply because the initial attempt was processed.
-     * When enabling write retries even when idempotency is not guaranteed the SDK will apply a few extra
-     * steps to minimize the risk for the caller of facing these idempotency issues due to retries. If enabled.
-     * the SDK will use a system property "_trackingId" which will be stored in the documents to help
-     * filter out failure conditions caused simply by retries for requests that have actually been processed already
-     * by the service. For example a 409 on a retry would be mapped back to a 201 if the document has the same
-     * _trackingId value the initial attempt to create the document used.
-     * <p>
-     * DEFAULT value is false.
-     * <p>
+     * Enables automatic retries for write operations even when the SDK can't
+     * guarantee that they are idempotent. This is the default behavior for the entire Cosmos client - the policy can be
+     * overridden for individual operations in the request options.
+     * <br/>>
      * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
      * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch
-     * operations by default (unless overridden in the request options) retries are always disabled by default
-     * when the retry can't be guaranteed to be idempotent. The exception for patch is used because whether
-     * a retry is "safe" for a patch operation really depends on the set of patch instructions. The documentation
-     * for the patch operation has more details.
-     *
+     * operations by default (unless overridden in the request options) retries are always disabled by default.
+     * <br/>
+     * - Create: retries can result in surfacing (more) 409-Conflict requests to the application when a retry tries
+     * to create a document that the initial attempt successfully created. When enabling
+     * useTrackingIdPropertyForCreateAndReplace this can be avoided for 409-Conflict caused by retries.
+     * <br/>
+     * - Replace: retries can result in surfacing (more) 412-Precondition failure requests to the application when a
+     * replace operations are using a pre-condition check (etag) and a retry tries to update a document that the
+     * initial attempt successfully updated (causing the etag to change). When enabling
+     * useTrackingIdPropertyForCreateAndReplace this can be avoided for 412-Precondition failures caused by retries.
+     * <br/>
+     * - Delete: retries can result in surfacing (more) 404-NotFound requests when a delete operation is retried and the
+     * initial attempt succeeded. Ideally, write retries should only be enabled when applications can gracefully
+     * handle 404 - Not Found.
+     * <br/>
+     * - Upsert: retries can result in surfacing a 200 - looking like the document was updated when actually the
+     * document has been created by the initial attempt - so logically within the same operation. This will only
+     * impact applications who have special casing for 201 vs. 200 for upsert operations.
+     * <br/>
+     * Patch: retries for patch can but will not always be idempotent - it completely depends on the patch operations
+     * being executed and the precondition filters being used. Before enabling write retries for patch this needs
+     * to be carefully reviewed and tests - which is wht retries for patch can only be enabled on request options
+     * - any CosmosClient wide configuration will be ignored.
+     * <br/>
+     * Bulk/Delete by PK/Transactional Batch/Stroed Procedure execution: No automatic retries are supported.
+     * @param nonIdempotentWriteRetriesEnabled  a flag indicating whether the SDK should enable automatic retries for
+     * an operation when idempotency can't be guaranteed because for the previous attempt a request has been sent
+     * on the network.
      * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
-     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due to
-     * retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
+     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
+     * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
      * for which the value will be updated by the SDK. If it is not desired to add this new json property (for example
-     * due to the RU-increase based on the payload size or because it causes documents to exceed the 2 MB upper limit),
-     * the usage of this system property can be disabled by setting this parameter to false. This means there could be
-     * a higher level of 409/312 due to retries - and applications would need to handle them gracefully on their own.
-     * @return current CosmosClientBuilder
+     * due to the RU-increase based on the payload size or because it causes documents to exceed the max payload size
+     * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
+     * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
+     * on their own.
+     * @return the CosmosItemRequestOptions
      */
-    CosmosClientBuilder enableNonIdempotentWriteRetries(boolean useTrackingIdPropertyForCreateAndReplace) {
-        if (useTrackingIdPropertyForCreateAndReplace) {
-            this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
+    CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean useTrackingIdPropertyForCreateAndReplace) {
+
+        if (nonIdempotentWriteRetriesEnabled) {
+            if (useTrackingIdPropertyForCreateAndReplace) {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
+            } else {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
+            }
         } else {
-            this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
+            this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
         }
         return this;
     }

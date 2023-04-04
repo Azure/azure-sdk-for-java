@@ -74,7 +74,6 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
      * Disables automatic retries for write operations when the SDK can't
      * guarantee that they are idempotent. This is an override of the
      * {@link CosmosClientBuilder} behavior for a specific operation.
-     * <p>
      *
      * @return the CosmosPatchItemRequestOptions.
      */
