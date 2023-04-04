@@ -4,6 +4,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSignatureType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -4,10 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentImage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

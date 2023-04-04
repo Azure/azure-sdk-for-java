@@ -404,19 +404,23 @@ public final class DocumentPage {
                 documentPage.setKind(pageKind);
             }
 
-            void setImages(DocumentPage documentPage, List<DocumentImage> images) {
+            @Override
+            public void setImages(DocumentPage documentPage, List<DocumentImage> images) {
                 documentPage.setImages(images);
             }
 
-            void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
+            @Override
+            public void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
                 documentPage.setFormulas(formulas);
             }
 
-            void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
+            @Override
+            public void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
                 documentPage.setBarcodes(barcodes);
             }
 
-            void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations) {
+            @Override
+            public void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations) {
                 documentPage.setAnnotations(annotations);
             }
         });

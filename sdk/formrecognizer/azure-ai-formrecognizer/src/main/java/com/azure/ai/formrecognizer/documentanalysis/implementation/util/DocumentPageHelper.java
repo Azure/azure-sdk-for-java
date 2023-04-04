@@ -3,6 +3,10 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentImage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
@@ -36,10 +40,10 @@ public final class DocumentPageHelper {
         void setSelectionMarks(DocumentPage documentPage, List<DocumentSelectionMark> selectionMarks);
         void setLines(DocumentPage documentPage, List<DocumentLine> lines);
         void setKind(DocumentPage documentPage, DocumentPageKind kind);
-        void setKind(DocumentPage documentPage, DocumentPageKind kind);
-        void setKind(DocumentPage documentPage, DocumentPageKind kind);
-        void setKind(DocumentPage documentPage, DocumentPageKind kind);
-        void setKind(DocumentPage documentPage, DocumentPageKind kind);
+        void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations);
+        void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes);
+        void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas);
+        void setImages(DocumentPage documentPage, List<DocumentImage> images);
 
     }
 
@@ -84,5 +88,17 @@ public final class DocumentPageHelper {
     }
     static void setKind(DocumentPage documentPage, DocumentPageKind kind) {
         accessor.setKind(documentPage, kind);
+    }
+    static void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations) {
+        accessor.setAnnotations(documentPage, annotations);
+    }
+    static void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
+        accessor.setBarcodes(documentPage, barcodes);
+    }
+    static void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
+        accessor.setFormulas(documentPage, formulas);
+    }
+    static void setImages(DocumentPage documentPage, List<DocumentImage> images) {
+        accessor.setImages(documentPage, images);
     }
 }
