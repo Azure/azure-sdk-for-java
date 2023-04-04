@@ -643,7 +643,8 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized, canLogAtLevel(LogLevel.WARNING));
+        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized,
+            canLogAtLevel(LogLevel.WARNING));
     }
 
     /**
@@ -665,7 +666,8 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContextSerialized, canLogAtLevel(LogLevel.INFORMATIONAL));
+        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContextSerialized,
+            canLogAtLevel(LogLevel.INFORMATIONAL));
     }
 
     /**
@@ -686,6 +688,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized, canLogAtLevel(LogLevel.VERBOSE));
+        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized,
+            canLogAtLevel(LogLevel.VERBOSE));
     }
 }

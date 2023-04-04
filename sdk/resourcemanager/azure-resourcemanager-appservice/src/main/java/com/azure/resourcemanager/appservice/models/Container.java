@@ -47,6 +47,10 @@ public final class Container {
     @JsonProperty(value = "resources")
     private ContainerResources resources;
 
+    /** Creates an instance of Container class. */
+    public Container() {
+    }
+
     /**
      * Get the image property: Container image tag.
      *

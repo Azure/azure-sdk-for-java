@@ -41,6 +41,10 @@ public final class DesktopProperties {
     @JsonProperty(value = "iconContent", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] iconContent;
 
+    /** Creates an instance of DesktopProperties class. */
+    public DesktopProperties() {
+    }
+
     /**
      * Get the objectId property: ObjectId of Desktop. (internal use).
      *

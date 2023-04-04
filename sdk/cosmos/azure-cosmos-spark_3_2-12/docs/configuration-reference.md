@@ -2,13 +2,23 @@
 
 
 ## Generic Configuration
-| Config Property Name      | Default | Description |
-| :---        |    :----   |         :--- | 
-| `spark.cosmos.accountEndpoint`      | None   | Cosmos DB Account Endpoint Uri |
-| `spark.cosmos.accountKey`      | None    | Cosmos DB Account Key  |
-| `spark.cosmos.database`      | None    | Cosmos DB database name  |
-| `spark.cosmos.container`      | None    | Cosmos DB container name  |
+| Config Property Name             | Default | Description                                                                                                |
+|:---------------------------------|    :----   |:-----------------------------------------------------------------------------------------------------------| 
+| `spark.cosmos.accountEndpoint`   | None   | Cosmos DB Account Endpoint Uri                                                                             |
+| `spark.cosmos.accountKey`        | None    | Cosmos DB Account Key                                                                                      |
+| `spark.cosmos.database`          | None    | Cosmos DB database name                                                                                    |
+| `spark.cosmos.container`         | None    | Cosmos DB container name                                                                                   |
+| `spark.cosmos.subscriptionId`    | None    | The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.tenantId`          | None    | The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.                      |
+| `spark.cosmos.resourceGroupName` | None    | The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.azureEnvironment`    | `Azure`    | The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`. |
 
+### AAD Auth Config
+| Config Property Name                 | Default | Description                                                                                                                                                             |
+|:-------------------------------------|    :----   |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `spark.cosmos.auth.type`             | `MasterKey`    | There are two auth types are supported currently: `MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrinciple`. |
+| `spark.cosmos.auth.aad.clientId`     | None    | The clientId/ApplicationId of the service principle. Required for `ServicePrinciple` authentication.                                                                                                                                                   |
+| `spark.cosmos.auth.aad.clientSecret` | None    | The client secret/password of the service principle. Required for `ServicePrinciple` authentication.                                                                                                                                                 |
 
 ### Additional Tuning
 | Config Property Name      | Default | Description |
@@ -38,10 +48,12 @@
 | `spark.cosmos.write.patch.filter`      | None        | Used for [Conditional patch](https://docs.microsoft.com/azure/cosmos-db/partial-document-update-getting-started#java) |
 
 ### Query Config
-| Config Property Name      | Default | Description |
-| :---        |    :----   |         :--- | 
-| `spark.cosmos.read.customQuery`      | None   | When provided the custom query will be processed against the Cosmos endpoint instead of dynamically generating the query via predicate push down. Usually it is recommended to rely on Spark's predicate push down because that will allow to generate the most efficient set of filters based on the query plan. But there are a couple of predicates like aggregates (count, group by, avg, sum etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow them to be pushed into the query sent to Cosmos. If specified, with schema inference enabled, the custom query will also be used to infer the schema. |
-| `spark.cosmos.read.maxItemCount`  | `1000`    | Overrides the maximum number of documents that can be returned for a single query- or change feed request. The default value is `1000` - consider increasing this only for average document sizes significantly smaller than 1KB or when projection reduces the number of properties selected in queries significantly (like when only selecting "id" of documents etc.).  |
+| Config Property Name                                           | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:---------------------------------------------------------------|:--------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| `spark.cosmos.read.customQuery`                                | None    | When provided the custom query will be processed against the Cosmos endpoint instead of dynamically generating the query via predicate push down. Usually it is recommended to rely on Spark's predicate push down because that will allow to generate the most efficient set of filters based on the query plan. But there are a couple of predicates like aggregates (count, group by, avg, sum etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow them to be pushed into the query sent to Cosmos. If specified, with schema inference enabled, the custom query will also be used to infer the schema. |
+| `spark.cosmos.read.maxItemCount`                               | `1000`  | Overrides the maximum number of documents that can be returned for a single query- or change feed request. The default value is `1000` - consider increasing this only for average document sizes significantly smaller than 1KB or when projection reduces the number of properties selected in queries significantly (like when only selecting "id" of documents etc.).                                                                                                                                                                                                                                                                                         |
+| `spark.cosmos.read.maxIntegratedCacheStalenessInMS`        | None    | Sets the max staleness window in milliseconds for the point read or query request results in the integrated cache when using the dedicated gateway. Learn more about `MaxIntegratedCacheStaleness` [here](https://learn.microsoft.com/azure/cosmos-db/integrated-cache#maxintegratedcachestaleness)                                                                                                                                                                                                                                                                                                                                                                      |
+
 
 #### Schema Inference Config
 When doing read operations, users can specify a custom schema or allow the connector to infer it. Schema inference is enabled by default.
@@ -99,3 +111,4 @@ Used to influence the json serialization/deserialization behavior
 | `spark.cosmos.throughputControl.globalControl.container`      | None    | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
 | `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected   |
+| `spark.cosmos.throughputControl.globalControl.useDedicatedContainer`      | `true`  | Flag to indicat when configured with throughput control, whether dedicated throughput control container will be provided.  |

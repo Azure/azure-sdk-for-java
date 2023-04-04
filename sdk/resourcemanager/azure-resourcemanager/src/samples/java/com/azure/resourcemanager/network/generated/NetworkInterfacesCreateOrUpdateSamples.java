@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for NetworkInterfaces CreateOrUpdate. */
 public final class NetworkInterfacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create network interface with Gateway Load Balancer Consumer configured.
@@ -52,11 +51,11 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
                                             .withId(
                                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"))))
                     .withEnableAcceleratedNetworking(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkInterfaceCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkInterfaceCreate.json
      */
     /**
      * Sample code: Create network interface.
@@ -89,6 +88,6 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
                                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/test-ip"))))
                     .withEnableAcceleratedNetworking(true)
                     .withDisableTcpStateTracking(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

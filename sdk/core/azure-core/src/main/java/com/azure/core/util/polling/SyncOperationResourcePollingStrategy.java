@@ -15,6 +15,8 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollResult;
 import com.azure.core.util.polling.implementation.PollingConstants;
@@ -49,6 +51,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
     private final String endpoint;
     private final HttpHeaderName operationLocationHeaderName;
     private final Context context;
+    private final String serviceVersion;
 
     /**
      * Creates an instance of the operation resource polling strategy using a JSON serializer and "Operation-Location"
@@ -57,7 +60,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      */
     public SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, null, new DefaultJsonSerializer(), DEFAULT_OPERATION_LOCATION_HEADER, Context.NONE);
+        this(DEFAULT_OPERATION_LOCATION_HEADER, new PollingStrategyOptions(httpPipeline));
     }
 
     /**
@@ -96,19 +99,30 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
      */
     public SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         String operationLocationHeaderName, Context context) {
-        this(httpPipeline, endpoint, serializer,
-            operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            context);
+        this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
+            new PollingStrategyOptions(httpPipeline)
+            .setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
     }
 
-    private SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint,
-        ObjectSerializer serializer, HttpHeaderName operationLocationHeaderName, Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.endpoint = endpoint;
-        this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
+    /**
+     * Creates an instance of the operation resource polling strategy.
+     *
+     * @param operationLocationHeaderName a custom header for polling the long-running operation.
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException if {@code pollingStrategyOptions} is null.
+     */
+    public SyncOperationResourcePollingStrategy(HttpHeaderName operationLocationHeaderName, PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
+        this.endpoint = pollingStrategyOptions.getEndpoint();
+        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer() : new DefaultJsonSerializer();
         this.operationLocationHeaderName = (operationLocationHeaderName == null)
             ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
-        this.context = context == null ? Context.NONE : context;
+
+        this.serviceVersion = pollingStrategyOptions.getServiceVersion();
+        this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
     }
 
     @Override
@@ -159,8 +173,10 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
 
     @Override
     public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(operationLocationHeaderName
-            .getCaseSensitiveName()));
+        String url = pollingContext.getData(operationLocationHeaderName
+            .getCaseSensitiveName());
+        url = setServiceVersionQueryParam(url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             BinaryData responseBody = response.getBodyAsBinaryData();
@@ -194,8 +210,7 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
                 || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                && pollingContext.getData(PollingConstants.LOCATION) != null) {
+            } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
                 finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
             } else {
                 throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));
@@ -207,11 +222,21 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
             return PollingUtils.deserializeResponseSync(BinaryData.fromString(latestResponseBody), serializer,
                 resultType);
         }
+        finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             BinaryData responseBody = response.getBodyAsBinaryData();
             return PollingUtils.deserializeResponseSync(responseBody, serializer, resultType);
         }
+    }
+
+    private String setServiceVersionQueryParam(String url) {
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+        return url;
     }
 }

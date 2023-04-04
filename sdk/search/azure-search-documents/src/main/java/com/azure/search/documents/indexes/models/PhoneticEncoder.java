@@ -6,42 +6,39 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PhoneticEncoder. */
+/** Identifies the type of phonetic encoder to use with a PhoneticTokenFilter. */
 public enum PhoneticEncoder {
-    /** Enum value metaphone. */
+    /** Encodes a token into a Metaphone value. */
     METAPHONE("metaphone"),
 
-    /** Enum value doubleMetaphone. */
+    /** Encodes a token into a double metaphone value. */
     DOUBLE_METAPHONE("doubleMetaphone"),
 
-    /** Enum value soundex. */
+    /** Encodes a token into a Soundex value. */
     SOUNDEX("soundex"),
 
-    /** Enum value refinedSoundex. */
+    /** Encodes a token into a Refined Soundex value. */
     REFINED_SOUNDEX("refinedSoundex"),
 
-    /** Enum value caverphone1. */
+    /** Encodes a token into a Caverphone 1.0 value. */
     CAVERPHONE1("caverphone1"),
 
-    /** Enum value caverphone2. */
+    /** Encodes a token into a Caverphone 2.0 value. */
     CAVERPHONE2("caverphone2"),
 
-    /** Enum value cologne. */
+    /** Encodes a token into a Cologne Phonetic value. */
     COLOGNE("cologne"),
 
-    /** Enum value nysiis. */
+    /** Encodes a token into a NYSIIS value. */
     NYSIIS("nysiis"),
 
-    /** Enum value koelnerPhonetik. */
+    /** Encodes a token using the Kölner Phonetik algorithm. */
     KOELNER_PHONETIK("koelnerPhonetik"),
 
-    /** Enum value haasePhonetik. */
+    /** Encodes a token using the Haase refinement of the Kölner Phonetik algorithm. */
     HAASE_PHONETIK("haasePhonetik"),
 
-    /** Enum value beiderMorse. */
+    /** Encodes a token into a Beider-Morse value. */
     BEIDER_MORSE("beiderMorse");
 
     /** The actual serialized value for a PhoneticEncoder instance. */
@@ -57,7 +54,6 @@ public enum PhoneticEncoder {
      * @param value the serialized value to parse.
      * @return the parsed PhoneticEncoder object, or null if unable to parse.
      */
-    @JsonCreator
     public static PhoneticEncoder fromString(String value) {
         if (value == null) {
             return null;
@@ -71,7 +67,7 @@ public enum PhoneticEncoder {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

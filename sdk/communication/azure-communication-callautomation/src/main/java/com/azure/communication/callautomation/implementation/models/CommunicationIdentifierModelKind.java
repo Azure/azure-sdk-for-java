@@ -33,7 +33,11 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
         return fromString(name, CommunicationIdentifierModelKind.class);
     }
 
-    /** @return known CommunicationIdentifierModelKind values. */
+    /**
+     * Gets known CommunicationIdentifierModelKind values.
+     *
+     * @return known CommunicationIdentifierModelKind values.
+     */
     public static Collection<CommunicationIdentifierModelKind> values() {
         return values(CommunicationIdentifierModelKind.class);
     }

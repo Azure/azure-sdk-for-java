@@ -7,17 +7,16 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceList;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceList model = BinaryData.fromString("{\"nextLink\":\"bkzgcwrwclx\"}").toObject(ResourceList.class);
         Assertions.assertEquals("bkzgcwrwclx", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceList model = new ResourceList().withNextLink("bkzgcwrwclx");
         model = BinaryData.fromObject(model).toObject(ResourceList.class);
         Assertions.assertEquals("bkzgcwrwclx", model.nextLink());

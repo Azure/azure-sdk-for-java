@@ -15,65 +15,61 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadType;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureVMAppContainerProtectionContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureVMAppContainerProtectionContainer model =
             BinaryData
                 .fromString(
-                    "{\"containerType\":\"VMAppContainer\",\"sourceResourceId\":\"lrvkmjc\",\"lastUpdatedTime\":\"2021-04-16T01:01:12Z\",\"extendedInfo\":{\"hostServerName\":\"gfggcvkyylizrzbj\",\"inquiryInfo\":{\"status\":\"xsfuztlvt\",\"inquiryDetails\":[]},\"nodesList\":[{\"nodeName\":\"dqlvhukoveof\",\"status\":\"rvjfnmjmvlw\"}]},\"workloadType\":\"Sharepoint\",\"operationType\":\"Reregister\",\"friendlyName\":\"ujr\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"juid\",\"healthStatus\":\"uuyjucejikz\",\"protectableObjectType\":\"ovvtzejetjkln\"}")
+                    "{\"containerType\":\"VMAppContainer\",\"sourceResourceId\":\"cjc\",\"lastUpdatedTime\":\"2021-04-22T19:07:29Z\",\"extendedInfo\":{\"hostServerName\":\"snsqowxwcoml\",\"inquiryInfo\":{\"status\":\"twvc\",\"inquiryDetails\":[]},\"nodesList\":[{\"nodeName\":\"ve\",\"status\":\"fdv\"}]},\"workloadType\":\"Invalid\",\"operationType\":\"Register\",\"friendlyName\":\"f\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"dpqthehn\",\"healthStatus\":\"aoyankcoeqswa\",\"protectableObjectType\":\"ltytmhdr\"}")
                 .toObject(AzureVMAppContainerProtectionContainer.class);
-        Assertions.assertEquals("ujr", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
-        Assertions.assertEquals("juid", model.registrationStatus());
-        Assertions.assertEquals("uuyjucejikz", model.healthStatus());
-        Assertions.assertEquals("ovvtzejetjkln", model.protectableObjectType());
-        Assertions.assertEquals("lrvkmjc", model.sourceResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T01:01:12Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("gfggcvkyylizrzbj", model.extendedInfo().hostServerName());
-        Assertions.assertEquals("xsfuztlvt", model.extendedInfo().inquiryInfo().status());
-        Assertions.assertEquals("dqlvhukoveof", model.extendedInfo().nodesList().get(0).nodeName());
-        Assertions.assertEquals("rvjfnmjmvlw", model.extendedInfo().nodesList().get(0).status());
-        Assertions.assertEquals(WorkloadType.SHAREPOINT, model.workloadType());
-        Assertions.assertEquals(OperationType.REREGISTER, model.operationType());
+        Assertions.assertEquals("f", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("dpqthehn", model.registrationStatus());
+        Assertions.assertEquals("aoyankcoeqswa", model.healthStatus());
+        Assertions.assertEquals("ltytmhdr", model.protectableObjectType());
+        Assertions.assertEquals("cjc", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T19:07:29Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("snsqowxwcoml", model.extendedInfo().hostServerName());
+        Assertions.assertEquals("twvc", model.extendedInfo().inquiryInfo().status());
+        Assertions.assertEquals("ve", model.extendedInfo().nodesList().get(0).nodeName());
+        Assertions.assertEquals("fdv", model.extendedInfo().nodesList().get(0).status());
+        Assertions.assertEquals(WorkloadType.INVALID, model.workloadType());
+        Assertions.assertEquals(OperationType.REGISTER, model.operationType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureVMAppContainerProtectionContainer model =
             new AzureVMAppContainerProtectionContainer()
-                .withFriendlyName("ujr")
-                .withBackupManagementType(BackupManagementType.INVALID)
-                .withRegistrationStatus("juid")
-                .withHealthStatus("uuyjucejikz")
-                .withProtectableObjectType("ovvtzejetjkln")
-                .withSourceResourceId("lrvkmjc")
-                .withLastUpdatedTime(OffsetDateTime.parse("2021-04-16T01:01:12Z"))
+                .withFriendlyName("f")
+                .withBackupManagementType(BackupManagementType.AZURE_SQL)
+                .withRegistrationStatus("dpqthehn")
+                .withHealthStatus("aoyankcoeqswa")
+                .withProtectableObjectType("ltytmhdr")
+                .withSourceResourceId("cjc")
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-04-22T19:07:29Z"))
                 .withExtendedInfo(
                     new AzureWorkloadContainerExtendedInfo()
-                        .withHostServerName("gfggcvkyylizrzbj")
-                        .withInquiryInfo(new InquiryInfo().withStatus("xsfuztlvt").withInquiryDetails(Arrays.asList()))
-                        .withNodesList(
-                            Arrays
-                                .asList(
-                                    new DistributedNodesInfo().withNodeName("dqlvhukoveof").withStatus("rvjfnmjmvlw"))))
-                .withWorkloadType(WorkloadType.SHAREPOINT)
-                .withOperationType(OperationType.REREGISTER);
+                        .withHostServerName("snsqowxwcoml")
+                        .withInquiryInfo(new InquiryInfo().withStatus("twvc").withInquiryDetails(Arrays.asList()))
+                        .withNodesList(Arrays.asList(new DistributedNodesInfo().withNodeName("ve").withStatus("fdv"))))
+                .withWorkloadType(WorkloadType.INVALID)
+                .withOperationType(OperationType.REGISTER);
         model = BinaryData.fromObject(model).toObject(AzureVMAppContainerProtectionContainer.class);
-        Assertions.assertEquals("ujr", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
-        Assertions.assertEquals("juid", model.registrationStatus());
-        Assertions.assertEquals("uuyjucejikz", model.healthStatus());
-        Assertions.assertEquals("ovvtzejetjkln", model.protectableObjectType());
-        Assertions.assertEquals("lrvkmjc", model.sourceResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T01:01:12Z"), model.lastUpdatedTime());
-        Assertions.assertEquals("gfggcvkyylizrzbj", model.extendedInfo().hostServerName());
-        Assertions.assertEquals("xsfuztlvt", model.extendedInfo().inquiryInfo().status());
-        Assertions.assertEquals("dqlvhukoveof", model.extendedInfo().nodesList().get(0).nodeName());
-        Assertions.assertEquals("rvjfnmjmvlw", model.extendedInfo().nodesList().get(0).status());
-        Assertions.assertEquals(WorkloadType.SHAREPOINT, model.workloadType());
-        Assertions.assertEquals(OperationType.REREGISTER, model.operationType());
+        Assertions.assertEquals("f", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("dpqthehn", model.registrationStatus());
+        Assertions.assertEquals("aoyankcoeqswa", model.healthStatus());
+        Assertions.assertEquals("ltytmhdr", model.protectableObjectType());
+        Assertions.assertEquals("cjc", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T19:07:29Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("snsqowxwcoml", model.extendedInfo().hostServerName());
+        Assertions.assertEquals("twvc", model.extendedInfo().inquiryInfo().status());
+        Assertions.assertEquals("ve", model.extendedInfo().nodesList().get(0).nodeName());
+        Assertions.assertEquals("fdv", model.extendedInfo().nodesList().get(0).status());
+        Assertions.assertEquals(WorkloadType.INVALID, model.workloadType());
+        Assertions.assertEquals(OperationType.REGISTER, model.operationType());
     }
 }

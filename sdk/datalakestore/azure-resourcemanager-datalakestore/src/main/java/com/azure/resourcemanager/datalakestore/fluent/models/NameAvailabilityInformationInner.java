@@ -5,35 +5,32 @@
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data Lake Store account name availability result information. */
 @Immutable
 public final class NameAvailabilityInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInformationInner.class);
-
     /*
-     * The Boolean value of true or false to indicate whether the Data Lake
-     * Store account name is available or not.
+     * The Boolean value of true or false to indicate whether the Data Lake Store account name is available or not.
      */
     @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
-     * The reason why the Data Lake Store account name is not available, if
-     * nameAvailable is false.
+     * The reason why the Data Lake Store account name is not available, if nameAvailable is false.
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
     /*
-     * The message describing why the Data Lake Store account name is not
-     * available, if nameAvailable is false.
+     * The message describing why the Data Lake Store account name is not available, if nameAvailable is false.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
+
+    /** Creates an instance of NameAvailabilityInformationInner class. */
+    public NameAvailabilityInformationInner() {
+    }
 
     /**
      * Get the nameAvailable property: The Boolean value of true or false to indicate whether the Data Lake Store

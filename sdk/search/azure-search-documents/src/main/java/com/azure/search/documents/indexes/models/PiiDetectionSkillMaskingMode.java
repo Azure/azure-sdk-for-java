@@ -7,16 +7,27 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PiiDetectionSkillMaskingMode. */
+/** A string indicating what maskingMode to use to mask the personal information detected in the input text. */
 public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<PiiDetectionSkillMaskingMode> {
-    /** Static value none for PiiDetectionSkillMaskingMode. */
+    /** No masking occurs and the maskedText output will not be returned. */
     public static final PiiDetectionSkillMaskingMode NONE = fromString("none");
 
-    /** Static value replace for PiiDetectionSkillMaskingMode. */
+    /**
+     * Replaces the detected entities with the character given in the maskingCharacter parameter. The character will be
+     * repeated to the length of the detected entity so that the offsets will correctly correspond to both the input
+     * text as well as the output maskedText.
+     */
     public static final PiiDetectionSkillMaskingMode REPLACE = fromString("replace");
+
+    /**
+     * Creates a new instance of PiiDetectionSkillMaskingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiDetectionSkillMaskingMode() {}
 
     /**
      * Creates or finds a PiiDetectionSkillMaskingMode from its string representation.
@@ -24,7 +35,6 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
      * @param name a name to look for.
      * @return the corresponding PiiDetectionSkillMaskingMode.
      */
-    @JsonCreator
     public static PiiDetectionSkillMaskingMode fromString(String name) {
         return fromString(name, PiiDetectionSkillMaskingMode.class);
     }

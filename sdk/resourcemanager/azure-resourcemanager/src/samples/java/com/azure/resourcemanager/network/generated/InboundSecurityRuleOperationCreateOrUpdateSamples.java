@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.InboundSecurityRuleInner;
 import com.azure.resourcemanager.network.models.InboundSecurityRules;
 import com.azure.resourcemanager.network.models.InboundSecurityRulesProtocol;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for InboundSecurityRuleOperation CreateOrUpdate. */
 public final class InboundSecurityRuleOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/InboundSecurityRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/InboundSecurityRulePut.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.
@@ -39,6 +38,6 @@ public final class InboundSecurityRuleOperationCreateOrUpdateSamples {
                                     .withProtocol(InboundSecurityRulesProtocol.TCP)
                                     .withSourceAddressPrefix("50.20.121.5/32")
                                     .withDestinationPortRange(22))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

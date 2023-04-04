@@ -19,63 +19,58 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MabJobTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MabJob model =
             BinaryData
                 .fromString(
-                    "{\"jobType\":\"MabJob\",\"duration\":\"PT65H36M23S\",\"actionsInfo\":[\"Invalid\",\"Retriable\",\"Invalid\",\"Cancellable\"],\"mabServerName\":\"zhrgmqgjsxvpqc\",\"mabServerType\":\"AzureSqlContainer\",\"workloadType\":\"SQLDataBase\",\"errorDetails\":[{\"errorString\":\"hsqqgvriibakcl\",\"recommendations\":[\"fr\",\"xousxauzl\",\"vsg\",\"wohqfzizvu\"]}],\"extendedInfo\":{\"tasksList\":[{\"taskId\":\"svth\",\"startTime\":\"2021-07-04T11:04:10Z\",\"endTime\":\"2021-03-05T16:41:13Z\",\"duration\":\"PT133H10M52S\",\"status\":\"vmribiat\"},{\"taskId\":\"plucfotangcfhnyk\",\"startTime\":\"2021-04-07T10:16:52Z\",\"endTime\":\"2021-02-07T12:46:46Z\",\"duration\":\"PT221H57M54S\",\"status\":\"wlmzqwmvtxnjmxmc\"},{\"taskId\":\"udtc\",\"startTime\":\"2021-01-01T06:59:38Z\",\"endTime\":\"2021-04-13T08:58:27Z\",\"duration\":\"PT184H46M33S\",\"status\":\"k\"},{\"taskId\":\"fabuiyjibu\",\"startTime\":\"2021-07-04T05:28:17Z\",\"endTime\":\"2021-10-23T05:21:09Z\",\"duration\":\"PT49H3M48S\",\"status\":\"iknp\"}],\"propertyBag\":{\"ipq\":\"gjiuqhibto\",\"tvqylkmqpzoyhlfb\":\"jedmurrxxgewp\"},\"dynamicErrorMessage\":\"wgcloxoebqinji\"},\"entityFriendlyName\":\"wjfuj\",\"backupManagementType\":\"MAB\",\"operation\":\"cbahhpzpofoiy\",\"status\":\"p\",\"startTime\":\"2021-05-29T00:16:26Z\",\"endTime\":\"2021-09-14T14:45:14Z\",\"activityId\":\"kholvd\"}")
+                    "{\"jobType\":\"MabJob\",\"duration\":\"PT78H42M28S\",\"actionsInfo\":[\"Cancellable\",\"Invalid\",\"Invalid\"],\"mabServerName\":\"ubqmamh\",\"mabServerType\":\"AzureSqlContainer\",\"workloadType\":\"SQLDB\",\"errorDetails\":[{\"errorString\":\"azttaboidvmfq\",\"recommendations\":[\"ubowsepdfgkm\",\"dherngbtcj\",\"ahokqtobkauxofsh\"]}],\"extendedInfo\":{\"tasksList\":[{\"taskId\":\"nulaiywzejywhsl\",\"startTime\":\"2021-06-09T06:05:44Z\",\"endTime\":\"2021-10-11T08:16:03Z\",\"duration\":\"PT94H10M55S\",\"status\":\"npdwr\"},{\"taskId\":\"afgfugsnn\",\"startTime\":\"2021-08-26T04:30:17Z\",\"endTime\":\"2021-07-08T15:54:36Z\",\"duration\":\"PT135H28M58S\",\"status\":\"pococtfjgt\"},{\"taskId\":\"rjvzuyt\",\"startTime\":\"2021-03-14T11:53:49Z\",\"endTime\":\"2021-04-19T09:03:23Z\",\"duration\":\"PT181H51M44S\",\"status\":\"olbauirop\"},{\"taskId\":\"nszonwpngaj\",\"startTime\":\"2020-12-27T04:22:49Z\",\"endTime\":\"2021-06-01T23:38:48Z\",\"duration\":\"PT189H58M33S\",\"status\":\"rtmjfj\"}],\"propertyBag\":{\"nlusfnrd\":\"cxlzhcoxovnekh\",\"tjvidt\":\"jxtxrdc\",\"uwkasiz\":\"gepuslvyjtc\",\"qfecjxeygtuhx\":\"esfuught\"},\"dynamicErrorMessage\":\"cbuewmrswnjlxuz\"},\"entityFriendlyName\":\"wpusxjbaqehg\",\"backupManagementType\":\"MAB\",\"operation\":\"zjqatucoig\",\"status\":\"xncnwfe\",\"startTime\":\"2021-04-30T09:19:55Z\",\"endTime\":\"2021-09-02T11:06:06Z\",\"activityId\":\"m\"}")
                 .toObject(MabJob.class);
-        Assertions.assertEquals("wjfuj", model.entityFriendlyName());
+        Assertions.assertEquals("wpusxjbaqehg", model.entityFriendlyName());
         Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("cbahhpzpofoiy", model.operation());
-        Assertions.assertEquals("p", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T00:16:26Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T14:45:14Z"), model.endTime());
-        Assertions.assertEquals("kholvd", model.activityId());
-        Assertions.assertEquals(Duration.parse("PT65H36M23S"), model.duration());
-        Assertions.assertEquals(JobSupportedAction.INVALID, model.actionsInfo().get(0));
-        Assertions.assertEquals("zhrgmqgjsxvpqc", model.mabServerName());
+        Assertions.assertEquals("zjqatucoig", model.operation());
+        Assertions.assertEquals("xncnwfe", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T09:19:55Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T11:06:06Z"), model.endTime());
+        Assertions.assertEquals("m", model.activityId());
+        Assertions.assertEquals(Duration.parse("PT78H42M28S"), model.duration());
+        Assertions.assertEquals(JobSupportedAction.CANCELLABLE, model.actionsInfo().get(0));
+        Assertions.assertEquals("ubqmamh", model.mabServerName());
         Assertions.assertEquals(MabServerType.AZURE_SQL_CONTAINER, model.mabServerType());
-        Assertions.assertEquals(WorkloadType.SQLDATA_BASE, model.workloadType());
-        Assertions.assertEquals("svth", model.extendedInfo().tasksList().get(0).taskId());
+        Assertions.assertEquals(WorkloadType.SQLDB, model.workloadType());
+        Assertions.assertEquals("nulaiywzejywhsl", model.extendedInfo().tasksList().get(0).taskId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-07-04T11:04:10Z"), model.extendedInfo().tasksList().get(0).startTime());
+                OffsetDateTime.parse("2021-06-09T06:05:44Z"), model.extendedInfo().tasksList().get(0).startTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-03-05T16:41:13Z"), model.extendedInfo().tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT133H10M52S"), model.extendedInfo().tasksList().get(0).duration());
-        Assertions.assertEquals("vmribiat", model.extendedInfo().tasksList().get(0).status());
-        Assertions.assertEquals("gjiuqhibto", model.extendedInfo().propertyBag().get("ipq"));
-        Assertions.assertEquals("wgcloxoebqinji", model.extendedInfo().dynamicErrorMessage());
+                OffsetDateTime.parse("2021-10-11T08:16:03Z"), model.extendedInfo().tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT94H10M55S"), model.extendedInfo().tasksList().get(0).duration());
+        Assertions.assertEquals("npdwr", model.extendedInfo().tasksList().get(0).status());
+        Assertions.assertEquals("cxlzhcoxovnekh", model.extendedInfo().propertyBag().get("nlusfnrd"));
+        Assertions.assertEquals("cbuewmrswnjlxuz", model.extendedInfo().dynamicErrorMessage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MabJob model =
             new MabJob()
-                .withEntityFriendlyName("wjfuj")
+                .withEntityFriendlyName("wpusxjbaqehg")
                 .withBackupManagementType(BackupManagementType.MAB)
-                .withOperation("cbahhpzpofoiy")
-                .withStatus("p")
-                .withStartTime(OffsetDateTime.parse("2021-05-29T00:16:26Z"))
-                .withEndTime(OffsetDateTime.parse("2021-09-14T14:45:14Z"))
-                .withActivityId("kholvd")
-                .withDuration(Duration.parse("PT65H36M23S"))
+                .withOperation("zjqatucoig")
+                .withStatus("xncnwfe")
+                .withStartTime(OffsetDateTime.parse("2021-04-30T09:19:55Z"))
+                .withEndTime(OffsetDateTime.parse("2021-09-02T11:06:06Z"))
+                .withActivityId("m")
+                .withDuration(Duration.parse("PT78H42M28S"))
                 .withActionsInfo(
                     Arrays
-                        .asList(
-                            JobSupportedAction.INVALID,
-                            JobSupportedAction.RETRIABLE,
-                            JobSupportedAction.INVALID,
-                            JobSupportedAction.CANCELLABLE))
-                .withMabServerName("zhrgmqgjsxvpqc")
+                        .asList(JobSupportedAction.CANCELLABLE, JobSupportedAction.INVALID, JobSupportedAction.INVALID))
+                .withMabServerName("ubqmamh")
                 .withMabServerType(MabServerType.AZURE_SQL_CONTAINER)
-                .withWorkloadType(WorkloadType.SQLDATA_BASE)
+                .withWorkloadType(WorkloadType.SQLDB)
                 .withErrorDetails(Arrays.asList(new MabErrorInfo()))
                 .withExtendedInfo(
                     new MabJobExtendedInfo()
@@ -83,55 +78,64 @@ public final class MabJobTests {
                             Arrays
                                 .asList(
                                     new MabJobTaskDetails()
-                                        .withTaskId("svth")
-                                        .withStartTime(OffsetDateTime.parse("2021-07-04T11:04:10Z"))
-                                        .withEndTime(OffsetDateTime.parse("2021-03-05T16:41:13Z"))
-                                        .withDuration(Duration.parse("PT133H10M52S"))
-                                        .withStatus("vmribiat"),
+                                        .withTaskId("nulaiywzejywhsl")
+                                        .withStartTime(OffsetDateTime.parse("2021-06-09T06:05:44Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-10-11T08:16:03Z"))
+                                        .withDuration(Duration.parse("PT94H10M55S"))
+                                        .withStatus("npdwr"),
                                     new MabJobTaskDetails()
-                                        .withTaskId("plucfotangcfhnyk")
-                                        .withStartTime(OffsetDateTime.parse("2021-04-07T10:16:52Z"))
-                                        .withEndTime(OffsetDateTime.parse("2021-02-07T12:46:46Z"))
-                                        .withDuration(Duration.parse("PT221H57M54S"))
-                                        .withStatus("wlmzqwmvtxnjmxmc"),
+                                        .withTaskId("afgfugsnn")
+                                        .withStartTime(OffsetDateTime.parse("2021-08-26T04:30:17Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-07-08T15:54:36Z"))
+                                        .withDuration(Duration.parse("PT135H28M58S"))
+                                        .withStatus("pococtfjgt"),
                                     new MabJobTaskDetails()
-                                        .withTaskId("udtc")
-                                        .withStartTime(OffsetDateTime.parse("2021-01-01T06:59:38Z"))
-                                        .withEndTime(OffsetDateTime.parse("2021-04-13T08:58:27Z"))
-                                        .withDuration(Duration.parse("PT184H46M33S"))
-                                        .withStatus("k"),
+                                        .withTaskId("rjvzuyt")
+                                        .withStartTime(OffsetDateTime.parse("2021-03-14T11:53:49Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-04-19T09:03:23Z"))
+                                        .withDuration(Duration.parse("PT181H51M44S"))
+                                        .withStatus("olbauirop"),
                                     new MabJobTaskDetails()
-                                        .withTaskId("fabuiyjibu")
-                                        .withStartTime(OffsetDateTime.parse("2021-07-04T05:28:17Z"))
-                                        .withEndTime(OffsetDateTime.parse("2021-10-23T05:21:09Z"))
-                                        .withDuration(Duration.parse("PT49H3M48S"))
-                                        .withStatus("iknp")))
-                        .withPropertyBag(mapOf("ipq", "gjiuqhibto", "tvqylkmqpzoyhlfb", "jedmurrxxgewp"))
-                        .withDynamicErrorMessage("wgcloxoebqinji"));
+                                        .withTaskId("nszonwpngaj")
+                                        .withStartTime(OffsetDateTime.parse("2020-12-27T04:22:49Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-06-01T23:38:48Z"))
+                                        .withDuration(Duration.parse("PT189H58M33S"))
+                                        .withStatus("rtmjfj")))
+                        .withPropertyBag(
+                            mapOf(
+                                "nlusfnrd",
+                                "cxlzhcoxovnekh",
+                                "tjvidt",
+                                "jxtxrdc",
+                                "uwkasiz",
+                                "gepuslvyjtc",
+                                "qfecjxeygtuhx",
+                                "esfuught"))
+                        .withDynamicErrorMessage("cbuewmrswnjlxuz"));
         model = BinaryData.fromObject(model).toObject(MabJob.class);
-        Assertions.assertEquals("wjfuj", model.entityFriendlyName());
+        Assertions.assertEquals("wpusxjbaqehg", model.entityFriendlyName());
         Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("cbahhpzpofoiy", model.operation());
-        Assertions.assertEquals("p", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T00:16:26Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T14:45:14Z"), model.endTime());
-        Assertions.assertEquals("kholvd", model.activityId());
-        Assertions.assertEquals(Duration.parse("PT65H36M23S"), model.duration());
-        Assertions.assertEquals(JobSupportedAction.INVALID, model.actionsInfo().get(0));
-        Assertions.assertEquals("zhrgmqgjsxvpqc", model.mabServerName());
+        Assertions.assertEquals("zjqatucoig", model.operation());
+        Assertions.assertEquals("xncnwfe", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T09:19:55Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T11:06:06Z"), model.endTime());
+        Assertions.assertEquals("m", model.activityId());
+        Assertions.assertEquals(Duration.parse("PT78H42M28S"), model.duration());
+        Assertions.assertEquals(JobSupportedAction.CANCELLABLE, model.actionsInfo().get(0));
+        Assertions.assertEquals("ubqmamh", model.mabServerName());
         Assertions.assertEquals(MabServerType.AZURE_SQL_CONTAINER, model.mabServerType());
-        Assertions.assertEquals(WorkloadType.SQLDATA_BASE, model.workloadType());
-        Assertions.assertEquals("svth", model.extendedInfo().tasksList().get(0).taskId());
+        Assertions.assertEquals(WorkloadType.SQLDB, model.workloadType());
+        Assertions.assertEquals("nulaiywzejywhsl", model.extendedInfo().tasksList().get(0).taskId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-07-04T11:04:10Z"), model.extendedInfo().tasksList().get(0).startTime());
+                OffsetDateTime.parse("2021-06-09T06:05:44Z"), model.extendedInfo().tasksList().get(0).startTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-03-05T16:41:13Z"), model.extendedInfo().tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT133H10M52S"), model.extendedInfo().tasksList().get(0).duration());
-        Assertions.assertEquals("vmribiat", model.extendedInfo().tasksList().get(0).status());
-        Assertions.assertEquals("gjiuqhibto", model.extendedInfo().propertyBag().get("ipq"));
-        Assertions.assertEquals("wgcloxoebqinji", model.extendedInfo().dynamicErrorMessage());
+                OffsetDateTime.parse("2021-10-11T08:16:03Z"), model.extendedInfo().tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT94H10M55S"), model.extendedInfo().tasksList().get(0).duration());
+        Assertions.assertEquals("npdwr", model.extendedInfo().tasksList().get(0).status());
+        Assertions.assertEquals("cxlzhcoxovnekh", model.extendedInfo().propertyBag().get("nlusfnrd"));
+        Assertions.assertEquals("cbuewmrswnjlxuz", model.extendedInfo().dynamicErrorMessage());
     }
 
     @SuppressWarnings("unchecked")

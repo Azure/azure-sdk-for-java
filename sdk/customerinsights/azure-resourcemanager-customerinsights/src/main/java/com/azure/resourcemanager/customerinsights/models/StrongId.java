@@ -6,7 +6,7 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +14,6 @@ import java.util.Map;
 /** Property/Properties which represent a unique ID. */
 @Fluent
 public final class StrongId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StrongId.class);
-
     /*
      * The properties which make up the unique ID.
      */
@@ -32,13 +30,19 @@ public final class StrongId {
      * Localized display name.
      */
     @JsonProperty(value = "displayName")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized descriptions.
      */
     @JsonProperty(value = "description")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
+
+    /** Creates an instance of StrongId class. */
+    public StrongId() {
+    }
 
     /**
      * Get the keyPropertyNames property: The properties which make up the unique ID.
@@ -127,14 +131,16 @@ public final class StrongId {
      */
     public void validate() {
         if (keyPropertyNames() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyPropertyNames in model StrongId"));
         }
         if (strongIdName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property strongIdName in model StrongId"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StrongId.class);
 }

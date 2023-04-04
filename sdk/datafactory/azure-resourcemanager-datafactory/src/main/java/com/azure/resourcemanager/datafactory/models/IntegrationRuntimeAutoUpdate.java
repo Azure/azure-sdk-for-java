@@ -17,6 +17,15 @@ public final class IntegrationRuntimeAutoUpdate extends ExpandableStringEnum<Int
     public static final IntegrationRuntimeAutoUpdate OFF = fromString("Off");
 
     /**
+     * Creates a new instance of IntegrationRuntimeAutoUpdate value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeAutoUpdate() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeAutoUpdate from its string representation.
      *
      * @param name a name to look for.

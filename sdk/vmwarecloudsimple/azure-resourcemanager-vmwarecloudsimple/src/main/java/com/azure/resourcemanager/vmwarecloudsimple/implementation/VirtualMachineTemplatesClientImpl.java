@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.VirtualMachineTemplatesClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.VirtualMachineTemplateInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineTemplateListResponse;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineTemplatesClient. */
 public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTemplatesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualMachineTemplatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineTemplatesService service;
 
@@ -59,7 +56,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleVir")
-    private interface VirtualMachineTemplatesService {
+    public interface VirtualMachineTemplatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
@@ -104,7 +101,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -112,7 +111,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listSinglePageAsync(
@@ -166,7 +166,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -175,7 +177,8 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listSinglePageAsync(
@@ -226,7 +229,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -234,7 +239,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineTemplateInner> listAsync(String pcName, String regionId, String resourcePoolName) {
@@ -244,7 +249,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -253,7 +260,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineTemplateInner> listAsync(
@@ -264,7 +271,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -272,7 +281,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineTemplateInner> list(String pcName, String regionId, String resourcePoolName) {
@@ -280,7 +289,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns list of virtual machine templates in region for private cloud.
+     * Implements list of available VM templates
+     *
+     * <p>Returns list of virtual machine templates in region for private cloud.
      *
      * @param pcName The private cloud name.
      * @param regionId The region Id (westus, eastus).
@@ -289,7 +300,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineTemplateInner> list(
@@ -298,7 +309,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns virtual machine templates by its name.
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -306,7 +319,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine template model.
+     * @return virtual machine template model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineTemplateInner>> getWithResponseAsync(
@@ -353,7 +366,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns virtual machine templates by its name.
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -362,7 +377,7 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine template model.
+     * @return virtual machine template model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineTemplateInner>> getWithResponseAsync(
@@ -406,7 +421,9 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     }
 
     /**
-     * Returns virtual machine templates by its name.
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -414,24 +431,39 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine template model.
+     * @return virtual machine template model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineTemplateInner> getAsync(
         String regionId, String pcName, String virtualMachineTemplateName) {
         return getWithResponseAsync(regionId, pcName, virtualMachineTemplateName)
-            .flatMap(
-                (Response<VirtualMachineTemplateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns virtual machine templates by its name.
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
+     *
+     * @param regionId The region Id (westus, eastus).
+     * @param pcName The private cloud name.
+     * @param virtualMachineTemplateName virtual machine template id (vsphereId).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual machine template model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VirtualMachineTemplateInner> getWithResponse(
+        String regionId, String pcName, String virtualMachineTemplateName, Context context) {
+        return getWithResponseAsync(regionId, pcName, virtualMachineTemplateName, context).block();
+    }
+
+    /**
+     * Implements virtual machine template GET method
+     *
+     * <p>Returns virtual machine templates by its name.
      *
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
@@ -443,35 +475,19 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineTemplateInner get(String regionId, String pcName, String virtualMachineTemplateName) {
-        return getAsync(regionId, pcName, virtualMachineTemplateName).block();
-    }
-
-    /**
-     * Returns virtual machine templates by its name.
-     *
-     * @param regionId The region Id (westus, eastus).
-     * @param pcName The private cloud name.
-     * @param virtualMachineTemplateName virtual machine template id (vsphereId).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine template model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualMachineTemplateInner> getWithResponse(
-        String regionId, String pcName, String virtualMachineTemplateName, Context context) {
-        return getWithResponseAsync(regionId, pcName, virtualMachineTemplateName, context).block();
+        return getWithResponse(regionId, pcName, virtualMachineTemplateName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listNextSinglePageAsync(String nextLink) {
@@ -502,12 +518,14 @@ public final class VirtualMachineTemplatesClientImpl implements VirtualMachineTe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of virtual machine templates.
+     * @return list of virtual machine templates along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineTemplateInner>> listNextSinglePageAsync(String nextLink, Context context) {

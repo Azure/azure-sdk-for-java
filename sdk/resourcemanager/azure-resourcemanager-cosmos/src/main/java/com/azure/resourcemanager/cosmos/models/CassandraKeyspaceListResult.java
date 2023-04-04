@@ -18,6 +18,10 @@ public final class CassandraKeyspaceListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CassandraKeyspaceGetResultsInner> value;
 
+    /** Creates an instance of CassandraKeyspaceListResult class. */
+    public CassandraKeyspaceListResult() {
+    }
+
     /**
      * Get the value property: List of Cassandra keyspaces and their properties.
      *

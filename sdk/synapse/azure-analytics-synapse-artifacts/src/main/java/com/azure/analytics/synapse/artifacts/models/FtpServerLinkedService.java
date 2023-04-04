@@ -70,6 +70,9 @@ public class FtpServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
+    /** Creates an instance of FtpServerLinkedService class. */
+    public FtpServerLinkedService() {}
+
     /**
      * Get the host property: Host name of the FTP server. Type: string (or Expression with resultType string).
      *

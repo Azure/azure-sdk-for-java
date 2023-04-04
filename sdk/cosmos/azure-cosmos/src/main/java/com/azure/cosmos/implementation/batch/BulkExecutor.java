@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -48,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -85,6 +82,8 @@ public final class BulkExecutor<TContext> implements Disposable {
 
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
@@ -541,7 +540,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         if (item instanceof CosmosItemOperationBase) {
             return currentTotalSerializedLength.accumulateAndGet(
                 ((CosmosItemOperationBase) item).getSerializedLength(),
-                (currentValue, incremental) -> currentValue + incremental);
+                Integer::sum);
         }
 
         return currentTotalSerializedLength.get();
@@ -831,7 +830,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     if (itemBulkOperation.getOperationType() == CosmosItemOperationType.READ ||
                         (itemBulkOperation.getRequestOptions() != null &&
                             itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
-                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled().booleanValue())) {
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled())) {
 
                         options.setContentResponseOnWriteEnabled(true);
                         break;
@@ -844,17 +843,19 @@ public final class BulkExecutor<TContext> implements Disposable {
             final Mono<CosmosBatchResponse> responseMono = this.docClientWrapper.executeBatchRequest(
                 BridgeInternal.getLink(this.container), serverRequest, options, false);
 
-            return BridgeInternal.getTracerProvider(this.cosmosClient)
+            return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(
                     responseMono,
                     context,
                     this.bulkSpanName,
-                    this.container.getId(),
                     this.container.getDatabase().getId(),
+                    this.container.getId(),
                     this.cosmosClient,
                     options.getConsistencyLevel(),
                     OperationType.Batch,
-                    ResourceType.Document);
+                    ResourceType.Document,
+                    clientAccessor.getEffectiveDiagnosticsThresholds(
+                        this.cosmosClient, options.getDiagnosticsThresholds()));
         });
     }
 
@@ -866,7 +867,18 @@ public final class BulkExecutor<TContext> implements Disposable {
         if (completeEmitResult == Sinks.EmitResult.OK) {
             logger.debug("Main sink completed, Context: {}", this.operationContextText);
         } else {
-            logger.info("Main sink completion failed. EmitResult: {}, Context: {}", completeEmitResult, this.operationContextText);
+            if (completeEmitResult == Sinks.EmitResult.FAIL_CANCELLED ||
+                completeEmitResult == Sinks.EmitResult.FAIL_TERMINATED) {
+
+                logger.debug("Main sink already completed, EmitResult: {}, Context: {}",
+                    completeEmitResult,
+                    this.operationContextText);
+            } else {
+                logger.warn(
+                    "Main sink completion failed. EmitResult: {}, Context: {}",
+                    completeEmitResult,
+                    this.operationContextText);
+            }
         }
 
         this.shutdown();
@@ -886,17 +898,13 @@ public final class BulkExecutor<TContext> implements Disposable {
             return "ItemOperation[Type: Flush]";
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb
-            .append("ItemOperation[Type: ")
-            .append(operation.getOperationType().toString())
-            .append(", PK: ")
-            .append(operation.getPartitionKeyValue() != null ? operation.getPartitionKeyValue().toString() : "n/a")
-            .append(", id: ")
-            .append(operation.getId())
-            .append("]");
-
-        return sb.toString();
+        return "ItemOperation[Type: "
+            + operation.getOperationType().toString()
+            + ", PK: "
+            + (operation.getPartitionKeyValue() != null ? operation.getPartitionKeyValue().toString() : "n/a")
+            + ", id: "
+            + operation.getId()
+            + "]";
     }
 
     private static String getThreadInfo() {

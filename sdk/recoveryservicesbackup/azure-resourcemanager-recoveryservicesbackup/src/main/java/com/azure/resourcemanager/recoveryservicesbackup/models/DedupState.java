@@ -20,6 +20,15 @@ public final class DedupState extends ExpandableStringEnum<DedupState> {
     public static final DedupState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of DedupState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DedupState() {
+    }
+
+    /**
      * Creates or finds a DedupState from its string representation.
      *
      * @param name a name to look for.

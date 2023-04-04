@@ -35,6 +35,10 @@ public final class WorkflowRunActionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of WorkflowRunActionInner class. */
+    public WorkflowRunActionInner() {
+    }
+
     /**
      * Get the innerProperties property: The workflow run action properties.
      *

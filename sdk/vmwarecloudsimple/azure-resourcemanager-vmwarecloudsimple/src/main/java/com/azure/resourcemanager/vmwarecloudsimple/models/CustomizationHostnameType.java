@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomizationHostnameType. */
+/** Type of host name. */
 public final class CustomizationHostnameType extends ExpandableStringEnum<CustomizationHostnameType> {
     /** Static value USER_DEFINED for CustomizationHostnameType. */
     public static final CustomizationHostnameType USER_DEFINED = fromString("USER_DEFINED");
@@ -26,6 +26,15 @@ public final class CustomizationHostnameType extends ExpandableStringEnum<Custom
     public static final CustomizationHostnameType CUSTOM_NAME = fromString("CUSTOM_NAME");
 
     /**
+     * Creates a new instance of CustomizationHostnameType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomizationHostnameType() {
+    }
+
+    /**
      * Creates or finds a CustomizationHostnameType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class CustomizationHostnameType extends ExpandableStringEnum<Custom
         return fromString(name, CustomizationHostnameType.class);
     }
 
-    /** @return known CustomizationHostnameType values. */
+    /**
+     * Gets known CustomizationHostnameType values.
+     *
+     * @return known CustomizationHostnameType values.
+     */
     public static Collection<CustomizationHostnameType> values() {
         return values(CustomizationHostnameType.class);
     }

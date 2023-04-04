@@ -7,13 +7,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IndexerExecutionStatusDetail. */
+/** Details the status of an individual indexer execution. */
 public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<IndexerExecutionStatusDetail> {
-    /** Static value resetDocs for IndexerExecutionStatusDetail. */
+    /** Indicates that the reset that occurred was for a call to ResetDocs. */
     public static final IndexerExecutionStatusDetail RESET_DOCS = fromString("resetDocs");
+
+    /**
+     * Creates a new instance of IndexerExecutionStatusDetail value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IndexerExecutionStatusDetail() {}
 
     /**
      * Creates or finds a IndexerExecutionStatusDetail from its string representation.
@@ -21,7 +28,6 @@ public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<Ind
      * @param name a name to look for.
      * @return the corresponding IndexerExecutionStatusDetail.
      */
-    @JsonCreator
     public static IndexerExecutionStatusDetail fromString(String name) {
         return fromString(name, IndexerExecutionStatusDetail.class);
     }

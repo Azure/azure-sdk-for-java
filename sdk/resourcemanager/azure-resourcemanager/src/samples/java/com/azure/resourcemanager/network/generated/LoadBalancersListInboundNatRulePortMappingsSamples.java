@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRequest;
 
 /** Samples for LoadBalancers ListInboundNatRulePortMappings. */
 public final class LoadBalancersListInboundNatRulePortMappingsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/QueryInboundNatRulePortMapping.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/QueryInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Query inbound NAT rule port mapping.
@@ -28,6 +27,6 @@ public final class LoadBalancersListInboundNatRulePortMappingsSamples {
                 "lb1",
                 "bp1",
                 new QueryInboundNatRulePortMappingRequest().withIpAddress("10.0.0.4"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

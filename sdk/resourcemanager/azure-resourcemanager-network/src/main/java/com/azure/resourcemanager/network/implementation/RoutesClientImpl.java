@@ -62,7 +62,7 @@ public final class RoutesClientImpl implements RoutesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface RoutesService {
+    public interface RoutesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables"
@@ -174,7 +174,7 @@ public final class RoutesClientImpl implements RoutesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -229,7 +229,7 @@ public final class RoutesClientImpl implements RoutesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -302,7 +302,7 @@ public final class RoutesClientImpl implements RoutesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeTableName, String routeName) {
-        return beginDeleteAsync(resourceGroupName, routeTableName, routeName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, routeTableName, routeName).getSyncPoller();
     }
 
     /**
@@ -320,7 +320,7 @@ public final class RoutesClientImpl implements RoutesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeTableName, String routeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, routeTableName, routeName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, routeTableName, routeName, context).getSyncPoller();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class RoutesClientImpl implements RoutesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -484,7 +484,7 @@ public final class RoutesClientImpl implements RoutesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -593,7 +593,7 @@ public final class RoutesClientImpl implements RoutesClient {
         } else {
             routeParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -660,7 +660,7 @@ public final class RoutesClientImpl implements RoutesClient {
         } else {
             routeParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -743,7 +743,9 @@ public final class RoutesClientImpl implements RoutesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(
         String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -766,7 +768,8 @@ public final class RoutesClientImpl implements RoutesClient {
         String routeName,
         RouteInner routeParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters, context)
             .getSyncPoller();
     }
 
@@ -887,7 +890,7 @@ public final class RoutesClientImpl implements RoutesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -946,7 +949,7 @@ public final class RoutesClientImpl implements RoutesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

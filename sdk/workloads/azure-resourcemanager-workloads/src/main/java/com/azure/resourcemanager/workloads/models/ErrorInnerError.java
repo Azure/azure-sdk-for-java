@@ -16,6 +16,10 @@ public final class ErrorInnerError {
     @JsonProperty(value = "innerError")
     private Error innerError;
 
+    /** Creates an instance of ErrorInnerError class. */
+    public ErrorInnerError() {
+    }
+
     /**
      * Get the innerError property: Standard error object.
      *

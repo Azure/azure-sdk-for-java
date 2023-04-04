@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A file containing a set of parameter values for an ARM template. */
 @Fluent
 public final class ParametersValueFileInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParametersValueFileInfo.class);
-
     /*
      * File name.
      */
@@ -25,6 +21,10 @@ public final class ParametersValueFileInfo {
      */
     @JsonProperty(value = "parametersValueInfo")
     private Object parametersValueInfo;
+
+    /** Creates an instance of ParametersValueFileInfo class. */
+    public ParametersValueFileInfo() {
+    }
 
     /**
      * Get the fileName property: File name.

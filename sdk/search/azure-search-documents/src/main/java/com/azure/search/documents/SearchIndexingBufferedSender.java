@@ -15,6 +15,8 @@ import java.util.Collection;
 /**
  * This class provides a buffered sender that contains operations for conveniently indexing documents to an Azure Search
  * index.
+ *
+ * @param <T> The type of the document handled by this buffered indexing sender.
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchIndexingBufferedSender<T> {

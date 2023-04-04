@@ -22,17 +22,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.fluent.ForecastsClient;
-import com.azure.resourcemanager.costmanagement.fluent.models.QueryResultInner;
+import com.azure.resourcemanager.costmanagement.fluent.models.ForecastResultInner;
 import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ForecastsClient. */
 public final class ForecastsClientImpl implements ForecastsClient {
-    private final ClientLogger logger = new ClientLogger(ForecastsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ForecastsService service;
 
@@ -56,12 +53,12 @@ public final class ForecastsClientImpl implements ForecastsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
-    private interface ForecastsService {
+    public interface ForecastsService {
         @Headers({"Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.CostManagement/forecast")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResultInner>> usage(
+        Mono<Response<ForecastResultInner>> usage(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -74,7 +71,7 @@ public final class ForecastsClientImpl implements ForecastsClient {
         @Post("/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/forecast")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResultInner>> externalCloudProviderUsage(
+        Mono<Response<ForecastResultInner>> externalCloudProviderUsage(
             @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
@@ -109,10 +106,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> usageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(
         String scope, ForecastDefinition parameters, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -169,10 +166,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> usageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> usageWithResponseAsync(
         String scope, ForecastDefinition parameters, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -212,91 +209,15 @@ public final class ForecastsClientImpl implements ForecastsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @param filter May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or
-     *     properties/grain. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
-     *     'ne', 'or', or 'not'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> usageAsync(String scope, ForecastDefinition parameters, String filter) {
-        return usageWithResponseAsync(scope, parameters, filter)
-            .flatMap(
-                (Response<QueryResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists the forecast charges for scope defined.
-     *
-     * @param scope The scope associated with forecast operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-     *     Management Group scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billingProfile scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     *     for invoiceSection scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
-     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> usageAsync(String scope, ForecastDefinition parameters) {
+    private Mono<ForecastResultInner> usageAsync(String scope, ForecastDefinition parameters) {
         final String filter = null;
-        return usageWithResponseAsync(scope, parameters, filter)
-            .flatMap(
-                (Response<QueryResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists the forecast charges for scope defined.
-     *
-     * @param scope The scope associated with forecast operations. This includes '/subscriptions/{subscriptionId}/' for
-     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
-     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     *     scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
-     *     Management Group scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billingProfile scope,
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
-     *     for invoiceSection scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
-     *     partners.
-     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultInner usage(String scope, ForecastDefinition parameters) {
-        final String filter = null;
-        return usageAsync(scope, parameters, filter).block();
+        return usageWithResponseAsync(scope, parameters, filter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -324,12 +245,41 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResultInner> usageWithResponse(
+    public Response<ForecastResultInner> usageWithResponse(
         String scope, ForecastDefinition parameters, String filter, Context context) {
         return usageWithResponseAsync(scope, parameters, filter, context).block();
+    }
+
+    /**
+     * Lists the forecast charges for scope defined.
+     *
+     * @param scope The scope associated with forecast operations. This includes '/subscriptions/{subscriptionId}/' for
+     *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
+     *     scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope and
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
+     *     scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
+     *     for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+     *     Management Group scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     *     billingProfile scope,
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+     *     for invoiceSection scope, and
+     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
+     *     partners.
+     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of forecast.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ForecastResultInner usage(String scope, ForecastDefinition parameters) {
+        final String filter = null;
+        return usageWithResponse(scope, parameters, filter, Context.NONE).getValue();
     }
 
     /**
@@ -347,10 +297,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> externalCloudProviderUsageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> externalCloudProviderUsageWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -410,10 +360,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> externalCloudProviderUsageWithResponseAsync(
+    private Mono<Response<ForecastResultInner>> externalCloudProviderUsageWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -464,86 +414,20 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
      * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @param filter May be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or
-     *     properties/grain. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
-     *     'ne', 'or', or 'not'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> externalCloudProviderUsageAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter) {
-        return externalCloudProviderUsageWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters, filter)
-            .flatMap(
-                (Response<QueryResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists the forecast charges for external cloud provider type defined.
-     *
-     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
-     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
-     *     account.
-     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
-     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
-     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> externalCloudProviderUsageAsync(
+    private Mono<ForecastResultInner> externalCloudProviderUsageAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters) {
         final String filter = null;
         return externalCloudProviderUsageWithResponseAsync(
                 externalCloudProviderType, externalCloudProviderId, parameters, filter)
-            .flatMap(
-                (Response<QueryResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists the forecast charges for external cloud provider type defined.
-     *
-     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
-     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
-     *     account.
-     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
-     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
-     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultInner externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters) {
-        final String filter = null;
-        return externalCloudProviderUsageAsync(externalCloudProviderType, externalCloudProviderId, parameters, filter)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -562,10 +446,10 @@ public final class ForecastsClientImpl implements ForecastsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResultInner> externalCloudProviderUsageWithResponse(
+    public Response<ForecastResultInner> externalCloudProviderUsageWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -574,5 +458,30 @@ public final class ForecastsClientImpl implements ForecastsClient {
         return externalCloudProviderUsageWithResponseAsync(
                 externalCloudProviderType, externalCloudProviderId, parameters, filter, context)
             .block();
+    }
+
+    /**
+     * Lists the forecast charges for external cloud provider type defined.
+     *
+     * @param externalCloudProviderType The external cloud provider type associated with dimension/query operations.
+     *     This includes 'externalSubscriptions' for linked account and 'externalBillingAccounts' for consolidated
+     *     account.
+     * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
+     *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param parameters Parameters supplied to the CreateOrUpdate Forecast Config operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of forecast.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ForecastResultInner externalCloudProviderUsage(
+        ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId,
+        ForecastDefinition parameters) {
+        final String filter = null;
+        return externalCloudProviderUsageWithResponse(
+                externalCloudProviderType, externalCloudProviderId, parameters, filter, Context.NONE)
+            .getValue();
     }
 }

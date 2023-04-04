@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for Replications Create. */
 public final class ReplicationsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ReplicationCreate.json
      */
     /**
      * Sample code: ReplicationCreate.
@@ -30,12 +29,12 @@ public final class ReplicationsCreateSamples {
                 "myResourceGroup",
                 "myRegistry",
                 "myReplication",
-                new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "value")),
-                Context.NONE);
+                new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationCreateZoneRedundant.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ReplicationCreateZoneRedundant.json
      */
     /**
      * Sample code: ReplicationCreateZoneRedundant.
@@ -54,10 +53,10 @@ public final class ReplicationsCreateSamples {
                 "myReplication",
                 new ReplicationInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withRegionEndpointEnabled(true)
                     .withZoneRedundancy(ZoneRedundancy.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

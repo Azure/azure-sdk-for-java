@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
-@Fluent
 @JacksonXmlRootElement(localName = "blob-http-headers")
+@Fluent
 public final class BlobHttpHeaders {
 
     /*
@@ -29,7 +29,8 @@ public final class BlobHttpHeaders {
 
     /*
      * Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the
-     * individual blocks were validated when each was uploaded.
+     * individual blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK
+     * will perform the encoding.
      */
     @JsonProperty(value = "contentMd5")
     private byte[] contentMd5;

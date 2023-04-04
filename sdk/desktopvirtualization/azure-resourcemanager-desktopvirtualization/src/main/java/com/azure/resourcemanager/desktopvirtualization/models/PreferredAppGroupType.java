@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PreferredAppGroupType. */
+/** The type of preferred application group type, default to Desktop Application Group. */
 public final class PreferredAppGroupType extends ExpandableStringEnum<PreferredAppGroupType> {
     /** Static value None for PreferredAppGroupType. */
     public static final PreferredAppGroupType NONE = fromString("None");
@@ -18,6 +18,15 @@ public final class PreferredAppGroupType extends ExpandableStringEnum<PreferredA
 
     /** Static value RailApplications for PreferredAppGroupType. */
     public static final PreferredAppGroupType RAIL_APPLICATIONS = fromString("RailApplications");
+
+    /**
+     * Creates a new instance of PreferredAppGroupType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PreferredAppGroupType() {
+    }
 
     /**
      * Creates or finds a PreferredAppGroupType from its string representation.

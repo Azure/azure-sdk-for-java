@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.ExpandEnum;
 
 /** Samples for Assessments Get. */
@@ -25,7 +24,7 @@ public final class AssessmentsGetSamples {
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
                 "21300918-b2e3-0346-785f-c77ff57d243b",
                 ExpandEnum.LINKS,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,6 +43,6 @@ public final class AssessmentsGetSamples {
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
                 "21300918-b2e3-0346-785f-c77ff57d243b",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.InputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.LogVerbosity;
 import com.azure.resourcemanager.machinelearning.models.MLTableJobInput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoMLVerticalTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoMLVertical model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class AutoMLVerticalTests {
         Assertions.assertEquals("yjzp", model.trainingData().uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoMLVertical model =
             new AutoMLVertical()
                 .withLogVerbosity(LogVerbosity.CRITICAL)

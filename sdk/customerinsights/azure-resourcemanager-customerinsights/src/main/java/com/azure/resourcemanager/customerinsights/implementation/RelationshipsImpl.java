@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.RelationshipsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.RelationshipResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.RelationshipResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Relationships;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RelationshipsImpl implements Relationships {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RelationshipsImpl.class);
 
     private final RelationshipsClient innerClient;
 
@@ -29,15 +28,6 @@ public final class RelationshipsImpl implements Relationships {
         this.serviceManager = serviceManager;
     }
 
-    public RelationshipResourceFormat get(String resourceGroupName, String hubName, String relationshipName) {
-        RelationshipResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, relationshipName);
-        if (inner != null) {
-            return new RelationshipResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RelationshipResourceFormat> getWithResponse(
         String resourceGroupName, String hubName, String relationshipName, Context context) {
         Response<RelationshipResourceFormatInner> inner =
@@ -48,6 +38,15 @@ public final class RelationshipsImpl implements Relationships {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RelationshipResourceFormatImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RelationshipResourceFormat get(String resourceGroupName, String hubName, String relationshipName) {
+        RelationshipResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, relationshipName);
+        if (inner != null) {
+            return new RelationshipResourceFormatImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -77,7 +76,7 @@ public final class RelationshipsImpl implements Relationships {
     public RelationshipResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,14 +84,14 @@ public final class RelationshipsImpl implements Relationships {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String relationshipName = Utils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
@@ -103,7 +102,7 @@ public final class RelationshipsImpl implements Relationships {
     public Response<RelationshipResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,14 +110,14 @@ public final class RelationshipsImpl implements Relationships {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String relationshipName = Utils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
@@ -129,7 +128,7 @@ public final class RelationshipsImpl implements Relationships {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,14 +136,14 @@ public final class RelationshipsImpl implements Relationships {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String relationshipName = Utils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
@@ -155,7 +154,7 @@ public final class RelationshipsImpl implements Relationships {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,14 +162,14 @@ public final class RelationshipsImpl implements Relationships {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String relationshipName = Utils.getValueFromIdByName(id, "relationships");
         if (relationshipName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));

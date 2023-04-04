@@ -17,7 +17,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-checkpointstore-jedis</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
 
 
   <name>Microsoft Azure client library for storing checkpoints in Azure Redis</name>
@@ -46,10 +46,16 @@
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+      <version>4.3.1</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -65,7 +71,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.25</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -83,24 +89,22 @@
   </dependencies>
 
   <build>
-  <plugins>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-enforcer-plugin</artifactId>
-      <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-      <configuration>
-        <rules>
-          <bannedDependencies>
-            <includes>
-              <include>redis.clients:jedis:[4.2.3]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
-              <include>org.mockito:mockito-inline:[4.5.1]</include> <!-- {x-include-update;org.mockito:mockito-inline;external_dependency} -->
-            </includes>
-          </bannedDependencies>
-        </rules>
-      </configuration>
-    </plugin>
-  </plugins>
-</build>
-
-
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>redis.clients:jedis:[4.3.1]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
+                <include>org.mockito:mockito-inline:[4.5.1]</include> <!-- {x-include-update;org.mockito:mockito-inline;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

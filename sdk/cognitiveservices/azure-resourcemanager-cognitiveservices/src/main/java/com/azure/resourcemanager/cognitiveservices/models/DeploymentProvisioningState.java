@@ -29,6 +29,15 @@ public final class DeploymentProvisioningState extends ExpandableStringEnum<Depl
     public static final DeploymentProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Creates a new instance of DeploymentProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentProvisioningState() {
+    }
+
+    /**
      * Creates or finds a DeploymentProvisioningState from its string representation.
      *
      * @param name a name to look for.

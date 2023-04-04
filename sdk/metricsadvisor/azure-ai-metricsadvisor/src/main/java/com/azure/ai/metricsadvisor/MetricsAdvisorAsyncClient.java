@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDimensionQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyFeedback;
@@ -12,12 +12,9 @@ import com.azure.ai.metricsadvisor.implementation.models.ChangePointFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.ChangePointFeedbackValue;
 import com.azure.ai.metricsadvisor.implementation.models.CommentFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.CommentFeedbackValue;
-import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyResultQuery;
-import com.azure.ai.metricsadvisor.implementation.models.DetectionIncidentFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionIncidentResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionSeriesQuery;
-import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.EnrichmentStatusQueryOption;
 import com.azure.ai.metricsadvisor.implementation.models.FeedbackDimensionFilter;
 import com.azure.ai.metricsadvisor.implementation.models.MetricDataQueryOptions;
@@ -27,6 +24,7 @@ import com.azure.ai.metricsadvisor.implementation.models.MetricSeriesQueryOption
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedback;
 import com.azure.ai.metricsadvisor.implementation.models.PeriodFeedbackValue;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.TimeMode;
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
@@ -41,7 +39,6 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -61,6 +58,7 @@ import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.ai.metricsadvisor.models.MetricPeriodFeedback;
 import com.azure.ai.metricsadvisor.models.MetricSeriesData;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -77,17 +75,33 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getEnrichmentStatusQueryOptions;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getListAnomaliesDetectedOptions;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getListAnomalyDimensionValuesOptions;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getListIncidentsDetectedOptions;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getMetricDataQueryOptions;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getMetricDimensionQueryOptions;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.getMetricSeriesQueryOptions;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateActiveSinceInput;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateAnomalyDimensionValuesInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateAnomalyIncidentRootCausesInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateIncidentsForDetectionConfigInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateListAlertsInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateListAnomaliesInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateMetricEnrichedSeriesInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateMetricEnrichmentStatusInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateMetricSeriesInputs;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateStartEndTime;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
@@ -107,10 +121,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class, isAsync = true)
 public final class MetricsAdvisorAsyncClient {
-
-    private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     final ClientLogger logger = new ClientLogger(MetricsAdvisorAsyncClient.class);
-    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
+    private final MetricsAdvisorImpl service;
 
     /**
      * Create a {@link MetricsAdvisorAsyncClient} that sends requests to the Metrics Advisor
@@ -120,7 +132,7 @@ public final class MetricsAdvisorAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAsyncClient(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service,
+    MetricsAdvisorAsyncClient(MetricsAdvisorImpl service,
         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }
@@ -211,34 +223,24 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<MetricSeriesDefinition> listMetricSeriesDefinitions(String metricId,
-        OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
-        return new PagedFlux<>(() -> listMetricSeriesDefinitionSinglePageAsync(metricId, activeSince, options,
-            context),
-            continuationToken -> listMetricSeriesDefinitionNextPageAsync(continuationToken, activeSince, options,
-                context));
-    }
-
     private Mono<PagedResponse<MetricSeriesDefinition>> listMetricSeriesDefinitionSinglePageAsync(String metricId,
         OffsetDateTime activeSince, ListMetricSeriesDefinitionOptions options, Context context) {
 
-        if (activeSince == null) {
-            Objects.requireNonNull(options, "'activeSince' is required and cannot be null.");
-        }
+        validateActiveSinceInput(activeSince, logger);
 
         if (options == null) {
             options = new ListMetricSeriesDefinitionOptions();
         }
 
-        final MetricSeriesQueryOptions metricSeriesQueryOptions = new MetricSeriesQueryOptions()
-            .setActiveSince(activeSince).setDimensionFilter(options.getDimensionCombinationsToFilter());
+        final MetricSeriesQueryOptions metricSeriesQueryOptions =
+            getMetricSeriesQueryOptions(activeSince, options);
 
         return service.getMetricSeriesSinglePageAsync(UUID.fromString(metricId), metricSeriesQueryOptions,
             options.getSkip(), options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing information metric series definitions"))
             .doOnSuccess(response -> logger.info("Listed metric series definitions - {}", response))
             .doOnError(error -> logger.warning("Failed to list metric series definitions information - {}", error))
-            .map(res -> MetricSeriesDefinitionTransforms.fromInnerResponse(res));
+            .map(MetricSeriesDefinitionTransforms::fromInnerResponse);
     }
 
     private Mono<PagedResponse<MetricSeriesDefinition>> listMetricSeriesDefinitionNextPageAsync(String nextPageLink,
@@ -246,22 +248,20 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        if (activeSince == null) {
-            Objects.requireNonNull(options, "'activeSince' is required and cannot be null.");
-        }
+        validateActiveSinceInput(activeSince, logger);
 
         if (options == null) {
             options = new ListMetricSeriesDefinitionOptions();
         }
-        final MetricSeriesQueryOptions metricSeriesQueryOptions = new MetricSeriesQueryOptions()
-            .setActiveSince(activeSince).setDimensionFilter(options.getDimensionCombinationsToFilter());
+        final MetricSeriesQueryOptions metricSeriesQueryOptions =
+            getMetricSeriesQueryOptions(activeSince, options);
 
         return service.getMetricSeriesNextSinglePageAsync(nextPageLink, metricSeriesQueryOptions, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(res -> MetricSeriesDefinitionTransforms.fromInnerResponse(res));
+            .map(MetricSeriesDefinitionTransforms::fromInnerResponse);
     }
 
     /**
@@ -316,33 +316,19 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<MetricSeriesData> listMetricSeriesData(String metricId, List<DimensionKey> seriesKeys,
-        OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
-        return new PagedFlux<>(() -> listMetricSeriesDataInternal(metricId, seriesKeys, startTime, endTime, context),
-            null);
-    }
-
     private Mono<PagedResponse<MetricSeriesData>> listMetricSeriesDataInternal(String metricId,
         List<DimensionKey> seriesKeys, OffsetDateTime startTime,
         OffsetDateTime endTime, Context context) {
-        Objects.requireNonNull(metricId, "'metricId' cannot be null.");
-        Objects.requireNonNull(startTime, "'startTime' cannot be null.");
-        Objects.requireNonNull(endTime, "'endTime' cannot be null.");
-        if (CoreUtils.isNullOrEmpty(seriesKeys)) {
-            Objects.requireNonNull(seriesKeys, "'seriesKeys' cannot be null or empty.");
-        }
+        validateMetricSeriesInputs(metricId, seriesKeys, startTime, endTime, logger);
 
         List<Map<String, String>> dimensionList =
             seriesKeys.stream().map(DimensionKey::asMap).collect(Collectors.toList());
-        final MetricDataQueryOptions metricDataQueryOptions
-            = new MetricDataQueryOptions()
-            .setStartTime(startTime)
-            .setEndTime(startTime)
-            .setSeries(dimensionList);
+        final MetricDataQueryOptions metricDataQueryOptions =
+            getMetricDataQueryOptions(startTime, dimensionList);
 
         return service.getMetricDataWithResponseAsync(UUID.fromString(metricId), metricDataQueryOptions,
             context)
-            .map(response -> MetricSeriesDataTransforms.fromInnerResponse(response));
+            .map(MetricSeriesDataTransforms::fromInnerResponse);
     }
 
     /**
@@ -410,14 +396,6 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<String> listMetricDimensionValues(final String metricId, final String dimensionName,
-        final ListMetricDimensionValuesOptions options, final Context context) {
-        return new PagedFlux<>(() -> listMetricDimensionValuesSinglePageAsync(metricId, dimensionName,
-            options, context),
-            continuationToken -> listMetricDimensionValuesNextPageAsync(continuationToken, dimensionName,
-                options, context));
-    }
-
     private Mono<PagedResponse<String>> listMetricDimensionValuesSinglePageAsync(String metricId, String dimensionName,
         ListMetricDimensionValuesOptions options, Context context) {
         Objects.requireNonNull(metricId, "'metricId' cannot be null.");
@@ -426,8 +404,8 @@ public final class MetricsAdvisorAsyncClient {
             options = new ListMetricDimensionValuesOptions();
         }
 
-        final MetricDimensionQueryOptions metricDimensionQueryOptions = new MetricDimensionQueryOptions()
-            .setDimensionName(dimensionName).setDimensionValueFilter(options.getDimensionValueToFilter());
+        final MetricDimensionQueryOptions metricDimensionQueryOptions =
+            getMetricDimensionQueryOptions(dimensionName, options);
 
         return service.getMetricDimensionSinglePageAsync(UUID.fromString(metricId), metricDimensionQueryOptions,
             options.getSkip(), options.getMaxPageSize(), context)
@@ -451,8 +429,8 @@ public final class MetricsAdvisorAsyncClient {
         if (options == null) {
             options = new ListMetricDimensionValuesOptions();
         }
-        final MetricDimensionQueryOptions metricDimensionQueryOptions = new MetricDimensionQueryOptions()
-            .setDimensionName(dimensionName).setDimensionValueFilter(options.getDimensionValueToFilter());
+        final MetricDimensionQueryOptions metricDimensionQueryOptions =
+            getMetricDimensionQueryOptions(dimensionName, options);
 
         return service.getMetricDimensionNextSinglePageAsync(nextPageLink, metricDimensionQueryOptions, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
@@ -553,33 +531,21 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<EnrichmentStatus> listMetricEnrichmentStatus(
-        String metricId,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
-        return new PagedFlux<>(() -> listMetricEnrichmentStatusSinglePageAsync(metricId, startTime, endTime,
-            options, context),
-            continuationToken -> listMetricEnrichmentStatusNextPageAsync(continuationToken, startTime, endTime,
-                context));
-    }
-
     private Mono<PagedResponse<EnrichmentStatus>> listMetricEnrichmentStatusSinglePageAsync(String metricId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListMetricEnrichmentStatusOptions options, Context context) {
-        Objects.requireNonNull(metricId, "'metricId' is required.");
-        Objects.requireNonNull(startTime, "'startTime' is required.");
-        Objects.requireNonNull(endTime, "'endTime' is required.");
+        validateMetricEnrichmentStatusInputs(metricId, "'metricId' is required.", startTime, endTime);
         if (options == null) {
             options = new ListMetricEnrichmentStatusOptions();
         }
         final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
-            new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+            getEnrichmentStatusQueryOptions(startTime, endTime);
 
         return service.getEnrichmentStatusByMetricSinglePageAsync(
-            UUID.fromString(metricId),
-            enrichmentStatusQueryOption,
-            options.getSkip(),
-            options.getMaxPageSize(),
-            withTracing)
+                UUID.fromString(metricId),
+                enrichmentStatusQueryOption,
+                options.getSkip(),
+                options.getMaxPageSize(),
+                context)
             .doOnRequest(ignoredValue -> logger.info("Listing all metric enrichment status values for a metric"))
             .doOnSuccess(response -> logger.info("Listed all metric enrichment status values for a metric - {}",
                 response))
@@ -599,15 +565,13 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        Objects.requireNonNull(startTime, "'startTime' is required.");
-        Objects.requireNonNull(endTime, "'endTime' is required.");
+        validateStartEndTime(startTime, endTime);
 
         final EnrichmentStatusQueryOption enrichmentStatusQueryOption =
-            new EnrichmentStatusQueryOption().setStartTime(startTime).setEndTime(endTime);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+            getEnrichmentStatusQueryOptions(startTime, endTime);
 
         return service.getEnrichmentStatusByMetricNextSinglePageAsync(nextPageLink, enrichmentStatusQueryOption,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -682,31 +646,13 @@ public final class MetricsAdvisorAsyncClient {
             return new PagedFlux<>(() -> monoError(logger, e));
         }
     }
-
-    PagedFlux<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
-                                                                     List<DimensionKey> seriesKeys,
-                                                                     OffsetDateTime startTime,
-                                                                     OffsetDateTime endTime,
-                                                                     Context context) {
-        return new PagedFlux<>(() -> listMetricEnrichedSeriesDataInternal(detectionConfigurationId,
-            seriesKeys,
-            startTime, endTime, context), null);
-    }
-
     private Mono<PagedResponse<MetricEnrichedSeriesData>>
         listMetricEnrichedSeriesDataInternal(String detectionConfigurationId,
                                              List<DimensionKey> seriesKeys,
                                              OffsetDateTime startTime,
                                              OffsetDateTime endTime,
                                              Context context) {
-        Objects.requireNonNull(seriesKeys, "'seriesKeys' is required.");
-        if (seriesKeys.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'seriesKeys' cannot be empty."));
-        }
-        Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        Objects.requireNonNull(startTime, "'startTime' is required.");
-        Objects.requireNonNull(endTime, "'endTime' is required.");
+        validateMetricEnrichedSeriesInputs(detectionConfigurationId, seriesKeys, startTime, endTime, logger);
 
         final List<SeriesIdentity> innerSeriesKeys = seriesKeys
             .stream()
@@ -718,12 +664,10 @@ public final class MetricsAdvisorAsyncClient {
             .setStartTime(startTime)
             .setEndTime(endTime);
 
-        final Context withTracing
-            = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getSeriesByAnomalyDetectionConfigurationWithResponseAsync(
             UUID.fromString(detectionConfigurationId),
             query,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the EnrichedSeries"))
             .doOnSuccess(response -> logger.info("Retrieved the EnrichedSeries {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve EnrichedSeries", error))
@@ -835,16 +779,6 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<DataPointAnomaly> listAnomaliesForDetectionConfig(
-        String detectionConfigurationId,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listAnomaliesForDetectionConfigSinglePageAsync(detectionConfigurationId, startTime, endTime, options,
-                context),
-            continuationToken ->
-                listAnomaliesForDetectionConfigNextPageAsync(continuationToken, startTime, endTime, options, context));
-    }
-
     private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForDetectionConfigSinglePageAsync(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomaliesDetectedOptions options,
@@ -857,29 +791,18 @@ public final class MetricsAdvisorAsyncClient {
             .setStartTime(startTime)
             .setEndTime(endTime);
 
-        if (options == null) {
-            options = new ListAnomaliesDetectedOptions();
-        }
+        options = getListAnomaliesDetectedOptions(options, query, logger);
 
-        if (options.getFilter() != null) {
-            DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
-                logger);
-            if (innerFilter != null) {
-                query.setFilter(innerFilter);
-            }
-        }
-
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies detected"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the anomalies detected", error))
-            .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
+            .map(AnomalyTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForDetectionConfigNextPageAsync(
@@ -894,29 +817,16 @@ public final class MetricsAdvisorAsyncClient {
             .setStartTime(startTime)
             .setEndTime(endTime);
 
-        if (options == null) {
-            options = new ListAnomaliesDetectedOptions();
-        }
+        getListAnomaliesDetectedOptions(options, query, logger);
 
-        if (options.getFilter() != null) {
-            DetectionAnomalyFilterCondition innerFilter = AnomalyTransforms.toInnerFilter(options.getFilter(),
-                logger);
-            if (innerFilter != null) {
-                query.setFilter(innerFilter);
-            }
-        }
-
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
-            query,
-            withTracing)
+        return service.getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, query, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
+            .map(AnomalyTransforms::fromInnerPagedResponse);
     }
 
     /**
@@ -1017,52 +927,26 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
-        String detectionConfigurationId,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listIncidentsForDetectionConfigSinglePageAsync(detectionConfigurationId, startTime, endTime, options,
-                context),
-            continuationToken ->
-                listIncidentsForDetectionConfigNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigSinglePageAsync(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options,
         Context context) {
-        Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        Objects.requireNonNull(startTime, "'startTime' is required.");
-        Objects.requireNonNull(endTime, "'endTime' is required.");
+        validateIncidentsForDetectionConfigInputs(detectionConfigurationId, startTime, endTime);
 
         DetectionIncidentResultQuery query = new DetectionIncidentResultQuery()
             .setStartTime(startTime)
             .setEndTime(endTime);
-        if (options == null) {
-            options = new ListIncidentsDetectedOptions();
-        }
-        if (options.getDimensionsToFilter() != null) {
-            List<DimensionGroupIdentity> innerDimensionsToFilter = new ArrayList<>();
-            for (DimensionKey dimensionToFilter : options.getDimensionsToFilter()) {
-                innerDimensionsToFilter.add(new DimensionGroupIdentity()
-                    .setDimension(dimensionToFilter.asMap()));
-            }
-            if (!innerDimensionsToFilter.isEmpty()) {
-                query.setFilter(new DetectionIncidentFilterCondition()
-                    .setDimensionFilter(innerDimensionsToFilter));
-            }
-        }
+        options = getListIncidentsDetectedOptions(options, query);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing incidents detected"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
             .doOnError(error -> logger.warning("Failed to list the incidents detected", error))
-            .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
+            .map(IncidentTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForDetectionConfigNextPageAsync(
@@ -1070,15 +954,14 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, withTracing)
+        return service.getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
+            .map(IncidentTransforms::fromInnerPagedResponse);
     }
 
     /**
@@ -1120,21 +1003,6 @@ public final class MetricsAdvisorAsyncClient {
         try {
             return new PagedFlux<>(() ->
                 withContext(context -> listIncidentRootCausesInternal(anomalyIncident, context)),  null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<IncidentRootCause> listIncidentRootCauses(
-        String detectionConfigurationId,
-        String incidentId, Context context) {
-        try {
-            Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-            Objects.requireNonNull(incidentId, "'incidentId' is required.");
-            AnomalyIncident anomalyIncident = new AnomalyIncident();
-            IncidentHelper.setId(anomalyIncident, incidentId);
-            IncidentHelper.setDetectionConfigurationId(anomalyIncident, detectionConfigurationId);
-            return new PagedFlux<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -1185,28 +1053,19 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<IncidentRootCause> listIncidentRootCauses(AnomalyIncident anomalyIncident, Context context) {
-        return new PagedFlux<>(() -> listIncidentRootCausesInternal(anomalyIncident, context), null);
-    }
-
     private Mono<PagedResponse<IncidentRootCause>> listIncidentRootCausesInternal(AnomalyIncident anomalyIncident,
         Context context) {
-        if (anomalyIncident == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'anomalyIncident' is required."));
-        }
-        Objects.requireNonNull(anomalyIncident.getDetectionConfigurationId(),
-            "'anomalyIncident.detectionConfigurationId' is required.");
-        Objects.requireNonNull(anomalyIncident.getId(), "'anomalyIncident.id' is required");
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+        validateAnomalyIncidentRootCausesInputs(anomalyIncident, logger);
+
         return service.getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
             UUID.fromString(anomalyIncident.getDetectionConfigurationId()),
-            anomalyIncident.getId(), withTracing)
+            anomalyIncident.getId(), context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieved the IncidentRootCauses - {}",
                 anomalyIncident.getDetectionConfigurationId()))
             .doOnSuccess(response -> logger.info("Retrieved the IncidentRootCauses - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve the incident root causes - {}",
                 anomalyIncident.getDetectionConfigurationId(), error))
-            .map(res -> IncidentRootCauseTransforms.fromInnerResponse(res));
+            .map(IncidentRootCauseTransforms::fromInnerResponse);
     }
 
     /**
@@ -1307,56 +1166,26 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<String> listAnomalyDimensionValues(
-        String detectionConfigurationId,
-        String dimensionName,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
-        Context context) {
-        return new PagedFlux<>(() ->
-            listAnomalyDimensionValuesSinglePageAsync(detectionConfigurationId,
-                dimensionName,
-                startTime,
-                endTime,
-                options,
-                context),
-            continuationToken ->
-                listAnomalyDimensionValuesNextPageAsync(continuationToken,
-                    dimensionName,
-                    startTime,
-                    endTime,
-                    options,
-                    context));
-    }
-
     private Mono<PagedResponse<String>> listAnomalyDimensionValuesSinglePageAsync(
         String detectionConfigurationId,
         String dimensionName,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAnomalyDimensionValuesOptions options,
         Context context) {
-        Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        Objects.requireNonNull(dimensionName, "'dimensionName' is required.");
-        Objects.requireNonNull(startTime, "'startTime' is required.");
-        Objects.requireNonNull(endTime, "'endTime' is required.");
+        validateAnomalyDimensionValuesInputs(detectionConfigurationId, dimensionName, startTime, endTime);
 
         AnomalyDimensionQuery query = new AnomalyDimensionQuery();
         query.setDimensionName(dimensionName);
         query.setStartTime(startTime);
         query.setEndTime(endTime);
-        if (options == null) {
-            options = new ListAnomalyDimensionValuesOptions();
-        }
-        if (options.getDimensionToFilter() != null) {
-            query.setDimensionFilter(new DimensionGroupIdentity()
-                .setDimension(options.getDimensionToFilter().asMap()));
-        }
+        options = getListAnomalyDimensionValuesOptions(options, query);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing dimension values with anomalies"))
             .doOnSuccess(response -> logger.info("Listed dimension values with anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the dimension values with anomalies", error));
@@ -1375,15 +1204,11 @@ public final class MetricsAdvisorAsyncClient {
         query.setDimensionName(dimensionName);
         query.setStartTime(startTime);
         query.setEndTime(endTime);
-        if (options.getDimensionToFilter() != null) {
-            query.setDimensionFilter(new DimensionGroupIdentity()
-                .setDimension(options.getDimensionToFilter().asMap()));
-        }
+        getListAnomalyDimensionValuesOptions(options, query);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
             query,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -1476,22 +1301,11 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyAlert> listAlerts(
-        String alertConfigurationId,
-        OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listAlertsSinglePageAsync(alertConfigurationId, startTime, endTime, options, context),
-            continuationToken ->
-                listAlertsNextPageAsync(continuationToken, startTime, endTime, options, context));
-    }
-
     private Mono<PagedResponse<AnomalyAlert>> listAlertsSinglePageAsync(
         String alertConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListAlertOptions options,
         Context context) {
-        Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
-        Objects.requireNonNull(startTime, "'startTime' is required.");
-        Objects.requireNonNull(endTime, "'endTime' is required.");
+        validateListAlertsInputs(alertConfigurationId, startTime, endTime);
 
         if (options == null) {
             options = new ListAlertOptions();
@@ -1499,15 +1313,14 @@ public final class MetricsAdvisorAsyncClient {
         AlertingResultQuery query = new AlertingResultQuery();
         query.setStartTime(startTime);
         query.setEndTime(endTime);
-        query.setTimeMode(options.getTimeMode());
+        query.setTimeMode(TimeMode.fromString(toStringOrNull(options.getTimeMode())));
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
             UUID.fromString(alertConfigurationId),
             query,
             options.getSkip(),
             options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing alerts"))
             .doOnSuccess(response -> logger.info("Listed alerts {}", response))
             .doOnError(error -> logger.warning("Failed to list the alerts", error));
@@ -1524,12 +1337,11 @@ public final class MetricsAdvisorAsyncClient {
         AlertingResultQuery query = new AlertingResultQuery();
         query.setStartTime(startTime);
         query.setEndTime(endTime);
-        query.setTimeMode(options.getTimeMode());
+        query.setTimeMode(TimeMode.fromString(toStringOrNull(options.getTimeMode())));
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,
             query,
-            withTracing)
+            context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -1633,36 +1445,23 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<DataPointAnomaly> listAnomaliesForAlert(
-        String alertConfigurationId,
-        String alertId,
-        ListAnomaliesAlertedOptions options,
-        Context context) {
-        return new PagedFlux<>(() ->
-            listAnomaliesForAlertSinglePageAsync(alertConfigurationId, alertId, options, context),
-            continuationToken ->
-                listAnomaliesForAlertNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForAlertSinglePageAsync(
         String alertConfigurationId,
         String alertId,
         ListAnomaliesAlertedOptions options,
         Context context) {
-        Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
-        Objects.requireNonNull(alertId, "'alertId' is required.");
+        validateListAnomaliesInputs(alertConfigurationId, alertId);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID.fromString(alertConfigurationId),
             alertId,
             options == null ? null : options.getSkip(),
             options == null ? null : options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies for alert"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
             .doOnError(error -> logger.warning("Failed to list the anomalies for alert", error))
-            .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
+            .map(AnomalyTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<DataPointAnomaly>> listAnomaliesForAlertNextPageAsync(
@@ -1671,18 +1470,16 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,
-            withTracing)
+
+        return service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink,
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
+            .map(AnomalyTransforms::fromInnerPagedResponse);
     }
-
 
     /**
      * Fetch the incidents in an alert.
@@ -1786,35 +1583,22 @@ public final class MetricsAdvisorAsyncClient {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
-
-    PagedFlux<AnomalyIncident> listIncidentsForAlert(
-        String alertConfigurationId,
-        String alertId,
-        ListIncidentsAlertedOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listIncidentsForAlertSinglePageAsync(alertConfigurationId, alertId, options, context),
-            continuationToken ->
-                listIncidentsForAlertNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForAlertSinglePageAsync(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options, Context context) {
-        Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
-        Objects.requireNonNull(alertId, "'alertId' is required.");
+        validateListAnomaliesInputs(alertConfigurationId, alertId);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
         return service.getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
             UUID.fromString(alertConfigurationId),
             alertId,
             options == null ? null : options.getSkip(),
             options == null ? null : options.getMaxPageSize(),
-            withTracing)
+            context)
             .doOnRequest(ignoredValue -> logger.info("Listing incidents for alert"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
             .doOnError(error -> logger.warning("Failed to list the incidents for alert", error))
-            .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
+            .map(IncidentTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<AnomalyIncident>> listIncidentsForAlertNextPageAsync(
@@ -1823,14 +1607,13 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
-        return service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink,
-            withTracing)
+
+        return service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> IncidentTransforms.fromInnerPagedResponse(response));
+            .map(IncidentTransforms::fromInnerPagedResponse);
     }
 
     /**
@@ -1918,7 +1701,7 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    Mono<Response<MetricFeedback>> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
+    private Mono<Response<MetricFeedback>> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
         Context context) {
         Objects.requireNonNull(metricId, "'metricId' is required.");
         Objects.requireNonNull(metricFeedback, "'metricFeedback' is required.");
@@ -2080,7 +1863,7 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    Mono<Response<MetricFeedback>> getFeedbackWithResponse(String feedbackId, Context context) {
+    private Mono<Response<MetricFeedback>> getFeedbackWithResponse(String feedbackId, Context context) {
         Objects.requireNonNull(feedbackId, "'feedbackId' is required.");
         return service.getMetricFeedbackWithResponseAsync(UUID.fromString(feedbackId), context)
             .map(metricFeedbackResponse -> new SimpleResponse<>(metricFeedbackResponse,
@@ -2213,24 +1996,10 @@ public final class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<MetricFeedback> listFeedback(String metricId, ListMetricFeedbackOptions options, Context context) {
-        options = options != null ? options : new ListMetricFeedbackOptions();
-        final MetricFeedbackFilter metricFeedbackFilter = MetricFeedbackTransforms.toInnerFilter(metricId, options);
-        final ListMetricFeedbackOptions finalOptions = options;
-
-        return new PagedFlux<>(() ->
-            listMetricFeedbacksSinglePage(metricFeedbackFilter, finalOptions.getMaxPageSize(),
-                finalOptions.getSkip(), context),
-            continuationToken ->
-                listMetricFeedbacksNextPage(continuationToken, metricFeedbackFilter,
-                    context));
-    }
-
     private Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePage(MetricFeedbackFilter metricFeedbackFilter,
         Integer maxPageSize, Integer skip, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.listMetricFeedbacksSinglePageAsync(metricFeedbackFilter, skip, maxPageSize, withTracing)
+        return service.listMetricFeedbacksSinglePageAsync(metricFeedbackFilter, skip, maxPageSize, context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all metric feedbacks"))
             .doOnSuccess(response -> logger.info("Listed metric feedbacks - {}", response))
             .doOnError(error -> logger.warning("Failed to list all metric feedbacks information", error))
@@ -2248,9 +2017,8 @@ public final class MetricsAdvisorAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.listMetricFeedbacksNextSinglePageAsync(nextPageLink, metricFeedbackFilter, withTracing)
+        return service.listMetricFeedbacksNextSinglePageAsync(nextPageLink, metricFeedbackFilter, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -2263,5 +2031,4 @@ public final class MetricsAdvisorAsyncClient {
                 res.getContinuationToken(),
                 null));
     }
-
 }

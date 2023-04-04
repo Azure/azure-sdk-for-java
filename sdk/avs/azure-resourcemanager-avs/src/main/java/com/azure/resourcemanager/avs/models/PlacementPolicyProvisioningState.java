@@ -29,6 +29,15 @@ public final class PlacementPolicyProvisioningState extends ExpandableStringEnum
     public static final PlacementPolicyProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of PlacementPolicyProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PlacementPolicyProvisioningState() {
+    }
+
+    /**
      * Creates or finds a PlacementPolicyProvisioningState from its string representation.
      *
      * @param name a name to look for.

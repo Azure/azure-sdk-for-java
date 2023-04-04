@@ -16,6 +16,9 @@ public final class SparkJobDefinitionResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private SparkJobDefinition properties;
 
+    /** Creates an instance of SparkJobDefinitionResource class. */
+    public SparkJobDefinitionResource() {}
+
     /**
      * Get the properties property: Properties of spark job definition.
      *

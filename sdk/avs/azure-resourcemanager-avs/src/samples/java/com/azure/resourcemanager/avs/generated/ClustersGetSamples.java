@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters Get. */
 public final class ClustersGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class ClustersGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().getWithResponse("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().getWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

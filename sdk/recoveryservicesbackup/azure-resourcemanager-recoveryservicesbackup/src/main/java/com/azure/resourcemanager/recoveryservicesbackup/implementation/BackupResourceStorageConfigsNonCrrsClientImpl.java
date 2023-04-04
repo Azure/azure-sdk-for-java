@@ -59,11 +59,10 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupResourceStorageConfigsNonCrrsService {
+    public interface BackupResourceStorageConfigsNonCrrsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupResourceConfigResourceInner>> get(
@@ -77,8 +76,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupResourceConfigResourceInner>> update(
@@ -93,8 +91,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> patch(

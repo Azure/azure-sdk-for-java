@@ -34,6 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,9 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class SyncRestProxyTests {
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-
-
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
     interface TestInterface {
@@ -75,11 +73,34 @@ public class SyncRestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-
-        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-        testInterface.testVoidMethod(context);
+        testInterface.testVoidMethod(Context.NONE);
 
         assertTrue(client.lastResponseClosed);
+    }
+
+    @Test
+    public void contextFlagDisablesSyncStack() {
+        AtomicBoolean asyncMethodCalled = new AtomicBoolean(false);
+        HttpClient client = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                asyncMethodCalled.set(true);
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                throw new IllegalStateException("Sync send API was Invoked.");
+            }
+        };
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testVoidMethod(new Context("com.azure.core.http.restproxy.syncproxy.enable", false));
+        assertTrue(asyncMethodCalled.get());
     }
 
     @Test
@@ -91,9 +112,8 @@ public class SyncRestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes)),
-            "application/json", (long) bytes.length, context);
+            "application/json", (long) bytes.length, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
@@ -105,8 +125,7 @@ public class SyncRestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-        StreamResponse streamResponse = testInterface.testDownload(context);
+        StreamResponse streamResponse = testInterface.testDownload(Context.NONE);
         streamResponse.close();
         // This indirectly tests that StreamResponse has HttpResponse reference
         assertTrue(client.lastResponseClosed);

@@ -50,7 +50,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface ContainerServicesService {
+    public interface ContainerServicesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/orchestrators")
         @ExpectedResponses({200})

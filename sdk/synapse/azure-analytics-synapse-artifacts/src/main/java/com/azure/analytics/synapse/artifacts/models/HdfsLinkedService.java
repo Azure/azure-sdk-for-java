@@ -51,6 +51,9 @@ public class HdfsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
+    /** Creates an instance of HdfsLinkedService class. */
+    public HdfsLinkedService() {}
+
     /**
      * Get the url property: The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type:
      * string (or Expression with resultType string).

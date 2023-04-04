@@ -14,14 +14,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
-
-import javax.xml.stream.XMLStreamException;
 
 import java.nio.charset.StandardCharsets;
 
@@ -33,63 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * dependency.
  */
 public class RestProxyXmlSerializableTests {
-    public static final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSerializable> {
-        private final boolean aBooleanAsAttribute;
-        private final int anInt;
-        private final double aDecimalAsAttribute;
-        private final String aString;
-
-        public SimpleXmlSerializable(boolean aBooleanAsAttribute, int anInt, double aDecimalAsAttribute,
-            String aString) {
-            this.aBooleanAsAttribute = aBooleanAsAttribute;
-            this.anInt = anInt;
-            this.aDecimalAsAttribute = aDecimalAsAttribute;
-            this.aString = aString;
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            xmlWriter.writeStartElement("SimpleXml");
-
-            xmlWriter.writeBooleanAttribute("aBoolean", aBooleanAsAttribute);
-            xmlWriter.writeDoubleAttribute("aDecimal", aDecimalAsAttribute);
-
-            xmlWriter.writeIntElement("anInt", anInt);
-            xmlWriter.writeStringElement("aString", aString);
-
-            return xmlWriter.writeEndElement();
-        }
-
-        public static SimpleXmlSerializable fromXml(XmlReader xmlReader) throws XMLStreamException {
-            return xmlReader.readObject("SimpleXml", reader -> {
-                boolean aBooleanAsAttribute = xmlReader.getBooleanAttribute(null, "aBoolean");
-                double aDecimalAsAttribute = xmlReader.getDoubleAttribute(null, "aDecimal");
-                int anInt = 0;
-                boolean foundAnInt = false;
-                String aString = null;
-                boolean foundAString = false;
-
-                while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-                    String elementName = xmlReader.getElementName().getLocalPart();
-                    if ("anInt".equals(elementName)) {
-                        anInt = xmlReader.getIntElement();
-                        foundAnInt = true;
-                    } else if ("aString".equals(elementName)) {
-                        aString = xmlReader.getStringElement();
-                        foundAString = true;
-                    } else {
-                        xmlReader.skipElement();
-                    }
-                }
-
-                if (foundAnInt && foundAString) {
-                    return new SimpleXmlSerializable(aBooleanAsAttribute, anInt, aDecimalAsAttribute, aString);
-                }
-
-                throw new IllegalStateException("Missing required elements.");
-            });
-        }
-    }
 
     @Host("http://localhost")
     @ServiceInterface(name = "XmlSerializable")
@@ -113,7 +51,7 @@ public class RestProxyXmlSerializableTests {
         String singleQuoteXmlDeclaration = "<?xml version='1.0' encoding='utf-8'?>";
         String doubleQuoteXmlDeclaration = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
         String expectedBody
-            = "<SimpleXml aBoolean=\"true\" aDecimal=\"10.0\"><anInt>10</anInt><aString>10</aString></SimpleXml>";
+            = "<SimpleXml boolean=\"true\" decimal=\"10.0\"><int>10</int><string>10</string></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> {
@@ -134,9 +72,9 @@ public class RestProxyXmlSerializableTests {
     @Test
     public void receiveXmlSerializableResponse() {
         String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-            + "<SimpleXml aBoolean=\"true\" aDecimal=\"10.0\">"
-            + "<anInt>10</anInt>"
-            + "<aString>10</aString>"
+            + "<SimpleXml boolean=\"true\" decimal=\"10.0\">"
+            + "<int>10</int>"
+            + "<string>10</string>"
             + "</SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -148,16 +86,16 @@ public class RestProxyXmlSerializableTests {
 
         SimpleXmlSerializable xmlSerializable = proxy.getXmlSerializable();
 
-        assertEquals(true, xmlSerializable.aBooleanAsAttribute);
-        assertEquals(10, xmlSerializable.anInt);
-        assertEquals(10.0D, xmlSerializable.aDecimalAsAttribute);
-        assertEquals("10", xmlSerializable.aString);
+        assertEquals(true, xmlSerializable.isABoolean());
+        assertEquals(10, xmlSerializable.getAnInt());
+        assertEquals(10.0D, xmlSerializable.getADecimal());
+        assertEquals("10", xmlSerializable.getAString());
     }
 
     @Test
     public void invalidXmlSerializableResponse() {
         String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-            + "<SimpleXml aBoolean=\"true\" aDecimal=\"10.0\"></SimpleXml>";
+            + "<SimpleXml boolean=\"true\" decimal=\"10.0\"></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200,

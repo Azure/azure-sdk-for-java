@@ -56,6 +56,15 @@ public final class MabServerType extends ExpandableStringEnum<MabServerType> {
     public static final MabServerType GENERIC_CONTAINER = fromString("GenericContainer");
 
     /**
+     * Creates a new instance of MabServerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MabServerType() {
+    }
+
+    /**
      * Creates or finds a MabServerType from its string representation.
      *
      * @param name a name to look for.

@@ -7,27 +7,26 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreFileSpecs;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RestoreFileSpecsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RestoreFileSpecs model =
             BinaryData
-                .fromString("{\"path\":\"wqiok\",\"fileSpecType\":\"sx\",\"targetFolderPath\":\"jmsvpkjp\"}")
+                .fromString("{\"path\":\"rc\",\"fileSpecType\":\"yklyhpluodpvruud\",\"targetFolderPath\":\"zibt\"}")
                 .toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("wqiok", model.path());
-        Assertions.assertEquals("sx", model.fileSpecType());
-        Assertions.assertEquals("jmsvpkjp", model.targetFolderPath());
+        Assertions.assertEquals("rc", model.path());
+        Assertions.assertEquals("yklyhpluodpvruud", model.fileSpecType());
+        Assertions.assertEquals("zibt", model.targetFolderPath());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RestoreFileSpecs model =
-            new RestoreFileSpecs().withPath("wqiok").withFileSpecType("sx").withTargetFolderPath("jmsvpkjp");
+            new RestoreFileSpecs().withPath("rc").withFileSpecType("yklyhpluodpvruud").withTargetFolderPath("zibt");
         model = BinaryData.fromObject(model).toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("wqiok", model.path());
-        Assertions.assertEquals("sx", model.fileSpecType());
-        Assertions.assertEquals("jmsvpkjp", model.targetFolderPath());
+        Assertions.assertEquals("rc", model.path());
+        Assertions.assertEquals("yklyhpluodpvruud", model.fileSpecType());
+        Assertions.assertEquals("zibt", model.targetFolderPath());
     }
 }

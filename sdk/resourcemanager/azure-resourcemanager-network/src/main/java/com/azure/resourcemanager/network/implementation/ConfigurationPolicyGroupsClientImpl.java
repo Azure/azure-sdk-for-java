@@ -65,7 +65,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ConfigurationPolicyGroupsService {
+    public interface ConfigurationPolicyGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -201,7 +201,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         } else {
             vpnServerConfigurationPolicyGroupParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -278,7 +278,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         } else {
             vpnServerConfigurationPolicyGroupParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -390,7 +390,8 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             String vpnServerConfigurationName,
             String configurationPolicyGroupName,
             VpnServerConfigurationPolicyGroupInner vpnServerConfigurationPolicyGroupParameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 vpnServerConfigurationName,
                 configurationPolicyGroupName,
@@ -420,7 +421,8 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             String configurationPolicyGroupName,
             VpnServerConfigurationPolicyGroupInner vpnServerConfigurationPolicyGroupParameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 vpnServerConfigurationName,
                 configurationPolicyGroupName,
@@ -587,7 +589,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -651,7 +653,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -729,7 +731,8 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vpnServerConfigurationName, String configurationPolicyGroupName) {
-        return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName)
+        return this
+            .beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName)
             .getSyncPoller();
     }
 
@@ -751,7 +754,8 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
         String vpnServerConfigurationName,
         String configurationPolicyGroupName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName, context)
             .getSyncPoller();
     }
 
@@ -876,7 +880,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -941,7 +945,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter configurationPolicyGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1052,7 +1056,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1115,7 +1119,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

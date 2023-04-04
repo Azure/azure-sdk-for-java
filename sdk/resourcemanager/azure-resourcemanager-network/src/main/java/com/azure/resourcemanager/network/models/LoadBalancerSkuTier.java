@@ -17,6 +17,15 @@ public final class LoadBalancerSkuTier extends ExpandableStringEnum<LoadBalancer
     public static final LoadBalancerSkuTier GLOBAL = fromString("Global");
 
     /**
+     * Creates a new instance of LoadBalancerSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerSkuTier() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerSkuTier from its string representation.
      *
      * @param name a name to look for.

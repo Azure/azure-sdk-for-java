@@ -47,6 +47,10 @@ public class MetricValue {
     @JsonProperty(value = "total", access = JsonProperty.Access.WRITE_ONLY)
     private Double total;
 
+    /** Creates an instance of MetricValue class. */
+    public MetricValue() {
+    }
+
     /**
      * Get the count property: The number of values for the metric.
      *

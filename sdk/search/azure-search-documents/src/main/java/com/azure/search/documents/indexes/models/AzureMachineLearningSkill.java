@@ -7,44 +7,35 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The AML skill allows you to extend AI enrichment with a custom Azure Machine Learning (AML) model. Once an AML model
  * is trained and deployed, an AML skill integrates it into AI enrichment.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Skills.Custom.AmlSkill")
 @Fluent
 public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType = "#Microsoft.Skills.Custom.AmlSkill";
+    private static final String ODATA_TYPE = "#Microsoft.Skills.Custom.AmlSkill";
 
     /*
      * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON
      * payload will be sent. Only the https URI scheme is allowed.
      */
-    @JsonProperty(value = "uri")
     private String scoringUri;
 
     /*
      * (Required for key authentication) The key for the AML service.
      */
-    @JsonProperty(value = "key")
     private String authenticationKey;
 
     /*
@@ -52,19 +43,16 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * the format
      * subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.MachineLearningServices/workspaces/{workspace-name}/services/{service_name}.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * (Optional) When specified, indicates the timeout for the http client making the API call.
      */
-    @JsonProperty(value = "timeout")
     private Duration timeout;
 
     /*
      * (Optional for token authentication). The region the AML service is deployed in.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
@@ -74,7 +62,6 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * the indexer. If not set, a default value of 5 is used. The degreeOfParallelism can be set to a maximum of 10 and
      * a minimum of 1.
      */
-    @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
     /**
@@ -83,20 +70,8 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @JsonCreator
-    public AzureMachineLearningSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+    public AzureMachineLearningSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the skill.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -254,5 +229,119 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     public AzureMachineLearningSkill setContext(String context) {
         super.setContext(context);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("context", getContext());
+        jsonWriter.writeStringField("uri", this.scoringUri);
+        jsonWriter.writeStringField("key", this.authenticationKey);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("timeout", Objects.toString(this.timeout, null));
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningSkill if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningSkill.
+     */
+    public static AzureMachineLearningSkill fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    String scoringUri = null;
+                    String authenticationKey = null;
+                    String resourceId = null;
+                    Duration timeout = null;
+                    String region = null;
+                    Integer degreeOfParallelism = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!ODATA_TYPE.equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '"
+                                                + ODATA_TYPE
+                                                + "'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("uri".equals(fieldName)) {
+                            scoringUri = reader.getString();
+                        } else if ("key".equals(fieldName)) {
+                            authenticationKey = reader.getString();
+                        } else if ("resourceId".equals(fieldName)) {
+                            resourceId = reader.getString();
+                        } else if ("timeout".equals(fieldName)) {
+                            timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                        } else if ("region".equals(fieldName)) {
+                            region = reader.getString();
+                        } else if ("degreeOfParallelism".equals(fieldName)) {
+                            degreeOfParallelism = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (inputsFound && outputsFound) {
+                        AzureMachineLearningSkill deserializedAzureMachineLearningSkill =
+                                new AzureMachineLearningSkill(inputs, outputs);
+                        deserializedAzureMachineLearningSkill.setName(name);
+                        deserializedAzureMachineLearningSkill.setDescription(description);
+                        deserializedAzureMachineLearningSkill.setContext(context);
+                        deserializedAzureMachineLearningSkill.scoringUri = scoringUri;
+                        deserializedAzureMachineLearningSkill.authenticationKey = authenticationKey;
+                        deserializedAzureMachineLearningSkill.resourceId = resourceId;
+                        deserializedAzureMachineLearningSkill.timeout = timeout;
+                        deserializedAzureMachineLearningSkill.region = region;
+                        deserializedAzureMachineLearningSkill.degreeOfParallelism = degreeOfParallelism;
+
+                        return deserializedAzureMachineLearningSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

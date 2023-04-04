@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.models.SubscriptionPolicies;
 import com.azure.resourcemanager.subscription.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Subscription information. */
 @Fluent
 public final class SubscriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionInner.class);
-
     /*
-     * The fully qualified ID for the subscription. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000.
+     * The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -36,11 +33,23 @@ public final class SubscriptionInner {
     private String displayName;
 
     /*
-     * The subscription state. Possible values are Enabled, Warned, PastDue,
-     * Disabled, and Deleted.
+     * The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionState state;
+
+    /*
+     * The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     */
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantId;
+
+    /*
+     * Tags for the subscription
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /*
      * The subscription policies.
@@ -49,12 +58,15 @@ public final class SubscriptionInner {
     private SubscriptionPolicies subscriptionPolicies;
 
     /*
-     * The authorization source of the request. Valid values are one or more
-     * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For
-     * example, 'Legacy, RoleBased'.
+     * The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased,
+     * Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
      */
     @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
+
+    /** Creates an instance of SubscriptionInner class. */
+    public SubscriptionInner() {
+    }
 
     /**
      * Get the id property: The fully qualified ID for the subscription. For example,
@@ -92,6 +104,35 @@ public final class SubscriptionInner {
      */
     public SubscriptionState state() {
         return this.state;
+    }
+
+    /**
+     * Get the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the tags property: Tags for the subscription.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Tags for the subscription.
+     *
+     * @param tags the tags value to set.
+     * @return the SubscriptionInner object itself.
+     */
+    public SubscriptionInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**

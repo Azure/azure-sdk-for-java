@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +15,15 @@ import java.util.List;
 @JsonTypeName("Microsoft.Network/networkSecurityGroups")
 @Fluent
 public final class NetworkSecurityGroupResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupResourceSettings.class);
-
     /*
      * Gets or sets Security rules of network security group.
      */
     @JsonProperty(value = "securityRules")
     private List<NsgSecurityRule> securityRules;
+
+    /** Creates an instance of NetworkSecurityGroupResourceSettings class. */
+    public NetworkSecurityGroupResourceSettings() {
+    }
 
     /**
      * Get the securityRules property: Gets or sets Security rules of network security group.

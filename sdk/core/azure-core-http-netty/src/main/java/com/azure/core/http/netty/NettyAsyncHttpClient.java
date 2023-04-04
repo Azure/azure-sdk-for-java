@@ -38,6 +38,7 @@ import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
@@ -53,7 +54,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -162,7 +162,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(toReactorNettyHttpMethod(request.getHttpMethod()))
-            .uri(URI.create(request.getUrl().toString()))
+            .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
                 headersEagerlyConverted))
@@ -185,6 +185,22 @@ class NettyAsyncHttpClient implements HttpClient {
             })
             .retryWhen(Retry.max(1).filter(throwable -> throwable instanceof ProxyConnectException)
                 .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        try {
+            return send(request, context).block();
+        } catch (Exception e) {
+            Throwable unwrapped = Exceptions.unwrap(e);
+            if (unwrapped instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
+            } else if (unwrapped instanceof IOException) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
+            }
+        }
     }
 
     /**
@@ -240,7 +256,10 @@ class NettyAsyncHttpClient implements HttpClient {
         // as other corner cases are not existent (i.e. different protocols using ssl).
         // But in case we missed them these will be still handled by Netty's logic - they'd just use 1KB chunk
         // and this check should be evolved when they're discovered.
-        if (restRequest.getUrl().getProtocol().equals("https")) {
+        if (fileContent.getLength() == 0) {
+            // Send an empty file using send byte array as there is less overhead.
+            return reactorNettyOutbound.sendByteArray(Flux.just(EMPTY_BYTES));
+        } else if (restRequest.getUrl().getProtocol().equals("https")) {
             return reactorNettyOutbound.sendUsing(
                 () -> FileChannel.open(fileContent.getFile(), StandardOpenOption.READ),
                 (c, fc) -> {

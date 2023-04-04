@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerServices ListOrchestrators. */
 public final class ContainerServicesListOrchestratorsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-08-01/examples/ContainerServiceListOrchestrators.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-08-01/examples/ContainerServiceListOrchestrators.json
      */
     /**
      * Sample code: List Container Service Orchestrators.
@@ -22,6 +20,6 @@ public final class ContainerServicesListOrchestratorsSamples {
             .manager()
             .serviceClient()
             .getContainerServices()
-            .listOrchestratorsWithResponse("location1", null, Context.NONE);
+            .listOrchestratorsWithResponse("location1", null, com.azure.core.util.Context.NONE);
     }
 }

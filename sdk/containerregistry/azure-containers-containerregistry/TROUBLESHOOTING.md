@@ -12,7 +12,6 @@ Here's the example of how to catch it with synchronous client
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient()
     .getRepository(repositoryName);
@@ -54,7 +53,7 @@ Reviewing the HTTP request sent or response received over the wire to/from the A
 troubleshooting issues. To enable logging the HTTP request and response payload, the `ContainerRegistryClient` can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
-ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
     .credential(defaultCredential)
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -92,7 +91,20 @@ ApplicationInsights Java agent. Please refer to [configure tracing in Azure SDK 
 
 ### HTTP 401 Errors
 
-HTTP 401 errors indicates problems authenticating. Check exception message or logs for more information. 
+HTTP 401 errors indicates problems authenticating. Check exception message or logs for more information.
+
+#### ARM access token is disabled
+
+You may see error similar to the one below, it indicates an attempt to perform operation that requires authentication without credentials.
+
+```text
+AcrErrorsException: Status code 401, "{"errors":[{"code":"UNAUTHORIZED","message":"arm aad token disallowed"}]}"
+```
+
+The error indicates that authentication with ARM access token was disabled on accessed Container Registry resource. Check if audience was provided to
+Container Registry client builder. When ARM AAD tokens are disabled on the Container Registry resource, audience should not be set.
+Refer to [ACR CLI reference](https://learn.microsoft.com/cli/azure/acr/config/authentication-as-arm?view=azure-cli-latest) for information on how to
+check and configure authentication with ARM tokens.
 
 #### Anonymous access issues
 You may see error similar to the one below, it indicates an attempt to perform operation that requires authentication without credentials.
@@ -133,7 +145,35 @@ Refer to [Troubleshoot network issues with registry](https://docs.microsoft.com/
 ```text
 AcrErrorsException: Status code 403, "{"errors":[{"code":"DENIED","message":"client with IP <> is not allowed access. Refer https://aka.ms/acr/firewall to grant access."}]}
 ```
- 
+
+## Service errors
+
+When working with `ContainerRegistryContentClient` and `ContainerRegistryAsyncContentClient` you may get an `HttpResponseException` exception with
+message containing additional information and [Docker error code](https://docs.docker.com/registry/spec/api/#errors-2).
+
+### Getting BLOB_UPLOAD_INVALID
+
+In rare cases, transient error (such as connection reset) can happen during blob upload which may lead to `ResourceNotFoundException` being thrown with message similar to
+`{"errors":[{"code":"BLOB_UPLOAD_INVALID","message":"blob upload invalid"}]}` resulting in a failed upload. In this case upload should to be restarted from the beginning.
+
+The following code snippet shows how to access detailed error information:   
+```java com.azure.containers.containerregistry.uploadBlobErrorHandling
+BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+
+try {
+    UploadRegistryBlobResult uploadResult = contentClient.uploadBlob(configContent);
+    System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(),
+        uploadResult.getSizeInBytes());
+} catch (HttpResponseException ex) {
+    if (ex.getCause() instanceof AcrErrorsException) {
+        AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
+        for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
+            System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
+        }
+    }
+}
+```
+
 ## Dependency Conflicts
 
 If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for NatGateways UpdateTags. */
 public final class NatGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NatGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NatGatewayUpdateTags.json
      */
     /**
      * Sample code: Update nat gateway tags.
@@ -29,7 +28,7 @@ public final class NatGatewaysUpdateTagsSamples {
                 "rg1",
                 "test-natGateway",
                 new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

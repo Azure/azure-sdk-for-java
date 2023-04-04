@@ -43,6 +43,9 @@ public class FileServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of FileServerLinkedService class. */
+    public FileServerLinkedService() {}
+
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
      *

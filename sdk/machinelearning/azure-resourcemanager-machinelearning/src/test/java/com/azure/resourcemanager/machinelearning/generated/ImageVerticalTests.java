@@ -14,11 +14,10 @@ import com.azure.resourcemanager.machinelearning.models.MLTableJobInput;
 import com.azure.resourcemanager.machinelearning.models.SamplingAlgorithmType;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageVerticalTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageVertical model =
             BinaryData
                 .fromString(
@@ -36,8 +35,8 @@ public final class ImageVerticalTests {
         Assertions.assertEquals(69.16610610373561D, model.validationDataSize());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageVertical model =
             new ImageVertical()
                 .withLimitSettings(

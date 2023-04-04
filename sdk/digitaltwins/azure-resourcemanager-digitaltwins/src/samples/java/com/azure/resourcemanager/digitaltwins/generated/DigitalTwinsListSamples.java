@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DigitalTwins List. */
 public final class DigitalTwinsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsList_example.json
      */
     /**
      * Sample code: Get DigitalTwinsInstance resources by subscription.
@@ -18,6 +16,6 @@ public final class DigitalTwinsListSamples {
      */
     public static void getDigitalTwinsInstanceResourcesBySubscription(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwins().list(Context.NONE);
+        manager.digitalTwins().list(com.azure.core.util.Context.NONE);
     }
 }

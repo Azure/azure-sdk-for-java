@@ -22,23 +22,32 @@ public class ShareStorageCustomization extends Customization {
         models.getClass("ShareFileRangeList").addAnnotation("@JsonDeserialize(using = ShareFileRangeListDeserializer.class)");
 
         // Changes to JacksonXmlRootElement for classes that have been renamed.
-        models.getClass("ShareMetrics").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"Metrics\")");
-
-        models.getClass("ShareRetentionPolicy").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"RetentionPolicy\")");
-
-        models.getClass("ShareSignedIdentifier").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"SignedIdentifier\")");
-
-        models.getClass("ShareAccessPolicy").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"AccessPolicy\")");
+        changeJacksonXmlRootElementName(models.getClass("ShareMetrics"), "Metrics");
+        changeJacksonXmlRootElementName(models.getClass("ShareRetentionPolicy"), "RetentionPolicy");
+        changeJacksonXmlRootElementName(models.getClass("ShareSignedIdentifier"), "SignedIdentifier");
+        changeJacksonXmlRootElementName(models.getClass("ShareAccessPolicy"), "AccessPolicy");
 
         // Replace JacksonXmlRootElement annotations that are causing a semantic breaking change.
-        models.getClass("ShareFileHttpHeaders").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
+        changeJacksonXmlRootElementName(models.getClass("ShareFileHttpHeaders"), "share-file-http-headers");
+        changeJacksonXmlRootElementName(models.getClass("SourceModifiedAccessConditions"), "source-modified-access-conditions");
 
-        models.getClass("SourceModifiedAccessConditions").removeAnnotation("@JacksonXmlRootElement")
-            .addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
+        ClassCustomization shareTokenIntent = models.getClass("ShareTokenIntent");
+        shareTokenIntent.getJavadoc().setDescription("The request intent specifies requests that are intended for " +
+            "backup/admin type operations, meaning that all file/directory ACLs are bypassed and full permissions are " +
+            "granted. User must also have required RBAC permission.");
+    }
+
+    /*
+     * Uses ClassCustomization.customizeAst to replace the 'localName' value of the JacksonXmlRootElement instead of
+     * the previous implementation which removed the JacksonXmlRootElement then added it back with the updated
+     * 'localName'. The previous implementation would occasionally run into an issue where the JacksonXmlRootElement
+     * import wouldn't be added back, causing a failure in CI when validating that code generation was up-to-date.
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private void changeJacksonXmlRootElementName(ClassCustomization classCustomization, String rootElementName) {
+        classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName()).get()
+            .getAnnotationByName("JacksonXmlRootElement").get()
+            .asNormalAnnotationExpr()
+            .setPairs(new NodeList<>(new MemberValuePair("localName", new StringLiteralExpr(rootElementName)))));
     }
 }

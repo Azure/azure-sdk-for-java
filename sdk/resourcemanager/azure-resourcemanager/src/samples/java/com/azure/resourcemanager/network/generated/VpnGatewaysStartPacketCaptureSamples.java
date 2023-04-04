@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStartParameters;
 
 /** Samples for VpnGateways StartPacketCapture. */
 public final class VpnGatewaysStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnGatewayStartPacketCaptureFilterData.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnGatewayStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on vpn gateway with filter.
@@ -32,11 +31,11 @@ public final class VpnGatewaysStartPacketCaptureSamples {
                             + " [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort':"
                             + " [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags':"
                             + " 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnGatewayStartPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnGatewayStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn gateway without filter.
@@ -50,6 +49,6 @@ public final class VpnGatewaysStartPacketCaptureSamples {
             .manager()
             .serviceClient()
             .getVpnGateways()
-            .startPacketCapture("rg1", "vpngw", null, Context.NONE);
+            .startPacketCapture("rg1", "vpngw", null, com.azure.core.util.Context.NONE);
     }
 }

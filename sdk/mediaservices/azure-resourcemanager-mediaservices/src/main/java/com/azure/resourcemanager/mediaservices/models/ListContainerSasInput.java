@@ -23,6 +23,10 @@ public final class ListContainerSasInput {
     @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
+    /** Creates an instance of ListContainerSasInput class. */
+    public ListContainerSasInput() {
+    }
+
     /**
      * Get the permissions property: The permissions to set on the SAS URL.
      *

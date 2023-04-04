@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ModelVersion;
 import java.nio.ByteBuffer;
@@ -63,7 +62,8 @@ public final class ModelVersionsGetWithResponseMockTests {
         ModelVersion response =
             manager
                 .modelVersions()
-                .getWithResponse("jqyowaadc", "dazabundtse", "kaupwhlz", "ckremgjlmsvdorsi", Context.NONE)
+                .getWithResponse(
+                    "jqyowaadc", "dazabundtse", "kaupwhlz", "ckremgjlmsvdorsi", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("pylblfsprrwc", response.properties().description());

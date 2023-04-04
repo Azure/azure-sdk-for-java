@@ -34,7 +34,6 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -418,9 +417,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             // Can't use a Collections.emptyMap() because we add metadata for encryption.
             final Map<String, String> metadataFinal = options.getMetadata() == null
                 ? new HashMap<>() : options.getMetadata();
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
-                : options.getDataFlux();
+
+            final ParallelTransferOptions parallelTransferOptions =
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+
+            Flux<ByteBuffer> data = options.getDataFlux();
+            data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
+                parallelTransferOptions.getBlockSizeLong(), options.getDataStream());
+
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
@@ -586,7 +590,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                         .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
                         .setRequestConditions(options.getRequestConditions()))
-                    .doOnTerminate(() -> {
+                    .doFinally(ignored -> {
                         try {
                             channel.close();
                         } catch (IOException e) {

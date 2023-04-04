@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedServerSecurityAlertPolicies ListByInstance. */
 public final class ManagedServerSecurityAlertPoliciesListByInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ManagedServerSecurityAlertListByInstance.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedServerSecurityAlertListByInstance.json
      */
     /**
      * Sample code: Get the managed server's threat detection policies.

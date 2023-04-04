@@ -106,9 +106,17 @@ public class Configs {
     private static final String QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = "COSMOS.QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED";
     private static final boolean DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = false;
 
+    // whether to use old tracing format instead of semantic profile
+    private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
+    private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
+
     // whether to enable replica addresses validation
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
     private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
+
+    // Rntbd health check related config
+    private static final String TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = "COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED";
+    private static final boolean DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = true;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -283,6 +291,12 @@ public class Configs {
             DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED);
     }
 
+    public static boolean useLegacyTracing() {
+        return getJVMConfigAsBoolean(
+            USE_LEGACY_TRACING,
+            DEFAULT_USE_LEGACY_TRACING);
+    }
+
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
         String propValue = System.getProperty(propName);
         return getIntValue(propValue, defaultValue);
@@ -313,5 +327,11 @@ public class Configs {
         return getJVMConfigAsBoolean(
                 REPLICA_ADDRESS_VALIDATION_ENABLED,
                 DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED);
+    }
+
+    public static boolean isTcpHealthCheckTimeoutDetectionEnabled() {
+        return getJVMConfigAsBoolean(
+            TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED,
+            DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED);
     }
 }

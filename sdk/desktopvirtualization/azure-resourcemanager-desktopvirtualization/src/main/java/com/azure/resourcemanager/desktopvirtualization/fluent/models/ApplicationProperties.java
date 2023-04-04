@@ -57,9 +57,8 @@ public final class ApplicationProperties {
     private RemoteApplicationType applicationType;
 
     /*
-     * Specifies whether this published application can be launched with
-     * command line arguments provided by the client, command line arguments
-     * specified at publish time, or no command line arguments at all.
+     * Specifies whether this published application can be launched with command line arguments provided by the client,
+     * command line arguments specified at publish time, or no command line arguments at all.
      */
     @JsonProperty(value = "commandLineSetting", required = true)
     private CommandLineSetting commandLineSetting;
@@ -71,8 +70,7 @@ public final class ApplicationProperties {
     private String commandLineArguments;
 
     /*
-     * Specifies whether to show the RemoteApp program in the RD Web Access
-     * server.
+     * Specifies whether to show the RemoteApp program in the RD Web Access server.
      */
     @JsonProperty(value = "showInPortal")
     private Boolean showInPortal;
@@ -100,6 +98,10 @@ public final class ApplicationProperties {
      */
     @JsonProperty(value = "iconContent", access = JsonProperty.Access.WRITE_ONLY)
     private byte[] iconContent;
+
+    /** Creates an instance of ApplicationProperties class. */
+    public ApplicationProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of Application. (internal use).

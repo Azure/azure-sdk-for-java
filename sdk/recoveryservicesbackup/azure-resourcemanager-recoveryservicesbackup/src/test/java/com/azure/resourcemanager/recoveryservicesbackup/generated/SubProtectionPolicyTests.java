@@ -15,41 +15,40 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.TieringPolicy;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SubProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SubProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"kdl\":{\"tieringMode\":\"DoNotTier\",\"duration\":693304246,\"durationType\":\"Months\"}}}")
+                    "{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"qybaryeua\":{\"tieringMode\":\"TierRecommended\",\"duration\":1020341632,\"durationType\":\"Years\"}}}")
                 .toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.LOG, model.policyType());
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringPolicy().get("kdl").tieringMode());
-        Assertions.assertEquals(693304246, model.tieringPolicy().get("kdl").duration());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.tieringPolicy().get("kdl").durationType());
+        Assertions.assertEquals(PolicyType.COPY_ONLY_FULL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("qybaryeua").tieringMode());
+        Assertions.assertEquals(1020341632, model.tieringPolicy().get("qybaryeua").duration());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.tieringPolicy().get("qybaryeua").durationType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SubProtectionPolicy model =
             new SubProtectionPolicy()
-                .withPolicyType(PolicyType.LOG)
+                .withPolicyType(PolicyType.COPY_ONLY_FULL)
                 .withSchedulePolicy(new SchedulePolicy())
                 .withRetentionPolicy(new RetentionPolicy())
                 .withTieringPolicy(
                     mapOf(
-                        "kdl",
+                        "qybaryeua",
                         new TieringPolicy()
-                            .withTieringMode(TieringMode.DO_NOT_TIER)
-                            .withDuration(693304246)
-                            .withDurationType(RetentionDurationType.MONTHS)));
+                            .withTieringMode(TieringMode.TIER_RECOMMENDED)
+                            .withDuration(1020341632)
+                            .withDurationType(RetentionDurationType.YEARS)));
         model = BinaryData.fromObject(model).toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.LOG, model.policyType());
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringPolicy().get("kdl").tieringMode());
-        Assertions.assertEquals(693304246, model.tieringPolicy().get("kdl").duration());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.tieringPolicy().get("kdl").durationType());
+        Assertions.assertEquals(PolicyType.COPY_ONLY_FULL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("qybaryeua").tieringMode());
+        Assertions.assertEquals(1020341632, model.tieringPolicy().get("qybaryeua").duration());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.tieringPolicy().get("qybaryeua").durationType());
     }
 
     @SuppressWarnings("unchecked")

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Servers Stop. */
 public final class ServersStopSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerStop.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerStop.json
      */
     /**
      * Sample code: Stop a server.
@@ -17,6 +15,6 @@ public final class ServersStopSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void stopAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.servers().stop("TestGroup", "testserver", Context.NONE);
+        manager.servers().stop("TestGroup", "testserver", com.azure.core.util.Context.NONE);
     }
 }

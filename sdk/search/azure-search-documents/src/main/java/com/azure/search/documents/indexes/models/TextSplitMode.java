@@ -7,16 +7,23 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TextSplitMode. */
+/** A value indicating which split mode to perform. */
 public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
-    /** Static value pages for TextSplitMode. */
+    /** Split the text into individual pages. */
     public static final TextSplitMode PAGES = fromString("pages");
 
-    /** Static value sentences for TextSplitMode. */
+    /** Split the text into individual sentences. */
     public static final TextSplitMode SENTENCES = fromString("sentences");
+
+    /**
+     * Creates a new instance of TextSplitMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextSplitMode() {}
 
     /**
      * Creates or finds a TextSplitMode from its string representation.
@@ -24,7 +31,6 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
      * @param name a name to look for.
      * @return the corresponding TextSplitMode.
      */
-    @JsonCreator
     public static TextSplitMode fromString(String name) {
         return fromString(name, TextSplitMode.class);
     }

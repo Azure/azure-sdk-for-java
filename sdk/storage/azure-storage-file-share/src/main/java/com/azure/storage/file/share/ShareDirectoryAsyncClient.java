@@ -71,8 +71,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 
 /**
@@ -348,8 +346,7 @@ public class ShareDirectoryAsyncClient {
 
         return azureFileStorageClient.getDirectories()
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
-                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ShareDirectoryAsyncClient::createWithRestResponse);
     }
 
@@ -502,8 +499,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -642,8 +638,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null, context)
             .map(ShareDirectoryAsyncClient::getPropertiesResponse);
     }
 
@@ -730,8 +725,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
-                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ShareDirectoryAsyncClient::setPropertiesResponse);
     }
 
@@ -821,8 +815,7 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata, context)
             .map(ShareDirectoryAsyncClient::setMetadataResponse);
     }
 
@@ -1003,7 +996,7 @@ public class ShareDirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().getHandleList(),
+                    ModelHelper.transformHandleItems(response.getValue().getHandleList()),
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
@@ -1237,8 +1230,7 @@ public class ShareDirectoryAsyncClient {
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-            destinationConditions, smbInfo,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            destinationConditions, smbInfo, context)
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 
@@ -2134,15 +2126,25 @@ public class ShareDirectoryAsyncClient {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
             res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(), true,
-                    directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
-                    null)));
+                .forEach(directoryItem -> {
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
+                        true,
+                        directoryItem.getFileId(),
+                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                        directoryItem.getPermissionKey(),
+                        null));
+                });
             res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(fileItem.getName(), false,
-                    fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
-                    fileItem.getProperties().getContentLength())));
+                .forEach(fileItem -> {
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
+                        false,
+                        fileItem.getFileId(),
+                        ModelHelper.transformFileProperty(fileItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
+                        fileItem.getPermissionKey(),
+                        fileItem.getProperties().getContentLength()));
+                });
         }
 
         return new ArrayList<>(shareFileItems);

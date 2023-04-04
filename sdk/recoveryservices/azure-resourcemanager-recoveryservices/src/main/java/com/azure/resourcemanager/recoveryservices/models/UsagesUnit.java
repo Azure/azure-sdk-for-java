@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UsagesUnit. */
+/** Unit of the usage. */
 public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
     /** Static value Count for UsagesUnit. */
     public static final UsagesUnit COUNT = fromString("Count");
@@ -27,6 +27,15 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
 
     /** Static value BytesPerSecond for UsagesUnit. */
     public static final UsagesUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
+
+    /**
+     * Creates a new instance of UsagesUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsagesUnit() {
+    }
 
     /**
      * Creates or finds a UsagesUnit from its string representation.

@@ -6,39 +6,41 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A database geo backup policy. */
+/** A Geo backup policy. */
 @Fluent
 public final class GeoBackupPolicyInner extends ProxyResource {
-    /*
-     * The properties of the geo backup policy.
-     */
-    @JsonProperty(value = "properties", required = true)
-    private GeoBackupPolicyProperties innerProperties = new GeoBackupPolicyProperties();
-
-    /*
-     * Kind of geo backup policy.  This is metadata used for the Azure portal
-     * experience.
-     */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
-
     /*
      * Backup policy location.
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /**
-     * Get the innerProperties property: The properties of the geo backup policy.
-     *
-     * @return the innerProperties value.
+    /*
+     * Kind of geo backup policy.  This is metadata used for the Azure portal experience.
      */
-    private GeoBackupPolicyProperties innerProperties() {
-        return this.innerProperties;
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private GeoBackupPolicyProperties innerProperties;
+
+    /** Creates an instance of GeoBackupPolicyInner class. */
+    public GeoBackupPolicyInner() {
+    }
+
+    /**
+     * Get the location property: Backup policy location.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
     }
 
     /**
@@ -51,12 +53,12 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the location property: Backup policy location.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the location value.
+     * @return the innerProperties value.
      */
-    public String location() {
-        return this.location;
+    private GeoBackupPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -97,15 +99,8 @@ public final class GeoBackupPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model GeoBackupPolicyInner"));
-        } else {
+        if (innerProperties() != null) {
             innerProperties().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GeoBackupPolicyInner.class);
 }

@@ -10,9 +10,11 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 
 public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBase {
@@ -21,12 +23,36 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
     protected void beforeTest() {
     }
 
-    MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
-        return getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true);
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
     }
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
+                                                         MetricsAdvisorServiceVersion serviceVersion, boolean isSync) {
+        HttpClient httpClient1;
+        if (isSync) {
+            httpClient1 = buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        } else {
+            httpClient1 = buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        }
+        return getMetricsAdvisorAdministrationBuilderInternal(httpClient1, serviceVersion, true);
+    }
+
+    static MetricsAdvisorAdministrationClientBuilder getNonRecordAdminClient() {
+        return new MetricsAdvisorAdministrationClientBuilder()
+            .endpoint(PLAYBACK_ENDPOINT)
+            .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
+    }
+
+    MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilderInternal(HttpClient httpClient,
                                                                                      MetricsAdvisorServiceVersion serviceVersion,
                                                                                      boolean useKeyCredential) {
         MetricsAdvisorAdministrationClientBuilder builder = new MetricsAdvisorAdministrationClientBuilder()

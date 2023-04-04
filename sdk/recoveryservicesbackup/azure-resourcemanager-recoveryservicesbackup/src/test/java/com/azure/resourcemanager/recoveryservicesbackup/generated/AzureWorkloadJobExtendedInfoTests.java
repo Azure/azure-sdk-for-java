@@ -11,11 +11,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadJobExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureWorkloadJobExtendedInfo model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class AzureWorkloadJobExtendedInfoTests {
         Assertions.assertEquals("dyuib", model.dynamicErrorMessage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureWorkloadJobExtendedInfo model =
             new AzureWorkloadJobExtendedInfo()
                 .withTasksList(

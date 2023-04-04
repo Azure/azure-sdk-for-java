@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.delegatednetwork.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** Represents an instance of a resource. */
-@Immutable
+@Fluent
 public class ControllerResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerResource.class);
+    /** Creates an instance of ControllerResource class. */
+    public ControllerResource() {
+    }
 
     /** {@inheritDoc} */
     @Override

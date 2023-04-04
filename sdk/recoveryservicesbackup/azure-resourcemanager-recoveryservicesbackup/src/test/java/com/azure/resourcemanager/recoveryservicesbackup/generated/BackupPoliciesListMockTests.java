@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicyResource;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class BackupPoliciesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":873173770,\"resourceGuardOperationRequests\":[\"wqulsutrjbhxykf\",\"y\"]},\"eTag\":\"zvqqugdrftbcvexr\",\"location\":\"uquowtljvfwhr\",\"tags\":{\"ulmdgglm\":\"khyxvrqtvbcz\",\"ngpszngafpg\":\"pjpfseykgs\",\"ujcngo\":\"lkvec\",\"nub\":\"dyedmzrgjfo\"},\"id\":\"oitpkpztrgdgx\",\"name\":\"coqra\",\"type\":\"wugyx\"}]}";
+            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1143125594,\"resourceGuardOperationRequests\":[\"tmjtsghp\",\"c\",\"cp\",\"arpzeqacdldtzm\"]},\"eTag\":\"pefcpcz\",\"location\":\"hnuqndaizu\",\"tags\":{\"mtvtvegwqiukvzwy\":\"huytuszx\"},\"id\":\"wtthaokgksk\",\"name\":\"i\",\"type\":\"bs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +61,13 @@ public final class BackupPoliciesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ProtectionPolicyResource> response =
-            manager.backupPolicies().list("jkpdxphlkksnm", "zvyfijdkzuqnwsi", "huqol", Context.NONE);
+            manager.backupPolicies().list("aewse", "vesk", "xegqphr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uquowtljvfwhr", response.iterator().next().location());
-        Assertions.assertEquals("khyxvrqtvbcz", response.iterator().next().tags().get("ulmdgglm"));
-        Assertions.assertEquals(873173770, response.iterator().next().properties().protectedItemsCount());
+        Assertions.assertEquals("hnuqndaizu", response.iterator().next().location());
+        Assertions.assertEquals("huytuszx", response.iterator().next().tags().get("mtvtvegwqiukvzwy"));
+        Assertions.assertEquals(1143125594, response.iterator().next().properties().protectedItemsCount());
         Assertions
-            .assertEquals(
-                "wqulsutrjbhxykf", response.iterator().next().properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("zvqqugdrftbcvexr", response.iterator().next().etag());
+            .assertEquals("tmjtsghp", response.iterator().next().properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("pefcpcz", response.iterator().next().etag());
     }
 }

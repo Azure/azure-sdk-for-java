@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityConnectorApplicationOperation Get. */
 public final class SecurityConnectorApplicationOperationGetSamples {
     /*
@@ -20,6 +18,10 @@ public final class SecurityConnectorApplicationOperationGetSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .securityConnectorApplicationOperations()
-            .getWithResponse("gcpResourceGroup", "gcpconnector", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", Context.NONE);
+            .getWithResponse(
+                "gcpResourceGroup",
+                "gcpconnector",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
+                com.azure.core.util.Context.NONE);
     }
 }

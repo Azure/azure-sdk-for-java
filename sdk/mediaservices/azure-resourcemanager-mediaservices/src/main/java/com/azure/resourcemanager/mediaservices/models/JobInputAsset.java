@@ -22,6 +22,10 @@ public final class JobInputAsset extends JobInputClip {
     @JsonProperty(value = "assetName", required = true)
     private String assetName;
 
+    /** Creates an instance of JobInputAsset class. */
+    public JobInputAsset() {
+    }
+
     /**
      * Get the assetName property: The name of the input Asset.
      *

@@ -22,6 +22,10 @@ public final class NameInfo {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of NameInfo class. */
+    public NameInfo() {
+    }
+
     /**
      * Get the value property: Value of usage.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConfigurationPolicyGroups Delete. */
 public final class ConfigurationPolicyGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ConfigurationPolicyGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ConfigurationPolicyGroupDelete.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupDelete.
@@ -22,6 +20,6 @@ public final class ConfigurationPolicyGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getConfigurationPolicyGroups()
-            .delete("rg1", "vpnServerConfiguration1", "policyGroup1", Context.NONE);
+            .delete("rg1", "vpnServerConfiguration1", "policyGroup1", com.azure.core.util.Context.NONE);
     }
 }

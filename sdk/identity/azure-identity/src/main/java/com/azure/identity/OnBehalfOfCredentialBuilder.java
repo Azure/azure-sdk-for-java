@@ -6,15 +6,42 @@ package com.azure.identity;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
-import java.util.HashMap;
-
 /**
  * Fluent credential builder for instantiating a {@link OnBehalfOfCredential}.
+ *
+ * <p>On Behalf of authentication in Azure is a way for a user or application to authenticate to a service or resource
+ * using credentials from another identity provider. This type of authentication is typically used when a user or
+ * application wants to access a resource in Azure, but their credentials are managed by a different identity provider,
+ * such as an on-premises Active Directory or a third-party identity provider.
+ * To use "On Behalf of" authentication in Azure, the user must first authenticate to the identity provider using their
+ * credentials. The identity provider then issues a security token that contains information about the user and their
+ * permissions. This security token is then passed to Azure, which uses it to authenticate the user or application and
+ * grant them access to the requested resource.
+ * The OnBehalfOfCredential acquires a token with a client secret/certificate and user assertion for an AAD application
+ * on behalf of a user principal.</p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.OnBehalfOfCredential},
+ * using the {@link com.azure.identity.OnBehalfOfCredentialBuilder} to configure it. The {@code tenantId},
+ * {@code clientId} and {@code clientSecret} parameters are required to create
+ * {@link com.azure.identity.OnBehalfOfCredential}. The {@code userAssertion} can be optionally specified on the
+ * {@link OnBehalfOfCredentialBuilder}. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.obocredential.construct -->
+ * <pre>
+ * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;
+ *     .clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
+ *     .clientSecret&#40;&quot;&lt;app-Client-Secret&gt;&quot;&#41;
+ *     .userAssertion&#40;&quot;&lt;user-assertion&gt;&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.obocredential.construct -->
  *
  * @see OnBehalfOfCredential
  */
 public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBehalfOfCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(OnBehalfOfCredentialBuilder.class);
+    private static final String CLASS_NAME = OnBehalfOfCredentialBuilder.class.getSimpleName();
 
     private String clientSecret;
     private String clientCertificatePath;
@@ -109,12 +136,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
      * are configured.
      */
     public OnBehalfOfCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {
-            {
-                put("clientId", clientId);
-                put("tenantId", tenantId);
-            }
-        }, LOGGER);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId);
 
         if (clientSecret == null && clientCertificatePath == null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("At least client secret or certificate "

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSkuDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of integration service environment skus. */
 @Fluent
 public final class IntegrationServiceEnvironmentSkuList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSkuList.class);
-
     /*
      * The list of integration service environment skus.
      */
@@ -27,6 +23,10 @@ public final class IntegrationServiceEnvironmentSkuList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of IntegrationServiceEnvironmentSkuList class. */
+    public IntegrationServiceEnvironmentSkuList() {
+    }
 
     /**
      * Get the value property: The list of integration service environment skus.

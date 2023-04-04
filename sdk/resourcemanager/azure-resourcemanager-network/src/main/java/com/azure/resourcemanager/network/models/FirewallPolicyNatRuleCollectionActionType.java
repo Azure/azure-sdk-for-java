@@ -15,6 +15,15 @@ public final class FirewallPolicyNatRuleCollectionActionType
     public static final FirewallPolicyNatRuleCollectionActionType DNAT = fromString("DNAT");
 
     /**
+     * Creates a new instance of FirewallPolicyNatRuleCollectionActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyNatRuleCollectionActionType() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyNatRuleCollectionActionType from its string representation.
      *
      * @param name a name to look for.

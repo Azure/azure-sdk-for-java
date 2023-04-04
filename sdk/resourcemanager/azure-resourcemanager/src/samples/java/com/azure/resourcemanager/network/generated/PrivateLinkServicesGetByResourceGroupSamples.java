@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkServices GetByResourceGroup. */
 public final class PrivateLinkServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PrivateLinkServiceGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PrivateLinkServiceGet.json
      */
     /**
      * Sample code: Get private link service.
@@ -22,6 +20,6 @@ public final class PrivateLinkServicesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkServices()
-            .getByResourceGroupWithResponse("rg1", "testPls", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "testPls", null, com.azure.core.util.Context.NONE);
     }
 }

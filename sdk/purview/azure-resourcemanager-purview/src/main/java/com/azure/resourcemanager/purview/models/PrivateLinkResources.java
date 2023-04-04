@@ -13,17 +13,21 @@ public interface PrivateLinkResources {
     /**
      * Gets a list of privately linkable resources for an account.
      *
+     * <p>Gets a list of privately linkable resources for an account.
+     *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> listByAccount(String resourceGroupName, String accountName);
 
     /**
      * Gets a list of privately linkable resources for an account.
+     *
+     * <p>Gets a list of privately linkable resources for an account.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -31,12 +35,31 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of privately linkable resources for an account.
+     * @return a list of privately linkable resources for an account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> listByAccount(String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets a privately linkable resources for an account with given group identifier.
+     *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param accountName The name of the account.
+     * @param groupId The group identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a privately linkable resources for an account with given group identifier along with {@link Response}.
+     */
+    Response<PrivateLinkResource> getByGroupIdWithResponse(
+        String resourceGroupName, String accountName, String groupId, Context context);
+
+    /**
+     * Gets a privately linkable resources for an account with given group identifier.
+     *
+     * <p>Gets a privately linkable resources for an account with given group identifier.
      *
      * @param resourceGroupName The resource group name.
      * @param accountName The name of the account.
@@ -47,19 +70,4 @@ public interface PrivateLinkResources {
      * @return a privately linkable resources for an account with given group identifier.
      */
     PrivateLinkResource getByGroupId(String resourceGroupName, String accountName, String groupId);
-
-    /**
-     * Gets a privately linkable resources for an account with given group identifier.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName The name of the account.
-     * @param groupId The group identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privately linkable resources for an account with given group identifier.
-     */
-    Response<PrivateLinkResource> getByGroupIdWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context);
 }

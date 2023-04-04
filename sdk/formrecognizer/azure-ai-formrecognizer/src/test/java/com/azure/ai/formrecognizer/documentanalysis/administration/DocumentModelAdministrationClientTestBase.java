@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
@@ -111,6 +112,12 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         actualCustomModel.getDocumentTypes().forEach((s, docTypeInfo) -> assertNotNull(docTypeInfo.getFieldSchema()));
     }
 
+    void validateClassifierModelData(DocumentClassifierDetails documentClassifierDetails) {
+        assertNotNull(documentClassifierDetails.getCreatedOn());
+        assertNotNull(documentClassifierDetails.getClassifierId());
+        assertNotNull(documentClassifierDetails.getApiVersion());
+    }
+
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
 
@@ -136,6 +143,14 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
 
     void multipageTrainingRunner(Consumer<String> testRunner) {
         TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
+    void beginClassifierRunner(Consumer<String> testRunner) {
+        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
+    void selectionMarkTrainingRunner(Consumer<String> testRunner) {
+        TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
     private String getEndpoint() {

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.AlertsClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.AlertInner;
 import com.azure.resourcemanager.databoxedge.models.Alert;
 import com.azure.resourcemanager.databoxedge.models.Alerts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AlertsImpl implements Alerts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AlertsImpl.class);
 
     private final AlertsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class AlertsImpl implements Alerts {
         return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
-    public Alert get(String deviceName, String name, String resourceGroupName) {
-        AlertInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
-        if (inner != null) {
-            return new AlertImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Alert> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
         Response<AlertInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
         if (inner != null) {
@@ -56,6 +46,15 @@ public final class AlertsImpl implements Alerts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Alert get(String deviceName, String name, String resourceGroupName) {
+        AlertInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
+        if (inner != null) {
+            return new AlertImpl(inner, this.manager());
         } else {
             return null;
         }

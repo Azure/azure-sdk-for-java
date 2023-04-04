@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VpnConnectionInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import com.azure.resourcemanager.network.models.PropagatedRouteTable;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 /** Samples for VpnConnections CreateOrUpdate. */
 public final class VpnConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnConnectionPut.json
      */
     /**
      * Sample code: VpnConnectionPut.
@@ -52,7 +51,7 @@ public final class VpnConnectionsCreateOrUpdateSamples {
                                     .withVpnLinkConnectionMode(VpnLinkConnectionMode.DEFAULT)
                                     .withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol.IKEV2)
                                     .withConnectionBandwidth(200)
-                                    .withSharedKey("key")
+                                    .withSharedKey("fakeTokenPlaceholder")
                                     .withUsePolicyBasedTrafficSelectors(false)))
                     .withRoutingConfiguration(
                         new RoutingConfiguration()
@@ -83,6 +82,6 @@ public final class VpnConnectionsCreateOrUpdateSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

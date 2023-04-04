@@ -30,6 +30,10 @@ public final class WorkspaceInfo {
     @JsonProperty(value = "properties", required = true)
     private WorkspaceInfoProperties innerProperties = new WorkspaceInfoProperties();
 
+    /** Creates an instance of WorkspaceInfo class. */
+    public WorkspaceInfo() {
+    }
+
     /**
      * Get the id property: Azure Resource Manager identifier of the Log Analytics Workspace.
      *

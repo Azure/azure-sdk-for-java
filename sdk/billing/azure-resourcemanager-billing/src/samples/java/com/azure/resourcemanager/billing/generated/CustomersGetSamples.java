@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Customers Get. */
 public final class CustomersGetSamples {
     /*
@@ -19,7 +17,11 @@ public final class CustomersGetSamples {
     public static void customerWithExpand(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .customers()
-            .getWithResponse("{billingAccountName}", "{customerName}", "enabledAzurePlans,resellers", Context.NONE);
+            .getWithResponse(
+                "{billingAccountName}",
+                "{customerName}",
+                "enabledAzurePlans,resellers",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +33,8 @@ public final class CustomersGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void customer(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.customers().getWithResponse("{billingAccountName}", "{customerName}", null, Context.NONE);
+        manager
+            .customers()
+            .getWithResponse("{billingAccountName}", "{customerName}", null, com.azure.core.util.Context.NONE);
     }
 }

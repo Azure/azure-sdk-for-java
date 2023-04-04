@@ -17,6 +17,10 @@ public final class MobileNetworkResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of MobileNetworkResourceId class. */
+    public MobileNetworkResourceId() {
+    }
+
     /**
      * Get the id property: Mobile network resource ID.
      *

@@ -66,6 +66,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     private final LinkedCancellationTokenSource cancellationTokenSource;
     private final ConcurrentHashMap<String, LinkedCancellationToken> cancellationTokenMap;
+    private final Mono<Integer> throughputQueryMono;
 
     private ThroughputGroupControllerBase defaultGroupController;
     private String targetContainerRid;
@@ -77,7 +78,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
         ConnectionMode connectionMode,
         Set<ThroughputControlGroupInternal> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
-        LinkedCancellationToken parentToken) {
+        LinkedCancellationToken parentToken,
+        Mono<Integer> throughputQueryMono) {
 
         checkNotNull(collectionCache, "Collection cache can not be null");
         checkArgument(groups != null && groups.size() > 0, "Throughput budget groups can not be null or empty");
@@ -98,6 +100,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
         this.cancellationTokenSource = new LinkedCancellationTokenSource(parentToken);
         this.cancellationTokenMap = new ConcurrentHashMap<>();
+        this.throughputQueryMono = throughputQueryMono == null ? this.resolveContainerMaxThroughputCore() : throughputQueryMono;
     }
 
     private ThroughputProvisioningScope getThroughputResolveLevel(Set<ThroughputControlGroupInternal> groupConfigs) {
@@ -170,6 +173,14 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
+        return this.throughputQueryMono
+            .flatMap(maxThroughput -> {
+                this.maxContainerThroughput.set(maxThroughput);
+                return Mono.just(this);
+            });
+    }
+
+    private Mono<Integer> resolveContainerMaxThroughputCore() {
         return Mono.defer(() -> Mono.just(this.throughputProvisioningScope))
             .flatMap(throughputProvisioningScope -> {
                 if (throughputProvisioningScope == ThroughputProvisioningScope.CONTAINER) {
@@ -196,10 +207,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 // which is constant value, hence no need to resolve throughput
                 return Mono.empty();
             })
-            .flatMap(throughputResponse -> {
-                this.updateMaxContainerThroughput(throughputResponse);
-                return Mono.empty();
-            })
+            .map(throughputResponse -> this.getMaxContainerThroughput(throughputResponse))
             .onErrorResume(throwable -> {
                 if (this.isOwnerResourceNotExistsException(throwable)) {
                     this.cancellationTokenSource.close();
@@ -211,7 +219,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 // Throughput can be configured on database level or container level
                 // Retry at most 1 time so we can try on database and container both
                 RetrySpec.max(1).filter(throwable -> this.isOfferNotConfiguredException(throwable))
-            ).thenReturn(this);
+            );
     }
 
     private Mono<ThroughputResponse> resolveThroughputByResourceId(String resourceId) {
@@ -237,12 +245,11 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .map(ModelBridgeInternal::createThroughputRespose);
     }
 
-    private void updateMaxContainerThroughput(ThroughputResponse throughputResponse) {
+    private Integer getMaxContainerThroughput(ThroughputResponse throughputResponse) {
         checkNotNull(throughputResponse, "Throughput response can not be null");
 
         ThroughputProperties throughputProperties = throughputResponse.getProperties();
-        this.maxContainerThroughput.set(
-            Math.max(throughputProperties.getAutoscaleMaxThroughput(), throughputProperties.getManualThroughput()));
+        return Math.max(throughputProperties.getAutoscaleMaxThroughput(), throughputProperties.getManualThroughput());
     }
 
     private boolean isOfferNotConfiguredException(Throwable throwable) {
@@ -367,7 +374,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(group -> this.resolveThroughputGroupController(group))
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
-                logger.warn("Refresh throughput failed with reason %s", throwable);
+                logger.warn("Refresh throughput failed with reason {}", throwable.getMessage());
                 return Mono.empty();
             })
             .then()

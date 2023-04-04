@@ -13,10 +13,9 @@ import com.azure.resourcemanager.databoxedge.fluent.RolesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
 import com.azure.resourcemanager.databoxedge.models.Role;
 import com.azure.resourcemanager.databoxedge.models.Roles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RolesImpl implements Roles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RolesImpl.class);
 
     private final RolesClient innerClient;
 
@@ -38,15 +37,6 @@ public final class RolesImpl implements Roles {
         return Utils.mapPage(inner, inner1 -> new RoleImpl(inner1, this.manager()));
     }
 
-    public Role get(String deviceName, String name, String resourceGroupName) {
-        RoleInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
-        if (inner != null) {
-            return new RoleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Role> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
         Response<RoleInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
         if (inner != null) {
@@ -55,6 +45,15 @@ public final class RolesImpl implements Roles {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RoleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Role get(String deviceName, String name, String resourceGroupName) {
+        RoleInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
+        if (inner != null) {
+            return new RoleImpl(inner, this.manager());
         } else {
             return null;
         }

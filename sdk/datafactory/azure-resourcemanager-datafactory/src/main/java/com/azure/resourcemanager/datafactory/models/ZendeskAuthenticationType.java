@@ -17,6 +17,15 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
     public static final ZendeskAuthenticationType TOKEN = fromString("Token");
 
     /**
+     * Creates a new instance of ZendeskAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ZendeskAuthenticationType() {
+    }
+
+    /**
      * Creates or finds a ZendeskAuthenticationType from its string representation.
      *
      * @param name a name to look for.

@@ -7,50 +7,49 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents an item- or document-level indexing error. */
 @Immutable
-public final class SearchIndexerError {
+public final class SearchIndexerError implements JsonSerializable<SearchIndexerError> {
     /*
      * The key of the item for which indexing failed.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
      * The message describing the error that occurred while processing the item.
      */
-    @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
+    private final String errorMessage;
 
     /*
      * The status code indicating why the indexing operation failed. Possible values include: 400 for a malformed input
      * document, 404 for document not found, 409 for a version conflict, 422 when the index is temporarily unavailable,
      * or 503 for when the service is too busy.
      */
-    @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int statusCode;
+    private final int statusCode;
 
     /*
      * The name of the source at which the error originated. For example, this could refer to a particular skill in the
      * attached skillset. This may not be always available.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Additional, verbose details about the error to assist in debugging the indexer. This may not be always
      * available.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /*
      * A link to a troubleshooting guide for these classes of errors. This may not be always available.
      */
-    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
     /**
@@ -59,12 +58,7 @@ public final class SearchIndexerError {
      * @param errorMessage the errorMessage value to set.
      * @param statusCode the statusCode value to set.
      */
-    @JsonCreator
-    public SearchIndexerError(
-            @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    String errorMessage,
-            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int statusCode) {
+    public SearchIndexerError(String errorMessage, int statusCode) {
         this.errorMessage = errorMessage;
         this.statusCode = statusCode;
     }
@@ -126,5 +120,82 @@ public final class SearchIndexerError {
      */
     public String getDocumentationLink() {
         return this.documentationLink;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeIntField("statusCode", this.statusCode);
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("details", this.details);
+        jsonWriter.writeStringField("documentationLink", this.documentationLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndexerError from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerError if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchIndexerError.
+     */
+    public static SearchIndexerError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean errorMessageFound = false;
+                    String errorMessage = null;
+                    boolean statusCodeFound = false;
+                    int statusCode = 0;
+                    String key = null;
+                    String name = null;
+                    String details = null;
+                    String documentationLink = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("errorMessage".equals(fieldName)) {
+                            errorMessage = reader.getString();
+                            errorMessageFound = true;
+                        } else if ("statusCode".equals(fieldName)) {
+                            statusCode = reader.getInt();
+                            statusCodeFound = true;
+                        } else if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("details".equals(fieldName)) {
+                            details = reader.getString();
+                        } else if ("documentationLink".equals(fieldName)) {
+                            documentationLink = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (errorMessageFound && statusCodeFound) {
+                        SearchIndexerError deserializedSearchIndexerError =
+                                new SearchIndexerError(errorMessage, statusCode);
+                        deserializedSearchIndexerError.key = key;
+                        deserializedSearchIndexerError.name = name;
+                        deserializedSearchIndexerError.details = details;
+                        deserializedSearchIndexerError.documentationLink = documentationLink;
+
+                        return deserializedSearchIndexerError;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!errorMessageFound) {
+                        missingProperties.add("errorMessage");
+                    }
+                    if (!statusCodeFound) {
+                        missingProperties.add("statusCode");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InboundNatRules Get. */
 public final class InboundNatRulesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/InboundNatRuleGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/InboundNatRuleGet.json
      */
     /**
      * Sample code: InboundNatRuleGet.
@@ -22,6 +20,6 @@ public final class InboundNatRulesGetSamples {
             .manager()
             .serviceClient()
             .getInboundNatRules()
-            .getWithResponse("testrg", "lb1", "natRule1.1", null, Context.NONE);
+            .getWithResponse("testrg", "lb1", "natRule1.1", null, com.azure.core.util.Context.NONE);
     }
 }

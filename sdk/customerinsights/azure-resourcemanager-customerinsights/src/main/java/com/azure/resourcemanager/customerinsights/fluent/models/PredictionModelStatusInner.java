@@ -7,15 +7,12 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.PredictionModelLifeCycle;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 /** The prediction model status. */
 @Fluent
 public final class PredictionModelStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionModelStatusInner.class);
-
     /*
      * The hub name.
      */
@@ -35,9 +32,8 @@ public final class PredictionModelStatusInner {
     private String predictionGuidId;
 
     /*
-     * Prediction model life cycle.  When prediction is in
-     * PendingModelConfirmation status, it is allowed to update the status to
-     * PendingFeaturing or Active through API.
+     * Prediction model life cycle.  When prediction is in PendingModelConfirmation status, it is allowed to update the
+     * status to PendingFeaturing or Active through API.
      */
     @JsonProperty(value = "status", required = true)
     private PredictionModelLifeCycle status;
@@ -83,6 +79,10 @@ public final class PredictionModelStatusInner {
      */
     @JsonProperty(value = "modelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String modelVersion;
+
+    /** Creates an instance of PredictionModelStatusInner class. */
+    public PredictionModelStatusInner() {
+    }
 
     /**
      * Get the tenantId property: The hub name.
@@ -203,10 +203,12 @@ public final class PredictionModelStatusInner {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model PredictionModelStatusInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PredictionModelStatusInner.class);
 }

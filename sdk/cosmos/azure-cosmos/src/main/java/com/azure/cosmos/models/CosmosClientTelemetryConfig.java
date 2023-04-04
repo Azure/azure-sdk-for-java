@@ -4,29 +4,38 @@
 package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.MetricsOptions;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.core.util.TracingOptions;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
+import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -35,20 +44,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Class with config options for Cosmos Client telemetry
  */
 public final class CosmosClientTelemetryConfig {
-    private static Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
-    private static EnumSet<TagName> DEFAULT_TAGS = EnumSet.of(
-        TagName.Container,
-        TagName.Operation,
-        TagName.OperationStatusCode,
-        TagName.ClientCorrelationId,
-        TagName.RequestStatusCode,
-        TagName.RequestOperationType,
-        TagName.ServiceAddress,
-        TagName.RegionName
-    );
 
     private Boolean clientTelemetryEnabled;
     private final Duration httpNetworkRequestTimeout;
@@ -56,31 +55,36 @@ public final class CosmosClientTelemetryConfig {
     private final Duration idleHttpConnectionTimeout;
     private final ProxyOptions proxy;
     private String clientCorrelationId = null;
-    private EnumSet<TagName> metricTagNames = DEFAULT_TAGS;
-    private MeterRegistry clientMetricRegistry = null;
+    private EnumSet<TagName> metricTagNamesOverride = null;
     private boolean isClientMetricsEnabled = false;
+    private final HashSet<CosmosDiagnosticsHandler> customDiagnosticHandlers;
+    private final CopyOnWriteArrayList<CosmosDiagnosticsHandler> diagnosticHandlers;
+    private boolean useLegacyOpenTelemetryTracing = Configs.useLegacyTracing();
+    private boolean isTransportLevelTracingEnabled = false;
+    private Tag clientCorrelationTag;
+    private String accountName;
+    private ClientTelemetry clientTelemetry;
 
-    CosmosClientTelemetryConfig(CosmosClientTelemetryConfig toBeCopied, boolean effectiveIsClientTelemetryEnabled) {
-        this.httpNetworkRequestTimeout = toBeCopied.httpNetworkRequestTimeout;
-        this.maxConnectionPoolSize = toBeCopied.maxConnectionPoolSize;
-        this.idleHttpConnectionTimeout = toBeCopied.idleHttpConnectionTimeout;
-        this.proxy = toBeCopied.proxy;
-        this.clientCorrelationId = toBeCopied.clientCorrelationId;
-        this.metricTagNames = toBeCopied.metricTagNames;
-        this.clientMetricRegistry = toBeCopied.clientMetricRegistry;
-        this.isClientMetricsEnabled = toBeCopied.isClientMetricsEnabled;
-        this.clientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
-    }
+    private Boolean effectiveIsClientTelemetryEnabled = null;
+    private CosmosMicrometerMetricsOptions micrometerMetricsOptions = null;
+    private CosmosDiagnosticsThresholds diagnosticsThresholds = new CosmosDiagnosticsThresholds();
+    private Tracer tracer;
+    private TracingOptions tracingOptions;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
      */
     public CosmosClientTelemetryConfig() {
         this.clientTelemetryEnabled = null;
+        this.effectiveIsClientTelemetryEnabled = null;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.proxy = this.getProxyOptions();
+        this.customDiagnosticHandlers = new HashSet<>();
+        this.diagnosticHandlers = new CopyOnWriteArrayList<>();
+        this.tracer = null;
+        this.tracingOptions = null;
     }
 
     /**
@@ -96,11 +100,34 @@ public final class CosmosClientTelemetryConfig {
     }
 
     Boolean isSendClientTelemetryToServiceEnabled() {
-        return this.clientTelemetryEnabled;
+        Boolean effectiveSnapshot = this.effectiveIsClientTelemetryEnabled;
+        Boolean currentSnapshot = this.clientTelemetryEnabled;
+
+        return  effectiveSnapshot != null ? effectiveSnapshot : currentSnapshot;
     }
 
     void resetIsSendClientTelemetryToServiceEnabled() {
         this.clientTelemetryEnabled = null;
+    }
+
+    void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    String getAccountName() {
+        return this.accountName;
+    }
+
+    void setClientCorrelationTag(Tag clientCorrelationTag) {
+        this.clientCorrelationTag = clientCorrelationTag;
+    }
+
+    Tag getClientCorrelationTag() {
+        return this.clientCorrelationTag;
+    }
+
+    void setUseLegacyOpenTelemetryTracing(boolean useLegacyTracing) {
+        this.useLegacyOpenTelemetryTracing = useLegacyTracing;
     }
 
     /**
@@ -119,16 +146,31 @@ public final class CosmosClientTelemetryConfig {
                 "Currently only MetricsOptions of type CosmosMicrometerMetricsOptions are supported");
         }
 
-        CosmosMicrometerMetricsOptions micrometerMetricsOptions = (CosmosMicrometerMetricsOptions)clientMetricsOptions;
+        CosmosMicrometerMetricsOptions candidate = (CosmosMicrometerMetricsOptions)clientMetricsOptions;
+        if (this.metricTagNamesOverride != null &&
+            !this.metricTagNamesOverride.equals(candidate.getDefaultTagNames())) {
 
-        this.clientMetricRegistry = micrometerMetricsOptions.getClientMetricRegistry();
+            if (TagName.DEFAULT_TAGS.equals(candidate.getDefaultTagNames())) {
+                candidate.configureDefaultTagNames(this.metricTagNamesOverride);
+            } else {
+                throw new IllegalArgumentException(
+                    "Tags for meters cannot be specified via the deprecated CosmosClientTelemetryConfig " +
+                        "when they are also specified in CosmosMicrometerMetricOptions.");
+            }
+        }
+
+        this.micrometerMetricsOptions = candidate;
         this.isClientMetricsEnabled = micrometerMetricsOptions.isEnabled();
 
         return this;
     }
 
     MeterRegistry getClientMetricRegistry() {
-        return this.clientMetricRegistry;
+        if (this.micrometerMetricsOptions == null) {
+            return null;
+        }
+
+        return this.micrometerMetricsOptions.getClientMetricRegistry();
     }
 
     /**
@@ -146,8 +188,58 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
+    /**
+     * Request diagnostics for operations will be logged if their latency, request charge or payload size exceeds
+     * one of the defined thresholds. This method can be used to customize the default thresholds, which are used
+     * across different types of diagnostics (logging, tracing, client telemetry).
+     * @param thresholds the default thresholds across all diagnostic types
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig diagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
+        checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
+        this.diagnosticsThresholds = thresholds;
+
+        return this;
+    }
+
+    /**
+     * Sets the Tracer to trace Cosmos DB operations and requests. If not specified the tracer will be
+     * created via a TracerProvider from the class path - if any exists. This means if a TracerProvider is available
+     * for example because the applicationinsights-agent java-agent is on the class path, a tracer will be created
+     * automatically.
+     *
+     * @param tracer The Tracer instance.
+     * @return current CosmosClientTelemetryConfig
+     */
+    CosmosClientTelemetryConfig tracer(Tracer tracer) {
+        this.tracer = tracer;
+        return this;
+    }
+
+    /**
+     * Sets {@link TracingOptions} that are applied to each tracing reported by the client.
+     * Use tracing options to enable and disable tracing or pass implementation-specific configuration.
+     *
+     * @param tracingOptions instance of {@link TracingOptions} to set.
+     * @return The updated {@link ClientOptions} object.
+     */
+    public CosmosClientTelemetryConfig tracingOptions(TracingOptions tracingOptions) {
+        this.tracingOptions = tracingOptions;
+        return this;
+    }
+
+    CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.diagnosticsThresholds;
+    }
+
     String getClientCorrelationId() {
         return this.clientCorrelationId;
+    }
+
+    List<CosmosDiagnosticsHandler> getDiagnosticHandlers() {
+        ArrayList<CosmosDiagnosticsHandler> snapshot = new ArrayList<>(this.diagnosticHandlers);
+        snapshot.addAll(this.customDiagnosticHandlers);
+        return snapshot;
     }
 
     /**
@@ -158,10 +250,14 @@ public final class CosmosClientTelemetryConfig {
      *
      * @param tagNames - a comma-separated list of tag names that should be considered
      * @return current CosmosClientTelemetryConfig
+     *
+     * @deprecated Use {@link CosmosMicrometerMetricsOptions#configureDefaultTagNames(CosmosMetricTagName...)} or
+     * {@link CosmosMicrometerMeterOptions#suppressTagNames(CosmosMetricTagName...)} instead.
      */
+    @Deprecated
     public CosmosClientTelemetryConfig metricTagNames(String... tagNames) {
         if (tagNames == null || tagNames.length == 0) {
-            this.metricTagNames = DEFAULT_TAGS;
+            this.metricTagNamesOverride = TagName.DEFAULT_TAGS.clone();
         }
 
         Map<String, TagName> tagNameMap = new HashMap<>();
@@ -171,8 +267,8 @@ public final class CosmosClientTelemetryConfig {
 
         Stream<TagName> tagNameStream =
             Arrays.stream(tagNames)
-                  .map(rawTagName -> rawTagName.toLowerCase(Locale.ROOT))
                   .filter(tagName -> !Strings.isNullOrWhiteSpace(tagName))
+                  .map(rawTagName -> rawTagName.toLowerCase(Locale.ROOT))
                   .map(tagName -> {
                       String trimmedTagName = tagName.trim();
 
@@ -196,13 +292,16 @@ public final class CosmosClientTelemetryConfig {
         EnumSet<TagName> newTagNames = EnumSet.noneOf(TagName.class);
         tagNameStream.forEach(tagName -> newTagNames.add(tagName));
 
-        this.metricTagNames = newTagNames;
+        this.metricTagNamesOverride = newTagNames;
 
         return this;
     }
 
-    EnumSet<TagName> getMetricTagNames() {
-        return this.metricTagNames;
+    private CosmosClientTelemetryConfig setEffectiveIsClientTelemetryEnabled(
+        boolean effectiveIsClientTelemetryEnabled) {
+
+        this.effectiveIsClientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
+        return this;
     }
 
     Duration getHttpNetworkRequestTimeout() {
@@ -265,6 +364,40 @@ public final class CosmosClientTelemetryConfig {
         return null;
     }
 
+    /**
+     * Injects a custom diagnostics handler
+     * @param handler the custom diagnostics handler.
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig diagnosticsHandler(CosmosDiagnosticsHandler handler) {
+        checkNotNull(handler, "Argument 'handler' must not be null.");
+        this.customDiagnosticHandlers.add(handler);
+        return this;
+    }
+
+    /**
+     * Enables transport level tracing. By default, transport-level tracing is not enabled - but
+     * when operations fail or exceed thresholds the diagnostics are traced. Enabling transport level tracing
+     * can be useful when latency is still beneath the defined thresholds.
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig enableTransportLevelTracing() {
+        this.isTransportLevelTracingEnabled = true;
+        return this;
+    }
+
+    Tracer getOrCreateTracer() {
+        if (this.tracer != null) {
+            return this.tracer;
+        }
+
+        return TracerProvider.getDefaultProvider().createTracer(
+            "azure-cosmos",
+            HttpConstants.Versions.getSdkVersion(),
+            DiagnosticsProvider.RESOURCE_PROVIDER_NAME,
+            tracingOptions);
+    }
+
     private static class JsonProxyOptionsConfig {
         @JsonProperty
         private String host;
@@ -315,8 +448,36 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
+                public EnumSet<MetricCategory> getMetricCategories(CosmosClientTelemetryConfig config) {
+                    return config.micrometerMetricsOptions.getMetricCategories();
+                }
+
+                @Override
                 public EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config) {
-                    return config.getMetricTagNames();
+                    return config.micrometerMetricsOptions.getDefaultTagNames();
+                }
+
+                @Override
+                public CosmosMeterOptions getMeterOptions(
+                    CosmosClientTelemetryConfig config,
+                    CosmosMetricName name) {
+                    if (config != null &&
+                        config.micrometerMetricsOptions != null) {
+
+                        return config.micrometerMetricsOptions.getMeterOptions(name);
+                    }
+
+                    return createDisabledMeterOptions(name);
+                }
+
+                @Override
+                public CosmosMeterOptions createDisabledMeterOptions(CosmosMetricName name) {
+                    return new CosmosMeterOptions(
+                        name,
+                        false,
+                        new double[0],
+                        false,
+                        EnumSet.noneOf(TagName.class));
                 }
 
                 @Override
@@ -344,13 +505,87 @@ public final class CosmosClientTelemetryConfig {
                     CosmosClientTelemetryConfig config,
                     boolean effectiveIsClientTelemetryEnabled) {
 
-                    return new CosmosClientTelemetryConfig(config, effectiveIsClientTelemetryEnabled);
+                    return config.setEffectiveIsClientTelemetryEnabled(effectiveIsClientTelemetryEnabled);
+                }
+
+                @Override
+                public Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config) {
+                    return config.getDiagnosticHandlers();
+                }
+
+                @Override
+                public void setAccountName(CosmosClientTelemetryConfig config, String accountName) {
+                    config.setAccountName(accountName);
+                }
+
+                @Override
+                public String getAccountName(CosmosClientTelemetryConfig config) {
+                    return config.getAccountName();
+                }
+
+                @Override
+                public void setClientCorrelationTag(CosmosClientTelemetryConfig config, Tag clientCorrelationTag) {
+                    config.setClientCorrelationTag(clientCorrelationTag);
+                }
+
+                @Override
+                public Tag getClientCorrelationTag(CosmosClientTelemetryConfig config) {
+                    return config.getClientCorrelationTag();
+                }
+
+                @Override
+                public void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry) {
+                    config.clientTelemetry = clientTelemetry;
+                }
+
+                @Override
+                public ClientTelemetry getClientTelemetry(CosmosClientTelemetryConfig config) {
+                    return config.clientTelemetry;
+                }
+
+                @Override
+                public void addDiagnosticsHandler(CosmosClientTelemetryConfig config,
+                                                  CosmosDiagnosticsHandler handler) {
+
+                    config.diagnosticHandlers.add(handler);
                 }
 
                 @Override
                 public void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
 
                     config.resetIsSendClientTelemetryToServiceEnabled();
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosClientTelemetryConfig config) {
+                    return config.diagnosticsThresholds;
+                }
+
+                @Override
+                public boolean isLegacyTracingEnabled(CosmosClientTelemetryConfig config) {
+                    return config.useLegacyOpenTelemetryTracing;
+                }
+
+                @Override
+                public boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config) {
+                    return config.isTransportLevelTracingEnabled;
+                }
+
+                @Override
+                public Tracer getOrCreateTracer(CosmosClientTelemetryConfig config) {
+                    return config.getOrCreateTracer();
+                }
+
+                @Override
+                public void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing) {
+                    config.setUseLegacyOpenTelemetryTracing(useLegacyTracing);
+                }
+
+                @Override
+                public void setTracer(CosmosClientTelemetryConfig config, Tracer tracer) {
+                    if (tracer != null) {
+                        config.tracer = tracer;
+                    }
                 }
             });
     }

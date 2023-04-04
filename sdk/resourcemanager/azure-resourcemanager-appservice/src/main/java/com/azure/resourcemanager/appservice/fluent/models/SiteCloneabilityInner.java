@@ -26,8 +26,7 @@ public final class SiteCloneabilityInner {
     private List<SiteCloneabilityCriterion> blockingFeatures;
 
     /*
-     * List of features enabled on app that are non-blocking but cannot be
-     * cloned. The app can still be cloned
+     * List of features enabled on app that are non-blocking but cannot be cloned. The app can still be cloned
      * but the features in this list will not be set up on cloned app.
      */
     @JsonProperty(value = "unsupportedFeatures")
@@ -38,6 +37,10 @@ public final class SiteCloneabilityInner {
      */
     @JsonProperty(value = "blockingCharacteristics")
     private List<SiteCloneabilityCriterion> blockingCharacteristics;
+
+    /** Creates an instance of SiteCloneabilityInner class. */
+    public SiteCloneabilityInner() {
+    }
 
     /**
      * Get the result property: Name of app.

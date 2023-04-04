@@ -66,7 +66,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/af4753c20af4753c2e22874977ec5f57654e64be7be4/af4753c22af4753c2e2257216a3462da32672494ea27?resource=directory&sv=2021-10-04&se=2022-07-23T20%3A22%3A41Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2022-07-22T20%3A22%3A41Z&ske=2022-07-22T21%3A22%3A40Z&sks=b&skv=2021-10-04&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/af4753c20af4753c2e22874977ec5f57654e64be7be4/af4753c22af4753c2e2257216a3462da32672494ea27?resource=directory&sv=2022-11-02&se=2022-07-23T20%3A22%3A41Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2022-07-22T20%3A22%3A41Z&ske=2022-07-22T21%3A22%3A40Z&sks=b&skv=2021-10-04&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
     "Headers" : {
       "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",
@@ -89,7 +89,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/af4753c20af4753c2e22874977ec5f57654e64be7be4/af4753c22af4753c2e2257216a3462da32672494ea27?sv=2021-10-04&se=2022-07-23T20%3A22%3A41Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2022-07-22T20%3A22%3A41Z&ske=2022-07-22T21%3A22%3A40Z&sks=b&skv=2021-10-04&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
+    "Uri" : "https://REDACTED.blob.core.windows.net/af4753c20af4753c2e22874977ec5f57654e64be7be4/af4753c22af4753c2e2257216a3462da32672494ea27?sv=2022-11-02&se=2022-07-23T20%3A22%3A41Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2022-07-22T20%3A22%3A41Z&ske=2022-07-22T21%3A22%3A40Z&sks=b&skv=2021-10-04&sr=c&sp=racwdm&sig=REDACTED&ses=testscope1",
     "Headers" : {
       "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.19.0-beta.1 azsdk-java-azure-storage-file-datalake/12.12.0-beta.1 (11.0.14; Windows 10; 10.0)",

@@ -26,6 +26,15 @@ public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
     public static final RecoveryType OFFLINE = fromString("Offline");
 
     /**
+     * Creates a new instance of RecoveryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryType() {
+    }
+
+    /**
      * Creates or finds a RecoveryType from its string representation.
      *
      * @param name a name to look for.

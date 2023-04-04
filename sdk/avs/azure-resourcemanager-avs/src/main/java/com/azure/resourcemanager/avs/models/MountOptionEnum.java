@@ -17,6 +17,15 @@ public final class MountOptionEnum extends ExpandableStringEnum<MountOptionEnum>
     public static final MountOptionEnum ATTACH = fromString("ATTACH");
 
     /**
+     * Creates a new instance of MountOptionEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MountOptionEnum() {
+    }
+
+    /**
      * Creates or finds a MountOptionEnum from its string representation.
      *
      * @param name a name to look for.

@@ -3,18 +3,21 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.ContentsImpl;
-import com.azure.communication.callautomation.implementation.ServerCallsImpl;
+import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.BlobStorageInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.ExternalStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callautomation.models.BlobStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
@@ -22,7 +25,6 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -43,8 +45,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -65,17 +65,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  * CallRecordingAsync.
  */
 public class CallRecordingAsync {
-    private final ServerCallsImpl serverCallsInternal;
-    private final ContentsImpl contentsInternal;
+    private final CallRecordingsImpl callRecordingsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
-    CallRecordingAsync(ServerCallsImpl serverCallsInternal, ContentsImpl contentsInternal,
-                       ContentDownloader contentDownloader, HttpPipeline httpPipelineInternal, String resourceEndpoint) {
-        this.serverCallsInternal = serverCallsInternal;
-        this.contentsInternal = contentsInternal;
+    CallRecordingAsync(CallRecordingsImpl callRecordingsInternal, ContentDownloader contentDownloader,
+                       HttpPipeline httpPipelineInternal, String resourceEndpoint) {
+        this.callRecordingsInternal = callRecordingsInternal;
         this.contentDownloader = contentDownloader;
         this.httpPipelineInternal = httpPipelineInternal;
         this.resourceEndpoint = resourceEndpoint;
@@ -115,21 +113,13 @@ public class CallRecordingAsync {
 
     Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
-            String callbackUrl = options.getRecordingStateCallbackUrl();
-            if (callbackUrl != null && !callbackUrl.isEmpty() && !Boolean.TRUE.equals(new URI(callbackUrl).isAbsolute())) {
-                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
-            }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
-
-            options.setRepeatabilityHeaders(handleApiIdempotency(options.getRepeatabilityHeaders()));
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return contentsInternal
-                    .recordingWithResponseAsync(
+                return callRecordingsInternal
+                    .startRecordingWithResponseAsync(
                         request,
-                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                         contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
@@ -138,8 +128,6 @@ public class CallRecordingAsync {
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        } catch (URISyntaxException ex) {
-            return monoError(logger, new RuntimeException(ex));
         }
     }
 
@@ -177,6 +165,16 @@ public class CallRecordingAsync {
                 .collect(Collectors.toList());
             request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
         }
+        if (options.getExternalStorage() != null) {
+            ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
+                .setStorageType(RecordingStorageTypeInternal.fromString(options.getExternalStorage().getStorageType().toString()));
+
+            if (options.getExternalStorage() instanceof BlobStorage) {
+                externalStorageInternal.setBlobStorage(getBlobStorageInternalFromBlobStorage((BlobStorage) options.getExternalStorage()));
+            }
+
+            request.setExternalStorage(externalStorageInternal);
+        }
 
         return request;
     }
@@ -211,7 +209,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .stopRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -250,7 +248,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .pauseRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -289,7 +287,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .resumeRecordingWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
             });
@@ -328,7 +326,7 @@ public class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return serverCallsInternal
+                return callRecordingsInternal
                     .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
@@ -573,14 +571,7 @@ public class CallRecordingAsync {
         }
     }
 
-    //region helper functions
-    /***
-     * Make sure repeatability headers of the request are correctly set.
-     *
-     * @return a verified RepeatabilityHeaders object.
-     */
-    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
-        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    private BlobStorageInternal getBlobStorageInternalFromBlobStorage(BlobStorage blobStorage) {
+        return new BlobStorageInternal().setContainerUri(blobStorage.getContainerUri());
     }
-    //endregion
 }

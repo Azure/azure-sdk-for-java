@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileshareProtectedItemExtendedInfo;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileshareProtectedItemExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureFileshareProtectedItemExtendedInfo model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class AzureFileshareProtectedItemExtendedInfoTests {
         Assertions.assertEquals("vfoimwksli", model.policyState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureFileshareProtectedItemExtendedInfo model =
             new AzureFileshareProtectedItemExtendedInfo()
                 .withOldestRecoveryPoint(OffsetDateTime.parse("2021-05-13T12:50:34Z"))

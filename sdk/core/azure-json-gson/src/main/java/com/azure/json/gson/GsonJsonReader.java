@@ -233,12 +233,9 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public JsonReader bufferObject() throws IOException {
-        if (currentToken == JsonToken.START_OBJECT
-            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
+        if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             consumed = true;
-            StringBuilder bufferedObject = new StringBuilder();
-            readChildren(bufferedObject);
-            String json = bufferedObject.toString();
+            String json = readRemainingFieldsAsJsonObject();
             return new GsonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
@@ -247,7 +244,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean resetSupported() {
+    public boolean isResetSupported() {
         return resetSupported;
     }
 

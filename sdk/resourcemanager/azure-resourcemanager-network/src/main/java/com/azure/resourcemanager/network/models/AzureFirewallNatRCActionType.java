@@ -17,6 +17,15 @@ public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<Azu
     public static final AzureFirewallNatRCActionType DNAT = fromString("Dnat");
 
     /**
+     * Creates a new instance of AzureFirewallNatRCActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallNatRCActionType() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallNatRCActionType from its string representation.
      *
      * @param name a name to look for.

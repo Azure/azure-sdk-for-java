@@ -40,6 +40,10 @@ public final class StartMenuItemProperties {
     @JsonProperty(value = "iconIndex")
     private Integer iconIndex;
 
+    /** Creates an instance of StartMenuItemProperties class. */
+    public StartMenuItemProperties() {
+    }
+
     /**
      * Get the appAlias property: Alias of StartMenuItem.
      *

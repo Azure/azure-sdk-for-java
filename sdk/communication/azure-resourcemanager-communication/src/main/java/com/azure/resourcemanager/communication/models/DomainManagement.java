@@ -21,6 +21,15 @@ public final class DomainManagement extends ExpandableStringEnum<DomainManagemen
         fromString("CustomerManagedInExchangeOnline");
 
     /**
+     * Creates a new instance of DomainManagement value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DomainManagement() {
+    }
+
+    /**
      * Creates or finds a DomainManagement from its string representation.
      *
      * @param name a name to look for.

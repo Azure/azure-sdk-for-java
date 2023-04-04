@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps ListBasicPublishingCredentialsPolicies. */
 public final class WebAppsListBasicPublishingCredentialsPoliciesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListPublishingCredentialsPolicies.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListPublishingCredentialsPolicies.json
      */
     /**
      * Sample code: List Publishing Credentials Policies.
@@ -22,6 +20,6 @@ public final class WebAppsListBasicPublishingCredentialsPoliciesSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .listBasicPublishingCredentialsPolicies("testrg123", "testsite", Context.NONE);
+            .listBasicPublishingCredentialsPolicies("testrg123", "testsite", com.azure.core.util.Context.NONE);
     }
 }

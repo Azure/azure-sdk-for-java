@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.RouteInner;
 import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for RouteTables CreateOrUpdate. */
 public final class RouteTablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteTableCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteTableCreate.json
      */
     /**
      * Sample code: Create route table.
@@ -26,11 +25,12 @@ public final class RouteTablesCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getRouteTables()
-            .createOrUpdate("rg1", "testrt", new RouteTableInner().withLocation("westus"), Context.NONE);
+            .createOrUpdate(
+                "rg1", "testrt", new RouteTableInner().withLocation("westus"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteTableCreateWithRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteTableCreateWithRoute.json
      */
     /**
      * Sample code: Create route table with route.
@@ -56,6 +56,6 @@ public final class RouteTablesCreateOrUpdateSamples {
                                     .withAddressPrefix("10.0.3.0/24")
                                     .withNextHopType(RouteNextHopType.VIRTUAL_NETWORK_GATEWAY)))
                     .withDisableBgpRoutePropagation(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupStorageVersion. */
+/** Backup storage version. */
 public final class BackupStorageVersion extends ExpandableStringEnum<BackupStorageVersion> {
     /** Static value V1 for BackupStorageVersion. */
     public static final BackupStorageVersion V1 = fromString("V1");
@@ -18,6 +18,15 @@ public final class BackupStorageVersion extends ExpandableStringEnum<BackupStora
 
     /** Static value Unassigned for BackupStorageVersion. */
     public static final BackupStorageVersion UNASSIGNED = fromString("Unassigned");
+
+    /**
+     * Creates a new instance of BackupStorageVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupStorageVersion() {
+    }
 
     /**
      * Creates or finds a BackupStorageVersion from its string representation.

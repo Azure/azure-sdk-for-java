@@ -45,11 +45,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the RecoveryServicesManagementClientImpl type. */
 @ServiceClient(builder = RecoveryServicesManagementClientBuilder.class)
 public final class RecoveryServicesManagementClientImpl implements RecoveryServicesManagementClient {
-    /** The subscription Id. */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets The subscription Id.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -244,7 +244,7 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The subscription Id.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     RecoveryServicesManagementClientImpl(
@@ -259,7 +259,7 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-01";
+        this.apiVersion = "2023-01-01";
         this.vaultCertificates = new VaultCertificatesClientImpl(this);
         this.registeredIdentities = new RegisteredIdentitiesClientImpl(this);
         this.replicationUsages = new ReplicationUsagesClientImpl(this);

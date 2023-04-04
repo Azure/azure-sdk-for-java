@@ -35,6 +35,10 @@ public final class RestorableLocationResource {
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionTime;
 
+    /** Creates an instance of RestorableLocationResource class. */
+    public RestorableLocationResource() {
+    }
+
     /**
      * Get the locationName property: The location of the regional restorable account.
      *

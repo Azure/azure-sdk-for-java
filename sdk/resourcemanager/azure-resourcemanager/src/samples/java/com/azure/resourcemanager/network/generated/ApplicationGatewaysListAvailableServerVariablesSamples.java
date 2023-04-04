@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationGateways ListAvailableServerVariables. */
 public final class ApplicationGatewaysListAvailableServerVariablesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
      */
     /**
      * Sample code: Get Available Server Variables.
@@ -22,6 +20,6 @@ public final class ApplicationGatewaysListAvailableServerVariablesSamples {
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .listAvailableServerVariablesWithResponse(Context.NONE);
+            .listAvailableServerVariablesWithResponse(com.azure.core.util.Context.NONE);
     }
 }

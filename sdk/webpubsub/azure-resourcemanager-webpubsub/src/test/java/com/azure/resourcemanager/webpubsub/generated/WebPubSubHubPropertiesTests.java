@@ -14,11 +14,10 @@ import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WebPubSubHubPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WebPubSubHubProperties model =
             BinaryData
                 .fromString(
@@ -31,8 +30,8 @@ public final class WebPubSubHubPropertiesTests {
         Assertions.assertEquals("bkrvrnsvshqj", model.anonymousConnectPolicy());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WebPubSubHubProperties model =
             new WebPubSubHubProperties()
                 .withEventHandlers(

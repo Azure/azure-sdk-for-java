@@ -7,29 +7,31 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Provides parameter values to a magnitude scoring function. */
 @Fluent
-public final class MagnitudeScoringParameters {
+public final class MagnitudeScoringParameters implements JsonSerializable<MagnitudeScoringParameters> {
     /*
      * The field value at which boosting starts.
      */
-    @JsonProperty(value = "boostingRangeStart", required = true)
-    private double boostingRangeStart;
+    private final double boostingRangeStart;
 
     /*
      * The field value at which boosting ends.
      */
-    @JsonProperty(value = "boostingRangeEnd", required = true)
-    private double boostingRangeEnd;
+    private final double boostingRangeEnd;
 
     /*
      * A value indicating whether to apply a constant boost for field values beyond the range end value; default is
      * false.
      */
-    @JsonProperty(value = "constantBoostBeyondRange")
     private Boolean shouldBoostBeyondRangeByConstant;
 
     /**
@@ -38,10 +40,7 @@ public final class MagnitudeScoringParameters {
      * @param boostingRangeStart the boostingRangeStart value to set.
      * @param boostingRangeEnd the boostingRangeEnd value to set.
      */
-    @JsonCreator
-    public MagnitudeScoringParameters(
-            @JsonProperty(value = "boostingRangeStart", required = true) double boostingRangeStart,
-            @JsonProperty(value = "boostingRangeEnd", required = true) double boostingRangeEnd) {
+    public MagnitudeScoringParameters(double boostingRangeStart, double boostingRangeEnd) {
         this.boostingRangeStart = boostingRangeStart;
         this.boostingRangeEnd = boostingRangeEnd;
     }
@@ -84,5 +83,68 @@ public final class MagnitudeScoringParameters {
     public MagnitudeScoringParameters setShouldBoostBeyondRangeByConstant(Boolean shouldBoostBeyondRangeByConstant) {
         this.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("boostingRangeStart", this.boostingRangeStart);
+        jsonWriter.writeDoubleField("boostingRangeEnd", this.boostingRangeEnd);
+        jsonWriter.writeBooleanField("constantBoostBeyondRange", this.shouldBoostBeyondRangeByConstant);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MagnitudeScoringParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MagnitudeScoringParameters if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MagnitudeScoringParameters.
+     */
+    public static MagnitudeScoringParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean boostingRangeStartFound = false;
+                    double boostingRangeStart = 0.0;
+                    boolean boostingRangeEndFound = false;
+                    double boostingRangeEnd = 0.0;
+                    Boolean shouldBoostBeyondRangeByConstant = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("boostingRangeStart".equals(fieldName)) {
+                            boostingRangeStart = reader.getDouble();
+                            boostingRangeStartFound = true;
+                        } else if ("boostingRangeEnd".equals(fieldName)) {
+                            boostingRangeEnd = reader.getDouble();
+                            boostingRangeEndFound = true;
+                        } else if ("constantBoostBeyondRange".equals(fieldName)) {
+                            shouldBoostBeyondRangeByConstant = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (boostingRangeStartFound && boostingRangeEndFound) {
+                        MagnitudeScoringParameters deserializedMagnitudeScoringParameters =
+                                new MagnitudeScoringParameters(boostingRangeStart, boostingRangeEnd);
+                        deserializedMagnitudeScoringParameters.shouldBoostBeyondRangeByConstant =
+                                shouldBoostBeyondRangeByConstant;
+
+                        return deserializedMagnitudeScoringParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!boostingRangeStartFound) {
+                        missingProperties.add("boostingRangeStart");
+                    }
+                    if (!boostingRangeEndFound) {
+                        missingProperties.add("boostingRangeEnd");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

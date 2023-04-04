@@ -9,11 +9,11 @@ import com.azure.resourcemanager.security.fluent.models.GovernanceRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Page of a security governanceRules list. */
+/** Page of a governance rules list. */
 @Immutable
 public final class GovernanceRuleList {
     /*
-     * Collection of governanceRules in this page
+     * Collection of governance rules in this page
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GovernanceRuleInner> value;
@@ -29,7 +29,7 @@ public final class GovernanceRuleList {
     }
 
     /**
-     * Get the value property: Collection of governanceRules in this page.
+     * Get the value property: Collection of governance rules in this page.
      *
      * @return the value value.
      */

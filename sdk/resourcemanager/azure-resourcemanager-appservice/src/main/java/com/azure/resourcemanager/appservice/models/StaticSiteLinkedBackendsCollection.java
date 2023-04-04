@@ -25,6 +25,10 @@ public final class StaticSiteLinkedBackendsCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of StaticSiteLinkedBackendsCollection class. */
+    public StaticSiteLinkedBackendsCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

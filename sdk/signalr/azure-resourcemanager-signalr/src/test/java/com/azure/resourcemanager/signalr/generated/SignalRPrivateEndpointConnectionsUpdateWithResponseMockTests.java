@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.signalr.models.PrivateEndpoint;
@@ -78,7 +77,7 @@ public final class SignalRPrivateEndpointConnectionsUpdateWithResponseMockTests 
                                 .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
                                 .withDescription("ijnhyjsvfycxzbf")
                                 .withActionsRequired("owvrvmtgjqppyos")),
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("kxw", response.privateEndpoint().id());

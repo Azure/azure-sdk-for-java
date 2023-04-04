@@ -33,7 +33,6 @@ import java.util.UUID;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
@@ -62,10 +61,6 @@ import static com.azure.security.keyvault.administration.KeyVaultAdministrationU
  */
 @ServiceClient(builder = KeyVaultAccessControlClientBuilder.class, isAsync = true)
 public final class KeyVaultAccessControlAsyncClient {
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-
     /**
      * The logger to be used.
      */
@@ -200,7 +195,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
             return clientImpl.getRoleDefinitions()
                 .listSinglePageAsync(vaultUrl, roleScope.toString(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Listing role definitions for roleScope - {}", roleScope))
                 .doOnSuccess(response -> logger.verbose("Listed role definitions for roleScope - {}", roleScope))
                 .doOnError(error -> logger.warning("Failed to list role definitions for roleScope - {}", roleScope,
@@ -229,8 +224,7 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<PagedResponse<KeyVaultRoleDefinition>> listRoleDefinitionsNextPage(String continuationToken, Context context) {
         try {
             return clientImpl.getRoleDefinitions()
-                .listNextSinglePageAsync(continuationToken, vaultUrl, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .listNextSinglePageAsync(continuationToken, vaultUrl, context)
                 .doOnRequest(ignored ->
                     logger.verbose("Listing next role definitions page - Page {}", continuationToken))
                 .doOnSuccess(response ->
@@ -384,7 +378,7 @@ public final class KeyVaultAccessControlAsyncClient {
             return clientImpl.getRoleDefinitions()
                 .createOrUpdateWithResponseAsync(vaultUrl, options.getRoleScope().toString(),
                     options.getRoleDefinitionName(), parameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored ->
                     logger.verbose("Creating role definition - {}", options.getRoleDefinitionName()))
                 .doOnSuccess(response -> logger.verbose("Created role definition - {}", response.getValue().getName()))
@@ -486,7 +480,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
             return clientImpl.getRoleDefinitions()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Retrieving role definition - {}", roleDefinitionName))
                 .doOnSuccess(response ->
                     logger.verbose("Retrieved role definition - {}", response.getValue().getName()))
@@ -581,7 +575,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
             return clientImpl.getRoleDefinitions()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Deleting role definition - {}", roleDefinitionName))
                 .doOnSuccess(response -> logger.verbose("Deleted role definition - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to delete role definition - {}", roleDefinitionName, error))
@@ -656,7 +650,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
             return clientImpl.getRoleAssignments()
                 .listForScopeSinglePageAsync(vaultUrl, roleScope.toString(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Listing role assignments for roleScope - {}", roleScope))
                 .doOnSuccess(response -> logger.verbose("Listed role assignments for roleScope - {}", roleScope))
                 .doOnError(error -> logger.warning("Failed to list role assignments for roleScope - {}", roleScope,
@@ -685,7 +679,7 @@ public final class KeyVaultAccessControlAsyncClient {
         try {
             return clientImpl.getRoleAssignments()
                 .listForScopeNextSinglePageAsync(continuationToken, vaultUrl,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored ->
                     logger.verbose("Listing next role assignments page - Page {}", continuationToken))
                 .doOnSuccess(response ->
@@ -850,7 +844,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
             return clientImpl.getRoleAssignments()
                 .createWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName, parameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Creating role assignment - {}", roleAssignmentName))
                 .doOnSuccess(response -> logger.verbose("Created role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to create role assignment - {}", roleAssignmentName, error))
@@ -947,7 +941,7 @@ public final class KeyVaultAccessControlAsyncClient {
             validateRoleAssignmentParameters(roleScope, roleAssignmentName);
             return clientImpl.getRoleAssignments()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Retrieving role assignment - {}", roleAssignmentName))
                 .doOnSuccess(response ->
                     logger.verbose("Retrieved role assignment - {}", response.getValue().getName()))
@@ -1041,7 +1035,7 @@ public final class KeyVaultAccessControlAsyncClient {
 
             return clientImpl.getRoleAssignments()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Deleting role assignment - {}", roleAssignmentName))
                 .doOnSuccess(response -> logger.verbose("Deleted role assignment - {}", response.getValue().getName()))
                 .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleAssignmentName, error))

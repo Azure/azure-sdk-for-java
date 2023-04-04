@@ -1,6 +1,6 @@
 # Release History
 
-## 2.21.0-beta.1 (Unreleased)
+## 2.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed wrong javadocs of `withSsh()` in `VirtualMachine` and `VirtualMachineScaleSet`.
+- Fixed a bug that scaling up scale sets results in outdated models for existing VMs.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Features Added
+
+- Supported `withHibernationSupport` method in `Disk` to support hibernation for the OS on the disk.
 
 ## 2.21.0 (2022-11-24)
 

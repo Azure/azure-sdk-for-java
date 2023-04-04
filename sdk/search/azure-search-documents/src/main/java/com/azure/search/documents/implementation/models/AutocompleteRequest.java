@@ -7,30 +7,33 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.AutocompleteMode;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Parameters for fuzzy matching, and other autocomplete query behaviors. */
 @Fluent
-public final class AutocompleteRequest {
+public final class AutocompleteRequest implements JsonSerializable<AutocompleteRequest> {
     /*
      * The search text on which to base autocomplete results.
      */
-    @JsonProperty(value = "search", required = true)
-    private String searchText;
+    private final String searchText;
 
     /*
      * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and
      * 'oneTermWithContext' to use the current context while producing auto-completed terms.
      */
-    @JsonProperty(value = "autocompleteMode")
     private AutocompleteMode autocompleteMode;
 
     /*
      * An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
      */
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
@@ -39,21 +42,18 @@ public final class AutocompleteRequest {
      * this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete
      * queries are slower and consume more resources.
      */
-    @JsonProperty(value = "fuzzy")
     private Boolean useFuzzyMatching;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting
      * is disabled.
      */
-    @JsonProperty(value = "highlightPostTag")
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit
      * highlighting is disabled.
      */
-    @JsonProperty(value = "highlightPreTag")
     private String highlightPreTag;
 
     /*
@@ -61,26 +61,22 @@ public final class AutocompleteRequest {
      * in order for the query to be reported as a success. This parameter can be useful for ensuring search
      * availability even for services with only one replica. The default is 80.
      */
-    @JsonProperty(value = "minimumCoverage")
     private Double minimumCoverage;
 
     /*
      * The comma-separated list of field names to consider when querying for auto-completed terms. Target fields must
      * be included in the specified suggester.
      */
-    @JsonProperty(value = "searchFields")
     private String searchFields;
 
     /*
      * The name of the suggester as specified in the suggesters collection that's part of the index definition.
      */
-    @JsonProperty(value = "suggesterName", required = true)
-    private String suggesterName;
+    private final String suggesterName;
 
     /*
      * The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
      */
-    @JsonProperty(value = "top")
     private Integer top;
 
     /**
@@ -89,10 +85,7 @@ public final class AutocompleteRequest {
      * @param searchText the searchText value to set.
      * @param suggesterName the suggesterName value to set.
      */
-    @JsonCreator
-    public AutocompleteRequest(
-            @JsonProperty(value = "search", required = true) String searchText,
-            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
+    public AutocompleteRequest(String searchText, String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
     }
@@ -296,5 +289,102 @@ public final class AutocompleteRequest {
     public AutocompleteRequest setTop(Integer top) {
         this.top = top;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("search", this.searchText);
+        jsonWriter.writeStringField("suggesterName", this.suggesterName);
+        jsonWriter.writeStringField("autocompleteMode", Objects.toString(this.autocompleteMode, null));
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeBooleanField("fuzzy", this.useFuzzyMatching);
+        jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
+        jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag);
+        jsonWriter.writeNumberField("minimumCoverage", this.minimumCoverage);
+        jsonWriter.writeStringField("searchFields", this.searchFields);
+        jsonWriter.writeNumberField("top", this.top);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutocompleteRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutocompleteRequest if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutocompleteRequest.
+     */
+    public static AutocompleteRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean searchTextFound = false;
+                    String searchText = null;
+                    boolean suggesterNameFound = false;
+                    String suggesterName = null;
+                    AutocompleteMode autocompleteMode = null;
+                    String filter = null;
+                    Boolean useFuzzyMatching = null;
+                    String highlightPostTag = null;
+                    String highlightPreTag = null;
+                    Double minimumCoverage = null;
+                    String searchFields = null;
+                    Integer top = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("search".equals(fieldName)) {
+                            searchText = reader.getString();
+                            searchTextFound = true;
+                        } else if ("suggesterName".equals(fieldName)) {
+                            suggesterName = reader.getString();
+                            suggesterNameFound = true;
+                        } else if ("autocompleteMode".equals(fieldName)) {
+                            autocompleteMode = AutocompleteMode.fromString(reader.getString());
+                        } else if ("filter".equals(fieldName)) {
+                            filter = reader.getString();
+                        } else if ("fuzzy".equals(fieldName)) {
+                            useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("highlightPostTag".equals(fieldName)) {
+                            highlightPostTag = reader.getString();
+                        } else if ("highlightPreTag".equals(fieldName)) {
+                            highlightPreTag = reader.getString();
+                        } else if ("minimumCoverage".equals(fieldName)) {
+                            minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                        } else if ("searchFields".equals(fieldName)) {
+                            searchFields = reader.getString();
+                        } else if ("top".equals(fieldName)) {
+                            top = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (searchTextFound && suggesterNameFound) {
+                        AutocompleteRequest deserializedAutocompleteRequest =
+                                new AutocompleteRequest(searchText, suggesterName);
+                        deserializedAutocompleteRequest.autocompleteMode = autocompleteMode;
+                        deserializedAutocompleteRequest.filter = filter;
+                        deserializedAutocompleteRequest.useFuzzyMatching = useFuzzyMatching;
+                        deserializedAutocompleteRequest.highlightPostTag = highlightPostTag;
+                        deserializedAutocompleteRequest.highlightPreTag = highlightPreTag;
+                        deserializedAutocompleteRequest.minimumCoverage = minimumCoverage;
+                        deserializedAutocompleteRequest.searchFields = searchFields;
+                        deserializedAutocompleteRequest.top = top;
+
+                        return deserializedAutocompleteRequest;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!searchTextFound) {
+                        missingProperties.add("search");
+                    }
+                    if (!suggesterNameFound) {
+                        missingProperties.add("suggesterName");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

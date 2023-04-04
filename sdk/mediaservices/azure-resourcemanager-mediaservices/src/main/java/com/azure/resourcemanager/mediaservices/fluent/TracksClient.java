@@ -58,13 +58,15 @@ public interface TracksClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset.
+     * @return the details of a Track in the Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName);
+    Response<AssetTrackInner> getWithResponse(
+        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
 
     /**
      * Get a Track
@@ -75,15 +77,13 @@ public interface TracksClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset along with {@link Response}.
+     * @return the details of a Track in the Asset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetTrackInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
      * Create or update a Track

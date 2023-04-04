@@ -16,6 +16,9 @@ public final class GitHubAccessTokenResponse {
     @JsonProperty(value = "gitHubAccessToken")
     private String gitHubAccessToken;
 
+    /** Creates an instance of GitHubAccessTokenResponse class. */
+    public GitHubAccessTokenResponse() {}
+
     /**
      * Get the gitHubAccessToken property: The gitHubAccessToken property.
      *

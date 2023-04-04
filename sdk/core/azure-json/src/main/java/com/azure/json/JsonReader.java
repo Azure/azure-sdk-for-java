@@ -3,6 +3,8 @@
 
 package com.azure.json;
 
+import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,11 +13,20 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Reads a JSON encoded value as a stream of tokens.
  */
 public abstract class JsonReader implements Closeable {
+    private static final JsonStringEncoder ENCODER = JsonStringEncoder.getInstance();
+
+    /**
+     * Creates an instance of {@link JsonReader}.
+     */
+    public JsonReader() {
+    }
+
     /**
      * Gets the {@link JsonToken} that the reader currently points.
      * <p>
@@ -233,8 +244,12 @@ public abstract class JsonReader implements Closeable {
      * Reads and returns the current JSON object the {@link JsonReader} is pointing to. This will mutate the current
      * location of this {@link JsonReader}.
      * <p>
-     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} followed by
-     * {@link JsonToken#START_OBJECT} an {@link IllegalStateException} will be thrown.
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} an
+     * {@link IllegalStateException} will be thrown.
+     * <p>
+     * If the {@link #currentToken()} is {@link JsonToken#FIELD_NAME} this will create a JSON object where the first
+     * JSON field is the {@link #currentToken()} field, meaning this can be called from the middle of a JSON object to
+     * create a new JSON object with only a subset of fields (those remaining from when the method is called).
      * <p>
      * The returned {@link JsonReader} is able to be {@link #reset()} to replay the underlying JSON stream.
      *
@@ -250,12 +265,12 @@ public abstract class JsonReader implements Closeable {
      *
      * @return Whether {@link #reset()} is supported.
      */
-    public abstract boolean resetSupported();
+    public abstract boolean isResetSupported();
 
     /**
      * Creates a new {@link JsonReader} reset to the beginning of the JSON stream.
      * <p>
-     * Use {@link #resetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
+     * Use {@link #isResetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
      * and it isn't supported an {@link IllegalStateException} will be thrown.
      *
      * @return A new {@link JsonReader} reset to the beginning of the JSON stream.
@@ -268,37 +283,89 @@ public abstract class JsonReader implements Closeable {
      * Recursively reads the JSON token sub-stream if the current token is either {@link JsonToken#START_ARRAY} or
      * {@link JsonToken#START_OBJECT}.
      * <p>
-     * If the current token isn't the beginning of an array or object this method is a no-op.
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#START_ARRAY} nothing will
+     * be read.
      *
      * @return The raw textual value of the JSON token sub-stream.
      * @throws IOException If the children cannot be read.
      */
     public final String readChildren() throws IOException {
-        return readChildrenInternal(new StringBuilder()).toString();
+        return readInternal(new StringBuilder(), true, false).toString();
     }
 
     /**
      * Recursively reads the JSON token sub-stream if the current token is either {@link JsonToken#START_ARRAY} or
      * {@link JsonToken#START_OBJECT} into the passed {@link StringBuilder}.
      * <p>
-     * If the current token isn't the beginning of an array or object this method is a no-op.
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#START_ARRAY} nothing will
+     * be read.
      *
      * @param buffer The {@link StringBuilder} where the read sub-stream will be written.
+     * @throws NullPointerException If {@code buffer} is null.
      * @throws IOException If the children cannot be read.
      */
     public final void readChildren(StringBuilder buffer) throws IOException {
-        readChildrenInternal(buffer);
+        readInternal(buffer, true, false);
     }
 
-    private StringBuilder readChildrenInternal(StringBuilder buffer) throws IOException {
+    /**
+     * Reads the remaining fields in the current JSON object as a JSON object.
+     * <p>
+     * If the {@link #currentToken()} is {@link JsonToken#START_OBJECT} this functions the same as
+     * {@link #readChildren()}. If the {@link #currentToken()} is {@link JsonToken#FIELD_NAME} this creates a JSON
+     * object where the first field is the current field and reads the remaining fields in the JSON object.
+     * <p>
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} nothing will
+     * be read.
+     *
+     * @return The raw textual value of the remaining JSON fields.
+     * @throws IOException If the remaining JSON fields cannot be read.
+     */
+    public final String readRemainingFieldsAsJsonObject() throws IOException {
+        return readInternal(new StringBuilder(), false, true).toString();
+    }
+
+    /**
+     * Reads the remaining fields in the current JSON object as a JSON object.
+     * <p>
+     * If the {@link #currentToken()} is {@link JsonToken#START_OBJECT} this functions the same as
+     * {@link #readChildren(StringBuilder)}. If the {@link #currentToken()} is {@link JsonToken#FIELD_NAME} this creates
+     * a JSON object where the first field is the current field and reads the remaining fields in the JSON object.
+     * <p>
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} nothing will
+     * be read.
+     *
+     * @param buffer The {@link StringBuilder} where the remaining JSON fields will be written.
+     * @throws NullPointerException If {@code buffer} is null.
+     * @throws IOException If the remaining JSON fields cannot be read.
+     */
+    public final void readRemainingFieldsAsJsonObject(StringBuilder buffer) throws IOException {
+        readInternal(buffer, false, true);
+    }
+
+    private StringBuilder readInternal(StringBuilder buffer, boolean canStartAtArray, boolean canStartAtFieldName)
+        throws IOException {
+        Objects.requireNonNull(buffer, "The 'buffer' used to read the JSON object cannot be null.");
+
         JsonToken token = currentToken();
 
-        // Not pointing to an array or object start, no-op.
-        if (!isStartArrayOrObject(token)) {
+        boolean canRead = (token == JsonToken.START_OBJECT)
+            || (canStartAtArray && token == JsonToken.START_ARRAY)
+            || (canStartAtFieldName && token == JsonToken.FIELD_NAME);
+
+        // Not a valid starting point.
+        if (!canRead) {
             return buffer;
         }
 
-        buffer.append(getText());
+        if (token == JsonToken.FIELD_NAME) {
+            buffer.append("{\"");
+            ENCODER.quoteAsString(getFieldName(), buffer);
+            buffer.append("\":");
+            token = nextToken();
+        }
+
+        appendJson(buffer, token);
 
         // Initial array or object depth is 1.
         int depth = 1;
@@ -328,16 +395,33 @@ public abstract class JsonReader implements Closeable {
                 buffer.append(',');
             }
 
-            if (token == JsonToken.FIELD_NAME) {
-                buffer.append("\"").append(getFieldName()).append("\":");
-            } else if (token == JsonToken.STRING) {
-                buffer.append("\"").append(getString()).append("\"");
-            } else {
-                buffer.append(getText());
-            }
+            appendJson(buffer, token);
         }
 
         return buffer;
+    }
+
+    /**
+     * Convenience method to read a JSON element into a buffer.
+     *
+     * @param buffer The buffer where the JSON element value will be written.
+     * @param token The type of the JSON element.
+     * @throws IOException If an error occurs while reading the JSON element.
+     */
+    private void appendJson(StringBuilder buffer, JsonToken token) throws IOException {
+        // TODO (alzimmer): Think of making this a protected method. This will allow for optimizations such as where
+        //  Jackson can read text directly into a StringBuilder which removes a String copy.
+        if (token == JsonToken.FIELD_NAME) {
+            buffer.append("\"");
+            ENCODER.quoteAsString(getFieldName(), buffer);
+            buffer.append("\":");
+        } else if (token == JsonToken.STRING) {
+            buffer.append("\"");
+            ENCODER.quoteAsString(getString(), buffer);
+            buffer.append("\"");
+        } else {
+            buffer.append(getText());
+        }
     }
 
     /**
@@ -355,27 +439,12 @@ public abstract class JsonReader implements Closeable {
      *
      * @param objectReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
-     * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
-     * null.
+     * @return The read JSON object, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the object cannot be read.
      */
     public final <T> T readObject(ReadValueCallback<JsonReader, T> objectReaderFunc) throws IOException {
-        JsonToken currentToken = currentToken();
-        if (currentToken == null) {
-            currentToken = nextToken();
-        }
-
-        // If the current token is JSON NULL or current token is still null return null.
-        // The current token may be null if there was no JSON content to read.
-        if (currentToken == JsonToken.NULL || currentToken == null) {
-            return null;
-        } else if (currentToken == JsonToken.END_OBJECT || currentToken == JsonToken.FIELD_NAME) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + currentToken);
-        }
-
-        return objectReaderFunc.read(this);
+        return readMapOrObject(objectReaderFunc, false);
     }
 
     /**
@@ -437,33 +506,41 @@ public abstract class JsonReader implements Closeable {
      * @param valueReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
      * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
-     * null.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the map cannot be read.
      */
     public final <T> Map<String, T> readMap(ReadValueCallback<JsonReader, T> valueReaderFunc) throws IOException {
+        return readMapOrObject(reader -> {
+            Map<String, T> map = new LinkedHashMap<>();
+
+            while (nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = getFieldName();
+                nextToken();
+
+                map.put(fieldName, valueReaderFunc.read(this));
+            }
+
+            return map;
+        }, true);
+    }
+
+    private <T> T readMapOrObject(ReadValueCallback<JsonReader, T> valueReaderFunc, boolean isMap) throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == null) {
             currentToken = nextToken();
         }
 
+        // Reading maps and objects can begin in one of four states with the following outcomes:
+        // - JSON null token or no token: returns null
+        // - JSON start object or field name: reads the map or object
         if (currentToken == JsonToken.NULL || currentToken == null) {
             return null;
         } else if (currentToken != JsonToken.START_OBJECT) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin map deserialization: " + currentToken);
+            String type = isMap ? "map" : "object";
+            throw new IllegalStateException("Unexpected token to begin " + type + " deserialization: " + currentToken);
         }
 
-        Map<String, T> map = new LinkedHashMap<>();
-
-        while (nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = getFieldName();
-            nextToken();
-
-            map.put(fieldName, valueReaderFunc.read(this));
-        }
-
-        return map;
+        return valueReaderFunc.read(this);
     }
 
     /**
@@ -611,6 +688,8 @@ public abstract class JsonReader implements Closeable {
                 return getFieldName();
 
             case BOOLEAN:
+                return String.valueOf(getBoolean());
+
             case NUMBER:
             case STRING:
                 return getString();

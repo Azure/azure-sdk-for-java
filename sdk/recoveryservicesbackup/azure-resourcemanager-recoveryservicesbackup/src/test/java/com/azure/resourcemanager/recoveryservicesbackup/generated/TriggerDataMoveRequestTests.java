@@ -9,11 +9,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TriggerDataMoveRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TriggerDataMoveRequest model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class TriggerDataMoveRequestTests {
         Assertions.assertEquals(false, model.pauseGC());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TriggerDataMoveRequest model =
             new TriggerDataMoveRequest()
                 .withSourceResourceId("lhbxxhejjzzvdud")

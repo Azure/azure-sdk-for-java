@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OnlineRequestSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OnlineRequestSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OnlineRequestSettings model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class OnlineRequestSettingsTests {
         Assertions.assertEquals(Duration.parse("PT152H42M33S"), model.requestTimeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OnlineRequestSettings model =
             new OnlineRequestSettings()
                 .withMaxConcurrentRequestsPerInstance(1659306080)

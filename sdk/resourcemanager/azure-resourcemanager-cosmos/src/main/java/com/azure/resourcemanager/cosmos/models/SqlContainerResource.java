@@ -50,10 +50,20 @@ public class SqlContainerResource {
     private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /*
+     * The client encryption policy for the container.
+     */
+    @JsonProperty(value = "clientEncryptionPolicy")
+    private ClientEncryptionPolicy clientEncryptionPolicy;
+
+    /*
      * Analytical TTL.
      */
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
+
+    /** Creates an instance of SqlContainerResource class. */
+    public SqlContainerResource() {
+    }
 
     /**
      * Get the id property: Name of the Cosmos DB SQL container.
@@ -182,6 +192,26 @@ public class SqlContainerResource {
     }
 
     /**
+     * Get the clientEncryptionPolicy property: The client encryption policy for the container.
+     *
+     * @return the clientEncryptionPolicy value.
+     */
+    public ClientEncryptionPolicy clientEncryptionPolicy() {
+        return this.clientEncryptionPolicy;
+    }
+
+    /**
+     * Set the clientEncryptionPolicy property: The client encryption policy for the container.
+     *
+     * @param clientEncryptionPolicy the clientEncryptionPolicy value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withClientEncryptionPolicy(ClientEncryptionPolicy clientEncryptionPolicy) {
+        this.clientEncryptionPolicy = clientEncryptionPolicy;
+        return this;
+    }
+
+    /**
      * Get the analyticalStorageTtl property: Analytical TTL.
      *
      * @return the analyticalStorageTtl value.
@@ -223,6 +253,9 @@ public class SqlContainerResource {
         }
         if (conflictResolutionPolicy() != null) {
             conflictResolutionPolicy().validate();
+        }
+        if (clientEncryptionPolicy() != null) {
+            clientEncryptionPolicy().validate();
         }
     }
 

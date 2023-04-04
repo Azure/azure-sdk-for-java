@@ -29,6 +29,9 @@ public class ScriptActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
+    /** Creates an instance of ScriptActivity class. */
+    public ScriptActivity() {}
+
     /**
      * Get the scripts property: Array of script blocks. Type: array.
      *

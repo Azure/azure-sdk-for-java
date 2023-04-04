@@ -7,29 +7,34 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** Container object for various projection selectors. */
 @Fluent
-public final class SearchIndexerKnowledgeStoreProjection {
+public final class SearchIndexerKnowledgeStoreProjection
+        implements JsonSerializable<SearchIndexerKnowledgeStoreProjection> {
     /*
      * Projections to Azure Table storage.
      */
-    @JsonProperty(value = "tables")
     private List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables;
 
     /*
      * Projections to Azure Blob storage.
      */
-    @JsonProperty(value = "objects")
     private List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects;
 
     /*
      * Projections to Azure File storage.
      */
-    @JsonProperty(value = "files")
     private List<SearchIndexerKnowledgeStoreFileProjectionSelector> files;
+
+    /** Creates an instance of SearchIndexerKnowledgeStoreProjection class. */
+    public SearchIndexerKnowledgeStoreProjection() {}
 
     /**
      * Get the tables property: Projections to Azure Table storage.
@@ -92,5 +97,61 @@ public final class SearchIndexerKnowledgeStoreProjection {
             List<SearchIndexerKnowledgeStoreFileProjectionSelector> files) {
         this.files = files;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("objects", this.objects, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndexerKnowledgeStoreProjection from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerKnowledgeStoreProjection if the JsonReader was pointing to an instance of it,
+     *     or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreProjection.
+     */
+    public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    SearchIndexerKnowledgeStoreProjection deserializedSearchIndexerKnowledgeStoreProjection =
+                            new SearchIndexerKnowledgeStoreProjection();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tables".equals(fieldName)) {
+                            List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables =
+                                    reader.readArray(
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreTableProjectionSelector.fromJson(
+                                                            reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.tables = tables;
+                        } else if ("objects".equals(fieldName)) {
+                            List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects =
+                                    reader.readArray(
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreObjectProjectionSelector.fromJson(
+                                                            reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.objects = objects;
+                        } else if ("files".equals(fieldName)) {
+                            List<SearchIndexerKnowledgeStoreFileProjectionSelector> files =
+                                    reader.readArray(
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreFileProjectionSelector.fromJson(
+                                                            reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.files = files;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedSearchIndexerKnowledgeStoreProjection;
+                });
     }
 }

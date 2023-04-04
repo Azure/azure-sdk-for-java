@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInner;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.FlowLogFormatType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.network.models.FlowLogFormatType;
 /** Samples for FlowLogs CreateOrUpdate. */
 public final class FlowLogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherFlowLogCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherFlowLogCreate.json
      */
     /**
      * Sample code: Create or update flow log.
@@ -37,6 +36,6 @@ public final class FlowLogsCreateOrUpdateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe")
                     .withEnabled(true)
                     .withFormat(new FlowLogFormatParameters().withType(FlowLogFormatType.JSON).withVersion(1)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

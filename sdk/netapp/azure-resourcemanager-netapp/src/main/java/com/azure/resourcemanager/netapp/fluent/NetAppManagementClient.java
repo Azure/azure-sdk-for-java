@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for NetAppManagementClient class. */
 public interface NetAppManagementClient {
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -128,13 +127,6 @@ public interface NetAppManagementClient {
      * @return the VolumeQuotaRulesClient object.
      */
     VolumeQuotaRulesClient getVolumeQuotaRules();
-
-    /**
-     * Gets the VaultsClient object to access its operations.
-     *
-     * @return the VaultsClient object.
-     */
-    VaultsClient getVaults();
 
     /**
      * Gets the VolumeGroupsClient object to access its operations.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.2 (2023-03-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.8.0` to version `1.8.1`.
+
+## 1.1.1 (2023-02-13)
+
+### Dependency Updates
+
+- Upgrade Azure Identity to 1.8.0.
+
+### Others
+
+- Improve the performance of DefaultTokenCredentialProvider's `get()` method.
+
+## 1.2.0-beta.1 (2023-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `mysql-connector-j` from version `8.0.31` to `8.0.32`.
+
+## 1.1.0 (2023-01-11)
+
+This is the 1.1.0 GA version of Azure identity extensions library for Java.
+
+### Dependency Updates
+
+- Upgrade Azure Identity to 1.7.3.
 
 ## 1.0.0 (2022-12-05)
 

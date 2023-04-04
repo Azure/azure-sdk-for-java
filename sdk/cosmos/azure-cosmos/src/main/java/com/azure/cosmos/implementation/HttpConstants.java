@@ -289,6 +289,8 @@ public class HttpConstants {
         private static final long NONE = 0; // 0
         private static final long PARTITION_MERGE = 1; // 1 << 0
 
+        private static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 2; // 1 << 1
+
         public static final String SUPPORTED_CAPABILITIES;
         public static final String SUPPORTED_CAPABILITIES_NONE;
         static {
@@ -410,6 +412,8 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
+
+        public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
     }
 
     public static class HeaderValues {

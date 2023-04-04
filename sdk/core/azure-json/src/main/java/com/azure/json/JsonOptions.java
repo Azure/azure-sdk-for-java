@@ -7,9 +7,14 @@ package com.azure.json;
  * Contains configuration options for creating a {@link JsonReader} or {@link JsonWriter}.
  */
 public final class JsonOptions {
-    static final JsonOptions DEFAULT_OPTIONS = new JsonOptions();
 
     private boolean nonNumericNumbersSupported = true;
+
+    /**
+     * Creates an instance of {@link JsonOptions}.
+     */
+    public JsonOptions() {
+    }
 
     /**
      * Whether non-numeric numbers such as {@code NaN} and {@code INF} and {@code -INF} are supported.

@@ -23,6 +23,10 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DetectorResponseProperties innerProperties;
 
+    /** Creates an instance of DetectorResponseInner class. */
+    public DetectorResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: DetectorResponse resource specific properties.
      *

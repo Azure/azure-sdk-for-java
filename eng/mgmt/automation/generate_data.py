@@ -29,19 +29,24 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
     spec_root = os.path.abspath(config['specFolder'])
 
     packages = []
-    if 'relatedCadlProjectFolder' not in config:
+    if 'relatedTypeSpecProjectFolder' not in config:
         return packages
 
-    cadl_projects = config['relatedCadlProjectFolder']
+    cadl_projects = config['relatedTypeSpecProjectFolder']
     if isinstance(cadl_projects, str):
         cadl_projects = [cadl_projects]
 
     for cadl_project in cadl_projects:
         cadl_dir = os.path.join(spec_root, cadl_project)
 
-        sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
+        sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'tspconfig.yaml'))
         if not sdk_folder:
-            logging.warning('[Skip] "sdk-folder" option not found in cadl-project.yaml')
+            # fallback to cadl file
+            sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
+        if not sdk_folder:
+            logging.warning('[Skip] "options.@azure-tools/typespec-java.emitter-output-dir" '
+                            'or "parameters.service-directory-name.default" not found '
+                            'in tspconfig.yaml or cadl-project.yaml')
         else:
             sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
             require_sdk_integration = not os.path.exists(os.path.join(sdk_folder_abspath, 'src'))
@@ -54,20 +59,34 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 module = match.group(2)
 
             if not module:
-                logging.warning('[Skip] sdk-folder option {} not match format sdk/<service>/<module>'
-                                .format(sdk_folder))
+                logging.warning('[Skip] "emitter-output-dir" not match format '
+                                '{java-sdk-folder}/sdk/{service-directory-name}/<module>')
             else:
                 # cadl
                 succeeded = False
                 pwd = os.getcwd()
                 os.chdir(cadl_dir)
                 try:
+                    # copy "eng/emitter-package.json" to "package.json" in current project
+                    shutil.copyfile(os.path.join(sdk_root, 'eng', 'emitter-package.json'),
+                                    os.path.join(cadl_dir, 'package.json'))
+
+                    # install dependencies
                     subprocess.run('npm install', shell=True, check=True)
 
+                    # check client.cadl
+                    cadl_source = '.'
+                    if os.path.exists(os.path.join(cadl_dir, 'client.tsp')):
+                        cadl_source = 'client.tsp'
+                    if cadl_source == '.' and os.path.exists(os.path.join(cadl_dir, 'client.cadl')):
+                        # fallback to cadl file
+                        cadl_source = 'client.cadl'
+
                     # generate Java project
-                    subprocess.run('npx cadl compile . --emit @azure-tools/cadl-java --output-path={}'
-                                   .format(sdk_folder_abspath),
-                                   shell=True, check=True)
+                    command = 'npx tsp compile {0} --emit=@azure-tools/typespec-java --arg="java-sdk-folder={1}"'\
+                        .format(cadl_source, sdk_root)
+                    logging.info(command)
+                    subprocess.run(command, shell=True, check=True)
 
                     succeeded = True
                 except subprocess.CalledProcessError:
@@ -99,7 +118,7 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                         'eng/versioning',
                         'pom.xml'
                     ],
-                    'cadlProject': [cadl_project],
+                    'typespecProject': [cadl_project],
                     'packageFolder': sdk_folder,
                     'artifacts': artifacts,
                     'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
@@ -111,12 +130,17 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
 
 
 def get_cadl_sdk_folder(project_filename: str) -> Optional[str]:
-    sdk_folder = None
+    sdk_folder: Optional[str] = None
     if os.path.exists(project_filename):
         with open(project_filename, 'r', encoding='utf-8') as f_in:
             project_yaml = yaml.safe_load(f_in)
-            sdk_folder = project_yaml['emitters']['@azure-tools/cadl-java']['sdk-folder']
-
+            if 'parameters' in project_yaml and 'service-directory-name' in project_yaml['parameters'] \
+                    and 'options' in project_yaml and '@azure-tools/typespec-java' in project_yaml['options']:
+                service: str = project_yaml['parameters']['service-directory-name']['default']
+                sdk_folder = project_yaml['options']['@azure-tools/typespec-java']['emitter-output-dir']
+                sdk_folder = sdk_folder.replace(
+                    r'{java-sdk-folder}/sdk/{service-directory-name}/',
+                    'sdk/{0}/'.format(service))
     return sdk_folder
 
 
@@ -372,7 +396,7 @@ def generate(
 
 
 def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Drevapi.skip -pl {1}:{2} -am'.format(
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:

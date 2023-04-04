@@ -232,11 +232,8 @@ final class JacksonJsonReader extends JsonReader {
     @Override
     public JsonReader bufferObject() throws IOException {
         JsonToken currentToken = currentToken();
-        if (currentToken == JsonToken.START_OBJECT
-            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
-            StringBuilder bufferedObject = new StringBuilder();
-            readChildren(bufferedObject);
-            String json = bufferedObject.toString();
+        if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
+            String json = readRemainingFieldsAsJsonObject();
             return new JacksonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
@@ -245,7 +242,7 @@ final class JacksonJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean resetSupported() {
+    public boolean isResetSupported() {
         return this.resetSupported;
     }
 

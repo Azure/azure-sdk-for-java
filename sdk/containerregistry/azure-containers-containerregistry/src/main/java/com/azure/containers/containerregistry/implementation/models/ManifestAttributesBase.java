@@ -8,88 +8,81 @@ import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /** Manifest details. */
-@JsonFlatten
 @Fluent
-public class ManifestAttributesBase {
+public class ManifestAttributesBase implements JsonSerializable<ManifestAttributesBase> {
     /*
      * Manifest
      */
-    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
      * Image size
      */
-    @JsonProperty(value = "imageSize", access = JsonProperty.Access.WRITE_ONLY)
-    private Long size;
+    private Long sizeInBytes;
 
     /*
      * Created time
      */
-    @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
-    @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactOperatingSystem operatingSystem;
 
     /*
-     * List of artifacts that are referenced by this manifest list, with
-     * information about the platform each supports.  This list will be empty
-     * if this is a leaf manifest and not a manifest list.
+     * List of artifacts that are referenced by this manifest list, with information about the platform each supports.
+     * This list will be empty if this is a leaf manifest and not a manifest list.
      */
-    @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
     private List<ArtifactManifestPlatform> relatedArtifacts;
 
     /*
      * List of tags
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tags;
 
     /*
      * Delete enabled
      */
-    @JsonProperty(value = "changeableAttributes.deleteEnabled")
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
-    @JsonProperty(value = "changeableAttributes.writeEnabled")
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
-    @JsonProperty(value = "changeableAttributes.listEnabled")
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
-    @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
+
+    /** Creates an instance of ManifestAttributesBase class. */
+    public ManifestAttributesBase() {}
 
     /**
      * Get the digest property: Manifest.
@@ -101,12 +94,34 @@ public class ManifestAttributesBase {
     }
 
     /**
-     * Get the size property: Image size.
+     * Set the digest property: Manifest.
      *
-     * @return the size value.
+     * @param digest the digest value to set.
+     * @return the ManifestAttributesBase object itself.
      */
-    public Long getSize() {
-        return this.size;
+    public ManifestAttributesBase setDigest(String digest) {
+        this.digest = digest;
+        return this;
+    }
+
+    /**
+     * Get the sizeInBytes property: Image size.
+     *
+     * @return the sizeInBytes value.
+     */
+    public Long getSizeInBytes() {
+        return this.sizeInBytes;
+    }
+
+    /**
+     * Set the sizeInBytes property: Image size.
+     *
+     * @param sizeInBytes the sizeInBytes value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setSizeInBytes(Long sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
+        return this;
     }
 
     /**
@@ -119,12 +134,34 @@ public class ManifestAttributesBase {
     }
 
     /**
+     * Set the createdOn property: Created time.
+     *
+     * @param createdOn the createdOn value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    /**
      * Get the lastUpdatedOn property: Last update time.
      *
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
+    }
+
+    /**
+     * Set the lastUpdatedOn property: Last update time.
+     *
+     * @param lastUpdatedOn the lastUpdatedOn value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
+        this.lastUpdatedOn = lastUpdatedOn;
+        return this;
     }
 
     /**
@@ -137,12 +174,34 @@ public class ManifestAttributesBase {
     }
 
     /**
+     * Set the architecture property: CPU architecture.
+     *
+     * @param architecture the architecture value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setArchitecture(ArtifactArchitecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
      * Get the operatingSystem property: Operating system.
      *
      * @return the operatingSystem value.
      */
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
+    }
+
+    /**
+     * Set the operatingSystem property: Operating system.
+     *
+     * @param operatingSystem the operatingSystem value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setOperatingSystem(ArtifactOperatingSystem operatingSystem) {
+        this.operatingSystem = operatingSystem;
+        return this;
     }
 
     /**
@@ -156,12 +215,35 @@ public class ManifestAttributesBase {
     }
 
     /**
+     * Set the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
+     * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
+     *
+     * @param relatedArtifacts the relatedArtifacts value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setRelatedArtifacts(List<ArtifactManifestPlatform> relatedArtifacts) {
+        this.relatedArtifacts = relatedArtifacts;
+        return this;
+    }
+
+    /**
      * Get the tags property: List of tags.
      *
      * @return the tags value.
      */
     public List<String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of tags.
+     *
+     * @param tags the tags value to set.
+     * @return the ManifestAttributesBase object itself.
+     */
+    public ManifestAttributesBase setTags(List<String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -242,5 +324,100 @@ public class ManifestAttributesBase {
     public ManifestAttributesBase setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeStringField("createdTime", Objects.toString(this.createdOn, null));
+        jsonWriter.writeStringField("lastUpdateTime", Objects.toString(this.lastUpdatedOn, null));
+        jsonWriter.writeNumberField("imageSize", this.sizeInBytes);
+        jsonWriter.writeStringField("architecture", Objects.toString(this.architecture, null));
+        jsonWriter.writeStringField("os", Objects.toString(this.operatingSystem, null));
+        jsonWriter.writeArrayField("references", this.relatedArtifacts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        if (deleteEnabled != null || writeEnabled != null || listEnabled != null || readEnabled != null) {
+            jsonWriter.writeStartObject("changeableAttributes");
+            jsonWriter.writeBooleanField("deleteEnabled", this.deleteEnabled);
+            jsonWriter.writeBooleanField("writeEnabled", this.writeEnabled);
+            jsonWriter.writeBooleanField("listEnabled", this.listEnabled);
+            jsonWriter.writeBooleanField("readEnabled", this.readEnabled);
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManifestAttributesBase from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManifestAttributesBase if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManifestAttributesBase.
+     */
+    public static ManifestAttributesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestAttributesBase deserializedManifestAttributesBase = new ManifestAttributesBase();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("digest".equals(fieldName)) {
+                            deserializedManifestAttributesBase.digest = reader.getString();
+                        } else if ("createdTime".equals(fieldName)) {
+                            deserializedManifestAttributesBase.createdOn =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("lastUpdateTime".equals(fieldName)) {
+                            deserializedManifestAttributesBase.lastUpdatedOn =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("imageSize".equals(fieldName)) {
+                            deserializedManifestAttributesBase.sizeInBytes = reader.getNullable(JsonReader::getLong);
+                        } else if ("architecture".equals(fieldName)) {
+                            deserializedManifestAttributesBase.architecture =
+                                    ArtifactArchitecture.fromString(reader.getString());
+                        } else if ("os".equals(fieldName)) {
+                            deserializedManifestAttributesBase.operatingSystem =
+                                    ArtifactOperatingSystem.fromString(reader.getString());
+                        } else if ("references".equals(fieldName)) {
+                            List<ArtifactManifestPlatform> relatedArtifacts =
+                                    reader.readArray(reader1 -> ArtifactManifestPlatform.fromJson(reader1));
+                            deserializedManifestAttributesBase.relatedArtifacts = relatedArtifacts;
+                        } else if ("tags".equals(fieldName)) {
+                            List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                            deserializedManifestAttributesBase.tags = tags;
+                        } else if ("changeableAttributes".equals(fieldName)
+                                && reader.currentToken() == JsonToken.START_OBJECT) {
+                            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                fieldName = reader.getFieldName();
+                                reader.nextToken();
+
+                                if ("deleteEnabled".equals(fieldName)) {
+                                    deserializedManifestAttributesBase.deleteEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
+                                } else if ("writeEnabled".equals(fieldName)) {
+                                    deserializedManifestAttributesBase.writeEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
+                                } else if ("listEnabled".equals(fieldName)) {
+                                    deserializedManifestAttributesBase.listEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
+                                } else if ("readEnabled".equals(fieldName)) {
+                                    deserializedManifestAttributesBase.readEnabled =
+                                            reader.getNullable(JsonReader::getBoolean);
+                                } else {
+                                    reader.skipChildren();
+                                }
+                            }
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedManifestAttributesBase;
+                });
     }
 }

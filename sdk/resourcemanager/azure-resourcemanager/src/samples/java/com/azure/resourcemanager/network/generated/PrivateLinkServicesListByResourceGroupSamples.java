@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkServices ListByResourceGroup. */
 public final class PrivateLinkServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PrivateLinkServiceList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PrivateLinkServiceList.json
      */
     /**
      * Sample code: List private link service in resource group.
@@ -17,6 +15,11 @@ public final class PrivateLinkServicesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPrivateLinkServiceInResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices().listByResourceGroup("rg1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

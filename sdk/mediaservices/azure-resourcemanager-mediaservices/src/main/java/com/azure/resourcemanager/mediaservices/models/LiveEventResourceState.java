@@ -32,6 +32,15 @@ public final class LiveEventResourceState extends ExpandableStringEnum<LiveEvent
     public static final LiveEventResourceState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of LiveEventResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LiveEventResourceState() {
+    }
+
+    /**
      * Creates or finds a LiveEventResourceState from its string representation.
      *
      * @param name a name to look for.

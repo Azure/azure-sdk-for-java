@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -41,6 +42,7 @@ public class ClientSideRequestStatistics {
     private Set<String> regionsContacted;
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
+    private FaultInjectionRequestContext requestContext;
     private GatewayStatistics gatewayStatistics;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
@@ -99,6 +101,10 @@ public class ClientSideRequestStatistics {
 
     public Instant getRequestStartTimeUTC() {
         return requestStartTimeUTC;
+    }
+
+    public Instant getRequestEndTimeUTC() {
+        return requestEndTimeUTC;
     }
 
     public DiagnosticsClientContext.DiagnosticsClientConfig getDiagnosticsClientConfig() {
@@ -182,6 +188,7 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
             this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
             this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
+            this.gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
             this.activityId = storeResponseDiagnostics.getActivityId();
         }
     }
@@ -289,6 +296,10 @@ public class ClientSideRequestStatistics {
 
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
+            if (this.gatewayStatistics != null) {
+                return this.gatewayStatistics.responsePayloadSizeInBytes;
+            }
+
             return 0;
         }
 
@@ -513,6 +524,8 @@ public class ClientSideRequestStatistics {
         private String exceptionMessage;
         private String exceptionResponseHeaders;
 
+        private int responsePayloadSizeInBytes;
+
         public String getSessionToken() {
             return sessionToken;
         }
@@ -552,6 +565,8 @@ public class ClientSideRequestStatistics {
         public String getExceptionResponseHeaders() {
             return exceptionResponseHeaders;
         }
+
+        public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
     }
 
     public static SystemInformation fetchSystemInformation() {

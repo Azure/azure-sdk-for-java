@@ -14,6 +14,18 @@ public interface RecommendationMetadatas {
      * Gets the metadata entity.
      *
      * @param name Name of metadata entity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the metadata entity along with {@link Response}.
+     */
+    Response<MetadataEntity> getWithResponse(String name, Context context);
+
+    /**
+     * Gets the metadata entity.
+     *
+     * @param name Name of metadata entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -22,23 +34,11 @@ public interface RecommendationMetadatas {
     MetadataEntity get(String name);
 
     /**
-     * Gets the metadata entity.
-     *
-     * @param name Name of metadata entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity.
-     */
-    Response<MetadataEntity> getWithResponse(String name, Context context);
-
-    /**
      * Gets the list of metadata entities.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MetadataEntity> list();
 
@@ -49,7 +49,7 @@ public interface RecommendationMetadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MetadataEntity> list(Context context);
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LocalNetworkGateways Delete. */
 public final class LocalNetworkGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LocalNetworkGatewayDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/LocalNetworkGatewayDelete.json
      */
     /**
      * Sample code: DeleteLocalNetworkGateway.
@@ -17,6 +15,11 @@ public final class LocalNetworkGatewaysDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteLocalNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLocalNetworkGateways().delete("rg1", "localgw", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getLocalNetworkGateways()
+            .delete("rg1", "localgw", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,6 +20,14 @@ public final class NamespaceClassification extends ExpandableStringEnum<Namespac
     public static final NamespaceClassification QOS = fromString("Qos");
 
     /**
+     * Creates a new instance of NamespaceClassification value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NamespaceClassification() {}
+
+    /**
      * Creates or finds a NamespaceClassification from its string representation.
      *
      * @param name a name to look for.

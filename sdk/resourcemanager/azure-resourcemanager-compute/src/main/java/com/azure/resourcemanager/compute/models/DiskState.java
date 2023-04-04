@@ -35,6 +35,15 @@ public final class DiskState extends ExpandableStringEnum<DiskState> {
     public static final DiskState ACTIVE_UPLOAD = fromString("ActiveUpload");
 
     /**
+     * Creates a new instance of DiskState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskState() {
+    }
+
+    /**
      * Creates or finds a DiskState from its string representation.
      *
      * @param name a name to look for.

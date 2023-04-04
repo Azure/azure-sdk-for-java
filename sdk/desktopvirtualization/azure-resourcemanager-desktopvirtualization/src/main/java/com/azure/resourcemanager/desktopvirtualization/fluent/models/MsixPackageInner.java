@@ -29,6 +29,10 @@ public final class MsixPackageInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private MsixPackageProperties innerProperties = new MsixPackageProperties();
 
+    /** Creates an instance of MsixPackageInner class. */
+    public MsixPackageInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

@@ -3,15 +3,21 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
+
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void canParseLong() {
@@ -22,6 +28,27 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertTrue((token2.getExpiresAt().toEpochSecond() - OffsetDateTime.now().toEpochSecond()) > 3500);
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
+    }
+
+    @Test
+    public void canDeserialize() {
+        String json = "{\n"
+            + "  \"access_token\": \"fake_token\",\n"
+            + "  \"refresh_token\": \"\",\n"
+            + "  \"expires_in\": \"3599\",\n"
+            + "  \"expires_on\": \"1506484173\",\n"
+            + "  \"not_before\": \"1506480273\",\n"
+            + "  \"resource\": \"https://managementazurecom/\",\n"
+            + "  \"token_type\": \"Bearer\"\n"
+            + "}";
+        MSIToken token;
+        try {
+            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
     }
 
     @Test

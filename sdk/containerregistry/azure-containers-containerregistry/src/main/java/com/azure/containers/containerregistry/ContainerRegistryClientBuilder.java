@@ -22,12 +22,15 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
@@ -42,7 +45,6 @@ import java.util.Objects;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
@@ -52,7 +54,6 @@ import java.util.Objects;
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -78,7 +79,6 @@ import java.util.Objects;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -94,7 +94,6 @@ import java.util.Objects;
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -118,7 +117,8 @@ public final class ContainerRegistryClientBuilder implements
     EndpointTrait<ContainerRegistryClientBuilder>,
     HttpTrait<ContainerRegistryClientBuilder>,
     TokenCredentialTrait<ContainerRegistryClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryClientBuilder.class);
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private ClientOptions clientOptions;
@@ -145,7 +145,7 @@ public final class ContainerRegistryClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = endpoint;
@@ -202,7 +202,7 @@ public final class ContainerRegistryClientBuilder implements
     @Override
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.httpPipeline = httpPipeline;
         return this;
@@ -238,7 +238,7 @@ public final class ContainerRegistryClientBuilder implements
     @Override
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
         this.httpClient = httpClient;
         return this;
@@ -393,31 +393,10 @@ public final class ContainerRegistryClientBuilder implements
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        HttpPipeline pipeline = getHttpPipeline();
+        HttpPipeline pipeline = getHttpPipeline(createTracer(clientOptions));
 
         ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(pipeline, endpoint, serviceVersion.getVersion());
         return client;
-    }
-
-    private HttpPipeline getHttpPipeline() {
-        if (httpPipeline != null) {
-            return httpPipeline;
-        }
-
-        return UtilsImpl.buildHttpPipeline(
-            this.clientOptions,
-            this.httpLogOptions,
-            this.configuration,
-            this.retryPolicy,
-            this.retryOptions,
-            this.credential,
-            this.audience,
-            this.perCallPolicies,
-            this.perRetryPolicies,
-            this.httpClient,
-            this.endpoint,
-            this.version,
-            this.logger);
     }
 
     /**
@@ -435,6 +414,34 @@ public final class ContainerRegistryClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public ContainerRegistryClient buildClient() {
-        return new ContainerRegistryClient(buildAsyncClient());
+        Objects.requireNonNull(endpoint, "'endpoint' can't be null");
+
+        // Service version
+        ContainerRegistryServiceVersion serviceVersion = (version != null)
+            ? version
+            : ContainerRegistryServiceVersion.getLatest();
+
+        return new ContainerRegistryClient(getHttpPipeline(createTracer(clientOptions)), endpoint, serviceVersion.getVersion());
+    }
+
+    private HttpPipeline getHttpPipeline(Tracer tracer) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        return UtilsImpl.buildHttpPipeline(
+            this.clientOptions,
+            this.httpLogOptions,
+            this.configuration,
+            this.retryPolicy,
+            this.retryOptions,
+            this.credential,
+            this.audience,
+            this.perCallPolicies,
+            this.perRetryPolicies,
+            this.httpClient,
+            this.endpoint,
+            this.version,
+            tracer);
     }
 }

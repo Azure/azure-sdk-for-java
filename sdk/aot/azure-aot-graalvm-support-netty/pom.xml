@@ -11,7 +11,10 @@
 
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for GraalVM Netty support</name>
-    <description>This package contains Microsoft Azure GraalVM Netty Support SDK.</description>
+    <description>
+      This package is deprecated will have no further updates. Dependency on this library is no longer required to build native images with Azure SDK for Java.
+      For more details, please refer to https://devblogs.microsoft.com/azure-sdk/announcing-graalvm-support-in-azure-sdk-for-java-and-spring-cloud-azure-libraries
+    </description>
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-client-sdk-parent</artifactId>
@@ -63,44 +66,44 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler-proxy</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
         </dependency>
 
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http2</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-unix-common</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
             <classifier>linux-x86_64</classifier>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-kqueue</artifactId>
-            <version>4.1.85.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+            <version>4.1.89.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
             <classifier>osx-x86_64</classifier>
         </dependency>
     </dependencies>
@@ -115,14 +118,14 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>io.netty:netty-buffer:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
-                                <include>io.netty:netty-codec-http:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                                <include>io.netty:netty-codec-http2:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
-                                <include>io.netty:netty-handler:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
-                                <include>io.netty:netty-handler-proxy:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
-                                <include>io.netty:netty-transport-native-unix-common:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
-                                <include>io.netty:netty-transport-native-epoll:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                                <include>io.netty:netty-transport-native-kqueue:[4.1.85.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+                                <include>io.netty:netty-buffer:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                                <include>io.netty:netty-codec-http:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                                <include>io.netty:netty-codec-http2:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                                <include>io.netty:netty-handler:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                                <include>io.netty:netty-handler-proxy:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                                <include>io.netty:netty-transport-native-unix-common:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+                                <include>io.netty:netty-transport-native-epoll:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+                                <include>io.netty:netty-transport-native-kqueue:[4.1.89.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots GetByResourceGroup. */
 public final class SnapshotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/SnapshotsGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/SnapshotsGet.json
      */
     /**
      * Sample code: Get Snapshot.
@@ -22,6 +20,6 @@ public final class SnapshotsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .getByResourceGroupWithResponse("rg1", "snapshot1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "snapshot1", com.azure.core.util.Context.NONE);
     }
 }

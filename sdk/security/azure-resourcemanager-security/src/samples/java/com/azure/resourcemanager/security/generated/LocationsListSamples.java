@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Locations List. */
 public final class LocationsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class LocationsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecurityDataLocations(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.locations().list(Context.NONE);
+        manager.locations().list(com.azure.core.util.Context.NONE);
     }
 }

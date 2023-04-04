@@ -20,12 +20,13 @@ public interface RateCards {
      * @param filter The filter to apply on the operation. It ONLY supports the 'eq' and 'and' logical operators at this
      *     time. All the 4 query parameters 'OfferDurableId', 'Currency', 'Locale', 'Region' are required to be a part
      *     of the $filter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return price and Metadata information for resources.
+     * @return price and Metadata information for resources along with {@link Response}.
      */
-    ResourceRateCardInfo get(String filter);
+    Response<ResourceRateCardInfo> getWithResponse(String filter, Context context);
 
     /**
      * Enables you to query for the resource/meter metadata and related prices used in a given subscription by Offer ID,
@@ -38,11 +39,10 @@ public interface RateCards {
      * @param filter The filter to apply on the operation. It ONLY supports the 'eq' and 'and' logical operators at this
      *     time. All the 4 query parameters 'OfferDurableId', 'Currency', 'Locale', 'Region' are required to be a part
      *     of the $filter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return price and Metadata information for resources.
      */
-    Response<ResourceRateCardInfo> getWithResponse(String filter, Context context);
+    ResourceRateCardInfo get(String filter);
 }

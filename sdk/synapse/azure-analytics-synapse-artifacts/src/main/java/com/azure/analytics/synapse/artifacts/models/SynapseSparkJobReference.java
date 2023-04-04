@@ -22,6 +22,9 @@ public final class SynapseSparkJobReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
+    /** Creates an instance of SynapseSparkJobReference class. */
+    public SynapseSparkJobReference() {}
+
     /**
      * Get the type property: Synapse spark job reference type.
      *

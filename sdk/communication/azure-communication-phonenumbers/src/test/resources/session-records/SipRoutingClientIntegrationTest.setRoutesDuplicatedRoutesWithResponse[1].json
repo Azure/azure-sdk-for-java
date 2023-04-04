@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (11.0.16.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5f2a6154-8344-4429-afd1-d6e706bf538e",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6efd79b7-1778-46f9-a5aa-1546dd823f70",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "37ms",
-      "MS-CV" : "In+uDudnHUyLzBZ1diGNKQ.0",
+      "X-Processing-Time" : "16ms",
+      "MS-CV" : "k9UHULW/ck+ewkMr9nCFGQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0h2eNYwAAAAAKPMDNy32RTIMNUPhvqSFQUFJHMDFFREdFMDkxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0BpEIZAAAAAA3UDNbq8olQqBspUfM5llWUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"DuplicatedRoute\",\"message\":\"There is a duplicated route.\"}}}",
-      "Date" : "Mon, 05 Dec 2022 03:37:43 GMT",
+      "Date" : "Wed, 08 Mar 2023 13:43:34 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

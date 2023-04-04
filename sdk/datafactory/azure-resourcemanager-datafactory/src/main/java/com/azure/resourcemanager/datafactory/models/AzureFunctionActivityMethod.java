@@ -32,6 +32,15 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
     public static final AzureFunctionActivityMethod TRACE = fromString("TRACE");
 
     /**
+     * Creates a new instance of AzureFunctionActivityMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFunctionActivityMethod() {
+    }
+
+    /**
      * Creates or finds a AzureFunctionActivityMethod from its string representation.
      *
      * @param name a name to look for.

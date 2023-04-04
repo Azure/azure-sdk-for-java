@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -23,8 +24,15 @@ public final class GetDocumentModelsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of GetDocumentModelsResponse class. */
-    public GetDocumentModelsResponse() {}
+    /**
+     * Creates an instance of GetDocumentModelsResponse class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public GetDocumentModelsResponse(@JsonProperty(value = "value", required = true) List<DocumentModelSummary> value) {
+        this.value = value;
+    }
 
     /**
      * Get the value property: List of document models.
@@ -33,17 +41,6 @@ public final class GetDocumentModelsResponse {
      */
     public List<DocumentModelSummary> getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: List of document models.
-     *
-     * @param value the value value to set.
-     * @return the GetDocumentModelsResponse object itself.
-     */
-    public GetDocumentModelsResponse setValue(List<DocumentModelSummary> value) {
-        this.value = value;
-        return this;
     }
 
     /**

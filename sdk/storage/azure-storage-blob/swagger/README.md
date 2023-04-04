@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.10'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e515b6251fdc21015282d2e84b85beec7c091763/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-04-10/blob.json
+use: '@autorest/java@4.1.16'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3e6f238a1f74d77ba6970f297c77995a9f1f374e/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-12-02/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -29,7 +29,7 @@ context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode,BlobCopySourceTags
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders,GeoReplicationStatus,BlobImmutabilityPolicyMode,BlobCopySourceTagsMode
 custom-types-subpackage: models
 customization-class: src/main/java/BlobStorageCustomization.java
 generic-response-type: true
@@ -357,6 +357,7 @@ directive:
   where: $.definitions.ErrorCode
   transform: >
     $.enum.push("SnaphotOperationRateExceeded");
+    $.enum.push("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 ```
 
 ### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
@@ -392,12 +393,15 @@ directive:
     $.StorageServiceProperties.name = "BlobServiceProperties";
 ```
 
-### BlobServiceStatistics
+### BlobServiceStatistics and BlobPrefixInternal
 ``` yaml
 directive:
 - rename-model:
     from: StorageServiceStats
     to: BlobServiceStatistics
+- rename-model:
+    from: BlobPrefix
+    to: BlobPrefixInternal
 ```
 
 ### BlobAccessPolicy and BlobSignedIdentifier
@@ -433,6 +437,7 @@ directive:
     $.BlobContentLanguage["x-ms-client-name"] = "contentLanguage";
     $.BlobContentMD5["x-ms-parameter-grouping"].name = "blob-http-headers";
     $.BlobContentMD5["x-ms-client-name"] = "contentMd5";
+    $.BlobContentMD5.description = "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK will perform the encoding.";
     $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
     $.BlobContentType["x-ms-client-name"] = "contentType";
 ```
@@ -593,13 +598,23 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
-### BlobCopySourceTags expandable string enum
+### BlobCopySourceTags expandable string enum and rename
 ``` yaml
 directive:
 - from: swagger-document
   where: $.parameters.CopySourceTags
   transform: >
     $["x-ms-enum"].modelAsString = true;
+    $["x-ms-enum"].name = "BlobCopySourceTagsMode";
+```
+
+### Fix putBlobFromUrl Apostrophe
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob&fromUrl"].put
+  transform: >
+    $.description = "The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given URL.  This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob from URL; the content of an existing blob is overwritten with the content of the new blob.  To perform partial updates to a block blob's contents using a source URL, use the Put Block from URL API in conjunction with Put Block List.";
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

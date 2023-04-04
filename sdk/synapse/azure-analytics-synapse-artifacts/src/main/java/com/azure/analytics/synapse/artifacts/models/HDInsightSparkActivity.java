@@ -68,6 +68,9 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.sparkConfig")
     private Map<String, Object> sparkConfig;
 
+    /** Creates an instance of HDInsightSparkActivity class. */
+    public HDInsightSparkActivity() {}
+
     /**
      * Get the rootPath property: The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or
      * Expression with resultType string).

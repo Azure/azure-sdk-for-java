@@ -17,12 +17,15 @@ public final class VirtualNetworkConfig {
     private String subnetId;
 
     /*
-     * Size of the proxy virtual machine used to pass traffic to the build VM
-     * and validation VM. Omit or specify empty string to use the default
-     * (Standard_A1_v2).
+     * Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. Omit or specify empty
+     * string to use the default (Standard_A1_v2).
      */
     @JsonProperty(value = "proxyVmSize")
     private String proxyVmSize;
+
+    /** Creates an instance of VirtualNetworkConfig class. */
+    public VirtualNetworkConfig() {
+    }
 
     /**
      * Get the subnetId property: Resource id of a pre-existing subnet.

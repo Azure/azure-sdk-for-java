@@ -9,40 +9,39 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureResourceProt
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureResourceProtectionIntentTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureResourceProtectionIntent model =
             BinaryData
                 .fromString(
-                    "{\"protectionIntentItemType\":\"AzureResourceItem\",\"friendlyName\":\"toaukhfkvcisiz\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"dsxjwuivedw\",\"itemId\":\"yeew\",\"policyId\":\"iqbps\",\"protectionState\":\"NotProtected\"}")
+                    "{\"protectionIntentItemType\":\"AzureResourceItem\",\"friendlyName\":\"asunwqrjzfrgq\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"cmbuocnjrohmbpy\",\"itemId\":\"xameblydyvkfkm\",\"policyId\":\"cxneh\",\"protectionState\":\"Invalid\"}")
                 .toObject(AzureResourceProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("dsxjwuivedw", model.sourceResourceId());
-        Assertions.assertEquals("yeew", model.itemId());
-        Assertions.assertEquals("iqbps", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("toaukhfkvcisiz", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("cmbuocnjrohmbpy", model.sourceResourceId());
+        Assertions.assertEquals("xameblydyvkfkm", model.itemId());
+        Assertions.assertEquals("cxneh", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
+        Assertions.assertEquals("asunwqrjzfrgq", model.friendlyName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureResourceProtectionIntent model =
             new AzureResourceProtectionIntent()
-                .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withSourceResourceId("dsxjwuivedw")
-                .withItemId("yeew")
-                .withPolicyId("iqbps")
-                .withProtectionState(ProtectionStatus.NOT_PROTECTED)
-                .withFriendlyName("toaukhfkvcisiz");
+                .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
+                .withSourceResourceId("cmbuocnjrohmbpy")
+                .withItemId("xameblydyvkfkm")
+                .withPolicyId("cxneh")
+                .withProtectionState(ProtectionStatus.INVALID)
+                .withFriendlyName("asunwqrjzfrgq");
         model = BinaryData.fromObject(model).toObject(AzureResourceProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("dsxjwuivedw", model.sourceResourceId());
-        Assertions.assertEquals("yeew", model.itemId());
-        Assertions.assertEquals("iqbps", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("toaukhfkvcisiz", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("cmbuocnjrohmbpy", model.sourceResourceId());
+        Assertions.assertEquals("xameblydyvkfkm", model.itemId());
+        Assertions.assertEquals("cxneh", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
+        Assertions.assertEquals("asunwqrjzfrgq", model.friendlyName());
     }
 }

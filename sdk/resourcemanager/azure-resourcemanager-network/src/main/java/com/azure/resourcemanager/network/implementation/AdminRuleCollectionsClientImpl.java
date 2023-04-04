@@ -64,7 +64,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface AdminRuleCollectionsService {
+    public interface AdminRuleCollectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -195,7 +195,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -274,7 +274,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -470,7 +470,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -538,7 +538,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -671,7 +671,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         } else {
             ruleCollection.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -746,7 +746,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         } else {
             ruleCollection.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -894,7 +894,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -965,7 +965,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1085,7 +1085,8 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, ruleCollectionName, force)
+        return this
+            .beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, ruleCollectionName, force)
             .getSyncPoller();
     }
 
@@ -1112,7 +1113,8 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         String ruleCollectionName,
         Boolean force,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, networkManagerName, configurationName, ruleCollectionName, force, context)
             .getSyncPoller();
     }

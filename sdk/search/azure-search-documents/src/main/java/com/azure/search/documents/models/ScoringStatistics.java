@@ -6,15 +6,16 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ScoringStatistics. */
+/**
+ * A value that specifies whether we want to calculate scoring statistics (such as document frequency) globally for more
+ * consistent scoring, or locally, for lower latency. The default is 'local'. Use 'global' to aggregate scoring
+ * statistics globally before scoring. Using global scoring statistics can increase latency of search queries.
+ */
 public enum ScoringStatistics {
-    /** Enum value local. */
+    /** The scoring statistics will be calculated locally for lower latency. */
     LOCAL("local"),
 
-    /** Enum value global. */
+    /** The scoring statistics will be calculated globally for more consistent scoring. */
     GLOBAL("global");
 
     /** The actual serialized value for a ScoringStatistics instance. */
@@ -30,7 +31,6 @@ public enum ScoringStatistics {
      * @param value the serialized value to parse.
      * @return the parsed ScoringStatistics object, or null if unable to parse.
      */
-    @JsonCreator
     public static ScoringStatistics fromString(String value) {
         if (value == null) {
             return null;
@@ -44,7 +44,7 @@ public enum ScoringStatistics {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

@@ -5,6 +5,7 @@ package com.azure.json;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -13,6 +14,12 @@ import java.util.Objects;
  */
 @SuppressWarnings("resource")
 public abstract class JsonWriter implements Closeable {
+    /**
+     * Creates an instance of {@link JsonWriter}.
+     */
+    public JsonWriter() {
+    }
+
     /**
      * Gets the current {@link JsonWriteContext writing context} for the JSON object.
      * <p>
@@ -167,16 +174,10 @@ public abstract class JsonWriter implements Closeable {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
-            return this;
+            return writeNull();
         }
 
-        writeStartArray();
-
-        for (T element : array) {
-            elementWriterFunc.write(this, element);
-        }
-
-        return writeEndArray();
+        return writeArrayInternal(Arrays.asList(array), elementWriterFunc, null);
     }
 
     /**
@@ -203,13 +204,22 @@ public abstract class JsonWriter implements Closeable {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
-            return this;
+            return writeNull();
         }
 
-        writeStartArray();
+        return writeArrayInternal(array, elementWriterFunc, null);
+    }
+
+    private <T> JsonWriter writeArrayInternal(Iterable<T> array, WriteValueCallback<JsonWriter, T> func,
+        String fieldName) throws IOException {
+        if (fieldName == null) {
+            writeStartArray();
+        } else {
+            writeStartArray(fieldName);
+        }
 
         for (T element : array) {
-            elementWriterFunc.write(this, element);
+            func.write(this, element);
         }
 
         return writeEndArray();
@@ -503,13 +513,7 @@ public abstract class JsonWriter implements Closeable {
             return this;
         }
 
-        writeStartArray(fieldName);
-
-        for (T element : array) {
-            elementWriterFunc.write(this, element);
-        }
-
-        return writeEndArray();
+        return writeArrayInternal(Arrays.asList(array), elementWriterFunc, fieldName);
     }
 
     /**
@@ -542,13 +546,7 @@ public abstract class JsonWriter implements Closeable {
             return this;
         }
 
-        writeStartArray(fieldName);
-
-        for (T element : array) {
-            elementWriterFunc.write(this, element);
-        }
-
-        return writeEndArray();
+        return writeArrayInternal(array, elementWriterFunc, fieldName);
     }
 
     /**

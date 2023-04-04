@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RouteMaps Delete. */
 public final class RouteMapsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteMapDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteMapDelete.json
      */
     /**
      * Sample code: RouteMapDelete.
@@ -22,6 +20,6 @@ public final class RouteMapsDeleteSamples {
             .manager()
             .serviceClient()
             .getRouteMaps()
-            .delete("rg1", "virtualHub1", "routeMap1", Context.NONE);
+            .delete("rg1", "virtualHub1", "routeMap1", com.azure.core.util.Context.NONE);
     }
 }

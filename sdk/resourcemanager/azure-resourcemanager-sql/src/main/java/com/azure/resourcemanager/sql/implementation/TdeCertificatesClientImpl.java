@@ -55,7 +55,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientT")
-    private interface TdeCertificatesService {
+    public interface TdeCertificatesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
@@ -111,7 +111,6 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -121,7 +120,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
                             resourceGroupName,
                             serverName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -167,7 +166,6 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -175,7 +173,7 @@ public final class TdeCertificatesClientImpl implements TdeCertificatesClient {
                 resourceGroupName,
                 serverName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 context);
     }

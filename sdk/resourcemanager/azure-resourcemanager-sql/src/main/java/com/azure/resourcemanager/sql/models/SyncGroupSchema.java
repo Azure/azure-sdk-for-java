@@ -23,6 +23,10 @@ public final class SyncGroupSchema {
     @JsonProperty(value = "masterSyncMemberName")
     private String masterSyncMemberName;
 
+    /** Creates an instance of SyncGroupSchema class. */
+    public SyncGroupSchema() {
+    }
+
     /**
      * Get the tables property: List of tables in sync group schema.
      *

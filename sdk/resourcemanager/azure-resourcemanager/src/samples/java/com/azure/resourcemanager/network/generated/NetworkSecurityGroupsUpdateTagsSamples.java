@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for NetworkSecurityGroups UpdateTags. */
 public final class NetworkSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkSecurityGroupUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkSecurityGroupUpdateTags.json
      */
     /**
      * Sample code: Update network security group tags.
@@ -26,7 +25,10 @@ public final class NetworkSecurityGroupsUpdateTagsSamples {
             .serviceClient()
             .getNetworkSecurityGroups()
             .updateTagsWithResponse(
-                "rg1", "testnsg", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), Context.NONE);
+                "rg1",
+                "testnsg",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

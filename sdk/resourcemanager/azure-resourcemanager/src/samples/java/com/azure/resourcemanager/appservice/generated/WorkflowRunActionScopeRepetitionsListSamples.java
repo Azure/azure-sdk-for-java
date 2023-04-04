@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowRunActionScopeRepetitions List. */
 public final class WorkflowRunActionScopeRepetitionsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRunActionScopeRepetitions_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionScopeRepetitions_List.json
      */
     /**
      * Sample code: List the scoped repetitions.
@@ -28,6 +26,6 @@ public final class WorkflowRunActionScopeRepetitionsListSamples {
                 "testFlow",
                 "08586776228332053161046300351",
                 "for_each",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

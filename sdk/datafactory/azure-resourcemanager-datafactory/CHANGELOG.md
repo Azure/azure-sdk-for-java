@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.20 (Unreleased)
+## 1.0.0-beta.23 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,76 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.22 (2023-03-13)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `withSasToken(models.SecretBase)` was added
+* `withSasUri(java.lang.Object)` was added
+* `sasUri()` was added
+* `sasToken()` was added
+
+## 1.0.0-beta.21 (2023-02-20)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CopyComputeScaleProperties` was added
+
+* `models.AzureStorageAuthenticationType` was added
+
+* `models.PipelineExternalComputeScaleProperties` was added
+
+#### `models.IntegrationRuntimeComputeProperties` was modified
+
+* `pipelineExternalComputeScaleProperties()` was added
+* `withPipelineExternalComputeScaleProperties(models.PipelineExternalComputeScaleProperties)` was added
+* `copyComputeScaleProperties()` was added
+* `withCopyComputeScaleProperties(models.CopyComputeScaleProperties)` was added
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `authenticationType()` was added
+* `containerUri()` was added
+* `withAuthenticationType(models.AzureStorageAuthenticationType)` was added
+* `withContainerUri(java.lang.Object)` was added
+
+## 1.0.0-beta.20 (2023-01-18)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `withNumExecutors(java.lang.Integer)` was removed
+* `java.lang.Integer numExecutors()` -> `java.lang.Object numExecutors()`
+
+### Features Added
+
+* `models.ConfigurationType` was added
+
+* `models.SparkConfigurationReferenceType` was added
+
+* `models.SparkConfigurationParametrizationReference` was added
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `withConfigurationType(models.ConfigurationType)` was added
+* `targetSparkConfiguration()` was added
+* `configurationType()` was added
+* `withTargetSparkConfiguration(models.SparkConfigurationParametrizationReference)` was added
+* `withNumExecutors(java.lang.Object)` was added
+* `scanFolder()` was added
+* `withSparkConfig(java.util.Map)` was added
+* `sparkConfig()` was added
+* `withScanFolder(java.lang.Object)` was added
 
 ## 1.0.0-beta.19 (2022-11-24)
 

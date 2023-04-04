@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Output for the task that validates connection to Azure SQL Database Managed Instance. */
 @Immutable
 public final class ConnectToTargetSqlMITaskOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectToTargetSqlMITaskOutput.class);
-
     /*
      * Result identifier
      */
@@ -50,6 +46,10 @@ public final class ConnectToTargetSqlMITaskOutput {
      */
     @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
+
+    /** Creates an instance of ConnectToTargetSqlMITaskOutput class. */
+    public ConnectToTargetSqlMITaskOutput() {
+    }
 
     /**
      * Get the id property: Result identifier.

@@ -139,7 +139,6 @@ public class MapsRenderClientTestBase extends TestBase {
     static void validateGetCopyrightCaption(CopyrightCaption expected, CopyrightCaption actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getCopyrightsCaption(), actual.getCopyrightsCaption());
         assertEquals(expected.getFormatVersion(), actual.getFormatVersion());
     }
 

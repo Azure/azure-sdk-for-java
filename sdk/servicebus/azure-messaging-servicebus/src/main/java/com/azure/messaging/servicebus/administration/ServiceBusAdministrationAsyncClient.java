@@ -27,22 +27,22 @@ import com.azure.messaging.servicebus.administration.implementation.EntityHelper
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
-import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -70,12 +70,12 @@ import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUE
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.NUMBER_OF_ELEMENTS;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.QUEUES_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.TOPICS_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.addSupplementaryAuthHeader;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.extractPage;
+import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateQueueBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateSubscriptionBody;
@@ -87,10 +87,8 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTitleValue;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopics;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTracingContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
@@ -1444,7 +1442,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         final Context contextWithHeaders
-            = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+            = getContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
 
         final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
@@ -1455,7 +1453,7 @@ public final class ServiceBusAdministrationAsyncClient {
         if (forwardDlq != null) {
             createQueueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
-        final CreateQueueBody createEntity =
+        final CreateQueueBodyImpl createEntity =
             getCreateQueueBody(EntityHelper.getQueueDescription(createQueueOptions));
         try {
             return entityClient.putWithResponseAsync(queueName, createEntity, null, contextWithHeaders)
@@ -1492,10 +1490,10 @@ public final class ServiceBusAdministrationAsyncClient {
         if (ruleOptions == null) {
             return monoError(LOGGER, new NullPointerException("'ruleOptions' cannot be null."));
         }
-        final CreateRuleBody createEntity = getCreateRuleBody(ruleName, ruleOptions);
+        final CreateRuleBodyImpl createEntity = getCreateRuleBody(ruleName, ruleOptions);
         try {
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, ruleName, createEntity,
-                null, getTracingContext(context))
+                null, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeRule);
         } catch (RuntimeException ex) {
@@ -1532,7 +1530,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         final Context contextWithHeaders
-            = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+            = getContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
 
         final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
@@ -1548,13 +1546,13 @@ public final class ServiceBusAdministrationAsyncClient {
             if (ruleOptions.getFilter() == null) {
                 return monoError(LOGGER, new IllegalArgumentException("'RuleFilter' cannot be null."));
             }
-            final RuleDescription rule = new RuleDescription()
+            final RuleDescriptionImpl rule = new RuleDescriptionImpl()
                 .setAction(ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
                 .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
                 .setName(ruleName);
             subscriptionOptions.setDefaultRule(EntityHelper.toModel(rule));
         }
-        final CreateSubscriptionBody createEntity =
+        final CreateSubscriptionBodyImpl createEntity =
                 getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
         try {
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
@@ -1582,9 +1580,9 @@ public final class ServiceBusAdministrationAsyncClient {
         if (topicOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
         }
-        final CreateTopicBody createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
+        final CreateTopicBodyImpl createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
         try {
-            return entityClient.putWithResponseAsync(topicName, createEntity, null, getTracingContext(context))
+            return entityClient.putWithResponseAsync(topicName, createEntity, null, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {
@@ -1605,7 +1603,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be null or empty."));
         }
         try {
-            return entityClient.deleteWithResponseAsync(queueName, getTracingContext(context))
+            return entityClient.deleteWithResponseAsync(queueName, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
@@ -1639,7 +1637,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
         try {
 
-            return rulesClient.deleteWithResponseAsync(topicName, subscriptionName, ruleName, getTracingContext(context))
+            return rulesClient.deleteWithResponseAsync(topicName, subscriptionName, ruleName, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
@@ -1669,7 +1667,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
 
             return managementClient.getSubscriptions().deleteWithResponseAsync(topicName, subscriptionName,
-                getTracingContext(context))
+                getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
@@ -1691,7 +1689,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
         try {
-            return entityClient.deleteWithResponseAsync(topicName, getTracingContext(context))
+            return entityClient.deleteWithResponseAsync(topicName, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
@@ -1739,7 +1737,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be null or empty."));
         }
         try {
-            return entityClient.getWithResponseAsync(queueName, true, getTracingContext(context))
+            return entityClient.getWithResponseAsync(queueName, true, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<QueueProperties> deserialize = deserializeQueue(response);
@@ -1764,7 +1762,7 @@ public final class ServiceBusAdministrationAsyncClient {
         String ruleName, Context context) {
 
         try {
-            return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, getTracingContext(context))
+            return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeRule);
         } catch (RuntimeException ex) {
@@ -1793,7 +1791,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
 
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
-                    getTracingContext(context))
+                    getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<SubscriptionProperties> deserialize = deserializeSubscription(topicName, response);
@@ -1824,7 +1822,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<NamespaceProperties>> getNamespacePropertiesWithResponse(Context context) {
         return managementClient.getNamespaces().getWithResponseAsync(context).handle((response, sink) -> {
-            final NamespacePropertiesEntry entry = response.getValue();
+            final NamespacePropertiesEntryImpl entry = response.getValue();
             if (entry == null || entry.getContent() == null) {
                 sink.error(new AzureException(
                     "There was no content inside namespace response. Entry: " + response));
@@ -1854,7 +1852,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
         try {
 
-            return entityClient.getWithResponseAsync(topicName, true, getTracingContext(context))
+            return entityClient.getWithResponseAsync(topicName, true, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<TopicProperties> deserialize = deserializeTopic(response);
@@ -1884,7 +1882,7 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
 
         try {
-            return listQueues(0, getTracingContext(context));
+            return listQueues(0, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1906,7 +1904,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             final int skip = Integer.parseInt(continuationToken);
 
-            return listQueues(skip, getTracingContext(context));
+            return listQueues(skip, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1921,7 +1919,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
         try {
-            return listRules(topicName, subscriptionName, 0, getTracingContext(context));
+            return listRules(topicName, subscriptionName, 0, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1944,7 +1942,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             final int skip = Integer.parseInt(continuationToken);
 
-            return listRules(topicName, subscriptionName, skip, getTracingContext(context));
+            return listRules(topicName, subscriptionName, skip, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1959,7 +1957,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<PagedResponse<SubscriptionProperties>> listSubscriptionsFirstPage(String topicName, Context context) {
         try {
-            return listSubscriptions(topicName, 0, getTracingContext(context));
+            return listSubscriptions(topicName, 0, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1982,7 +1980,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             final int skip = Integer.parseInt(continuationToken);
 
-            return listSubscriptions(topicName, skip, getTracingContext(context));
+            return listSubscriptions(topicName, skip, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1998,7 +1996,7 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<PagedResponse<TopicProperties>> listTopicsFirstPage(Context context) {
 
         try {
-            return listTopics(0, getTracingContext(context));
+            return listTopics(0, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -2020,7 +2018,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             final int skip = Integer.parseInt(continuationToken);
 
-            return listTopics(skip, getTracingContext(context));
+            return listTopics(skip, getContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -2042,7 +2040,7 @@ public final class ServiceBusAdministrationAsyncClient {
         context = context == null ? Context.NONE : context;
 
         final Context contextWithHeaders
-            = getTracingContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
+            = getContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
         final String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             queue.setForwardTo(forwardTo);
@@ -2053,7 +2051,7 @@ public final class ServiceBusAdministrationAsyncClient {
             queue.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
 
-        final CreateQueueBody createEntity =
+        final CreateQueueBodyImpl createEntity =
             getCreateQueueBody(EntityHelper.toImplementation(queue));
 
         try {
@@ -2081,11 +2079,11 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, new NullPointerException("'rule' cannot be null"));
         }
 
-        final CreateRuleBody ruleBody = getUpdateRuleBody(rule);
+        final CreateRuleBodyImpl ruleBody = getUpdateRuleBody(rule);
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, rule.getName(),
-                ruleBody, "*", getTracingContext(context))
+                ruleBody, "*", getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeRule);
         } catch (RuntimeException ex) {
@@ -2108,8 +2106,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, new NullPointerException("'subscription' cannot be null"));
         }
         context = context == null ? Context.NONE : context;
-        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
-            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final Context contextWithHeaders = context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
         final String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
         if (forwardTo != null) {
             subscription.setForwardTo(forwardTo);
@@ -2122,7 +2119,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
         final String topicName = subscription.getTopicName();
         final String subscriptionName = subscription.getSubscriptionName();
-        final CreateSubscriptionBody createEntity =
+        final CreateSubscriptionBodyImpl createEntity =
             getCreateSubscriptionBody(EntityHelper.toImplementation(subscription));
 
         try {
@@ -2150,12 +2147,12 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(LOGGER, new NullPointerException("'topic' cannot be null"));
         }
 
-        final CreateTopicBody createEntity = getUpdateTopicBody(topic);
+        final CreateTopicBodyImpl createEntity = getUpdateTopicBody(topic);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return entityClient.putWithResponseAsync(topic.getName(), createEntity, "*",
-                    getTracingContext(context))
+                    getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {
@@ -2198,7 +2195,7 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Converts a Response into its corresponding {@link QueueDescriptionEntry} then mapped into {@link
+     * Converts a Response into its corresponding {@link QueueDescriptionEntryImpl} then mapped into {@link
      * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
@@ -2206,7 +2203,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return The corresponding HTTP response with convenience properties set.
      */
     private Response<QueueProperties> deserializeQueue(Response<Object> response) {
-        final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
+        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
 
         // This was an empty response (ie. 204).
         if (entry == null) {
@@ -2215,7 +2212,7 @@ public final class ServiceBusAdministrationAsyncClient {
             LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getQueueDescription() == null) {
-            final TopicDescriptionEntry entryTopic = deserialize(response.getValue(), TopicDescriptionEntry.class);
+            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
             if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
                 LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -2230,20 +2227,20 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Converts a Response into its corresponding {@link RuleDescriptionEntry} then mapped into {@link RuleProperties}.
+     * Converts a Response into its corresponding {@link RuleDescriptionEntryImpl} then mapped into {@link RuleProperties}.
      *
      * @param response HTTP Response to deserialize.
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
     private Response<RuleProperties> deserializeRule(Response<Object> response) {
-        final RuleDescriptionEntry entry = deserialize(response.getValue(), RuleDescriptionEntry.class);
+        final RuleDescriptionEntryImpl entry = deserialize(response.getValue(), RuleDescriptionEntryImpl.class);
 
         return getRulePropertiesSimpleResponse(response, entry);
     }
 
     /**
-     * Converts a Response into its corresponding {@link SubscriptionDescriptionEntry} then mapped into {@link
+     * Converts a Response into its corresponding {@link SubscriptionDescriptionEntryImpl} then mapped into {@link
      * SubscriptionProperties}.
      *
      * @param response HTTP Response to deserialize.
@@ -2251,12 +2248,14 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return The corresponding HTTP response with convenience properties set.
      */
     private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
-        final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
+        final SubscriptionDescriptionEntryImpl entry = deserialize(response.getValue(),
+            SubscriptionDescriptionEntryImpl.class);
+
         return getSubscriptionPropertiesSimpleResponse(topicName, response, entry);
     }
 
     /**
-     * Converts a Response into its corresponding {@link TopicDescriptionEntry} then mapped into {@link
+     * Converts a Response into its corresponding {@link TopicDescriptionEntryImpl} then mapped into {@link
      * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
@@ -2264,7 +2263,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return The corresponding HTTP response with convenience properties set.
      */
     private Response<TopicProperties> deserializeTopic(Response<Object> response) {
-        final TopicDescriptionEntry entry = deserialize(response.getValue(), TopicDescriptionEntry.class);
+        final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
 
         // This was an empty response (ie. 204).
         if (entry == null) {
@@ -2273,7 +2272,7 @@ public final class ServiceBusAdministrationAsyncClient {
             LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getTopicDescription() == null) {
-            final QueueDescriptionEntry entryQueue = deserialize(response.getValue(), QueueDescriptionEntry.class);
+            final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
             if (entryQueue != null && entryQueue.getContent() != null && entryQueue.getContent().getQueueDescription() != null) {
                 LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -2299,8 +2298,8 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
-                final QueueDescriptionFeed feed = feedResponse.getValue();
+                final Response<QueueDescriptionFeedImpl> feedResponse = deserialize(response, QueueDescriptionFeedImpl.class);
+                final QueueDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
@@ -2332,10 +2331,10 @@ public final class ServiceBusAdministrationAsyncClient {
             context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<RuleDescriptionFeed> feedResponse = deserialize(response,
-                    RuleDescriptionFeed.class);
+                final Response<RuleDescriptionFeedImpl> feedResponse = deserialize(response,
+                    RuleDescriptionFeedImpl.class);
 
-                final RuleDescriptionFeed feed = feedResponse.getValue();
+                final RuleDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
@@ -2366,10 +2365,10 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listSubscriptionsWithResponseAsync(topicName, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<SubscriptionDescriptionFeed> feedResponse = deserialize(response,
-                    SubscriptionDescriptionFeed.class);
+                final Response<SubscriptionDescriptionFeedImpl> feedResponse = deserialize(response,
+                    SubscriptionDescriptionFeedImpl.class);
 
-                final SubscriptionDescriptionFeed feed = feedResponse.getValue();
+                final SubscriptionDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
@@ -2399,8 +2398,8 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<TopicDescriptionFeed> feedResponse = deserialize(response, TopicDescriptionFeed.class);
-                final TopicDescriptionFeed feed = feedResponse.getValue();
+                final Response<TopicDescriptionFeedImpl> feedResponse = deserialize(response, TopicDescriptionFeedImpl.class);
+                final TopicDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
@@ -29,7 +28,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkGatewayConnections CreateOrUpdate. */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayConnectionCreate.json
      */
     /**
      * Sample code: CreateVirtualNetworkGatewayConnection_S2S.
@@ -105,7 +104,7 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                     .withRoutingWeight(0)
                     .withDpdTimeoutSeconds(30)
                     .withConnectionMode(VirtualNetworkGatewayConnectionMode.DEFAULT)
-                    .withSharedKey("Abc123")
+                    .withSharedKey("fakeTokenPlaceholder")
                     .withEnableBgp(false)
                     .withGatewayCustomBgpIpAddresses(
                         Arrays
@@ -121,7 +120,7 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                     .withUsePolicyBasedTrafficSelectors(false)
                     .withIpsecPolicies(Arrays.asList())
                     .withTrafficSelectorPolicies(Arrays.asList()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

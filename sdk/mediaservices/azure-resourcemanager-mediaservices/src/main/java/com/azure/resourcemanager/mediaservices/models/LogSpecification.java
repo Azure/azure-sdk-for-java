@@ -28,6 +28,10 @@ public final class LogSpecification {
     @JsonProperty(value = "blobDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String blobDuration;
 
+    /** Creates an instance of LogSpecification class. */
+    public LogSpecification() {
+    }
+
     /**
      * Get the name property: The diagnostic log category name.
      *

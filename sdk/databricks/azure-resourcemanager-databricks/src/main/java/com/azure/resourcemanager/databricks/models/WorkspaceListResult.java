@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.fluent.models.WorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of workspaces. */
 @Fluent
 public final class WorkspaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceListResult.class);
-
     /*
      * The array of workspaces.
      */
@@ -27,6 +23,10 @@ public final class WorkspaceListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of WorkspaceListResult class. */
+    public WorkspaceListResult() {
+    }
 
     /**
      * Get the value property: The array of workspaces.

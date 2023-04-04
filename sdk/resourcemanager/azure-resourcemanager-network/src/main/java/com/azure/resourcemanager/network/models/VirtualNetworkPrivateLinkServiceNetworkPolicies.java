@@ -18,6 +18,15 @@ public final class VirtualNetworkPrivateLinkServiceNetworkPolicies
     public static final VirtualNetworkPrivateLinkServiceNetworkPolicies DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of VirtualNetworkPrivateLinkServiceNetworkPolicies value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkPrivateLinkServiceNetworkPolicies() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkPrivateLinkServiceNetworkPolicies from its string representation.
      *
      * @param name a name to look for.

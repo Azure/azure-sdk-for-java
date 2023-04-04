@@ -62,6 +62,10 @@ public final class MetricInner {
     @JsonProperty(value = "timeseries", required = true)
     private List<TimeSeriesElement> timeseries;
 
+    /** Creates an instance of MetricInner class. */
+    public MetricInner() {
+    }
+
     /**
      * Get the id property: the metric Id.
      *

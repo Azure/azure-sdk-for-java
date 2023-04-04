@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.RegistryUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for Registries Update. */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/RegistryUpdate.json
      */
     /**
      * Sample code: RegistryUpdate.
@@ -31,10 +30,10 @@ public final class RegistriesUpdateSamples {
                 "myResourceGroup",
                 "myRegistry",
                 new RegistryUpdateParameters()
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withSku(new Sku().withName(SkuName.STANDARD))
                     .withAdminUserEnabled(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

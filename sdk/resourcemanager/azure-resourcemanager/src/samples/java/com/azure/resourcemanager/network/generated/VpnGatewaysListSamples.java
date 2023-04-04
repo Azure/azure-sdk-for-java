@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VpnGateways List. */
 public final class VpnGatewaysListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnGatewayList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnGatewayList.json
      */
     /**
      * Sample code: VpnGatewayListBySubscription.
@@ -17,6 +15,6 @@ public final class VpnGatewaysListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnGatewayListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnGateways().list(Context.NONE);
+        azure.networks().manager().serviceClient().getVpnGateways().list(com.azure.core.util.Context.NONE);
     }
 }

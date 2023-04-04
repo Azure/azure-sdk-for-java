@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MapType. */
+/** The map type. */
 public final class MapType extends ExpandableStringEnum<MapType> {
     /** Static value NotSpecified for MapType. */
     public static final MapType NOT_SPECIFIED = fromString("NotSpecified");
@@ -26,6 +26,15 @@ public final class MapType extends ExpandableStringEnum<MapType> {
     public static final MapType LIQUID = fromString("Liquid");
 
     /**
+     * Creates a new instance of MapType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MapType() {
+    }
+
+    /**
      * Creates or finds a MapType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class MapType extends ExpandableStringEnum<MapType> {
         return fromString(name, MapType.class);
     }
 
-    /** @return known MapType values. */
+    /**
+     * Gets known MapType values.
+     *
+     * @return known MapType values.
+     */
     public static Collection<MapType> values() {
         return values(MapType.class);
     }

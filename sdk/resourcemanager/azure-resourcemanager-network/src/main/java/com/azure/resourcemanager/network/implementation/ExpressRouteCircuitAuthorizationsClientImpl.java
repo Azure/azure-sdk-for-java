@@ -69,7 +69,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteCircuitAuthorizationsService {
+    public interface ExpressRouteCircuitAuthorizationsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -182,7 +182,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -238,7 +238,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -312,7 +312,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName) {
-        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, circuitName, authorizationName).getSyncPoller();
     }
 
     /**
@@ -330,7 +330,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, circuitName, authorizationName, context).getSyncPoller();
     }
 
     /**
@@ -440,7 +440,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -497,7 +497,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -616,7 +616,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -687,7 +687,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -791,7 +791,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             String circuitName,
             String authorizationName,
             ExpressRouteCircuitAuthorizationInner authorizationParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters)
             .getSyncPoller();
     }
 
@@ -817,7 +818,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             String authorizationName,
             ExpressRouteCircuitAuthorizationInner authorizationParameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, circuitName, authorizationName, authorizationParameters, context)
             .getSyncPoller();
     }
@@ -953,7 +955,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1013,7 +1015,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

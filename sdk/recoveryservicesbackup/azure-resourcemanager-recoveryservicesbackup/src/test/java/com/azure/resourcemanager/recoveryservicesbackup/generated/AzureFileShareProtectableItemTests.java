@@ -9,43 +9,42 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileSharePro
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileShareProtectableItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureFileShareProtectableItem model =
             BinaryData
                 .fromString(
-                    "{\"protectableItemType\":\"AzureFileShare\",\"parentContainerFabricId\":\"uygb\",\"parentContainerFriendlyName\":\"qqekewvnqvcdlgu\",\"azureFileShareType\":\"XSMB\",\"backupManagementType\":\"f\",\"workloadType\":\"wnlaxpu\",\"friendlyName\":\"qikczvvita\",\"protectionState\":\"Protecting\"}")
+                    "{\"protectableItemType\":\"AzureFileShare\",\"parentContainerFabricId\":\"bzxliohrdddtfgxq\",\"parentContainerFriendlyName\":\"wpcbbnzqcy\",\"azureFileShareType\":\"XSync\",\"backupManagementType\":\"qofyuicdhzbdy\",\"workloadType\":\"wgbdvibidmhmwffp\",\"friendlyName\":\"muvapc\",\"protectionState\":\"ProtectionFailed\"}")
                 .toObject(AzureFileShareProtectableItem.class);
-        Assertions.assertEquals("f", model.backupManagementType());
-        Assertions.assertEquals("wnlaxpu", model.workloadType());
-        Assertions.assertEquals("qikczvvita", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
-        Assertions.assertEquals("uygb", model.parentContainerFabricId());
-        Assertions.assertEquals("qqekewvnqvcdlgu", model.parentContainerFriendlyName());
-        Assertions.assertEquals(AzureFileShareType.XSMB, model.azureFileShareType());
+        Assertions.assertEquals("qofyuicdhzbdy", model.backupManagementType());
+        Assertions.assertEquals("wgbdvibidmhmwffp", model.workloadType());
+        Assertions.assertEquals("muvapc", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
+        Assertions.assertEquals("bzxliohrdddtfgxq", model.parentContainerFabricId());
+        Assertions.assertEquals("wpcbbnzqcy", model.parentContainerFriendlyName());
+        Assertions.assertEquals(AzureFileShareType.XSYNC, model.azureFileShareType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureFileShareProtectableItem model =
             new AzureFileShareProtectableItem()
-                .withBackupManagementType("f")
-                .withWorkloadType("wnlaxpu")
-                .withFriendlyName("qikczvvita")
-                .withProtectionState(ProtectionStatus.PROTECTING)
-                .withParentContainerFabricId("uygb")
-                .withParentContainerFriendlyName("qqekewvnqvcdlgu")
-                .withAzureFileShareType(AzureFileShareType.XSMB);
+                .withBackupManagementType("qofyuicdhzbdy")
+                .withWorkloadType("wgbdvibidmhmwffp")
+                .withFriendlyName("muvapc")
+                .withProtectionState(ProtectionStatus.PROTECTION_FAILED)
+                .withParentContainerFabricId("bzxliohrdddtfgxq")
+                .withParentContainerFriendlyName("wpcbbnzqcy")
+                .withAzureFileShareType(AzureFileShareType.XSYNC);
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectableItem.class);
-        Assertions.assertEquals("f", model.backupManagementType());
-        Assertions.assertEquals("wnlaxpu", model.workloadType());
-        Assertions.assertEquals("qikczvvita", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
-        Assertions.assertEquals("uygb", model.parentContainerFabricId());
-        Assertions.assertEquals("qqekewvnqvcdlgu", model.parentContainerFriendlyName());
-        Assertions.assertEquals(AzureFileShareType.XSMB, model.azureFileShareType());
+        Assertions.assertEquals("qofyuicdhzbdy", model.backupManagementType());
+        Assertions.assertEquals("wgbdvibidmhmwffp", model.workloadType());
+        Assertions.assertEquals("muvapc", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
+        Assertions.assertEquals("bzxliohrdddtfgxq", model.parentContainerFabricId());
+        Assertions.assertEquals("wpcbbnzqcy", model.parentContainerFriendlyName());
+        Assertions.assertEquals(AzureFileShareType.XSYNC, model.azureFileShareType());
     }
 }

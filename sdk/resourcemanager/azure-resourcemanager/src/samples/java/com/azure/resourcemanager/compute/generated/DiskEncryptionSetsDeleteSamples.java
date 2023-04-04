@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskEncryptionSets Delete. */
 public final class DiskEncryptionSetsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class DiskEncryptionSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getDiskEncryptionSets()
-            .delete("myResourceGroup", "myDiskEncryptionSet", Context.NONE);
+            .delete("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/UsageList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/UsageList.json
      */
     /**
      * Sample code: List usages.
@@ -17,11 +15,11 @@ public final class UsagesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listUsages(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getUsages().list("westus", Context.NONE);
+        azure.networks().manager().serviceClient().getUsages().list("westus", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/UsageListSpacedLocation.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/UsageListSpacedLocation.json
      */
     /**
      * Sample code: List usages spaced location.
@@ -29,6 +27,6 @@ public final class UsagesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listUsagesSpacedLocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getUsages().list("West US", Context.NONE);
+        azure.networks().manager().serviceClient().getUsages().list("West US", com.azure.core.util.Context.NONE);
     }
 }

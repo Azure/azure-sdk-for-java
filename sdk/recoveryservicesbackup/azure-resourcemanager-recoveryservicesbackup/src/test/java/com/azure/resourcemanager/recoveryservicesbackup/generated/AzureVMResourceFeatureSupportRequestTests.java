@@ -7,25 +7,25 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFeatureSupportRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureVMResourceFeatureSupportRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureVMResourceFeatureSupportRequest model =
             BinaryData
-                .fromString("{\"featureType\":\"AzureVMResourceBackup\",\"vmSize\":\"guamlj\",\"vmSku\":\"rgmsplzga\"}")
+                .fromString(
+                    "{\"featureType\":\"AzureVMResourceBackup\",\"vmSize\":\"odlfpyapucygvo\",\"vmSku\":\"yunssx\"}")
                 .toObject(AzureVMResourceFeatureSupportRequest.class);
-        Assertions.assertEquals("guamlj", model.vmSize());
-        Assertions.assertEquals("rgmsplzga", model.vmSku());
+        Assertions.assertEquals("odlfpyapucygvo", model.vmSize());
+        Assertions.assertEquals("yunssx", model.vmSku());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureVMResourceFeatureSupportRequest model =
-            new AzureVMResourceFeatureSupportRequest().withVmSize("guamlj").withVmSku("rgmsplzga");
+            new AzureVMResourceFeatureSupportRequest().withVmSize("odlfpyapucygvo").withVmSku("yunssx");
         model = BinaryData.fromObject(model).toObject(AzureVMResourceFeatureSupportRequest.class);
-        Assertions.assertEquals("guamlj", model.vmSize());
-        Assertions.assertEquals("rgmsplzga", model.vmSku());
+        Assertions.assertEquals("odlfpyapucygvo", model.vmSize());
+        Assertions.assertEquals("yunssx", model.vmSku());
     }
 }

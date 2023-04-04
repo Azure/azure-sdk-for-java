@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.RouteInner;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 
 /** Samples for Routes CreateOrUpdate. */
 public final class RoutesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteTableRouteCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteTableRouteCreate.json
      */
     /**
      * Sample code: Create route.
@@ -31,6 +30,6 @@ public final class RoutesCreateOrUpdateSamples {
                 new RouteInner()
                     .withAddressPrefix("10.0.3.0/24")
                     .withNextHopType(RouteNextHopType.VIRTUAL_NETWORK_GATEWAY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

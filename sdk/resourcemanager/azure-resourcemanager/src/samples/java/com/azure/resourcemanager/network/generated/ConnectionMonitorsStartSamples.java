@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConnectionMonitors Start. */
 public final class ConnectionMonitorsStartSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherConnectionMonitorStart.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherConnectionMonitorStart.json
      */
     /**
      * Sample code: Start connection monitor.
@@ -17,6 +15,11 @@ public final class ConnectionMonitorsStartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startConnectionMonitor(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectionMonitors().start("rg1", "nw1", "cm1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getConnectionMonitors()
+            .start("rg1", "nw1", "cm1", com.azure.core.util.Context.NONE);
     }
 }

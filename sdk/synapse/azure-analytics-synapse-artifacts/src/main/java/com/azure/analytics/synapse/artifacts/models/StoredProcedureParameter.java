@@ -22,6 +22,9 @@ public final class StoredProcedureParameter {
     @JsonProperty(value = "type")
     private StoredProcedureParameterType type;
 
+    /** Creates an instance of StoredProcedureParameter class. */
+    public StoredProcedureParameter() {}
+
     /**
      * Get the value property: Stored procedure parameter value. Type: string (or Expression with resultType string).
      *

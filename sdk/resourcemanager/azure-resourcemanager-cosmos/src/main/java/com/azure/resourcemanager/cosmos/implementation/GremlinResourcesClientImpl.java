@@ -33,9 +33,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.GremlinResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseListResult;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphCreateUpdateParameters;
@@ -70,7 +72,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface GremlinResourcesService {
+    public interface GremlinResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
@@ -338,6 +340,25 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             @PathParam("databaseName") String databaseName,
             @PathParam("graphName") String graphName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
+                + "/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}"
+                + "/retrieveContinuousBackupInformation")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("graphName") String graphName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ContinuousBackupRestoreLocation location,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -647,23 +668,6 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GremlinDatabaseGetResultsInner getGremlinDatabase(
-        String resourceGroupName, String accountName, String databaseName) {
-        return getGremlinDatabaseAsync(resourceGroupName, accountName, databaseName).block();
-    }
-
-    /**
-     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -675,6 +679,23 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public Response<GremlinDatabaseGetResultsInner> getGremlinDatabaseWithResponse(
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return getGremlinDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context).block();
+    }
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GremlinDatabaseGetResultsInner getGremlinDatabase(
+        String resourceGroupName, String accountName, String databaseName) {
+        return getGremlinDatabaseWithResponse(resourceGroupName, accountName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -894,7 +915,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String accountName,
             String databaseName,
             GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
-        return beginCreateUpdateGremlinDatabaseAsync(
+        return this
+            .beginCreateUpdateGremlinDatabaseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateGremlinDatabaseParameters)
             .getSyncPoller();
     }
@@ -920,7 +942,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String databaseName,
             GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters,
             Context context) {
-        return beginCreateUpdateGremlinDatabaseAsync(
+        return this
+            .beginCreateUpdateGremlinDatabaseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateGremlinDatabaseParameters, context)
             .getSyncPoller();
     }
@@ -1182,7 +1205,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
         String resourceGroupName, String accountName, String databaseName) {
-        return beginDeleteGremlinDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
+        return this.beginDeleteGremlinDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1200,7 +1223,9 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginDeleteGremlinDatabaseAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
+        return this
+            .beginDeleteGremlinDatabaseAsync(resourceGroupName, accountName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1408,25 +1433,6 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getGremlinDatabaseThroughput(
-        String resourceGroupName, String accountName, String databaseName) {
-        return getGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName).block();
-    }
-
-    /**
-     * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1439,6 +1445,26 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return getGremlinDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, context)
             .block();
+    }
+
+    /**
+     * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getGremlinDatabaseThroughput(
+        String resourceGroupName, String accountName, String databaseName) {
+        return getGremlinDatabaseThroughputWithResponse(resourceGroupName, accountName, databaseName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1665,7 +1691,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String accountName,
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateGremlinDatabaseThroughputAsync(
+        return this
+            .beginUpdateGremlinDatabaseThroughputAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters)
             .getSyncPoller();
     }
@@ -1692,7 +1719,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        return beginUpdateGremlinDatabaseThroughputAsync(
+        return this
+            .beginUpdateGremlinDatabaseThroughputAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
             .getSyncPoller();
     }
@@ -1974,7 +2002,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
-        return beginMigrateGremlinDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
+        return this
+            .beginMigrateGremlinDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
             .getSyncPoller();
     }
 
@@ -1994,7 +2023,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToAutoscale(
             String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginMigrateGremlinDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context)
+        return this
+            .beginMigrateGremlinDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context)
             .getSyncPoller();
     }
 
@@ -2250,7 +2280,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName) {
-        return beginMigrateGremlinDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
+        return this
+            .beginMigrateGremlinDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
             .getSyncPoller();
     }
 
@@ -2270,7 +2301,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginMigrateGremlinDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
+        return this
+            .beginMigrateGremlinDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
             .getSyncPoller();
     }
 
@@ -2681,24 +2713,6 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GremlinGraphGetResultsInner getGremlinGraph(
-        String resourceGroupName, String accountName, String databaseName, String graphName) {
-        return getGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName).block();
-    }
-
-    /**
-     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param graphName Cosmos DB graph name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2710,6 +2724,25 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
         String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
         return getGremlinGraphWithResponseAsync(resourceGroupName, accountName, databaseName, graphName, context)
             .block();
+    }
+
+    /**
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GremlinGraphGetResultsInner getGremlinGraph(
+        String resourceGroupName, String accountName, String databaseName, String graphName) {
+        return getGremlinGraphWithResponse(resourceGroupName, accountName, databaseName, graphName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2947,7 +2980,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String databaseName,
             String graphName,
             GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
-        return beginCreateUpdateGremlinGraphAsync(
+        return this
+            .beginCreateUpdateGremlinGraphAsync(
                 resourceGroupName, accountName, databaseName, graphName, createUpdateGremlinGraphParameters)
             .getSyncPoller();
     }
@@ -2975,7 +3009,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String graphName,
             GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters,
             Context context) {
-        return beginCreateUpdateGremlinGraphAsync(
+        return this
+            .beginCreateUpdateGremlinGraphAsync(
                 resourceGroupName, accountName, databaseName, graphName, createUpdateGremlinGraphParameters, context)
             .getSyncPoller();
     }
@@ -3258,7 +3293,9 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
-        return beginDeleteGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName).getSyncPoller();
+        return this
+            .beginDeleteGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName)
+            .getSyncPoller();
     }
 
     /**
@@ -3277,7 +3314,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
         String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
-        return beginDeleteGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName, context)
+        return this
+            .beginDeleteGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName, context)
             .getSyncPoller();
     }
 
@@ -3500,24 +3538,6 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param graphName Cosmos DB graph name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getGremlinGraphThroughput(
-        String resourceGroupName, String accountName, String databaseName, String graphName) {
-        return getGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName).block();
-    }
-
-    /**
-     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param graphName Cosmos DB graph name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3531,6 +3551,26 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
         return getGremlinGraphThroughputWithResponseAsync(
                 resourceGroupName, accountName, databaseName, graphName, context)
             .block();
+    }
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getGremlinGraphThroughput(
+        String resourceGroupName, String accountName, String databaseName, String graphName) {
+        return getGremlinGraphThroughputWithResponse(
+                resourceGroupName, accountName, databaseName, graphName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3770,7 +3810,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String databaseName,
             String graphName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateGremlinGraphThroughputAsync(
+        return this
+            .beginUpdateGremlinGraphThroughputAsync(
                 resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters)
             .getSyncPoller();
     }
@@ -3798,7 +3839,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             String graphName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        return beginUpdateGremlinGraphThroughputAsync(
+        return this
+            .beginUpdateGremlinGraphThroughputAsync(
                 resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters, context)
             .getSyncPoller();
     }
@@ -4100,7 +4142,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String graphName) {
-        return beginMigrateGremlinGraphToAutoscaleAsync(resourceGroupName, accountName, databaseName, graphName)
+        return this
+            .beginMigrateGremlinGraphToAutoscaleAsync(resourceGroupName, accountName, databaseName, graphName)
             .getSyncPoller();
     }
 
@@ -4121,8 +4164,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
-        return beginMigrateGremlinGraphToAutoscaleAsync(
-                resourceGroupName, accountName, databaseName, graphName, context)
+        return this
+            .beginMigrateGremlinGraphToAutoscaleAsync(resourceGroupName, accountName, databaseName, graphName, context)
             .getSyncPoller();
     }
 
@@ -4398,7 +4441,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String graphName) {
-        return beginMigrateGremlinGraphToManualThroughputAsync(resourceGroupName, accountName, databaseName, graphName)
+        return this
+            .beginMigrateGremlinGraphToManualThroughputAsync(resourceGroupName, accountName, databaseName, graphName)
             .getSyncPoller();
     }
 
@@ -4419,7 +4463,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
-        return beginMigrateGremlinGraphToManualThroughputAsync(
+        return this
+            .beginMigrateGremlinGraphToManualThroughputAsync(
                 resourceGroupName, accountName, databaseName, graphName, context)
             .getSyncPoller();
     }
@@ -4503,6 +4548,376 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
         String resourceGroupName, String accountName, String databaseName, String graphName, Context context) {
         return migrateGremlinGraphToManualThroughputAsync(
                 resourceGroupName, accountName, databaseName, graphName, context)
+            .block();
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ContinuousBackupRestoreLocation location) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        } else {
+            location.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .retrieveContinuousBackupInformation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            graphName,
+                            this.client.getApiVersion(),
+                            location,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (graphName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter graphName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        } else {
+            location.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .retrieveContinuousBackupInformation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                graphName,
+                this.client.getApiVersion(),
+                location,
+                accept,
+                context);
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String graphName,
+            ContinuousBackupRestoreLocation location) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, databaseName, graphName, location);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String graphName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, databaseName, graphName, location, context);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                context);
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String graphName,
+            ContinuousBackupRestoreLocation location) {
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, graphName, location)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String graphName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, graphName, location, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ContinuousBackupRestoreLocation location) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, graphName, location)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, graphName, location, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ContinuousBackupRestoreLocation location) {
+        return retrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, graphName, location)
+            .block();
+    }
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String graphName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return retrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, graphName, location, context)
             .block();
     }
 }

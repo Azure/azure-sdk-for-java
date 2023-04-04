@@ -21,6 +21,15 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
     public static final SecurityEncryptionTypes DISK_WITH_VMGUEST_STATE = fromString("DiskWithVMGuestState");
 
     /**
+     * Creates a new instance of SecurityEncryptionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityEncryptionTypes() {
+    }
+
+    /**
      * Creates or finds a SecurityEncryptionTypes from its string representation.
      *
      * @param name a name to look for.

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.fluent.FrontDoorNameAvailabilitiesClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.frontdoor.models.CheckNameAvailabilityInput;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FrontDoorNameAvailabilitiesClient. */
 public final class FrontDoorNameAvailabilitiesClientImpl implements FrontDoorNameAvailabilitiesClient {
-    private final ClientLogger logger = new ClientLogger(FrontDoorNameAvailabilitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FrontDoorNameAvailabilitiesService service;
 
@@ -56,7 +53,7 @@ public final class FrontDoorNameAvailabilitiesClientImpl implements FrontDoorNam
      */
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
-    private interface FrontDoorNameAvailabilitiesService {
+    public interface FrontDoorNameAvailabilitiesService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Network/checkFrontDoorNameAvailability")
         @ExpectedResponses({200})
@@ -76,7 +73,8 @@ public final class FrontDoorNameAvailabilitiesClientImpl implements FrontDoorNam
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkWithResponseAsync(
@@ -118,7 +116,8 @@ public final class FrontDoorNameAvailabilitiesClientImpl implements FrontDoorNam
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkWithResponseAsync(
@@ -151,20 +150,29 @@ public final class FrontDoorNameAvailabilitiesClientImpl implements FrontDoorNam
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityOutputInner> checkAsync(
         CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput) {
         return checkWithResponseAsync(checkFrontDoorNameAvailabilityInput)
-            .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Check the availability of a Front Door resource name.
+     *
+     * @param checkFrontDoorNameAvailabilityInput Input to check.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of check name availability API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckNameAvailabilityOutputInner> checkWithResponse(
+        CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context) {
+        return checkWithResponseAsync(checkFrontDoorNameAvailabilityInput, context).block();
     }
 
     /**
@@ -178,22 +186,6 @@ public final class FrontDoorNameAvailabilitiesClientImpl implements FrontDoorNam
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityOutputInner check(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput) {
-        return checkAsync(checkFrontDoorNameAvailabilityInput).block();
-    }
-
-    /**
-     * Check the availability of a Front Door resource name.
-     *
-     * @param checkFrontDoorNameAvailabilityInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkWithResponse(
-        CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context) {
-        return checkWithResponseAsync(checkFrontDoorNameAvailabilityInput, context).block();
+        return checkWithResponse(checkFrontDoorNameAvailabilityInput, Context.NONE).getValue();
     }
 }

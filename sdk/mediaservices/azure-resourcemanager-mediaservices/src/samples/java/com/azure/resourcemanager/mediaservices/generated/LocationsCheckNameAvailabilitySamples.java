@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.models.CheckNameAvailabilityInput;
 
 /** Samples for Locations CheckNameAvailability. */
 public final class LocationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accounts-check-name-availability.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/accounts-check-name-availability.json
      */
     /**
      * Sample code: Check Name Availability.
@@ -22,7 +21,7 @@ public final class LocationsCheckNameAvailabilitySamples {
             .locations()
             .checkNameAvailabilityWithResponse(
                 "japanwest",
-                new CheckNameAvailabilityInput().withName("contosotv").withType("videoAnalyzers"),
-                Context.NONE);
+                new CheckNameAvailabilityInput().withName("contosotv").withType("Microsoft.Media/mediaservices"),
+                com.azure.core.util.Context.NONE);
     }
 }

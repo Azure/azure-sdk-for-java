@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomTargetRollingWindowSize;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomTargetRollingWindowSizeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomTargetRollingWindowSize model =
             BinaryData
                 .fromString("{\"mode\":\"Custom\",\"value\":482115950}")
@@ -19,8 +18,8 @@ public final class CustomTargetRollingWindowSizeTests {
         Assertions.assertEquals(482115950, model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomTargetRollingWindowSize model = new CustomTargetRollingWindowSize().withValue(482115950);
         model = BinaryData.fromObject(model).toObject(CustomTargetRollingWindowSize.class);
         Assertions.assertEquals(482115950, model.value());

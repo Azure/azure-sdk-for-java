@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.models.AzureBlobStorageLinkedService;
 import com.azure.resourcemanager.datafactory.models.AzureBlobStorageLocation;
@@ -123,7 +122,7 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                         Object.class,
                                         SerializerEncoding.JSON)))
                     .withAdditionalProperties(mapOf()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

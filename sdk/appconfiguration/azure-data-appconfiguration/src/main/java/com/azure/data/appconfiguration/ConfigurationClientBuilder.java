@@ -33,15 +33,15 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
+import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImplBuilder;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 
 import java.net.MalformedURLException;
@@ -55,6 +55,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.CoreUtils.getApplicationId;
+import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
@@ -116,13 +117,6 @@ public final class ConfigurationClientBuilder implements
     HttpTrait<ConfigurationClientBuilder>,
     ConfigurationTrait<ConfigurationClientBuilder>,
     EndpointTrait<ConfigurationClientBuilder> {
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final SyncTokenPolicy DEFAULT_SYNC_TOKEN_POLICY = new SyncTokenPolicy();
-
-    /**
-     * The serializer to serialize an object into a string.
-     */
-    private static final SerializerAdapter SERIALIZER_ADAPTER;
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -136,21 +130,14 @@ public final class ConfigurationClientBuilder implements
             .set("x-ms-return-client-request-id", "true")
             .set("Content-Type", "application/json")
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
-
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
-
-        SERIALIZER_ADAPTER = jacksonAdapter;
     }
 
-
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private ClientOptions clientOptions;
-    private ConfigurationClientCredentials credential;
+    private String connectionString;
     private TokenCredential tokenCredential;
 
     private String endpoint;
@@ -186,7 +173,8 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY);
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
     }
 
     /**
@@ -206,28 +194,65 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
-        return new ConfigurationAsyncClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY);
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        return new ConfigurationAsyncClient(buildInnerClient(syncTokenPolicy), syncTokenPolicy);
     }
 
     /**
      * Builds an instance of ConfigurationClientImpl with the provided parameters.
      *
      * @return an instance of ConfigurationClientImpl.
+     * @throws NullPointerException If {@code connectionString} is null.
+     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
+     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
+     * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
+     * authentication per builder instance.
      */
-    private ConfigurationClientImpl buildInnerClient() {
+    private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+        String endpointLocal = endpoint;
+        ConfigurationClientCredentials credentialsLocal = null;
+        TokenCredential tokenCredentialLocal = null;
+        // validate the authentication setup
+        if (tokenCredential == null && connectionString == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'tokenCredential' and 'connectionString' "
+                + "both can not be null. Set one authentication before creating client."));
+        } else if (tokenCredential != null && connectionString != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Multiple forms of authentication found. "
+                + "TokenCredential should be null if using connection string, vice versa."));
+        } else if (tokenCredential == null) {
+            if (connectionString.isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("'connectionString' cannot be an empty string."));
+            }
+            try {
+                credentialsLocal = new ConfigurationClientCredentials(connectionString);
+                endpointLocal = credentialsLocal.getBaseUri();
+            } catch (InvalidKeyException err) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The secret contained within the"
+                    + " connection string is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+            } catch (NoSuchAlgorithmException err) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
+            }
+        } else {
+            tokenCredentialLocal = this.tokenCredential;
+        }
+
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
-        return new ConfigurationClientImpl(
-            pipeline == null ? createHttpPipeline() : pipeline,
-            SERIALIZER_ADAPTER,
-            endpoint,
-            serviceVersion.getVersion());
+        return new AzureAppConfigurationImplBuilder()
+                   .pipeline(pipeline == null ? createDefaultHttpPipeline(
+                       syncTokenPolicy, credentialsLocal, tokenCredentialLocal) : pipeline)
+                   .apiVersion(serviceVersion.getVersion())
+                   .endpoint(endpointLocal)
+                   .buildClient();
     }
 
-    private HttpPipeline createHttpPipeline() {
+    private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
+        ConfigurationClientCredentials credentials, TokenCredential tokenCredential) {
         // Global Env configuration store
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -235,8 +260,8 @@ public final class ConfigurationClientBuilder implements
 
         // Endpoint
         String buildEndpoint = endpoint;
-        if (tokenCredential == null) {
-            buildEndpoint = getBuildEndpoint();
+        if (credentials != null) {
+            buildEndpoint = credentials.getBaseUri();
         }
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
@@ -252,23 +277,24 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions,
+            new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS)));
 
         policies.add(new AddDatePolicy());
 
         if (tokenCredential != null) {
             // User token based policy
             policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
-        } else if (credential != null) {
-            // Use credential based policy
-            policies.add(new ConfigurationCredentialsPolicy(credential));
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (credentials != null) {
+            // Use credentialS based policy
+            policies.add(new ConfigurationCredentialsPolicy(credentials));
         } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
+            // Throw exception that credentials and tokenCredential cannot be null
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        policies.add(DEFAULT_SYNC_TOKEN_POLICY);
+        policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
@@ -285,7 +311,14 @@ public final class ConfigurationClientBuilder implements
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(createTracer(clientOptions))
             .build();
+    }
+
+    private static Tracer createTracer(ClientOptions clientOptions) {
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, APP_CONFIG_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 
     /**
@@ -300,7 +333,7 @@ public final class ConfigurationClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;
@@ -337,31 +370,10 @@ public final class ConfigurationClientBuilder implements
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code connectionString} is null.
-     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
-     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
     @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-
-        if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'connectionString' cannot be an empty string."));
-        }
-
-        try {
-            this.credential = new ConfigurationClientCredentials(connectionString);
-        } catch (InvalidKeyException err) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
-                    + " algorithm.", err));
-        } catch (NoSuchAlgorithmException err) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
-        }
-
-        this.endpoint = credential.getBaseUri();
+        this.connectionString = connectionString;
         return this;
     }
 
@@ -372,12 +384,9 @@ public final class ConfigurationClientBuilder implements
      *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code credential} is null.
      */
     @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
-        // token credential can not be null value
-        Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -446,7 +455,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -471,7 +480,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;
@@ -545,16 +554,6 @@ public final class ConfigurationClientBuilder implements
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
         return this;
-    }
-
-    private String getBuildEndpoint() {
-        if (endpoint != null) {
-            return endpoint;
-        } else if (credential != null) {
-            return credential.getBaseUri();
-        } else {
-            return null;
-        }
     }
 }
 

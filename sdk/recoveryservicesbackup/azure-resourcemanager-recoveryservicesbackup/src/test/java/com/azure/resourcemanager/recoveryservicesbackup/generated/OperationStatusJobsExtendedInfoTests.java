@@ -10,29 +10,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationStatusJobsExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationStatusJobsExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"jtumgh\",\"hpv\",\"cmslclblyjxltbs\"],\"failedJobsError\":{\"sfxigctmgx\":\"c\",\"eukdqkkyih\":\"upbezqccydrt\",\"qm\":\"tg\"}}")
+                    "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"wbjijkgq\",\"nhmbkez\",\"jauj\",\"aan\"],\"failedJobsError\":{\"wxwfekaumrr\":\"iycwkdta\",\"atbnxwbj\":\"mbzmqk\",\"dgo\":\"idbirkfpkso\",\"zkye\":\"ewijymrhbguz\"}}")
                 .toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("jtumgh", model.jobIds().get(0));
-        Assertions.assertEquals("c", model.failedJobsError().get("sfxigctmgx"));
+        Assertions.assertEquals("wbjijkgq", model.jobIds().get(0));
+        Assertions.assertEquals("iycwkdta", model.failedJobsError().get("wxwfekaumrr"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationStatusJobsExtendedInfo model =
             new OperationStatusJobsExtendedInfo()
-                .withJobIds(Arrays.asList("jtumgh", "hpv", "cmslclblyjxltbs"))
-                .withFailedJobsError(mapOf("sfxigctmgx", "c", "eukdqkkyih", "upbezqccydrt", "qm", "tg"));
+                .withJobIds(Arrays.asList("wbjijkgq", "nhmbkez", "jauj", "aan"))
+                .withFailedJobsError(
+                    mapOf(
+                        "wxwfekaumrr", "iycwkdta", "atbnxwbj", "mbzmqk", "dgo", "idbirkfpkso", "zkye", "ewijymrhbguz"));
         model = BinaryData.fromObject(model).toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("jtumgh", model.jobIds().get(0));
-        Assertions.assertEquals("c", model.failedJobsError().get("sfxigctmgx"));
+        Assertions.assertEquals("wbjijkgq", model.jobIds().get(0));
+        Assertions.assertEquals("iycwkdta", model.failedJobsError().get("wxwfekaumrr"));
     }
 
     @SuppressWarnings("unchecked")

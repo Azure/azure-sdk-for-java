@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Customer End point to store/retrieve data during a contact. */
+/** Customer end point to store and retrieve data during a contact with the spacecraft. */
 @Fluent
 public final class EndPoint {
     /*
-     * IP Address.
+     * IP Address (IPv4).
      */
     @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
@@ -35,8 +35,12 @@ public final class EndPoint {
     @JsonProperty(value = "protocol", required = true)
     private Protocol protocol;
 
+    /** Creates an instance of EndPoint class. */
+    public EndPoint() {
+    }
+
     /**
-     * Get the ipAddress property: IP Address.
+     * Get the ipAddress property: IP Address (IPv4).
      *
      * @return the ipAddress value.
      */
@@ -45,7 +49,7 @@ public final class EndPoint {
     }
 
     /**
-     * Set the ipAddress property: IP Address.
+     * Set the ipAddress property: IP Address (IPv4).
      *
      * @param ipAddress the ipAddress value to set.
      * @return the EndPoint object itself.

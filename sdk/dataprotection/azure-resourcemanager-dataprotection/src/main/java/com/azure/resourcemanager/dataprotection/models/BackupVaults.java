@@ -15,7 +15,7 @@ public interface BackupVaults {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> list();
 
@@ -26,37 +26,51 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> list(Context context);
 
     /**
      * Returns resource collection belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> listByResourceGroup(String resourceGroupName);
 
     /**
      * Returns resource collection belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVaultResourceList.
+     * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupVaultResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Returns a resource belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backupVault Resource along with {@link Response}.
+     */
+    Response<BackupVaultResource> getByResourceGroupWithResponse(
+        String resourceGroupName, String vaultName, Context context);
+
+    /**
+     * Returns a resource belonging to a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,23 +80,9 @@ public interface BackupVaults {
     BackupVaultResource getByResourceGroup(String resourceGroupName, String vaultName);
 
     /**
-     * Returns a resource belonging to a resource group.
-     *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param vaultName The name of the backup vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
-     */
-    Response<BackupVaultResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String vaultName, Context context);
-
-    /**
      * Deletes a BackupVault resource from the resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,20 +93,34 @@ public interface BackupVaults {
     /**
      * Deletes a BackupVault resource from the resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context);
+    void delete(String resourceGroupName, String vaultName, Context context);
 
     /**
      * API to check for resource name availability.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location in which uniqueness will be verified.
+     * @param parameters Check name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return checkNameAvailabilityResult along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
+        String resourceGroupName, String location, CheckNameAvailabilityRequest parameters, Context context);
+
+    /**
+     * API to check for resource name availability.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location in which uniqueness will be verified.
      * @param parameters Check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,28 +132,13 @@ public interface BackupVaults {
         String resourceGroupName, String location, CheckNameAvailabilityRequest parameters);
 
     /**
-     * API to check for resource name availability.
-     *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param location The location in which uniqueness will be verified.
-     * @param parameters Check name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return checkNameAvailabilityResult.
-     */
-    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityRequest parameters, Context context);
-
-    /**
      * Returns a resource belonging to a resource group.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response}.
      */
     BackupVaultResource getById(String id);
 
@@ -151,7 +150,7 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backupVault Resource.
+     * @return backupVault Resource along with {@link Response}.
      */
     Response<BackupVaultResource> getByIdWithResponse(String id, Context context);
 
@@ -173,9 +172,8 @@ public interface BackupVaults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new BackupVaultResource resource.

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class RecoveryPointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"hmpejtlkexaonw\",\"location\":\"vkcqhr\",\"tags\":{\"jubyqjfkakfq\":\"knlccrmmkyup\"},\"id\":\"rke\",\"name\":\"yildudxjascow\",\"type\":\"f\"}]}";
+            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"tybkcgs\",\"location\":\"thhllnmwyne\",\"tags\":{\"fciatxtjrr\":\"x\",\"ajfoxc\":\"kmdskjhhxd\",\"lxlhuavkrm\":\"scv\",\"slojfkqidnqt\":\"kmyjmkxett\"},\"id\":\"qxjhqxcsqhtkbtnq\",\"name\":\"rngl\",\"type\":\"mbiipsnawwlqk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,10 +63,17 @@ public final class RecoveryPointsListMockTests {
         PagedIterable<RecoveryPointResource> response =
             manager
                 .recoveryPoints()
-                .list("umtggmuwdchozfn", "fexl", "xn", "akizvoaikna", "lnuwiguy", "lykwphvxz", Context.NONE);
+                .list(
+                    "hpycvjqdvdwkq",
+                    "ldrlefgnaavua",
+                    "n",
+                    "etaoutnpdc",
+                    "uhspfefyihduy",
+                    "uyld",
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vkcqhr", response.iterator().next().location());
-        Assertions.assertEquals("knlccrmmkyup", response.iterator().next().tags().get("jubyqjfkakfq"));
-        Assertions.assertEquals("hmpejtlkexaonw", response.iterator().next().etag());
+        Assertions.assertEquals("thhllnmwyne", response.iterator().next().location());
+        Assertions.assertEquals("x", response.iterator().next().tags().get("fciatxtjrr"));
+        Assertions.assertEquals("tybkcgs", response.iterator().next().etag());
     }
 }

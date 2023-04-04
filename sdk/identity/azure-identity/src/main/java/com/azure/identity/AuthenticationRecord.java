@@ -13,7 +13,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Represents the account information relating to an authentication request
+ * <p>Authentication Record represents the account information of the authenticated account.
+ * This is helpful in scenarios where applications require brokered authentication via {@link DeviceCodeCredential}
+ * or {@link InteractiveBrowserCredential}.</p>
+ *
+ * <p>Authentication record is returned when
+ * {@link DeviceCodeCredential#authenticate()} or {@link InteractiveBrowserCredential#authenticate()} api is invoked.
+ * The returned auth record can be stored/persisted in the user application. Further, this record can be configured on
+ * the {@link DeviceCodeCredentialBuilder#authenticationRecord(AuthenticationRecord)} or
+ * {@link InteractiveBrowserCredentialBuilder#authenticationRecord(AuthenticationRecord)} to proactively indicate
+ * that a previously authenticated account should be used from the persisted cache instead of authenticating again.</p>
+ *
+ * @see DeviceCodeCredential
+ * @see InteractiveBrowserCredential
  */
 public final class AuthenticationRecord {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

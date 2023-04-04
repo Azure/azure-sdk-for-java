@@ -6,19 +6,18 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
-import org.junit.jupiter.api.Test;
 
 public final class VaultStorageConfigOperationResultResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VaultStorageConfigOperationResultResponseInner model =
             BinaryData
                 .fromString("{\"objectType\":\"VaultStorageConfigOperationResultResponse\"}")
                 .toObject(VaultStorageConfigOperationResultResponseInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VaultStorageConfigOperationResultResponseInner model = new VaultStorageConfigOperationResultResponseInner();
         model = BinaryData.fromObject(model).toObject(VaultStorageConfigOperationResultResponseInner.class);
     }

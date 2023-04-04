@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "azure-ai-textanalytics.properties"
+      }
+    ]
+  },
+  "bundles": []
+}

@@ -6,28 +6,31 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /** Defines weights on index fields for which matches should boost scoring in search queries. */
-@Fluent
-public final class TextWeights {
+@Immutable
+public final class TextWeights implements JsonSerializable<TextWeights> {
     /*
      * The dictionary of per-field weights to boost document scoring. The keys are field names and the values are the
      * weights for each field.
      */
-    @JsonProperty(value = "weights", required = true)
-    private Map<String, Double> weights;
+    private final Map<String, Double> weights;
 
     /**
      * Creates an instance of TextWeights class.
      *
      * @param weights the weights value to set.
      */
-    @JsonCreator
-    public TextWeights(@JsonProperty(value = "weights", required = true) Map<String, Double> weights) {
+    public TextWeights(Map<String, Double> weights) {
         this.weights = weights;
     }
 
@@ -39,5 +42,52 @@ public final class TextWeights {
      */
     public Map<String, Double> getWeights() {
         return this.weights;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("weights", this.weights, (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TextWeights from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TextWeights if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TextWeights.
+     */
+    public static TextWeights fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean weightsFound = false;
+                    Map<String, Double> weights = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("weights".equals(fieldName)) {
+                            weights = reader.readMap(reader1 -> reader1.getDouble());
+                            weightsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (weightsFound) {
+                        TextWeights deserializedTextWeights = new TextWeights(weights);
+
+                        return deserializedTextWeights;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!weightsFound) {
+                        missingProperties.add("weights");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -23,6 +23,9 @@ public final class CustomActivityReferenceObject {
     @JsonProperty(value = "datasets")
     private List<DatasetReference> datasets;
 
+    /** Creates an instance of CustomActivityReferenceObject class. */
+    public CustomActivityReferenceObject() {}
+
     /**
      * Get the linkedServices property: Linked service references.
      *

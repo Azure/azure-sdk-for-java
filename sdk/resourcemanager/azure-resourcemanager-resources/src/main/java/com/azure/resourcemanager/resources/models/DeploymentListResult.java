@@ -24,6 +24,10 @@ public final class DeploymentListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DeploymentListResult class. */
+    public DeploymentListResult() {
+    }
+
     /**
      * Get the value property: An array of deployments.
      *

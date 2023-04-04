@@ -56,11 +56,10 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
-    private interface BackupUsageSummariesService {
+    public interface BackupUsageSummariesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupUsageSummaries")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupUsageSummaries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupManagementUsageList>> list(

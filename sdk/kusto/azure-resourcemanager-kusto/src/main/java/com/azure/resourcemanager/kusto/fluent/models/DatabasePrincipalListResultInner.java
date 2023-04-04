@@ -17,6 +17,10 @@ public final class DatabasePrincipalListResultInner {
     @JsonProperty(value = "value")
     private List<DatabasePrincipalInner> value;
 
+    /** Creates an instance of DatabasePrincipalListResultInner class. */
+    public DatabasePrincipalListResultInner() {
+    }
+
     /**
      * Get the value property: The list of Kusto database principals.
      *

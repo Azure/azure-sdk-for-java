@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LoadBalancers GetByResourceGroup. */
 public final class LoadBalancersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/LoadBalancerGet.json
      */
     /**
      * Sample code: Get load balancer.
@@ -22,11 +20,11 @@ public final class LoadBalancersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getLoadBalancers()
-            .getByResourceGroupWithResponse("rg1", "lb", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "lb", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Get load balancer with inbound NAT rule port mapping.
@@ -40,6 +38,6 @@ public final class LoadBalancersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getLoadBalancers()
-            .getByResourceGroupWithResponse("rg1", "lb", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "lb", null, com.azure.core.util.Context.NONE);
     }
 }

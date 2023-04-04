@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TenantCategory. */
+/** Category of the tenant. */
 public enum TenantCategory {
     /** Enum value Home. */
     HOME("Home"),
@@ -33,6 +33,9 @@ public enum TenantCategory {
      */
     @JsonCreator
     public static TenantCategory fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TenantCategory[] items = TenantCategory.values();
         for (TenantCategory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum TenantCategory {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

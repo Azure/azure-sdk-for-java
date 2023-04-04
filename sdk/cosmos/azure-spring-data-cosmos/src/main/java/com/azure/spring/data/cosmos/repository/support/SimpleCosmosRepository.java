@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -49,9 +51,14 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
             createContainerIfNotExists();
         }
 
+        if (this.information.isOverwriteIndexingPolicy()) {
+            overwriteIndexingPolicy();
+        }
+    }
+
+    private void overwriteIndexingPolicy() {
         CosmosContainerProperties currentProperties = getContainerProperties();
         if (currentProperties != null
-            && information.isIndexingPolicySpecified()
             && policyNeedsUpdate(currentProperties.getIndexingPolicy(), information.getIndexingPolicy())) {
             currentProperties.setIndexingPolicy(information.getIndexingPolicy());
             replaceContainerProperties(currentProperties);
@@ -95,6 +102,37 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         } else {
             return operation.upsertAndReturnEntity(information.getContainerName(), entity);
         }
+    }
+
+    /**
+     * patch entity with CosmosPatchItemRequestOptions
+     * @param id of entity to be patched
+     * @param partitionKey of entity to be patched
+     * @param patchOperations for entity to be patched
+     * @param <S> domainType of entity
+     */
+    @Override
+    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(partitionKey, "partitionKey must not be null");
+        // patch items
+        return operation.patch(id, partitionKey, domainType, patchOperations);
+    }
+
+    /**
+     * patch entity with CosmosPatchItemRequestOptions
+     * @param id of entity to be patched
+     * @param partitionKey of entity to be patched
+     * @param patchOperations for entity to be patched
+     * @param options options
+     * @param <S> domainType of entity
+     */
+    @Override
+    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(partitionKey, "partitionKey must not be null");
+        // patch items
+        return operation.patch(id, partitionKey, domainType, patchOperations, options);
     }
 
     /**

@@ -22,52 +22,50 @@ public final class AttachedDataNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The user plane interface on the data network. For 5G networks, this is
-     * the N6 interface. For 4G networks, this is the SGi interface.
+     * The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this
+     * is the SGi interface.
      */
     @JsonProperty(value = "userPlaneDataInterface", required = true)
     private InterfaceProperties userPlaneDataInterface;
 
     /*
-     * The DNS servers to signal to UEs to use for this attached data network.
+     * The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if you
+     * don't want DNS servers, you must provide an empty array.
      */
-    @JsonProperty(value = "dnsAddresses")
+    @JsonProperty(value = "dnsAddresses", required = true)
     private List<String> dnsAddresses;
 
     /*
      * The network address and port translation (NAPT) configuration.
-     * If this is not specified, the attached data network will use a default
-     * NAPT configuration with NAPT enabled.
+     * If this is not specified, the attached data network will use a default NAPT configuration with NAPT enabled.
      */
     @JsonProperty(value = "naptConfiguration")
     private NaptConfiguration naptConfiguration;
 
     /*
-     * The user equipment (UE) address pool prefixes for the attached data
-     * network from which the packet core instance will dynamically assign IP
-     * addresses to UEs.
-     * The packet core instance assigns an IP address to a UE when the UE sets
-     * up a PDU session.
-     * You must define at least one of userEquipmentAddressPoolPrefix and
-     * userEquipmentStaticAddressPoolPrefix. If you define both, they must be
-     * of the same size.
+     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance
+     * will dynamically assign IP addresses to UEs.
+     * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session.
+     * You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you
+     * define both, they must be of the same size.
      */
     @JsonProperty(value = "userEquipmentAddressPoolPrefix")
     private List<String> userEquipmentAddressPoolPrefix;
 
     /*
-     * The user equipment (UE) address pool prefixes for the attached data
-     * network from which the packet core instance will assign static IP
-     * addresses to UEs.
-     * The packet core instance assigns an IP address to a UE when the UE sets
-     * up a PDU session. The static IP address for a specific UE is set in
-     * StaticIPConfiguration on the corresponding SIM resource.
-     * At least one of userEquipmentAddressPoolPrefix and
-     * userEquipmentStaticAddressPoolPrefix must be defined. If both are
-     * defined, they must be of the same size.
+     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance
+     * will assign static IP addresses to UEs.
+     * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address
+     * for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource.
+     * At least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both
+     * are defined, they must be of the same size.
      */
     @JsonProperty(value = "userEquipmentStaticAddressPoolPrefix")
     private List<String> userEquipmentStaticAddressPoolPrefix;
+
+    /** Creates an instance of AttachedDataNetworkPropertiesFormat class. */
+    public AttachedDataNetworkPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the attached data network resource.
@@ -101,7 +99,8 @@ public final class AttachedDataNetworkPropertiesFormat {
     }
 
     /**
-     * Get the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network.
+     * Get the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
      *
      * @return the dnsAddresses value.
      */
@@ -110,7 +109,8 @@ public final class AttachedDataNetworkPropertiesFormat {
     }
 
     /**
-     * Set the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network.
+     * Set the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
      *
      * @param dnsAddresses the dnsAddresses value to set.
      * @return the AttachedDataNetworkPropertiesFormat object itself.
@@ -214,6 +214,12 @@ public final class AttachedDataNetworkPropertiesFormat {
                             + " AttachedDataNetworkPropertiesFormat"));
         } else {
             userPlaneDataInterface().validate();
+        }
+        if (dnsAddresses() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dnsAddresses in model AttachedDataNetworkPropertiesFormat"));
         }
         if (naptConfiguration() != null) {
             naptConfiguration().validate();

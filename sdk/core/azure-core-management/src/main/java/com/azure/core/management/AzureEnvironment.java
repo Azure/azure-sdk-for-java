@@ -48,6 +48,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "azuredatalakeanalytics.net");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
             put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
+            put("managedHsmDnsSuffix", ".managedhsm.azure.net");
         }});
 
     /**
@@ -73,6 +74,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
+            put("managedHsmDnsSuffix", ".managedhsm.azure.cn");
         }});
 
     /**
@@ -98,6 +100,7 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
             put("azureApplicationInsightsResourceId", "N/A");
+            put("managedHsmDnsSuffix", ".managedhsm.usgovcloudapi.net");
         }});
 
     /**
@@ -129,9 +132,12 @@ public final class AzureEnvironment {
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
             put("azureApplicationInsightsResourceId", "N/A");
+            put("managedHsmDnsSuffix", "N/A");
         }});
 
     /**
+     * Gets the entirety of the endpoints associated with the current environment.
+     *
      * @return the entirety of the endpoints associated with the current environment.
      */
     public Map<String, String> getEndpoints() {
@@ -139,6 +145,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the list of known environments to Azure SDK.
+     *
      * @return the list of known environments to Azure SDK.
      */
     public static List<AzureEnvironment> knownEnvironments() {
@@ -146,6 +154,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the management portal URL.
+     *
      * @return the management portal URL.
      */
     public String getPortal() {
@@ -153,13 +163,17 @@ public final class AzureEnvironment {
     }
 
     /**
-     * @return the publish settings file URL.
+     * Gets the publishing settings file URL.
+     *
+     * @return the publishing settings file URL.
      */
     public String getPublishingProfile() {
         return endpoints.get("publishingProfileUrl");
     }
 
     /**
+     * Gets the management service endpoint.
+     *
      * @return the management service endpoint.
      */
     public String getManagementEndpoint() {
@@ -167,6 +181,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the resource management endpoint.
+     *
      * @return the resource management endpoint.
      */
     public String getResourceManagerEndpoint() {
@@ -174,6 +190,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the sql server management endpoint for mobile commands.
+     *
      * @return the sql server management endpoint for mobile commands.
      */
     public String getSqlManagementEndpoint() {
@@ -181,6 +199,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the dns suffix for sql servers.
+     *
      * @return the dns suffix for sql servers.
      */
     public String getSqlServerHostnameSuffix() {
@@ -188,6 +208,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the Active Directory login endpoint.
+     *
      * @return the Active Directory login endpoint.
      */
     public String getActiveDirectoryEndpoint() {
@@ -195,13 +217,17 @@ public final class AzureEnvironment {
     }
 
     /**
-     * @return The resource ID to obtain AD tokens for.
+     * Gets the resource ID to obtain AD tokens.
+     *
+     * @return The resource ID to obtain AD tokens.
      */
     public String getActiveDirectoryResourceId() {
         return endpoints.get("activeDirectoryResourceId");
     }
 
     /**
+     * Gets the template gallery endpoint.
+     *
      * @return the template gallery endpoint.
      */
     public String getGalleryEndpoint() {
@@ -209,6 +235,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the Active Directory resource ID.
+     *
      * @return the Active Directory resource ID.
      */
     public String getGraphEndpoint() {
@@ -216,6 +244,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the Microsoft Graph resource ID.
+     *
      * @return the Microsoft Graph resource ID.
      */
     public String getMicrosoftGraphEndpoint() {
@@ -223,6 +253,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the Data Lake resource ID.
+     *
      * @return the Data Lake resource ID.
      */
     public String getDataLakeEndpointResourceId() {
@@ -230,6 +262,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the Active Directory api version.
+     *
      * @return the Active Directory api version.
      */
     public String getActiveDirectoryGraphApiVersion() {
@@ -237,6 +271,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the endpoint suffix for storage accounts.
+     *
      * @return the endpoint suffix for storage accounts.
      */
     public String getStorageEndpointSuffix() {
@@ -244,6 +280,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the keyvault service dns suffix.
+     *
      * @return the keyvault service dns suffix.
      */
     public String getKeyVaultDnsSuffix() {
@@ -251,6 +289,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the data lake store filesystem service dns suffix.
+     *
      * @return the data lake store filesystem service dns suffix.
      */
     public String getAzureDataLakeStoreFileSystemEndpointSuffix() {
@@ -258,6 +298,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the data lake analytics job and catalog service dns suffix.
+     *
      * @return the data lake analytics job and catalog service dns suffix.
      */
     public String getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix() {
@@ -265,6 +307,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the log analytics endpoint.
+     *
      * @return the log analytics endpoint.
      */
     public String getLogAnalyticsEndpoint() {
@@ -272,6 +316,8 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the log analytics endpoint.
+     *
      * @return the log analytics endpoint.
      */
     public String getApplicationInsightsEndpoint() {
@@ -305,7 +351,9 @@ public final class AzureEnvironment {
         /** Azure Application Insights. */
         APPLICATION_INSIGHTS("azureApplicationInsightsResourceId"),
         /** Microsoft Graph APIs endpoint. */
-        MICROSOFT_GRAPH("microsoftGraphResourceId");
+        MICROSOFT_GRAPH("microsoftGraphResourceId"),
+        /** Managed HSM DNS suffix. */
+        MANAGED_HSM("managedHsmDnsSuffix");
 
         private final String field;
 
@@ -314,6 +362,8 @@ public final class AzureEnvironment {
         }
 
         /**
+         * Gets a unique identifier for the endpoint in the environment.
+         *
          * @return a unique identifier for the endpoint in the environment
          */
         public String identifier() {

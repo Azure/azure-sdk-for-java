@@ -44,6 +44,10 @@ public final class TestNotificationDetailsResponseInner {
     @JsonProperty(value = "actionDetails")
     private List<ActionDetail> actionDetails;
 
+    /** Creates an instance of TestNotificationDetailsResponseInner class. */
+    public TestNotificationDetailsResponseInner() {
+    }
+
     /**
      * Get the context property: The context info.
      *

@@ -75,7 +75,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteCrossConnectionsService {
+    public interface ExpressRouteCrossConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteCrossConnections")
         @ExpectedResponses({200})
@@ -243,7 +243,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -286,7 +286,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -388,7 +388,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -443,7 +443,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -567,7 +567,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -619,7 +619,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -722,7 +722,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -784,7 +784,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -873,7 +873,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
     public SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, parameters).getSyncPoller();
     }
 
     /**
@@ -895,7 +895,9 @@ public final class ExpressRouteCrossConnectionsClientImpl
             String crossConnectionName,
             ExpressRouteCrossConnectionInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1021,7 +1023,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1083,7 +1085,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1195,7 +1197,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1257,7 +1259,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1356,7 +1358,9 @@ public final class ExpressRouteCrossConnectionsClientImpl
     public SyncPoller<
             PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath) {
-        return beginListArpTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath).getSyncPoller();
+        return this
+            .beginListArpTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath)
+            .getSyncPoller();
     }
 
     /**
@@ -1382,7 +1386,8 @@ public final class ExpressRouteCrossConnectionsClientImpl
             String peeringName,
             String devicePath,
             Context context) {
-        return beginListArpTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
+        return this
+            .beginListArpTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
             .getSyncPoller();
     }
 
@@ -1510,7 +1515,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1572,7 +1577,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1680,7 +1685,8 @@ public final class ExpressRouteCrossConnectionsClientImpl
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
         beginListRoutesTableSummary(
             String resourceGroupName, String crossConnectionName, String peeringName, String devicePath) {
-        return beginListRoutesTableSummaryAsync(resourceGroupName, crossConnectionName, peeringName, devicePath)
+        return this
+            .beginListRoutesTableSummaryAsync(resourceGroupName, crossConnectionName, peeringName, devicePath)
             .getSyncPoller();
     }
 
@@ -1708,8 +1714,8 @@ public final class ExpressRouteCrossConnectionsClientImpl
             String peeringName,
             String devicePath,
             Context context) {
-        return beginListRoutesTableSummaryAsync(
-                resourceGroupName, crossConnectionName, peeringName, devicePath, context)
+        return this
+            .beginListRoutesTableSummaryAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
             .getSyncPoller();
     }
 
@@ -1838,7 +1844,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1901,7 +1907,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2006,7 +2012,8 @@ public final class ExpressRouteCrossConnectionsClientImpl
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(
             String resourceGroupName, String crossConnectionName, String peeringName, String devicePath) {
-        return beginListRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath)
+        return this
+            .beginListRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath)
             .getSyncPoller();
     }
 
@@ -2034,7 +2041,8 @@ public final class ExpressRouteCrossConnectionsClientImpl
             String peeringName,
             String devicePath,
             Context context) {
-        return beginListRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
+        return this
+            .beginListRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
             .getSyncPoller();
     }
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed identity properties. */
 @Fluent
 public final class IdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProperties.class);
-
     /*
      * Managed service identity type.
      */
@@ -25,6 +21,10 @@ public final class IdentityProperties {
      */
     @JsonProperty(value = "userAssigned")
     private UserAssignedProperties userAssigned;
+
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
 
     /**
      * Get the type property: Managed service identity type.

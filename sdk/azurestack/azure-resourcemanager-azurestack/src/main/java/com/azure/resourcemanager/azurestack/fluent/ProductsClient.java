@@ -26,7 +26,7 @@ public interface ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProductInner> list(String resourceGroup, String registrationName);
@@ -40,10 +40,26 @@ public interface ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProductInner> list(String resourceGroup, String registrationName, Context context);
+
+    /**
+     * Returns the specified product.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return product information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProductInner> getWithResponse(
+        String resourceGroup, String registrationName, String productName, Context context);
 
     /**
      * Returns the specified product.
@@ -60,7 +76,7 @@ public interface ProductsClient {
     ProductInner get(String resourceGroup, String registrationName, String productName);
 
     /**
-     * Returns the specified product.
+     * Returns the extended properties of a product.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -69,10 +85,11 @@ public interface ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return extended description about the product required for installing it into Azure Stack along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductInner> getWithResponse(
+    Response<ExtendedProductInner> listDetailsWithResponse(
         String resourceGroup, String registrationName, String productName, Context context);
 
     /**
@@ -90,20 +107,60 @@ public interface ProductsClient {
     ExtendedProductInner listDetails(String resourceGroup, String registrationName, String productName);
 
     /**
-     * Returns the extended properties of a product.
+     * Returns a list of products.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
+     * @param deviceConfiguration Device configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack.
+     * @return pageable list of products along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedProductInner> listDetailsWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context);
+    Response<ProductListInner> listProductsWithResponse(
+        String resourceGroup,
+        String registrationName,
+        String productName,
+        DeviceConfiguration deviceConfiguration,
+        Context context);
+
+    /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of products.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ProductListInner listProducts(String resourceGroup, String registrationName, String productName);
+
+    /**
+     * Returns a list of products.
+     *
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param productName Name of the product.
+     * @param deviceConfiguration Device configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return pageable list of products along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProductListInner> getProductsWithResponse(
+        String resourceGroup,
+        String registrationName,
+        String productName,
+        DeviceConfiguration deviceConfiguration,
+        Context context);
 
     /**
      * Returns a list of products.
@@ -120,7 +177,7 @@ public interface ProductsClient {
     ProductListInner getProducts(String resourceGroup, String registrationName, String productName);
 
     /**
-     * Returns a list of products.
+     * Returns the specified product.
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
@@ -130,10 +187,10 @@ public interface ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return product information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductListInner> getProductsWithResponse(
+    Response<ProductInner> getProductWithResponse(
         String resourceGroup,
         String registrationName,
         String productName,
@@ -160,19 +217,19 @@ public interface ProductsClient {
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param productName Name of the product.
-     * @param deviceConfiguration Device configuration.
+     * @param marketplaceProductLogUpdate Update details for product log.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product action log along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductInner> getProductWithResponse(
+    Response<ProductLogInner> uploadLogWithResponse(
         String resourceGroup,
         String registrationName,
         String productName,
-        DeviceConfiguration deviceConfiguration,
+        MarketplaceProductLogUpdate marketplaceProductLogUpdate,
         Context context);
 
     /**
@@ -188,25 +245,4 @@ public interface ProductsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProductLogInner uploadLog(String resourceGroup, String registrationName, String productName);
-
-    /**
-     * Returns the specified product.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param productName Name of the product.
-     * @param marketplaceProductLogUpdate Update details for product log.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductLogInner> uploadLogWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        MarketplaceProductLogUpdate marketplaceProductLogUpdate,
-        Context context);
 }

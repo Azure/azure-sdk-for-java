@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CrossRegionRestore. */
+/** Flag to show if Cross Region Restore is enabled on the Vault or not. */
 public final class CrossRegionRestore extends ExpandableStringEnum<CrossRegionRestore> {
     /** Static value Enabled for CrossRegionRestore. */
     public static final CrossRegionRestore ENABLED = fromString("Enabled");
 
     /** Static value Disabled for CrossRegionRestore. */
     public static final CrossRegionRestore DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of CrossRegionRestore value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CrossRegionRestore() {
+    }
 
     /**
      * Creates or finds a CrossRegionRestore from its string representation.

@@ -14,6 +14,15 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
     public static final SsisLogLocationType FILE = fromString("File");
 
     /**
+     * Creates a new instance of SsisLogLocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsisLogLocationType() {
+    }
+
+    /**
      * Creates or finds a SsisLogLocationType from its string representation.
      *
      * @param name a name to look for.

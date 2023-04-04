@@ -24,6 +24,15 @@ public final class VirtualNetworkGatewayConnectionType
     public static final VirtualNetworkGatewayConnectionType VPNCLIENT = fromString("VPNClient");
 
     /**
+     * Creates a new instance of VirtualNetworkGatewayConnectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkGatewayConnectionType() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkGatewayConnectionType from its string representation.
      *
      * @param name a name to look for.

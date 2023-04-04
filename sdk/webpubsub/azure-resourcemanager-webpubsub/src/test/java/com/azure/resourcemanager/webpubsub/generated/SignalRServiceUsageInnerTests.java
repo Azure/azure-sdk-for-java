@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.SignalRServiceUsageInner;
 import com.azure.resourcemanager.webpubsub.models.SignalRServiceUsageName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRServiceUsageInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SignalRServiceUsageInner model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class SignalRServiceUsageInnerTests {
         Assertions.assertEquals("p", model.unit());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SignalRServiceUsageInner model =
             new SignalRServiceUsageInner()
                 .withId("qktapspwgcuert")

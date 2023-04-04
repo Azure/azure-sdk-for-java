@@ -5,88 +5,35 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.models.ParticipantProfilePropertyReference;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipLinkFieldMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The relationship link resource format. */
-@JsonFlatten
 @Fluent
-public class RelationshipLinkResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipLinkResourceFormatInner.class);
-
+public final class RelationshipLinkResourceFormatInner extends ProxyResource {
     /*
-     * Localized display name for the Relationship Link.
+     * The definition of relationship link.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    @JsonProperty(value = "properties")
+    private RelationshipLinkDefinition innerProperties;
 
-    /*
-     * Localized descriptions for the Relationship Link.
-     */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
+    /** Creates an instance of RelationshipLinkResourceFormatInner class. */
+    public RelationshipLinkResourceFormatInner() {
+    }
 
-    /*
-     * The InteractionType associated with the Relationship Link.
+    /**
+     * Get the innerProperties property: The definition of relationship link.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.interactionType")
-    private String interactionType;
-
-    /*
-     * The name of the Relationship Link.
-     */
-    @JsonProperty(value = "properties.linkName", access = JsonProperty.Access.WRITE_ONLY)
-    private String linkName;
-
-    /*
-     * The mappings between Interaction and Relationship fields.
-     */
-    @JsonProperty(value = "properties.mappings")
-    private List<RelationshipLinkFieldMapping> mappings;
-
-    /*
-     * The property references for the Profile of the Relationship.
-     */
-    @JsonProperty(value = "properties.profilePropertyReferences")
-    private List<ParticipantProfilePropertyReference> profilePropertyReferences;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * The property references for the Related Profile of the Relationship.
-     */
-    @JsonProperty(value = "properties.relatedProfilePropertyReferences")
-    private List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences;
-
-    /*
-     * The Relationship associated with the Link.
-     */
-    @JsonProperty(value = "properties.relationshipName")
-    private String relationshipName;
-
-    /*
-     * The relationship guid id.
-     */
-    @JsonProperty(value = "properties.relationshipGuidId", access = JsonProperty.Access.WRITE_ONLY)
-    private String relationshipGuidId;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private RelationshipLinkDefinition innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Localized display name for the Relationship Link.
@@ -94,7 +41,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -104,7 +51,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
     public RelationshipLinkResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -114,7 +64,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -124,7 +74,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
     public RelationshipLinkResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -134,7 +87,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the interactionType value.
      */
     public String interactionType() {
-        return this.interactionType;
+        return this.innerProperties() == null ? null : this.innerProperties().interactionType();
     }
 
     /**
@@ -144,7 +97,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
     public RelationshipLinkResourceFormatInner withInteractionType(String interactionType) {
-        this.interactionType = interactionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withInteractionType(interactionType);
         return this;
     }
 
@@ -154,7 +110,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the linkName value.
      */
     public String linkName() {
-        return this.linkName;
+        return this.innerProperties() == null ? null : this.innerProperties().linkName();
     }
 
     /**
@@ -163,7 +119,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the mappings value.
      */
     public List<RelationshipLinkFieldMapping> mappings() {
-        return this.mappings;
+        return this.innerProperties() == null ? null : this.innerProperties().mappings();
     }
 
     /**
@@ -173,7 +129,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
     public RelationshipLinkResourceFormatInner withMappings(List<RelationshipLinkFieldMapping> mappings) {
-        this.mappings = mappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withMappings(mappings);
         return this;
     }
 
@@ -183,7 +142,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the profilePropertyReferences value.
      */
     public List<ParticipantProfilePropertyReference> profilePropertyReferences() {
-        return this.profilePropertyReferences;
+        return this.innerProperties() == null ? null : this.innerProperties().profilePropertyReferences();
     }
 
     /**
@@ -194,7 +153,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      */
     public RelationshipLinkResourceFormatInner withProfilePropertyReferences(
         List<ParticipantProfilePropertyReference> profilePropertyReferences) {
-        this.profilePropertyReferences = profilePropertyReferences;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withProfilePropertyReferences(profilePropertyReferences);
         return this;
     }
 
@@ -204,7 +166,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -214,7 +176,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the relatedProfilePropertyReferences value.
      */
     public List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences() {
-        return this.relatedProfilePropertyReferences;
+        return this.innerProperties() == null ? null : this.innerProperties().relatedProfilePropertyReferences();
     }
 
     /**
@@ -226,7 +188,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      */
     public RelationshipLinkResourceFormatInner withRelatedProfilePropertyReferences(
         List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences) {
-        this.relatedProfilePropertyReferences = relatedProfilePropertyReferences;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withRelatedProfilePropertyReferences(relatedProfilePropertyReferences);
         return this;
     }
 
@@ -236,7 +201,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the relationshipName value.
      */
     public String relationshipName() {
-        return this.relationshipName;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipName();
     }
 
     /**
@@ -246,7 +211,10 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the RelationshipLinkResourceFormatInner object itself.
      */
     public RelationshipLinkResourceFormatInner withRelationshipName(String relationshipName) {
-        this.relationshipName = relationshipName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipLinkDefinition();
+        }
+        this.innerProperties().withRelationshipName(relationshipName);
         return this;
     }
 
@@ -256,7 +224,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
-        return this.relationshipGuidId;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipGuidId();
     }
 
     /**
@@ -265,7 +233,7 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -274,14 +242,8 @@ public class RelationshipLinkResourceFormatInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mappings() != null) {
-            mappings().forEach(e -> e.validate());
-        }
-        if (profilePropertyReferences() != null) {
-            profilePropertyReferences().forEach(e -> e.validate());
-        }
-        if (relatedProfilePropertyReferences() != null) {
-            relatedProfilePropertyReferences().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

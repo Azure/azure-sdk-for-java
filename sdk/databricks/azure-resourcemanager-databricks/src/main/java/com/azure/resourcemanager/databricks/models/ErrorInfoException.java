@@ -30,6 +30,7 @@ public final class ErrorInfoException extends ManagementException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public ErrorInfo getValue() {
         return (ErrorInfo) super.getValue();

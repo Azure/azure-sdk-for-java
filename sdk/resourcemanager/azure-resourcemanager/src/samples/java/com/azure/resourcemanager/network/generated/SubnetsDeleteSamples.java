@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Subnets Delete. */
 public final class SubnetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/SubnetDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/SubnetDelete.json
      */
     /**
      * Sample code: Delete subnet.
@@ -22,6 +20,6 @@ public final class SubnetsDeleteSamples {
             .manager()
             .serviceClient()
             .getSubnets()
-            .delete("subnet-test", "vnetname", "subnet1", Context.NONE);
+            .delete("subnet-test", "vnetname", "subnet1", com.azure.core.util.Context.NONE);
     }
 }
