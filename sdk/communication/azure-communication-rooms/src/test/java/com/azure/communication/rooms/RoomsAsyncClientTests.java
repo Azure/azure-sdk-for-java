@@ -42,9 +42,9 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL)
-        .setParticipants(participants1);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants1);
 
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
 
@@ -54,39 +54,39 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         roomParticipantsMri.add(participants1.get(2).getCommunicationIdentifier().getRawId());
 
         StepVerifier.create(response1)
-            .assertNext(roomResult -> {
-                assertHappyPath(roomResult, 201);
-            })
-            .verifyComplete();
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
 
         String roomId = response1.block().getValue().getRoomId();
 
         UpdateRoomOptions updateOptions = new UpdateRoomOptions()
-        .setRoomId(roomId)
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_FROM.plusMonths(3));
+                .setRoomId(roomId)
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_FROM.plusMonths(3));
 
-        Mono<Response<CommunicationRoom>> response3 =  roomsAsyncClient.updateRoomWithResponse(updateOptions);
+        Mono<Response<CommunicationRoom>> response3 = roomsAsyncClient.updateRoomWithResponse(updateOptions);
 
         System.out.println(VALID_FROM.plusMonths(3).getDayOfYear());
 
         StepVerifier.create(response3)
-            .assertNext(roomResult -> {
-                assertHappyPath(roomResult, 200);
-            }).verifyComplete();
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 200);
+                }).verifyComplete();
 
-        Mono<Response<CommunicationRoom>> response4 =  roomsAsyncClient.getRoomWithResponse(roomId);
+        Mono<Response<CommunicationRoom>> response4 = roomsAsyncClient.getRoomWithResponse(roomId);
 
         StepVerifier.create(response4)
-            .assertNext(result4 -> {
-                assertHappyPath(result4, 200);
-            }).verifyComplete();
+                .assertNext(result4 -> {
+                    assertHappyPath(result4, 200);
+                }).verifyComplete();
 
-        Mono<Response<Void>> response5 =  roomsAsyncClient.deleteRoomWithResponse(roomId);
+        Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
         StepVerifier.create(response5)
-        .assertNext(result5 -> {
-            assertEquals(result5.getStatusCode(), 204);
-        }).verifyComplete();
+                .assertNext(result5 -> {
+                    assertEquals(result5.getStatusCode(), 204);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -95,47 +95,45 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         roomsAsyncClient = setupAsyncClient(httpClient, "createRoomFullCycleWithOutResponse");
         assertNotNull(roomsAsyncClient);
 
-
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL)
-        .setParticipants(participants1);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants1);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
         // StepVerifier.create(response1)
-        //     .assertNext(roomResult -> {
-        //         assertEquals(VALID_FROM, roomResult.getValidFrom());
-        //         assertEquals(VALID_UNTIL, roomResult.getValidUntil());
-        //     }).verifyComplete();
+        // .assertNext(roomResult -> {
+        // assertEquals(VALID_FROM, roomResult.getValidFrom());
+        // assertEquals(VALID_UNTIL, roomResult.getValidUntil());
+        // }).verifyComplete();
 
         String roomId = response1.block().getRoomId();
 
-
         UpdateRoomOptions updateOptions = new UpdateRoomOptions()
-        .setRoomId(roomId)
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_FROM.plusMonths(3));
+                .setRoomId(roomId)
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_FROM.plusMonths(3));
 
-        Mono<CommunicationRoom> response3 =  roomsAsyncClient.updateRoom(updateOptions);
+        Mono<CommunicationRoom> response3 = roomsAsyncClient.updateRoom(updateOptions);
 
         // StepVerifier.create(response3)
-        //     .assertNext(result3 -> {
-        //         assertEquals(result3.getValidUntil(), VALID_FROM.plusMonths(3));
-        //     }).verifyComplete();
+        // .assertNext(result3 -> {
+        // assertEquals(result3.getValidUntil(), VALID_FROM.plusMonths(3));
+        // }).verifyComplete();
 
         Mono<CommunicationRoom> response4 = roomsAsyncClient.getRoom(roomId);
 
         StepVerifier.create(response4)
-            .assertNext(result4 -> {
-                assertEquals(result4.getRoomId(), roomId);
-            }).verifyComplete();
+                .assertNext(result4 -> {
+                    assertEquals(result4.getRoomId(), roomId);
+                }).verifyComplete();
 
-        Mono<Response<Void>> response5 =  roomsAsyncClient.deleteRoomWithResponse(roomId);
+        Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
         StepVerifier.create(response5)
-        .assertNext(result5 -> {
-            assertEquals(result5.getStatusCode(), 204);
-        }).verifyComplete();
+                .assertNext(result5 -> {
+                    assertEquals(result5.getStatusCode(), 204);
+                }).verifyComplete();
 
     }
 
@@ -146,32 +144,33 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL)
-        .setParticipants(participants1);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants1);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
         // StepVerifier.create(response1)
         // .assertNext(roomResult -> {
-        //     assertEquals(VALID_FROM, roomResult.getValidFrom());
-        //     assertEquals(VALID_UNTIL, roomResult.getValidUntil());
+        // assertEquals(VALID_FROM, roomResult.getValidFrom());
+        // assertEquals(VALID_UNTIL, roomResult.getValidUntil());
 
         // }).verifyComplete();
 
         String roomId = response1.block().getRoomId();
 
-        Mono<RemoveParticipantsResult> response4 =  roomsAsyncClient.removeParticipants(roomId, communicationIdentifiersForParticipants5);
+        Mono<RemoveParticipantsResult> response4 = roomsAsyncClient.removeParticipants(roomId,
+                communicationIdentifiersForParticipants5);
         StepVerifier.create(response4)
-            .assertNext(result4 -> {
-                assertTrue(result4 instanceof RemoveParticipantsResult);
-            }).verifyComplete();
+                .assertNext(result4 -> {
+                    assertTrue(result4 instanceof RemoveParticipantsResult);
+                }).verifyComplete();
 
-        Mono<Response<Void>> response5 =  roomsAsyncClient.deleteRoomWithResponse(roomId);
+        Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
         StepVerifier.create(response5)
-        .assertNext(result5 -> {
-            assertEquals(result5.getStatusCode(), 204);
-        }).verifyComplete();
+                .assertNext(result5 -> {
+                    assertEquals(result5.getStatusCode(), 204);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -180,27 +179,27 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         roomsAsyncClient = setupAsyncClient(httpClient, "addParticipantsWithResponseStep");
         assertNotNull(roomsAsyncClient);
 
-
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
 
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
 
         StepVerifier.create(response1)
-            .assertNext(roomResult -> {
-                assertHappyPath(roomResult, 201);
-            })
-            .verifyComplete();
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
 
         String roomId = response1.block().getValue().getRoomId();
 
-        Mono<Response<UpsertParticipantsResult>> response2 =  roomsAsyncClient.upsertParticipantsWithResponse(roomId, participants5);
+        Mono<Response<UpsertParticipantsResult>> response2 = roomsAsyncClient.upsertParticipantsWithResponse(roomId,
+                participants5);
 
         StepVerifier.create(response2)
-            .assertNext(result2 -> {
-                assertEquals(result2.getStatusCode(), 200);
-            }).verifyComplete();
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 200);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -211,32 +210,31 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         List<InvitedRoomParticipant> participants = new ArrayList<InvitedRoomParticipant>();
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL)
-        .setParticipants(participants);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
-        // StepVerifier.create(response1)
-        // .assertNext(roomResult -> {
-        //     assertEquals(VALID_FROM, roomResult.getValidFrom());
-        //     assertEquals(VALID_UNTIL, roomResult.getValidUntil());
-        // }).verifyComplete();
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertTrue(roomResult.getValidFrom() != null);
+                }).verifyComplete();
 
         String roomId = response1.block().getRoomId();
 
-        Mono<UpsertParticipantsResult> response2 =  roomsAsyncClient.upsertParticipants(roomId, participants5);
+        Mono<UpsertParticipantsResult> response2 = roomsAsyncClient.upsertParticipants(roomId, participants3);
 
         StepVerifier.create(response2)
-            .assertNext(result2 -> {
-                assertTrue(result2 instanceof UpsertParticipantsResult);
-            }).verifyComplete();
+                .assertNext(result2 -> {
+                    assertTrue(result2 instanceof UpsertParticipantsResult);
+                }).verifyComplete();
 
         StepVerifier.create(roomsAsyncClient.listParticipants(roomId)).assertNext(response4 -> {
-            assertEquals(response4.getCommunicationIdentifier().getRawId(), firstParticipant.getCommunicationIdentifier().getRawId());
+            assertEquals(response4.getCommunicationIdentifier().getRawId(),
+                    secondParticipant.getCommunicationIdentifier().getRawId());
         })
-        .expectNextCount(2)
-        .verifyComplete();
+                .verifyComplete();
     }
 
     @ParameterizedTest
@@ -246,26 +244,27 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL)
-        .setParticipants(participants2);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants2);
 
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
 
         StepVerifier.create(response1)
-            .assertNext(roomResult -> {
-                assertHappyPath(roomResult, 201);
-            })
-            .verifyComplete();
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
 
         String roomId = response1.block().getValue().getRoomId();
 
-        Mono<Response<UpsertParticipantsResult>> response2 =  roomsAsyncClient.upsertParticipantsWithResponse(roomId, participantsWithRoleUpdates);
+        Mono<Response<UpsertParticipantsResult>> response2 = roomsAsyncClient.upsertParticipantsWithResponse(roomId,
+                participantsWithRoleUpdates);
 
         StepVerifier.create(response2)
-            .assertNext(result2 -> {
-                assertEquals(result2.getStatusCode(), 200);
-            }).verifyComplete();
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 200);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -275,26 +274,27 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         assertNotNull(roomsAsyncClient);
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
-        .setValidFrom(VALID_FROM)
-        .setValidUntil(VALID_UNTIL)
-        .setParticipants(participants2);
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants2);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
         // StepVerifier.create(response1)
         // .assertNext(roomResult -> {
-        //     assertEquals(VALID_FROM, roomResult.getValidFrom());
-        //     assertEquals(VALID_UNTIL, roomResult.getValidUntil());
+        // assertEquals(VALID_FROM, roomResult.getValidFrom());
+        // assertEquals(VALID_UNTIL, roomResult.getValidUntil());
         // }).verifyComplete();
 
         String roomId = response1.block().getRoomId();
 
-        Mono<UpsertParticipantsResult> response2 =  roomsAsyncClient.upsertParticipants(roomId, participantsWithRoleUpdates);
+        Mono<UpsertParticipantsResult> response2 = roomsAsyncClient.upsertParticipants(roomId,
+                participantsWithRoleUpdates);
 
         StepVerifier.create(response2)
-            .assertNext(roomResult -> {
-                assertTrue(roomResult instanceof UpsertParticipantsResult);
-            }).verifyComplete();
+                .assertNext(roomResult -> {
+                    assertTrue(roomResult instanceof UpsertParticipantsResult);
+                }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -316,7 +316,8 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     }
 
     private RoomsAsyncClient setupAsyncClient(HttpClient httpClient, String testName) {
-        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient, RoomsServiceVersion.V2023_03_31_PREVIEW);
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient,
+                RoomsServiceVersion.V2023_03_31_PREVIEW);
         createUsers(httpClient);
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }

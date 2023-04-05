@@ -8,7 +8,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.rooms.implementation.converters.RoleTypeConverter;
 import com.azure.communication.rooms.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
@@ -21,9 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.lang.reflect.Array;
 import java.time.OffsetDateTime;
-// import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,9 +38,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RoomsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
-     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
-                     "COMMUNICATION_CONNECTION_STRING_ROOMS",
-                 "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
+    protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
+            "COMMUNICATION_CONNECTION_STRING_ROOMS",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
@@ -75,10 +72,10 @@ public class RoomsTestBase extends TestBase {
     protected InvitedRoomParticipant validateParticipant2;
     protected InvitedRoomParticipant validateParticipant3;
 
-
     protected static final String NONEXIST_ROOM_ID = "NotExistingRoomID";
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"").add("roomId");
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"")
+            .add("roomId");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
             String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
@@ -116,7 +113,8 @@ public class RoomsTestBase extends TestBase {
         return builder;
     }
 
-    protected RoomsClientBuilder getRoomsClientWithConnectionString(HttpClient httpClient, RoomsServiceVersion version) {
+    protected RoomsClientBuilder getRoomsClientWithConnectionString(HttpClient httpClient,
+            RoomsServiceVersion version) {
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.connectionString(CONNECTION_STRING)
                 .serviceVersion(version)
@@ -137,8 +135,8 @@ public class RoomsTestBase extends TestBase {
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         builder.endpoint(endpoint)
-            .credential(new AzureKeyCredential(accessKey))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .credential(new AzureKeyCredential(accessKey))
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -192,14 +190,15 @@ public class RoomsTestBase extends TestBase {
 
         participants6 = Arrays.asList(secondParticipant, thirdParticipant);
         participants7 = Arrays.asList();
-        badParticipant = Arrays.asList( new InvitedRoomParticipant(new CommunicationUserIdentifier("Dummy_Mri")).setRole(ParticipantRole.CONSUMER));
+        badParticipant = Arrays.asList(new InvitedRoomParticipant(new CommunicationUserIdentifier("Dummy_Mri"))
+                .setRole(ParticipantRole.CONSUMER));
         participantsWithRoleUpdates = Arrays.asList(firstChangeParticipant, secondChangeParticipant);
     }
 
     protected void cleanUpUsers() {
-//        communicationClient.deleteUser(firstParticipantId);
-//        communicationClient.deleteUser(secondParticipantId);
-//        communicationClient.deleteUser(thirdParticipantId);
+        // communicationClient.deleteUser(firstParticipantId);
+        // communicationClient.deleteUser(secondParticipantId);
+        // communicationClient.deleteUser(thirdParticipantId);
     }
 
     protected RoomsClientBuilder addLoggingPolicy(RoomsClientBuilder builder, String testName) {
@@ -244,8 +243,9 @@ public class RoomsTestBase extends TestBase {
     }
 
     protected boolean areParticipantsEqual(RoomParticipant participant1, RoomParticipant participant2) {
-        return participant1.getCommunicationIdentifier().getRawId().equals(participant1.getCommunicationIdentifier().getRawId())
-            && participant1.getRole().toString().equals(participant2.getRole().toString());
+        return participant1.getCommunicationIdentifier().getRawId()
+                .equals(participant1.getCommunicationIdentifier().getRawId())
+                && participant1.getRole().toString().equals(participant2.getRole().toString());
     }
 
     protected List<CommunicationIdentifier> getCommunicationIdentifiers(List<InvitedRoomParticipant> participants) {

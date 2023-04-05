@@ -15,25 +15,30 @@ public final class RoomParticipant {
      * model must be interpreted as a union: Apart from rawId, at most one
      * further property may be set.
      */
-    private CommunicationIdentifier communicationIdentifier;
+    private final CommunicationIdentifier communicationIdentifier;
 
     /*
      * The Role of a room participant.
      */
-    private ParticipantRole role;
+    private final ParticipantRole role;
 
     /**
      * Default constructor for Room Participant
+     * 
+     * @param communicationIdentifier The communication identifier.
+     * @param role The participant role.
      */
 
-     public RoomParticipant(CommunicationIdentifier communicationIdentifier, ParticipantRole role){
+    public RoomParticipant(CommunicationIdentifier communicationIdentifier, ParticipantRole role) {
         this.communicationIdentifier = communicationIdentifier;
         this.role = role;
-     }
+    }
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This model must be interpreted as a union: Apart
+     * Get the communicationIdentifier property: Identifies a participant in Azure
+     * Communication services. A participant
+     * is, for example, a phone number or an Azure communication user. This model
+     * must be interpreted as a union: Apart
      * from rawId, at most one further property may be set.
      *
      * @return the communicationIdentifier value.
