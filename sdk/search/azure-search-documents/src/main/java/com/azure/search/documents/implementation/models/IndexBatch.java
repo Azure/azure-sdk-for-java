@@ -74,9 +74,9 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
                         }
                     }
                     if (actionsFound) {
-                        IndexBatch deserializedValue = new IndexBatch(actions);
+                        IndexBatch deserializedIndexBatch = new IndexBatch(actions);
 
-                        return deserializedValue;
+                        return deserializedIndexBatch;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!actionsFound) {

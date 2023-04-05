@@ -1,6 +1,6 @@
 # Release History
 
-## 4.15.0-beta.1 (Unreleased)
+## 4.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.15.0 (2023-03-31)
+
+### Features Added
+
+- Added new ACS Email events
+
+## 4.14.2 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 4.14.1 (2023-02-16)
 

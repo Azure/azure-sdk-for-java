@@ -1,14 +1,10 @@
 # Release History
 
-## 1.1.0-beta.16 (Unreleased)
+## 1.1.0 (2023-03-28)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- GA release of SIP routing client.
+- GA release of Phone Numbers Browse API Methods.
 
 ## 1.1.0-beta.15 (2023-03-15)
 
@@ -21,6 +17,15 @@
 - Moved SIP routing clients to com.azure.communication.phonenumbers.siprouting subpackage.
 - Added `PhoneNumberAreaCode` public model.
 - Removed `PhoneNumberOfferings`, `PhoneNumberLocalities` and `PhoneNumberCountries` from the models package. Since no public method exposed them, this is not a breaking change.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+- Upgraded `azure-communication-common` from `1.2.5` to version `1.2.6`.
+
+## 1.0.20 (2023-03-13)
+
+### Other Changes
 
 #### Dependency Updates
 

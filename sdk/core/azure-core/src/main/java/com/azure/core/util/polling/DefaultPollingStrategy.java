@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * The default polling strategy to use with Azure data plane services. The default polling strategy will attempt 3
@@ -76,10 +77,26 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, Context context) {
+        this(new PollingStrategyOptions(httpPipeline)
+            .setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
+    }
+
+    /**
+     * Creates a chained polling strategy with 3 known polling strategies, {@link OperationResourcePollingStrategy},
+     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a custom
+     * serializer.
+     *
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
+     */
+    public DefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
-            new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
-            new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
-            new StatusCheckPollingStrategy<>(serializer)));
+            new OperationResourcePollingStrategy<>(null, pollingStrategyOptions),
+            new LocationPollingStrategy<>(pollingStrategyOptions),
+            new StatusCheckPollingStrategy<>(pollingStrategyOptions.getSerializer())));
     }
 
     @Override

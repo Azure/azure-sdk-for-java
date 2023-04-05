@@ -60,6 +60,10 @@ public final class DetectorAbnormalTimePeriod {
     @JsonProperty(value = "solutions")
     private List<Solution> solutions;
 
+    /** Creates an instance of DetectorAbnormalTimePeriod class. */
+    public DetectorAbnormalTimePeriod() {
+    }
+
     /**
      * Get the startTime property: Start time of the correlated event.
      *

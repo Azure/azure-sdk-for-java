@@ -11,6 +11,7 @@ import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,43 @@ import java.util.concurrent.ForkJoinPool;
 import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
 
 /**
- * Fluent credential builder for instantiating a {@link DefaultAzureCredential}.
+ * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
+ *
+ * <p>The {@link DefaultAzureCredential} is appropriate for most scenarios where the application is intended to
+ * ultimately be run in Azure. DefaultAzureCredential combines credentials that are commonly used to authenticate when
+ * deployed, with credentials that are used to authenticate in a development environment.
+ * The {@link DefaultAzureCredential} will attempt to authenticate via the following mechanisms in order.</p>
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link DefaultAzureCredential}, using
+ * the DefaultAzureCredentialBuilder to configure it. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
+ * <pre>
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
+ *
+ * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a> that is associated with one or more Azure resources. This identity can then be used to authenticate and
+ * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
+ * a {@link DefaultAzureCredential} to target a user assigned managed identity, using the DefaultAzureCredentialBuilder
+ * to configure it. Once this credential is created, it may be passed into the builder of many of the
+ * Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
+ * <pre>
+ * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
  * @see DefaultAzureCredential
  */
@@ -140,7 +177,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
+     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
      * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
      * requests might starve and setting up this executor service should be considered.
      * </p>
@@ -179,6 +216,27 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         this.additionallyAllowedTenants = IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants);
+        return this;
+    }
+
+    /**
+     * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI or IntelliJ).
+     * @param duration The {@link Duration} to wait.
+     * @return An updated instance of this builder with the timeout specified.
+     */
+    public DefaultAzureCredentialBuilder developerCredentialTimeout(Duration duration) {
+        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
+        return this;
+    }
+
+    /**
+     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
+     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     *
+     * @return An updated instance of this builder with instance discovery disabled.
+     */
+    public DefaultAzureCredentialBuilder disableInstanceDiscovery() {
+        this.identityClientOptions.disableInstanceDisovery();
         return this;
     }
 

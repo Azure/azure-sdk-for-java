@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppArmResourceInner;
 
 /** Samples for StaticSites RegisterUserProvidedFunctionAppWithStaticSiteBuild. */
 public final class StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
      */
     /**
      * Sample code: Register a user provided function app with a static site build.
@@ -34,6 +33,6 @@ public final class StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuild
                         "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp")
                     .withFunctionAppRegion("West US 2"),
                 true,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

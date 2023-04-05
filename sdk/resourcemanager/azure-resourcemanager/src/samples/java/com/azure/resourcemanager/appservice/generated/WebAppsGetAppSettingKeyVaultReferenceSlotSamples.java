@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetAppSettingKeyVaultReferenceSlot. */
 public final class WebAppsGetAppSettingKeyVaultReferenceSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetKeyVaultReferencesForAppSettingSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetKeyVaultReferencesForAppSettingSlot.json
      */
     /**
      * Sample code: Get Azure Key Vault slot app setting reference.
@@ -22,6 +20,7 @@ public final class WebAppsGetAppSettingKeyVaultReferenceSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getAppSettingKeyVaultReferenceSlotWithResponse("testrg123", "testc6282", "setting", "stage", Context.NONE);
+            .getAppSettingKeyVaultReferenceSlotWithResponse(
+                "testrg123", "testc6282", "setting", "stage", com.azure.core.util.Context.NONE);
     }
 }

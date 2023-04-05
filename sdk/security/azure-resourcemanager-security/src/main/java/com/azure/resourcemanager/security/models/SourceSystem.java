@@ -26,6 +26,15 @@ public final class SourceSystem extends ExpandableStringEnum<SourceSystem> {
     public static final SourceSystem NONE = fromString("None");
 
     /**
+     * Creates a new instance of SourceSystem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceSystem() {
+    }
+
+    /**
      * Creates or finds a SourceSystem from its string representation.
      *
      * @param name a name to look for.

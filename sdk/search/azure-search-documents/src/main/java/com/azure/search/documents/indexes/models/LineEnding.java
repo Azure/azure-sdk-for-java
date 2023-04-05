@@ -14,16 +14,16 @@ import java.util.Collection;
  * "space".
  */
 public final class LineEnding extends ExpandableStringEnum<LineEnding> {
-    /** Static value space for LineEnding. */
+    /** Lines are separated by a single space character. */
     public static final LineEnding SPACE = fromString("space");
 
-    /** Static value carriageReturn for LineEnding. */
+    /** Lines are separated by a carriage return ('\r') character. */
     public static final LineEnding CARRIAGE_RETURN = fromString("carriageReturn");
 
-    /** Static value lineFeed for LineEnding. */
+    /** Lines are separated by a single line feed ('\n') character. */
     public static final LineEnding LINE_FEED = fromString("lineFeed");
 
-    /** Static value carriageReturnLineFeed for LineEnding. */
+    /** Lines are separated by a carriage return and a line feed ('\r\n') character. */
     public static final LineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
 
     /**

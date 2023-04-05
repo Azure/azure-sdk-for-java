@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataPolicyManifests GetByPolicyMode. */
 public final class DataPolicyManifestsGetByPolicyModeSamples {
     /*
@@ -22,6 +20,6 @@ public final class DataPolicyManifestsGetByPolicyModeSamples {
             .manager()
             .policyClient()
             .getDataPolicyManifests()
-            .getByPolicyModeWithResponse("Microsoft.KeyVault.Data", Context.NONE);
+            .getByPolicyModeWithResponse("Microsoft.KeyVault.Data", com.azure.core.util.Context.NONE);
     }
 }

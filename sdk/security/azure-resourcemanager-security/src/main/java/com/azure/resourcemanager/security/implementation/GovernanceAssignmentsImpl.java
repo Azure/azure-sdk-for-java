@@ -75,8 +75,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "scope");
         if (scope == null) {
             throw LOGGER
@@ -88,8 +87,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assessmentName");
         if (assessmentName == null) {
             throw LOGGER
@@ -101,8 +99,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assignmentKey");
         if (assignmentKey == null) {
             throw LOGGER
@@ -121,8 +118,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "scope");
         if (scope == null) {
             throw LOGGER
@@ -134,8 +130,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assessmentName");
         if (assessmentName == null) {
             throw LOGGER
@@ -147,8 +142,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assignmentKey");
         if (assignmentKey == null) {
             throw LOGGER
@@ -167,8 +161,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "scope");
         if (scope == null) {
             throw LOGGER
@@ -180,8 +173,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assessmentName");
         if (assessmentName == null) {
             throw LOGGER
@@ -193,8 +185,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assignmentKey");
         if (assignmentKey == null) {
             throw LOGGER
@@ -213,8 +204,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "scope");
         if (scope == null) {
             throw LOGGER
@@ -226,8 +216,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assessmentName");
         if (assessmentName == null) {
             throw LOGGER
@@ -239,8 +228,7 @@ public final class GovernanceAssignmentsImpl implements GovernanceAssignments {
             Utils
                 .getValueFromIdByParameterName(
                     id,
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assignmentKey");
         if (assignmentKey == null) {
             throw LOGGER

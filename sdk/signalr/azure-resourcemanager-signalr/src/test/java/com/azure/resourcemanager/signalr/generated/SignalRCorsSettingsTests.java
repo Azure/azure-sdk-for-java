@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRCorsSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SignalRCorsSettings model =
             BinaryData
                 .fromString("{\"allowedOrigins\":[\"gzva\",\"apj\",\"zhpvgqzcjrvxd\",\"zlmwlxkvugfhz\"]}")
@@ -20,8 +19,8 @@ public final class SignalRCorsSettingsTests {
         Assertions.assertEquals("gzva", model.allowedOrigins().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SignalRCorsSettings model =
             new SignalRCorsSettings()
                 .withAllowedOrigins(Arrays.asList("gzva", "apj", "zhpvgqzcjrvxd", "zlmwlxkvugfhz"));

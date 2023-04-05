@@ -60,6 +60,10 @@ public class OperationResult extends OperationResultProperties {
     @JsonProperty(value = "iterationCount")
     private Integer iterationCount;
 
+    /** Creates an instance of OperationResult class. */
+    public OperationResult() {
+    }
+
     /**
      * Get the trackingId property: Gets the tracking id.
      *

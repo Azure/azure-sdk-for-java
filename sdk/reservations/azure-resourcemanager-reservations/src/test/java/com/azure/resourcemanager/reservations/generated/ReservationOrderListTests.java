@@ -20,20 +20,20 @@ public final class ReservationOrderListTests {
         ReservationOrderList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"etag\":9622678,\"properties\":{\"displayName\":\"tnwu\",\"requestDateTime\":\"2021-10-03T15:35:19Z\",\"createdDateTime\":\"2021-02-12T15:23:48Z\",\"expiryDateTime\":\"2021-11-07T16:18:10Z\",\"benefitStartTime\":\"2020-12-27T04:43:40Z\",\"originalQuantity\":1448961060,\"term\":\"P1Y\",\"provisioningState\":\"Created\",\"billingPlan\":\"Monthly\",\"reservations\":[],\"reviewDateTime\":\"2021-07-21T12:31:03Z\"},\"id\":\"zwdzuh\",\"name\":\"ymwisdkft\",\"type\":\"wxmnteiwao\"},{\"etag\":269791591,\"properties\":{\"displayName\":\"jcmmxdcufufsrp\",\"requestDateTime\":\"2021-06-29T04:41:21Z\",\"createdDateTime\":\"2021-12-09T12:29:37Z\",\"expiryDateTime\":\"2021-10-23T08:25:02Z\",\"benefitStartTime\":\"2021-09-08T03:00:46Z\",\"originalQuantity\":564973983,\"term\":\"P3Y\",\"provisioningState\":\"Succeeded\",\"billingPlan\":\"Upfront\",\"reservations\":[],\"reviewDateTime\":\"2021-04-28T14:26:37Z\"},\"id\":\"mdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"}],\"nextLink\":\"wjdk\"}")
+                    "{\"value\":[{\"etag\":44234410,\"properties\":{\"displayName\":\"rlyxwjkcprbnw\",\"requestDateTime\":\"2021-05-06T10:18:25Z\",\"createdDateTime\":\"2021-07-23T00:34:49Z\",\"expiryDateTime\":\"2021-01-24T18:28:17Z\",\"benefitStartTime\":\"2021-05-10T19:00:57Z\",\"originalQuantity\":1314012997,\"term\":\"P3Y\",\"provisioningState\":\"Creating\",\"billingPlan\":\"Upfront\",\"reservations\":[],\"reviewDateTime\":\"2021-02-25T06:26:56Z\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"},{\"etag\":1325323583,\"properties\":{\"displayName\":\"y\",\"requestDateTime\":\"2021-07-28T21:30:24Z\",\"createdDateTime\":\"2021-11-08T13:56:21Z\",\"expiryDateTime\":\"2021-07-21T12:31:03Z\",\"benefitStartTime\":\"2021-11-01T04:03:29Z\",\"originalQuantity\":134248992,\"term\":\"P1Y\",\"provisioningState\":\"Cancelled\",\"billingPlan\":\"Monthly\",\"reservations\":[],\"reviewDateTime\":\"2021-04-25T02:46:04Z\"},\"id\":\"fthwxmnteiwa\",\"name\":\"pvkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"},{\"etag\":1219718844,\"properties\":{\"displayName\":\"zsgfyccsnewmd\",\"requestDateTime\":\"2021-01-08T04:58:25Z\",\"createdDateTime\":\"2021-11-27T18:08Z\",\"expiryDateTime\":\"2021-08-09T00:52:58Z\",\"benefitStartTime\":\"2021-06-19T08:04:11Z\",\"originalQuantity\":317245764,\"term\":\"P1Y\",\"provisioningState\":\"Creating\",\"billingPlan\":\"Monthly\",\"reservations\":[],\"reviewDateTime\":\"2021-08-27T09:45:25Z\"},\"id\":\"ehzzvypyqrim\",\"name\":\"inpvswjdkirsoodq\",\"type\":\"hc\"},{\"etag\":1265522776,\"properties\":{\"displayName\":\"jtckwhdso\",\"requestDateTime\":\"2021-12-08T08:28:27Z\",\"createdDateTime\":\"2020-12-23T06:13:14Z\",\"expiryDateTime\":\"2021-10-18T02:17:27Z\",\"benefitStartTime\":\"2021-02-24T22:15:36Z\",\"originalQuantity\":1459693032,\"term\":\"P3Y\",\"provisioningState\":\"BillingFailed\",\"billingPlan\":\"Monthly\",\"reservations\":[],\"reviewDateTime\":\"2021-08-28T21:50:54Z\"},\"id\":\"vsnb\",\"name\":\"xqabnmocpcysh\",\"type\":\"rzafbljjgpbtoqcj\"}],\"nextLink\":\"ljavbqid\"}")
                 .toObject(ReservationOrderList.class);
-        Assertions.assertEquals(9622678, model.value().get(0).etag());
-        Assertions.assertEquals("tnwu", model.value().get(0).displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T15:35:19Z"), model.value().get(0).requestDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-12T15:23:48Z"), model.value().get(0).createdDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T16:18:10Z"), model.value().get(0).expiryDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T04:43:40Z"), model.value().get(0).benefitStartTime());
-        Assertions.assertEquals(1448961060, model.value().get(0).originalQuantity());
-        Assertions.assertEquals(ReservationTerm.P1Y, model.value().get(0).term());
-        Assertions.assertEquals(ProvisioningState.CREATED, model.value().get(0).provisioningState());
-        Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.value().get(0).billingPlan());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T12:31:03Z"), model.value().get(0).reviewDateTime());
-        Assertions.assertEquals("wjdk", model.nextLink());
+        Assertions.assertEquals(44234410, model.value().get(0).etag());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.value().get(0).displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T10:18:25Z"), model.value().get(0).requestDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T00:34:49Z"), model.value().get(0).createdDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T18:28:17Z"), model.value().get(0).expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T19:00:57Z"), model.value().get(0).benefitStartTime());
+        Assertions.assertEquals(1314012997, model.value().get(0).originalQuantity());
+        Assertions.assertEquals(ReservationTerm.P3Y, model.value().get(0).term());
+        Assertions.assertEquals(ProvisioningState.CREATING, model.value().get(0).provisioningState());
+        Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.value().get(0).billingPlan());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T06:26:56Z"), model.value().get(0).reviewDateTime());
+        Assertions.assertEquals("ljavbqid", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -44,44 +44,70 @@ public final class ReservationOrderListTests {
                     Arrays
                         .asList(
                             new ReservationOrderResponseInner()
-                                .withEtag(9622678)
-                                .withDisplayName("tnwu")
-                                .withRequestDateTime(OffsetDateTime.parse("2021-10-03T15:35:19Z"))
-                                .withCreatedDateTime(OffsetDateTime.parse("2021-02-12T15:23:48Z"))
-                                .withExpiryDateTime(OffsetDateTime.parse("2021-11-07T16:18:10Z"))
-                                .withBenefitStartTime(OffsetDateTime.parse("2020-12-27T04:43:40Z"))
-                                .withOriginalQuantity(1448961060)
-                                .withTerm(ReservationTerm.P1Y)
-                                .withProvisioningState(ProvisioningState.CREATED)
-                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                                .withReservations(Arrays.asList())
-                                .withReviewDateTime(OffsetDateTime.parse("2021-07-21T12:31:03Z")),
-                            new ReservationOrderResponseInner()
-                                .withEtag(269791591)
-                                .withDisplayName("jcmmxdcufufsrp")
-                                .withRequestDateTime(OffsetDateTime.parse("2021-06-29T04:41:21Z"))
-                                .withCreatedDateTime(OffsetDateTime.parse("2021-12-09T12:29:37Z"))
-                                .withExpiryDateTime(OffsetDateTime.parse("2021-10-23T08:25:02Z"))
-                                .withBenefitStartTime(OffsetDateTime.parse("2021-09-08T03:00:46Z"))
-                                .withOriginalQuantity(564973983)
+                                .withEtag(44234410)
+                                .withDisplayName("rlyxwjkcprbnw")
+                                .withRequestDateTime(OffsetDateTime.parse("2021-05-06T10:18:25Z"))
+                                .withCreatedDateTime(OffsetDateTime.parse("2021-07-23T00:34:49Z"))
+                                .withExpiryDateTime(OffsetDateTime.parse("2021-01-24T18:28:17Z"))
+                                .withBenefitStartTime(OffsetDateTime.parse("2021-05-10T19:00:57Z"))
+                                .withOriginalQuantity(1314012997)
                                 .withTerm(ReservationTerm.P3Y)
-                                .withProvisioningState(ProvisioningState.SUCCEEDED)
+                                .withProvisioningState(ProvisioningState.CREATING)
                                 .withBillingPlan(ReservationBillingPlan.UPFRONT)
                                 .withReservations(Arrays.asList())
-                                .withReviewDateTime(OffsetDateTime.parse("2021-04-28T14:26:37Z"))))
-                .withNextLink("wjdk");
+                                .withReviewDateTime(OffsetDateTime.parse("2021-02-25T06:26:56Z")),
+                            new ReservationOrderResponseInner()
+                                .withEtag(1325323583)
+                                .withDisplayName("y")
+                                .withRequestDateTime(OffsetDateTime.parse("2021-07-28T21:30:24Z"))
+                                .withCreatedDateTime(OffsetDateTime.parse("2021-11-08T13:56:21Z"))
+                                .withExpiryDateTime(OffsetDateTime.parse("2021-07-21T12:31:03Z"))
+                                .withBenefitStartTime(OffsetDateTime.parse("2021-11-01T04:03:29Z"))
+                                .withOriginalQuantity(134248992)
+                                .withTerm(ReservationTerm.P1Y)
+                                .withProvisioningState(ProvisioningState.CANCELLED)
+                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                                .withReservations(Arrays.asList())
+                                .withReviewDateTime(OffsetDateTime.parse("2021-04-25T02:46:04Z")),
+                            new ReservationOrderResponseInner()
+                                .withEtag(1219718844)
+                                .withDisplayName("zsgfyccsnewmd")
+                                .withRequestDateTime(OffsetDateTime.parse("2021-01-08T04:58:25Z"))
+                                .withCreatedDateTime(OffsetDateTime.parse("2021-11-27T18:08Z"))
+                                .withExpiryDateTime(OffsetDateTime.parse("2021-08-09T00:52:58Z"))
+                                .withBenefitStartTime(OffsetDateTime.parse("2021-06-19T08:04:11Z"))
+                                .withOriginalQuantity(317245764)
+                                .withTerm(ReservationTerm.P1Y)
+                                .withProvisioningState(ProvisioningState.CREATING)
+                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                                .withReservations(Arrays.asList())
+                                .withReviewDateTime(OffsetDateTime.parse("2021-08-27T09:45:25Z")),
+                            new ReservationOrderResponseInner()
+                                .withEtag(1265522776)
+                                .withDisplayName("jtckwhdso")
+                                .withRequestDateTime(OffsetDateTime.parse("2021-12-08T08:28:27Z"))
+                                .withCreatedDateTime(OffsetDateTime.parse("2020-12-23T06:13:14Z"))
+                                .withExpiryDateTime(OffsetDateTime.parse("2021-10-18T02:17:27Z"))
+                                .withBenefitStartTime(OffsetDateTime.parse("2021-02-24T22:15:36Z"))
+                                .withOriginalQuantity(1459693032)
+                                .withTerm(ReservationTerm.P3Y)
+                                .withProvisioningState(ProvisioningState.BILLING_FAILED)
+                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
+                                .withReservations(Arrays.asList())
+                                .withReviewDateTime(OffsetDateTime.parse("2021-08-28T21:50:54Z"))))
+                .withNextLink("ljavbqid");
         model = BinaryData.fromObject(model).toObject(ReservationOrderList.class);
-        Assertions.assertEquals(9622678, model.value().get(0).etag());
-        Assertions.assertEquals("tnwu", model.value().get(0).displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T15:35:19Z"), model.value().get(0).requestDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-12T15:23:48Z"), model.value().get(0).createdDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T16:18:10Z"), model.value().get(0).expiryDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T04:43:40Z"), model.value().get(0).benefitStartTime());
-        Assertions.assertEquals(1448961060, model.value().get(0).originalQuantity());
-        Assertions.assertEquals(ReservationTerm.P1Y, model.value().get(0).term());
-        Assertions.assertEquals(ProvisioningState.CREATED, model.value().get(0).provisioningState());
-        Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.value().get(0).billingPlan());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T12:31:03Z"), model.value().get(0).reviewDateTime());
-        Assertions.assertEquals("wjdk", model.nextLink());
+        Assertions.assertEquals(44234410, model.value().get(0).etag());
+        Assertions.assertEquals("rlyxwjkcprbnw", model.value().get(0).displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T10:18:25Z"), model.value().get(0).requestDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T00:34:49Z"), model.value().get(0).createdDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T18:28:17Z"), model.value().get(0).expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T19:00:57Z"), model.value().get(0).benefitStartTime());
+        Assertions.assertEquals(1314012997, model.value().get(0).originalQuantity());
+        Assertions.assertEquals(ReservationTerm.P3Y, model.value().get(0).term());
+        Assertions.assertEquals(ProvisioningState.CREATING, model.value().get(0).provisioningState());
+        Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.value().get(0).billingPlan());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-25T06:26:56Z"), model.value().get(0).reviewDateTime());
+        Assertions.assertEquals("ljavbqid", model.nextLink());
     }
 }

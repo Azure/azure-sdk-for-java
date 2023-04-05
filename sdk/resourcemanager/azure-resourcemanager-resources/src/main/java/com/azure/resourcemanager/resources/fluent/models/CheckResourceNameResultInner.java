@@ -31,6 +31,10 @@ public final class CheckResourceNameResultInner {
     @JsonProperty(value = "status")
     private ResourceNameStatus status;
 
+    /** Creates an instance of CheckResourceNameResultInner class. */
+    public CheckResourceNameResultInner() {
+    }
+
     /**
      * Get the name property: Name of Resource.
      *

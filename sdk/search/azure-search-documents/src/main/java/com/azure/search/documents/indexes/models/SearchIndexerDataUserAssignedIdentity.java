@@ -95,10 +95,10 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
                         }
                     }
                     if (userAssignedIdentityFound) {
-                        SearchIndexerDataUserAssignedIdentity deserializedValue =
+                        SearchIndexerDataUserAssignedIdentity deserializedSearchIndexerDataUserAssignedIdentity =
                                 new SearchIndexerDataUserAssignedIdentity(userAssignedIdentity);
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerDataUserAssignedIdentity;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!userAssignedIdentityFound) {

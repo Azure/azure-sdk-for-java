@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -48,8 +49,25 @@ public final class DocumentClassifierDetails {
     @JsonProperty(value = "docTypes", required = true)
     private Map<String, ClassifierDocumentTypeDetails> docTypes;
 
-    /** Creates an instance of DocumentClassifierDetails class. */
-    public DocumentClassifierDetails() {}
+    /**
+     * Creates an instance of DocumentClassifierDetails class.
+     *
+     * @param classifierId the classifierId value to set.
+     * @param createdDateTime the createdDateTime value to set.
+     * @param apiVersion the apiVersion value to set.
+     * @param docTypes the docTypes value to set.
+     */
+    @JsonCreator
+    public DocumentClassifierDetails(
+            @JsonProperty(value = "classifierId", required = true) String classifierId,
+            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
+            @JsonProperty(value = "apiVersion", required = true) String apiVersion,
+            @JsonProperty(value = "docTypes", required = true) Map<String, ClassifierDocumentTypeDetails> docTypes) {
+        this.classifierId = classifierId;
+        this.createdDateTime = createdDateTime;
+        this.apiVersion = apiVersion;
+        this.docTypes = docTypes;
+    }
 
     /**
      * Get the classifierId property: Unique document classifier name.
@@ -58,17 +76,6 @@ public final class DocumentClassifierDetails {
      */
     public String getClassifierId() {
         return this.classifierId;
-    }
-
-    /**
-     * Set the classifierId property: Unique document classifier name.
-     *
-     * @param classifierId the classifierId value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setClassifierId(String classifierId) {
-        this.classifierId = classifierId;
-        return this;
     }
 
     /**
@@ -101,17 +108,6 @@ public final class DocumentClassifierDetails {
     }
 
     /**
-     * Set the createdDateTime property: Date and time (UTC) when the document classifier was created.
-     *
-     * @param createdDateTime the createdDateTime value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-        return this;
-    }
-
-    /**
      * Get the expirationDateTime property: Date and time (UTC) when the document classifier will expire.
      *
      * @return the expirationDateTime value.
@@ -141,33 +137,11 @@ public final class DocumentClassifierDetails {
     }
 
     /**
-     * Set the apiVersion property: API version used to create this document classifier.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
      * Get the docTypes property: List of document types to classify against.
      *
      * @return the docTypes value.
      */
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
-    }
-
-    /**
-     * Set the docTypes property: List of document types to classify against.
-     *
-     * @param docTypes the docTypes value to set.
-     * @return the DocumentClassifierDetails object itself.
-     */
-    public DocumentClassifierDetails setDocTypes(Map<String, ClassifierDocumentTypeDetails> docTypes) {
-        this.docTypes = docTypes;
-        return this;
     }
 }

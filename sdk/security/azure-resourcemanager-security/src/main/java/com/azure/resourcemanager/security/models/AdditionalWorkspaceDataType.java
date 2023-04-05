@@ -17,6 +17,15 @@ public final class AdditionalWorkspaceDataType extends ExpandableStringEnum<Addi
     public static final AdditionalWorkspaceDataType RAW_EVENTS = fromString("RawEvents");
 
     /**
+     * Creates a new instance of AdditionalWorkspaceDataType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdditionalWorkspaceDataType() {
+    }
+
+    /**
      * Creates or finds a AdditionalWorkspaceDataType from its string representation.
      *
      * @param name a name to look for.

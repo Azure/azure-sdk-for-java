@@ -23,6 +23,10 @@ public final class DeploymentWhatIf {
     @JsonProperty(value = "properties", required = true)
     private DeploymentWhatIfProperties properties;
 
+    /** Creates an instance of DeploymentWhatIf class. */
+    public DeploymentWhatIf() {
+    }
+
     /**
      * Get the location property: The location to store the deployment data.
      *

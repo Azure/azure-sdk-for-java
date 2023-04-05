@@ -81,15 +81,6 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
         return this.innerModel().verificationRecords();
     }
 
-    public Map<String, String> validSenderUsernames() {
-        Map<String, String> inner = this.innerModel().validSenderUsernames();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public UserEngagementTracking userEngagementTracking() {
         return this.innerModel().userEngagementTracking();
     }
@@ -247,16 +238,6 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     public DomainResourceImpl withDomainManagement(DomainManagement domainManagement) {
         this.innerModel().withDomainManagement(domainManagement);
         return this;
-    }
-
-    public DomainResourceImpl withValidSenderUsernames(Map<String, String> validSenderUsernames) {
-        if (isInCreateMode()) {
-            this.innerModel().withValidSenderUsernames(validSenderUsernames);
-            return this;
-        } else {
-            this.updateParameters.withValidSenderUsernames(validSenderUsernames);
-            return this;
-        }
     }
 
     public DomainResourceImpl withUserEngagementTracking(UserEngagementTracking userEngagementTracking) {

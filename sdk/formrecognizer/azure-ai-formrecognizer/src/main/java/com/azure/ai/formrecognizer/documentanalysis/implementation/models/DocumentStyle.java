@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -60,8 +61,19 @@ public final class DocumentStyle {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentStyle class. */
-    public DocumentStyle() {}
+    /**
+     * Creates an instance of DocumentStyle class.
+     *
+     * @param spans the spans value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentStyle(
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.spans = spans;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the isHandwritten property: Is content handwritten?.
@@ -195,33 +207,11 @@ public final class DocumentStyle {
     }
 
     /**
-     * Set the spans property: Location of the text elements in the concatenated content the style applies to.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly identifying the style.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly identifying the style.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentStyle object itself.
-     */
-    public DocumentStyle setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

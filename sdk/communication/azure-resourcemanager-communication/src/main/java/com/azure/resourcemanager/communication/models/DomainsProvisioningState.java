@@ -38,6 +38,15 @@ public final class DomainsProvisioningState extends ExpandableStringEnum<Domains
     public static final DomainsProvisioningState MOVING = fromString("Moving");
 
     /**
+     * Creates a new instance of DomainsProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DomainsProvisioningState() {
+    }
+
+    /**
      * Creates or finds a DomainsProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -18,6 +18,8 @@ import com.azure.communication.callautomation.models.events.CallAutomationEventB
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
 
 import org.junit.jupiter.api.Test;
@@ -259,5 +261,77 @@ public class EventHandlerUnitTests {
         RecognizeCanceled recognizeCanceledEvent = (RecognizeCanceled) event;
         assertNotNull(recognizeCanceledEvent);
         assertEquals("serverCallId", recognizeCanceledEvent.getServerCallId());
+    }
+
+    @Test
+    public void parseRemoveParticipantSucceededEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.RemoveParticipantSucceeded\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"participant\": {\n"
+                + "\"rawId\": \"rawId\",\n"
+                + "\"phoneNumber\": {\n"
+                + "\"value\": \"value\"\n"
+                + "}\n"
+                + "},\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+
+        assertNotNull(event);
+
+        RemoveParticipantSucceeded removeParticipantSucceededEvent = (RemoveParticipantSucceeded) event;
+        
+        assertNotNull(removeParticipantSucceededEvent);
+        assertEquals("serverCallId", removeParticipantSucceededEvent.getServerCallId());
+        assertEquals("callConnectionId", removeParticipantSucceededEvent.getCallConnectionId());
+        assertEquals("rawId", removeParticipantSucceededEvent.getParticipant().getRawId());
+    }
+
+    @Test
+    public void parseRemoveParticipantFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.RemoveParticipantFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"participant\": {\n"
+                + "\"rawId\": \"rawId\",\n"
+                + "\"phoneNumber\": {\n"
+                + "\"value\": \"value\"\n"
+                + "}\n"
+                + "},\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+
+        assertNotNull(event);
+
+        RemoveParticipantFailed removeParticipantFailedEvent = (RemoveParticipantFailed) event;
+        
+        assertNotNull(removeParticipantFailedEvent);
+        assertEquals("serverCallId", removeParticipantFailedEvent.getServerCallId());
+        assertEquals("callConnectionId", removeParticipantFailedEvent.getCallConnectionId());
+        assertEquals("rawId", removeParticipantFailedEvent.getParticipant().getRawId());
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowVersions Get. */
 public final class WorkflowVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowVersions_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowVersions_Get.json
      */
     /**
      * Sample code: Get a workflow version.
@@ -22,6 +20,11 @@ public final class WorkflowVersionsGetSamples {
             .manager()
             .serviceClient()
             .getWorkflowVersions()
-            .getWithResponse("test-resource-group", "test-name", "test-workflow", "08586676824806722526", Context.NONE);
+            .getWithResponse(
+                "test-resource-group",
+                "test-name",
+                "test-workflow",
+                "08586676824806722526",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -10,6 +10,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 /**
  * The exception thrown when a {@link TokenCredential} did not attempt to authenticate and retrieve {@link AccessToken},
  * as its prerequisite information or state was not available.
+ *
+ * @see com.azure.identity
  */
 public class CredentialUnavailableException extends ClientAuthenticationException {
 

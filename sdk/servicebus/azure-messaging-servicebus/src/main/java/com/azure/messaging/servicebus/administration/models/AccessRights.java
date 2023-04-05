@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Access rights of an authorization. */
@@ -18,6 +19,14 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
 
     /** Static value Listen for AccessRights. */
     public static final AccessRights LISTEN = fromString("Listen");
+
+    /**
+     * Creates a new instance of AccessRights value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessRights() {}
 
     /**
      * Creates or finds a AccessRights from its string representation.

@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Status of a Service Bus resource. */
@@ -36,6 +37,14 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
 
     /** Static value Unknown for EntityStatus. */
     public static final EntityStatus UNKNOWN = fromString("Unknown");
+
+    /**
+     * Creates a new instance of EntityStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityStatus() {}
 
     /**
      * Creates or finds a EntityStatus from its string representation.

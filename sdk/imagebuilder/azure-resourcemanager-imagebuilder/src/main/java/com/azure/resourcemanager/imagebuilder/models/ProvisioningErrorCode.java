@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningErrorCode. */
+/** Error code of the provisioning failure. */
 public final class ProvisioningErrorCode extends ExpandableStringEnum<ProvisioningErrorCode> {
     /** Static value BadSourceType for ProvisioningErrorCode. */
     public static final ProvisioningErrorCode BAD_SOURCE_TYPE = fromString("BadSourceType");
@@ -55,6 +55,15 @@ public final class ProvisioningErrorCode extends ExpandableStringEnum<Provisioni
 
     /** Static value Other for ProvisioningErrorCode. */
     public static final ProvisioningErrorCode OTHER = fromString("Other");
+
+    /**
+     * Creates a new instance of ProvisioningErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningErrorCode() {
+    }
 
     /**
      * Creates or finds a ProvisioningErrorCode from its string representation.

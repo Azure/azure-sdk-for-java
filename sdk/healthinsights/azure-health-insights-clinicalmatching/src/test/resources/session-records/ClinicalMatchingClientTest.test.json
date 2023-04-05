@@ -1,0 +1,79 @@
+{
+  "networkCallRecords" : [
+  {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/healthinsights/trialmatcher/jobs?api-version=2023-03-01-preview",
+    "Headers" : {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Connection": "keep-alive",
+      "Content-Length": "621",
+      "Content-Type": "application/json",
+      "Ocp-Apim-Subscription-Key": "00000000000000000000000000000000"
+    },
+    "Response" : {
+      "apim-request-id": "38b5199c-91fb-4c22-b574-2d1b2aed6405",
+      "Content-Length": "0",
+      "Date": "Sun, 29 Jan 2023 09:11:47 GMT",
+      "operation-location": "https://fake_ad_resource.cognitiveservices.azure.com//healthinsights/trialmatcher/jobs/8fc0d436-b092-42ab-bdf9-bc75af5a7a5a?api-version=2023-03-01-preview",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "x-envoy-upstream-service-time": "101",
+      "x-ms-region": "West Europe",
+      "StatusCode" : "202",
+      "Body" : null,
+      "Content-Type" : "application/json",
+      "Retry-After": "1"
+    },
+    "Exception" : null
+  },
+  {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/healthinsights/trialmatcher/jobs/8fc0d436-b092-42ab-bdf9-bc75af5a7a5a?api-version=2023-03-01-preview",
+    "Headers" : {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Connection": "keep-alive",
+      "Ocp-Apim-Subscription-Key": "00000000000000000000000000000000"
+    },
+    "Response" : {
+      "apim-request-id": "8fc0d436-b092-42ab-bdf9-bc75af5a7a5a",
+      "Content-Length": "4462",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Sun, 29 Jan 2023 09:11:48 GMT",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "x-envoy-upstream-service-time": "63",
+      "x-ms-region": "West Europe",
+      "StatusCode" : "200",
+      "Body" : "{\n\"jobId\": \"8fc0d436-b092-42ab-bdf9-bc75af5a7a5a\",\n\"createdDateTime\": \"2023-01-31T15:53:08Z\",\n\"expirationDateTime\": \"2023-02-01T15:53:08Z\",\n\"lastUpdateDateTime\": \"2023-01-31T15:53:11Z\",\n\"status\": \"notStarted\"\n}",
+      "Exception" : null
+    }
+  },
+  {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/healthinsights/trialmatcher/jobs/8fc0d436-b092-42ab-bdf9-bc75af5a7a5a?api-version=2023-03-01-preview",
+    "Headers" : {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Connection": "keep-alive",
+      "Ocp-Apim-Subscription-Key": "00000000000000000000000000000000"
+    },
+    "Response" : {
+      "apim-request-id": "8fc0d436-b092-42ab-bdf9-bc75af5a7a5a",
+      "Content-Length": "4462",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Sun, 29 Jan 2023 09:11:48 GMT",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "x-envoy-upstream-service-time": "63",
+      "x-ms-region": "West Europe",
+      "StatusCode" : "200",
+      "Body" : "{\n\"results\": {\n\"patients\": [\n{\n\"id\": \"98824209\",\n\"inferences\": [\n{\n\"type\": \"trialEligibility\",\n\"evidence\": [\n{\n\"eligibilityCriteriaEvidence\": \"Exclusion: Currently has or had a history of malignancy\",\n\"patientInfoEvidence\": {\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0006826\",\n\"name\": \"MalignantNeoplasms\",\n\"value\": \"true\"\n},\n\"importance\": 0.0\n}\n],\n\"id\": \"NCT05428943\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Ineligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"evidence\": [\n{\n\"eligibilityCriteriaEvidence\": \"Exclusion: Potential participants must not meet any of the following exclusion criteria: Have a history of malignancies\",\n\"patientInfoEvidence\": {\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0006826\",\n\"name\": \"MalignantNeoplasms\",\n\"value\": \"true\"\n},\n\"importance\": 0.0\n}\n],\n\"id\": \"NCT04279613\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Ineligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"evidence\": [\n{\n\"eligibilityCriteriaEvidence\": \"Exclusion: Previous or current diagnosis of malignancy\",\n\"patientInfoEvidence\": {\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0006826\",\n\"name\": \"MalignantNeoplasms\",\n\"value\": \"true\"\n},\n\"importance\": 0.0\n}\n],\n\"id\": \"NCT05574335\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Ineligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"evidence\": [\n{\n\"eligibilityCriteriaEvidence\": \"Exclusion: History or current malignancy\",\n\"patientInfoEvidence\": {\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0006826\",\n\"name\": \"MalignantNeoplasms\",\n\"value\": \"true\"\n},\n\"importance\": 0.0\n}\n],\n\"id\": \"NCT04590872\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Ineligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"evidence\": [\n{\n\"eligibilityCriteriaEvidence\": \"Exclusion: Active or recent malignancy\",\n\"patientInfoEvidence\": {\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0006826\",\n\"name\": \"MalignantNeoplasms\",\n\"value\": \"true\"\n},\n\"importance\": 0.0\n}\n],\n\"id\": \"NCT04684602\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Ineligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"evidence\": [\n{\n\"eligibilityCriteriaEvidence\": \"Exclusion: No prior history of myocardial infarction, stroke or heart failure.\",\n\"patientInfoEvidence\": {\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0018802\",\n\"name\": \"MalignantNeoplasms\",\n\"value\": \"false\"\n},\n\"importance\": 0.0\n}\n],\n\"id\": \"NCT05322213\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Ineligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT03746769\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT03977662\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT04919499\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT04786262\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT01736059\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT05241522\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT05377333\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT05473364\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT05586542\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT05634174\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n},\n{\n\"type\": \"trialEligibility\",\n\"id\": \"NCT05654831\",\n\"source\": \"clinicaltrials.gov\",\n\"value\": \"Eligible\",\n\"confidenceScore\": 0.0\n}\n],\n\"neededClinicalInfo\": [\n{\n\"semanticType\": \"T047\",\n\"category\": \"Diagnosis\",\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0011849\",\n\"name\": \"Diabetes Mellitus\",\n\"value\": \";EntityType:Diagnosis\"\n},\n{\n\"semanticType\": \"T040\",\n\"category\": \"Diagnosis\",\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C0032961\",\n\"name\": \"Pregnancy\",\n\"value\": \";EntityType:Diagnosis\"\n},\n{\n\"semanticType\": \"T201\",\n\"category\": \"ExaminationName\",\n\"system\": \"http://www.nlm.nih.gov/research/umls\",\n\"code\": \"C1305855\",\n\"name\": \"Body mass index\",\n\"value\": \";EntityType:ExaminationName\"\n}\n]\n}\n],\n\"modelVersion\": \"2023.117.1.0\",\n\"knowledgeGraphLastUpdateDate\": \"2023-11-01\"\n},\n\"jobId\": \"8fc0d436-b092-42ab-bdf9-bc75af5a7a5a\",\n\"createdDateTime\": \"2023-01-31T15:53:08Z\",\n\"expirationDateTime\": \"2023-02-01T15:53:08Z\",\n\"lastUpdateDateTime\": \"2023-01-31T15:53:11Z\",\n\"status\": \"succeeded\"\n}",
+      "Exception" : null
+    }
+  }
+
+  ],
+  "variables" : [ ]
+}

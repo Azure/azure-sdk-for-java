@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommunicationServices GetByResourceGroup. */
 public final class CommunicationServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/get.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/communicationServices/get.json
      */
     /**
      * Sample code: Get resource.
@@ -19,6 +17,7 @@ public final class CommunicationServicesGetByResourceGroupSamples {
     public static void getResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
         manager
             .communicationServices()
-            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }

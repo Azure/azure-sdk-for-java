@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for CommunicationServices Update. */
 public final class CommunicationServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/update.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/communicationServices/update.json
      */
     /**
      * Sample code: Update resource.
@@ -23,7 +22,8 @@ public final class CommunicationServicesUpdateSamples {
         CommunicationServiceResource resource =
             manager
                 .communicationServices()
-                .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("newTag", "newVal")).apply();
     }

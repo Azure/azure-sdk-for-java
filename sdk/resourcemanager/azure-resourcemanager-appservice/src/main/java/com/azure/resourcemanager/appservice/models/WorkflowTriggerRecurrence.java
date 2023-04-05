@@ -46,6 +46,10 @@ public final class WorkflowTriggerRecurrence {
     @JsonProperty(value = "schedule")
     private RecurrenceSchedule schedule;
 
+    /** Creates an instance of WorkflowTriggerRecurrence class. */
+    public WorkflowTriggerRecurrence() {
+    }
+
     /**
      * Get the frequency property: The frequency.
      *

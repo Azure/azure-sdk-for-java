@@ -9,11 +9,10 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConne
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionsResponseInner;
 import com.azure.resourcemanager.digitaltwins.models.ConnectionProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionsResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionsResponseInner model =
             BinaryData
                 .fromString(
@@ -21,8 +20,8 @@ public final class PrivateEndpointConnectionsResponseInnerTests {
                 .toObject(PrivateEndpointConnectionsResponseInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionsResponseInner model =
             new PrivateEndpointConnectionsResponseInner()
                 .withValue(

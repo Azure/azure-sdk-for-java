@@ -78,9 +78,10 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
                         }
                     }
                     if (boostingDurationFound) {
-                        FreshnessScoringParameters deserializedValue = new FreshnessScoringParameters(boostingDuration);
+                        FreshnessScoringParameters deserializedFreshnessScoringParameters =
+                                new FreshnessScoringParameters(boostingDuration);
 
-                        return deserializedValue;
+                        return deserializedFreshnessScoringParameters;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!boostingDurationFound) {

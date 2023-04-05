@@ -145,27 +145,6 @@ public interface ChangesClient {
      * @param resourceType The name of the resource type.
      * @param resourceName The name of the resource.
      * @param changeResourceId The ID of the change resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return change Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ChangeResourceResultInner get(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String resourceType,
-        String resourceName,
-        String changeResourceId);
-
-    /**
-     * Obtains the specified change resource for the target resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceProviderNamespace The name of the resource provider namespace.
-     * @param resourceType The name of the resource type.
-     * @param resourceName The name of the resource.
-     * @param changeResourceId The ID of the change resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,4 +159,25 @@ public interface ChangesClient {
         String resourceName,
         String changeResourceId,
         Context context);
+
+    /**
+     * Obtains the specified change resource for the target resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The name of the resource provider namespace.
+     * @param resourceType The name of the resource type.
+     * @param resourceName The name of the resource.
+     * @param changeResourceId The ID of the change resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return change Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ChangeResourceResultInner get(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String resourceType,
+        String resourceName,
+        String changeResourceId);
 }

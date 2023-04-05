@@ -15,23 +15,22 @@ public final class CalculateRefundRequestPropertiesTests {
         CalculateRefundRequestProperties model =
             BinaryData
                 .fromString(
-                    "{\"scope\":\"deoj\",\"reservationToReturn\":{\"reservationId\":\"ckhsmtxpsieb\",\"quantity\":1146165631}}")
+                    "{\"scope\":\"bglaocqxtccm\",\"reservationToReturn\":{\"reservationId\":\"dxyt\",\"quantity\":2080912340}}")
                 .toObject(CalculateRefundRequestProperties.class);
-        Assertions.assertEquals("deoj", model.scope());
-        Assertions.assertEquals("ckhsmtxpsieb", model.reservationToReturn().reservationId());
-        Assertions.assertEquals(1146165631, model.reservationToReturn().quantity());
+        Assertions.assertEquals("bglaocqxtccm", model.scope());
+        Assertions.assertEquals("dxyt", model.reservationToReturn().reservationId());
+        Assertions.assertEquals(2080912340, model.reservationToReturn().quantity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CalculateRefundRequestProperties model =
             new CalculateRefundRequestProperties()
-                .withScope("deoj")
-                .withReservationToReturn(
-                    new ReservationToReturn().withReservationId("ckhsmtxpsieb").withQuantity(1146165631));
+                .withScope("bglaocqxtccm")
+                .withReservationToReturn(new ReservationToReturn().withReservationId("dxyt").withQuantity(2080912340));
         model = BinaryData.fromObject(model).toObject(CalculateRefundRequestProperties.class);
-        Assertions.assertEquals("deoj", model.scope());
-        Assertions.assertEquals("ckhsmtxpsieb", model.reservationToReturn().reservationId());
-        Assertions.assertEquals(1146165631, model.reservationToReturn().quantity());
+        Assertions.assertEquals("bglaocqxtccm", model.scope());
+        Assertions.assertEquals("dxyt", model.reservationToReturn().reservationId());
+        Assertions.assertEquals(2080912340, model.reservationToReturn().quantity());
     }
 }

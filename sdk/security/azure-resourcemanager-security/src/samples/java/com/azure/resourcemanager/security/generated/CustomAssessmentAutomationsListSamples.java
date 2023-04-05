@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomAssessmentAutomations List. */
 public final class CustomAssessmentAutomationsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class CustomAssessmentAutomationsListSamples {
      */
     public static void listCustomAssessmentAutomationsInASubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.customAssessmentAutomations().list(Context.NONE);
+        manager.customAssessmentAutomations().list(com.azure.core.util.Context.NONE);
     }
 }

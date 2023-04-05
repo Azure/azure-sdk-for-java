@@ -400,18 +400,18 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
                         }
                     }
                     if (searchTextFound && suggesterNameFound) {
-                        SuggestRequest deserializedValue = new SuggestRequest(searchText, suggesterName);
-                        deserializedValue.filter = filter;
-                        deserializedValue.useFuzzyMatching = useFuzzyMatching;
-                        deserializedValue.highlightPostTag = highlightPostTag;
-                        deserializedValue.highlightPreTag = highlightPreTag;
-                        deserializedValue.minimumCoverage = minimumCoverage;
-                        deserializedValue.orderBy = orderBy;
-                        deserializedValue.searchFields = searchFields;
-                        deserializedValue.select = select;
-                        deserializedValue.top = top;
+                        SuggestRequest deserializedSuggestRequest = new SuggestRequest(searchText, suggesterName);
+                        deserializedSuggestRequest.filter = filter;
+                        deserializedSuggestRequest.useFuzzyMatching = useFuzzyMatching;
+                        deserializedSuggestRequest.highlightPostTag = highlightPostTag;
+                        deserializedSuggestRequest.highlightPreTag = highlightPreTag;
+                        deserializedSuggestRequest.minimumCoverage = minimumCoverage;
+                        deserializedSuggestRequest.orderBy = orderBy;
+                        deserializedSuggestRequest.searchFields = searchFields;
+                        deserializedSuggestRequest.select = select;
+                        deserializedSuggestRequest.top = top;
 
-                        return deserializedValue;
+                        return deserializedSuggestRequest;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!searchTextFound) {

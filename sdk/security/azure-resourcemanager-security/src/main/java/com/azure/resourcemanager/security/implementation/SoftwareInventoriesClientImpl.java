@@ -58,8 +58,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
     public interface SoftwareInventoriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SoftwaresList>> listByExtendedResource(
@@ -86,8 +85,7 @@ public final class SoftwareInventoriesClientImpl implements SoftwareInventoriesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}"
-                + "/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories/{softwareName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/softwareInventories/{softwareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SoftwareInner>> get(

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.resourcemanager.orbital.fluent.models.OperationResultInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** An immutable client-side representation of OperationResult. */
 public interface OperationResult {
@@ -50,6 +51,20 @@ public interface OperationResult {
      * @return the percentComplete value.
      */
     Double percentComplete();
+
+    /**
+     * Gets the value property: A list of results when the operation returns multiple results.
+     *
+     * @return the value value.
+     */
+    List<Object> value();
+
+    /**
+     * Gets the nextLink property: The URL to get the next set of results.
+     *
+     * @return the nextLink value.
+     */
+    String nextLink();
 
     /**
      * Gets the properties property: Operation result properties.

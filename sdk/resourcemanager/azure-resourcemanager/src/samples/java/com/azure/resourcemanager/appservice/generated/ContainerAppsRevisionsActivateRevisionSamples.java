@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsRevisions ActivateRevision. */
 public final class ContainerAppsRevisionsActivateRevisionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ActivateRevision.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ActivateRevision.json
      */
     /**
      * Sample code: Activate Container App's revision.
@@ -22,6 +20,7 @@ public final class ContainerAppsRevisionsActivateRevisionSamples {
             .manager()
             .serviceClient()
             .getContainerAppsRevisions()
-            .activateRevisionWithResponse("rg", "testcontainerApp0", "testcontainerApp0-pjxhsye", Context.NONE);
+            .activateRevisionWithResponse(
+                "rg", "testcontainerApp0", "testcontainerApp0-pjxhsye", com.azure.core.util.Context.NONE);
     }
 }

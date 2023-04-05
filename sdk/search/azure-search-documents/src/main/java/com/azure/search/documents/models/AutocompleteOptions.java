@@ -277,47 +277,34 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
     public static AutocompleteOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    AutocompleteMode autocompleteMode = null;
-                    String filter = null;
-                    Boolean useFuzzyMatching = null;
-                    String highlightPostTag = null;
-                    String highlightPreTag = null;
-                    Double minimumCoverage = null;
-                    List<String> searchFields = null;
-                    Integer top = null;
+                    AutocompleteOptions deserializedAutocompleteOptions = new AutocompleteOptions();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("autocompleteMode".equals(fieldName)) {
-                            autocompleteMode = AutocompleteMode.fromString(reader.getString());
+                            deserializedAutocompleteOptions.autocompleteMode =
+                                    AutocompleteMode.fromString(reader.getString());
                         } else if ("$filter".equals(fieldName)) {
-                            filter = reader.getString();
+                            deserializedAutocompleteOptions.filter = reader.getString();
                         } else if ("UseFuzzyMatching".equals(fieldName)) {
-                            useFuzzyMatching = reader.getNullable(JsonReader::getBoolean);
+                            deserializedAutocompleteOptions.useFuzzyMatching =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("highlightPostTag".equals(fieldName)) {
-                            highlightPostTag = reader.getString();
+                            deserializedAutocompleteOptions.highlightPostTag = reader.getString();
                         } else if ("highlightPreTag".equals(fieldName)) {
-                            highlightPreTag = reader.getString();
+                            deserializedAutocompleteOptions.highlightPreTag = reader.getString();
                         } else if ("minimumCoverage".equals(fieldName)) {
-                            minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                            deserializedAutocompleteOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
                         } else if ("searchFields".equals(fieldName)) {
-                            searchFields = reader.readArray(reader1 -> reader1.getString());
+                            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
+                            deserializedAutocompleteOptions.searchFields = searchFields;
                         } else if ("$top".equals(fieldName)) {
-                            top = reader.getNullable(JsonReader::getInt);
+                            deserializedAutocompleteOptions.top = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    AutocompleteOptions deserializedValue = new AutocompleteOptions();
-                    deserializedValue.autocompleteMode = autocompleteMode;
-                    deserializedValue.filter = filter;
-                    deserializedValue.useFuzzyMatching = useFuzzyMatching;
-                    deserializedValue.highlightPostTag = highlightPostTag;
-                    deserializedValue.highlightPreTag = highlightPreTag;
-                    deserializedValue.minimumCoverage = minimumCoverage;
-                    deserializedValue.searchFields = searchFields;
-                    deserializedValue.top = top;
-                    return deserializedValue;
+                    return deserializedAutocompleteOptions;
                 });
     }
 

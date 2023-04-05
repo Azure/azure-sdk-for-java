@@ -125,10 +125,10 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && patternFound && replacementFound) {
-                        PatternReplaceTokenFilter deserializedValue =
+                        PatternReplaceTokenFilter deserializedPatternReplaceTokenFilter =
                                 new PatternReplaceTokenFilter(name, pattern, replacement);
 
-                        return deserializedValue;
+                        return deserializedPatternReplaceTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

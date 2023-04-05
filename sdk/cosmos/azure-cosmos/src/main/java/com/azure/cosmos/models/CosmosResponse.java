@@ -4,7 +4,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 import java.time.Duration;
 import java.util.Map;
@@ -52,6 +51,10 @@ public class CosmosResponse<T> {
      * @return the max resource quota.
      */
     public String getMaxResourceQuota() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
+
         return resourceResponseWrapper.getMaxResourceQuota();
     }
 
@@ -61,6 +64,10 @@ public class CosmosResponse<T> {
      * @return the current resource quota usage.
      */
     public String getCurrentResourceQuotaUsage() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
+
         return resourceResponseWrapper.getCurrentResourceQuotaUsage();
     }
 
@@ -70,6 +77,10 @@ public class CosmosResponse<T> {
      * @return the activity getId.
      */
     public String getActivityId() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
+
         return resourceResponseWrapper.getActivityId();
     }
 
@@ -82,6 +93,10 @@ public class CosmosResponse<T> {
      * @return the request charge.
      */
     public double getRequestCharge() {
+        if (resourceResponseWrapper == null) {
+            return 0d;
+        }
+
         return resourceResponseWrapper.getRequestCharge();
     }
 
@@ -91,6 +106,10 @@ public class CosmosResponse<T> {
      * @return the status code.
      */
     public int getStatusCode() {
+        if (resourceResponseWrapper == null) {
+            return 0;
+        }
+
         return resourceResponseWrapper.getStatusCode();
     }
 
@@ -100,6 +119,10 @@ public class CosmosResponse<T> {
      * @return the session token.
      */
     public String getSessionToken() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
+
         return resourceResponseWrapper.getSessionToken();
     }
 
@@ -109,6 +132,9 @@ public class CosmosResponse<T> {
      * @return the response headers.
      */
     public Map<String, String> getResponseHeaders() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
         return resourceResponseWrapper.getResponseHeaders();
     }
 
@@ -118,6 +144,9 @@ public class CosmosResponse<T> {
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
     public CosmosDiagnostics getDiagnostics() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
         return resourceResponseWrapper.getDiagnostics();
     }
 
@@ -127,6 +156,10 @@ public class CosmosResponse<T> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     public Duration getDuration() {
+        if (resourceResponseWrapper == null) {
+            return null;
+        }
+
         return resourceResponseWrapper.getDuration();
     }
 }

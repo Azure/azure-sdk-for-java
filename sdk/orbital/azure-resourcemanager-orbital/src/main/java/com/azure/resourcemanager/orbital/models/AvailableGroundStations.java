@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /** Resource collection API of AvailableGroundStations. */
@@ -34,27 +33,4 @@ public interface AvailableGroundStations {
      *     PagedIterable}.
      */
     PagedIterable<AvailableGroundStation> list(CapabilityParameter capability, Context context);
-
-    /**
-     * Gets the specified available ground station.
-     *
-     * @param groundStationName Ground Station name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified available ground station.
-     */
-    AvailableGroundStation get(String groundStationName);
-
-    /**
-     * Gets the specified available ground station.
-     *
-     * @param groundStationName Ground Station name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified available ground station along with {@link Response}.
-     */
-    Response<AvailableGroundStation> getWithResponse(String groundStationName, Context context);
 }

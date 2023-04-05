@@ -14,9 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleCosmosRepositoryIllegalTest {
     private SimpleCosmosRepository<Person, String> repository;
@@ -29,7 +26,6 @@ public class SimpleCosmosRepositoryIllegalTest {
     @Before
     public void setUp() {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("", new PartitionKeyDefinition());
-        when(dbOperations.getContainerProperties(any())).thenReturn(containerProperties);
         repository = new SimpleCosmosRepository<>(entityInformation, dbOperations);
     }
 

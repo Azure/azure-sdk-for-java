@@ -22,6 +22,10 @@ public final class RepetitionIndex {
     @JsonProperty(value = "itemIndex", required = true)
     private int itemIndex;
 
+    /** Creates an instance of RepetitionIndex class. */
+    public RepetitionIndex() {
+    }
+
     /**
      * Get the scopeName property: The scope.
      *

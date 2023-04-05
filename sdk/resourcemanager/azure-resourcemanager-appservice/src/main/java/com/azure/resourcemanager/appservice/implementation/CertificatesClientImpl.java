@@ -67,7 +67,7 @@ public final class CertificatesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface CertificatesService {
+    public interface CertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
         @ExpectedResponses({200})
@@ -94,8 +94,7 @@ public final class CertificatesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> getByResourceGroup(
@@ -109,8 +108,7 @@ public final class CertificatesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> createOrUpdate(
@@ -125,8 +123,7 @@ public final class CertificatesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
@@ -140,8 +137,7 @@ public final class CertificatesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates"
-                + "/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> update(
@@ -176,7 +172,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @param filter Return only information specified in the filter (using OData syntax). For example:
      *     $filter=KeyVaultId eq 'KeyVaultId'.
@@ -224,7 +222,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @param filter Return only information specified in the filter (using OData syntax). For example:
      *     $filter=KeyVaultId eq 'KeyVaultId'.
@@ -270,7 +270,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @param filter Return only information specified in the filter (using OData syntax). For example:
      *     $filter=KeyVaultId eq 'KeyVaultId'.
@@ -285,7 +287,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,7 +302,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @param filter Return only information specified in the filter (using OData syntax). For example:
      *     $filter=KeyVaultId eq 'KeyVaultId'.
@@ -315,7 +321,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -328,7 +336,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
+     *
+     * <p>Description for Get all certificates for a subscription.
      *
      * @param filter Return only information specified in the filter (using OData syntax). For example:
      *     $filter=KeyVaultId eq 'KeyVaultId'.
@@ -344,7 +354,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
+     *
+     * <p>Description for Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,7 +407,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
+     *
+     * <p>Description for Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -445,7 +459,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
+     *
+     * <p>Description for Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -461,7 +477,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
+     *
+     * <p>Description for Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -478,7 +496,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
+     *
+     * <p>Description for Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,7 +512,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
+     *
+     * <p>Description for Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -507,7 +529,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
+     *
+     * <p>Description for Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -554,7 +578,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
+     *
+     * <p>Description for Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -600,7 +626,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
+     *
+     * <p>Description for Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -612,33 +640,13 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<CertificateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get a certificate.
+     * <p>Description for Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -655,7 +663,26 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Get a certificate.
+     *
+     * <p>Description for Get a certificate.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sSL certificate for an app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -711,7 +738,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -765,7 +794,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -779,35 +810,13 @@ public final class CertificatesClientImpl
     public Mono<CertificateInner> createOrUpdateAsync(
         String resourceGroupName, String name, CertificateInner certificateEnvelope) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, certificateEnvelope)
-            .flatMap(
-                (Response<CertificateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner createOrUpdate(
-        String resourceGroupName, String name, CertificateInner certificateEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, name, certificateEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a certificate.
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -825,7 +834,28 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Delete a certificate.
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateEnvelope Details of certificate, if it exists already.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sSL certificate for an app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner createOrUpdate(
+        String resourceGroupName, String name, CertificateInner certificateEnvelope) {
+        return createOrUpdateWithResponse(resourceGroupName, name, certificateEnvelope, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete a certificate.
+     *
+     * <p>Description for Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -872,7 +902,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
+     *
+     * <p>Description for Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -917,7 +949,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
+     *
+     * <p>Description for Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -928,25 +962,13 @@ public final class CertificatesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
-        return deleteWithResponseAsync(resourceGroupName, name).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name) {
-        deleteAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Delete a certificate.
+     * <p>Description for Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -962,7 +984,25 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Delete a certificate.
+     *
+     * <p>Description for Delete a certificate.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String name) {
+        deleteWithResponse(resourceGroupName, name, Context.NONE);
+    }
+
+    /**
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1018,7 +1058,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1072,7 +1114,9 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1086,35 +1130,13 @@ public final class CertificatesClientImpl
     public Mono<CertificateInner> updateAsync(
         String resourceGroupName, String name, CertificatePatchResource certificateEnvelope) {
         return updateWithResponseAsync(resourceGroupName, name, certificateEnvelope)
-            .flatMap(
-                (Response<CertificateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the certificate.
-     * @param certificateEnvelope Details of certificate, if it exists already.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope) {
-        return updateAsync(resourceGroupName, name, certificateEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a certificate.
+     * <p>Description for Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1132,9 +1154,29 @@ public final class CertificatesClientImpl
     }
 
     /**
+     * Create or update a certificate.
+     *
+     * <p>Description for Create or update a certificate.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateEnvelope Details of certificate, if it exists already.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sSL certificate for an app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner update(
+        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope) {
+        return updateWithResponse(resourceGroupName, name, certificateEnvelope, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1169,7 +1211,8 @@ public final class CertificatesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1205,7 +1248,8 @@ public final class CertificatesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1241,7 +1285,8 @@ public final class CertificatesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

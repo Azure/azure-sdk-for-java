@@ -23,6 +23,15 @@ public final class PropertyType extends ExpandableStringEnum<PropertyType> {
     public static final PropertyType BOOLEAN = fromString("Boolean");
 
     /**
+     * Creates a new instance of PropertyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PropertyType() {
+    }
+
+    /**
      * Creates or finds a PropertyType from its string representation.
      *
      * @param name a name to look for.

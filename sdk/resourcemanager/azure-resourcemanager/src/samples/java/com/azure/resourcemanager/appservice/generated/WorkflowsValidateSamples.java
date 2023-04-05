@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.models.Kind;
 import com.azure.resourcemanager.appservice.models.Workflow;
@@ -14,7 +13,7 @@ import java.io.IOException;
 /** Samples for Workflows Validate. */
 public final class WorkflowsValidateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Workflows_Validate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Workflows_Validate.json
      */
     /**
      * Sample code: Validate a workflow.
@@ -40,6 +39,6 @@ public final class WorkflowsValidateSamples {
                                 Object.class,
                                 SerializerEncoding.JSON))
                     .withKind(Kind.STATEFUL),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
