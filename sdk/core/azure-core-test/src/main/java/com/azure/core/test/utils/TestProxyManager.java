@@ -6,6 +6,7 @@ package com.azure.core.test.utils;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -44,8 +45,15 @@ public class TestProxyManager {
     public void startProxy() {
 
         try {
-            ProcessBuilder builder = new ProcessBuilder(Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-                TestProxyUtils.getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
+            String commandLine = "test-proxy";
+            // if we're not running in CI, construct the local path. TF_BUILD indicates Azure DevOps. CI indicates Github Actions.
+            if (Configuration.getGlobalConfiguration().get("TF_BUILD") == null &&
+                Configuration.getGlobalConfiguration().get("CI") == null) {
+                commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
+                    TestProxyUtils.getProxyProcessName()).toString();
+            }
+
+            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath())
                 .directory(TestProxyDownloader.getProxyDirectory().toFile());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
