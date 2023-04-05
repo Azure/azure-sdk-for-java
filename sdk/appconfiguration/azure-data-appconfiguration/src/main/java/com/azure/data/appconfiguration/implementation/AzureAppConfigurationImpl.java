@@ -76,11 +76,10 @@ import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeade
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the AzureAppConfiguration type. */
 public final class AzureAppConfigurationImpl {
