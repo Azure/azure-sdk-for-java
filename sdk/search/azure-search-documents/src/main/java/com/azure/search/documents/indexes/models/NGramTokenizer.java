@@ -170,12 +170,12 @@ public final class NGramTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        NGramTokenizer deserializedValue = new NGramTokenizer(name);
-                        deserializedValue.minGram = minGram;
-                        deserializedValue.maxGram = maxGram;
-                        deserializedValue.tokenChars = tokenChars;
+                        NGramTokenizer deserializedNGramTokenizer = new NGramTokenizer(name);
+                        deserializedNGramTokenizer.minGram = minGram;
+                        deserializedNGramTokenizer.maxGram = maxGram;
+                        deserializedNGramTokenizer.tokenChars = tokenChars;
 
-                        return deserializedValue;
+                        return deserializedNGramTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

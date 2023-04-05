@@ -11,13 +11,11 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosClientBuilderTest {
-
     String hostName = "https://sample-account.documents.azure.com:443/";
 
     @Test(groups = "unit")

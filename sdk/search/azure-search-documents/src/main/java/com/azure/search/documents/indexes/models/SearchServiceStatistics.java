@@ -96,9 +96,10 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
                         }
                     }
                     if (countersFound && limitsFound) {
-                        SearchServiceStatistics deserializedValue = new SearchServiceStatistics(counters, limits);
+                        SearchServiceStatistics deserializedSearchServiceStatistics =
+                                new SearchServiceStatistics(counters, limits);
 
-                        return deserializedValue;
+                        return deserializedSearchServiceStatistics;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!countersFound) {

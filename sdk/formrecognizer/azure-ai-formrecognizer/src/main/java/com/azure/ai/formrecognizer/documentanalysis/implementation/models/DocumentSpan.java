@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contiguous region of the concatenated content property, specified as an offset and length. */
-@Fluent
+@Immutable
 public final class DocumentSpan {
     /*
      * Zero-based index of the content represented by the span.
@@ -22,8 +23,19 @@ public final class DocumentSpan {
     @JsonProperty(value = "length", required = true)
     private int length;
 
-    /** Creates an instance of DocumentSpan class. */
-    public DocumentSpan() {}
+    /**
+     * Creates an instance of DocumentSpan class.
+     *
+     * @param offset the offset value to set.
+     * @param length the length value to set.
+     */
+    @JsonCreator
+    public DocumentSpan(
+            @JsonProperty(value = "offset", required = true) int offset,
+            @JsonProperty(value = "length", required = true) int length) {
+        this.offset = offset;
+        this.length = length;
+    }
 
     /**
      * Get the offset property: Zero-based index of the content represented by the span.
@@ -35,33 +47,11 @@ public final class DocumentSpan {
     }
 
     /**
-     * Set the offset property: Zero-based index of the content represented by the span.
-     *
-     * @param offset the offset value to set.
-     * @return the DocumentSpan object itself.
-     */
-    public DocumentSpan setOffset(int offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    /**
      * Get the length property: Number of characters in the content represented by the span.
      *
      * @return the length value.
      */
     public int getLength() {
         return this.length;
-    }
-
-    /**
-     * Set the length property: Number of characters in the content represented by the span.
-     *
-     * @param length the length value to set.
-     * @return the DocumentSpan object itself.
-     */
-    public DocumentSpan setLength(int length) {
-        this.length = length;
-        return this;
     }
 }

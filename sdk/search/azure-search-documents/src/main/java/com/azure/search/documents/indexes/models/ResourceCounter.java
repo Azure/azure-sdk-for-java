@@ -103,10 +103,10 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
                         }
                     }
                     if (usageFound) {
-                        ResourceCounter deserializedValue = new ResourceCounter(usage);
-                        deserializedValue.quota = quota;
+                        ResourceCounter deserializedResourceCounter = new ResourceCounter(usage);
+                        deserializedResourceCounter.quota = quota;
 
-                        return deserializedValue;
+                        return deserializedResourceCounter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!usageFound) {

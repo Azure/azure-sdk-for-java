@@ -40,7 +40,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
@@ -68,10 +67,6 @@ import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClie
 @ServiceClient(builder = KeyVaultBackupClientBuilder.class)
 public final class KeyVaultBackupClient {
     private final KeyVaultBackupAsyncClient asyncClient;
-
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
@@ -219,7 +214,7 @@ public final class KeyVaultBackupClient {
 
         try {
             FullBackupResponse backupOperationResponse = clientImpl.fullBackupWithResponse(vaultUrl, sasTokenParameter,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(),
                 (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
@@ -261,7 +256,7 @@ public final class KeyVaultBackupClient {
                 Context contextToUse = enableSyncRestProxy(context);
 
                 Response<FullBackupOperation> backupOperationResponse = clientImpl.fullBackupStatusWithResponse(vaultUrl, jobId,
-                    contextToUse.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    contextToUse);
                 return processBackupOperationResponse(new SimpleResponse<>(backupOperationResponse,
                             (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
             } catch (HttpResponseException e) {
@@ -386,7 +381,7 @@ public final class KeyVaultBackupClient {
 
         try {
             FullRestoreOperationResponse restoreOperationResponse = clientImpl.fullRestoreOperationWithResponse(vaultUrl, restoreOperationParameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return new SimpleResponse<>(restoreOperationResponse.getRequest(),
                 restoreOperationResponse.getStatusCode(),
                 restoreOperationResponse.getHeaders(),
@@ -429,7 +424,7 @@ public final class KeyVaultBackupClient {
                 Context contextToUse = enableSyncRestProxy(context);
 
                 Response<RestoreOperation> response = clientImpl.restoreStatusWithResponse(vaultUrl, jobId,
-                    contextToUse.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    contextToUse);
                 return processRestoreOperationResponse(new SimpleResponse<>(response,
                             (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())));
 
@@ -560,8 +555,7 @@ public final class KeyVaultBackupClient {
 
         try {
             SelectiveKeyRestoreOperationResponse restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationWithResponse(vaultUrl, keyName,
-                    selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    selectiveKeyRestoreOperationParameters, context);
             return new SimpleResponse<>(restoreOperationResponse.getRequest(),
                 restoreOperationResponse.getStatusCode(),
                 restoreOperationResponse.getHeaders(),
@@ -602,7 +596,7 @@ public final class KeyVaultBackupClient {
                 final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
                 Context contextToUse = enableSyncRestProxy(context);
                 Response<RestoreOperation> response = clientImpl.restoreStatusWithResponse(vaultUrl, jobId,
-                    contextToUse.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    contextToUse);
                 return processSelectiveKeyRestoreOperationResponse(new SimpleResponse<>(response,
                         (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(response.getValue())));
             } catch (HttpResponseException e) {

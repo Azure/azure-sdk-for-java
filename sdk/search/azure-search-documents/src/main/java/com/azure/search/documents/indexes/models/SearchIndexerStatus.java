@@ -140,11 +140,11 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                         }
                     }
                     if (statusFound && executionHistoryFound && limitsFound) {
-                        SearchIndexerStatus deserializedValue =
+                        SearchIndexerStatus deserializedSearchIndexerStatus =
                                 new SearchIndexerStatus(status, executionHistory, limits);
-                        deserializedValue.lastResult = lastResult;
+                        deserializedSearchIndexerStatus.lastResult = lastResult;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerStatus;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!statusFound) {

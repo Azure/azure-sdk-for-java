@@ -4,12 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An annotation object that represents a visual annotation in the document, such as checks ✓ and crosses X. */
-@Fluent
+@Immutable
 public final class DocumentAnnotation {
     /*
      * Annotation kind.
@@ -29,8 +30,22 @@ public final class DocumentAnnotation {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentAnnotation class. */
-    public DocumentAnnotation() {}
+    /**
+     * Creates an instance of DocumentAnnotation class.
+     *
+     * @param kind the kind value to set.
+     * @param polygon the polygon value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentAnnotation(
+            @JsonProperty(value = "kind", required = true) DocumentAnnotationKind kind,
+            @JsonProperty(value = "polygon", required = true) List<Float> polygon,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.kind = kind;
+        this.polygon = polygon;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the kind property: Annotation kind.
@@ -39,17 +54,6 @@ public final class DocumentAnnotation {
      */
     public DocumentAnnotationKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Set the kind property: Annotation kind.
-     *
-     * @param kind the kind value to set.
-     * @return the DocumentAnnotation object itself.
-     */
-    public DocumentAnnotation setKind(DocumentAnnotationKind kind) {
-        this.kind = kind;
-        return this;
     }
 
     /**
@@ -62,33 +66,11 @@ public final class DocumentAnnotation {
     }
 
     /**
-     * Set the polygon property: Bounding polygon of the annotation.
-     *
-     * @param polygon the polygon value to set.
-     * @return the DocumentAnnotation object itself.
-     */
-    public DocumentAnnotation setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the annotation.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the annotation.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentAnnotation object itself.
-     */
-    public DocumentAnnotation setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

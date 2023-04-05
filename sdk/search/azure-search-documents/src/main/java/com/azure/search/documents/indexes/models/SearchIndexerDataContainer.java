@@ -108,10 +108,11 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
                         }
                     }
                     if (nameFound) {
-                        SearchIndexerDataContainer deserializedValue = new SearchIndexerDataContainer(name);
-                        deserializedValue.query = query;
+                        SearchIndexerDataContainer deserializedSearchIndexerDataContainer =
+                                new SearchIndexerDataContainer(name);
+                        deserializedSearchIndexerDataContainer.query = query;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerDataContainer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

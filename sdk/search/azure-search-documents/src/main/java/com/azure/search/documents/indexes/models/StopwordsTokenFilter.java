@@ -203,13 +203,13 @@ public final class StopwordsTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        StopwordsTokenFilter deserializedValue = new StopwordsTokenFilter(name);
-                        deserializedValue.stopwords = stopwords;
-                        deserializedValue.stopwordsList = stopwordsList;
-                        deserializedValue.caseIgnored = caseIgnored;
-                        deserializedValue.trailingStopWordsRemoved = trailingStopWordsRemoved;
+                        StopwordsTokenFilter deserializedStopwordsTokenFilter = new StopwordsTokenFilter(name);
+                        deserializedStopwordsTokenFilter.stopwords = stopwords;
+                        deserializedStopwordsTokenFilter.stopwordsList = stopwordsList;
+                        deserializedStopwordsTokenFilter.caseIgnored = caseIgnored;
+                        deserializedStopwordsTokenFilter.trailingStopWordsRemoved = trailingStopWordsRemoved;
 
-                        return deserializedValue;
+                        return deserializedStopwordsTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

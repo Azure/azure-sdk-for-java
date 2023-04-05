@@ -4,12 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Quota used, limit, and next reset date/time. */
-@Fluent
+@Immutable
 public final class QuotaDetails {
     /*
      * Amount of the resource quota used.
@@ -29,8 +30,22 @@ public final class QuotaDetails {
     @JsonProperty(value = "quotaResetDateTime", required = true)
     private OffsetDateTime quotaResetDateTime;
 
-    /** Creates an instance of QuotaDetails class. */
-    public QuotaDetails() {}
+    /**
+     * Creates an instance of QuotaDetails class.
+     *
+     * @param used the used value to set.
+     * @param quota the quota value to set.
+     * @param quotaResetDateTime the quotaResetDateTime value to set.
+     */
+    @JsonCreator
+    public QuotaDetails(
+            @JsonProperty(value = "used", required = true) int used,
+            @JsonProperty(value = "quota", required = true) int quota,
+            @JsonProperty(value = "quotaResetDateTime", required = true) OffsetDateTime quotaResetDateTime) {
+        this.used = used;
+        this.quota = quota;
+        this.quotaResetDateTime = quotaResetDateTime;
+    }
 
     /**
      * Get the used property: Amount of the resource quota used.
@@ -39,17 +54,6 @@ public final class QuotaDetails {
      */
     public int getUsed() {
         return this.used;
-    }
-
-    /**
-     * Set the used property: Amount of the resource quota used.
-     *
-     * @param used the used value to set.
-     * @return the QuotaDetails object itself.
-     */
-    public QuotaDetails setUsed(int used) {
-        this.used = used;
-        return this;
     }
 
     /**
@@ -62,33 +66,11 @@ public final class QuotaDetails {
     }
 
     /**
-     * Set the quota property: Resource quota limit.
-     *
-     * @param quota the quota value to set.
-     * @return the QuotaDetails object itself.
-     */
-    public QuotaDetails setQuota(int quota) {
-        this.quota = quota;
-        return this;
-    }
-
-    /**
      * Get the quotaResetDateTime property: Date/time when the resource quota usage will be reset.
      *
      * @return the quotaResetDateTime value.
      */
     public OffsetDateTime getQuotaResetDateTime() {
         return this.quotaResetDateTime;
-    }
-
-    /**
-     * Set the quotaResetDateTime property: Date/time when the resource quota usage will be reset.
-     *
-     * @param quotaResetDateTime the quotaResetDateTime value to set.
-     * @return the QuotaDetails object itself.
-     */
-    public QuotaDetails setQuotaResetDateTime(OffsetDateTime quotaResetDateTime) {
-        this.quotaResetDateTime = quotaResetDateTime;
-        return this;
     }
 }

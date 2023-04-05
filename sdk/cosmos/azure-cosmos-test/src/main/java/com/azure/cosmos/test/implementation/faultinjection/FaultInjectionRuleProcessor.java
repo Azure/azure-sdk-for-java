@@ -156,13 +156,14 @@ public class FaultInjectionRuleProcessor {
                 }
 
                 List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
-                effectiveCondition.setRegionEndpoints(regionEndpoints);
 
                 if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
                     // if region is not specific configured, then also add the defaultEndpoint
                     List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
                     regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
                     effectiveCondition.setRegionEndpoints(regionEndpointsWithDefault);
+                } else {
+                    effectiveCondition.setRegionEndpoints(regionEndpoints);
                 }
 
                 // TODO: add handling for gateway mode

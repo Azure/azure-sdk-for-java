@@ -1,6 +1,6 @@
 # Release History
 
-## 4.15.0-beta.1 (Unreleased)
+## 4.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.15.0 (2023-03-31)
+
+### Features Added
+
+- Added new ACS Email events
 
 ## 4.14.2 (2023-03-16)
 

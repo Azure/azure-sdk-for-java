@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -29,8 +30,19 @@ public final class BuildDocumentClassifierRequest {
     @JsonProperty(value = "docTypes", required = true)
     private Map<String, ClassifierDocumentTypeDetails> docTypes;
 
-    /** Creates an instance of BuildDocumentClassifierRequest class. */
-    public BuildDocumentClassifierRequest() {}
+    /**
+     * Creates an instance of BuildDocumentClassifierRequest class.
+     *
+     * @param classifierId the classifierId value to set.
+     * @param docTypes the docTypes value to set.
+     */
+    @JsonCreator
+    public BuildDocumentClassifierRequest(
+            @JsonProperty(value = "classifierId", required = true) String classifierId,
+            @JsonProperty(value = "docTypes", required = true) Map<String, ClassifierDocumentTypeDetails> docTypes) {
+        this.classifierId = classifierId;
+        this.docTypes = docTypes;
+    }
 
     /**
      * Get the classifierId property: Unique document classifier name.
@@ -39,17 +51,6 @@ public final class BuildDocumentClassifierRequest {
      */
     public String getClassifierId() {
         return this.classifierId;
-    }
-
-    /**
-     * Set the classifierId property: Unique document classifier name.
-     *
-     * @param classifierId the classifierId value to set.
-     * @return the BuildDocumentClassifierRequest object itself.
-     */
-    public BuildDocumentClassifierRequest setClassifierId(String classifierId) {
-        this.classifierId = classifierId;
-        return this;
     }
 
     /**
@@ -79,16 +80,5 @@ public final class BuildDocumentClassifierRequest {
      */
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
-    }
-
-    /**
-     * Set the docTypes property: List of document types to classify against.
-     *
-     * @param docTypes the docTypes value to set.
-     * @return the BuildDocumentClassifierRequest object itself.
-     */
-    public BuildDocumentClassifierRequest setDocTypes(Map<String, ClassifierDocumentTypeDetails> docTypes) {
-        this.docTypes = docTypes;
-        return this;
     }
 }

@@ -26,7 +26,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
     /*
      * A value indicating the capabilities of the suggester.
      */
-    private String searchMode;
+    private String searchMode = "analyzingInfixMatching";
 
     /*
      * The list of field names to which the suggester applies. Each field must be searchable.
@@ -116,10 +116,10 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
                         }
                     }
                     if (nameFound && sourceFieldsFound) {
-                        SearchSuggester deserializedValue = new SearchSuggester(name, sourceFields);
-                        deserializedValue.searchMode = searchMode;
+                        SearchSuggester deserializedSearchSuggester = new SearchSuggester(name, sourceFields);
+                        deserializedSearchSuggester.searchMode = searchMode;
 
-                        return deserializedValue;
+                        return deserializedSearchSuggester;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

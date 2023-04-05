@@ -209,15 +209,15 @@ public final class OcrSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        OcrSkill deserializedValue = new OcrSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.shouldDetectOrientation = shouldDetectOrientation;
-                        deserializedValue.lineEnding = lineEnding;
+                        OcrSkill deserializedOcrSkill = new OcrSkill(inputs, outputs);
+                        deserializedOcrSkill.setName(name);
+                        deserializedOcrSkill.setDescription(description);
+                        deserializedOcrSkill.setContext(context);
+                        deserializedOcrSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedOcrSkill.shouldDetectOrientation = shouldDetectOrientation;
+                        deserializedOcrSkill.lineEnding = lineEnding;
 
-                        return deserializedValue;
+                        return deserializedOcrSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

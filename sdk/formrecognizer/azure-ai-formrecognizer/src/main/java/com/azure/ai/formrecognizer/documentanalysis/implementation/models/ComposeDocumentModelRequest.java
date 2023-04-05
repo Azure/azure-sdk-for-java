@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +37,20 @@ public final class ComposeDocumentModelRequest {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of ComposeDocumentModelRequest class. */
-    public ComposeDocumentModelRequest() {}
+    /**
+     * Creates an instance of ComposeDocumentModelRequest class.
+     *
+     * @param modelId the modelId value to set.
+     * @param componentModels the componentModels value to set.
+     */
+    @JsonCreator
+    public ComposeDocumentModelRequest(
+            @JsonProperty(value = "modelId", required = true) String modelId,
+            @JsonProperty(value = "componentModels", required = true)
+                    List<ComponentDocumentModelDetails> componentModels) {
+        this.modelId = modelId;
+        this.componentModels = componentModels;
+    }
 
     /**
      * Get the modelId property: Unique document model name.
@@ -46,17 +59,6 @@ public final class ComposeDocumentModelRequest {
      */
     public String getModelId() {
         return this.modelId;
-    }
-
-    /**
-     * Set the modelId property: Unique document model name.
-     *
-     * @param modelId the modelId value to set.
-     * @return the ComposeDocumentModelRequest object itself.
-     */
-    public ComposeDocumentModelRequest setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
     }
 
     /**
@@ -86,17 +88,6 @@ public final class ComposeDocumentModelRequest {
      */
     public List<ComponentDocumentModelDetails> getComponentModels() {
         return this.componentModels;
-    }
-
-    /**
-     * Set the componentModels property: List of component document models to compose.
-     *
-     * @param componentModels the componentModels value to set.
-     * @return the ComposeDocumentModelRequest object itself.
-     */
-    public ComposeDocumentModelRequest setComponentModels(List<ComponentDocumentModelDetails> componentModels) {
-        this.componentModels = componentModels;
-        return this;
     }
 
     /**
