@@ -461,6 +461,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * receive operation will wait for a default 1 minute for receiving a message before it times out. You can
      * override it by using {@link #receiveMessages(int, Duration)}.
      *
+     * <p>
+     * The client uses an amqp-link underneath to receive the messages; the client will transparently transition
+     * to a new amqp-link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
+     * invocations of receiveMessages API will throw the error to the application. Once the application receives
+     * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
+     * and create a new client to continue receiving messages.
+     * </p>
+     *
      * @param maxMessages The maximum number of messages to receive.
      *
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
@@ -479,6 +488,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
      * default receive mode is {@link ServiceBusReceiveMode#PEEK_LOCK } unless it is changed during creation of {@link
      * ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)}.
+     *
+     * <p>
+     * The client uses an amqp-link underneath to receive the messages; the client will transparently transition
+     * to a new amqp-link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
+     * invocations of receiveMessages API will throw the error to the application. Once the application receives
+     * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
+     * and create a new client to continue receiving messages.
+     * </p>
      *
      * @param maxMessages The maximum number of messages to receive.
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
