@@ -84,10 +84,6 @@ parameters:
     displayName: 'azure-cosmos'
     type: boolean
     default: true
-  - name: release_azurespringdatacosmos
-    displayName: 'azure-spring-data-cosmos'
-    type: boolean
-    default: true
   - name: release_azurecosmosencryption
     displayName: 'azure-cosmos-encryption'
     type: boolean
@@ -120,10 +116,6 @@ extends:
         groupId: com.azure
         safeName: azurecosmos
         releaseInBatch: ${{ parameters.release_azurecosmos }}
-      - name: azure-spring-data-cosmos
-        groupId: com.azure
-        safeName: azurespringdatacosmos
-        releaseInBatch: ${{ parameters.release_azurespringdatacosmos }}
       - name: azure-cosmos-encryption
         groupId: com.azure
         safeName: azurecosmosencryption
@@ -157,8 +149,6 @@ extends:
       - name: azure-cosmos-tests
         groupId: com.azure
       - name: azure-cosmos-benchmark
-        groupId: com.azure
-      - name: azure-spring-data-cosmos-test
         groupId: com.azure
       - name: azure-cosmos-spark_3_2-12
         groupId: com.azure.cosmos.spark
