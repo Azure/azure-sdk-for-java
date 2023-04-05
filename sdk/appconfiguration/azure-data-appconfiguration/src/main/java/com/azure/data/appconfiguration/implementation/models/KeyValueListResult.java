@@ -87,25 +87,22 @@ public final class KeyValueListResult implements JsonSerializable<KeyValueListRe
     public static KeyValueListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<KeyValue> items = null;
-                    String nextLink = null;
+                    KeyValueListResult deserializedKeyValueListResult = new KeyValueListResult();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("items".equals(fieldName)) {
-                            items = reader.readArray(reader1 -> KeyValue.fromJson(reader1));
+                            List<KeyValue> items = reader.readArray(reader1 -> KeyValue.fromJson(reader1));
+                            deserializedKeyValueListResult.items = items;
                         } else if ("@nextLink".equals(fieldName)) {
-                            nextLink = reader.getString();
+                            deserializedKeyValueListResult.nextLink = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    KeyValueListResult deserializedValue = new KeyValueListResult();
-                    deserializedValue.items = items;
-                    deserializedValue.nextLink = nextLink;
 
-                    return deserializedValue;
+                    return deserializedKeyValueListResult;
                 });
     }
 }

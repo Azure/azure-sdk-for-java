@@ -35,6 +35,8 @@ context-client-method-parameter: true
 custom-types-subpackage: models
 custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,PeriodType,AnomalySeverity,AlertQueryTimeMode,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
 default-http-exception-type: com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException
+enable-sync-stack: true
+polling: {} 
 ```
 
 ### Generated types renamed and moved to model

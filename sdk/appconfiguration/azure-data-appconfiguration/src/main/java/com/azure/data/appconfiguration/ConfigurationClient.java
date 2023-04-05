@@ -19,11 +19,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.DeleteLockHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -38,7 +36,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.addTracingN
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
@@ -737,15 +735,10 @@ public final class ConfigurationClient {
         final String key = setting.getKey();
         final String label = setting.getLabel();
         context = enableSyncRestProxy(addTracingNamespace(context));
-        if (isReadOnly) {
-            final ResponseBase<PutLockHeaders, KeyValue> response =
-                serviceClient.putLockWithResponse(key, label, null, null, context);
-            return toConfigurationSettingWithResponse(response);
-        } else {
-            final ResponseBase<DeleteLockHeaders, KeyValue> response =
-                serviceClient.deleteLockWithResponse(key, label, null, null, context);
-            return toConfigurationSettingWithResponse(response);
-        }
+
+        return isReadOnly
+            ? toConfigurationSettingWithResponse(serviceClient.putLockWithResponse(key, label, null, null, context))
+            : toConfigurationSettingWithResponse(serviceClient.deleteLockWithResponse(key, label, null, null, context));
     }
 
     /**
@@ -808,7 +801,7 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getLabelFilter(),
                     null,
                     selector == null ? null : selector.getAcceptDateTime(),
-                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
                     null,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
@@ -895,7 +888,7 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getLabelFilter(),
                     null,
                     acceptDateTime,
-                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },

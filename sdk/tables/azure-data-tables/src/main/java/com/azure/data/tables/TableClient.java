@@ -20,9 +20,11 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.EntityPaged;
-import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableEntityAccessHelper;
+import com.azure.data.tables.implementation.TableItemAccessHelper;
 import com.azure.data.tables.implementation.TableSasGenerator;
 import com.azure.data.tables.implementation.TableSasUtils;
+import com.azure.data.tables.implementation.TableTransactionActionResponseAccessHelper;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
@@ -68,7 +70,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
@@ -286,7 +287,7 @@ public final class TableClient {
             new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties,
             null,
             ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
-            ModelHelper.createItem(new TableResponseProperties().setTableName(tableName)));
+                TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
         try {
             Response<TableItem> response = timeoutInMillis.isPresent()
@@ -1004,7 +1005,7 @@ public final class TableClient {
         }
 
         final List<T> entities = entityResponseValue.stream()
-            .map(ModelHelper::createEntity)
+            .map(TableEntityAccessHelper::createEntity)
             .map(e -> EntityHelper.convertToSubclass(e, resultType, logger))
             .collect(Collectors.toList());
 
@@ -1122,7 +1123,7 @@ public final class TableClient {
                 return null;
             }
 
-            final TableEntity entity = ModelHelper.createEntity(matchingEntity);
+            final TableEntity entity = TableEntityAccessHelper.createEntity(matchingEntity);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 EntityHelper.convertToSubclass(entity, TableEntity.class, logger));
         };
@@ -1650,7 +1651,7 @@ public final class TableClient {
 
             // Attempt to attach a sub-request to each batch sub-response
             if (changes != null && changes.getContents().get(i) != null) {
-                ModelHelper.updateTableTransactionActionResponse(subResponse,
+                TableTransactionActionResponseAccessHelper.updateTableTransactionActionResponse(subResponse,
                     changes.getContents().get(i).getHttpRequest());
             }
 

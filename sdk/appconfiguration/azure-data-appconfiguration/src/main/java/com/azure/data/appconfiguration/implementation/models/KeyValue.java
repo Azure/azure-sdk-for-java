@@ -245,51 +245,36 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     public static KeyValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String key = null;
-                    String label = null;
-                    String contentType = null;
-                    String value = null;
-                    OffsetDateTime lastModified = null;
-                    Map<String, String> tags = null;
-                    Boolean locked = null;
-                    String etag = null;
+                    KeyValue deserializedKeyValue = new KeyValue();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("key".equals(fieldName)) {
-                            key = reader.getString();
+                            deserializedKeyValue.key = reader.getString();
                         } else if ("label".equals(fieldName)) {
-                            label = reader.getString();
+                            deserializedKeyValue.label = reader.getString();
                         } else if ("content_type".equals(fieldName)) {
-                            contentType = reader.getString();
+                            deserializedKeyValue.contentType = reader.getString();
                         } else if ("value".equals(fieldName)) {
-                            value = reader.getString();
+                            deserializedKeyValue.value = reader.getString();
                         } else if ("last_modified".equals(fieldName)) {
-                            lastModified =
+                            deserializedKeyValue.lastModified =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("tags".equals(fieldName)) {
-                            tags = reader.readMap(reader1 -> reader1.getString());
+                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                            deserializedKeyValue.tags = tags;
                         } else if ("locked".equals(fieldName)) {
-                            locked = reader.getNullable(JsonReader::getBoolean);
+                            deserializedKeyValue.locked = reader.getNullable(JsonReader::getBoolean);
                         } else if ("etag".equals(fieldName)) {
-                            etag = reader.getString();
+                            deserializedKeyValue.etag = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    KeyValue deserializedValue = new KeyValue();
-                    deserializedValue.key = key;
-                    deserializedValue.label = label;
-                    deserializedValue.contentType = contentType;
-                    deserializedValue.value = value;
-                    deserializedValue.lastModified = lastModified;
-                    deserializedValue.tags = tags;
-                    deserializedValue.locked = locked;
-                    deserializedValue.etag = etag;
 
-                    return deserializedValue;
+                    return deserializedKeyValue;
                 });
     }
 }

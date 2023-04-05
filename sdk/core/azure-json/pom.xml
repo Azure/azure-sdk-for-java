@@ -18,7 +18,7 @@
   <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-json;current} -->
 
   <name>Microsoft Azure Java JSON Library</name>
-  <description>This package contains core types for JSON.</description>
+  <description>This package provides interfaces for reading and writing JSON.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -57,6 +57,8 @@
     <javadoc.excludePackageNames/>
     <javadoc.sourcepath>${basedir}/src/main/java</javadoc.sourcepath>
 
+    <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
   </properties>
 
   <developers>

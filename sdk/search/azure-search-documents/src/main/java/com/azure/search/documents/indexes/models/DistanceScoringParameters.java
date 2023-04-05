@@ -98,10 +98,10 @@ public final class DistanceScoringParameters implements JsonSerializable<Distanc
                         }
                     }
                     if (referencePointParameterFound && boostingDistanceFound) {
-                        DistanceScoringParameters deserializedValue =
+                        DistanceScoringParameters deserializedDistanceScoringParameters =
                                 new DistanceScoringParameters(referencePointParameter, boostingDistance);
 
-                        return deserializedValue;
+                        return deserializedDistanceScoringParameters;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!referencePointParameterFound) {

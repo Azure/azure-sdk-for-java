@@ -105,10 +105,10 @@ public final class TruncateTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        TruncateTokenFilter deserializedValue = new TruncateTokenFilter(name);
-                        deserializedValue.length = length;
+                        TruncateTokenFilter deserializedTruncateTokenFilter = new TruncateTokenFilter(name);
+                        deserializedTruncateTokenFilter.length = length;
 
-                        return deserializedValue;
+                        return deserializedTruncateTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

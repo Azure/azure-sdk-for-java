@@ -209,15 +209,15 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound && defaultToLanguageCodeFound) {
-                        TextTranslationSkill deserializedValue =
+                        TextTranslationSkill deserializedTextTranslationSkill =
                                 new TextTranslationSkill(inputs, outputs, defaultToLanguageCode);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultFromLanguageCode = defaultFromLanguageCode;
-                        deserializedValue.suggestedFrom = suggestedFrom;
+                        deserializedTextTranslationSkill.setName(name);
+                        deserializedTextTranslationSkill.setDescription(description);
+                        deserializedTextTranslationSkill.setContext(context);
+                        deserializedTextTranslationSkill.defaultFromLanguageCode = defaultFromLanguageCode;
+                        deserializedTextTranslationSkill.suggestedFrom = suggestedFrom;
 
-                        return deserializedValue;
+                        return deserializedTextTranslationSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

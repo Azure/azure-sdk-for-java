@@ -49,21 +49,19 @@ public final class Label implements JsonSerializable<Label> {
     public static Label fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String name = null;
+                    Label deserializedLabel = new Label();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedLabel.name = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    Label deserializedValue = new Label();
-                    deserializedValue.name = name;
 
-                    return deserializedValue;
+                    return deserializedLabel;
                 });
     }
 }

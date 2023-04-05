@@ -87,25 +87,22 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
     public static LabelListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<Label> items = null;
-                    String nextLink = null;
+                    LabelListResult deserializedLabelListResult = new LabelListResult();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("items".equals(fieldName)) {
-                            items = reader.readArray(reader1 -> Label.fromJson(reader1));
+                            List<Label> items = reader.readArray(reader1 -> Label.fromJson(reader1));
+                            deserializedLabelListResult.items = items;
                         } else if ("@nextLink".equals(fieldName)) {
-                            nextLink = reader.getString();
+                            deserializedLabelListResult.nextLink = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    LabelListResult deserializedValue = new LabelListResult();
-                    deserializedValue.items = items;
-                    deserializedValue.nextLink = nextLink;
 
-                    return deserializedValue;
+                    return deserializedLabelListResult;
                 });
     }
 }

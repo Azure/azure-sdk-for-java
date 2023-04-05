@@ -113,10 +113,10 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
                         }
                     }
                     if (textFound) {
-                        SuggestResult deserializedValue = new SuggestResult(text);
-                        deserializedValue.additionalProperties = additionalProperties;
+                        SuggestResult deserializedSuggestResult = new SuggestResult(text);
+                        deserializedSuggestResult.additionalProperties = additionalProperties;
 
-                        return deserializedValue;
+                        return deserializedSuggestResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!textFound) {

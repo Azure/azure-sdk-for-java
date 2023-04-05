@@ -49,21 +49,19 @@ public final class Key implements JsonSerializable<Key> {
     public static Key fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String name = null;
+                    Key deserializedKey = new Key();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedKey.name = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    Key deserializedValue = new Key();
-                    deserializedValue.name = name;
 
-                    return deserializedValue;
+                    return deserializedKey;
                 });
     }
 }

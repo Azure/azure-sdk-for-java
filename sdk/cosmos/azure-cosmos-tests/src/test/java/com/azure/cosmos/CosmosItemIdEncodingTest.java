@@ -8,6 +8,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -47,14 +48,32 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple", "emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().buildClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        CosmosContainerProperties containerProperties = getCollectionDefinitionWithRangeRangeIndex();
+        logger.info("Creating separate container {} for ItemIdEncoding tests to prevent leaving " +
+            "any left-overs with weird encoded ids in the shared container.", containerProperties.getId());
+        try {
+            this.client = getClientBuilder().buildClient();
+            getSharedCosmosDatabase(this.client.asyncClient()).createContainer(containerProperties).block();
+            CosmosAsyncContainer asyncContainer =
+                getSharedCosmosDatabase(this.client.asyncClient()).getContainer(containerProperties.getId());
+            this.container = client
+                .getDatabase(asyncContainer.getDatabase().getId())
+                .getContainer(asyncContainer.getId());
+        } catch (Exception error) {
+            logger.error("Failed creating separate container {} for ItemIdEncoding tests to prevent leaving " +
+                "any left-overs with weird encoded ids in the shared container.", containerProperties.getId(), error);
+        }
+
+        logger.info("Finished creating separate container {} for ItemIdEncoding tests to prevent leaving " +
+            "any left-overs with weird encoded ids in the shared container.", containerProperties.getId());
     }
 
     @AfterClass(groups = {"simple", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
+        if (this.container != null) {
+            container.delete();
+        }
         this.client.close();
     }
 

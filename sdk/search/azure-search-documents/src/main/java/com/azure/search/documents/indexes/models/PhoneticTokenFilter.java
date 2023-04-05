@@ -138,11 +138,11 @@ public final class PhoneticTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        PhoneticTokenFilter deserializedValue = new PhoneticTokenFilter(name);
-                        deserializedValue.encoder = encoder;
-                        deserializedValue.originalTokensReplaced = originalTokensReplaced;
+                        PhoneticTokenFilter deserializedPhoneticTokenFilter = new PhoneticTokenFilter(name);
+                        deserializedPhoneticTokenFilter.encoder = encoder;
+                        deserializedPhoneticTokenFilter.originalTokensReplaced = originalTokensReplaced;
 
-                        return deserializedValue;
+                        return deserializedPhoneticTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

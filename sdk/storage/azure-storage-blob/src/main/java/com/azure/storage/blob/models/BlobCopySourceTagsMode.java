@@ -8,19 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobCopySourceTags. */
+/** Defines values for BlobCopySourceTagsMode. */
 public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopySourceTagsMode> {
-    /** Static value REPLACE for BlobCopySourceTags. */
+    /** Static value REPLACE for BlobCopySourceTagsMode. */
     public static final BlobCopySourceTagsMode REPLACE = fromString("REPLACE");
 
-    /** Static value COPY for BlobCopySourceTags. */
+    /** Static value COPY for BlobCopySourceTagsMode. */
     public static final BlobCopySourceTagsMode COPY = fromString("COPY");
 
     /**
-     * Creates or finds a BlobCopySourceTags from its string representation.
+     * Creates a new instance of BlobCopySourceTagsMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobCopySourceTagsMode() {}
+
+    /**
+     * Creates or finds a BlobCopySourceTagsMode from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding BlobCopySourceTags.
+     * @return the corresponding BlobCopySourceTagsMode.
      */
     @JsonCreator
     public static BlobCopySourceTagsMode fromString(String name) {
@@ -28,9 +36,9 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
     }
 
     /**
-     * Gets known BlobCopySourceTags values.
+     * Gets known BlobCopySourceTagsMode values.
      *
-     * @return known BlobCopySourceTags values.
+     * @return known BlobCopySourceTagsMode values.
      */
     public static Collection<BlobCopySourceTagsMode> values() {
         return values(BlobCopySourceTagsMode.class);

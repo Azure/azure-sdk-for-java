@@ -164,37 +164,27 @@ public final class Error implements JsonSerializable<Error> {
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String type = null;
-                    String title = null;
-                    String name = null;
-                    String detail = null;
-                    Integer status = null;
+                    Error deserializedError = new Error();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("type".equals(fieldName)) {
-                            type = reader.getString();
+                            deserializedError.type = reader.getString();
                         } else if ("title".equals(fieldName)) {
-                            title = reader.getString();
+                            deserializedError.title = reader.getString();
                         } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedError.name = reader.getString();
                         } else if ("detail".equals(fieldName)) {
-                            detail = reader.getString();
+                            deserializedError.detail = reader.getString();
                         } else if ("status".equals(fieldName)) {
-                            status = reader.getNullable(JsonReader::getInt);
+                            deserializedError.status = reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    Error deserializedValue = new Error();
-                    deserializedValue.type = type;
-                    deserializedValue.title = title;
-                    deserializedValue.name = name;
-                    deserializedValue.detail = detail;
-                    deserializedValue.status = status;
 
-                    return deserializedValue;
+                    return deserializedError;
                 });
     }
 }

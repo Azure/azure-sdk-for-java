@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 
 public abstract class CosmosAsyncClientTest implements ITest {
 
-    protected static final String ROUTING_GATEWAY_EMULATOR_PORT = ":8081";
-    protected static final String COMPUTE_GATEWAY_EMULATOR_PORT = ":8903";
+    public static final String ROUTING_GATEWAY_EMULATOR_PORT = ":8081";
+    public static final String COMPUTE_GATEWAY_EMULATOR_PORT = ":8903";
     private final CosmosClientBuilder clientBuilder;
     private String testName;
 
@@ -40,7 +40,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public final void setTestName(Method method) {
+    public final void setTestName(Method method, Object[] row) {
         String testClassAndMethodName = Strings.lenientFormat("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
@@ -61,10 +61,19 @@ public abstract class CosmosAsyncClientTest implements ITest {
         } else {
             this.testName = testClassAndMethodName;
         }
+
+        String suffix = this.resolveTestNameSuffix(row);
+        if (suffix != null && !suffix.isEmpty()) {
+            this.testName += "(" + suffix + ")";
+        }
     }
 
     @AfterMethod(alwaysRun = true)
     public final void unsetTestName() {
         this.testName = null;
+    }
+
+    public String resolveTestNameSuffix(Object[] row) {
+        return "";
     }
 }

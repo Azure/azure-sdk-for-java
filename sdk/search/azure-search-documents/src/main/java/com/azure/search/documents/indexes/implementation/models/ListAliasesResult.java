@@ -75,9 +75,9 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
                         }
                     }
                     if (aliasesFound) {
-                        ListAliasesResult deserializedValue = new ListAliasesResult(aliases);
+                        ListAliasesResult deserializedListAliasesResult = new ListAliasesResult(aliases);
 
-                        return deserializedValue;
+                        return deserializedListAliasesResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!aliasesFound) {

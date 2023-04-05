@@ -43,7 +43,7 @@ public final class TasksUpdateSamples {
                 "myRegistry",
                 "quicktask",
                 new TaskUpdateParameters()
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withLogTemplate("acr/tasks:{{.Run.OS}}"),
                 com.azure.core.util.Context.NONE);
@@ -68,7 +68,7 @@ public final class TasksUpdateSamples {
                 "myRegistry",
                 "myTask",
                 new TaskUpdateParameters()
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withAgentConfiguration(new AgentProperties().withCpu(3))
                     .withStep(
@@ -117,7 +117,7 @@ public final class TasksUpdateSamples {
                 "myRegistry",
                 "myTask",
                 new TaskUpdateParameters()
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withAgentConfiguration(new AgentProperties().withCpu(3))
                     .withStep(
@@ -175,7 +175,7 @@ public final class TasksUpdateSamples {
                 "myRegistry",
                 "myTask",
                 new TaskUpdateParameters()
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withAgentConfiguration(new AgentProperties().withCpu(3))
                     .withStep(
@@ -232,7 +232,7 @@ public final class TasksUpdateSamples {
                 "myRegistry",
                 "myTask",
                 new TaskUpdateParameters()
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withAgentConfiguration(new AgentProperties().withCpu(3))
                     .withStep(

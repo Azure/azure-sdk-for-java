@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -61,21 +62,19 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
     public static SnapshotUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    SnapshotStatus status = null;
+                    SnapshotUpdateParameters deserializedSnapshotUpdateParameters = new SnapshotUpdateParameters();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("status".equals(fieldName)) {
-                            status = SnapshotStatus.fromString(reader.getString());
+                            deserializedSnapshotUpdateParameters.status = SnapshotStatus.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SnapshotUpdateParameters deserializedValue = new SnapshotUpdateParameters();
-                    deserializedValue.status = status;
 
-                    return deserializedValue;
+                    return deserializedSnapshotUpdateParameters;
                 });
     }
 }

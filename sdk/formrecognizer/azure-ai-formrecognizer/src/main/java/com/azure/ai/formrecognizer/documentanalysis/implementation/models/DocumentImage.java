@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -35,8 +36,22 @@ public final class DocumentImage {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentImage class. */
-    public DocumentImage() {}
+    /**
+     * Creates an instance of DocumentImage class.
+     *
+     * @param span the span value to set.
+     * @param pageNumber the pageNumber value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentImage(
+            @JsonProperty(value = "span", required = true) DocumentSpan span,
+            @JsonProperty(value = "pageNumber", required = true) int pageNumber,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.span = span;
+        this.pageNumber = pageNumber;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the polygon property: Bounding polygon of the image.
@@ -68,17 +83,6 @@ public final class DocumentImage {
     }
 
     /**
-     * Set the span property: Location of the image in the reading order concatenated content.
-     *
-     * @param span the span value to set.
-     * @return the DocumentImage object itself.
-     */
-    public DocumentImage setSpan(DocumentSpan span) {
-        this.span = span;
-        return this;
-    }
-
-    /**
      * Get the pageNumber property: 1-based page number of the page that contains the image.
      *
      * @return the pageNumber value.
@@ -88,33 +92,11 @@ public final class DocumentImage {
     }
 
     /**
-     * Set the pageNumber property: 1-based page number of the page that contains the image.
-     *
-     * @param pageNumber the pageNumber value to set.
-     * @return the DocumentImage object itself.
-     */
-    public DocumentImage setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly identifying the image.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly identifying the image.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentImage object itself.
-     */
-    public DocumentImage setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

@@ -20,8 +20,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
-import reactor.util.context.ContextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -203,10 +201,9 @@ public class AsyncRestProxy extends RestProxyBase {
     private Object handleRestReturnType(Mono<HttpResponseDecoder.HttpDecodedResponse> asyncHttpDecodedResponse,
         SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
         EnumSet<ErrorOptions> errorOptionsSet) {
-        final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse =
-            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet)
-                .doOnEach(this::endTracingSpan)
-                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
+        final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse = endSpanWhenDone(
+                ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet),
+                context);
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -237,24 +234,22 @@ public class AsyncRestProxy extends RestProxyBase {
         return result;
     }
 
-    // This handles each onX for the response mono.
-    // The signal indicates the status and contains the metadata we need to end the tracing span.
-    private void endTracingSpan(Signal<HttpResponseDecoder.HttpDecodedResponse> signal) {
-        if (!tracer.isEnabled()) {
-            return;
+    private Mono<HttpResponseDecoder.HttpDecodedResponse> endSpanWhenDone(Mono<HttpResponseDecoder.HttpDecodedResponse> getResponse, Context span) {
+        if (isTracingEnabled(span)) {
+            return getResponse
+                .doOnEach(signal -> {
+                    if (signal.hasValue()) {
+                        int statusCode = signal.get().getSourceResponse().getStatusCode();
+                        tracer.end(statusCode >= 400 ? "" : null, null, span);
+                    } else if (signal.isOnError()) {
+                        tracer.end(null, signal.getThrowable(), span);
+                    }
+                })
+                .doOnCancel(() -> tracer.end("cancel", null, span))
+                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span));
         }
 
-        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
-        if (signal.isOnComplete() || signal.isOnSubscribe()) {
-            return;
-        }
-
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        ContextView context = signal.getContextView();
-        HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse = signal.hasValue() ? signal.get() : null;
-        Throwable throwable = signal.hasError() ? signal.getThrowable() : null;
-
-        endTracingSpan(httpDecodedResponse, throwable, (Context) context.getOrEmpty("TRACING_CONTEXT").get());
+        return getResponse;
     }
 
     @SuppressWarnings("unchecked")
