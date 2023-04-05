@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.TextDocumentBatchStatisticsPropertiesHelper;
 import com.azure.core.annotation.Immutable;
+
+import java.util.Map;
 
 /**
  * If {@link TextAnalyticsRequestOptions#isIncludeStatistics()} is set to {@code true} this class will will contain
@@ -32,6 +35,23 @@ public final class TextDocumentBatchStatistics {
      * Number of transactions for the request.
      */
     private final long transactionCount;
+
+    /*
+     * if showStats=true was specified in the request this field will contain information about the request payload.
+     */
+    private Map<String, Object> additionalProperties;
+
+    static {
+        TextDocumentBatchStatisticsPropertiesHelper.setAccessor(
+            new TextDocumentBatchStatisticsPropertiesHelper.TextDocumentBatchStatisticsAccessor() {
+                @Override
+                public void setAdditionalProperties(TextDocumentBatchStatistics batchStatistics,
+                    Map<String, Object> additionalProperties) {
+                    batchStatistics.setAdditionalProperties(additionalProperties);
+                }
+            }
+        );
+    }
 
     /**
      * Creates a {@link TextDocumentBatchStatistics} model that describes the statistics of batch text.
@@ -87,5 +107,25 @@ public final class TextDocumentBatchStatistics {
      */
     public long getTransactionCount() {
         return this.transactionCount;
+    }
+
+    /**
+     * Get the additionalProperties property: if showStats=true was specified in the request this field will contain
+     * information about the request payload.
+     *
+     * @return the additionalProperties value.
+     */
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: if showStats=true was specified in the request this field will contain
+     * information about the request payload.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     */
+    private void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 }
