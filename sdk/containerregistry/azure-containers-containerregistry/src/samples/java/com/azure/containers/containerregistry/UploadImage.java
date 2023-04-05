@@ -3,16 +3,15 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
@@ -88,6 +87,8 @@ public class UploadImage {
             .credential(CREDENTIAL)
             .buildClient();
 
+        // check out https://github.com/Azure/azure-sdk-for-java/issues/34276 for more details
+
         // BEGIN: com.azure.containers.containerregistry.uploadBlobErrorHandling
         BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
@@ -96,10 +97,12 @@ public class UploadImage {
             System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(),
                 uploadResult.getSizeInBytes());
         } catch (HttpResponseException ex) {
-            if (ex.getCause() instanceof AcrErrorsException) {
-                AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
-                for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
-                    System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
+            if (ex.getValue() instanceof ResponseError) {
+                ResponseError error = (ResponseError) ex.getValue();
+                System.out.printf("Upload failed: code '%s'\n", error.getCode());
+                if ("BLOB_UPLOAD_INVALID".equals(error.getCode())) {
+                    System.out.println("Transient upload issue, starting upload over");
+                    // retry upload
                 }
             }
         }

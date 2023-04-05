@@ -8,97 +8,97 @@ package com.azure.search.documents.indexes.models;
 
 /** Identifies a predefined list of language-specific stopwords. */
 public enum StopwordsList {
-    /** Enum value arabic. */
+    /** Selects the stopword list for Arabic. */
     ARABIC("arabic"),
 
-    /** Enum value armenian. */
+    /** Selects the stopword list for Armenian. */
     ARMENIAN("armenian"),
 
-    /** Enum value basque. */
+    /** Selects the stopword list for Basque. */
     BASQUE("basque"),
 
-    /** Enum value brazilian. */
+    /** Selects the stopword list for Portuguese (Brazil). */
     BRAZILIAN("brazilian"),
 
-    /** Enum value bulgarian. */
+    /** Selects the stopword list for Bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /** Enum value catalan. */
+    /** Selects the stopword list for Catalan. */
     CATALAN("catalan"),
 
-    /** Enum value czech. */
+    /** Selects the stopword list for Czech. */
     CZECH("czech"),
 
-    /** Enum value danish. */
+    /** Selects the stopword list for Danish. */
     DANISH("danish"),
 
-    /** Enum value dutch. */
+    /** Selects the stopword list for Dutch. */
     DUTCH("dutch"),
 
-    /** Enum value english. */
+    /** Selects the stopword list for English. */
     ENGLISH("english"),
 
-    /** Enum value finnish. */
+    /** Selects the stopword list for Finnish. */
     FINNISH("finnish"),
 
-    /** Enum value french. */
+    /** Selects the stopword list for French. */
     FRENCH("french"),
 
-    /** Enum value galician. */
+    /** Selects the stopword list for Galician. */
     GALICIAN("galician"),
 
-    /** Enum value german. */
+    /** Selects the stopword list for German. */
     GERMAN("german"),
 
-    /** Enum value greek. */
+    /** Selects the stopword list for Greek. */
     GREEK("greek"),
 
-    /** Enum value hindi. */
+    /** Selects the stopword list for Hindi. */
     HINDI("hindi"),
 
-    /** Enum value hungarian. */
+    /** Selects the stopword list for Hungarian. */
     HUNGARIAN("hungarian"),
 
-    /** Enum value indonesian. */
+    /** Selects the stopword list for Indonesian. */
     INDONESIAN("indonesian"),
 
-    /** Enum value irish. */
+    /** Selects the stopword list for Irish. */
     IRISH("irish"),
 
-    /** Enum value italian. */
+    /** Selects the stopword list for Italian. */
     ITALIAN("italian"),
 
-    /** Enum value latvian. */
+    /** Selects the stopword list for Latvian. */
     LATVIAN("latvian"),
 
-    /** Enum value norwegian. */
+    /** Selects the stopword list for Norwegian. */
     NORWEGIAN("norwegian"),
 
-    /** Enum value persian. */
+    /** Selects the stopword list for Persian. */
     PERSIAN("persian"),
 
-    /** Enum value portuguese. */
+    /** Selects the stopword list for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /** Enum value romanian. */
+    /** Selects the stopword list for Romanian. */
     ROMANIAN("romanian"),
 
-    /** Enum value russian. */
+    /** Selects the stopword list for Russian. */
     RUSSIAN("russian"),
 
-    /** Enum value sorani. */
+    /** Selects the stopword list for Sorani. */
     SORANI("sorani"),
 
-    /** Enum value spanish. */
+    /** Selects the stopword list for Spanish. */
     SPANISH("spanish"),
 
-    /** Enum value swedish. */
+    /** Selects the stopword list for Swedish. */
     SWEDISH("swedish"),
 
-    /** Enum value thai. */
+    /** Selects the stopword list for Thai. */
     THAI("thai"),
 
-    /** Enum value turkish. */
+    /** Selects the stopword list for Turkish. */
     TURKISH("turkish");
 
     /** The actual serialized value for a StopwordsList instance. */

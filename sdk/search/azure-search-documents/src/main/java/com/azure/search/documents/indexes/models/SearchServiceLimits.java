@@ -149,34 +149,28 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     public static SearchServiceLimits fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Integer maxFieldsPerIndex = null;
-                    Integer maxFieldNestingDepthPerIndex = null;
-                    Integer maxComplexCollectionFieldsPerIndex = null;
-                    Integer maxComplexObjectsInCollectionsPerDocument = null;
+                    SearchServiceLimits deserializedSearchServiceLimits = new SearchServiceLimits();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("maxFieldsPerIndex".equals(fieldName)) {
-                            maxFieldsPerIndex = reader.getNullable(JsonReader::getInt);
+                            deserializedSearchServiceLimits.maxFieldsPerIndex = reader.getNullable(JsonReader::getInt);
                         } else if ("maxFieldNestingDepthPerIndex".equals(fieldName)) {
-                            maxFieldNestingDepthPerIndex = reader.getNullable(JsonReader::getInt);
+                            deserializedSearchServiceLimits.maxFieldNestingDepthPerIndex =
+                                    reader.getNullable(JsonReader::getInt);
                         } else if ("maxComplexCollectionFieldsPerIndex".equals(fieldName)) {
-                            maxComplexCollectionFieldsPerIndex = reader.getNullable(JsonReader::getInt);
+                            deserializedSearchServiceLimits.maxComplexCollectionFieldsPerIndex =
+                                    reader.getNullable(JsonReader::getInt);
                         } else if ("maxComplexObjectsInCollectionsPerDocument".equals(fieldName)) {
-                            maxComplexObjectsInCollectionsPerDocument = reader.getNullable(JsonReader::getInt);
+                            deserializedSearchServiceLimits.maxComplexObjectsInCollectionsPerDocument =
+                                    reader.getNullable(JsonReader::getInt);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SearchServiceLimits deserializedValue = new SearchServiceLimits();
-                    deserializedValue.maxFieldsPerIndex = maxFieldsPerIndex;
-                    deserializedValue.maxFieldNestingDepthPerIndex = maxFieldNestingDepthPerIndex;
-                    deserializedValue.maxComplexCollectionFieldsPerIndex = maxComplexCollectionFieldsPerIndex;
-                    deserializedValue.maxComplexObjectsInCollectionsPerDocument =
-                            maxComplexObjectsInCollectionsPerDocument;
 
-                    return deserializedValue;
+                    return deserializedSearchServiceLimits;
                 });
     }
 }

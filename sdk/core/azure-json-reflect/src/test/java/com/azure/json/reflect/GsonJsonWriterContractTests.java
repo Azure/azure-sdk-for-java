@@ -3,6 +3,7 @@
 
 package com.azure.json.reflect;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ public class GsonJsonWriterContractTests extends JsonWriterContractTests {
     @BeforeEach
     public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = JsonProviderFactory.getGsonJsonProvider().createWriter(outputStream);
+        this.writer = JsonProviderFactory.getGsonJsonProvider().createWriter(outputStream, new JsonOptions());
     }
 
     @Override

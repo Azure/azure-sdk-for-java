@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.implementation.ConstructorAccessor
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsGetChunkHeaders;
 import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
@@ -52,6 +53,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.co
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
@@ -463,7 +465,7 @@ public final class ContainerRegistryContentAsyncClient {
                     response.getHeaders(),
                     ConstructorAccessors.createSetManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                     response.getDeserializedHeaders()))
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
 
@@ -474,13 +476,13 @@ public final class ContainerRegistryContentAsyncClient {
 
         return registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, SUPPORTED_MANIFEST_TYPES, context)
             .map(response -> toGetManifestResponse(tagOrDigest, response))
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
         return this.registriesImpl.deleteManifestWithResponseAsync(repositoryName, digest, context)
-            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-            .onErrorMap(UtilsImpl::mapException);
+            .map(UtilsImpl::deleteResponseToSuccess)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -527,7 +529,7 @@ public final class ContainerRegistryContentAsyncClient {
         content = content
             .doOnNext(buffer -> sha256.update(buffer.asReadOnlyBuffer()))
             .doOnComplete(() -> validateDigest(sha256, digest))
-            .doOnError(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
 
         return BinaryData.fromFlux(content, null, false);
     }
@@ -553,16 +555,16 @@ public final class ContainerRegistryContentAsyncClient {
         }
 
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)
-            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
+            .map(UtilsImpl::deleteResponseToSuccess)
             .onErrorResume(
                 ex -> ex instanceof HttpResponseException && ((HttpResponseException) ex).getResponse().getStatusCode() == 404,
                 ex -> {
                     HttpResponse response = ((HttpResponseException) ex).getResponse();
                     // In case of 404, we still convert it to success i.e. no-op.
-                    return Mono.just(new SimpleResponse<Void>(response.getRequest(), 202,
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), 202,
                         response.getHeaders(), null));
                 })
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<String> upload(Flux<ByteBuffer> data, String location, Context context) {
@@ -593,7 +595,7 @@ public final class ContainerRegistryContentAsyncClient {
             // TODO (limolkova) if we knew when's the last chunk, we could upload it in complete call instead.
             .flatMap(location -> blobsImpl.completeUploadWithResponseAsync("sha256:" + bytesToHexString(sha256.digest()), location, (BinaryData) null, 0L, context))
             .map(response -> ConstructorAccessors.createUploadRegistryBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME), streamLength.get()))
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private <T> Mono<T> runWithTracing(String spanName, Function<Context, Mono<T>> operation, Context context) {

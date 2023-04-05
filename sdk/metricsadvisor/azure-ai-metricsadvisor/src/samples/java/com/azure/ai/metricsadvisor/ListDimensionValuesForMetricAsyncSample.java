@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.core.util.Context;
 
 /**
  * Async sample for listing dimension values for a give metric filtered using specific set of dimension combinations.
@@ -22,7 +21,7 @@ public class ListDimensionValuesForMetricAsyncSample {
         advisorAsyncClient.listMetricDimensionValues(metricId, "category",
             new ListMetricDimensionValuesOptions()
                 .setMaxPageSize(10)
-                .setDimensionValueToFilter("Electronics"), Context.NONE)
+                .setDimensionValueToFilter("Electronics"))
             .doOnNext(System.out::println)
             .blockLast();
         /*
