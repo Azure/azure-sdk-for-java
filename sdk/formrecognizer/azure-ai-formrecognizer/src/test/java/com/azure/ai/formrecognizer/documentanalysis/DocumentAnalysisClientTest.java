@@ -1573,8 +1573,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         dataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-document", BinaryData.fromStream(data, dataLength),
-                new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Collections.singletonList(
-            DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Collections.singletonList("Charges")), Context.NONE)
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Collections.singletonList(
+                        DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Collections.singletonList("Charges")), Context.NONE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
