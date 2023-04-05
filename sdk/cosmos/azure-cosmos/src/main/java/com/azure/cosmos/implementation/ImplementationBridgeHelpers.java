@@ -703,14 +703,10 @@ public class ImplementationBridgeHelpers {
             Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations(CosmosDiagnostics cosmosDiagnostics);
             int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
             int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
-
             ClientSideRequestStatistics getClientSideRequestStatisticsRaw(CosmosDiagnostics cosmosDiagnostics);
             void addClientSideDiagnosticsToFeed(
                 CosmosDiagnostics cosmosDiagnostics,
                 Collection<ClientSideRequestStatistics> requestStatistics);
-
-            void setTrackingId(CosmosDiagnostics cosmosDiagnostics, String candidate);
-
         }
     }
 

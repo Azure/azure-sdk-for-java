@@ -721,7 +721,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 rntbdRequestRecord.completeExceptionally(cause);
             },
-            this.tcpNetworkRequestTimeoutInNanos,
+            delay.toNanos(),
             TimeUnit.NANOSECONDS
         );
     }

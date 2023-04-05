@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -42,8 +41,6 @@ public final class CosmosDiagnostics {
 
     private CosmosDiagnosticsContext diagnosticsContext;
     private final AtomicBoolean diagnosticsCapturedInPagedFlux;
-
-    private AtomicReference<String> trackingId = new AtomicReference<>(null);
 
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
@@ -187,14 +184,6 @@ public final class CosmosDiagnostics {
             return aggregatedRegionsContacted;
         }
         return this.clientSideRequestStatistics.getContactedRegionNames();
-    }
-
-    String getTrackingId() {
-        return this.trackingId.get();
-    }
-
-    boolean setTrackingId(String candidate) {
-        return this.trackingId.compareAndSet(null, candidate);
     }
 
     FeedResponseDiagnostics getFeedResponseDiagnostics() {
@@ -387,18 +376,6 @@ public final class CosmosDiagnostics {
 
                     cosmosDiagnostics
                         .addClientSideDiagnosticsToFeed(requestStatistics);
-                }
-
-                @Override
-                public void setTrackingId(CosmosDiagnostics cosmosDiagnostics, String candidate) {
-                    if (cosmosDiagnostics == null) {
-                        return;
-                    }
-
-                    if (!cosmosDiagnostics.setTrackingId(candidate)) {
-                        LOGGER.error("TrackingId already specified - candidate '{}' ignored", candidate);
-                        assert(false);
-                    }
                 }
             });
     }
