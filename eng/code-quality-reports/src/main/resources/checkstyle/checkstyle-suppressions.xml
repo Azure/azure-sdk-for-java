@@ -336,6 +336,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress ReverseProxyPolicy being package private. It may get moved into azure-core. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
             files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
+            files="com.azure.ai.translation.text.TranslatorRegionAuthenticationPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
