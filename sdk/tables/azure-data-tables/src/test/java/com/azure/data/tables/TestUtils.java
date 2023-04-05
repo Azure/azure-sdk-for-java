@@ -206,8 +206,8 @@ public final class TestUtils {
         customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
         interceptorManager.addSanitizers(customSanitizers);
 
-        //List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
-        //customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
-        //interceptorManager.addMatchers(customMatcher);
+        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+        interceptorManager.addMatchers(customMatcher);
     }
 }

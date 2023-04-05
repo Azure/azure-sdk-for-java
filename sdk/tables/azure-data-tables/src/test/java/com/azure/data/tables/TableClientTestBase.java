@@ -46,7 +46,7 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .tableName(tableName);
 
-        TestUtils.addTestProxyTestMatchers(interceptorManager);
+        // TestUtils.addTestProxyTestMatchers(interceptorManager);
 
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
