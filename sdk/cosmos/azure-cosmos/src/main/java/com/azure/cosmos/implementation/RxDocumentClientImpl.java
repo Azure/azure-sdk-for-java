@@ -1455,7 +1455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public static PartitionKeyInternal extractPartitionKeyValueFromDocument(
-            InternalObjectNode document,
+            JsonSerializable document,
             PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition != null) {
             switch (partitionKeyDefinition.getKind()) {
@@ -1507,7 +1507,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        String trackingId = null;
+        if (options != null) {
+            trackingId = options.getTrackingId();
+        }
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, mapper, trackingId);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1520,6 +1524,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             operationType, ResourceType.Document, path, requestHeaders, options, content);
+
+        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            request.setNonIdempotentWriteRetriesEnabled(true);
+        }
+
         if (requestRetryPolicy != null) {
             requestRetryPolicy.onBeforeSendRequest(request);
         }
@@ -1970,6 +1979,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final String path = Utils.joinPath(documentLink, null);
         final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
         Instant serializationStartTimeUTC = Instant.now();
+        if (options != null) {
+            String trackingId = options.getTrackingId();
+
+            if (trackingId != null && !trackingId.isEmpty()) {
+                document.set(Constants.Properties.TRACKING_ID, trackingId);
+            }
+        }
+
         ByteBuffer content = serializeJsonToByteBuffer(document);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1979,6 +1996,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            request.setNonIdempotentWriteRetriesEnabled(true);
+        }
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
@@ -2035,6 +2055,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            request.setNonIdempotentWriteRetriesEnabled(true);
+        }
+
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
@@ -2084,6 +2108,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
+
+            if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+                request.setNonIdempotentWriteRetriesEnabled(true);
+            }
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }

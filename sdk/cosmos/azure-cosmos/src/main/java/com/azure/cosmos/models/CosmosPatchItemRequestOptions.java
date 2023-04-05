@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**
@@ -15,7 +16,7 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
      * copy constructor
      */
     CosmosPatchItemRequestOptions(CosmosPatchItemRequestOptions options) {
-        super((CosmosItemRequestOptions) options);
+        super(options);
         filterPredicate = options.filterPredicate;
     }
 

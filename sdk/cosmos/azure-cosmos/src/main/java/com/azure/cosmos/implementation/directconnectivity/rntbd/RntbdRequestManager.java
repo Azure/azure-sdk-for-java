@@ -634,7 +634,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                     Consumer<Duration> writeRequestWithInjectedDelayConsumer =
                         (delay) -> this.writeRequestWithInjectedDelay(context, record, promise, delay);
-                    if (this.serverErrorInjector.injectRntbdServerResponseDelay(record, writeRequestWithInjectedDelayConsumer)) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseDelayBeforeProcessing(
+                        record, writeRequestWithInjectedDelayConsumer)) {
+
                         return;
                     }
                 }
@@ -694,6 +696,48 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 context.write(rntbdRequestRecord, promise);
             },
             effectiveDelayInNanos,
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final StoreResponse storeResponse,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.complete(storeResponse);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeExceptionallyWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final CosmosException cause,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.completeExceptionally(cause);
+            },
+            delay.toNanos(),
             TimeUnit.NANOSECONDS
         );
     }
@@ -937,6 +981,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
+
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeWithInjectedDelay(context, requestRecord, storeResponse, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
+
             requestRecord.complete(storeResponse);
 
         } else {
@@ -1057,6 +1112,16 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
+
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeExceptionallyWithInjectedDelay(context, requestRecord, cause, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
 
             requestRecord.completeExceptionally(cause);
         }

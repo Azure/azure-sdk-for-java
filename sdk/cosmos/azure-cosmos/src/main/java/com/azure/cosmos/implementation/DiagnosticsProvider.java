@@ -457,6 +457,7 @@ public final class DiagnosticsProvider {
             operationType,
             resourceType,
             null,
+            null,
             (r) -> r.getStatusCode(),
             (r) -> null,
             (r) -> r.getRequestCharge(),
@@ -492,6 +493,7 @@ public final class DiagnosticsProvider {
             operationType,
             resourceType,
             null,
+            null,
             CosmosBatchResponse::getStatusCode,
             (r) -> null,
             CosmosBatchResponse::getRequestCharge,
@@ -509,7 +511,8 @@ public final class DiagnosticsProvider {
        ConsistencyLevel consistencyLevel,
        OperationType operationType,
        ResourceType resourceType,
-       CosmosDiagnosticsThresholds thresholds) {
+       CosmosDiagnosticsThresholds thresholds,
+       String trackingId) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
@@ -526,6 +529,7 @@ public final class DiagnosticsProvider {
             consistencyLevel,
             operationType,
             resourceType,
+            trackingId,
             null,
             CosmosItemResponse::getStatusCode,
             (r) -> null,
@@ -612,6 +616,7 @@ public final class DiagnosticsProvider {
                                                      ConsistencyLevel consistencyLevel,
                                                      OperationType operationType,
                                                      ResourceType resourceType,
+                                                     String trackingId,
                                                      Integer maxItemCount,
                                                      Function<T, Integer> statusCodeFunc,
                                                      Function<T, Integer> actualItemCountFunc,
@@ -630,7 +635,8 @@ public final class DiagnosticsProvider {
             null,
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
-            thresholds);
+            thresholds,
+            trackingId);
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,
@@ -1111,7 +1117,9 @@ public final class DiagnosticsProvider {
 
                 tracer.setAttribute("exception.escaped", Boolean.toString(cosmosCtx.isFailure()), context);
                 tracer.setAttribute("exception.type", exceptionType, context);
-                tracer.setAttribute("exception.message", errorMessage, context);
+                if (errorMessage != null) {
+                    tracer.setAttribute("exception.message", errorMessage, context);
+                }
                 tracer.setAttribute("exception.stacktrace", prettifyCallstack(finalError), context);
             }
 

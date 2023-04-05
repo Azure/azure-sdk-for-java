@@ -102,11 +102,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void monitorTelemetry(MeterRegistry registry) {
         CosmosAsyncClient.setMonitorTelemetry(registry);
     }

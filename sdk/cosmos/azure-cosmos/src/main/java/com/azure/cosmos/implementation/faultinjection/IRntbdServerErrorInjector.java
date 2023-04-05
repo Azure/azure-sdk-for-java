@@ -15,13 +15,24 @@ import java.util.function.Consumer;
 public interface IRntbdServerErrorInjector {
 
     /***
-     * Inject server response delay.
+     * Inject server response delay before sending the request to the service
      *
      * @param requestRecord the request record.
      * @param writeRequestWithDelayConsumer the consumer to be executed if applicable rule is found.
      * @return flag to indicate whether server response delay is injected.
      */
-    boolean injectRntbdServerResponseDelay(
+    boolean injectRntbdServerResponseDelayBeforeProcessing(
+        RntbdRequestRecord requestRecord,
+        Consumer<Duration> writeRequestWithDelayConsumer);
+
+    /***
+     * Inject server response delay after sending the request to the service
+     *
+     * @param requestRecord the request record.
+     * @param writeRequestWithDelayConsumer the consumer to be executed if applicable rule is found.
+     * @return flag to indicate whether server response delay is injected.
+     */
+    boolean injectRntbdServerResponseDelayAfterProcessing(
         RntbdRequestRecord requestRecord,
         Consumer<Duration> writeRequestWithDelayConsumer);
 

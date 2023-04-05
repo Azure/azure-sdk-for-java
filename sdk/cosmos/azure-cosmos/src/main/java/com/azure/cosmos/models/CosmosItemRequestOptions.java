@@ -3,9 +3,11 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
@@ -35,6 +37,8 @@ public class CosmosItemRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Map<String, String> customOptions;
     private CosmosDiagnosticsThresholds thresholds;
+    private Boolean nonIdempotentWriteRetriesEnabled;
+    private boolean useTrackingIds;
 
     /**
      * copy constructor
@@ -53,6 +57,11 @@ public class CosmosItemRequestOptions {
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         thresholds = options.thresholds;
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        nonIdempotentWriteRetriesEnabled = options.nonIdempotentWriteRetriesEnabled;
+        useTrackingIds = options.useTrackingIds;
+        if (options.customOptions != null) {
+            this.customOptions = new HashMap<>(options.customOptions);
+        }
     }
 
 
@@ -277,6 +286,61 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Enables automatic retries for write operations even when the SDK can't
+     * guarantee that they are idempotent. This is an override of the
+     * {@link CosmosClientBuilder#setNonIdempotentWriteRetryPolicy(boolean, boolean)} behavior for a specific request/operation.
+     * <br/>
+     * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
+     * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch
+     * operations by default (unless overridden in the request options) retries are always disabled by default.
+     * <br/>
+     * - Create: retries can result in surfacing (more) 409-Conflict requests to the application when a retry tries
+     * to create a document that the initial attempt successfully created. When enabling
+     * useTrackingIdPropertyForCreateAndReplace this can be avoided for 409-Conflict caused by retries.
+     * <br/>
+     * - Replace: retries can result in surfacing (more) 412-Precondition failure requests to the application when a
+     * replace operations are using a pre-condition check (etag) and a retry tries to update a document that the
+     * initial attempt successfully updated (causing the etag to change). When enabling
+     * useTrackingIdPropertyForCreateAndReplace this can be avoided for 412-Precondition failures caused by retries.
+     * <br/>
+     * - Delete: retries can result in surfacing (more) 404-NotFound requests when a delete operation is retried and the
+     * initial attempt succeeded. Ideally, write retries should only be enabled when applications can gracefully
+     * handle 404 - Not Found.
+     * <br/>
+     * - Upsert: retries can result in surfacing a 200 - looking like the document was updated when actually the
+     * document has been created by the initial attempt - so logically within the same operation. This will only
+     * impact applications who have special casing for 201 vs. 200 for upsert operations.
+     * <br/>
+     * Patch: retries for patch can but will not always be idempotent - it completely depends on the patch operations
+     * being executed and the precondition filters being used. Before enabling write retries for patch this needs
+     * to be carefully reviewed and tests - which is wht retries for patch can only be enabled on request options
+     * - any CosmosClient wide configuration will be ignored.
+     * <br/>
+     * Bulk/Delete by PK/Transactional Batch/Stroed Procedure execution: No automatic retries are supported.
+     * @param nonIdempotentWriteRetriesEnabled  a flag indicating whether the SDK should enable automatic retries for
+     * an operation when idempotency can't be guaranteed because for the previous attempt a request has been sent
+     * on the network.
+     * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
+     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
+     * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
+     * for which the value will be updated by the SDK. If it is not desired to add this new json property (for example
+     * due to the RU-increase based on the payload size or because it causes documents to exceed the max payload size
+     * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
+     * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
+     * on their own.
+     * @return the CosmosItemRequestOptions
+     */
+    public CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean useTrackingIdPropertyForCreateAndReplace) {
+
+        this.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
+        this.useTrackingIds = useTrackingIdPropertyForCreateAndReplace;
+
+        return this;
+    }
+
+    /**
      * Sets the Dedicated Gateway Request Options
      * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
      * @return the CosmosItemRequestOptions
@@ -307,7 +371,6 @@ public class CosmosItemRequestOptions {
     }
 
     RequestOptions toRequestOptions() {
-        //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
@@ -322,6 +385,9 @@ public class CosmosItemRequestOptions {
         requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         requestOptions.setDiagnosticsThresholds(thresholds);
+        if (this.nonIdempotentWriteRetriesEnabled != null) {
+            requestOptions.setNonIdempotentWriteRetriesEnabled(this.nonIdempotentWriteRetriesEnabled);
+        }
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
@@ -458,6 +524,54 @@ public class CosmosItemRequestOptions {
                 @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions) {
                     return cosmosItemRequestOptions.thresholds;
+                }
+
+                @Override
+                public CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+                    CosmosItemRequestOptions cosmosItemRequestOptions,
+                    boolean enabled,
+                    boolean useTrackingIds) {
+
+                    return cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(enabled, useTrackingIds);
+                }
+
+                @Override
+                public WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                    CosmosItemRequestOptions cosmosItemRequestOptions,
+                    WriteRetryPolicy clientDefault,
+                    boolean operationDefault) {
+
+                    if (cosmosItemRequestOptions.nonIdempotentWriteRetriesEnabled != null) {
+                        return new WriteRetryPolicy(
+                            cosmosItemRequestOptions.nonIdempotentWriteRetriesEnabled,
+                            cosmosItemRequestOptions.useTrackingIds);
+                    }
+
+                    if (!operationDefault) {
+                        cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                            false,
+                            false);
+                        return WriteRetryPolicy.DISABLED;
+                    }
+
+                    if (clientDefault != null) {
+                        if (clientDefault.isEnabled()) {
+                            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                                true,
+                                clientDefault.useTrackingIdProperty());
+                        } else {
+                            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                                false,
+                                false);
+                        }
+
+                        return clientDefault;
+                    }
+
+                    cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(
+                        false,
+                        false);
+                    return WriteRetryPolicy.DISABLED;
                 }
             }
         );

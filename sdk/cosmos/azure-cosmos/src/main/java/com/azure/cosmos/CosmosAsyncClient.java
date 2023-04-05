@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryDiagnosticsHandler;
@@ -95,6 +96,7 @@ public final class CosmosAsyncClient implements Closeable {
     private static final ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor =
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
+    private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -110,6 +112,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
+        this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -582,6 +585,10 @@ public final class CosmosAsyncClient implements Closeable {
         blockListVoidResponse(openConnectionsAndInitCachesInternal());
     }
 
+    WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
+        return this.nonIdempotentWriteRetryPolicy;
+    }
+
     private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
         int concurrency = 1;
         int prefetch = 1;
@@ -832,6 +839,16 @@ public final class CosmosAsyncClient implements Closeable {
                 public CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name) {
                     return  telemetryConfigAccessor
                         .getMeterOptions(client.clientTelemetryConfig, name);
+                }
+
+                @Override
+                public boolean isEffectiveContentResponseOnWriteEnabled(CosmosAsyncClient client,
+                                                                        Boolean requestOptionsContentResponseEnabled) {
+                    if (requestOptionsContentResponseEnabled != null) {
+                        return requestOptionsContentResponseEnabled;
+                    }
+
+                    return client.asyncDocumentClient.isContentResponseOnWriteEnabled();
                 }
 
                 @Override

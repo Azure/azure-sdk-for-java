@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -69,5 +70,31 @@ public class RetryContext {
 
     public Instant getRetryStartTime() {
         return retryStartTime;
+    }
+
+    public void merge(RetryContext other) {
+        if (other == null) {
+            return;
+        }
+
+        if (other.retryStartTime != null) {
+            if (this.retryStartTime == null || this.retryStartTime.isAfter(other.retryStartTime)) {
+                this.retryStartTime = other.retryStartTime;
+            }
+        }
+
+        if (this.retryEndTime != null) {
+            if (other.retryEndTime == null || this.retryEndTime.isBefore(other.retryEndTime)) {
+                this.retryEndTime = other.retryEndTime;
+            }
+        }
+
+        if (other.statusAndSubStatusCodes != null) {
+            if (this.statusAndSubStatusCodes == null) {
+                this.statusAndSubStatusCodes = other.statusAndSubStatusCodes;
+            } else {
+                this.statusAndSubStatusCodes.addAll(other.statusAndSubStatusCodes);
+            }
+        }
     }
 }

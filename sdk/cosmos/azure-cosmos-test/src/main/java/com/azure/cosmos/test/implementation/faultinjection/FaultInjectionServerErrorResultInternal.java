@@ -29,15 +29,20 @@ public class FaultInjectionServerErrorResultInternal {
     private final Integer times;
     private final Duration delay;
 
+    private final Boolean suppressServiceRequests;
+
+
     public FaultInjectionServerErrorResultInternal(
         FaultInjectionServerErrorType serverErrorTypes,
         Integer times,
-        Duration delay) {
+        Duration delay,
+        Boolean suppressServiceRequests) {
 
         checkArgument(serverErrorTypes != null, "Argument 'serverErrorType' can not be null");
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
+        this.suppressServiceRequests = suppressServiceRequests;
     }
 
     public FaultInjectionServerErrorType getServerErrorType() {
@@ -50,6 +55,10 @@ public class FaultInjectionServerErrorResultInternal {
 
     public Duration getDelay() {
         return delay;
+    }
+
+    public Boolean getSuppressServiceRequests() {
+        return this.suppressServiceRequests;
     }
 
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {

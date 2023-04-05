@@ -16,7 +16,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -126,6 +125,8 @@ public class ImplementationBridgeHelpers {
             ApiType getCosmosClientApiType(CosmosClientBuilder builder);
 
             ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder);
+
+            ConnectionPolicy buildConnectionPolicy(CosmosClientBuilder builder);
 
             Configs getConfigs(CosmosClientBuilder builder);
 
@@ -343,6 +344,14 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
+            CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+                CosmosItemRequestOptions options,
+                boolean enabled,
+                boolean useTrackingIds);
+            WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                CosmosItemRequestOptions cosmosItemRequestOptions,
+                WriteRetryPolicy clientDefault,
+                boolean operationDefault);
         }
     }
 
@@ -453,11 +462,20 @@ public class ImplementationBridgeHelpers {
                                                                byte[] contentAsByteArray, Class<T> classType,
                                                                ItemDeserializer itemDeserializer);
 
+
+            <T> CosmosItemResponse<T> withRemappedStatusCode(
+                CosmosItemResponse<T> originalResponse,
+                int newStatusCode,
+                double additionalRequestCharge,
+                boolean isContentResponseOnWriteEnabled);
+
             byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
 
             void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
+
+            boolean hasTrackingId(CosmosItemResponse<?> response, String candidate);
         }
     }
 
@@ -685,7 +703,6 @@ public class ImplementationBridgeHelpers {
             Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations(CosmosDiagnostics cosmosDiagnostics);
             int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
             int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
-
             ClientSideRequestStatistics getClientSideRequestStatisticsRaw(CosmosDiagnostics cosmosDiagnostics);
             void addClientSideDiagnosticsToFeed(
                 CosmosDiagnostics cosmosDiagnostics,
@@ -736,7 +753,8 @@ public class ImplementationBridgeHelpers {
                 String operationId,
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
-                CosmosDiagnosticsThresholds thresholds);
+                CosmosDiagnosticsThresholds thresholds,
+                String trackingId);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
@@ -1174,6 +1192,9 @@ public class ImplementationBridgeHelpers {
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
+            boolean isEffectiveContentResponseOnWriteEnabled(
+                CosmosAsyncClient client,
+                Boolean requestOptionsContentResponseEnabled);
 
             ConsistencyLevel getEffectiveConsistencyLevel(
                 CosmosAsyncClient client,
