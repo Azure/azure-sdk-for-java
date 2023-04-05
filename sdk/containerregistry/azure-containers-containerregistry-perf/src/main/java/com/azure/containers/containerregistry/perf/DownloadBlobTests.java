@@ -31,7 +31,7 @@ public class DownloadBlobTests extends ServiceTest<PerfStressOptions> {
     public Mono<Void> setupAsync() {
         return
             BinaryData.fromFlux(generateAsyncStream(options.getSize()))
-                .flatMap(content -> blobAsyncClient .uploadBlob(content) )
+                .flatMap(content -> blobAsyncClient.uploadBlob(content))
                 .doOnNext(result -> digest[0] = result.getDigest())
                 .then();
     }
