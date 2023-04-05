@@ -139,6 +139,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- links -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/51d45dc89194774041ac09cae58cf8ede321eeb8/sdk/core/azure-json/src/samples/java/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/8517f855a79ea23dce94397c58e4368738016fc4/sdk/core/azure-json/src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-json%2FREADME.png)
