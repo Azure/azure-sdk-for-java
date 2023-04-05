@@ -77,9 +77,9 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
                         }
                     }
                     if (weightsFound) {
-                        TextWeights deserializedValue = new TextWeights(weights);
+                        TextWeights deserializedTextWeights = new TextWeights(weights);
 
-                        return deserializedValue;
+                        return deserializedTextWeights;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!weightsFound) {

@@ -9,7 +9,7 @@ import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
@@ -43,6 +43,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.EPOCH_TICKS;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
@@ -398,7 +399,7 @@ public final class MessageUtils {
             return null;
         }
 
-        RuleDescription ruleDescription = new RuleDescription();
+        RuleDescriptionImpl ruleDescription = new RuleDescriptionImpl();
         if (ruleDescribedType.getDescribed() instanceof Iterable) {
             @SuppressWarnings("unchecked") Iterator<Object> describedRule = ((Iterable<Object>) ruleDescribedType.getDescribed()).iterator();
             if (describedRule.hasNext()) {

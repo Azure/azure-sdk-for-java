@@ -180,11 +180,11 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
                         }
                     }
                     if (nameFound && tokenizerFound) {
-                        CustomAnalyzer deserializedValue = new CustomAnalyzer(name, tokenizer);
-                        deserializedValue.tokenFilters = tokenFilters;
-                        deserializedValue.charFilters = charFilters;
+                        CustomAnalyzer deserializedCustomAnalyzer = new CustomAnalyzer(name, tokenizer);
+                        deserializedCustomAnalyzer.tokenFilters = tokenFilters;
+                        deserializedCustomAnalyzer.charFilters = charFilters;
 
-                        return deserializedValue;
+                        return deserializedCustomAnalyzer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

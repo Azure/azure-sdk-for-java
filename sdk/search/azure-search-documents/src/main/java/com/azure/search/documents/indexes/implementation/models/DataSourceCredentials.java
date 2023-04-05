@@ -64,21 +64,19 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
     public static DataSourceCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String connectionString = null;
+                    DataSourceCredentials deserializedDataSourceCredentials = new DataSourceCredentials();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("connectionString".equals(fieldName)) {
-                            connectionString = reader.getString();
+                            deserializedDataSourceCredentials.connectionString = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    DataSourceCredentials deserializedValue = new DataSourceCredentials();
-                    deserializedValue.connectionString = connectionString;
 
-                    return deserializedValue;
+                    return deserializedDataSourceCredentials;
                 });
     }
 }

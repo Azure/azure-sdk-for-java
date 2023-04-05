@@ -157,45 +157,33 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
     public static IndexerCurrentState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    IndexingMode mode = null;
-                    String allDocsInitialChangeTrackingState = null;
-                    String allDocsFinalChangeTrackingState = null;
-                    String resetDocsInitialChangeTrackingState = null;
-                    String resetDocsFinalChangeTrackingState = null;
-                    List<String> resetDocumentKeys = null;
-                    List<String> resetDatasourceDocumentIds = null;
+                    IndexerCurrentState deserializedIndexerCurrentState = new IndexerCurrentState();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("mode".equals(fieldName)) {
-                            mode = IndexingMode.fromString(reader.getString());
+                            deserializedIndexerCurrentState.mode = IndexingMode.fromString(reader.getString());
                         } else if ("allDocsInitialChangeTrackingState".equals(fieldName)) {
-                            allDocsInitialChangeTrackingState = reader.getString();
+                            deserializedIndexerCurrentState.allDocsInitialChangeTrackingState = reader.getString();
                         } else if ("allDocsFinalChangeTrackingState".equals(fieldName)) {
-                            allDocsFinalChangeTrackingState = reader.getString();
+                            deserializedIndexerCurrentState.allDocsFinalChangeTrackingState = reader.getString();
                         } else if ("resetDocsInitialChangeTrackingState".equals(fieldName)) {
-                            resetDocsInitialChangeTrackingState = reader.getString();
+                            deserializedIndexerCurrentState.resetDocsInitialChangeTrackingState = reader.getString();
                         } else if ("resetDocsFinalChangeTrackingState".equals(fieldName)) {
-                            resetDocsFinalChangeTrackingState = reader.getString();
+                            deserializedIndexerCurrentState.resetDocsFinalChangeTrackingState = reader.getString();
                         } else if ("resetDocumentKeys".equals(fieldName)) {
-                            resetDocumentKeys = reader.readArray(reader1 -> reader1.getString());
+                            List<String> resetDocumentKeys = reader.readArray(reader1 -> reader1.getString());
+                            deserializedIndexerCurrentState.resetDocumentKeys = resetDocumentKeys;
                         } else if ("resetDatasourceDocumentIds".equals(fieldName)) {
-                            resetDatasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
+                            List<String> resetDatasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
+                            deserializedIndexerCurrentState.resetDatasourceDocumentIds = resetDatasourceDocumentIds;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    IndexerCurrentState deserializedValue = new IndexerCurrentState();
-                    deserializedValue.mode = mode;
-                    deserializedValue.allDocsInitialChangeTrackingState = allDocsInitialChangeTrackingState;
-                    deserializedValue.allDocsFinalChangeTrackingState = allDocsFinalChangeTrackingState;
-                    deserializedValue.resetDocsInitialChangeTrackingState = resetDocsInitialChangeTrackingState;
-                    deserializedValue.resetDocsFinalChangeTrackingState = resetDocsFinalChangeTrackingState;
-                    deserializedValue.resetDocumentKeys = resetDocumentKeys;
-                    deserializedValue.resetDatasourceDocumentIds = resetDatasourceDocumentIds;
 
-                    return deserializedValue;
+                    return deserializedIndexerCurrentState;
                 });
     }
 }

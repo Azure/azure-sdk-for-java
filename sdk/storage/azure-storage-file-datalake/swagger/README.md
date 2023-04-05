@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.10'
+use: '@autorest/java@4.1.16'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21921735e92f74e027266506d019135ccf0d4f8b/specification/storage/data-plane/Azure.Storage.Files.DataLake/preview/2021-06-08/DataLakeStorage.json
 java: true
 output-folder: ../

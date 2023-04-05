@@ -97,7 +97,7 @@ public class ManageCdnWithCustomDomain {
             CdnProfile cdnProfile = azureResourceManager.cdnProfiles().define(cdnProfileName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .withStandardAkamaiSku()
+                .withStandardMicrosoftSku()
                 .create();
             System.out.println("Created CDN profile " + cdnProfile.name());
 

@@ -39,7 +39,7 @@ public final class MetricEnrichedSeriesDataTest extends MetricEnrichedSeriesData
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled
     public void getEnrichedSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<MetricEnrichedSeriesData> enrichedDataIterable
             = client.listMetricEnrichedSeriesData(

@@ -11,13 +11,23 @@ package com.azure.search.documents.models;
  * syntax and 'semantic' if query syntax is not needed.
  */
 public enum QueryType {
-    /** Enum value simple. */
+    /**
+     * Uses the simple query syntax for searches. Search text is interpreted using a simple query language that allows
+     * for symbols such as +, * and "". Queries are evaluated across all searchable fields by default, unless the
+     * searchFields parameter is specified.
+     */
     SIMPLE("simple"),
 
-    /** Enum value full. */
+    /**
+     * Uses the full Lucene query syntax for searches. Search text is interpreted using the Lucene query language which
+     * allows field-specific and weighted searches, as well as other advanced features.
+     */
     FULL("full"),
 
-    /** Enum value semantic. */
+    /**
+     * Best suited for queries expressed in natural language as opposed to keywords. Improves precision of search
+     * results by re-ranking the top search results using a ranking model trained on the Web corpus.
+     */
     SEMANTIC("semantic");
 
     /** The actual serialized value for a QueryType instance. */

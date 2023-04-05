@@ -103,10 +103,10 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
                         }
                     }
                     if (nameFound) {
-                        OutputFieldMappingEntry deserializedValue = new OutputFieldMappingEntry(name);
-                        deserializedValue.targetName = targetName;
+                        OutputFieldMappingEntry deserializedOutputFieldMappingEntry = new OutputFieldMappingEntry(name);
+                        deserializedOutputFieldMappingEntry.targetName = targetName;
 
-                        return deserializedValue;
+                        return deserializedOutputFieldMappingEntry;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

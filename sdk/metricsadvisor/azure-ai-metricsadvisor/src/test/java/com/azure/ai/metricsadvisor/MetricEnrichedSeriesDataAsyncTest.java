@@ -37,7 +37,7 @@ public class MetricEnrichedSeriesDataAsyncTest extends MetricEnrichedSeriesDataT
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled
     public void getEnrichedSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
             = client.listMetricEnrichedSeriesData(

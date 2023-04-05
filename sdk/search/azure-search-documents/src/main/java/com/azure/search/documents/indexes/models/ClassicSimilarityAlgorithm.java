@@ -46,6 +46,8 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     public static ClassicSimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
+                    ClassicSimilarityAlgorithm deserializedClassicSimilarityAlgorithm =
+                            new ClassicSimilarityAlgorithm();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -64,9 +66,8 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
                             reader.skipChildren();
                         }
                     }
-                    ClassicSimilarityAlgorithm deserializedValue = new ClassicSimilarityAlgorithm();
 
-                    return deserializedValue;
+                    return deserializedClassicSimilarityAlgorithm;
                 });
     }
 }

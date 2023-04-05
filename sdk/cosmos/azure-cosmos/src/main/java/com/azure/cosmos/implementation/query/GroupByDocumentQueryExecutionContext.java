@@ -6,8 +6,10 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
@@ -18,7 +20,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +32,9 @@ import java.util.function.BiFunction;
 public final class GroupByDocumentQueryExecutionContext implements
     IDocumentQueryExecutionComponent<Document> {
 
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
                                                                                     "for queries with GROUP BY." +
                                                                                     "Do not use continuation token" +
@@ -76,14 +83,15 @@ public final class GroupByDocumentQueryExecutionContext implements
                 /* Do groupBy stuff here */
                 // Stage 1:
                 // Drain the groupings fully from all continuation and all partitions
-                List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
+                Collection<ClientSideRequestStatistics> diagnosticsList = new DistinctClientSideRequestStatisticsCollection();
                 ConcurrentMap<String, QueryMetrics> queryMetrics = new ConcurrentHashMap<>();
                 for (FeedResponse<Document> page : superList) {
                     List<Document> results = page.getResults();
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
-                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                    diagnosticsList.addAll(
+                        diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
                 }
 
                 this.aggregateGroupings(documentList);
@@ -111,7 +119,7 @@ public final class GroupByDocumentQueryExecutionContext implements
 
                 FeedResponse<Document> response = createFeedResponseFromGroupingTable(0,
                                                                                new ConcurrentHashMap<>(),
-                                                                               groupByResults, new ArrayList<>());
+                                                                               groupByResults, new HashSet<>());
                 return Mono.just(response);
             });
     }
@@ -120,7 +128,7 @@ public final class GroupByDocumentQueryExecutionContext implements
         double requestCharge,
         ConcurrentMap<String, QueryMetrics> queryMetrics,
         List<Document> groupByResults,
-        List<ClientSideRequestStatistics> diagnosticsList) {
+        Collection<ClientSideRequestStatistics> diagnostics) {
 
         if (this.groupingTable == null) {
             throw new IllegalStateException("No grouping table defined.");
@@ -131,7 +139,9 @@ public final class GroupByDocumentQueryExecutionContext implements
         FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
             queryMetrics, null, false,
             false, null);
-        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+            frp.getCosmosDiagnostics(), diagnostics);
+
         return frp;
     }
 
@@ -145,11 +155,11 @@ public final class GroupByDocumentQueryExecutionContext implements
 
     /**
      * When a group by query gets rewritten the projection looks like:
-     * <p>
+     * <br/>
      * SELECT
      * [{"item": c.age}, {"item": c.name}] AS groupByItems,
      * {"age": c.age, "name": c.name} AS payload
-     * <p>
+     * <br/>
      * This class just lets us easily access the "groupByItems" and "payload" property.
      */
     static final class RewrittenGroupByProjection extends JsonSerializable {

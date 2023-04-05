@@ -142,29 +142,27 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
     public static PrioritizedFields fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    SemanticField titleField = null;
-                    List<SemanticField> prioritizedContentFields = null;
-                    List<SemanticField> prioritizedKeywordsFields = null;
+                    PrioritizedFields deserializedPrioritizedFields = new PrioritizedFields();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("titleField".equals(fieldName)) {
-                            titleField = SemanticField.fromJson(reader);
+                            deserializedPrioritizedFields.titleField = SemanticField.fromJson(reader);
                         } else if ("prioritizedContentFields".equals(fieldName)) {
-                            prioritizedContentFields = reader.readArray(reader1 -> SemanticField.fromJson(reader1));
+                            List<SemanticField> prioritizedContentFields =
+                                    reader.readArray(reader1 -> SemanticField.fromJson(reader1));
+                            deserializedPrioritizedFields.prioritizedContentFields = prioritizedContentFields;
                         } else if ("prioritizedKeywordsFields".equals(fieldName)) {
-                            prioritizedKeywordsFields = reader.readArray(reader1 -> SemanticField.fromJson(reader1));
+                            List<SemanticField> prioritizedKeywordsFields =
+                                    reader.readArray(reader1 -> SemanticField.fromJson(reader1));
+                            deserializedPrioritizedFields.prioritizedKeywordsFields = prioritizedKeywordsFields;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    PrioritizedFields deserializedValue = new PrioritizedFields();
-                    deserializedValue.titleField = titleField;
-                    deserializedValue.prioritizedContentFields = prioritizedContentFields;
-                    deserializedValue.prioritizedKeywordsFields = prioritizedKeywordsFields;
 
-                    return deserializedValue;
+                    return deserializedPrioritizedFields;
                 });
     }
 }

@@ -86,29 +86,26 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
     public static SearchIndexerLimits fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Duration maxRunTime = null;
-                    Long maxDocumentExtractionSize = null;
-                    Long maxDocumentContentCharactersToExtract = null;
+                    SearchIndexerLimits deserializedSearchIndexerLimits = new SearchIndexerLimits();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("maxRunTime".equals(fieldName)) {
-                            maxRunTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                            deserializedSearchIndexerLimits.maxRunTime =
+                                    reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                         } else if ("maxDocumentExtractionSize".equals(fieldName)) {
-                            maxDocumentExtractionSize = reader.getNullable(JsonReader::getLong);
+                            deserializedSearchIndexerLimits.maxDocumentExtractionSize =
+                                    reader.getNullable(JsonReader::getLong);
                         } else if ("maxDocumentContentCharactersToExtract".equals(fieldName)) {
-                            maxDocumentContentCharactersToExtract = reader.getNullable(JsonReader::getLong);
+                            deserializedSearchIndexerLimits.maxDocumentContentCharactersToExtract =
+                                    reader.getNullable(JsonReader::getLong);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SearchIndexerLimits deserializedValue = new SearchIndexerLimits();
-                    deserializedValue.maxRunTime = maxRunTime;
-                    deserializedValue.maxDocumentExtractionSize = maxDocumentExtractionSize;
-                    deserializedValue.maxDocumentContentCharactersToExtract = maxDocumentContentCharactersToExtract;
 
-                    return deserializedValue;
+                    return deserializedSearchIndexerLimits;
                 });
     }
 }

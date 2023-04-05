@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Resource;
@@ -22,19 +23,23 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class OrderByUtils {
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     public static <T extends Resource> Flux<OrderByRowResult<Document>> orderedMerge(OrderbyRowComparer<Document> consumeComparer,
                                                                                      RequestChargeTracker tracker,
                                                                                      List<DocumentProducer<Document>> documentProducers,
                                                                                      Map<String, QueryMetrics> queryMetricsMap,
                                                                                      Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
-                                                                                     List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+                                                                                     Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
         @SuppressWarnings("unchecked")
         Flux<OrderByRowResult<Document>>[] fluxes = documentProducers
                 .subList(0, documentProducers.size())
@@ -42,7 +47,7 @@ class OrderByUtils {
                 .map(producer ->
                         toOrderByQueryResultObservable(producer, tracker, queryMetricsMap,
                                                        targetRangeToOrderByContinuationTokenMap,
-                                                       consumeComparer.getSortOrders(), clientSideRequestStatisticsList))
+                                                       consumeComparer.getSortOrders(), clientSideRequestStatistics))
                 .toArray(Flux[]::new);
         return Flux.mergeOrdered(consumeComparer, fluxes);
     }
@@ -52,7 +57,7 @@ class OrderByUtils {
                                                                                                  Map<String, QueryMetrics> queryMetricsMap,
                                                                                                  Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
                                                                                                  List<SortOrder> sortOrders,
-                                                                                                 List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+                                                                                                 Collection<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
         return producer
                 .produceAsync()
                    .transformDeferred(new OrderByUtils.PageToItemTransformer(tracker, queryMetricsMap,
@@ -66,24 +71,24 @@ class OrderByUtils {
         private final Map<String, QueryMetrics> queryMetricsMap;
         private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
         private final List<SortOrder> sortOrders;
-        private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+        private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
 
         public PageToItemTransformer(
             RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap,
             Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
-            List<SortOrder> sortOrders, List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+            List<SortOrder> sortOrders, Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
             this.tracker = tracker;
             this.queryMetricsMap = queryMetricsMap;
             this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
             this.sortOrders = sortOrders;
-            this.clientSideRequestStatisticsList = clientSideRequestStatisticsList;
+            this.clientSideRequestStatistics = clientSideRequestStatistics;
         }
 
         @Override
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
-                clientSideRequestStatisticsList.addAll(
-                    BridgeInternal.getClientSideRequestStatisticsList(documentProducerFeedResponse
+                clientSideRequestStatistics.addAll(
+                    diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
                 QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
                                                   BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult));

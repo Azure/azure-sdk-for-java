@@ -108,10 +108,10 @@ public final class StopAnalyzer extends LexicalAnalyzer {
                         }
                     }
                     if (nameFound) {
-                        StopAnalyzer deserializedValue = new StopAnalyzer(name);
-                        deserializedValue.stopwords = stopwords;
+                        StopAnalyzer deserializedStopAnalyzer = new StopAnalyzer(name);
+                        deserializedStopAnalyzer.stopwords = stopwords;
 
-                        return deserializedValue;
+                        return deserializedStopAnalyzer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

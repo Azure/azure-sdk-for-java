@@ -128,10 +128,10 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
                         }
                     }
                     if (nameFound && indexesFound) {
-                        SearchAlias deserializedValue = new SearchAlias(name, indexes);
-                        deserializedValue.eTag = eTag;
+                        SearchAlias deserializedSearchAlias = new SearchAlias(name, indexes);
+                        deserializedSearchAlias.eTag = eTag;
 
-                        return deserializedValue;
+                        return deserializedSearchAlias;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

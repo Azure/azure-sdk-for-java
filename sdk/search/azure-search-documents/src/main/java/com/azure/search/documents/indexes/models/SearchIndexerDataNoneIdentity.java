@@ -42,6 +42,8 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     public static SearchIndexerDataNoneIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
+                    SearchIndexerDataNoneIdentity deserializedSearchIndexerDataNoneIdentity =
+                            new SearchIndexerDataNoneIdentity();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -60,9 +62,8 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
                             reader.skipChildren();
                         }
                     }
-                    SearchIndexerDataNoneIdentity deserializedValue = new SearchIndexerDataNoneIdentity();
 
-                    return deserializedValue;
+                    return deserializedSearchIndexerDataNoneIdentity;
                 });
     }
 }
