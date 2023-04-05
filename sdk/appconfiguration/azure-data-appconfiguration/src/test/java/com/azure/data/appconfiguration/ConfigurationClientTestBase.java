@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -788,5 +789,17 @@ public abstract class ConfigurationClientTestBase extends TestBase {
                 .setDisplayName(displayName)
                 .setClientFilters(filters)
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
+    }
+
+    static void verifyConfigurationSettingSnapshot(ConfigurationSettingSnapshot expected,
+        ConfigurationSettingSnapshot actual) {
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getCompositionType(), actual.getCompositionType());
+//        assertEquals(expected.getFilters(), actual.getFilters());
+        assertEquals(expected.getItemCount(), actual.getItemCount());
+        assertEquals(expected.getRetentionPeriod(), actual.getRetentionPeriod());
+        assertEquals(expected.getSize(), actual.getSize());
+        assertEquals(expected.getStatus(), actual.getStatus());
+
     }
 }

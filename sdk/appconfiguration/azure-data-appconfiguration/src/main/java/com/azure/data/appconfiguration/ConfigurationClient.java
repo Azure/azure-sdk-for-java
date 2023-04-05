@@ -12,37 +12,29 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
-import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.DeleteLockHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
-import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
-import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
-import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
@@ -50,7 +42,6 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
-import static com.azure.data.appconfiguration.implementation.Utility.getEtagSnapshot;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
@@ -82,6 +73,8 @@ public final class ConfigurationClient {
     private final AzureAppConfigurationImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
+    final CreateSnapshotUtilClient createSnapshotUtilClient;
+
     /**
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
@@ -93,6 +86,7 @@ public final class ConfigurationClient {
     ConfigurationClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
+        this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
     }
 
     /**
@@ -922,172 +916,64 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Create snapshots
+     * Create a {@link ConfigurationSettingSnapshot} by providing a snapshot name and a list of
+     * {@link SnapshotSettingFilter}.
      *
-     * @param name name of snapshots
-     * @param filters
-     * @return snapshots.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapShot -->
+     * <pre>
+     * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
+     * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
+     * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * SyncPoller&lt;CreateSnapshotOperationDetail, ConfigurationSettingSnapshot&gt; poller =
+     *     client.beginCreateSnapShot&#40;snapshotName, filters&#41;;
+     *
+     * poller.setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;;
+     * poller.waitForCompletion&#40;&#41;;
+     *
+     * ConfigurationSettingSnapshot snapshot= poller.getFinalResult&#40;&#41;;
+     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s%n&quot;, snapshot.getName&#40;&#41;, snapshot.getCreatedAt&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapShot -->
+     *
+     * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
+     * @param filters A list of filters used to filter the {@link ConfigurationSetting} included in the snapshot.
+     * @return A {@link SyncPoller} that polls the creating snapshot operation until it has completed or
+     * has failed. The completed operation returns a {@link ConfigurationSettingSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingSnapshot createSnapShot(String name, List<SnapshotSettingFilter> filters) {
-        return createSnapShotWithResponse(name, new ConfigurationSettingSnapshot(filters), Context.NONE).getValue();
+    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapShot(
+        String name, List<SnapshotSettingFilter> filters) {
+        return beginCreateSnapShotWithResponse(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
     }
 
     /**
-     * Create snapshots
+     * Create a {@link ConfigurationSettingSnapshot} by providing a snapshot name and a
+     * {@link ConfigurationSettingSnapshot}.
      *
-     * @param snapshot snapshots
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapShotWithResponse -->
+     * <pre>
+     * client.listRevisions&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;setting -&gt;
+     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapShotWithResponse-->
+     *
+     * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
+     * @param snapshot The {@link ConfigurationSettingSnapshot} to create.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return snapshots.
+     * @return A {@link SyncPoller} that polls the creating snapshot operation until it has completed or
+     * has failed. The completed operation returns a {@link ConfigurationSettingSnapshot}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> createSnapShotWithResponse(String name,
-        ConfigurationSettingSnapshot snapshot, Context context) {
-        final ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.createSnapshotWithResponse(name, snapshot, context);
-        return new SimpleResponse<>(response, response.getValue());
-    }
-
-    /**
-     * Get snapshot
-     *
-     * @param name name of snapshot
-     * @return snapshot.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingSnapshot getSnapShot(String name) {
-        return getSnapShotWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Get snapshot
-     *
-     * @param name name of snapshot
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> getSnapShotWithResponse(String name, Context context) {
-        final ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.getSnapshotWithResponse(name, null, null, null, context);
-        return new SimpleResponse<>(response, response.getValue());
-    }
-
-    /**
-     * Archiving snapshot from Ready status.
-     *
-     * @param name name of snapshots
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingSnapshot archiveSnapshot(String name) {
-        return archiveSnapshotWithResponse(new ConfigurationSettingSnapshot(null),
-            false, Context.NONE).getValue();
-    }
-
-    /**
-     * Archiving snapshot from Ready status.
-     *
-     * @param snapshot name of snapshots
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()}  ETag} is
-     * used as a IF-MATCH header.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> archiveSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
-        boolean ifUnchanged, Context context) {
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(snapshot.getName(),
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
-                getEtagSnapshot(ifUnchanged, snapshot), null, context);
-        return new SimpleResponse<>(response, response.getValue());
-    }
-
-
-    /**
-     * recovering snapshot from archived status.
-     *
-     * @param name name of snapshots
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingSnapshot recoverSnapshot(String name) {
-        return recoverSnapshotWithResponse(null, false, Context.NONE).getValue();
-    }
-
-    /**
-     * recovering snapshot from archived status.
-     *
-     * @param snapshot snapshots.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()}  ETag} is
-     * used as a IF-MATCH header.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> recoverSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
-        boolean ifUnchanged, Context context) {
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.updateSnapshotWithResponse(snapshot.getName(),
-                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
-                getEtagSnapshot(ifUnchanged, snapshot), null, context);
-        return new SimpleResponse<>(response, response.getValue());
-    }
-
-    /**
-     * Listing snapshots
-     *
-     * @param selector SnapshotSelector
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSettingSnapshot> listSnapshots(SnapshotSelector selector) {
-        return listSnapshots(selector, Context.NONE);
-    }
-
-    /**
-     * Listing snapshots
-     *
-     * @param selector SnapshotSelector
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return snapshots.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSettingSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
-        return new PagedIterable<>(
-            () -> {
-                final PagedResponse<ConfigurationSettingSnapshot> pagedResponse = serviceClient.getSnapshotsSinglePage(
-                    selector.getName(),
-                    null,
-                    null,
-                    Arrays.asList(SnapshotStatus.fromString(selector.getSnapshotStatus().toString())),
-                    enableSyncRestProxy(addTracingNamespace(context)));
-                return new PagedResponseBase<>(
-                    pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(),
-                    null);
-            },
-            nextLink -> {
-                final PagedResponse<ConfigurationSettingSnapshot> pagedResponse =
-                    serviceClient.getSnapshotsNextSinglePage(nextLink,
-                        enableSyncRestProxy(addTracingNamespace(context)));
-                return new PagedResponseBase<>(
-                    pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(),
-                    null);
-            }
-        );
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapShotWithResponse(
+        String name, ConfigurationSettingSnapshot snapshot, Context context) {
+        return createSnapshotUtilClient.beginCreateSnapshot(name, snapshot, context);
     }
 
     /**

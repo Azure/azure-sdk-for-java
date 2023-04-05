@@ -4,11 +4,16 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import reactor.util.context.Context;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Code snippets for {@link ConfigurationAsyncClient}
@@ -263,6 +268,47 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapShot(String, List)}}
+     */
+    public void createSnapshotWithFilters() {
+        ConfigurationAsyncClient client = getAsyncClient();
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapShot
+        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+        filters.add(new SnapshotSettingFilter("{keyName}"));
+        String snapshotName = "{snapshotName}";
+        client.beginCreateSnapShot(snapshotName, filters)
+            .flatMap(result -> result.getFinalResult())
+            .subscribe(
+                snapshot -> System.out.printf("Snapshot name=%s is created at %s%n",
+                    snapshot.getName(), snapshot.getCreatedAt()),
+                ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
+                () -> System.out.println("Successfully created a snapshot."));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapShot
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapShotWithResponse(String, ConfigurationSettingSnapshot)}}
+     */
+    public void createSnapshotMaxOverload() {
+        ConfigurationAsyncClient client = getAsyncClient();
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapShotWithResponse
+        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+        filters.add(new SnapshotSettingFilter("{keyName}"));
+        String snapshotName = "{snapshotName}";
+        client.beginCreateSnapShotWithResponse(snapshotName,
+            new ConfigurationSettingSnapshot(filters).setRetentionPeriod(Duration.ZERO))
+            .flatMap(result -> result.getFinalResult())
+            .subscribe(
+                snapshot -> System.out.printf("Snapshot name=%s is created at %s%n",
+                    snapshot.getName(), snapshot.getCreatedAt()),
+                ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
+                () -> System.out.println("Successfully created a snapshot."));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapShotWithResponse
     }
 
     /**

@@ -16,17 +16,23 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -991,6 +997,35 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 assertContainsHeaders(headers, response.getRequest().getHeaders());
             }
         );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshotWithFilters(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+//        final int numberExpected = 10;
+//        for (int value = 0; value < numberExpected; value++) {
+//            client.setConfigurationSettingWithResponse(
+//                new ConfigurationSetting().setKey(keyPrefix + "-" + value),
+//                false,
+//                Context.NONE)
+//                .getValue();
+//        }
+        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        filters.add(new SnapshotSettingFilter("k*"));
+
+        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+            client.beginCreateSnapShot("NAME1", filters);
+
+        poller.setPollInterval(Duration.ofSeconds(10));
+        poller.waitForCompletion();
+
+        ConfigurationSettingSnapshot actual = poller.getFinalResult();
+        ConfigurationSettingSnapshot expected = new ConfigurationSettingSnapshot(filters)
+            .setRetentionPeriod(Duration.ofSeconds(2592000))
+            .setCompositionType(CompositionType.GROUP_BY_KEY);
+
+        verifyConfigurationSettingSnapshot(expected, actual);
     }
 
     /**
