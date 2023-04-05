@@ -206,8 +206,13 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      *
-      * Content is uploaded in chunks of up to 4MB size. Chunk size depends on passed {@link ByteBuffer}
-     * sizes. Buffers that are bigger than 4MB are broken down into smaller chunks, but small buffers are not aggregated.
+     * <p>
+     * Note:
+     * </p>
+     * Content may be uploaded in chunks of up to 4MB size. Chunk size depends on the passed {@link BinaryData} content.
+     * When {@link BinaryData} is created using {@link BinaryData#fromFlux(Flux, Long, boolean)}, it may be uploaded in
+     * chunks matching individual {@link ByteBuffer} in the {@link Flux} and up to 4MB size.
+     * Buffers that are bigger than 4MB can be broken down into smaller chunks, but small buffers are not aggregated.
      * To decrease number of chunks for big content, use buffers of 4MB size.
      *
      * @param content The blob content that needs to be uploaded.

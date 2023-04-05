@@ -41,8 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.security.MessageDigest;
 import java.util.Objects;
@@ -227,12 +225,10 @@ public final class ContainerRegistryContentClient {
         Objects.requireNonNull(content, "'content' cannot be null.");
 
         InputStream stream = content.toStream();
-        ReadableByteChannel channel = Channels.newChannel(stream);
         try {
-            return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(channel, span), context);
+            return runWithTracing(UPLOAD_BLOB_SPAN_NAME, (span) -> uploadBlobInternal(stream, span), context);
         } finally {
             try {
-                channel.close();
                 stream.close();
             } catch (IOException e) {
                 LOGGER.warning("Failed to close the stream", e);
@@ -444,7 +440,7 @@ public final class ContainerRegistryContentClient {
         }
     }
 
-    private UploadRegistryBlobResult uploadBlobInternal(ReadableByteChannel stream, Context context) {
+    private UploadRegistryBlobResult uploadBlobInternal(InputStream stream, Context context) {
         MessageDigest sha256 = createSha256();
         byte[] buffer = new byte[CHUNK_SIZE];
 
@@ -482,23 +478,27 @@ public final class ContainerRegistryContentClient {
         }
     }
 
-    private BinaryData readChunk(ReadableByteChannel stream, MessageDigest sha256, byte[] buffer) {
-        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-        while (byteBuffer.position() < CHUNK_SIZE) {
+    private BinaryData readChunk(InputStream stream, MessageDigest sha256, byte[] buffer) {
+        int position = 0;
+        while (position < CHUNK_SIZE) {
             try {
-                if (stream.read(byteBuffer) < 0) {
+                int read = stream.read(buffer, position, CHUNK_SIZE - position);
+                if (read < 0) {
                     break;
                 }
+                position += read;
             } catch (IOException ex) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
-        if (byteBuffer.position() == 0) {
+        if (position == 0) {
             return null;
         }
 
-        byteBuffer.flip();
-        sha256.update(byteBuffer.asReadOnlyBuffer());
+        sha256.update(buffer, 0, position);
+
+        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+        byteBuffer.limit(position);
         return BinaryData.fromByteBuffer(byteBuffer);
     }
 
