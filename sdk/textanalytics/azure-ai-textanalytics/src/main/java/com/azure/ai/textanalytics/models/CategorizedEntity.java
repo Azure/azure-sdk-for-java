@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics.models;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
 import com.azure.core.util.IterableStream;
 
+import java.util.Collections;
+
 /**
  * The {@link CategorizedEntity} model.
  */
@@ -124,7 +126,7 @@ public final class CategorizedEntity {
      * @return the resolutions value.
      */
     public IterableStream<? extends BaseResolution> getResolutions() {
-        return this.resolutions;
+        return this.resolutions == null ? IterableStream.of(Collections.emptyList()) : resolutions;
     }
 
     /**

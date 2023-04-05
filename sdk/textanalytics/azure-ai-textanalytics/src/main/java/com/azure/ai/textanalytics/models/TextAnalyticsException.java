@@ -7,6 +7,8 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertie
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.IterableStream;
 
+import java.util.Collections;
+
 /**
  * General exception for Text Analytics related failures.
  */
@@ -81,7 +83,7 @@ public class TextAnalyticsException extends AzureException {
      * @return {@link IterableStream} of {@link TextAnalyticsError}.
      */
     public IterableStream<TextAnalyticsError> getErrors() {
-        return this.errors;
+        return this.errors == null ? IterableStream.of(Collections.emptyList()) : this.errors;
     }
 
     /**

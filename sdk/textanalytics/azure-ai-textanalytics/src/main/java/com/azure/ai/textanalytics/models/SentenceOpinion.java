@@ -7,6 +7,8 @@ import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
+import java.util.Collections;
+
 /**
  * The {@link SentenceOpinion} model.
  */
@@ -47,7 +49,7 @@ public final class SentenceOpinion {
      * @return The assessments of target text.
      */
     public IterableStream<AssessmentSentiment> getAssessments() {
-        return assessments;
+        return assessments == null ? IterableStream.of(Collections.emptyList()) : assessments;
     }
 
     private void setTarget(TargetSentiment target) {
