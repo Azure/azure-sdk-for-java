@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -38,8 +39,22 @@ public final class DocumentWord {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentWord class. */
-    public DocumentWord() {}
+    /**
+     * Creates an instance of DocumentWord class.
+     *
+     * @param content the content value to set.
+     * @param span the span value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentWord(
+            @JsonProperty(value = "content", required = true) String content,
+            @JsonProperty(value = "span", required = true) DocumentSpan span,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.content = content;
+        this.span = span;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the content property: Text content of the word.
@@ -48,17 +63,6 @@ public final class DocumentWord {
      */
     public String getContent() {
         return this.content;
-    }
-
-    /**
-     * Set the content property: Text content of the word.
-     *
-     * @param content the content value to set.
-     * @return the DocumentWord object itself.
-     */
-    public DocumentWord setContent(String content) {
-        this.content = content;
-        return this;
     }
 
     /**
@@ -91,33 +95,11 @@ public final class DocumentWord {
     }
 
     /**
-     * Set the span property: Location of the word in the reading order concatenated content.
-     *
-     * @param span the span value to set.
-     * @return the DocumentWord object itself.
-     */
-    public DocumentWord setSpan(DocumentSpan span) {
-        this.span = span;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the word.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the word.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentWord object itself.
-     */
-    public DocumentWord setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

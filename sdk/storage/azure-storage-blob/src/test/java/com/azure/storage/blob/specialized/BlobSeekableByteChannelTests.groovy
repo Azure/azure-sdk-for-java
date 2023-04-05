@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized
 
 import com.azure.core.http.HttpHeaders
@@ -5,26 +8,33 @@ import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse
 import com.azure.storage.blob.models.BlobDownloadHeaders
 import com.azure.storage.blob.models.BlobDownloadResponse
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.ConsistentReadControl
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions
-import com.azure.storage.common.StorageSeekableByteChannel
+import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions
+import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions.WriteMode
+import com.azure.storage.common.implementation.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 
 import java.nio.ByteBuffer
 import java.time.Duration
 
 class BlobSeekableByteChannelTests extends APISpec {
     BlobClient bc
+    BlockBlobClient blockClient
 
     def setup() {
         bc = cc.getBlobClient(generateBlobName())
+        blockClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
     }
 
     def "E2E channel read"() {
@@ -33,11 +43,14 @@ class BlobSeekableByteChannelTests extends APISpec {
         bc.upload(BinaryData.fromBytes(data))
 
         when: "Channel initialized"
-        def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
-            .setBlockSize(streamBufferSize), null)
+        def result = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
+            .setReadSizeInBytes(streamBufferSize), null)
+        def channel = result.getChannel()
 
         then: "Channel initialized to position zero"
         channel.position() == 0
+        result.getProperties() != null
+        result.getProperties().blobSize == data.length
 
         when: "read from channel"
         def downloadedData = new ByteArrayOutputStream()
@@ -56,6 +69,35 @@ class BlobSeekableByteChannelTests extends APISpec {
         Constants.KB + 50 | 40             | Constants.KB // initial fetch larger than resource size
     }
 
+    @LiveOnly
+    def "E2E channel write - block"() {
+        when: "Channel initialized"
+        def channel = blockClient.openSeekableByteChannelWrite(
+            new BlockBlobSeekableByteChannelWriteOptions(WriteMode.OVERWRITE).setBlockSizeInBytes(streamBufferSize))
+
+        then: "Channel initialized to position zero"
+        channel.position() == 0
+
+        when: "write to channel"
+        def data = getRandomByteArray(dataLength)
+        int copied = TestUtility.copy(new ByteArrayInputStream(data), channel, copyBufferSize)
+
+        then: "channel position updated accordingly"
+        copied == dataLength
+        channel.position() == dataLength
+
+        when: "channel flushed"
+        channel.close()
+
+        then: "appropriate data uploaded"
+        blockClient.downloadContent().toBytes() == data
+
+        where:
+        streamBufferSize  | copyBufferSize | dataLength
+        50                | 40             | Constants.KB
+        Constants.KB + 50 | 40             | Constants.KB // initial fetch larger than resource size
+    }
+
     def "Supports greater than maxint blob size"() {
         given: "data"
         long blobSize = Long.MAX_VALUE
@@ -66,7 +108,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         def behavior = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null)
 
         and: "StorageSeekableByteChannel"
-        def channel = new StorageSeekableByteChannel(toRead, behavior, null, 0)
+        def channel = new StorageSeekableByteChannel(toRead, behavior, 0)
 
         when: "seek"
         channel.position(offset)
@@ -105,11 +147,16 @@ class BlobSeekableByteChannelTests extends APISpec {
     }
 
     def "Client creates appropriate channel readmode"() {
+        setup:
+        def versionedCC = versionedBlobServiceClient.getBlobContainerClient(generateContainerName())
+        versionedCC.create()
+        bc = versionedCC.getBlobClient(generateBlobName())
+
         when: "make channel in read mode"
         bc.upload(BinaryData.fromBytes(getRandomByteArray(1024)))
         def channel = bc.openSeekableByteChannelRead(new BlobSeekableByteChannelReadOptions()
-            .setRequestConditions(conditions).setBlockSize(blockSize).setConsistentReadControl(control)
-            .setInitialPosition(position), null) as StorageSeekableByteChannel
+            .setRequestConditions(conditions).setReadSizeInBytes(blockSize).setConsistentReadControl(control)
+            .setInitialPosition(position), null).getChannel() as StorageSeekableByteChannel
 
         then: "channel WriteBehavior is null"
         channel.getWriteBehavior() == null
@@ -146,6 +193,39 @@ class BlobSeekableByteChannelTests extends APISpec {
         null                        | null      | ConsistentReadControl.ETAG       | null
         null                        | null      | ConsistentReadControl.VERSION_ID | null
         null                        | null      | null                             | 800
+    }
 
+    def "Client creates appropriate channel writemode - block"() {
+        when: "make channel in write mode"
+        def channel = blockClient.openSeekableByteChannelWrite(
+            new BlockBlobSeekableByteChannelWriteOptions(writeMode).setBlockSizeInBytes(blockSize).setHeaders(headers)
+                .setMetadata(metadata).setTags(tags).setTier(tier).setRequestConditions(conditions)
+        ) as StorageSeekableByteChannel
+
+        then: "channel ReadBehavior is null"
+        channel.getReadBehavior() == null
+
+        and: "channel WriteBehavior has appropriate values"
+        def writeBehavior = channel.getWriteBehavior() as StorageSeekableByteChannelBlockBlobWriteBehavior
+        writeBehavior.getWriteMode().toString().equalsIgnoreCase(writeMode.toString())
+        writeBehavior.getHeaders() == headers
+        writeBehavior.getMetadata() == metadata
+        writeBehavior.getTags() == tags
+        writeBehavior.getTier() == tier
+        writeBehavior.getRequestConditions() == conditions
+
+        and: "channel has appropriate values"
+        channel.chunkSize == (blockSize == null ? 4 * Constants.MB : blockSize)
+        channel.position() == 0
+
+        where:
+        writeMode           | blockSize | headers               | metadata     | tags         | tier            | conditions
+        WriteMode.OVERWRITE | null      | null                  | null         | null         | null            | null
+        WriteMode.OVERWRITE | 500       | null                  | null         | null         | null            | null
+        WriteMode.OVERWRITE | null      | new BlobHttpHeaders() | null         | null         | null            | null
+        WriteMode.OVERWRITE | null      | null                  | [foo: "bar"] | null         | null            | null
+        WriteMode.OVERWRITE | null      | null                  | null         | [foo: "bar"] | null            | null
+        WriteMode.OVERWRITE | null      | null                  | null         | null         | AccessTier.COOL | null
+        WriteMode.OVERWRITE | null      | null                  | null         | null         | null            | new BlobRequestConditions()
     }
 }

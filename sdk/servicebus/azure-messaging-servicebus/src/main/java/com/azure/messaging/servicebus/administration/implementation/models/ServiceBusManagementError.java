@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The ServiceBusManagementError model. */
+/** The error response from Service Bus. */
 @JacksonXmlRootElement(localName = "ServiceBusManagementError")
 @Fluent
 public final class ServiceBusManagementError {
@@ -23,6 +23,9 @@ public final class ServiceBusManagementError {
      */
     @JsonProperty(value = "Detail")
     private String detail;
+
+    /** Creates an instance of ServiceBusManagementError class. */
+    public ServiceBusManagementError() {}
 
     /**
      * Get the code property: The service error code.

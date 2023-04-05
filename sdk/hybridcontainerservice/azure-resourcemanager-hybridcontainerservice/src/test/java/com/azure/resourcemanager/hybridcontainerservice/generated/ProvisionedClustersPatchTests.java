@@ -9,24 +9,25 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedCluste
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProvisionedClustersPatchTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProvisionedClustersPatch model =
             BinaryData
-                .fromString("{\"tags\":{\"hxw\":\"zpfzabglc\",\"bbovplwzbhvgyugu\":\"ctyqik\"}}")
+                .fromString(
+                    "{\"tags\":{\"qdqgbi\":\"zpwv\",\"fcivfsnkym\":\"ylihkaetckt\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\"}}")
                 .toObject(ProvisionedClustersPatch.class);
-        Assertions.assertEquals("zpfzabglc", model.tags().get("hxw"));
+        Assertions.assertEquals("zpwv", model.tags().get("qdqgbi"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProvisionedClustersPatch model =
-            new ProvisionedClustersPatch().withTags(mapOf("hxw", "zpfzabglc", "bbovplwzbhvgyugu", "ctyqik"));
+            new ProvisionedClustersPatch()
+                .withTags(mapOf("qdqgbi", "zpwv", "fcivfsnkym", "ylihkaetckt", "jf", "ctq", "fuwutttxf", "ebrjcxe"));
         model = BinaryData.fromObject(model).toObject(ProvisionedClustersPatch.class);
-        Assertions.assertEquals("zpfzabglc", model.tags().get("hxw"));
+        Assertions.assertEquals("zpwv", model.tags().get("qdqgbi"));
     }
 
     @SuppressWarnings("unchecked")

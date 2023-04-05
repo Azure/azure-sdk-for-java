@@ -34,7 +34,6 @@ import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -45,6 +44,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class ClientTelemetry {
     private final static AtomicLong instanceCount = new AtomicLong(0);
     private final static AtomicReference<AzureVMMetadata> azureVmMetaDataSingleton =
         new AtomicReference<>(null);
-    private ClientTelemetryInfo clientTelemetryInfo;
+    private final ClientTelemetryInfo clientTelemetryInfo;
     private final boolean clientTelemetryConfigEnabled;
     private final boolean clientMetricsEnabled;
     private final Configs configs;
@@ -272,8 +272,7 @@ public class ClientTelemetry {
                         ByteBuffer byteBuffer =
                             BridgeInternal.serializeJsonToByteBuffer(this.clientTelemetryInfo,
                                 ClientTelemetry.OBJECT_MAPPER);
-                        Flux<byte[]> fluxBytes = Flux.just(RxDocumentServiceRequest.toByteArray(byteBuffer));
-
+                        byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();
                         headers.put(HttpConstants.HttpHeaders.X_DATE, date);
@@ -301,13 +300,23 @@ public class ClientTelemetry {
                         }
 
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
-                            targetEndpoint.getPort(), httpHeaders, fluxBytes);
+                            targetEndpoint.getPort(), httpHeaders)
+                            .withBody(tempBuffer);
                         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
                             Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
                         return httpResponseMono.flatMap(response -> {
-                            if (response.statusCode() != HttpConstants.StatusCodes.OK) {
-                                logger.error("Client telemetry request did not succeeded, status code {}",
-                                    response.statusCode());
+                            if (response.statusCode() != HttpConstants.StatusCodes.NO_CONTENT) {
+                                logger.error("Client telemetry request did not succeeded, status code {}, request body {}",
+                                    response.statusCode(),
+                                    new String(tempBuffer, StandardCharsets.UTF_8));
+
+                                response.bodyAsString().doOnSuccess(responsePayload -> {
+                                    logger.error("Client telemetry request did not succeeded, status code {}, request body {}, response body {}",
+                                        response.statusCode(),
+                                        new String(tempBuffer, StandardCharsets.UTF_8),
+                                        responsePayload);
+                                }).subscribe();
+
                             }
                             this.clearDataForNextRun();
                             return this.sendClientTelemetry();

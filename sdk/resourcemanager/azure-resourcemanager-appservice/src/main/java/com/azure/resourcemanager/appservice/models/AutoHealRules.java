@@ -22,6 +22,10 @@ public final class AutoHealRules {
     @JsonProperty(value = "actions")
     private AutoHealActions actions;
 
+    /** Creates an instance of AutoHealRules class. */
+    public AutoHealRules() {
+    }
+
     /**
      * Get the triggers property: Conditions that describe when to execute the auto-heal actions.
      *

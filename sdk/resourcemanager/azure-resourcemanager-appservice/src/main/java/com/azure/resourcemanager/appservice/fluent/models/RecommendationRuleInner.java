@@ -21,6 +21,10 @@ public final class RecommendationRuleInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RecommendationRuleProperties innerProperties;
 
+    /** Creates an instance of RecommendationRuleInner class. */
+    public RecommendationRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: RecommendationRule resource specific properties.
      *

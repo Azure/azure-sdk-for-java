@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.ContactProfileInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of ContactProfile. */
@@ -48,18 +49,71 @@ public interface ContactProfile {
     Map<String, String> tags();
 
     /**
-     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The current state of the resource's creation, deletion, or modification.
+     *
+     * @return the provisioningState value.
+     */
+    ContactProfilesPropertiesProvisioningState provisioningState();
+
+    /**
+     * Gets the minimumViableContactDuration property: Minimum viable contact duration in ISO 8601 format. Used for
+     * listing the available contacts with a spacecraft at a given ground station.
+     *
+     * @return the minimumViableContactDuration value.
+     */
+    String minimumViableContactDuration();
+
+    /**
+     * Gets the minimumElevationDegrees property: Minimum viable elevation for the contact in decimal degrees. Used for
+     * listing the available contacts with a spacecraft at a given ground station.
+     *
+     * @return the minimumElevationDegrees value.
+     */
+    Float minimumElevationDegrees();
+
+    /**
+     * Gets the autoTrackingConfiguration property: Auto-tracking configuration.
+     *
+     * @return the autoTrackingConfiguration value.
+     */
+    AutoTrackingConfiguration autoTrackingConfiguration();
+
+    /**
+     * Gets the eventHubUri property: ARM resource identifier of the Event Hub used for telemetry. Requires granting
+     * Orbital Resource Provider the rights to send telemetry into the hub.
+     *
+     * @return the eventHubUri value.
+     */
+    String eventHubUri();
+
+    /**
+     * Gets the networkConfiguration property: Network configuration of customer virtual network.
+     *
+     * @return the networkConfiguration value.
+     */
+    ContactProfilesPropertiesNetworkConfiguration networkConfiguration();
+
+    /**
+     * Gets the thirdPartyConfigurations property: Third-party mission configuration of the Contact Profile. Describes
+     * RF links, modem processing, and IP endpoints.
+     *
+     * @return the thirdPartyConfigurations value.
+     */
+    List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations();
+
+    /**
+     * Gets the links property: Links of the Contact Profile. Describes RF links, modem processing, and IP endpoints.
+     *
+     * @return the links value.
+     */
+    List<ContactProfileLink> links();
 
     /**
      * Gets the region of the resource.
@@ -94,6 +148,8 @@ public interface ContactProfile {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithNetworkConfiguration,
+            DefinitionStages.WithLinks,
             DefinitionStages.WithCreate {
     }
     /** The ContactProfile definition stages. */
@@ -127,13 +183,41 @@ public interface ContactProfile {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithNetworkConfiguration withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the ContactProfile definition allowing to specify networkConfiguration. */
+        interface WithNetworkConfiguration {
+            /**
+             * Specifies the networkConfiguration property: Network configuration of customer virtual network..
+             *
+             * @param networkConfiguration Network configuration of customer virtual network.
+             * @return the next definition stage.
+             */
+            WithLinks withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration);
+        }
+        /** The stage of the ContactProfile definition allowing to specify links. */
+        interface WithLinks {
+            /**
+             * Specifies the links property: Links of the Contact Profile. Describes RF links, modem processing, and IP
+             * endpoints..
+             *
+             * @param links Links of the Contact Profile. Describes RF links, modem processing, and IP endpoints.
+             * @return the next definition stage.
+             */
+            WithCreate withLinks(List<ContactProfileLink> links);
         }
         /**
          * The stage of the ContactProfile definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+        interface WithCreate
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithProvisioningState,
+                DefinitionStages.WithMinimumViableContactDuration,
+                DefinitionStages.WithMinimumElevationDegrees,
+                DefinitionStages.WithAutoTrackingConfiguration,
+                DefinitionStages.WithEventHubUri,
+                DefinitionStages.WithThirdPartyConfigurations {
             /**
              * Executes the create request.
              *
@@ -158,6 +242,76 @@ public interface ContactProfile {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the ContactProfile definition allowing to specify provisioningState. */
+        interface WithProvisioningState {
+            /**
+             * Specifies the provisioningState property: The current state of the resource's creation, deletion, or
+             * modification..
+             *
+             * @param provisioningState The current state of the resource's creation, deletion, or modification.
+             * @return the next definition stage.
+             */
+            WithCreate withProvisioningState(ContactProfilesPropertiesProvisioningState provisioningState);
+        }
+        /** The stage of the ContactProfile definition allowing to specify minimumViableContactDuration. */
+        interface WithMinimumViableContactDuration {
+            /**
+             * Specifies the minimumViableContactDuration property: Minimum viable contact duration in ISO 8601 format.
+             * Used for listing the available contacts with a spacecraft at a given ground station..
+             *
+             * @param minimumViableContactDuration Minimum viable contact duration in ISO 8601 format. Used for listing
+             *     the available contacts with a spacecraft at a given ground station.
+             * @return the next definition stage.
+             */
+            WithCreate withMinimumViableContactDuration(String minimumViableContactDuration);
+        }
+        /** The stage of the ContactProfile definition allowing to specify minimumElevationDegrees. */
+        interface WithMinimumElevationDegrees {
+            /**
+             * Specifies the minimumElevationDegrees property: Minimum viable elevation for the contact in decimal
+             * degrees. Used for listing the available contacts with a spacecraft at a given ground station..
+             *
+             * @param minimumElevationDegrees Minimum viable elevation for the contact in decimal degrees. Used for
+             *     listing the available contacts with a spacecraft at a given ground station.
+             * @return the next definition stage.
+             */
+            WithCreate withMinimumElevationDegrees(Float minimumElevationDegrees);
+        }
+        /** The stage of the ContactProfile definition allowing to specify autoTrackingConfiguration. */
+        interface WithAutoTrackingConfiguration {
+            /**
+             * Specifies the autoTrackingConfiguration property: Auto-tracking configuration..
+             *
+             * @param autoTrackingConfiguration Auto-tracking configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withAutoTrackingConfiguration(AutoTrackingConfiguration autoTrackingConfiguration);
+        }
+        /** The stage of the ContactProfile definition allowing to specify eventHubUri. */
+        interface WithEventHubUri {
+            /**
+             * Specifies the eventHubUri property: ARM resource identifier of the Event Hub used for telemetry. Requires
+             * granting Orbital Resource Provider the rights to send telemetry into the hub..
+             *
+             * @param eventHubUri ARM resource identifier of the Event Hub used for telemetry. Requires granting Orbital
+             *     Resource Provider the rights to send telemetry into the hub.
+             * @return the next definition stage.
+             */
+            WithCreate withEventHubUri(String eventHubUri);
+        }
+        /** The stage of the ContactProfile definition allowing to specify thirdPartyConfigurations. */
+        interface WithThirdPartyConfigurations {
+            /**
+             * Specifies the thirdPartyConfigurations property: Third-party mission configuration of the Contact
+             * Profile. Describes RF links, modem processing, and IP endpoints..
+             *
+             * @param thirdPartyConfigurations Third-party mission configuration of the Contact Profile. Describes RF
+             *     links, modem processing, and IP endpoints.
+             * @return the next definition stage.
+             */
+            WithCreate withThirdPartyConfigurations(
+                List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations);
         }
     }
     /**

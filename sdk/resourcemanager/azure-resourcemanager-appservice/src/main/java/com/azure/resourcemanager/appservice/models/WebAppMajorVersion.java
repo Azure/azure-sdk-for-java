@@ -29,6 +29,10 @@ public final class WebAppMajorVersion {
     @JsonProperty(value = "minorVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<WebAppMinorVersion> minorVersions;
 
+    /** Creates an instance of WebAppMajorVersion class. */
+    public WebAppMajorVersion() {
+    }
+
     /**
      * Get the displayText property: Web App stack major version (display only).
      *

@@ -13,19 +13,19 @@ public final class SettingsTests {
     public void testDeserialize() throws Exception {
         Settings model =
             BinaryData
-                .fromString("{\"timeZone\":\"a\",\"issqlcompression\":true,\"isCompression\":true}")
+                .fromString("{\"timeZone\":\"vleo\",\"issqlcompression\":false,\"isCompression\":true}")
                 .toObject(Settings.class);
-        Assertions.assertEquals("a", model.timeZone());
-        Assertions.assertEquals(true, model.issqlcompression());
+        Assertions.assertEquals("vleo", model.timeZone());
+        Assertions.assertEquals(false, model.issqlcompression());
         Assertions.assertEquals(true, model.isCompression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Settings model = new Settings().withTimeZone("a").withIssqlcompression(true).withIsCompression(true);
+        Settings model = new Settings().withTimeZone("vleo").withIssqlcompression(false).withIsCompression(true);
         model = BinaryData.fromObject(model).toObject(Settings.class);
-        Assertions.assertEquals("a", model.timeZone());
-        Assertions.assertEquals(true, model.issqlcompression());
+        Assertions.assertEquals("vleo", model.timeZone());
+        Assertions.assertEquals(false, model.issqlcompression());
         Assertions.assertEquals(true, model.isCompression());
     }
 }

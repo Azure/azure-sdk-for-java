@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.resourcemanager.orbital.fluent.models.AvailableContactsInner;
+import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of AvailableContacts. */
 public interface AvailableContacts {
@@ -21,6 +22,70 @@ public interface AvailableContacts {
      * @return the groundStationName value.
      */
     String groundStationName();
+
+    /**
+     * Gets the maximumElevationDegrees property: Maximum elevation of the antenna during the contact in decimal
+     * degrees.
+     *
+     * @return the maximumElevationDegrees value.
+     */
+    Float maximumElevationDegrees();
+
+    /**
+     * Gets the txStartTime property: Time at which antenna transmit will be enabled (ISO 8601 UTC standard).
+     *
+     * @return the txStartTime value.
+     */
+    OffsetDateTime txStartTime();
+
+    /**
+     * Gets the txEndTime property: Time at which antenna transmit will be disabled (ISO 8601 UTC standard).
+     *
+     * @return the txEndTime value.
+     */
+    OffsetDateTime txEndTime();
+
+    /**
+     * Gets the rxStartTime property: Earliest time to receive a signal (ISO 8601 UTC standard).
+     *
+     * @return the rxStartTime value.
+     */
+    OffsetDateTime rxStartTime();
+
+    /**
+     * Gets the rxEndTime property: Time to lost receiving a signal (ISO 8601 UTC standard).
+     *
+     * @return the rxEndTime value.
+     */
+    OffsetDateTime rxEndTime();
+
+    /**
+     * Gets the startAzimuthDegrees property: Azimuth of the antenna at the start of the contact in decimal degrees.
+     *
+     * @return the startAzimuthDegrees value.
+     */
+    Float startAzimuthDegrees();
+
+    /**
+     * Gets the endAzimuthDegrees property: Azimuth of the antenna at the end of the contact in decimal degrees.
+     *
+     * @return the endAzimuthDegrees value.
+     */
+    Float endAzimuthDegrees();
+
+    /**
+     * Gets the startElevationDegrees property: Spacecraft elevation above the horizon at contact start.
+     *
+     * @return the startElevationDegrees value.
+     */
+    Float startElevationDegrees();
+
+    /**
+     * Gets the endElevationDegrees property: Spacecraft elevation above the horizon at contact end.
+     *
+     * @return the endElevationDegrees value.
+     */
+    Float endElevationDegrees();
 
     /**
      * Gets the inner com.azure.resourcemanager.orbital.fluent.models.AvailableContactsInner object.

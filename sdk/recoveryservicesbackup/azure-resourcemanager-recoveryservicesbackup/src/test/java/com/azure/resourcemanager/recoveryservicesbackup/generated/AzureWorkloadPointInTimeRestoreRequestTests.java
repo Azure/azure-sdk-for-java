@@ -21,18 +21,18 @@ public final class AzureWorkloadPointInTimeRestoreRequestTests {
         AzureWorkloadPointInTimeRestoreRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadPointInTimeRestoreRequest\",\"pointInTime\":\"2021-08-31T14:00:37Z\",\"recoveryType\":\"Invalid\",\"sourceResourceId\":\"qgsjjxun\",\"propertyBag\":{\"muvgp\":\"ketwzhhzjhfjmhv\",\"uzjyihsasbhudypo\":\"uneqsxvmhf\",\"slynsqyrpfoo\":\"yue\"},\"targetInfo\":{\"overwriteOption\":\"FailOnConflict\",\"containerId\":\"y\",\"databaseName\":\"jnygq\",\"targetDirectoryForFileRestore\":\"fwqzdz\"},\"recoveryMode\":\"FileRecovery\",\"targetVirtualMachineId\":\"axhnfh\"}")
+                    "{\"objectType\":\"AzureWorkloadPointInTimeRestoreRequest\",\"pointInTime\":\"2021-08-19T01:45:54Z\",\"recoveryType\":\"Invalid\",\"sourceResourceId\":\"neuvyinzqod\",\"propertyBag\":{\"xgsg\":\"gsh\",\"gzdjtxvzf\":\"p\",\"gafcqu\":\"bqvgaqv\",\"nwsdtutnwlduyc\":\"rdve\"},\"targetInfo\":{\"overwriteOption\":\"Overwrite\",\"containerId\":\"rmewipmve\",\"databaseName\":\"xukuqgsj\",\"targetDirectoryForFileRestore\":\"undxgketw\"},\"recoveryMode\":\"WorkloadRecovery\",\"targetVirtualMachineId\":\"jhfjmhvvmuvgpm\"}")
                 .toObject(AzureWorkloadPointInTimeRestoreRequest.class);
         Assertions.assertEquals(RecoveryType.INVALID, model.recoveryType());
-        Assertions.assertEquals("qgsjjxun", model.sourceResourceId());
-        Assertions.assertEquals("ketwzhhzjhfjmhv", model.propertyBag().get("muvgp"));
-        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("y", model.targetInfo().containerId());
-        Assertions.assertEquals("jnygq", model.targetInfo().databaseName());
-        Assertions.assertEquals("fwqzdz", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.FILE_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("axhnfh", model.targetVirtualMachineId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T14:00:37Z"), model.pointInTime());
+        Assertions.assertEquals("neuvyinzqod", model.sourceResourceId());
+        Assertions.assertEquals("gsh", model.propertyBag().get("xgsg"));
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("rmewipmve", model.targetInfo().containerId());
+        Assertions.assertEquals("xukuqgsj", model.targetInfo().databaseName());
+        Assertions.assertEquals("undxgketw", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
+        Assertions.assertEquals("jhfjmhvvmuvgpm", model.targetVirtualMachineId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T01:45:54Z"), model.pointInTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,29 +40,28 @@ public final class AzureWorkloadPointInTimeRestoreRequestTests {
         AzureWorkloadPointInTimeRestoreRequest model =
             new AzureWorkloadPointInTimeRestoreRequest()
                 .withRecoveryType(RecoveryType.INVALID)
-                .withSourceResourceId("qgsjjxun")
-                .withPropertyBag(
-                    mapOf("muvgp", "ketwzhhzjhfjmhv", "uzjyihsasbhudypo", "uneqsxvmhf", "slynsqyrpfoo", "yue"))
+                .withSourceResourceId("neuvyinzqod")
+                .withPropertyBag(mapOf("xgsg", "gsh", "gzdjtxvzf", "p", "gafcqu", "bqvgaqv", "nwsdtutnwlduyc", "rdve"))
                 .withTargetInfo(
                     new TargetRestoreInfo()
-                        .withOverwriteOption(OverwriteOptions.FAIL_ON_CONFLICT)
-                        .withContainerId("y")
-                        .withDatabaseName("jnygq")
-                        .withTargetDirectoryForFileRestore("fwqzdz"))
-                .withRecoveryMode(RecoveryMode.FILE_RECOVERY)
-                .withTargetVirtualMachineId("axhnfh")
-                .withPointInTime(OffsetDateTime.parse("2021-08-31T14:00:37Z"));
+                        .withOverwriteOption(OverwriteOptions.OVERWRITE)
+                        .withContainerId("rmewipmve")
+                        .withDatabaseName("xukuqgsj")
+                        .withTargetDirectoryForFileRestore("undxgketw"))
+                .withRecoveryMode(RecoveryMode.WORKLOAD_RECOVERY)
+                .withTargetVirtualMachineId("jhfjmhvvmuvgpm")
+                .withPointInTime(OffsetDateTime.parse("2021-08-19T01:45:54Z"));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadPointInTimeRestoreRequest.class);
         Assertions.assertEquals(RecoveryType.INVALID, model.recoveryType());
-        Assertions.assertEquals("qgsjjxun", model.sourceResourceId());
-        Assertions.assertEquals("ketwzhhzjhfjmhv", model.propertyBag().get("muvgp"));
-        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("y", model.targetInfo().containerId());
-        Assertions.assertEquals("jnygq", model.targetInfo().databaseName());
-        Assertions.assertEquals("fwqzdz", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.FILE_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("axhnfh", model.targetVirtualMachineId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T14:00:37Z"), model.pointInTime());
+        Assertions.assertEquals("neuvyinzqod", model.sourceResourceId());
+        Assertions.assertEquals("gsh", model.propertyBag().get("xgsg"));
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("rmewipmve", model.targetInfo().containerId());
+        Assertions.assertEquals("xukuqgsj", model.targetInfo().databaseName());
+        Assertions.assertEquals("undxgketw", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
+        Assertions.assertEquals("jhfjmhvvmuvgpm", model.targetVirtualMachineId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T01:45:54Z"), model.pointInTime());
     }
 
     @SuppressWarnings("unchecked")

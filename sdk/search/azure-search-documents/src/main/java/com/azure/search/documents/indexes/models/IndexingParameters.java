@@ -155,31 +155,25 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     public static IndexingParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Integer batchSize = null;
-                    Integer maxFailedItems = null;
-                    Integer maxFailedItemsPerBatch = null;
-                    IndexingParametersConfiguration configuration = null;
+                    IndexingParameters deserializedIndexingParameters = new IndexingParameters();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("batchSize".equals(fieldName)) {
-                            batchSize = reader.getNullable(JsonReader::getInt);
+                            deserializedIndexingParameters.batchSize = reader.getNullable(JsonReader::getInt);
                         } else if ("maxFailedItems".equals(fieldName)) {
-                            maxFailedItems = reader.getNullable(JsonReader::getInt);
+                            deserializedIndexingParameters.maxFailedItems = reader.getNullable(JsonReader::getInt);
                         } else if ("maxFailedItemsPerBatch".equals(fieldName)) {
-                            maxFailedItemsPerBatch = reader.getNullable(JsonReader::getInt);
+                            deserializedIndexingParameters.maxFailedItemsPerBatch =
+                                    reader.getNullable(JsonReader::getInt);
                         } else if ("configuration".equals(fieldName)) {
-                            configuration = IndexingParametersConfiguration.fromJson(reader);
+                            deserializedIndexingParameters.configuration =
+                                    IndexingParametersConfiguration.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    IndexingParameters deserializedValue = new IndexingParameters();
-                    deserializedValue.batchSize = batchSize;
-                    deserializedValue.maxFailedItems = maxFailedItems;
-                    deserializedValue.maxFailedItemsPerBatch = maxFailedItemsPerBatch;
-                    deserializedValue.setIndexingParametersConfiguration(configuration);
-                    return deserializedValue;
+                    return deserializedIndexingParameters;
                 });
     }
 
@@ -194,6 +188,9 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     }
 
     /**
+     * Set the configuration property: A dictionary of indexer-specific configuration properties. Each name is the name
+     * of a specific property. Each value must be of a primitive type.
+     *
      * @param configuration the configuration value to set.
      * @return the IndexingParameters object itself.
      */

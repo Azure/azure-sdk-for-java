@@ -37,6 +37,10 @@ public final class AccountProperties {
     @JsonProperty(value = "disableShowmount", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean disableShowmount;
 
+    /** Creates an instance of AccountProperties class. */
+    public AccountProperties() {
+    }
+
     /**
      * Get the provisioningState property: Azure lifecycle management.
      *

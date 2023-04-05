@@ -12,7 +12,7 @@ public final class ConditionTests {
     public void testDeserialize() throws Exception {
         Condition model =
             BinaryData
-                .fromString("{\"timestamp\":\"2021-01-21T09:18:25Z\",\"message\":\"unmmq\"}")
+                .fromString("{\"timestamp\":\"2021-01-03T19:26:04Z\",\"message\":\"gbiqylihkaet\"}")
                 .toObject(Condition.class);
     }
 

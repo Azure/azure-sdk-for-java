@@ -45,8 +45,6 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 
 /**
@@ -335,8 +333,7 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getServices().getPropertiesWithResponseAsync(null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return azureFileStorageClient.getServices().getPropertiesWithResponseAsync(null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -457,8 +454,7 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getServices().setPropertiesWithResponseAsync(properties, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return azureFileStorageClient.getServices().setPropertiesWithResponseAsync(properties, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -657,8 +653,7 @@ public final class ShareServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
-            .deleteWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .deleteWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -838,8 +833,7 @@ public final class ShareServiceAsyncClient {
     Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
         String deletedShareName, String deletedShareVersion, Context context) {
         return this.azureFileStorageClient.getShares().restoreWithResponseAsync(
-            deletedShareName, null, null, deletedShareName, deletedShareVersion,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
         .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 }

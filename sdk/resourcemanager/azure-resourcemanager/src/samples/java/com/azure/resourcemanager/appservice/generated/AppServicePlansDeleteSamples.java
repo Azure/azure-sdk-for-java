@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServicePlans Delete. */
 public final class AppServicePlansDeleteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteAppServicePlan.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteAppServicePlan.json
      */
     /**
      * Sample code: Delete App Service plan.
@@ -22,6 +20,6 @@ public final class AppServicePlansDeleteSamples {
             .manager()
             .serviceClient()
             .getAppServicePlans()
-            .deleteWithResponse("testrg123", "testsf6141", Context.NONE);
+            .deleteWithResponse("testrg123", "testsf6141", com.azure.core.util.Context.NONE);
     }
 }

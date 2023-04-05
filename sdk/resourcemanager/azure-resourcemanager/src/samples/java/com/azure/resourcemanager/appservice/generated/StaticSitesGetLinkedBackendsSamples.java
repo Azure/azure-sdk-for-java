@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites GetLinkedBackends. */
 public final class StaticSitesGetLinkedBackendsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetLinkedBackendsForStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetLinkedBackendsForStaticSite.json
      */
     /**
      * Sample code: Get details of the linked backends registered with a static site.
@@ -23,6 +21,6 @@ public final class StaticSitesGetLinkedBackendsSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .getLinkedBackends("rg", "testStaticSite0", Context.NONE);
+            .getLinkedBackends("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./metricsadvisor_1.20200903_openapi.v2.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/MetricsAdvisor/stable/v1.0/MetricsAdvisor.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -33,18 +33,13 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: AnomalyDetectorDirection,AnomalyStatus,AnomalyValue,ChangePointValue,DataFeedIngestionProgress,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,IngestionStatusType,PeriodType,AnomalySeverity,SnoozeScope,AlertQueryTimeMode,DataFeedIngestionStatus,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
+custom-types: AnomalyStatus,AnomalyValue,ChangePointValue,EnrichmentStatus,FeedbackType,AnomalyIncidentStatus,PeriodType,AnomalySeverity,AlertQueryTimeMode,MetricSeriesDefinition,FeedbackQueryTimeMode,AnomalyAlert,DataFeedGranularityType,DataFeedRollupType,DataFeedAutoRollUpMethod,DataFeedStatus,MetricsAdvisorErrorCodeException,MetricsAdvisorErrorCode
+default-http-exception-type: com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException
+enable-sync-stack: true
+polling: {} 
 ```
 
 ### Generated types renamed and moved to model
-
-#### ErrorCode -> MetricsAdvisorErrorCode
-```yaml
-directive:
-  - rename-model:
-      from: ErrorCode
-      to: MetricsAdvisorErrorCode
-```
 
 #### TimeMode -> AlertQueryTimeMode
 ```yaml
@@ -134,72 +129,13 @@ directive:
       to: DataFeedStatus
 ```
 
-#### Metric properties rename
-
+### Change AnomalyAlert alertId to id
 ``` yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.Metric) {
-        const metricId = $.Metric.properties.metricId;
-        if (metricId && !metricId["x-ms-client-name"]) {
-            metricId["x-ms-client-name"] = "id";
-            $.Metric.properties.metricId = metricId;
-        }
-        const metricName = $.Metric.properties.metricName;
-        if (metricName && !metricId["x-ms-client-name"]) {
-            metricName["x-ms-client-name"] = "name";
-            $.Metric.properties.metricName = metricName;
-        }
-        const metricDisplayName = $.Metric.properties.metricDisplayName;
-        if (metricDisplayName && !metricDisplayName["x-ms-client-name"]) {
-            metricDisplayName["x-ms-client-name"] = "displayName";
-            $.Metric.properties.metricDisplayName = metricDisplayName;
-        }
-        const metricDescription = $.Metric.properties.metricDescription;
-        if (metricDescription && !metricDescription["x-ms-client-name"]) {
-            metricDescription["x-ms-client-name"] = "description";
-            $.Metric.properties.metricDescription = metricDescription;
-        }
-    }
-```
-
-#### Dimension properties rename
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.Dimension) {
-        const dimensionName = $.Metric.properties.dimensionName;
-        if (dimensionName && !dimensionName["x-ms-client-name"]) {
-            dimensionName["x-ms-client-name"] = "name";
-            $.Metric.properties.dimensionName = dimensionName;
-        }
-        const dimensionDisplayName = $.Metric.properties.dimensionDisplayName;
-        if (dimensionDisplayName && !dimensionDisplayName["x-ms-client-name"]) {
-            dimensionDisplayName["x-ms-client-name"] = "displayName";
-            $.Metric.properties.dimensionDisplayName = dimensionDisplayName;
-        }
-    }
-```
-
-#### Alert properties rename
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.AlertResult) {
-        const alertId = $.AlertResult.properties.alertId;
-        if (alertId && !alertId["x-ms-client-name"]) {
-            alertId["x-ms-client-name"] = "id";
-            $.AlertResult.properties.alertId = alertId;
-        }
-    }
+  - from: swagger-document
+    where: $.definitions.AnomalyAlert.properties
+    transform: >
+      $.alertId["x-ms-client-name"] = "id";
 ```
 
 ### Expose MetricId as String
@@ -300,7 +236,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -372,7 +308,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -444,7 +380,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -474,7 +410,7 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    $["/{nextLink}?listMetricFeedbacksNext"] = {
+    $["{nextLink}?listMetricFeedbacksNext"] = {
       "post": {
         "tags": [
           "Feedback"
@@ -516,7 +452,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -588,7 +524,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -660,7 +596,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -732,7 +668,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },
@@ -804,7 +740,7 @@ directive:
           "default": {
             "description": "Client error or server error (4xx or 5xx)",
             "schema": {
-              "$ref": "#/definitions/MetricsAdvisorErrorCode"
+              "$ref": "#/definitions/ErrorCode"
             }
           }
         },

@@ -3,62 +3,67 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ArtifactArchitecture;
-import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
-import com.azure.containers.containerregistry.models.OciBlobDescriptor;
-import com.azure.containers.containerregistry.models.OciManifest;
-import com.azure.containers.containerregistry.models.UploadManifestOptions;
-import com.azure.containers.containerregistry.models.UploadManifestResult;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
-import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
+import com.azure.containers.containerregistry.models.OciDescriptor;
+import com.azure.containers.containerregistry.models.OciImageManifest;
+import com.azure.containers.containerregistry.models.SetManifestOptions;
+import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.Random;
 
 public class UploadImageAsync {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
     private static final String REPOSITORY = "hello/world";
-
+    private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
+    private static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+    private static final int CHUNK_SIZE = 4 * 1024 * 1024; // content will be uploaded in chunks of up to 4MB size
     public static void main(String[] args) {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
-        // BEGIN: readme-sample-uploadImageAsync
-        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
-            .credential(credential)
+            .repositoryName(REPOSITORY)
+            .credential(CREDENTIAL)
             .buildAsyncClient();
 
-        BinaryData configContent = BinaryData.fromObject(new ManifestConfig().setProperty("async client"));
+        // BEGIN: readme-sample-uploadImageAsync
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        Mono<OciBlobDescriptor> uploadConfig = blobClient
+        Mono<OciDescriptor> uploadConfig = contentClient
             .uploadBlob(configContent)
-            .doOnSuccess(configUploadResult -> System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength()))
-            .map(configUploadResult -> new OciBlobDescriptor()
+            .map(result -> new OciDescriptor()
                 .setMediaType("application/vnd.unknown.config.v1+json")
-                .setDigest(configUploadResult.getDigest())
-                .setSize(configContent.getLength()));
+                .setDigest(result.getDigest())
+                .setSizeInBytes(result.getSizeInBytes()));
 
-        BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
-        Mono<OciBlobDescriptor> uploadLayer = blobClient
+        Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
+        Mono<OciDescriptor> uploadLayer = contentClient
             .uploadBlob(layerContent)
-            .doOnSuccess(layerUploadResult -> System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength()))
-            .map(layerUploadResult -> new OciBlobDescriptor()
-                .setDigest(layerUploadResult.getDigest())
-                .setSize(layerContent.getLength())
+            .map(result -> new OciDescriptor()
+                .setDigest(result.getDigest())
+                .setSizeInBytes(result.getSizeInBytes())
                 .setMediaType("application/octet-stream"));
 
         Mono.zip(uploadConfig, uploadLayer)
-            .map(tuple -> new OciManifest()
-                .setConfig(tuple.getT1())
+            .map(tuple -> new OciImageManifest()
+                .setConfiguration(tuple.getT1())
                 .setSchemaVersion(2)
                 .setLayers(Collections.singletonList(tuple.getT2())))
-            .flatMap(manifest -> blobClient.uploadManifest(new UploadManifestOptions(manifest).setTag("latest")))
+            .flatMap(manifest -> contentClient.setManifest(manifest, "latest"))
             .doOnSuccess(manifestResult -> System.out.printf("Uploaded manifest: digest - %s\n", manifestResult.getDigest()))
             .block();
         // END: readme-sample-uploadImageAsync
@@ -66,43 +71,160 @@ public class UploadImageAsync {
         System.out.println("Done");
     }
 
+    private static Flux<ByteBuffer> getData(long size) {
+        Random rand = new Random(42);
+        byte[] data = new byte[12 * 1024 * 1024];
+        rand.nextBytes(data);
+        return Flux.generate(() -> 0L, (pos, sink) -> {
+            long remaining = size - pos;
+            if (remaining <= 0) {
+                sink.complete();
+                return size;
+            }
+
+            ByteBuffer buffer = ByteBuffer.wrap(data);
+            if (remaining < data.length) {
+                buffer.limit((int) remaining);
+            }
+            sink.next(buffer);
+
+            return pos + data.length;
+        });
+    }
+
+    private void setManifest() {
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(ENDPOINT)
+            .repositoryName(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
+
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
+
+        Mono<OciDescriptor> config = contentClient
+            .uploadBlob(configContent)
+            .map(configUploadResult -> new OciDescriptor()
+                .setMediaType("application/vnd.unknown.config.v1+json")
+                .setDigest(configUploadResult.getDigest())
+                .setSizeInBytes(configContent.getLength()));
+
+        Flux<ByteBuffer> layerContent = getData(1024 * 1024 * 1024); // 1 GB
+        Mono<OciDescriptor> layer = contentClient
+            .uploadBlob(layerContent)
+            .map(result -> new OciDescriptor()
+                .setDigest(result.getDigest())
+                .setSizeInBytes(result.getSizeInBytes())
+                .setMediaType("application/octet-stream"));
+
+        config
+            .flatMap(configDescriptor ->
+                layer.flatMap(layerDescriptor -> {
+                    // BEGIN: com.azure.containers.containerregistry.setManifestAsync
+                    OciImageManifest manifest = new OciImageManifest()
+                            .setConfiguration(configDescriptor)
+                            .setSchemaVersion(2)
+                            .setLayers(Collections.singletonList(layerDescriptor));
+                    Mono<SetManifestResult> result = contentClient.setManifest(manifest, "latest");
+                    // END: com.azure.containers.containerregistry.setManifestAsync
+                    return result;
+                }))
+            .subscribe(result -> System.out.println("Manifest uploaded, digest - " + result.getDigest()));
+    }
+
     private void uploadCustomManifestMediaType() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryBlobAsyncClient blobClient = new ContainerRegistryBlobClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
             .endpoint(ENDPOINT)
-            .repository(REPOSITORY)
+            .repositoryName(REPOSITORY)
             .credential(credential)
             .buildAsyncClient();
 
-        ManifestMediaType manifestListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-        DockerV2ManifestList manifestList = new DockerV2ManifestList()
-            .setSchemaVersion(2)
-            .setMediaType(manifestListType.toString())
-            .setManifests(Collections.singletonList(new DockerV2ManifestList.DockerV2ManifestListAttributes()
-                .setDigest("sha256:f54a58bc1aac5ea1a25d796ae155dc228b3f0e11d046ae276b39c4bf2f13d8c4")
-                .setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
-                .setPlatform(new DockerV2ManifestList.Platform()
-                    .setArchitecture(ArtifactArchitecture.AMD64.toString())
-                    .setOs(ArtifactOperatingSystem.LINUX.toString())))
-            );
+        // get manifest in custom format as string or an object of your custom type
+        String manifest = "{"
+            + "\"schemaVersion\": 2,"
+            + "\"mediaType\": \"application/vnd.docker.distribution.manifest.list.v2+json\","
+            + "\"manifests\": ["
+            + "{"
+            + "\"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\","
+            +   "\"digest\": \"sha256:e692418e4cbaf90ca69d05a66403747baa33ee08806650b51fab815ad7fc331f\","
+            +   "\"size\": 7143,"
+            +   "\"platform\": { \"architecture\": \"ppc64le\", \"os\": \"linux\" }"
+            + "},{"
+            +   "\"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\","
+            +   "\"digest\": \"sha256:5b0bcabd1ed22e9fb1310cf6c2dec7cdef19f0ad69efa1f392e94a4333501270\","
+            +   "\"size\": 7682,"
+            +   "\"platform\": { \"architecture\": \"amd64\", \"os\": \"linux\", \"features\": [\"sse4\"]}"
+            + "}]}";
+        // then create a binary data from it
+        BinaryData manifestList = BinaryData.fromString(manifest);
 
-        UploadManifestResult result = blobClient.uploadManifest(new UploadManifestOptions(BinaryData.fromObject(manifestList), manifestListType))
-            .block();
+        // BEGIN: com.azure.containers.containerregistry.uploadCustomManifestAsync
+        SetManifestOptions options = new SetManifestOptions(manifestList, DOCKER_MANIFEST_LIST_TYPE)
+            .setTag("v2");
 
-        System.out.println("Manifest uploaded, digest - " + result.getDigest());
+        contentClient.setManifestWithResponse(options)
+            .subscribe(response ->
+                System.out.println("Manifest uploaded, digest - " + response.getValue().getDigest()));
+        // END: com.azure.containers.containerregistry.uploadCustomManifestAsync
     }
 
-    private static class ManifestConfig {
-        @JsonProperty("property")
-        private String property;
+    private void uploadBlob() throws FileNotFoundException {
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(ENDPOINT)
+            .repositoryName(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
 
-        public String getProperty() {
-            return property;
-        }
+        // BEGIN: com.azure.containers.containerregistry.uploadBlobAsync
+        BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
-        public ManifestConfig setProperty(String property) {
-            this.property = property;
-            return this;
+        contentClient
+            .uploadBlob(configContent)
+            .subscribe(uploadResult -> System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
+                    uploadResult.getDigest(), uploadResult.getSizeInBytes()));
+        // END: com.azure.containers.containerregistry.uploadBlobAsync
+
+        // BEGIN: com.azure.containers.containerregistry.uploadStreamAsync
+        Flux.using(
+                () -> new FileInputStream("artifact.tar.gz"),
+                fileStream -> contentClient.uploadBlob(FluxUtil.toFluxByteBuffer(fileStream, CHUNK_SIZE)),
+                this::closeStream)
+            .subscribe(uploadResult ->
+                System.out.printf("Uploaded blob: digest - '%s', size - %s\n",
+                    uploadResult.getDigest(), uploadResult.getSizeInBytes()));
+        // END: com.azure.containers.containerregistry.uploadStreamAsync
+    }
+
+    private void closeStream(InputStream stream) {
+        try {
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+
+    private void uploadBlobFails() {
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(ENDPOINT)
+            .repositoryName(REPOSITORY)
+            .credential(CREDENTIAL)
+            .buildAsyncClient();
+
+        long dataLength = 1024 * 1024 * 1024;
+        Mono<BinaryData> layerContent = BinaryData.fromFlux(getData(dataLength), dataLength, false); // 1 GB
+
+        // BEGIN: com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling
+        layerContent
+            .flatMap(content -> contentClient.uploadBlob(content))
+            .doOnError(HttpResponseException.class, (ex) -> {
+                if (ex.getCause() instanceof AcrErrorsException) {
+                    AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
+                    for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
+                        System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
+                    }
+                }
+            });
+        // END: com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling
     }
 }

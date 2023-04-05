@@ -5,7 +5,7 @@ package com.azure.storage.file.share
 
 import com.azure.storage.common.ParallelTransferOptions
 
-import com.azure.storage.common.StorageSeekableByteChannel
+import com.azure.storage.common.implementation.StorageSeekableByteChannel
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestUtility
 import com.azure.storage.file.share.models.FileLastWrittenMode
@@ -42,7 +42,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
         when: "Channel initialized"
         def channel = primaryFileClient.getFileSeekableByteChannelWrite(
             new ShareFileSeekableByteChannelWriteOptions(ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
-                .setFileSize(data.length).setChunkSize(streamBufferSize))
+                .setFileSize(data.length).setChunkSizeInBytes(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -73,7 +73,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def channel = primaryFileClient.getFileSeekableByteChannelRead(
-            new ShareFileSeekableByteChannelReadOptions().setChunkSize(streamBufferSize))
+            new ShareFileSeekableByteChannelReadOptions().setChunkSizeInBytes(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0

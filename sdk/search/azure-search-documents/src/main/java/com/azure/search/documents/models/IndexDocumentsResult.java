@@ -74,9 +74,9 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
                         }
                     }
                     if (resultsFound) {
-                        IndexDocumentsResult deserializedValue = new IndexDocumentsResult(results);
+                        IndexDocumentsResult deserializedIndexDocumentsResult = new IndexDocumentsResult(results);
 
-                        return deserializedValue;
+                        return deserializedIndexDocumentsResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!resultsFound) {

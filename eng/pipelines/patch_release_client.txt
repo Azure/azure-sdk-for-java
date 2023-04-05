@@ -1,36 +1,57 @@
 # Format
-# <groupId>:<artifactId>
+# <groupId>:<artifactId> # Tests owner: <GitHub alias of the tests owner>, <GitHub alias of another tests owner>...
 #
 # This document contains a list of artifacts that have opted-in to be a part of the automated patch release process.
 #
-# An automated patch release for a library contains updates to a library's dependencies, CHANGELOG and README only,
+# An automated patch release for a library only contains updates to a library's dependencies, CHANGELOG and README,
 # compared to the latest stable version. No other changes shall be included as part of such a release.
 #
 # Currently, the process only handles data plane libraries (those under the 'com.azure' group ID), meaning this will
 # not work for perf, management plane or Spring libraries.
 #
 # Libraries listed here will not be released if a stable version for them has already been released for a given release
-# cycle by the time the script is run. So, if a library owner needs to release a bugfix, performance improvement or new
-# features, they should go ahead with their release during release week and not worry about updating this list. The
-# automated release process will happen the week after release week.
+# cycle by the time the the automated release process begins. So, if a library owner needs to release a bugfix,
+# performance improvement or new features, they should go ahead with their release during release week and not worry
+# about updating this file. The automated release process will happen the week after release week, followed by
+# the release of the Azure SDK BOM the week after that.
+#
+# Test owners listed here are responsible for ensuring their library works properly before and after releases and for
+# ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
+# performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
-com.azure:azure-ai-formrecognizer
-com.azure:azure-ai-metricsadvisor
-com.azure:azure-ai-textanalytics
-com.azure:azure-containers-containerregistry
-com.azure:azure-data-appconfiguration
-com.azure:azure-data-schemaregistry
-com.azure:azure-data-schemaregistry-apacheavro
-com.azure:azure-data-tables
-com.azure:azure-messaging-eventgrid
-com.azure:azure-messaging-eventhubs
-com.azure:azure-messaging-eventhubs-checkpointstore-blob
-com.azure:azure-messaging-servicebus
-com.azure:azure-messaging-webpubsub
-com.azure:azure-monitor-query
-com.azure:azure-security-attestation
-com.azure:azure-security-keyvault-administration
-com.azure:azure-security-keyvault-certificates
-com.azure:azure-security-keyvault-keys
-com.azure:azure-security-keyvault-secrets
-com.azure:azure-search-documents
+com.azure:azure-ai-formrecognizer # Tests owner: samvaity
+com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
+com.azure:azure-ai-textanalytics # Tests owner: mssfang
+com.azure:azure-communication-chat # Tests owner: jiminwen
+com.azure:azure-containers-containerregistry # Tests owner: lmolkova
+com.azure:azure-data-appconfiguration # Tests owner: mssfang
+com.azure:azure-data-schemaregistry # Tests owner: conniey
+com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
+com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
+com.azure:azure-messaging-eventgrid # Tests owner: billwert
+com.azure:azure-messaging-eventhubs # Tests owner: conniey
+com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
+com.azure:azure-messaging-servicebus # Tests owner: ki1729
+com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
+com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
+com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
+com.azure:azure-monitor-query # Tests owner: srnagar
+com.azure:azure-security-attestation # Tests owner: LarryOsterman
+com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
+com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
+com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
+com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
+com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
+com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
+com.azure:azure-search-documents # Tests owner: jairmyree
+com.azure:azure-storage-blob # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-blob-batch # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-blob-cryptography # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-common # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft
+com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft
+
+

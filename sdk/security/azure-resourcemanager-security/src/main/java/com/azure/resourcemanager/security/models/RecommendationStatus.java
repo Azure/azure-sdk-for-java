@@ -23,6 +23,15 @@ public final class RecommendationStatus extends ExpandableStringEnum<Recommendat
     public static final RecommendationStatus NO_STATUS = fromString("NoStatus");
 
     /**
+     * Creates a new instance of RecommendationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendationStatus() {
+    }
+
+    /**
      * Creates or finds a RecommendationStatus from its string representation.
      *
      * @param name a name to look for.

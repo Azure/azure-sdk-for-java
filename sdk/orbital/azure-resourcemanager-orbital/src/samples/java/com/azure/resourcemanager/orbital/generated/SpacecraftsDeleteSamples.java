@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Spacecrafts Delete. */
 public final class SpacecraftsDeleteSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftDelete.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/SpacecraftDelete.json
      */
     /**
      * Sample code: Delete Spacecraft.
@@ -17,6 +15,6 @@ public final class SpacecraftsDeleteSamples {
      * @param manager Entry point to OrbitalManager.
      */
     public static void deleteSpacecraft(com.azure.resourcemanager.orbital.OrbitalManager manager) {
-        manager.spacecrafts().delete("contoso-Rgp", "CONTOSO_SAT", Context.NONE);
+        manager.spacecrafts().delete("contoso-Rgp", "CONTOSO_SAT", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,7 +22,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6)
      */
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /*
      * Contact details of the people or organization responsible for the image.
@@ -89,24 +89,24 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     public OciAnnotations() {}
 
     /**
-     * Get the created property: Date and time on which the image was built (string, date-time as defined by
+     * Get the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
      *
-     * @return the created value.
+     * @return the createdOn value.
      */
-    public OffsetDateTime getCreated() {
-        return this.created;
+    public OffsetDateTime getCreatedOn() {
+        return this.createdOn;
     }
 
     /**
-     * Set the created property: Date and time on which the image was built (string, date-time as defined by
+     * Set the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
      *
-     * @param created the created value to set.
+     * @param createdOn the createdOn value to set.
      * @return the OciAnnotations object itself.
      */
-    public OciAnnotations setCreated(OffsetDateTime created) {
-        this.created = created;
+    public OciAnnotations setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
         return this;
     }
 
@@ -357,7 +357,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("org.opencontainers.image.created", Objects.toString(this.created, null));
+        jsonWriter.writeStringField("org.opencontainers.image.created", Objects.toString(this.createdOn, null));
         jsonWriter.writeStringField("org.opencontainers.image.authors", this.authors);
         jsonWriter.writeStringField("org.opencontainers.image.url", this.url);
         jsonWriter.writeStringField("org.opencontainers.image.documentation", this.documentation);
@@ -388,49 +388,38 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     public static OciAnnotations fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    OffsetDateTime created = null;
-                    String authors = null;
-                    String url = null;
-                    String documentation = null;
-                    String source = null;
-                    String version = null;
-                    String revision = null;
-                    String vendor = null;
-                    String licenses = null;
-                    String name = null;
-                    String title = null;
-                    String description = null;
+                    OciAnnotations deserializedOciAnnotations = new OciAnnotations();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("org.opencontainers.image.created".equals(fieldName)) {
-                            created =
+                            deserializedOciAnnotations.createdOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("org.opencontainers.image.authors".equals(fieldName)) {
-                            authors = reader.getString();
+                            deserializedOciAnnotations.authors = reader.getString();
                         } else if ("org.opencontainers.image.url".equals(fieldName)) {
-                            url = reader.getString();
+                            deserializedOciAnnotations.url = reader.getString();
                         } else if ("org.opencontainers.image.documentation".equals(fieldName)) {
-                            documentation = reader.getString();
+                            deserializedOciAnnotations.documentation = reader.getString();
                         } else if ("org.opencontainers.image.source".equals(fieldName)) {
-                            source = reader.getString();
+                            deserializedOciAnnotations.source = reader.getString();
                         } else if ("org.opencontainers.image.version".equals(fieldName)) {
-                            version = reader.getString();
+                            deserializedOciAnnotations.version = reader.getString();
                         } else if ("org.opencontainers.image.revision".equals(fieldName)) {
-                            revision = reader.getString();
+                            deserializedOciAnnotations.revision = reader.getString();
                         } else if ("org.opencontainers.image.vendor".equals(fieldName)) {
-                            vendor = reader.getString();
+                            deserializedOciAnnotations.vendor = reader.getString();
                         } else if ("org.opencontainers.image.licenses".equals(fieldName)) {
-                            licenses = reader.getString();
+                            deserializedOciAnnotations.licenses = reader.getString();
                         } else if ("org.opencontainers.image.ref.name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedOciAnnotations.name = reader.getString();
                         } else if ("org.opencontainers.image.title".equals(fieldName)) {
-                            title = reader.getString();
+                            deserializedOciAnnotations.title = reader.getString();
                         } else if ("org.opencontainers.image.description".equals(fieldName)) {
-                            description = reader.getString();
+                            deserializedOciAnnotations.description = reader.getString();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -439,22 +428,9 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    OciAnnotations deserializedValue = new OciAnnotations();
-                    deserializedValue.created = created;
-                    deserializedValue.authors = authors;
-                    deserializedValue.url = url;
-                    deserializedValue.documentation = documentation;
-                    deserializedValue.source = source;
-                    deserializedValue.version = version;
-                    deserializedValue.revision = revision;
-                    deserializedValue.vendor = vendor;
-                    deserializedValue.licenses = licenses;
-                    deserializedValue.name = name;
-                    deserializedValue.title = title;
-                    deserializedValue.description = description;
-                    deserializedValue.additionalProperties = additionalProperties;
+                    deserializedOciAnnotations.additionalProperties = additionalProperties;
 
-                    return deserializedValue;
+                    return deserializedOciAnnotations;
                 });
     }
 }

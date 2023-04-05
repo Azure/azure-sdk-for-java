@@ -14,7 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -173,9 +173,9 @@ public class ShareFileClient {
             create(options.getFileSize());
         }
 
-        int chunkSize = options.getChunkSize() != null
-            ? options.getChunkSize().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
-        return new StorageSeekableByteChannel(chunkSize, null /*readBehavior*/,
+        int chunkSize = options.getChunkSizeInBytes() != null
+            ? options.getChunkSizeInBytes().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        return new StorageSeekableByteChannel(chunkSize,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()), 0L);
     }
@@ -187,12 +187,12 @@ public class ShareFileClient {
      */
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
         ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
-        Long configuredChunkSize = options != null ? options.getChunkSize() : null;
+        Long configuredChunkSize = options != null ? options.getChunkSizeInBytes() : null;
         int chunkSize = configuredChunkSize != null
             ? configuredChunkSize.intValue()
             : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
         return new StorageSeekableByteChannel(chunkSize,
-            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), null /*writeBehavior*/, 0L);
+            new StorageSeekableByteChannelShareFileReadBehavior(this, conditions), 0L);
     }
 
     /**

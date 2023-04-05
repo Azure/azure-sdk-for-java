@@ -3,12 +3,23 @@
 ## 4.1.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Added support for analyzing new document types
+- Added support for AzureBlobList source type when building document models
+- Added support for building, getting, listing and deleting classifiers
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 4.0.4 (2023-02-09)
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AliasType. */
+/** The type of the alias. */
 public enum AliasType {
     /** Enum value NotSpecified. */
     NOT_SPECIFIED("NotSpecified"),
@@ -33,6 +33,9 @@ public enum AliasType {
      */
     @JsonCreator
     public static AliasType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AliasType[] items = AliasType.values();
         for (AliasType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AliasType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

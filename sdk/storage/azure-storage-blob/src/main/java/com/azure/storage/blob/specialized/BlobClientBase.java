@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CpkInfo;
@@ -54,7 +55,7 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
@@ -397,27 +398,28 @@ public class BlobClientBase {
      *
      * @param options {@link BlobSeekableByteChannelReadOptions}
      * @param context {@link Context}
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @return A <code>SeekableByteChannel</code> that represents the channel to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public SeekableByteChannel openSeekableByteChannelRead(BlobSeekableByteChannelReadOptions options,
-        Context context) {
+    public BlobSeekableByteChannelReadResult openSeekableByteChannelRead(
+        BlobSeekableByteChannelReadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+        int chunkSize = options.getReadSizeInBytes() == null ? 4 * Constants.MB : options.getReadSizeInBytes();
         long initialPosition = options.getInitialPosition() == null ? 0 : options.getInitialPosition();
 
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
         BlobProperties properties;
+        BlobDownloadResponse response;
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
-            BlobDownloadResponse response = this.downloadStreamWithResponse(dstStream,
+            response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
                 options.getRequestConditions(), false, null, context);
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
 
         initialRange.limit(initialRange.position());
@@ -455,7 +457,8 @@ public class BlobClientBase {
         StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
             behaviorClient, initialRange, initialPosition, properties.getBlobSize(), requestConditions);
 
-        return new StorageSeekableByteChannel(chunkSize, behavior, null, initialPosition);
+        SeekableByteChannel channel = new StorageSeekableByteChannel(chunkSize, behavior, initialPosition);
+        return new BlobSeekableByteChannelReadResult(channel, properties);
     }
 
     /**

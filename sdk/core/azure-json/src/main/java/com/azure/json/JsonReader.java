@@ -265,12 +265,12 @@ public abstract class JsonReader implements Closeable {
      *
      * @return Whether {@link #reset()} is supported.
      */
-    public abstract boolean resetSupported();
+    public abstract boolean isResetSupported();
 
     /**
      * Creates a new {@link JsonReader} reset to the beginning of the JSON stream.
      * <p>
-     * Use {@link #resetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
+     * Use {@link #isResetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
      * and it isn't supported an {@link IllegalStateException} will be thrown.
      *
      * @return A new {@link JsonReader} reset to the beginning of the JSON stream.
@@ -439,27 +439,12 @@ public abstract class JsonReader implements Closeable {
      *
      * @param objectReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
-     * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
-     * null.
+     * @return The read JSON object, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the object cannot be read.
      */
     public final <T> T readObject(ReadValueCallback<JsonReader, T> objectReaderFunc) throws IOException {
-        JsonToken currentToken = currentToken();
-        if (currentToken == null) {
-            currentToken = nextToken();
-        }
-
-        // If the current token is JSON NULL or current token is still null return null.
-        // The current token may be null if there was no JSON content to read.
-        if (currentToken == JsonToken.NULL || currentToken == null) {
-            return null;
-        } else if (currentToken == JsonToken.END_OBJECT || currentToken == JsonToken.FIELD_NAME) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + currentToken);
-        }
-
-        return objectReaderFunc.read(this);
+        return readMapOrObject(objectReaderFunc, false);
     }
 
     /**
@@ -521,33 +506,41 @@ public abstract class JsonReader implements Closeable {
      * @param valueReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
      * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
-     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
-     * null.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the map cannot be read.
      */
     public final <T> Map<String, T> readMap(ReadValueCallback<JsonReader, T> valueReaderFunc) throws IOException {
+        return readMapOrObject(reader -> {
+            Map<String, T> map = new LinkedHashMap<>();
+
+            while (nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = getFieldName();
+                nextToken();
+
+                map.put(fieldName, valueReaderFunc.read(this));
+            }
+
+            return map;
+        }, true);
+    }
+
+    private <T> T readMapOrObject(ReadValueCallback<JsonReader, T> valueReaderFunc, boolean isMap) throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == null) {
             currentToken = nextToken();
         }
 
+        // Reading maps and objects can begin in one of four states with the following outcomes:
+        // - JSON null token or no token: returns null
+        // - JSON start object or field name: reads the map or object
         if (currentToken == JsonToken.NULL || currentToken == null) {
             return null;
         } else if (currentToken != JsonToken.START_OBJECT) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin map deserialization: " + currentToken);
+            String type = isMap ? "map" : "object";
+            throw new IllegalStateException("Unexpected token to begin " + type + " deserialization: " + currentToken);
         }
 
-        Map<String, T> map = new LinkedHashMap<>();
-
-        while (nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = getFieldName();
-            nextToken();
-
-            map.put(fieldName, valueReaderFunc.read(this));
-        }
-
-        return map;
+        return valueReaderFunc.read(this);
     }
 
     /**
@@ -695,6 +688,8 @@ public abstract class JsonReader implements Closeable {
                 return getFieldName();
 
             case BOOLEAN:
+                return String.valueOf(getBoolean());
+
             case NUMBER:
             case STRING:
                 return getString();

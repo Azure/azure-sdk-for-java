@@ -15,11 +15,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WebPubSubResourceListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WebPubSubResourceList model =
             BinaryData
                 .fromString(
@@ -37,8 +36,8 @@ public final class WebPubSubResourceListTests {
         Assertions.assertEquals("nlebxetqgtzxd", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WebPubSubResourceList model =
             new WebPubSubResourceList()
                 .withValue(

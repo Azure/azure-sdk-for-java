@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
 import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewRequest;
 
 /** Samples for StaticSites PreviewWorkflow. */
 public final class StaticSitesPreviewWorkflowSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GenerateStaticSiteWorkflowPreview.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GenerateStaticSiteWorkflowPreview.json
      */
     /**
      * Sample code: Generates a preview workflow file for the static site.
@@ -35,6 +34,6 @@ public final class StaticSitesPreviewWorkflowSamples {
                             .withAppLocation("app")
                             .withApiLocation("api")
                             .withAppArtifactLocation("build")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

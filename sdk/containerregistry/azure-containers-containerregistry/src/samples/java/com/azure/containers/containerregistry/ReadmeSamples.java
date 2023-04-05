@@ -6,6 +6,9 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
+import com.azure.containers.containerregistry.models.GetManifestResult;
+import com.azure.containers.containerregistry.models.OciDescriptor;
+import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -21,38 +24,61 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  *
  */
 public class ReadmeSamples {
-
     private String endpoint = "endpoint";
+    private String repository = "samples/nginx";
 
     public void createClient() {
         // BEGIN: readme-sample-createClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildClient();
         // END: readme-sample-createClient
     }
 
+    public void createContentClient() {
+        // BEGIN: readme-sample-createContentClient
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .repositoryName(repository)
+            .buildClient();
+        // END: readme-sample-createContentClient
+    }
+
     public void createAsyncClient() {
         // BEGIN: readme-sample-createAsyncClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryAsyncClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildAsyncClient();
         // END: readme-sample-createAsyncClient
     }
 
-    public void listRepositoryNamesSample() {
-        // BEGIN: readme-sample-listRepositoryNames
+    public void createBlobAsyncClient() {
+        // BEGIN: readme-sample-createBlobAsyncClient
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .repositoryName(repository)
+            .buildAsyncClient();
+        // END: readme-sample-createBlobAsyncClient
+    }
+
+
+    public void listRepositoryNamesSample() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildClient();
 
-        client.listRepositoryNames().forEach(repository -> System.out.println(repository));
+        // BEGIN: readme-sample-listRepositoryNames
+        registryClient.listRepositoryNames().forEach(repository -> System.out.println(repository));
         // END: readme-sample-listRepositoryNames
     }
 
@@ -76,7 +102,7 @@ public class ReadmeSamples {
 
     public void createAnonymousAccessClient() {
         // BEGIN: readme-sample-createAnonymousAccessClient
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .buildClient();
         // END: readme-sample-createAnonymousAccessClient
@@ -84,24 +110,24 @@ public class ReadmeSamples {
 
     public void createAnonymousAccessAsyncClient() {
         // BEGIN: readme-sample-createAnonymousAsyncAccessClient
-        ContainerRegistryAsyncClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryAsyncClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .buildAsyncClient();
         // END: readme-sample-createAnonymousAsyncAccessClient
     }
 
     public void deleteImages() {
-        // BEGIN: readme-sample-deleteImages
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(defaultCredential)
             .buildClient();
 
+        // BEGIN: readme-sample-deleteImages
         final int imagesCountToKeep = 3;
-        for (String repositoryName : client.listRepositoryNames()) {
-            final ContainerRepository repository = client.getRepository(repositoryName);
+        for (String repositoryName : registryClient.listRepositoryNames()) {
+            final ContainerRepository repository = registryClient.getRepository(repositoryName);
 
             // Obtain the images ordered from newest to oldest
             PagedIterable<ArtifactManifestProperties> imageManifests =
@@ -127,15 +153,15 @@ public class ReadmeSamples {
     private String tag = "tag";
 
     public void setArtifactProperties() {
-        // BEGIN: readme-sample-setArtifactProperties
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(defaultCredential)
             .buildClient();
 
-        RegistryArtifact image = client.getArtifact(repositoryName, digest);
+        // BEGIN: readme-sample-setArtifactProperties
+        RegistryArtifact image = registryClient.getArtifact(repositoryName, digest);
 
         image.updateTagProperties(
             tag,
@@ -148,12 +174,13 @@ public class ReadmeSamples {
     private final String digest = "digest";
 
     public void listTagProperties() {
-        // BEGIN: readme-sample-listTagProperties
         ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .buildClient();
 
+        // BEGIN: readme-sample-listTagProperties
         RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
+
         PagedIterable<ArtifactTagProperties> tags = image.listTagProperties();
 
         System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedReference()));
@@ -202,11 +229,10 @@ public class ReadmeSamples {
 
     public void enableHttpLogging() {
         final String endpoint = getEndpoint();
-        final String repositoryName = getRepositoryName();
 
         final TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         // BEGIN: readme-sample-enablehttplogging
-        ContainerRegistryClient client = new ContainerRegistryClientBuilder()
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(defaultCredential)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -225,19 +251,92 @@ public class ReadmeSamples {
         return null;
     }
 
-    private final TokenCredential credentials = null;
+    private final TokenCredential credential = null;
     public void nationalCloudSample() {
-        // BEGIN: readme-sample-nationalCloudSample
-        ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
+        // BEGIN: readme-sample-armTokenChina
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
-            .credential(credentials)
+            .credential(credential)
+            // only if ACR access tokens are disabled or not supported
             .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_CHINA)
             .buildClient();
 
-        containerRegistryClient
+        registryClient
             .listRepositoryNames()
             .forEach(name -> System.out.println(name));
-        // END: readme-sample-nationalCloudSample
+        // END: readme-sample-armTokenChina
+    }
+
+    public void armTokenSample() {
+        // BEGIN: readme-sample-armTokenPublic
+        ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
+            .endpoint(getEndpoint())
+            .credential(credential)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
+            .buildClient();
+
+        registryClient
+            .listRepositoryNames()
+            .forEach(name -> System.out.println(name));
+        // END: readme-sample-armTokenPublic
+    }
+
+    public void deleteBlob()  {
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(getEndpoint())
+            .repositoryName(repository)
+            .credential(credential)
+            .buildClient();
+
+        // BEGIN: readme-sample-deleteBlob
+        GetManifestResult manifestResult = contentClient.getManifest("latest");
+
+        OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
+        for (OciDescriptor layer : manifest.getLayers()) {
+            contentClient.deleteBlob(layer.getDigest());
+        }
+        // END: readme-sample-deleteBlob
+    }
+
+    public void deleteManifest()  {
+        ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(getEndpoint())
+            .repositoryName(repository)
+            .credential(credential)
+            .buildClient();
+
+        // BEGIN: readme-sample-deleteManifest
+        GetManifestResult manifestResult = contentClient.getManifest("latest");
+        contentClient.deleteManifest(manifestResult.getDigest());
+        // END: readme-sample-deleteManifest
+    }
+
+    public void deleteBlobAsync()  {
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(getEndpoint())
+            .repositoryName(repository)
+            .credential(credential)
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-deleteBlobAsync
+        contentClient.getManifest("latest")
+            .flatMap(manifest -> contentClient.deleteBlob(manifest.getDigest()))
+            .block();
+        // END: readme-sample-deleteBlobAsync
+    }
+
+    public void deleteManifestAsync()  {
+        ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder()
+            .endpoint(getEndpoint())
+            .repositoryName(repository)
+            .credential(credential)
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-deleteManifestAsync
+        contentClient.getManifest("latest")
+            .flatMap(manifest -> contentClient.deleteManifest(manifest.getDigest()))
+            .block();
+        // END: readme-sample-deleteManifestAsync
     }
 }
 

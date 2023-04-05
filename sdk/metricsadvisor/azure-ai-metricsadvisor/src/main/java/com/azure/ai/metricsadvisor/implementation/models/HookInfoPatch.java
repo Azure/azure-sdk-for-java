@@ -48,6 +48,9 @@ public class HookInfoPatch {
     @JsonProperty(value = "admins")
     private List<String> admins;
 
+    /** Creates an instance of HookInfoPatch class. */
+    public HookInfoPatch() {}
+
     /**
      * Get the hookName property: hook unique name.
      *

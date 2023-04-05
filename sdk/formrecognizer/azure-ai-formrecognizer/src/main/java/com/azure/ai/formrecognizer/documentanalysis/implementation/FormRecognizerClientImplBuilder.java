@@ -235,7 +235,7 @@ public final class FormRecognizerClientImplBuilder
     @Generated
     public FormRecognizerClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-08-31";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-02-28-preview";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         FormRecognizerClientImpl client =

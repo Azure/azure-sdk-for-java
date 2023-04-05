@@ -98,26 +98,23 @@ public final class AzureActiveDirectoryApplicationCredentials
     public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String applicationId = null;
-                    String applicationSecret = null;
+                    AzureActiveDirectoryApplicationCredentials deserializedAzureActiveDirectoryApplicationCredentials =
+                            new AzureActiveDirectoryApplicationCredentials();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("applicationId".equals(fieldName)) {
-                            applicationId = reader.getString();
+                            deserializedAzureActiveDirectoryApplicationCredentials.applicationId = reader.getString();
                         } else if ("applicationSecret".equals(fieldName)) {
-                            applicationSecret = reader.getString();
+                            deserializedAzureActiveDirectoryApplicationCredentials.applicationSecret =
+                                    reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    AzureActiveDirectoryApplicationCredentials deserializedValue =
-                            new AzureActiveDirectoryApplicationCredentials();
-                    deserializedValue.applicationId = applicationId;
-                    deserializedValue.applicationSecret = applicationSecret;
 
-                    return deserializedValue;
+                    return deserializedAzureActiveDirectoryApplicationCredentials;
                 });
     }
 }

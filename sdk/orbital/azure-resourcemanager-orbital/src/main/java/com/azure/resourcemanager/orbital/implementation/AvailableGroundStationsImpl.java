@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.orbital.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.orbital.fluent.AvailableGroundStationsClient;
@@ -36,28 +34,6 @@ public final class AvailableGroundStationsImpl implements AvailableGroundStation
     public PagedIterable<AvailableGroundStation> list(CapabilityParameter capability, Context context) {
         PagedIterable<AvailableGroundStationInner> inner = this.serviceClient().list(capability, context);
         return Utils.mapPage(inner, inner1 -> new AvailableGroundStationImpl(inner1, this.manager()));
-    }
-
-    public AvailableGroundStation get(String groundStationName) {
-        AvailableGroundStationInner inner = this.serviceClient().get(groundStationName);
-        if (inner != null) {
-            return new AvailableGroundStationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AvailableGroundStation> getWithResponse(String groundStationName, Context context) {
-        Response<AvailableGroundStationInner> inner = this.serviceClient().getWithResponse(groundStationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AvailableGroundStationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
     }
 
     private AvailableGroundStationsClient serviceClient() {

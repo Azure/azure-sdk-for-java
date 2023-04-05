@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 
 import java.time.Duration;
@@ -40,6 +41,6 @@ public interface IRntbdServerErrorInjector {
      * @return flag to indicate whether server connection delay rule is injected.
      */
     boolean injectRntbdServerConnectionDelay(
-        RntbdRequestRecord requestRecord,
+        IRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer);
 }

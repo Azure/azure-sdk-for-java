@@ -7,13 +7,17 @@ import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.BlobStorageInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.ExternalStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callautomation.models.BlobStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
@@ -41,8 +45,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -111,10 +113,6 @@ public class CallRecordingAsync {
 
     Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
-            String callbackUrl = options.getRecordingStateCallbackUrl();
-            if (callbackUrl != null && !callbackUrl.isEmpty() && !Boolean.TRUE.equals(new URI(callbackUrl).isAbsolute())) {
-                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
-            }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
             return withContext(contextValue -> {
@@ -130,8 +128,6 @@ public class CallRecordingAsync {
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        } catch (URISyntaxException ex) {
-            return monoError(logger, new RuntimeException(ex));
         }
     }
 
@@ -168,6 +164,16 @@ public class CallRecordingAsync {
                 .stream().map(CommunicationIdentifierConverter::convert)
                 .collect(Collectors.toList());
             request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
+        }
+        if (options.getExternalStorage() != null) {
+            ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
+                .setStorageType(RecordingStorageTypeInternal.fromString(options.getExternalStorage().getStorageType().toString()));
+
+            if (options.getExternalStorage() instanceof BlobStorage) {
+                externalStorageInternal.setBlobStorage(getBlobStorageInternalFromBlobStorage((BlobStorage) options.getExternalStorage()));
+            }
+
+            request.setExternalStorage(externalStorageInternal);
         }
 
         return request;
@@ -563,5 +569,9 @@ public class CallRecordingAsync {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
+    }
+
+    private BlobStorageInternal getBlobStorageInternalFromBlobStorage(BlobStorage blobStorage) {
+        return new BlobStorageInternal().setContainerUri(blobStorage.getContainerUri());
     }
 }

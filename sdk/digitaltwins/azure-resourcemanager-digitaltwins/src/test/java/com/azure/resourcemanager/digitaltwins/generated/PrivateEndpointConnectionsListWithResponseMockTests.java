@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.PrivateEndpointConnectionsResponse;
 import java.nio.ByteBuffer;
@@ -31,7 +30,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"ytkblmpew\",\"name\":\"wfbkrvrns\",\"type\":\"shqjohxcrsbf\"},{\"id\":\"asrru\",\"name\":\"wbhsqfsub\",\"type\":\"gjb\"}]}";
+            "{\"value\":[{\"id\":\"pvjzbe\",\"name\":\"ilzznfqqnvwp\",\"type\":\"qtaruoujmkcjhwq\"},{\"id\":\"jrybnwjewgdrjer\",\"name\":\"naenqpehindo\",\"type\":\"gmifthnzd\"},{\"id\":\"sl\",\"name\":\"nayqi\",\"type\":\"ynduha\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +61,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         PrivateEndpointConnectionsResponse response =
             manager
                 .privateEndpointConnections()
-                .listWithResponse("qaqtdoqmcbxvwvxy", "lqbhsf", Context.NONE)
+                .listWithResponse("sqfsubcgjbirxb", "ybsrfbjfdtwss", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

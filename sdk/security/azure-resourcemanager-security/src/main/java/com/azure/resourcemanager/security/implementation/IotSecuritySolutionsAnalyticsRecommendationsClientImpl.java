@@ -66,9 +66,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
     public interface IotSecuritySolutionsAnalyticsRecommendationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations"
-                + "/{aggregatedRecommendationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations/{aggregatedRecommendationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecurityAggregatedRecommendationInner>> get(
@@ -83,8 +81,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IoTSecurityAggregatedRecommendationList>> list(

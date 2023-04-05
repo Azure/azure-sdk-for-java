@@ -9,11 +9,10 @@ import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.ManagedIdentityReference;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TimeSeriesDatabaseConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TimeSeriesDatabaseConnectionProperties model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class TimeSeriesDatabaseConnectionPropertiesTests {
         Assertions.assertEquals("yq", model.identity().userAssignedIdentity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TimeSeriesDatabaseConnectionProperties model =
             new TimeSeriesDatabaseConnectionProperties()
                 .withIdentity(

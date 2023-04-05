@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 
 /** Samples for AppServiceEnvironments ApproveOrRejectPrivateEndpointConnection. */
 public final class AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ApproveOrRejectPrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ApproveOrRejectPrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection.
@@ -34,6 +33,6 @@ public final class AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectio
                         new PrivateLinkConnectionState()
                             .withStatus("Approved")
                             .withDescription("Approved by johndoe@company.com")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

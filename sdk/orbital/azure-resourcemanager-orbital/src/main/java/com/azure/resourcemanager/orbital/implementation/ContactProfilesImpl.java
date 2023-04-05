@@ -27,15 +27,6 @@ public final class ContactProfilesImpl implements ContactProfiles {
         this.serviceManager = serviceManager;
     }
 
-    public ContactProfile getByResourceGroup(String resourceGroupName, String contactProfileName) {
-        ContactProfileInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, contactProfileName);
-        if (inner != null) {
-            return new ContactProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ContactProfile> getByResourceGroupWithResponse(
         String resourceGroupName, String contactProfileName, Context context) {
         Response<ContactProfileInner> inner =
@@ -46,6 +37,15 @@ public final class ContactProfilesImpl implements ContactProfiles {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ContactProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ContactProfile getByResourceGroup(String resourceGroupName, String contactProfileName) {
+        ContactProfileInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, contactProfileName);
+        if (inner != null) {
+            return new ContactProfileImpl(inner, this.manager());
         } else {
             return null;
         }

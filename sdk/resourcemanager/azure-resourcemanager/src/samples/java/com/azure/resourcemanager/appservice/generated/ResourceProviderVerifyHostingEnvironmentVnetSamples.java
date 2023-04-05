@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
 
 /** Samples for ResourceProvider VerifyHostingEnvironmentVnet. */
 public final class ResourceProviderVerifyHostingEnvironmentVnetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/VerifyHostingEnvironmentVnet.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/VerifyHostingEnvironmentVnet.json
      */
     /**
      * Sample code: VerifyHostingEnvironmentVnet.
@@ -28,6 +27,6 @@ public final class ResourceProviderVerifyHostingEnvironmentVnetSamples {
                     .withVnetResourceGroup("vNet123rg")
                     .withVnetName("vNet123")
                     .withVnetSubnetName("vNet123SubNet"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

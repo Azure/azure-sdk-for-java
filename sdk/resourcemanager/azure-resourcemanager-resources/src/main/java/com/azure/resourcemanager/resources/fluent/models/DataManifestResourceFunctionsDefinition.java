@@ -24,6 +24,10 @@ public final class DataManifestResourceFunctionsDefinition {
     @JsonProperty(value = "custom")
     private List<DataManifestCustomResourceFunctionDefinition> custom;
 
+    /** Creates an instance of DataManifestResourceFunctionsDefinition class. */
+    public DataManifestResourceFunctionsDefinition() {
+    }
+
     /**
      * Get the standard property: The standard resource functions (subscription and/or resourceGroup).
      *

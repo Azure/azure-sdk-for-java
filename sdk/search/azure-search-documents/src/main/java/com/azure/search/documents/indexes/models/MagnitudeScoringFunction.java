@@ -118,11 +118,11 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
                         }
                     }
                     if (fieldNameFound && boostFound && parametersFound) {
-                        MagnitudeScoringFunction deserializedValue =
+                        MagnitudeScoringFunction deserializedMagnitudeScoringFunction =
                                 new MagnitudeScoringFunction(fieldName, boost, parameters);
-                        deserializedValue.setInterpolation(interpolation);
+                        deserializedMagnitudeScoringFunction.setInterpolation(interpolation);
 
-                        return deserializedValue;
+                        return deserializedMagnitudeScoringFunction;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!fieldNameFound) {

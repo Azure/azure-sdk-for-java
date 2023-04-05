@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Contacts List. */
 public final class ContactsListSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactsBySpacecraftNameList.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactsBySpacecraftNameList.json
      */
     /**
      * Sample code: List of Spacecraft.
@@ -17,6 +15,6 @@ public final class ContactsListSamples {
      * @param manager Entry point to OrbitalManager.
      */
     public static void listOfSpacecraft(com.azure.resourcemanager.orbital.OrbitalManager manager) {
-        manager.contacts().list("contoso-Rgp", "CONTOSO_SAT", "opaqueString", Context.NONE);
+        manager.contacts().list("contoso-Rgp", "CONTOSO_SAT", "opaqueString", com.azure.core.util.Context.NONE);
     }
 }

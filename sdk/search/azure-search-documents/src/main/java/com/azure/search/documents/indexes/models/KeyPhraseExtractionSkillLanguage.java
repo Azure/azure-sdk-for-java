@@ -11,52 +11,52 @@ import java.util.Collection;
 
 /** The language codes supported for input text by KeyPhraseExtractionSkill. */
 public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum<KeyPhraseExtractionSkillLanguage> {
-    /** Static value da for KeyPhraseExtractionSkillLanguage. */
+    /** Danish. */
     public static final KeyPhraseExtractionSkillLanguage DA = fromString("da");
 
-    /** Static value nl for KeyPhraseExtractionSkillLanguage. */
+    /** Dutch. */
     public static final KeyPhraseExtractionSkillLanguage NL = fromString("nl");
 
-    /** Static value en for KeyPhraseExtractionSkillLanguage. */
+    /** English. */
     public static final KeyPhraseExtractionSkillLanguage EN = fromString("en");
 
-    /** Static value fi for KeyPhraseExtractionSkillLanguage. */
+    /** Finnish. */
     public static final KeyPhraseExtractionSkillLanguage FI = fromString("fi");
 
-    /** Static value fr for KeyPhraseExtractionSkillLanguage. */
+    /** French. */
     public static final KeyPhraseExtractionSkillLanguage FR = fromString("fr");
 
-    /** Static value de for KeyPhraseExtractionSkillLanguage. */
+    /** German. */
     public static final KeyPhraseExtractionSkillLanguage DE = fromString("de");
 
-    /** Static value it for KeyPhraseExtractionSkillLanguage. */
+    /** Italian. */
     public static final KeyPhraseExtractionSkillLanguage IT = fromString("it");
 
-    /** Static value ja for KeyPhraseExtractionSkillLanguage. */
+    /** Japanese. */
     public static final KeyPhraseExtractionSkillLanguage JA = fromString("ja");
 
-    /** Static value ko for KeyPhraseExtractionSkillLanguage. */
+    /** Korean. */
     public static final KeyPhraseExtractionSkillLanguage KO = fromString("ko");
 
-    /** Static value no for KeyPhraseExtractionSkillLanguage. */
+    /** Norwegian (Bokmaal). */
     public static final KeyPhraseExtractionSkillLanguage NO = fromString("no");
 
-    /** Static value pl for KeyPhraseExtractionSkillLanguage. */
+    /** Polish. */
     public static final KeyPhraseExtractionSkillLanguage PL = fromString("pl");
 
-    /** Static value pt-PT for KeyPhraseExtractionSkillLanguage. */
+    /** Portuguese (Portugal). */
     public static final KeyPhraseExtractionSkillLanguage PT_PT = fromString("pt-PT");
 
-    /** Static value pt-BR for KeyPhraseExtractionSkillLanguage. */
+    /** Portuguese (Brazil). */
     public static final KeyPhraseExtractionSkillLanguage PT_BR = fromString("pt-BR");
 
-    /** Static value ru for KeyPhraseExtractionSkillLanguage. */
+    /** Russian. */
     public static final KeyPhraseExtractionSkillLanguage RU = fromString("ru");
 
-    /** Static value es for KeyPhraseExtractionSkillLanguage. */
+    /** Spanish. */
     public static final KeyPhraseExtractionSkillLanguage ES = fromString("es");
 
-    /** Static value sv for KeyPhraseExtractionSkillLanguage. */
+    /** Swedish. */
     public static final KeyPhraseExtractionSkillLanguage SV = fromString("sv");
 
     /**

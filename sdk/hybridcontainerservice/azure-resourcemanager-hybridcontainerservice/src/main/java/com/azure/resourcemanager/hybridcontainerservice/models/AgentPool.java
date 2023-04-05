@@ -226,13 +226,13 @@ public interface AgentPool {
         /** The stage of the AgentPool definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, provisionedClustersName.
+             * Specifies resourceGroupName, resourceName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param provisionedClustersName Parameter for the name of the provisioned cluster.
+             * @param resourceName Parameter for the name of the provisioned cluster.
              * @return the next definition stage.
              */
-            WithCreate withExistingProvisionedCluster(String resourceGroupName, String provisionedClustersName);
+            WithCreate withExistingProvisionedCluster(String resourceGroupName, String resourceName);
         }
         /**
          * The stage of the AgentPool definition which contains all the minimum required properties for the resource to

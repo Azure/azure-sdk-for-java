@@ -16,22 +16,21 @@ public final class PrepareDataMoveResponseTests {
         PrepareDataMoveResponse model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"kbusqo\",\"sourceVaultProperties\":{\"ji\":\"ikayiansharuj\",\"j\":\"xfz\",\"penuy\":\"ttvwkpqh\",\"guaucmfdjwnla\":\"bqeqqekewvnqvcd\"}}")
+                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"iqxf\",\"sourceVaultProperties\":{\"kpqhjpenuygbq\":\"qttv\"}}")
                 .toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("kbusqo", model.correlationId());
-        Assertions.assertEquals("ikayiansharuj", model.sourceVaultProperties().get("ji"));
+        Assertions.assertEquals("iqxf", model.correlationId());
+        Assertions.assertEquals("qttv", model.sourceVaultProperties().get("kpqhjpenuygbq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrepareDataMoveResponse model =
             new PrepareDataMoveResponse()
-                .withCorrelationId("kbusqo")
-                .withSourceVaultProperties(
-                    mapOf("ji", "ikayiansharuj", "j", "xfz", "penuy", "ttvwkpqh", "guaucmfdjwnla", "bqeqqekewvnqvcd"));
+                .withCorrelationId("iqxf")
+                .withSourceVaultProperties(mapOf("kpqhjpenuygbq", "qttv"));
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("kbusqo", model.correlationId());
-        Assertions.assertEquals("ikayiansharuj", model.sourceVaultProperties().get("ji"));
+        Assertions.assertEquals("iqxf", model.correlationId());
+        Assertions.assertEquals("qttv", model.sourceVaultProperties().get("kpqhjpenuygbq"));
     }
 
     @SuppressWarnings("unchecked")

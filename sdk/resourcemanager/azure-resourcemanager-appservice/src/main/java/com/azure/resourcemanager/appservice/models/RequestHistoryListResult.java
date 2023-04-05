@@ -24,6 +24,10 @@ public final class RequestHistoryListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RequestHistoryListResult class. */
+    public RequestHistoryListResult() {
+    }
+
     /**
      * Get the value property: A list of workflow request histories.
      *

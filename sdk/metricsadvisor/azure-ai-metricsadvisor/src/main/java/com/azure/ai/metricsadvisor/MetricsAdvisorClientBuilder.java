@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -32,8 +32,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -182,7 +182,29 @@ public final class MetricsAdvisorClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public MetricsAdvisorClient buildClient() {
-        return new MetricsAdvisorClient(buildAsyncClient());
+        // Endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+
+        // Global Env configuration store
+        final Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service Version
+        final MetricsAdvisorServiceVersion serviceVersion =
+            version != null ? version : MetricsAdvisorServiceVersion.getLatest();
+
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
+        }
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
+            new MetricsAdvisorImplBuilder()
+                .endpoint(endpoint)
+                .pipeline(pipeline)
+                .buildClient();
+
+        return new MetricsAdvisorClient(advisorRestAPIOpenAPIV2, serviceVersion);
     }
 
     /**
@@ -220,8 +242,8 @@ public final class MetricsAdvisorClientBuilder implements
         if (pipeline == null) {
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
-        final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl advisorRestAPIOpenAPIV2 =
-            new AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder()
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2 =
+            new MetricsAdvisorImplBuilder()
                 .endpoint(endpoint)
                 .pipeline(pipeline)
                 .buildClient();
@@ -267,7 +289,7 @@ public final class MetricsAdvisorClientBuilder implements
         if (clientOptions != null) {
             tracingOptions = clientOptions.getTracingOptions();
         }
-        
+
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE, tracingOptions);
 

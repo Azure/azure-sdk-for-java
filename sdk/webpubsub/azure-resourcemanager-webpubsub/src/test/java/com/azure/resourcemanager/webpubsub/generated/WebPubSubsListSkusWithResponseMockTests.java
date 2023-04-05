@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.SkuList;
 import java.nio.ByteBuffer;
@@ -59,6 +58,10 @@ public final class WebPubSubsListSkusWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SkuList response = manager.webPubSubs().listSkusWithResponse("kgjubgdknnqvsazn", "n", Context.NONE).getValue();
+        SkuList response =
+            manager
+                .webPubSubs()
+                .listSkusWithResponse("kgjubgdknnqvsazn", "n", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

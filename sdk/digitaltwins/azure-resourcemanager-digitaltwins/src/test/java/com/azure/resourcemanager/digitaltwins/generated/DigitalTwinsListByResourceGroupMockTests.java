@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
@@ -35,7 +34,7 @@ public final class DigitalTwinsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-17T17:40:25Z\",\"lastUpdatedTime\":\"2021-09-07T09:24:33Z\",\"provisioningState\":\"Suspending\",\"hostName\":\"crpab\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"zq\",\"tenantId\":\"xywpmueefjzwfqkq\",\"userAssignedIdentities\":{}},\"location\":\"suyonobglaocq\",\"tags\":{\"ytlmoyrxvwfud\":\"cmgyud\"},\"id\":\"pz\",\"name\":\"txhdzh\",\"type\":\"rqjbhckfrl\"}]}";
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-26T18:25:08Z\",\"lastUpdatedTime\":\"2021-04-20T11:39:18Z\",\"provisioningState\":\"Suspending\",\"hostName\":\"xy\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"fudwpznt\",\"tenantId\":\"dzhlrq\",\"userAssignedIdentities\":{}},\"location\":\"kfrlhrxsbky\",\"tags\":{\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\",\"hspkdeemao\":\"ehhseyvjusrts\",\"gkvtmelmqkrhah\":\"mx\"},\"id\":\"ljuahaquhcdh\",\"name\":\"duala\",\"type\":\"xqpvfadmw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +63,13 @@ public final class DigitalTwinsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DigitalTwinsDescription> response =
-            manager.digitalTwins().listByResourceGroup("nermcl", Context.NONE);
+            manager.digitalTwins().listByResourceGroup("cq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("suyonobglaocq", response.iterator().next().location());
-        Assertions.assertEquals("cmgyud", response.iterator().next().tags().get("ytlmoyrxvwfud"));
+        Assertions.assertEquals("kfrlhrxsbky", response.iterator().next().location());
+        Assertions.assertEquals("ca", response.iterator().next().tags().get("uzbpzkafku"));
         Assertions
             .assertEquals(
                 DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
     }
 }

@@ -76,9 +76,9 @@ public final class TagScoringParameters implements JsonSerializable<TagScoringPa
                         }
                     }
                     if (tagsParameterFound) {
-                        TagScoringParameters deserializedValue = new TagScoringParameters(tagsParameter);
+                        TagScoringParameters deserializedTagScoringParameters = new TagScoringParameters(tagsParameter);
 
-                        return deserializedValue;
+                        return deserializedTagScoringParameters;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!tagsParameterFound) {

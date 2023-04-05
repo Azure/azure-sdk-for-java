@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignalR ListSkus. */
 public final class SignalRListSkusSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_ListSkus.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_ListSkus.json
      */
     /**
      * Sample code: SignalR_ListSkus.
@@ -17,6 +15,8 @@ public final class SignalRListSkusSamples {
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRListSkus(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager.signalRs().listSkusWithResponse("myResourceGroup", "mySignalRService", Context.NONE);
+        manager
+            .signalRs()
+            .listSkusWithResponse("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE);
     }
 }

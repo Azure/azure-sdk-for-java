@@ -15,79 +15,78 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":{\"errorMessage\":\"vjcbpwxqpsrknf\",\"readyReplicas\":1256922904,\"replicas\":1607260782},\"count\":2067966148,\"availabilityZones\":[\"wmdyvxqtay\",\"iwwroyqbexrmc\",\"ibycno\"],\"maxCount\":988905675,\"maxPods\":2121055666,\"minCount\":841332893,\"mode\":\"LB\",\"nodeLabels\":{\"pjyzhpv\":\"vah\",\"lmwlxkvugfhzo\":\"qzcjrvxdj\"},\"nodeTaints\":[\"jvzunluthnnp\",\"nxipeil\",\"jzuaejxdultskzbb\"],\"osType\":\"Windows\",\"nodeImageVersion\":\"mv\",\"vmSize\":\"kgpwoz\",\"cloudProviderProfile\":{}},\"extendedLocation\":{\"type\":\"jyofdxluusdtto\",\"name\":\"aboekqv\"},\"location\":\"elnsmvbxw\",\"tags\":{\"jixisxyawjoyaqcs\":\"flhhcaal\",\"eli\":\"yjpkiidzyexz\"},\"id\":\"hnrztfol\",\"name\":\"bnxknalaulppg\",\"type\":\"dtpnapnyiropuhp\"}")
+                    "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":{\"errorMessage\":\"juahaquhcdhmdual\",\"readyReplicas\":552039222,\"replicas\":1809510954},\"count\":792525510,\"availabilityZones\":[\"ws\",\"crgvxpvgom\",\"lf\",\"isgwbnbbeldawkz\"],\"maxCount\":70118233,\"maxPods\":113893877,\"minCount\":12612409,\"mode\":\"LB\",\"nodeLabels\":{\"sowzxcugi\":\"auhashsfwx\",\"ucww\":\"jooxdjebw\",\"bvmeuecivy\":\"vo\"},\"nodeTaints\":[\"euojgjrwju\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"wmcdytdxwi\",\"vmSize\":\"nrjawgqwg\",\"cloudProviderProfile\":{}},\"extendedLocation\":{\"type\":\"fbkp\",\"name\":\"gklwn\"},\"location\":\"nhjdauw\",\"tags\":{\"zbtd\":\"l\"},\"id\":\"xujznbmpowu\",\"name\":\"przqlveu\",\"type\":\"lupj\"}")
                 .toObject(AgentPoolInner.class);
-        Assertions.assertEquals("elnsmvbxw", model.location());
-        Assertions.assertEquals("flhhcaal", model.tags().get("jixisxyawjoyaqcs"));
-        Assertions.assertEquals("jyofdxluusdtto", model.extendedLocation().type());
-        Assertions.assertEquals("aboekqv", model.extendedLocation().name());
-        Assertions.assertEquals("vjcbpwxqpsrknf", model.status().errorMessage());
-        Assertions.assertEquals(1256922904, model.status().readyReplicas());
-        Assertions.assertEquals(1607260782, model.status().replicas());
-        Assertions.assertEquals(2067966148, model.count());
-        Assertions.assertEquals("wmdyvxqtay", model.availabilityZones().get(0));
-        Assertions.assertEquals(988905675, model.maxCount());
-        Assertions.assertEquals(2121055666, model.maxPods());
-        Assertions.assertEquals(841332893, model.minCount());
+        Assertions.assertEquals("nhjdauw", model.location());
+        Assertions.assertEquals("l", model.tags().get("zbtd"));
+        Assertions.assertEquals("fbkp", model.extendedLocation().type());
+        Assertions.assertEquals("gklwn", model.extendedLocation().name());
+        Assertions.assertEquals("juahaquhcdhmdual", model.status().errorMessage());
+        Assertions.assertEquals(552039222, model.status().readyReplicas());
+        Assertions.assertEquals(1809510954, model.status().replicas());
+        Assertions.assertEquals(792525510, model.count());
+        Assertions.assertEquals("ws", model.availabilityZones().get(0));
+        Assertions.assertEquals(70118233, model.maxCount());
+        Assertions.assertEquals(113893877, model.maxPods());
+        Assertions.assertEquals(12612409, model.minCount());
         Assertions.assertEquals(Mode.LB, model.mode());
-        Assertions.assertEquals("vah", model.nodeLabels().get("pjyzhpv"));
-        Assertions.assertEquals("jvzunluthnnp", model.nodeTaints().get(0));
-        Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals("mv", model.nodeImageVersion());
-        Assertions.assertEquals("kgpwoz", model.vmSize());
+        Assertions.assertEquals("auhashsfwx", model.nodeLabels().get("sowzxcugi"));
+        Assertions.assertEquals("euojgjrwju", model.nodeTaints().get(0));
+        Assertions.assertEquals(OsType.LINUX, model.osType());
+        Assertions.assertEquals("wmcdytdxwi", model.nodeImageVersion());
+        Assertions.assertEquals("nrjawgqwg", model.vmSize());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgentPoolInner model =
             new AgentPoolInner()
-                .withLocation("elnsmvbxw")
-                .withTags(mapOf("jixisxyawjoyaqcs", "flhhcaal", "eli", "yjpkiidzyexz"))
-                .withExtendedLocation(new AgentPoolExtendedLocation().withType("jyofdxluusdtto").withName("aboekqv"))
+                .withLocation("nhjdauw")
+                .withTags(mapOf("zbtd", "l"))
+                .withExtendedLocation(new AgentPoolExtendedLocation().withType("fbkp").withName("gklwn"))
                 .withStatus(
                     new AgentPoolProvisioningStatusStatus()
-                        .withErrorMessage("vjcbpwxqpsrknf")
-                        .withReadyReplicas(1256922904)
-                        .withReplicas(1607260782))
-                .withCount(2067966148)
-                .withAvailabilityZones(Arrays.asList("wmdyvxqtay", "iwwroyqbexrmc", "ibycno"))
-                .withMaxCount(988905675)
-                .withMaxPods(2121055666)
-                .withMinCount(841332893)
+                        .withErrorMessage("juahaquhcdhmdual")
+                        .withReadyReplicas(552039222)
+                        .withReplicas(1809510954))
+                .withCount(792525510)
+                .withAvailabilityZones(Arrays.asList("ws", "crgvxpvgom", "lf", "isgwbnbbeldawkz"))
+                .withMaxCount(70118233)
+                .withMaxPods(113893877)
+                .withMinCount(12612409)
                 .withMode(Mode.LB)
-                .withNodeLabels(mapOf("pjyzhpv", "vah", "lmwlxkvugfhzo", "qzcjrvxdj"))
-                .withNodeTaints(Arrays.asList("jvzunluthnnp", "nxipeil", "jzuaejxdultskzbb"))
-                .withOsType(OsType.WINDOWS)
-                .withNodeImageVersion("mv")
-                .withVmSize("kgpwoz")
+                .withNodeLabels(mapOf("sowzxcugi", "auhashsfwx", "ucww", "jooxdjebw", "bvmeuecivy", "vo"))
+                .withNodeTaints(Arrays.asList("euojgjrwju"))
+                .withOsType(OsType.LINUX)
+                .withNodeImageVersion("wmcdytdxwi")
+                .withVmSize("nrjawgqwg")
                 .withCloudProviderProfile(new CloudProviderProfile());
         model = BinaryData.fromObject(model).toObject(AgentPoolInner.class);
-        Assertions.assertEquals("elnsmvbxw", model.location());
-        Assertions.assertEquals("flhhcaal", model.tags().get("jixisxyawjoyaqcs"));
-        Assertions.assertEquals("jyofdxluusdtto", model.extendedLocation().type());
-        Assertions.assertEquals("aboekqv", model.extendedLocation().name());
-        Assertions.assertEquals("vjcbpwxqpsrknf", model.status().errorMessage());
-        Assertions.assertEquals(1256922904, model.status().readyReplicas());
-        Assertions.assertEquals(1607260782, model.status().replicas());
-        Assertions.assertEquals(2067966148, model.count());
-        Assertions.assertEquals("wmdyvxqtay", model.availabilityZones().get(0));
-        Assertions.assertEquals(988905675, model.maxCount());
-        Assertions.assertEquals(2121055666, model.maxPods());
-        Assertions.assertEquals(841332893, model.minCount());
+        Assertions.assertEquals("nhjdauw", model.location());
+        Assertions.assertEquals("l", model.tags().get("zbtd"));
+        Assertions.assertEquals("fbkp", model.extendedLocation().type());
+        Assertions.assertEquals("gklwn", model.extendedLocation().name());
+        Assertions.assertEquals("juahaquhcdhmdual", model.status().errorMessage());
+        Assertions.assertEquals(552039222, model.status().readyReplicas());
+        Assertions.assertEquals(1809510954, model.status().replicas());
+        Assertions.assertEquals(792525510, model.count());
+        Assertions.assertEquals("ws", model.availabilityZones().get(0));
+        Assertions.assertEquals(70118233, model.maxCount());
+        Assertions.assertEquals(113893877, model.maxPods());
+        Assertions.assertEquals(12612409, model.minCount());
         Assertions.assertEquals(Mode.LB, model.mode());
-        Assertions.assertEquals("vah", model.nodeLabels().get("pjyzhpv"));
-        Assertions.assertEquals("jvzunluthnnp", model.nodeTaints().get(0));
-        Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals("mv", model.nodeImageVersion());
-        Assertions.assertEquals("kgpwoz", model.vmSize());
+        Assertions.assertEquals("auhashsfwx", model.nodeLabels().get("sowzxcugi"));
+        Assertions.assertEquals("euojgjrwju", model.nodeTaints().get(0));
+        Assertions.assertEquals(OsType.LINUX, model.osType());
+        Assertions.assertEquals("wmcdytdxwi", model.nodeImageVersion());
+        Assertions.assertEquals("nrjawgqwg", model.vmSize());
     }
 
     @SuppressWarnings("unchecked")
