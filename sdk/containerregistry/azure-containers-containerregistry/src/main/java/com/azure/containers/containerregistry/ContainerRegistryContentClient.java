@@ -184,10 +184,12 @@ public final class ContainerRegistryContentClient {
      *     System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;, uploadResult.getDigest&#40;&#41;,
      *         uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * &#125; catch &#40;HttpResponseException ex&#41; &#123;
-     *     if &#40;ex.getCause&#40;&#41; instanceof AcrErrorsException&#41; &#123;
-     *         AcrErrorsException acrErrors = &#40;AcrErrorsException&#41; ex.getCause&#40;&#41;;
-     *         for &#40;AcrErrorInfo info : acrErrors.getValue&#40;&#41;.getErrors&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Uploaded blob failed: code '%s'&#92;n&quot;, info.getCode&#40;&#41;&#41;;
+     *     if &#40;ex.getValue&#40;&#41; instanceof ResponseError&#41; &#123;
+     *         ResponseError error = &#40;ResponseError&#41; ex.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Upload failed: code '%s'&#92;n&quot;, error.getCode&#40;&#41;&#41;;
+     *         if &#40;&quot;BLOB_UPLOAD_INVALID&quot;.equals&#40;error.getCode&#40;&#41;&#41;&#41; &#123;
+     *             System.out.println&#40;&quot;Transient upload issue, starting upload over&quot;&#41;;
+     *             &#47;&#47; retry upload
      *         &#125;
      *     &#125;
      * &#125;
@@ -478,8 +480,8 @@ public final class ContainerRegistryContentClient {
                 blobsImpl.completeUploadWithResponse(digest, location, chunk, chunk == null ? null : chunk.getLength(), context);
 
             return ConstructorAccessors.createUploadRegistryBlobResult(completeUploadResponse.getDeserializedHeaders().getDockerContentDigest(), streamLength);
-        } catch (AcrErrorsException ex) {
-            throw LOGGER.logExceptionAsError(mapAcrErrorsException(ex));
+        } catch (AcrErrorsException exception) {
+            throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
     }
 
