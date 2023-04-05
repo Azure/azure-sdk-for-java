@@ -113,7 +113,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { FaultInjectionServerErrorType.TIMEOUT, false, 408, 0 },
-            { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 }
+            { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
+            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 }
         };
     }
 
