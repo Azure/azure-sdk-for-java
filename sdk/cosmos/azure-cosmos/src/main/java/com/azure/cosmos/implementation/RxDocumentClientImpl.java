@@ -1455,7 +1455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public static PartitionKeyInternal extractPartitionKeyValueFromDocument(
-            InternalObjectNode document,
+            JsonSerializable document,
             PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition != null) {
             switch (partitionKeyDefinition.getKind()) {

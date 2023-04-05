@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -28,6 +29,7 @@ import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
@@ -55,6 +57,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -439,19 +442,43 @@ public class CosmosAsyncContainer {
 
                 InternalObjectNode internalObjectNode = InternalObjectNode.fromObjectToInternalObjectNode(item);
                 String itemId = internalObjectNode.getId();
-                RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+
+                CosmosItemRequestOptions readRequestOptions = itemOptionsAccessor
+                    .clone(options);
+                readRequestOptions.setConsistencyLevel(null);
+
                 @SuppressWarnings("unchecked")
                 Class<T> itemType = (Class<T>) item.getClass();
 
+                final AsyncDocumentClient clientWrapper = this.getDatabase().getDocClientWrapper();
                 Mono<CosmosItemResponse<T>> readMono =
-                    this.getDatabase().getDocClientWrapper()
-                        .readDocument(getItemLink(itemId), requestOptions)
-                        .map(response -> {
-                            mergeDiagnostics(response, cosmosException);
-                            return ModelBridgeInternal
-                                .createCosmosAsyncItemResponse(response, itemType, getItemDeserializer());
-                        })
-                        .single();
+                    clientWrapper
+                        .getCollectionCache()
+                        .resolveByNameAsync(
+                            null, this.getLinkWithoutTrailingSlash(), null)
+                        .flatMap(collection -> {
+                            if (collection == null) {
+                                throw new IllegalStateException("Collection cannot be null");
+                            }
+
+                            PartitionKeyDefinition pkDef = collection.getPartitionKey();
+                            PartitionKeyInternal partitionKeyInternal = RxDocumentClientImpl
+                                .extractPartitionKeyValueFromDocument(internalObjectNode, pkDef);
+                            RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(readRequestOptions);
+                            PartitionKey partitionKey = ImplementationBridgeHelpers
+                                .PartitionKeyHelper
+                                    .getPartitionKeyAccessor()
+                                    .toPartitionKey(partitionKeyInternal);
+                            requestOptions.setPartitionKey(partitionKey);
+
+                            return clientWrapper.readDocument(getItemLink(itemId), requestOptions)
+                                                .map(response -> {
+                                                    mergeDiagnostics(response, cosmosException);
+                                                    return ModelBridgeInternal
+                                                        .createCosmosAsyncItemResponse(
+                                                            response, itemType, getItemDeserializer());
+                                                }).single();
+                        });
 
                 return readMono
                     .onErrorMap(readThrowable -> {

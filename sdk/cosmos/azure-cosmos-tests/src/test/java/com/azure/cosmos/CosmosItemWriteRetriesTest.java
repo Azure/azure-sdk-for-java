@@ -54,6 +54,8 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
     private static final boolean NO_CONTENT_RESPONSE = false;
     private static final boolean WITH_PRECONDITION_CHECK = true;
     private static final boolean NO_PRECONDITION_CHECK = false;
+    private static final boolean WITH_EXPLICIT_PK = true;
+    private static final boolean NO_EXPLICIT_PK = false;
     private static final Boolean DEFAULT_REQUEST_SUPPRESSION = null;
     private static final Boolean ENFORCED_REQUEST_SUPPRESSION = true;
     private static final Boolean NO_REQUEST_SUPPRESSION = false;
@@ -157,29 +159,30 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         // - requestOptions retry policy
         // - expected StatusCode
         return new Object[][]{
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { CONTENT_RESPONSE_ENABLED, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CONFLICT },
-            new Object[] { NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { CONTENT_RESPONSE_ENABLED, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CONFLICT },
-            new Object[] { NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, CONTENT_RESPONSE_ENABLED, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, null, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, NO_RETRIES, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CONFLICT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, NO_RETRIES, RETRIES_WITH_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, NO_INJECTION, DEFAULT_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, NO_RETRIES, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, null, null, HttpConstants.StatusCodes.REQUEST_TIMEOUT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { NO_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, CONTENT_RESPONSE_ENABLED, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, null, HttpConstants.StatusCodes.CREATED },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, NO_REQUEST_SUPPRESSION, RETRIES_WITHOUT_TRACKING_ID, null, HttpConstants.StatusCodes.CONFLICT },
+            new Object[] { WITH_EXPLICIT_PK, NO_CONTENT_RESPONSE, WITH_INJECTION, ENFORCED_REQUEST_SUPPRESSION, RETRIES_WITH_TRACKING_ID, RETRIES_WITHOUT_TRACKING_ID, HttpConstants.StatusCodes.CREATED },
         };
     }
 
@@ -343,6 +346,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
     @Test(groups = { "simple", "emulator" }, dataProvider = "createItemTestCaseProvider", timeOut = TIMEOUT * 10000)
     public void createItem(
+        boolean hasExplicitPK,
         boolean isContentResponseOnWriteEnabled,
         boolean injectFailure,
         Boolean suppressServiceRequests,
@@ -372,10 +376,19 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             rule = injectFailure(container, FaultInjectionOperationType.CREATE_ITEM, suppressServiceRequests);
         }
 
+        String id = UUID.randomUUID().toString();
+        Supplier<Mono<CosmosItemResponse<ObjectNode>>> call;
+
+        if (hasExplicitPK) {
+            call = () -> container.createItem(
+                getDocumentDefinition(id), new PartitionKey(id), options);
+        } else {
+            call = () -> container.createItem(
+                getDocumentDefinition(id), options);
+        }
+
         try {
-            String id = UUID.randomUUID().toString();
-            executeAndValidate(() -> container.createItem(
-                getDocumentDefinition(id), new PartitionKey(id), options),
+            executeAndValidate(call,
                 id,
                 expectedStatusCode,
                 shouldExpectTrackingId(requestOptionsWriteRetryPolicy, clientWideWriteRetryPolicy),
