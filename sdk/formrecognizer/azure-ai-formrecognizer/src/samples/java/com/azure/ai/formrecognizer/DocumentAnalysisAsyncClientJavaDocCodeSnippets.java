@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -145,12 +146,14 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-Options
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
+        final AnalyzeDocumentOptions analyzeDocumentOptions =
+            new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")).setDocumentAnalysisFeatures(Arrays.asList(
+                DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Arrays.asList("Charges", "Tax"));
 
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer,
-                new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")))
+        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, analyzeDocumentOptions)
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult -> {
