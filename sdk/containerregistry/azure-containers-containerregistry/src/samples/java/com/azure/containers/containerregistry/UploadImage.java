@@ -96,7 +96,7 @@ public class UploadImage {
                 uploadResult.getSizeInBytes());
         } catch (HttpResponseException ex) {
             if (ex.getValue() instanceof ResponseError) {
-                System.out.printf("Uploaded blob failed: code '%s'\n", ((ResponseError) ex.getValue()).getCode());
+                System.out.printf("Upload failed: code '%s'\n", ((ResponseError) ex.getValue()).getCode());
             }
         }
         // END: com.azure.containers.containerregistry.uploadBlobErrorHandling

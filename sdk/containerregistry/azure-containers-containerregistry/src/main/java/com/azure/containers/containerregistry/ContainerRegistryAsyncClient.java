@@ -112,10 +112,9 @@ public final class ContainerRegistryAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
         }
 
-        Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context)
+        return this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context)
             .map(UtilsImpl::getPagedResponseWithContinuationToken)
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
-        return pagedResponseMono;
     }
 
     private Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {

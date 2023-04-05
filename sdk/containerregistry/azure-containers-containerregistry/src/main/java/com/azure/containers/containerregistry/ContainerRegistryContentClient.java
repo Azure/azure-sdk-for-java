@@ -185,7 +185,7 @@ public final class ContainerRegistryContentClient {
      *         uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * &#125; catch &#40;HttpResponseException ex&#41; &#123;
      *     if &#40;ex.getValue&#40;&#41; instanceof ResponseError&#41; &#123;
-     *         System.out.printf&#40;&quot;Uploaded blob failed: code '%s'&#92;n&quot;, &#40;&#40;ResponseError&#41; ex.getValue&#40;&#41;&#41;.getCode&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Upload failed: code '%s'&#92;n&quot;, &#40;&#40;ResponseError&#41; ex.getValue&#40;&#41;&#41;.getCode&#40;&#41;&#41;;
      *     &#125;
      * &#125;
      * </pre>
