@@ -32,9 +32,9 @@ public class WriteRetryPolicy {
         }
 
         if (!this.useTrackingIds) {
-            return "No TrackingIds";
+            return "RetriesWithoutTrackingIds";
         }
 
-        return "WithTrackingIds";
+        return "RetriesWithTrackingIds";
     }
 }
