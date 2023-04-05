@@ -185,7 +185,12 @@ public final class ContainerRegistryContentClient {
      *         uploadResult.getSizeInBytes&#40;&#41;&#41;;
      * &#125; catch &#40;HttpResponseException ex&#41; &#123;
      *     if &#40;ex.getValue&#40;&#41; instanceof ResponseError&#41; &#123;
-     *         System.out.printf&#40;&quot;Upload failed: code '%s'&#92;n&quot;, &#40;&#40;ResponseError&#41; ex.getValue&#40;&#41;&#41;.getCode&#40;&#41;&#41;;
+     *         ResponseError error = &#40;ResponseError&#41; ex.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Upload failed: code '%s'&#92;n&quot;, error.getCode&#40;&#41;&#41;;
+     *         if &#40;&quot;BLOB_UPLOAD_INVALID&quot;.equals&#40;error.getCode&#40;&#41;&#41;&#41; &#123;
+     *             System.out.println&#40;&quot;Transient upload issue, starting upload over&quot;&#41;;
+     *             &#47;&#47; retry upload
+     *         &#125;
      *     &#125;
      * &#125;
      * </pre>

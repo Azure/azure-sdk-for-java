@@ -166,7 +166,12 @@ try {
         uploadResult.getSizeInBytes());
 } catch (HttpResponseException ex) {
     if (ex.getValue() instanceof ResponseError) {
-        System.out.printf("Upload failed: code '%s'\n", ((ResponseError) ex.getValue()).getCode());
+        ResponseError error = (ResponseError) ex.getValue();
+        System.out.printf("Upload failed: code '%s'\n", error.getCode());
+        if ("BLOB_UPLOAD_INVALID".equals(error.getCode())) {
+            System.out.println("Transient upload issue, starting upload over");
+            // retry upload
+        }
     }
 }
 ```
