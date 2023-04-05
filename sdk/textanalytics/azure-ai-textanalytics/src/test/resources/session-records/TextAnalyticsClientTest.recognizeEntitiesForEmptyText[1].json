@@ -7,10 +7,10 @@
         "Accept": "application/json",
         "Content-Length": "152",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 18:38:32 GMT",
+        "Date": "Wed, 05 Apr 2023 18:43:19 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "8c7bfbad-8b4d-4c6f-bceb-ffc79a854aca"
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "be66fd76-25d3-4cde-abc1-f05cb191063b"
       },
       "RequestBody": {
         "kind": "EntityRecognition",
@@ -29,14 +29,14 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e66dcbc0-71ca-4315-b278-c9010280e16e",
+        "apim-request-id": "d75d48b8-319c-4008-8cc3-eb649f0a55af",
         "Content-Length": "264",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 18:38:32 GMT",
+        "Date": "Wed, 05 Apr 2023 18:43:17 GMT",
         "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3",
+        "x-envoy-upstream-service-time": "2",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": {

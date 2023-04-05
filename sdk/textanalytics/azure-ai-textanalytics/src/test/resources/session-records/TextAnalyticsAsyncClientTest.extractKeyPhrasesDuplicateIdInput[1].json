@@ -7,10 +7,10 @@
         "Accept": "application/json",
         "Content-Length": "294",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 18:49:50 GMT",
+        "Date": "Wed, 05 Apr 2023 18:54:41 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "58d5c684-2ae4-4407-88d2-b363bc9c110d"
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "eab32055-4efd-422f-92ac-de039ba26eeb"
       },
       "RequestBody": {
         "kind": "KeyPhraseExtraction",
@@ -36,13 +36,13 @@
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "d5d46e31-35a3-4be1-a467-422fa8c35c93",
+        "apim-request-id": "c89b399d-be4e-4e60-bee7-b7a87d4ca39d",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 18:49:50 GMT",
+        "Date": "Wed, 05 Apr 2023 18:54:40 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "7",
+        "x-envoy-upstream-service-time": "6",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": {

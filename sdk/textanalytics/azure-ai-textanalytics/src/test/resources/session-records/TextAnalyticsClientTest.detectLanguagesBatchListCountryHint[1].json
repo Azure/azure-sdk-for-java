@@ -7,10 +7,10 @@
         "Accept": "application/json",
         "Content-Length": "244",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 18:40:35 GMT",
+        "Date": "Wed, 05 Apr 2023 18:45:22 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e84d8039-5a6a-4cde-94d8-1a4cd4948279"
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "839d58f7-c495-4905-ba8c-11bf3a57dae6"
       },
       "RequestBody": {
         "kind": "LanguageDetection",
@@ -34,15 +34,15 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "88a9604f-e1a9-4a04-9e42-ed256d7d2188",
+        "apim-request-id": "a8460436-308d-4b2f-a6a8-0ff155cca160",
         "Content-Length": "310",
         "Content-Type": "application/json; charset=utf-8",
         "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.LanguageDetection=2,CognitiveServices.TextAnalytics.TextRecords=2",
-        "Date": "Wed, 08 Mar 2023 18:40:36 GMT",
+        "Date": "Wed, 05 Apr 2023 18:45:21 GMT",
         "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "8",
+        "x-envoy-upstream-service-time": "12",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": {
@@ -54,7 +54,7 @@
               "detectedLanguage": {
                 "name": "English",
                 "iso6391Name": "en",
-                "confidenceScore": 1.0
+                "confidenceScore": 0.99
               },
               "warnings": []
             },
@@ -63,7 +63,7 @@
               "detectedLanguage": {
                 "name": "Spanish",
                 "iso6391Name": "es",
-                "confidenceScore": 0.84
+                "confidenceScore": 1.0
               },
               "warnings": []
             }

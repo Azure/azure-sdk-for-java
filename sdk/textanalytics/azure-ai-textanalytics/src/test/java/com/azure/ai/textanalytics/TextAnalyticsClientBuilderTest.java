@@ -26,7 +26,6 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
@@ -442,21 +441,17 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        TokenCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-            credential = new ClientSecretCredentialBuilder()
-                             .clientSecret(clientKey)
-                             .clientId(clientId)
-                             .tenantId(tenantId)
-                             .build();
-        }
+        String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
+        String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
+        String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+        Objects.requireNonNull(clientId, "The client id cannot be null");
+        Objects.requireNonNull(clientKey, "The client key cannot be null");
+        Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+        TokenCredential credential =  new ClientSecretCredentialBuilder()
+            .clientSecret(clientKey)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .build();
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -468,11 +463,9 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         policies.add(new AddDatePolicy());
-
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
-        }
+        policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
+
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (getTestMode() == TestMode.RECORD) {
@@ -481,7 +474,7 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
                                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                                    .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
                                     .build();
 
         return pipeline;
@@ -499,7 +492,7 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
         if (!interceptorManager.isPlaybackMode()) {

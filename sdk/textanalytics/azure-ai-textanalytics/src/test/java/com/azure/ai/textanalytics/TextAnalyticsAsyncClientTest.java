@@ -146,7 +146,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient getTextAnalyticsAsyncClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         return getTextAnalyticsClientBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
             isStaticResource)
             .buildAsyncClient();

@@ -7,10 +7,10 @@
         "Accept": "application/json",
         "Content-Length": "394",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 18:40:05 GMT",
+        "Date": "Wed, 05 Apr 2023 18:44:51 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "5c3315d2-6d3f-458d-bcc3-0a33dd5afe08"
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "04f2dc2e-f6a1-4d8d-8776-a1a07351fbe1"
       },
       "RequestBody": {
         "kind": "PiiEntityRecognition",
@@ -36,15 +36,15 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "4b2558cb-5050-49fd-96e5-426c647588f6",
+        "apim-request-id": "f9b5293c-06ca-43ae-a87d-b34996f2c506",
         "Content-Length": "876",
         "Content-Type": "application/json; charset=utf-8",
         "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=2,CognitiveServices.TextAnalytics.TextRecords=2",
-        "Date": "Wed, 08 Mar 2023 18:40:05 GMT",
+        "Date": "Wed, 05 Apr 2023 18:44:50 GMT",
         "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "43",
+        "x-envoy-upstream-service-time": "33",
         "x-ms-region": "West US 2"
       },
       "ResponseBody": {
