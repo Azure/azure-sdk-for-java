@@ -39,6 +39,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
@@ -178,7 +179,7 @@ public final class DocumentAnalysisClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
-                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
                 finalAnalyzeDocumentOptions.getQueryFields(),
                 null,
                 documentUrl,
@@ -292,7 +293,7 @@ public final class DocumentAnalysisClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
-                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
                 finalAnalyzeDocumentOptions.getQueryFields(),
                 document,
                 null,
@@ -303,7 +304,7 @@ public final class DocumentAnalysisClient {
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
-        String modelId, List<String> pages, String locale, List<DocumentAnalysisFeature> features, List<String> queryFields,
+        String modelId, List<String> pages, String locale, List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> features, List<String> queryFields,
         BinaryData document, String documentUrl, Context context) {
         return (pollingContext) ->
             Transforms.toDocumentOperationResult(analyzeDocument(modelId,
@@ -318,7 +319,7 @@ public final class DocumentAnalysisClient {
     }
 
     private ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
-                                                                                     List<DocumentAnalysisFeature> features, List<String> queryFields,
+                                                                                     List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> features, List<String> queryFields,
                                                                                      BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {

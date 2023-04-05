@@ -36,7 +36,6 @@ custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
 required-fields-as-ctor-args: true
-custom-types: DocumentAnalysisFeature
 enable-sync-stack: true
 polling: {}
 ```

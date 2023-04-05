@@ -37,7 +37,7 @@ public final class AnalyzeDocumentOptions {
      * range with a comma, ex - ["1-3", 4].</p>
      *
      * @param pages the custom page numbers value to set.
-     * @return the updated {@code RecognizeContentOptions} value.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
      */
     public AnalyzeDocumentOptions setPages(List<String> pages) {
         this.pages = pages;
@@ -59,7 +59,7 @@ public final class AnalyzeDocumentOptions {
      * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
      *
      * @param locale the locale value to set.
-     * @return the locale value.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
      */
     public AnalyzeDocumentOptions setLocale(String locale) {
         this.locale = locale;
@@ -77,6 +77,7 @@ public final class AnalyzeDocumentOptions {
     /**
      * Set the list of additional fields to extract. Ex. "NumberOfGuests,StoreNumber".
      * @param queryFields List of additional fields to extract from analysis.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
      */
     public AnalyzeDocumentOptions setQueryFields(List<String> queryFields) {
         this.queryFields = queryFields;
@@ -94,7 +95,7 @@ public final class AnalyzeDocumentOptions {
     /**
      * Set the list of optional analysis features.
      * @param documentAnalysisFeatures List of optional analysis features.
-     * @return the list of optional analysis features.
+     * @return the updated {@code AnalyzeDocumentOptions} value.
      */
     public AnalyzeDocumentOptions setDocumentAnalysisFeatures(List<DocumentAnalysisFeature> documentAnalysisFeatures) {
         this.documentAnalysisFeatures = documentAnalysisFeatures;

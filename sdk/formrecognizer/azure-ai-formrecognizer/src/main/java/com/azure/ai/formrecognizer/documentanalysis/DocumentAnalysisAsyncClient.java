@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
@@ -30,10 +31,13 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.activationOperation;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -194,7 +198,7 @@ public final class DocumentAnalysisAsyncClient {
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
-                                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
                                 finalAnalyzeDocumentOptions.getQueryFields(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
@@ -283,12 +287,14 @@ public final class DocumentAnalysisAsyncClient {
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * final AnalyzeDocumentOptions analyzeDocumentOptions =
+     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;Arrays.asList&#40;
+     *         DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM&#41;&#41;.setQueryFields&#40;Arrays.asList&#40;&quot;Charges&quot;, &quot;Tax&quot;&#41;&#41;;
      *
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
-     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer,
-     *         new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;&#41;
+     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer, analyzeDocumentOptions&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt; &#123;
@@ -354,7 +360,7 @@ public final class DocumentAnalysisAsyncClient {
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
-                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                            toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
                             finalAnalyzeDocumentOptions.getQueryFields(),
                             document,
                             document.getLength(),
