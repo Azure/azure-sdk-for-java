@@ -8,166 +8,166 @@ package com.azure.search.documents.indexes.models;
 
 /** The language to use for a stemmer token filter. */
 public enum StemmerTokenFilterLanguage {
-    /** Enum value arabic. */
+    /** Selects the Lucene stemming tokenizer for Arabic. */
     ARABIC("arabic"),
 
-    /** Enum value armenian. */
+    /** Selects the Lucene stemming tokenizer for Armenian. */
     ARMENIAN("armenian"),
 
-    /** Enum value basque. */
+    /** Selects the Lucene stemming tokenizer for Basque. */
     BASQUE("basque"),
 
-    /** Enum value brazilian. */
+    /** Selects the Lucene stemming tokenizer for Portuguese (Brazil). */
     BRAZILIAN("brazilian"),
 
-    /** Enum value bulgarian. */
+    /** Selects the Lucene stemming tokenizer for Bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /** Enum value catalan. */
+    /** Selects the Lucene stemming tokenizer for Catalan. */
     CATALAN("catalan"),
 
-    /** Enum value czech. */
+    /** Selects the Lucene stemming tokenizer for Czech. */
     CZECH("czech"),
 
-    /** Enum value danish. */
+    /** Selects the Lucene stemming tokenizer for Danish. */
     DANISH("danish"),
 
-    /** Enum value dutch. */
+    /** Selects the Lucene stemming tokenizer for Dutch. */
     DUTCH("dutch"),
 
-    /** Enum value dutchKp. */
+    /** Selects the Lucene stemming tokenizer for Dutch that uses the Kraaij-Pohlmann stemming algorithm. */
     DUTCH_KP("dutchKp"),
 
-    /** Enum value english. */
+    /** Selects the Lucene stemming tokenizer for English. */
     ENGLISH("english"),
 
-    /** Enum value lightEnglish. */
+    /** Selects the Lucene stemming tokenizer for English that does light stemming. */
     LIGHT_ENGLISH("lightEnglish"),
 
-    /** Enum value minimalEnglish. */
+    /** Selects the Lucene stemming tokenizer for English that does minimal stemming. */
     MINIMAL_ENGLISH("minimalEnglish"),
 
-    /** Enum value possessiveEnglish. */
+    /** Selects the Lucene stemming tokenizer for English that removes trailing possessives from words. */
     POSSESSIVE_ENGLISH("possessiveEnglish"),
 
-    /** Enum value porter2. */
+    /** Selects the Lucene stemming tokenizer for English that uses the Porter2 stemming algorithm. */
     PORTER2("porter2"),
 
-    /** Enum value lovins. */
+    /** Selects the Lucene stemming tokenizer for English that uses the Lovins stemming algorithm. */
     LOVINS("lovins"),
 
-    /** Enum value finnish. */
+    /** Selects the Lucene stemming tokenizer for Finnish. */
     FINNISH("finnish"),
 
-    /** Enum value lightFinnish. */
+    /** Selects the Lucene stemming tokenizer for Finnish that does light stemming. */
     LIGHT_FINNISH("lightFinnish"),
 
-    /** Enum value french. */
+    /** Selects the Lucene stemming tokenizer for French. */
     FRENCH("french"),
 
-    /** Enum value lightFrench. */
+    /** Selects the Lucene stemming tokenizer for French that does light stemming. */
     LIGHT_FRENCH("lightFrench"),
 
-    /** Enum value minimalFrench. */
+    /** Selects the Lucene stemming tokenizer for French that does minimal stemming. */
     MINIMAL_FRENCH("minimalFrench"),
 
-    /** Enum value galician. */
+    /** Selects the Lucene stemming tokenizer for Galician. */
     GALICIAN("galician"),
 
-    /** Enum value minimalGalician. */
+    /** Selects the Lucene stemming tokenizer for Galician that does minimal stemming. */
     MINIMAL_GALICIAN("minimalGalician"),
 
-    /** Enum value german. */
+    /** Selects the Lucene stemming tokenizer for German. */
     GERMAN("german"),
 
-    /** Enum value german2. */
+    /** Selects the Lucene stemming tokenizer that uses the German variant algorithm. */
     GERMAN2("german2"),
 
-    /** Enum value lightGerman. */
+    /** Selects the Lucene stemming tokenizer for German that does light stemming. */
     LIGHT_GERMAN("lightGerman"),
 
-    /** Enum value minimalGerman. */
+    /** Selects the Lucene stemming tokenizer for German that does minimal stemming. */
     MINIMAL_GERMAN("minimalGerman"),
 
-    /** Enum value greek. */
+    /** Selects the Lucene stemming tokenizer for Greek. */
     GREEK("greek"),
 
-    /** Enum value hindi. */
+    /** Selects the Lucene stemming tokenizer for Hindi. */
     HINDI("hindi"),
 
-    /** Enum value hungarian. */
+    /** Selects the Lucene stemming tokenizer for Hungarian. */
     HUNGARIAN("hungarian"),
 
-    /** Enum value lightHungarian. */
+    /** Selects the Lucene stemming tokenizer for Hungarian that does light stemming. */
     LIGHT_HUNGARIAN("lightHungarian"),
 
-    /** Enum value indonesian. */
+    /** Selects the Lucene stemming tokenizer for Indonesian. */
     INDONESIAN("indonesian"),
 
-    /** Enum value irish. */
+    /** Selects the Lucene stemming tokenizer for Irish. */
     IRISH("irish"),
 
-    /** Enum value italian. */
+    /** Selects the Lucene stemming tokenizer for Italian. */
     ITALIAN("italian"),
 
-    /** Enum value lightItalian. */
+    /** Selects the Lucene stemming tokenizer for Italian that does light stemming. */
     LIGHT_ITALIAN("lightItalian"),
 
-    /** Enum value sorani. */
+    /** Selects the Lucene stemming tokenizer for Sorani. */
     SORANI("sorani"),
 
-    /** Enum value latvian. */
+    /** Selects the Lucene stemming tokenizer for Latvian. */
     LATVIAN("latvian"),
 
-    /** Enum value norwegian. */
+    /** Selects the Lucene stemming tokenizer for Norwegian (Bokmål). */
     NORWEGIAN("norwegian"),
 
-    /** Enum value lightNorwegian. */
+    /** Selects the Lucene stemming tokenizer for Norwegian (Bokmål) that does light stemming. */
     LIGHT_NORWEGIAN("lightNorwegian"),
 
-    /** Enum value minimalNorwegian. */
+    /** Selects the Lucene stemming tokenizer for Norwegian (Bokmål) that does minimal stemming. */
     MINIMAL_NORWEGIAN("minimalNorwegian"),
 
-    /** Enum value lightNynorsk. */
+    /** Selects the Lucene stemming tokenizer for Norwegian (Nynorsk) that does light stemming. */
     LIGHT_NYNORSK("lightNynorsk"),
 
-    /** Enum value minimalNynorsk. */
+    /** Selects the Lucene stemming tokenizer for Norwegian (Nynorsk) that does minimal stemming. */
     MINIMAL_NYNORSK("minimalNynorsk"),
 
-    /** Enum value portuguese. */
+    /** Selects the Lucene stemming tokenizer for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /** Enum value lightPortuguese. */
+    /** Selects the Lucene stemming tokenizer for Portuguese that does light stemming. */
     LIGHT_PORTUGUESE("lightPortuguese"),
 
-    /** Enum value minimalPortuguese. */
+    /** Selects the Lucene stemming tokenizer for Portuguese that does minimal stemming. */
     MINIMAL_PORTUGUESE("minimalPortuguese"),
 
-    /** Enum value portugueseRslp. */
+    /** Selects the Lucene stemming tokenizer for Portuguese that uses the RSLP stemming algorithm. */
     PORTUGUESE_RSLP("portugueseRslp"),
 
-    /** Enum value romanian. */
+    /** Selects the Lucene stemming tokenizer for Romanian. */
     ROMANIAN("romanian"),
 
-    /** Enum value russian. */
+    /** Selects the Lucene stemming tokenizer for Russian. */
     RUSSIAN("russian"),
 
-    /** Enum value lightRussian. */
+    /** Selects the Lucene stemming tokenizer for Russian that does light stemming. */
     LIGHT_RUSSIAN("lightRussian"),
 
-    /** Enum value spanish. */
+    /** Selects the Lucene stemming tokenizer for Spanish. */
     SPANISH("spanish"),
 
-    /** Enum value lightSpanish. */
+    /** Selects the Lucene stemming tokenizer for Spanish that does light stemming. */
     LIGHT_SPANISH("lightSpanish"),
 
-    /** Enum value swedish. */
+    /** Selects the Lucene stemming tokenizer for Swedish. */
     SWEDISH("swedish"),
 
-    /** Enum value lightSwedish. */
+    /** Selects the Lucene stemming tokenizer for Swedish that does light stemming. */
     LIGHT_SWEDISH("lightSwedish"),
 
-    /** Enum value turkish. */
+    /** Selects the Lucene stemming tokenizer for Turkish. */
     TURKISH("turkish");
 
     /** The actual serialized value for a StemmerTokenFilterLanguage instance. */

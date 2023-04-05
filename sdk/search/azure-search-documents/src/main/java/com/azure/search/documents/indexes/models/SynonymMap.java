@@ -24,7 +24,7 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     /*
      * The format of the synonym map. Only the 'solr' format is currently supported.
      */
-    private String format;
+    private String format = "solr";
 
     /*
      * A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.
@@ -179,37 +179,27 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     public static SynonymMap fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String name = null;
-                    String format = null;
-                    String synonyms = null;
-                    SearchResourceEncryptionKey encryptionKey = null;
-                    String eTag = null;
+                    SynonymMap deserializedSynonymMap = new SynonymMap();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedSynonymMap.name = reader.getString();
                         } else if ("format".equals(fieldName)) {
-                            format = reader.getString();
+                            deserializedSynonymMap.format = reader.getString();
                         } else if ("synonyms".equals(fieldName)) {
-                            synonyms = reader.getString();
+                            deserializedSynonymMap.synonyms = reader.getString();
                         } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                            deserializedSynonymMap.encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
-                            eTag = reader.getString();
+                            deserializedSynonymMap.eTag = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SynonymMap deserializedValue = new SynonymMap();
-                    deserializedValue.name = name;
-                    deserializedValue.format = format;
-                    deserializedValue.synonyms = synonyms;
-                    deserializedValue.encryptionKey = encryptionKey;
-                    deserializedValue.eTag = eTag;
 
-                    return deserializedValue;
+                    return deserializedSynonymMap;
                 });
     }
 

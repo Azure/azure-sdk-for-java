@@ -11,73 +11,73 @@ import java.util.Collection;
 
 /** The language codes supported for input text by EntityRecognitionSkill. */
 public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<EntityRecognitionSkillLanguage> {
-    /** Static value ar for EntityRecognitionSkillLanguage. */
+    /** Arabic. */
     public static final EntityRecognitionSkillLanguage AR = fromString("ar");
 
-    /** Static value cs for EntityRecognitionSkillLanguage. */
+    /** Czech. */
     public static final EntityRecognitionSkillLanguage CS = fromString("cs");
 
-    /** Static value zh-Hans for EntityRecognitionSkillLanguage. */
+    /** Chinese-Simplified. */
     public static final EntityRecognitionSkillLanguage ZH_HANS = fromString("zh-Hans");
 
-    /** Static value zh-Hant for EntityRecognitionSkillLanguage. */
+    /** Chinese-Traditional. */
     public static final EntityRecognitionSkillLanguage ZH_HANT = fromString("zh-Hant");
 
-    /** Static value da for EntityRecognitionSkillLanguage. */
+    /** Danish. */
     public static final EntityRecognitionSkillLanguage DA = fromString("da");
 
-    /** Static value nl for EntityRecognitionSkillLanguage. */
+    /** Dutch. */
     public static final EntityRecognitionSkillLanguage NL = fromString("nl");
 
-    /** Static value en for EntityRecognitionSkillLanguage. */
+    /** English. */
     public static final EntityRecognitionSkillLanguage EN = fromString("en");
 
-    /** Static value fi for EntityRecognitionSkillLanguage. */
+    /** Finnish. */
     public static final EntityRecognitionSkillLanguage FI = fromString("fi");
 
-    /** Static value fr for EntityRecognitionSkillLanguage. */
+    /** French. */
     public static final EntityRecognitionSkillLanguage FR = fromString("fr");
 
-    /** Static value de for EntityRecognitionSkillLanguage. */
+    /** German. */
     public static final EntityRecognitionSkillLanguage DE = fromString("de");
 
-    /** Static value el for EntityRecognitionSkillLanguage. */
+    /** Greek. */
     public static final EntityRecognitionSkillLanguage EL = fromString("el");
 
-    /** Static value hu for EntityRecognitionSkillLanguage. */
+    /** Hungarian. */
     public static final EntityRecognitionSkillLanguage HU = fromString("hu");
 
-    /** Static value it for EntityRecognitionSkillLanguage. */
+    /** Italian. */
     public static final EntityRecognitionSkillLanguage IT = fromString("it");
 
-    /** Static value ja for EntityRecognitionSkillLanguage. */
+    /** Japanese. */
     public static final EntityRecognitionSkillLanguage JA = fromString("ja");
 
-    /** Static value ko for EntityRecognitionSkillLanguage. */
+    /** Korean. */
     public static final EntityRecognitionSkillLanguage KO = fromString("ko");
 
-    /** Static value no for EntityRecognitionSkillLanguage. */
+    /** Norwegian (Bokmaal). */
     public static final EntityRecognitionSkillLanguage NO = fromString("no");
 
-    /** Static value pl for EntityRecognitionSkillLanguage. */
+    /** Polish. */
     public static final EntityRecognitionSkillLanguage PL = fromString("pl");
 
-    /** Static value pt-PT for EntityRecognitionSkillLanguage. */
+    /** Portuguese (Portugal). */
     public static final EntityRecognitionSkillLanguage PT_PT = fromString("pt-PT");
 
-    /** Static value pt-BR for EntityRecognitionSkillLanguage. */
+    /** Portuguese (Brazil). */
     public static final EntityRecognitionSkillLanguage PT_BR = fromString("pt-BR");
 
-    /** Static value ru for EntityRecognitionSkillLanguage. */
+    /** Russian. */
     public static final EntityRecognitionSkillLanguage RU = fromString("ru");
 
-    /** Static value es for EntityRecognitionSkillLanguage. */
+    /** Spanish. */
     public static final EntityRecognitionSkillLanguage ES = fromString("es");
 
-    /** Static value sv for EntityRecognitionSkillLanguage. */
+    /** Swedish. */
     public static final EntityRecognitionSkillLanguage SV = fromString("sv");
 
-    /** Static value tr for EntityRecognitionSkillLanguage. */
+    /** Turkish. */
     public static final EntityRecognitionSkillLanguage TR = fromString("tr");
 
     /**

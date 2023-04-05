@@ -33,7 +33,6 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
@@ -65,7 +64,6 @@ import static com.azure.security.keyvault.administration.KeyVaultAdministrationU
 public final class KeyVaultAccessControlClient {
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
     /**
      * The logger to be used.
@@ -207,7 +205,7 @@ public final class KeyVaultAccessControlClient {
         try {
             PagedResponse<RoleDefinition> roleDefinitionPagedResponse = clientImpl.getRoleDefinitions()
                 .listSinglePage(vaultUrl, roleScope.toString(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleDefinitionsPagedResponse(roleDefinitionPagedResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -233,8 +231,7 @@ public final class KeyVaultAccessControlClient {
     PagedResponse<KeyVaultRoleDefinition> listRoleDefinitionsNextPage(String continuationToken, Context context) {
         try {
             PagedResponse<RoleDefinition> roleDefinitionPagedResponse = clientImpl.getRoleDefinitions()
-                .listNextSinglePage(continuationToken, vaultUrl, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+                .listNextSinglePage(continuationToken, vaultUrl, context);
             return KeyVaultAdministrationUtil.transformRoleDefinitionsPagedResponse(roleDefinitionPagedResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -367,7 +364,7 @@ public final class KeyVaultAccessControlClient {
             Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
                 .createOrUpdateWithResponse(vaultUrl, options.getRoleScope().toString(),
                     options.getRoleDefinitionName(), parameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleDefinitionResponse(roleDefinitionResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -447,7 +444,7 @@ public final class KeyVaultAccessControlClient {
             context = enableSyncRestProxy(context);
             Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
                 .getWithResponse(vaultUrl, roleScope.toString(), roleDefinitionName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleDefinitionResponse(roleDefinitionResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -521,7 +518,7 @@ public final class KeyVaultAccessControlClient {
             context = enableSyncRestProxy(context);
             Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
                 .deleteWithResponse(vaultUrl, roleScope.toString(), roleDefinitionName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return new SimpleResponse<>(roleDefinitionResponse, null);
 
         } catch (KeyVaultErrorException e) {
@@ -620,7 +617,7 @@ public final class KeyVaultAccessControlClient {
         try {
             PagedResponse<RoleAssignment> roleAssignmentPagedResponse = clientImpl.getRoleAssignments()
                 .listForScopeSinglePage(vaultUrl, roleScope.toString(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleAssignmentsPagedResponse(roleAssignmentPagedResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -646,7 +643,7 @@ public final class KeyVaultAccessControlClient {
         try {
             PagedResponse<RoleAssignment> roleAssignmentPagedResponse = clientImpl.getRoleAssignments()
                 .listForScopeNextSinglePage(continuationToken, vaultUrl,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleAssignmentsPagedResponse(roleAssignmentPagedResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -785,7 +782,7 @@ public final class KeyVaultAccessControlClient {
         try {
             Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
                 .createWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName, parameters,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleAssignmentResponse(roleAssignmentResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -862,7 +859,7 @@ public final class KeyVaultAccessControlClient {
             context = enableSyncRestProxy(context);
             Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
                 .getWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return KeyVaultAdministrationUtil.transformRoleAssignmentResponse(roleAssignmentResponse);
         } catch (KeyVaultErrorException e) {
             throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
@@ -934,7 +931,7 @@ public final class KeyVaultAccessControlClient {
             context = enableSyncRestProxy(context);
             Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
                 .deleteWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    context);
             return new SimpleResponse<>(roleAssignmentResponse, null);
         } catch (KeyVaultErrorException e) {
             KeyVaultAdministrationException mappedException = KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);

@@ -3,6 +3,9 @@
 ## 1.38.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added new constructor overload to `DefaultPollingStrategy`, `OperationResourcePollingStrategy`, `LocationPollingStrategy`
+and their sync counterparts that allows setting a service version as query parameter of request URLs for polling and getting the final
+result of a long-running operation.
 
 ### Breaking Changes
 

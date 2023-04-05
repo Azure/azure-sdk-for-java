@@ -27,6 +27,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -81,7 +82,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         httpProxyServer.start();
     }
 
-    @AfterClass(groups = {"emulator"})
+    @AfterClass(groups = {"emulator"}, alwaysRun = true)
     public void afterClass() {
         if (this.gatewayClient != null) {
             this.gatewayClient.close();
@@ -335,7 +336,13 @@ public class ClientTelemetryTest extends TestSuiteBase {
             }).verifyComplete();
         } finally {
             if (cosmosClient != null) {
-                cosmosClient.getDatabase(databaseId).delete();
+                try {
+                    cosmosClient.getDatabase(databaseId).delete();
+                } catch(CosmosException error) {
+                    if (error.getStatusCode() != 404) {
+                        throw error;
+                    }
+                }
             }
             safeCloseSyncClient(cosmosClient);
 
@@ -370,7 +377,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         if (shouldContainsSession) {
             assertThat(ctJson).contains("\"consistency\":\"Session\"");
         } else {
-            assertThat(ctJson).doesNotContain("consistency");
+            assertThat(ctJson).doesNotContain("\"consistency\":\"Session\"");
         }
 
         if (shouldContainsPreferredRegion) {

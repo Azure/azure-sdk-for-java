@@ -64,21 +64,21 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
     public static SemanticSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<SemanticConfiguration> configurations = null;
+                    SemanticSettings deserializedSemanticSettings = new SemanticSettings();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("configurations".equals(fieldName)) {
-                            configurations = reader.readArray(reader1 -> SemanticConfiguration.fromJson(reader1));
+                            List<SemanticConfiguration> configurations =
+                                    reader.readArray(reader1 -> SemanticConfiguration.fromJson(reader1));
+                            deserializedSemanticSettings.configurations = configurations;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SemanticSettings deserializedValue = new SemanticSettings();
-                    deserializedValue.configurations = configurations;
 
-                    return deserializedValue;
+                    return deserializedSemanticSettings;
                 });
     }
 }

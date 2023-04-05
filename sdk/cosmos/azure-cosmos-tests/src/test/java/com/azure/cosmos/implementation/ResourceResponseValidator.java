@@ -76,7 +76,6 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), propertyName)).is(validatingCondition);
-
                 }
             });
             return this;
@@ -89,7 +88,6 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), propertyName)).isEqualTo(value);
-
                 }
             });
             return this;
@@ -104,7 +102,6 @@ public interface ResourceResponseValidator<T extends Resource> {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
                     Instant d = resourceResponse.getResource().getTimestamp();
-                    System.out.println(d.toString());
                     assertThat(d).isAfterOrEqualTo(time);
                 }
             });

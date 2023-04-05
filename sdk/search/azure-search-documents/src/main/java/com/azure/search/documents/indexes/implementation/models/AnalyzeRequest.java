@@ -231,14 +231,14 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                         }
                     }
                     if (textFound) {
-                        AnalyzeRequest deserializedValue = new AnalyzeRequest(text);
-                        deserializedValue.analyzer = analyzer;
-                        deserializedValue.tokenizer = tokenizer;
-                        deserializedValue.normalizer = normalizer;
-                        deserializedValue.tokenFilters = tokenFilters;
-                        deserializedValue.charFilters = charFilters;
+                        AnalyzeRequest deserializedAnalyzeRequest = new AnalyzeRequest(text);
+                        deserializedAnalyzeRequest.analyzer = analyzer;
+                        deserializedAnalyzeRequest.tokenizer = tokenizer;
+                        deserializedAnalyzeRequest.normalizer = normalizer;
+                        deserializedAnalyzeRequest.tokenFilters = tokenFilters;
+                        deserializedAnalyzeRequest.charFilters = charFilters;
 
-                        return deserializedValue;
+                        return deserializedAnalyzeRequest;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!textFound) {

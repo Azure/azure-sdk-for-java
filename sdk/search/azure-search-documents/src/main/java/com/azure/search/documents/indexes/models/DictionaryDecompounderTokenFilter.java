@@ -222,14 +222,14 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && wordListFound) {
-                        DictionaryDecompounderTokenFilter deserializedValue =
+                        DictionaryDecompounderTokenFilter deserializedDictionaryDecompounderTokenFilter =
                                 new DictionaryDecompounderTokenFilter(name, wordList);
-                        deserializedValue.minWordSize = minWordSize;
-                        deserializedValue.minSubwordSize = minSubwordSize;
-                        deserializedValue.maxSubwordSize = maxSubwordSize;
-                        deserializedValue.onlyLongestMatched = onlyLongestMatched;
+                        deserializedDictionaryDecompounderTokenFilter.minWordSize = minWordSize;
+                        deserializedDictionaryDecompounderTokenFilter.minSubwordSize = minSubwordSize;
+                        deserializedDictionaryDecompounderTokenFilter.maxSubwordSize = maxSubwordSize;
+                        deserializedDictionaryDecompounderTokenFilter.onlyLongestMatched = onlyLongestMatched;
 
-                        return deserializedValue;
+                        return deserializedDictionaryDecompounderTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

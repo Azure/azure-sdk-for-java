@@ -41,7 +41,7 @@ public class DataFeedIngestionOperationTest extends DataFeedIngestionOperationTe
     @Override
     public void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<DataFeedIngestionStatus> ingestionStatusIterable
             = client.listDataFeedIngestionStatus(ListIngestionStatusInput.INSTANCE.dataFeedId,
@@ -57,7 +57,7 @@ public class DataFeedIngestionOperationTest extends DataFeedIngestionOperationTe
     @Override
     public void getIngestionProgress(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         DataFeedIngestionProgress ingestionProgress
             = client.getDataFeedIngestionProgress(GetIngestionProgressInput.INSTANCE.dataFeedId);
@@ -70,7 +70,7 @@ public class DataFeedIngestionOperationTest extends DataFeedIngestionOperationTe
     @Override
     public void refreshIngestion(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         Response<Void> refreshResponse = client.refreshDataFeedIngestionWithResponse(
             RefreshIngestionInput.INSTANCE.dataFeedId,

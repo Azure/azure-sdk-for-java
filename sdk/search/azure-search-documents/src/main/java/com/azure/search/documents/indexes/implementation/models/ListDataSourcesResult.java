@@ -76,9 +76,10 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
                         }
                     }
                     if (dataSourcesFound) {
-                        ListDataSourcesResult deserializedValue = new ListDataSourcesResult(dataSources);
+                        ListDataSourcesResult deserializedListDataSourcesResult =
+                                new ListDataSourcesResult(dataSources);
 
-                        return deserializedValue;
+                        return deserializedListDataSourcesResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!dataSourcesFound) {

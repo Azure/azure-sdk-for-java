@@ -1,8 +1,9 @@
 # Release History
 
-## 1.0.0-beta.3 (2022-05-17)
+## 1.0.0-beta.3 (2023-04-04)
 
 ### Other Changes
+- Marked this library as deprecated. Please refer to the [blog post](https://devblogs.microsoft.com/azure-sdk/announcing-graalvm-support-in-azure-sdk-for-java-and-spring-cloud-azure-libraries/) for more details on GraalVM support in Azure SDK for Java.
 - Changed the proxy interface package names to match the 1.28.0 version of `azure-core`
  
 ## 1.0.0-beta.2 (2022-04-25)

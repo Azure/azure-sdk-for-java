@@ -301,17 +301,17 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                         }
                     }
                     if (statusFound && errorsFound && warningsFound && itemCountFound && failedItemCountFound) {
-                        IndexerExecutionResult deserializedValue =
+                        IndexerExecutionResult deserializedIndexerExecutionResult =
                                 new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
-                        deserializedValue.statusDetail = statusDetail;
-                        deserializedValue.currentState = currentState;
-                        deserializedValue.errorMessage = errorMessage;
-                        deserializedValue.startTime = startTime;
-                        deserializedValue.endTime = endTime;
-                        deserializedValue.initialTrackingState = initialTrackingState;
-                        deserializedValue.finalTrackingState = finalTrackingState;
+                        deserializedIndexerExecutionResult.statusDetail = statusDetail;
+                        deserializedIndexerExecutionResult.currentState = currentState;
+                        deserializedIndexerExecutionResult.errorMessage = errorMessage;
+                        deserializedIndexerExecutionResult.startTime = startTime;
+                        deserializedIndexerExecutionResult.endTime = endTime;
+                        deserializedIndexerExecutionResult.initialTrackingState = initialTrackingState;
+                        deserializedIndexerExecutionResult.finalTrackingState = finalTrackingState;
 
-                        return deserializedValue;
+                        return deserializedIndexerExecutionResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!statusFound) {
