@@ -462,12 +462,16 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * override it by using {@link #receiveMessages(int, Duration)}.
      *
      * <p>
-     * The client uses an amqp-link underneath to receive the messages; the client will transparently transition
-     * to a new amqp-link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
+     * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
      * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
+     * <br/>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
      * </p>
      *
      * @param maxMessages The maximum number of messages to receive.
@@ -490,12 +494,16 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)}.
      *
      * <p>
-     * The client uses an amqp-link underneath to receive the messages; the client will transparently transition
-     * to a new amqp-link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
+     * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
      * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
+     * <br/>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
      * </p>
      *
      * @param maxMessages The maximum number of messages to receive.
