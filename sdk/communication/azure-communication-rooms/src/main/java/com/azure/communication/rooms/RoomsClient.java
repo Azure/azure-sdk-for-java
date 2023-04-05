@@ -58,7 +58,7 @@ public final class RoomsClient {
     /**
      * Update an existing Room.
      *
-     * @param updateRoomOptions the create room options.
+     * @param updateRoomOptions the update room options.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -69,7 +69,7 @@ public final class RoomsClient {
     /**
      * Update an existing Room with response.
      *
-     * @param updateRoomOptions the create room options.
+     * @param updateRoomOptions the update room options.
      * @param context The context of key value pairs for http request.
      * @return response for a successful update room request.
      */

@@ -74,6 +74,7 @@ public final class RoomsAsyncClient {
      * @param createRoomOptions the create room options.
      * @return response for a successful create room request.
      */
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRoom> createRoom(CreateRoomOptions createRoomOptions) {
         return createRoom(createRoomOptions, null);

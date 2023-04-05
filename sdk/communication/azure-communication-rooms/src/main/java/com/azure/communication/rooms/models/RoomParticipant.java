@@ -5,7 +5,6 @@ package com.azure.communication.rooms.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RoomParticipant model. */
 @Fluent

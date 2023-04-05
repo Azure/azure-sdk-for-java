@@ -17,9 +17,7 @@ public final class RoomParticipantConverter {
             return null;
         }
 
-        RoomParticipant roomParticipant = new RoomParticipant()
-            .setCommunicationIdentifier(CommunicationIdentifierConverter.convert(obj.getRawId()))
-            .setRole(RoleTypeConverter.convert(obj.getRole()));
+        RoomParticipant roomParticipant = new RoomParticipant(CommunicationIdentifierConverter.convert(obj.getRawId()), RoleTypeConverter.convert(obj.getRole()));
 
         return roomParticipant;
     }
