@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -55,6 +56,7 @@ import static com.azure.cosmos.BridgeInternal.injectConfigs;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
+@Listeners({TestNGLogListener.class})
 public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
