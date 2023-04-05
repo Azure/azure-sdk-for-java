@@ -92,12 +92,12 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     @Test
     public void serviceCreateTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
-        Assumptions.assumeTrue(interceptorManager.isLiveMode(), "This test only works in live mode.");
         Assumptions.assumeTrue(serviceClient.getServiceEndpoint().contains("core.windows.net")
             && serviceClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
 
         // Arrange
         String tableName = testResourceNamer.randomName("tableName", 20);
+        String secondTableName = testResourceNamer.randomName("secondTableName", 20);
 
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
@@ -116,10 +116,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         // This request will use the tenant ID extracted from the previous request.
         assertNotNull(tableServiceClient.createTable(tableName));
 
-        tableName = testResourceNamer.randomName("tableName", 20);
-
         // All other requests will also use the tenant ID obtained from the auth challenge.
-        assertNotNull(tableServiceClient.createTable(tableName));
+        assertNotNull(tableServiceClient.createTable(secondTableName));
     }
 
     @Test

@@ -12,7 +12,12 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -23,6 +28,8 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -99,6 +106,7 @@ public final class TestUtils {
             return next.process();
         }
     }
+
 
     static void assertPropertiesEquals(TableServiceProperties expected,
                                        TableServiceProperties actual) {
@@ -191,5 +199,15 @@ public final class TestUtils {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
         return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
             && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+    }
+
+    public static void addTestProxyTestMatchers(InterceptorManager interceptorManager) {
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
+        interceptorManager.addSanitizers(customSanitizers);
+
+        //List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+        //customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+        //interceptorManager.addMatchers(customMatcher);
     }
 }

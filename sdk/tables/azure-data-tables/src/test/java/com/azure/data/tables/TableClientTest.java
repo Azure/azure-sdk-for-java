@@ -74,14 +74,6 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     protected void beforeTest() {
-        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
-        interceptorManager.addSanitizers(customSanitizers);
-
-        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
-        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
-        interceptorManager.addMatchers(customMatcher);
-
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
@@ -107,8 +99,6 @@ public class TableClientTest extends TableClientTestBase {
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
-        Assumptions.assumeTrue(interceptorManager.isLiveMode(), "This test only works in live mode.");
-
         Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
             && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06); 
 
