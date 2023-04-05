@@ -16,11 +16,11 @@ public final class QuotaPropertiesTests {
         QuotaProperties model =
             BinaryData
                 .fromString(
-                    "{\"limit\":2056764824,\"currentValue\":344602824,\"unit\":\"zikhl\",\"name\":{\"value\":\"hdgqggeb\",\"localizedValue\":\"nyga\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"bqfatpxllrxcyjmo\",\"properties\":\"datasu\"}")
+                    "{\"limit\":671328296,\"currentValue\":1223269261,\"unit\":\"uiizynke\",\"name\":{\"value\":\"trwyhqmib\",\"localizedValue\":\"hwit\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"yynpcdpumnzgmwz\",\"properties\":\"dataabikns\"}")
                 .toObject(QuotaProperties.class);
-        Assertions.assertEquals(2056764824, model.limit());
-        Assertions.assertEquals("zikhl", model.unit());
-        Assertions.assertEquals("hdgqggeb", model.name().value());
+        Assertions.assertEquals(671328296, model.limit());
+        Assertions.assertEquals("uiizynke", model.unit());
+        Assertions.assertEquals("trwyhqmib", model.name().value());
         Assertions.assertEquals(ResourceType.LOW_PRIORITY, model.resourceType());
     }
 
@@ -28,15 +28,15 @@ public final class QuotaPropertiesTests {
     public void testSerialize() throws Exception {
         QuotaProperties model =
             new QuotaProperties()
-                .withLimit(2056764824)
-                .withUnit("zikhl")
-                .withName(new ResourceName().withValue("hdgqggeb"))
+                .withLimit(671328296)
+                .withUnit("uiizynke")
+                .withName(new ResourceName().withValue("trwyhqmib"))
                 .withResourceType(ResourceType.LOW_PRIORITY)
-                .withProperties("datasu");
+                .withProperties("dataabikns");
         model = BinaryData.fromObject(model).toObject(QuotaProperties.class);
-        Assertions.assertEquals(2056764824, model.limit());
-        Assertions.assertEquals("zikhl", model.unit());
-        Assertions.assertEquals("hdgqggeb", model.name().value());
+        Assertions.assertEquals(671328296, model.limit());
+        Assertions.assertEquals("uiizynke", model.unit());
+        Assertions.assertEquals("trwyhqmib", model.name().value());
         Assertions.assertEquals(ResourceType.LOW_PRIORITY, model.resourceType());
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RunSubState. */
+/** Sub-state of the last run. */
 public enum RunSubState {
     /** Enum value Queued. */
     QUEUED("Queued"),
@@ -17,6 +17,9 @@ public enum RunSubState {
 
     /** Enum value Customizing. */
     CUSTOMIZING("Customizing"),
+
+    /** Enum value Optimizing. */
+    OPTIMIZING("Optimizing"),
 
     /** Enum value Validating. */
     VALIDATING("Validating"),
@@ -39,6 +42,9 @@ public enum RunSubState {
      */
     @JsonCreator
     public static RunSubState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RunSubState[] items = RunSubState.values();
         for (RunSubState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +54,7 @@ public enum RunSubState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

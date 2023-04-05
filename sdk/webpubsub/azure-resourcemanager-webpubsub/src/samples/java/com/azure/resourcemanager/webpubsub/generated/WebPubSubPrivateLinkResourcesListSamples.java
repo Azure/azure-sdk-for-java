@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSubPrivateLinkResources List. */
 public final class WebPubSubPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubPrivateLinkResources_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateLinkResources_List.json
      */
     /**
      * Sample code: WebPubSubPrivateLinkResources_List.
@@ -17,6 +15,8 @@ public final class WebPubSubPrivateLinkResourcesListSamples {
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubPrivateLinkResourcesList(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubPrivateLinkResources().list("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager
+            .webPubSubPrivateLinkResources()
+            .list("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

@@ -23,11 +23,14 @@ public final class DomainControlCenterSsoRequestInner {
     private String postParameterKey;
 
     /*
-     * Post parameter value. Client should use
-     * 'application/x-www-form-urlencoded' encoding for this value.
+     * Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
      */
     @JsonProperty(value = "postParameterValue", access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterValue;
+
+    /** Creates an instance of DomainControlCenterSsoRequestInner class. */
+    public DomainControlCenterSsoRequestInner() {
+    }
 
     /**
      * Get the url property: URL where the single sign-on request is to be made.

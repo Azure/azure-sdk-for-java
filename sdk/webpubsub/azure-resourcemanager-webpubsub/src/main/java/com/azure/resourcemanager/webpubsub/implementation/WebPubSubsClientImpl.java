@@ -73,8 +73,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     public interface WebPubSubsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> checkNameAvailability(
@@ -99,8 +98,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebPubSubResourceList>> listByResourceGroup(
@@ -113,8 +111,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebPubSubResourceInner>> getByResourceGroup(
@@ -128,8 +125,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -144,8 +140,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -159,8 +154,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -175,8 +169,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebPubSubKeysInner>> listKeys(
@@ -190,8 +183,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/regenerateKey")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateKey(
@@ -206,8 +198,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/restart")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/restart")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
@@ -221,8 +212,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/skus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuListInner>> listSkus(
@@ -1052,7 +1042,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1071,7 +1061,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1302,7 +1292,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -1320,7 +1310,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -1569,7 +1559,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
-        return beginUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1588,7 +1578,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1995,7 +1985,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters) {
-        return beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -2014,7 +2004,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2245,7 +2235,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName) {
-        return beginRestartAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -2263,7 +2253,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String resourceName, Context context) {
-        return beginRestartAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**

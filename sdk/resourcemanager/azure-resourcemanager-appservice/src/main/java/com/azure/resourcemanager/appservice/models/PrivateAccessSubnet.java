@@ -22,6 +22,10 @@ public final class PrivateAccessSubnet {
     @JsonProperty(value = "key")
     private Integer key;
 
+    /** Creates an instance of PrivateAccessSubnet class. */
+    public PrivateAccessSubnet() {
+    }
+
     /**
      * Get the name property: The name of the subnet.
      *

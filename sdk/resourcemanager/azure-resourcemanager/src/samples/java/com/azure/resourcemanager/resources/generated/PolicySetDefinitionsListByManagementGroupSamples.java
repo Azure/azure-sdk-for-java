@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicySetDefinitions ListByManagementGroup. */
 public final class PolicySetDefinitionsListByManagementGroupSamples {
     /*
@@ -23,6 +21,6 @@ public final class PolicySetDefinitionsListByManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .listByManagementGroup("MyManagementGroup", null, null, Context.NONE);
+            .listByManagementGroup("MyManagementGroup", null, null, com.azure.core.util.Context.NONE);
     }
 }

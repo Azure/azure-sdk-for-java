@@ -31,7 +31,7 @@ public final class SpacecraftLink {
     private float bandwidthMHz;
 
     /*
-     * Direction (uplink or downlink).
+     * Direction (Uplink or Downlink).
      */
     @JsonProperty(value = "direction", required = true)
     private Direction direction;
@@ -47,6 +47,10 @@ public final class SpacecraftLink {
      */
     @JsonProperty(value = "authorizations", access = JsonProperty.Access.WRITE_ONLY)
     private List<AuthorizedGroundstation> authorizations;
+
+    /** Creates an instance of SpacecraftLink class. */
+    public SpacecraftLink() {
+    }
 
     /**
      * Get the name property: Link name.
@@ -109,7 +113,7 @@ public final class SpacecraftLink {
     }
 
     /**
-     * Get the direction property: Direction (uplink or downlink).
+     * Get the direction property: Direction (Uplink or Downlink).
      *
      * @return the direction value.
      */
@@ -118,7 +122,7 @@ public final class SpacecraftLink {
     }
 
     /**
-     * Set the direction property: Direction (uplink or downlink).
+     * Set the direction property: Direction (Uplink or Downlink).
      *
      * @param direction the direction value to set.
      * @return the SpacecraftLink object itself.

@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public final class SnapshotListResult {
      * The collection value.
      */
     @JsonProperty(value = "items")
-    private List<Snapshot> items;
+    private List<ConfigurationSettingSnapshot> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
@@ -31,7 +32,7 @@ public final class SnapshotListResult {
      *
      * @return the items value.
      */
-    public List<Snapshot> getItems() {
+    public List<ConfigurationSettingSnapshot> getItems() {
         return this.items;
     }
 
@@ -41,7 +42,7 @@ public final class SnapshotListResult {
      * @param items the items value to set.
      * @return the SnapshotListResult object itself.
      */
-    public SnapshotListResult setItems(List<Snapshot> items) {
+    public SnapshotListResult setItems(List<ConfigurationSettingSnapshot> items) {
         this.items = items;
         return this;
     }

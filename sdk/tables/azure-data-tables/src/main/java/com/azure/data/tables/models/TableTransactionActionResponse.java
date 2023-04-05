@@ -5,7 +5,7 @@ package com.azure.data.tables.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
-import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableTransactionActionResponseAccessHelper;
 
 /**
  * The response of a REST sub-request contained within the response of a transaction request.
@@ -17,8 +17,20 @@ public final class TableTransactionActionResponse implements Response<Object> {
     private final Object value;
 
     static {
-        ModelHelper.setTableTransactionActionResponseCreator(TableTransactionActionResponse::new);
-        ModelHelper.setTableTransactionActionResponseUpdater(TableTransactionActionResponse::update);
+        TableTransactionActionResponseAccessHelper.setAccessor(
+            new TableTransactionActionResponseAccessHelper.TableTransactionActionResponseAccessor() {
+                @Override
+                public TableTransactionActionResponse createTableTransactionActionResponse(int statusCode,
+                    Object value) {
+                    return new TableTransactionActionResponse(statusCode, value);
+                }
+
+                @Override
+                public void updateTableTransactionActionResponse(TableTransactionActionResponse subject,
+                    HttpRequest request) {
+                    TableTransactionActionResponse.update(subject, request);
+                }
+            });
     }
 
     /**

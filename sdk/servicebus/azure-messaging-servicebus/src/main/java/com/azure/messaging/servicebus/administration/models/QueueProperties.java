@@ -9,9 +9,9 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsy
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatusImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -39,7 +39,7 @@ public final class QueueProperties {
     private boolean enableBatchedOperations;
     private final Boolean enableExpress;
     private boolean enablePartitioning;
-    private final EntityAvailabilityStatus entityAvailabilityStatus;
+    private final EntityAvailabilityStatusImpl entityAvailabilityStatus;
     private String forwardTo;
     private String forwardDeadLetteredMessagesTo;
     private final Boolean isAnonymousAccessible;
@@ -48,7 +48,7 @@ public final class QueueProperties {
     private long maxMessageSizeInKilobytes;
     private long maxSizeInMegabytes;
     private final int messageCount;
-    private final MessageCountDetails messageCountDetails;
+    private final MessageCountDetailsImpl messageCountDetails;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
     private final long sizeInBytes;
@@ -62,8 +62,8 @@ public final class QueueProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
-            public QueueDescription toImplementation(QueueProperties queue, List<AuthorizationRuleImpl> rules) {
-                final QueueDescription description = new QueueDescription()
+            public QueueDescriptionImpl toImplementation(QueueProperties queue, List<AuthorizationRuleImpl> rules) {
+                final QueueDescriptionImpl description = new QueueDescriptionImpl()
                     .setAccessedAt(queue.getAccessedAt())
                     .setAutoDeleteOnIdle(queue.getAutoDeleteOnIdle())
                     .setCreatedAt(queue.getCreatedAt())
@@ -101,7 +101,7 @@ public final class QueueProperties {
             }
 
             @Override
-            public QueueProperties toModel(QueueDescription queueDescription) {
+            public QueueProperties toModel(QueueDescriptionImpl queueDescription) {
                 return new QueueProperties(queueDescription);
             }
 
@@ -113,11 +113,11 @@ public final class QueueProperties {
     }
 
     /**
-     * Creates a queue using a {@link QueueDescription}.
+     * Creates a queue using a {@link QueueDescriptionImpl}.
      *
      * @param description The queue to use.
      */
-    QueueProperties(QueueDescription description) {
+    QueueProperties(QueueDescriptionImpl description) {
         this.accessedAt = description.getAccessedAt();
         this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
         this.authorizationRules = description.getAuthorizationRules().stream()
@@ -529,7 +529,7 @@ public final class QueueProperties {
      *
      * @return the messageCountDetails value.
      */
-    MessageCountDetails getMessageCountDetails() {
+    MessageCountDetailsImpl getMessageCountDetails() {
         return this.messageCountDetails;
     }
 

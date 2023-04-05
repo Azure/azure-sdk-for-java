@@ -40,6 +40,10 @@ public final class ChangeAttributes {
     @JsonProperty(value = "newResourceSnapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private String newResourceSnapshotId;
 
+    /** Creates an instance of ChangeAttributes class. */
+    public ChangeAttributes() {
+    }
+
     /**
      * Get the correlationId property: The ARM correlation ID of the change resource.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowTriggers GetSchemaJson. */
 public final class WorkflowTriggersGetSchemaJsonSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowTriggers_GetSchemaJson.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggers_GetSchemaJson.json
      */
     /**
      * Sample code: Get trigger schema.
@@ -22,6 +20,7 @@ public final class WorkflowTriggersGetSchemaJsonSamples {
             .manager()
             .serviceClient()
             .getWorkflowTriggers()
-            .getSchemaJsonWithResponse("testResourceGroup", "test-name", "testWorkflow", "testTrigger", Context.NONE);
+            .getSchemaJsonWithResponse(
+                "testResourceGroup", "test-name", "testWorkflow", "testTrigger", com.azure.core.util.Context.NONE);
     }
 }

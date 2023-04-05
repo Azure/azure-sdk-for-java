@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GovernanceAssignments Delete. */
 public final class GovernanceAssignmentsDeleteSamples {
     /*
@@ -23,6 +21,6 @@ public final class GovernanceAssignmentsDeleteSamples {
                 "subscriptions/c32e05d9-7207-4e22-bdf4-4f7d9c72e5fd/resourceGroups/compute_servers/providers/Microsoft.Compute/virtualMachines/win2012",
                 "6b9421dd-5555-2251-9b3d-2be58e2f82cd",
                 "6634ff9f-127b-4bf2-8e6e-b1737f5e789c",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -22,6 +22,10 @@ public final class ProvisioningError {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ProvisioningError class. */
+    public ProvisioningError() {
+    }
+
     /**
      * Get the provisioningErrorCode property: Error code of the provisioning failure.
      *

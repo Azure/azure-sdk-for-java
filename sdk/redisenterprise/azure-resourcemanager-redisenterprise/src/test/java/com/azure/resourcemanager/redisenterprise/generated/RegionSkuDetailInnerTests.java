@@ -8,8 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.redisenterprise.fluent.models.RegionSkuDetailInner;
 import com.azure.resourcemanager.redisenterprise.models.Capability;
 import com.azure.resourcemanager.redisenterprise.models.LocationInfo;
-import com.azure.resourcemanager.redisenterprise.models.Name;
 import com.azure.resourcemanager.redisenterprise.models.SkuDetail;
+import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -25,7 +25,7 @@ public final class RegionSkuDetailInnerTests {
         Assertions.assertEquals("pbuxwgipwhon", model.locationInfo().location());
         Assertions.assertEquals("shwankixzbinje", model.locationInfo().capabilities().get(0).name());
         Assertions.assertEquals(true, model.locationInfo().capabilities().get(0).value());
-        Assertions.assertEquals(Name.ENTERPRISE_E10, model.skuDetails().name());
+        Assertions.assertEquals(SkuName.ENTERPRISE_E10, model.skuDetails().name());
     }
 
     @org.junit.jupiter.api.Test
@@ -41,12 +41,12 @@ public final class RegionSkuDetailInnerTests {
                                 .asList(
                                     new Capability().withName("shwankixzbinje").withValue(true),
                                     new Capability().withName("mryw").withValue(true))))
-                .withSkuDetails(new SkuDetail().withName(Name.ENTERPRISE_E10));
+                .withSkuDetails(new SkuDetail().withName(SkuName.ENTERPRISE_E10));
         model = BinaryData.fromObject(model).toObject(RegionSkuDetailInner.class);
         Assertions.assertEquals("jdeyeamdpha", model.resourceType());
         Assertions.assertEquals("pbuxwgipwhon", model.locationInfo().location());
         Assertions.assertEquals("shwankixzbinje", model.locationInfo().capabilities().get(0).name());
         Assertions.assertEquals(true, model.locationInfo().capabilities().get(0).value());
-        Assertions.assertEquals(Name.ENTERPRISE_E10, model.skuDetails().name());
+        Assertions.assertEquals(SkuName.ENTERPRISE_E10, model.skuDetails().name());
     }
 }

@@ -47,6 +47,15 @@ public final class TimeSeriesDatabaseConnectionState extends ExpandableStringEnu
     public static final TimeSeriesDatabaseConnectionState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of TimeSeriesDatabaseConnectionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeSeriesDatabaseConnectionState() {
+    }
+
+    /**
      * Creates or finds a TimeSeriesDatabaseConnectionState from its string representation.
      *
      * @param name a name to look for.

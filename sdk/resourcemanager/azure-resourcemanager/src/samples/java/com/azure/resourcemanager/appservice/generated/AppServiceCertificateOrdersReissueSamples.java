@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.ReissueCertificateOrderRequest;
 
 /** Samples for AppServiceCertificateOrders Reissue. */
 public final class AppServiceCertificateOrdersReissueSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/ReissueAppServiceCertificateOrder.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ReissueAppServiceCertificateOrder.json
      */
     /**
      * Sample code: Reissue App Service Certificate Order.
@@ -31,6 +30,6 @@ public final class AppServiceCertificateOrdersReissueSamples {
                     .withDelayExistingRevokeInHours(2)
                     .withCsr("CSR1223238Value")
                     .withIsPrivateKeyExternal(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

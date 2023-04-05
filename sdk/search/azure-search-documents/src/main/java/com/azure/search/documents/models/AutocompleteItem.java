@@ -96,9 +96,9 @@ public final class AutocompleteItem implements JsonSerializable<AutocompleteItem
                         }
                     }
                     if (textFound && queryPlusTextFound) {
-                        AutocompleteItem deserializedValue = new AutocompleteItem(text, queryPlusText);
+                        AutocompleteItem deserializedAutocompleteItem = new AutocompleteItem(text, queryPlusText);
 
-                        return deserializedValue;
+                        return deserializedAutocompleteItem;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!textFound) {

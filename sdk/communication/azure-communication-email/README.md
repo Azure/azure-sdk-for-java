@@ -116,7 +116,7 @@ EmailMessage message = new EmailMessage()
     .setSubject("test subject")
     .setBodyPlainText("test message");
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
@@ -135,7 +135,7 @@ EmailMessage message = new EmailMessage()
     .setCcRecipients("<cc-recipient-email-address>")
     .setBccRecipients("<bcc-recipient-email-address>");
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
@@ -156,7 +156,7 @@ EmailMessage message = new EmailMessage()
     .setBodyPlainText("test message")
     .setToRecipients(toAddress1, toAddress2);
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
@@ -181,7 +181,7 @@ EmailMessage message = new EmailMessage()
     .setBodyPlainText("test message")
     .setAttachments(attachment);
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());

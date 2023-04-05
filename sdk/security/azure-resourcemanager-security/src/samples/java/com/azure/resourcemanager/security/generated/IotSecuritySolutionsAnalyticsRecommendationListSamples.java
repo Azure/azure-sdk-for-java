@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolutionsAnalyticsRecommendation List. */
 public final class IotSecuritySolutionsAnalyticsRecommendationListSamples {
     /*
@@ -18,6 +16,8 @@ public final class IotSecuritySolutionsAnalyticsRecommendationListSamples {
      */
     public static void getTheListOfAggregatedSecurityAnalyticsRecommendationsOfYoursIoTSecuritySolution(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutionsAnalyticsRecommendations().list("IoTEdgeResources", "default", null, Context.NONE);
+        manager
+            .iotSecuritySolutionsAnalyticsRecommendations()
+            .list("IoTEdgeResources", "default", null, com.azure.core.util.Context.NONE);
     }
 }

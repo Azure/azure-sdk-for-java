@@ -342,19 +342,19 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        PiiDetectionSkill deserializedValue = new PiiDetectionSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.minimumPrecision = minimumPrecision;
-                        deserializedValue.maskingMode = maskingMode;
-                        deserializedValue.maskingCharacter = maskingCharacter;
-                        deserializedValue.modelVersion = modelVersion;
-                        deserializedValue.piiCategories = piiCategories;
-                        deserializedValue.domain = domain;
+                        PiiDetectionSkill deserializedPiiDetectionSkill = new PiiDetectionSkill(inputs, outputs);
+                        deserializedPiiDetectionSkill.setName(name);
+                        deserializedPiiDetectionSkill.setDescription(description);
+                        deserializedPiiDetectionSkill.setContext(context);
+                        deserializedPiiDetectionSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedPiiDetectionSkill.minimumPrecision = minimumPrecision;
+                        deserializedPiiDetectionSkill.maskingMode = maskingMode;
+                        deserializedPiiDetectionSkill.maskingCharacter = maskingCharacter;
+                        deserializedPiiDetectionSkill.modelVersion = modelVersion;
+                        deserializedPiiDetectionSkill.piiCategories = piiCategories;
+                        deserializedPiiDetectionSkill.domain = domain;
 
-                        return deserializedValue;
+                        return deserializedPiiDetectionSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

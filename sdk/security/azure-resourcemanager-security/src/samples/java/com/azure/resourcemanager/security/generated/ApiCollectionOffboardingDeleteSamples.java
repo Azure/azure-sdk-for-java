@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiCollectionOffboarding Delete. */
 public final class ApiCollectionOffboardingDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class ApiCollectionOffboardingDeleteSamples {
      */
     public static void deleteASecurityRecommendationTaskOnAResource(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.apiCollectionOffboardings().deleteWithResponse("rg1", "apimService1", "echo-api", Context.NONE);
+        manager
+            .apiCollectionOffboardings()
+            .deleteWithResponse("rg1", "apimService1", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

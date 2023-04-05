@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.CustomDomainProperties;
 import com.azure.resourcemanager.signalr.models.ResourceReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomDomainPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomDomainProperties model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class CustomDomainPropertiesTests {
         Assertions.assertEquals("besldnkwwtppjflc", model.customCertificate().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomDomainProperties model =
             new CustomDomainProperties()
                 .withDomainName("wiwubm")

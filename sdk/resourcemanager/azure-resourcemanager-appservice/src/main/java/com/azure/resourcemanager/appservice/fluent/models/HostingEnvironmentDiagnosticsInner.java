@@ -22,6 +22,10 @@ public final class HostingEnvironmentDiagnosticsInner {
     @JsonProperty(value = "diagnosticsOutput")
     private String diagnosticsOutput;
 
+    /** Creates an instance of HostingEnvironmentDiagnosticsInner class. */
+    public HostingEnvironmentDiagnosticsInner() {
+    }
+
     /**
      * Get the name property: Name/identifier of the diagnostics.
      *

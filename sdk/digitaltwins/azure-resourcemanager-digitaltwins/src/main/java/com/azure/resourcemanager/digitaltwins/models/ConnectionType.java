@@ -14,6 +14,15 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static final ConnectionType AZURE_DATA_EXPLORER = fromString("AzureDataExplorer");
 
     /**
+     * Creates a new instance of ConnectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionType() {
+    }
+
+    /**
      * Creates or finds a ConnectionType from its string representation.
      *
      * @param name a name to look for.

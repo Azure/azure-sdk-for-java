@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInner;
 
 /** Samples for AppServiceEnvironments UpdateMultiRolePool. */
 public final class AppServiceEnvironmentsUpdateMultiRolePoolSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_CreateOrUpdateMultiRolePool.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_CreateOrUpdateMultiRolePool.json
      */
     /**
      * Sample code: Create or update a multi-role pool.
@@ -27,6 +26,6 @@ public final class AppServiceEnvironmentsUpdateMultiRolePoolSamples {
                 "test-rg",
                 "test-ase",
                 new WorkerPoolResourceInner().withWorkerSize("Medium").withWorkerCount(3),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

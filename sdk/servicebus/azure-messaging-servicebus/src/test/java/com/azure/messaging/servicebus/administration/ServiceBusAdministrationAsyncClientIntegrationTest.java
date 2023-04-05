@@ -84,14 +84,14 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
     /**
      * Test to connect to the service bus with an azure identity TokenCredential.
      * com.azure.identity.ClientSecretCredential is used in this test.
      * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
      * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
      */
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void azureIdentityCredentials(HttpClient httpClient) {
         assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
@@ -476,7 +476,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("sub", 10);
 
-        client.createQueue(queueName).block(TIMEOUT);
+        client.createQueue(queueName)
+            .onErrorResume(ResourceExistsException.class, e -> Mono.empty())
+            .block(TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))

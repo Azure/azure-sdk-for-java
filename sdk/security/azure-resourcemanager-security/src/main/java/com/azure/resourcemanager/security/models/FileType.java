@@ -29,6 +29,15 @@ public final class FileType extends ExpandableStringEnum<FileType> {
     public static final FileType UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of FileType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FileType() {
+    }
+
+    /**
      * Creates or finds a FileType from its string representation.
      *
      * @param name a name to look for.

@@ -32,7 +32,7 @@ public final class QuotaRequestStatusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"sbpimlq\",\"requestSubmitTime\":\"2021-02-24T02:21:25Z\",\"value\":[]},\"id\":\"cgxxlxs\",\"name\":\"fgcviz\",\"type\":\"zdwlvwlyoupfgfb\"}";
+            "{\"properties\":{\"provisioningState\":\"Invalid\",\"message\":\"ocxvdfffwafqr\",\"requestSubmitTime\":\"2021-06-07T05:27:14Z\",\"value\":[]},\"id\":\"pavehhr\",\"name\":\"kbunzoz\",\"type\":\"dhcxgkmoy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,9 +64,13 @@ public final class QuotaRequestStatusGetWithResponseMockTests {
             manager
                 .quotaRequestStatus()
                 .getWithResponse(
-                    "fscjfnynszquji", "dvoqyt", "byowbblgyavutp", "hjoxo", com.azure.core.util.Context.NONE)
+                    "hihfrbbcevqagtlt",
+                    "hlfkqojpy",
+                    "vgtrdcnifmzzs",
+                    "ymbrnysuxmpraf",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, response.provisioningState());
+        Assertions.assertEquals(QuotaRequestState.INVALID, response.provisioningState());
     }
 }

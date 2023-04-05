@@ -66,7 +66,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void beforeClass() {
         client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(client);
@@ -91,6 +91,19 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "faultInjectionOperationTypeProvider")
+    public static Object[][] faultInjectionOperationTypeProvider() {
+        return new Object[][]{
+            // fault injection operation type, primaryAddressOnly
+            { FaultInjectionOperationType.READ_ITEM, false },
+            { FaultInjectionOperationType.REPLACE_ITEM, true },
+            { FaultInjectionOperationType.CREATE_ITEM, true },
+            { FaultInjectionOperationType.DELETE_ITEM, true},
+            { FaultInjectionOperationType.QUERY_ITEM, false },
+            { FaultInjectionOperationType.PATCH_ITEM, true }
+        };
+    }
+
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
@@ -104,7 +117,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "simple"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_OperationType(OperationType operationType) throws JsonProcessingException {
         // Test for SERVER_GONE, the operation type will be ignored after getting the addresses
         String serverGoneRuleId = "serverErrorRule-serverGone-" + UUID.randomUUID();
@@ -187,7 +200,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = "multi-region", dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_OperationTypeImpactAddresses(OperationType operationType) throws JsonProcessingException {
         // Test the operation type can impact which region or replica the rule will be applicable
         TestItem createdItem = TestItem.createNewItem();
@@ -383,7 +396,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Partition() throws JsonProcessingException {
         TestItem createdItem = TestItem.createNewItem();
         cosmosAsyncContainer.createItem(createdItem).block();
@@ -445,7 +458,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
         // define another rule which can simulate timeout
@@ -507,7 +520,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
         // simulate high channel acquisition/connectionTimeout
@@ -549,7 +562,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
             CosmosItemResponse<TestItem> itemResponse = container.createItem(TestItem.createNewItem()).block();
 
-            assertThat(serverConnectionDelayRule.getHitCount()).isEqualTo(1);
+            // Due to the replica validation, there could be an extra open connection call flow, while the rule will also be applied on.
+            assertThat(serverConnectionDelayRule.getHitCount()).isBetween(1l, 2l);
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Create,
@@ -565,7 +579,65 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "simple"}, dataProvider = "faultInjectionOperationTypeProvider", timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_ServerConnectionDelay_warmup(
+        FaultInjectionOperationType operationType,
+        boolean primaryAddressesOnly) {
+
+        CosmosAsyncClient newClient = null; // creating new client to force creating new connections
+        // simulate high channel acquisition/connectionTimeout during openConnection flow
+        String ruleId = "serverErrorRule-serverConnectionDelay-warmup" + UUID.randomUUID();
+        FaultInjectionRule serverConnectionDelayWarmupRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(operationType)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                        .delay(Duration.ofSeconds(2))
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+            directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
+
+            newClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .directMode(directConnectionConfig)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                newClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayWarmupRule)).block();
+
+            int partitionSize = container.getFeedRanges().block().size();
+            container.openConnectionsAndInitCaches().block();
+
+            if (primaryAddressesOnly) {
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isEqualTo(partitionSize);
+            } else {
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
+            }
+        } finally {
+            serverConnectionDelayWarmupRule.disable();
+            safeClose(newClient);
+        }
+    }
+
+    @Test(groups = {"multi-region", "simple"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
@@ -636,7 +708,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_HitLimit() throws JsonProcessingException {
         TestItem createdItem = TestItem.createNewItem();
         cosmosAsyncContainer.createItem(createdItem).block();
@@ -690,7 +762,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
@@ -810,9 +882,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         for (ObjectNode diagnosticNode : diagnosticsNode) {
             JsonNode responseStatisticsList = diagnosticNode.get("responseStatisticsList");
             assertThat(responseStatisticsList.isArray()).isTrue();
+
+            for (int i = 0; i < responseStatisticsList.size(); i++) {
+                JsonNode storeResult = responseStatisticsList.get(i).get("storeResult");
+                assertThat(storeResult.get("faultInjectionRuleId")).isNull();
+            }
             assertThat(responseStatisticsList.size()).isOne();
-            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
-            assertThat(storeResult.get("faultInjectionRuleId")).isNull();
         }
     }
 

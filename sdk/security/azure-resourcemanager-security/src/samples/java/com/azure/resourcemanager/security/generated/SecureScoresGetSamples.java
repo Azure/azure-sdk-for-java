@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecureScores Get. */
 public final class SecureScoresGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class SecureScoresGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSingleSecureScore(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.secureScores().getWithResponse("ascScore", Context.NONE);
+        manager.secureScores().getWithResponse("ascScore", com.azure.core.util.Context.NONE);
     }
 }

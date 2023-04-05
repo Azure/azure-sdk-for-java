@@ -70,6 +70,10 @@ public final class WorkflowTriggerProperties {
     @JsonProperty(value = "workflow", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference workflow;
 
+    /** Creates an instance of WorkflowTriggerProperties class. */
+    public WorkflowTriggerProperties() {
+    }
+
     /**
      * Get the provisioningState property: Gets the provisioning state.
      *

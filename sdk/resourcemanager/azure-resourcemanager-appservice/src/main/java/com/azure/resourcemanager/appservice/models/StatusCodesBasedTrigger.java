@@ -46,6 +46,10 @@ public final class StatusCodesBasedTrigger {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of StatusCodesBasedTrigger class. */
+    public StatusCodesBasedTrigger() {
+    }
+
     /**
      * Get the status property: HTTP status code.
      *

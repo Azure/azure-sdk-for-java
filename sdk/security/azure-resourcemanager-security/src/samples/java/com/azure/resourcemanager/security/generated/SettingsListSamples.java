@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Settings List. */
 public final class SettingsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class SettingsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSettingsOfSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.settings().list(Context.NONE);
+        manager.settings().list(com.azure.core.util.Context.NONE);
     }
 }

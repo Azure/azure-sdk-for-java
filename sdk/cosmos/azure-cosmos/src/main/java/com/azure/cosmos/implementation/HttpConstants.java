@@ -412,6 +412,8 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
+      
+        public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
 
         //SDK Codes(Client)
         public static final int TRANSPORT_GENERATED_410 = 20001;

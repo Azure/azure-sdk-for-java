@@ -23,15 +23,13 @@ public final class ValidatePropertiesInner {
     private String skuName;
 
     /*
-     * <code>true</code> if App Service plan is for Linux workers; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if App Service plan is for Linux workers; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "needLinuxWorkers")
     private Boolean needLinuxWorkers;
 
     /*
-     * <code>true</code> if App Service plan is for Spot instances; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if App Service plan is for Spot instances; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isSpot")
     private Boolean isSpot;
@@ -43,8 +41,7 @@ public final class ValidatePropertiesInner {
     private Integer capacity;
 
     /*
-     * Name of App Service Environment where app or App Service plan should be
-     * created.
+     * Name of App Service Environment where app or App Service plan should be created.
      */
     @JsonProperty(value = "hostingEnvironment")
     private String hostingEnvironment;
@@ -96,6 +93,10 @@ public final class ValidatePropertiesInner {
      */
     @JsonProperty(value = "appServiceEnvironment")
     private AppServiceEnvironmentInner appServiceEnvironment;
+
+    /** Creates an instance of ValidatePropertiesInner class. */
+    public ValidatePropertiesInner() {
+    }
 
     /**
      * Get the serverFarmId property: ARM resource ID of an App Service plan that would host the app.

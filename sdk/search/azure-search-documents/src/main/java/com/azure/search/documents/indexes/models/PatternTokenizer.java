@@ -188,12 +188,12 @@ public final class PatternTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        PatternTokenizer deserializedValue = new PatternTokenizer(name);
-                        deserializedValue.pattern = pattern;
-                        deserializedValue.flags = flags;
-                        deserializedValue.group = group;
+                        PatternTokenizer deserializedPatternTokenizer = new PatternTokenizer(name);
+                        deserializedPatternTokenizer.pattern = pattern;
+                        deserializedPatternTokenizer.flags = flags;
+                        deserializedPatternTokenizer.group = group;
 
-                        return deserializedValue;
+                        return deserializedPatternTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

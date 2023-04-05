@@ -211,13 +211,13 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                         }
                     }
                     if (nameFound) {
-                        PatternAnalyzer deserializedValue = new PatternAnalyzer(name);
-                        deserializedValue.lowerCaseTerms = lowerCaseTerms;
-                        deserializedValue.pattern = pattern;
-                        deserializedValue.flags = flags;
-                        deserializedValue.stopwords = stopwords;
+                        PatternAnalyzer deserializedPatternAnalyzer = new PatternAnalyzer(name);
+                        deserializedPatternAnalyzer.lowerCaseTerms = lowerCaseTerms;
+                        deserializedPatternAnalyzer.pattern = pattern;
+                        deserializedPatternAnalyzer.flags = flags;
+                        deserializedPatternAnalyzer.stopwords = stopwords;
 
-                        return deserializedValue;
+                        return deserializedPatternAnalyzer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesOptimize;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
@@ -27,15 +28,19 @@ public final class ImageTemplateProperties {
     private ImageTemplateSource source;
 
     /*
-     * Specifies the properties used to describe the customization steps of the
-     * image, like Image source etc
+     * Specifies the properties used to describe the customization steps of the image, like Image source etc
      */
     @JsonProperty(value = "customize")
     private List<ImageTemplateCustomizer> customize;
 
     /*
-     * Configuration options and list of validations to be performed on the
-     * resulting image.
+     * Specifies optimization to be performed on image.
+     */
+    @JsonProperty(value = "optimize")
+    private ImageTemplatePropertiesOptimize optimize;
+
+    /*
+     * Configuration options and list of validations to be performed on the resulting image.
      */
     @JsonProperty(value = "validate")
     private ImageTemplatePropertiesValidate validation;
@@ -65,9 +70,8 @@ public final class ImageTemplateProperties {
     private ImageTemplateLastRunStatus lastRunStatus;
 
     /*
-     * Maximum duration to wait while building the image template (includes all
-     * customizations, validations, and distributions). Omit or specify 0 to
-     * use the default (4 hours).
+     * Maximum duration to wait while building the image template (includes all customizations, optimization,
+     * validations, and distributions). Omit or specify 0 to use the default (4 hours).
      */
     @JsonProperty(value = "buildTimeoutInMinutes")
     private Integer buildTimeoutInMinutes;
@@ -79,29 +83,28 @@ public final class ImageTemplateProperties {
     private ImageTemplateVmProfile vmProfile;
 
     /*
-     * The staging resource group id in the same subscription as the image
-     * template that will be used to build the image. If this field is empty, a
-     * resource group with a random name will be created. If the resource group
-     * specified in this field doesn't exist, it will be created with the same
-     * name. If the resource group specified exists, it must be empty and in
-     * the same region as the image template. The resource group created will
-     * be deleted during template deletion if this field is empty or the
-     * resource group specified doesn't exist, but if the resource group
-     * specified exists the resources created in the resource group will be
-     * deleted during template deletion and the resource group itself will
-     * remain.
+     * The staging resource group id in the same subscription as the image template that will be used to build the
+     * image. If this field is empty, a resource group with a random name will be created. If the resource group
+     * specified in this field doesn't exist, it will be created with the same name. If the resource group specified
+     * exists, it must be empty and in the same region as the image template. The resource group created will be
+     * deleted during template deletion if this field is empty or the resource group specified doesn't exist, but if
+     * the resource group specified exists the resources created in the resource group will be deleted during template
+     * deletion and the resource group itself will remain.
      */
     @JsonProperty(value = "stagingResourceGroup")
     private String stagingResourceGroup;
 
     /*
-     * The staging resource group id in the same subscription as the image
-     * template that will be used to build the image. This read-only field
-     * differs from 'stagingResourceGroup' only if the value specified in the
+     * The staging resource group id in the same subscription as the image template that will be used to build the
+     * image. This read-only field differs from 'stagingResourceGroup' only if the value specified in the
      * 'stagingResourceGroup' field is empty.
      */
     @JsonProperty(value = "exactStagingResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String exactStagingResourceGroup;
+
+    /** Creates an instance of ImageTemplateProperties class. */
+    public ImageTemplateProperties() {
+    }
 
     /**
      * Get the source property: Specifies the properties used to describe the source image.
@@ -142,6 +145,26 @@ public final class ImageTemplateProperties {
      */
     public ImageTemplateProperties withCustomize(List<ImageTemplateCustomizer> customize) {
         this.customize = customize;
+        return this;
+    }
+
+    /**
+     * Get the optimize property: Specifies optimization to be performed on image.
+     *
+     * @return the optimize value.
+     */
+    public ImageTemplatePropertiesOptimize optimize() {
+        return this.optimize;
+    }
+
+    /**
+     * Set the optimize property: Specifies optimization to be performed on image.
+     *
+     * @param optimize the optimize value to set.
+     * @return the ImageTemplateProperties object itself.
+     */
+    public ImageTemplateProperties withOptimize(ImageTemplatePropertiesOptimize optimize) {
+        this.optimize = optimize;
         return this;
     }
 
@@ -216,7 +239,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Get the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
-     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
+     * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @return the buildTimeoutInMinutes value.
      */
@@ -226,7 +249,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Set the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
-     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
+     * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @param buildTimeoutInMinutes the buildTimeoutInMinutes value to set.
      * @return the ImageTemplateProperties object itself.
@@ -314,6 +337,9 @@ public final class ImageTemplateProperties {
         }
         if (customize() != null) {
             customize().forEach(e -> e.validate());
+        }
+        if (optimize() != null) {
+            optimize().validate();
         }
         if (validation() != null) {
             validation().validate();

@@ -21,19 +21,6 @@ public interface ContactProfilesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified contact Profile in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner getByResourceGroup(String resourceGroupName, String contactProfileName);
-
-    /**
-     * Gets the specified contact Profile in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,6 +30,19 @@ public interface ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContactProfileInner> getByResourceGroupWithResponse(
         String resourceGroupName, String contactProfileName, Context context);
+
+    /**
+     * Gets the specified contact Profile in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param contactProfileName Contact Profile name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified contact Profile in a specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ContactProfileInner getByResourceGroup(String resourceGroupName, String contactProfileName);
 
     /**
      * Creates or updates a contact profile.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EmailServices Delete. */
 public final class EmailServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/delete.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/emailServices/delete.json
      */
     /**
      * Sample code: Delete EmailService resource.
@@ -18,6 +16,6 @@ public final class EmailServicesDeleteSamples {
      */
     public static void deleteEmailServiceResource(
         com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().delete("MyResourceGroup", "MyEmailServiceResource", Context.NONE);
+        manager.emailServices().delete("MyResourceGroup", "MyEmailServiceResource", com.azure.core.util.Context.NONE);
     }
 }

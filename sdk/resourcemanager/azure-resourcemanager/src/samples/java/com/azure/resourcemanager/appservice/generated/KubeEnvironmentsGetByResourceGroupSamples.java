@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KubeEnvironments GetByResourceGroup. */
 public final class KubeEnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/KubeEnvironments_Get.json
      */
     /**
      * Sample code: Get kube environments by name.
@@ -22,6 +20,6 @@ public final class KubeEnvironmentsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getKubeEnvironments()
-            .getByResourceGroupWithResponse("examplerg", "jlaw-demo1", Context.NONE);
+            .getByResourceGroupWithResponse("examplerg", "jlaw-demo1", com.azure.core.util.Context.NONE);
     }
 }

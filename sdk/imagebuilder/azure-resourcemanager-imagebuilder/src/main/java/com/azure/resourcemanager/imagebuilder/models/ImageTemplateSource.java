@@ -23,6 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ImageTemplateSource {
+    /** Creates an instance of ImageTemplateSource class. */
+    public ImageTemplateSource() {
+    }
+
     /**
      * Validates the instance.
      *

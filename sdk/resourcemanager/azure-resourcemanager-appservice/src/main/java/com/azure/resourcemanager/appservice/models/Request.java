@@ -28,6 +28,10 @@ public final class Request {
     @JsonProperty(value = "method")
     private String method;
 
+    /** Creates an instance of Request class. */
+    public Request() {
+    }
+
     /**
      * Get the headers property: A list of all the headers attached to the request.
      *

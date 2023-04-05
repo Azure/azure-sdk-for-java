@@ -224,14 +224,14 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        PathHierarchyTokenizer deserializedValue = new PathHierarchyTokenizer(name);
-                        deserializedValue.delimiter = delimiter;
-                        deserializedValue.replacement = replacement;
-                        deserializedValue.maxTokenLength = maxTokenLength;
-                        deserializedValue.tokenOrderReversed = tokenOrderReversed;
-                        deserializedValue.numberOfTokensToSkip = numberOfTokensToSkip;
+                        PathHierarchyTokenizer deserializedPathHierarchyTokenizer = new PathHierarchyTokenizer(name);
+                        deserializedPathHierarchyTokenizer.delimiter = delimiter;
+                        deserializedPathHierarchyTokenizer.replacement = replacement;
+                        deserializedPathHierarchyTokenizer.maxTokenLength = maxTokenLength;
+                        deserializedPathHierarchyTokenizer.tokenOrderReversed = tokenOrderReversed;
+                        deserializedPathHierarchyTokenizer.numberOfTokensToSkip = numberOfTokensToSkip;
 
-                        return deserializedValue;
+                        return deserializedPathHierarchyTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

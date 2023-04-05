@@ -22,6 +22,10 @@ public final class TemplateHashResultInner {
     @JsonProperty(value = "templateHash")
     private String templateHash;
 
+    /** Creates an instance of TemplateHashResultInner class. */
+    public TemplateHashResultInner() {
+    }
+
     /**
      * Get the minifiedTemplate property: The minified template string.
      *

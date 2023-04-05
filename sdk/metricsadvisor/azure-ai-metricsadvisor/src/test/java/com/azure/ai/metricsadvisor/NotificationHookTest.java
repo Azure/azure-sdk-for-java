@@ -40,7 +40,7 @@ public final class NotificationHookTest extends NotificationHookTestBase {
     @Disabled
     void createEmailHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         NotificationHook createdNotificationHook = client.createHook(CreateEmailHookInput.INSTANCE.hook);
         Assertions.assertNotNull(createdNotificationHook);
@@ -53,7 +53,7 @@ public final class NotificationHookTest extends NotificationHookTestBase {
     @Override
     void createWebHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         NotificationHook createdNotificationHook = client.createHook(CreateWebHookInput.INSTANCE.hook);
         Assertions.assertNotNull(createdNotificationHook);
@@ -66,7 +66,7 @@ public final class NotificationHookTest extends NotificationHookTestBase {
     @Disabled
     void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
 
         String[] hookId = new String[2];
         NotificationHook notificationHook1 = client.createHook(ListHookInput.INSTANCE.emailHook);

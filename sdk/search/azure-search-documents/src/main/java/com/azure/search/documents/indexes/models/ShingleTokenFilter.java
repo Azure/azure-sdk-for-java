@@ -262,15 +262,15 @@ public final class ShingleTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        ShingleTokenFilter deserializedValue = new ShingleTokenFilter(name);
-                        deserializedValue.maxShingleSize = maxShingleSize;
-                        deserializedValue.minShingleSize = minShingleSize;
-                        deserializedValue.outputUnigrams = outputUnigrams;
-                        deserializedValue.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
-                        deserializedValue.tokenSeparator = tokenSeparator;
-                        deserializedValue.filterToken = filterToken;
+                        ShingleTokenFilter deserializedShingleTokenFilter = new ShingleTokenFilter(name);
+                        deserializedShingleTokenFilter.maxShingleSize = maxShingleSize;
+                        deserializedShingleTokenFilter.minShingleSize = minShingleSize;
+                        deserializedShingleTokenFilter.outputUnigrams = outputUnigrams;
+                        deserializedShingleTokenFilter.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
+                        deserializedShingleTokenFilter.tokenSeparator = tokenSeparator;
+                        deserializedShingleTokenFilter.filterToken = filterToken;
 
-                        return deserializedValue;
+                        return deserializedShingleTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

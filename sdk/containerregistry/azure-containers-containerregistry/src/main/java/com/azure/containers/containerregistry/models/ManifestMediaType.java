@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * Manifest media type.
  */
-public class ManifestMediaType extends ExpandableStringEnum<ManifestMediaType> {
+public final class ManifestMediaType extends ExpandableStringEnum<ManifestMediaType> {
 
     /**
      * Docker v2 manifest content type.

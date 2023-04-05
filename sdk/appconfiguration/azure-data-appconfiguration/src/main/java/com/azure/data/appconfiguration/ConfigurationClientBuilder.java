@@ -132,12 +132,12 @@ public final class ConfigurationClientBuilder implements
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
     }
 
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private ClientOptions clientOptions;
-    private ConfigurationClientCredentials credential;
+    private String connectionString;
     private TokenCredential tokenCredential;
 
     private String endpoint;
@@ -202,21 +202,57 @@ public final class ConfigurationClientBuilder implements
      * Builds an instance of ConfigurationClientImpl with the provided parameters.
      *
      * @return an instance of ConfigurationClientImpl.
+     * @throws NullPointerException If {@code connectionString} is null.
+     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
+     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
+     * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
+     * authentication per builder instance.
      */
     private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+        String endpointLocal = endpoint;
+        ConfigurationClientCredentials credentialsLocal = null;
+        TokenCredential tokenCredentialLocal = null;
+        // validate the authentication setup
+        if (tokenCredential == null && connectionString == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'tokenCredential' and 'connectionString' "
+                + "both can not be null. Set one authentication before creating client."));
+        } else if (tokenCredential != null && connectionString != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Multiple forms of authentication found. "
+                + "TokenCredential should be null if using connection string, vice versa."));
+        } else if (tokenCredential == null) {
+            if (connectionString.isEmpty()) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("'connectionString' cannot be an empty string."));
+            }
+            try {
+                credentialsLocal = new ConfigurationClientCredentials(connectionString);
+                endpointLocal = credentialsLocal.getBaseUri();
+            } catch (InvalidKeyException err) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The secret contained within the"
+                    + " connection string is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+            } catch (NoSuchAlgorithmException err) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
+            }
+        } else {
+            tokenCredentialLocal = this.tokenCredential;
+        }
+
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
             : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
         return new AzureAppConfigurationImplBuilder()
-                   .pipeline(pipeline == null ? createHttpPipeline(syncTokenPolicy) : pipeline)
+                   .pipeline(pipeline == null ? createDefaultHttpPipeline(
+                       syncTokenPolicy, credentialsLocal, tokenCredentialLocal) : pipeline)
                    .apiVersion(serviceVersion.getVersion())
-                   .endpoint(endpoint)
+                   .endpoint(endpointLocal)
                    .buildClient();
     }
 
-    private HttpPipeline createHttpPipeline(SyncTokenPolicy syncTokenPolicy) {
+    private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
+        ConfigurationClientCredentials credentials, TokenCredential tokenCredential) {
         // Global Env configuration store
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -224,8 +260,8 @@ public final class ConfigurationClientBuilder implements
 
         // Endpoint
         String buildEndpoint = endpoint;
-        if (tokenCredential == null) {
-            buildEndpoint = getBuildEndpoint();
+        if (credentials != null) {
+            buildEndpoint = credentials.getBaseUri();
         }
         // endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(buildEndpoint, "'Endpoint' is required and can not be null.");
@@ -249,13 +285,13 @@ public final class ConfigurationClientBuilder implements
         if (tokenCredential != null) {
             // User token based policy
             policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
-        } else if (credential != null) {
-            // Use credential based policy
-            policies.add(new ConfigurationCredentialsPolicy(credential));
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (credentials != null) {
+            // Use credentialS based policy
+            policies.add(new ConfigurationCredentialsPolicy(credentials));
         } else {
-            // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
+            // Throw exception that credentials and tokenCredential cannot be null
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
         policies.add(syncTokenPolicy);
@@ -297,7 +333,7 @@ public final class ConfigurationClientBuilder implements
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
         this.endpoint = endpoint;
         return this;
@@ -334,31 +370,10 @@ public final class ConfigurationClientBuilder implements
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
      * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code connectionString} is null.
-     * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
-     * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
     @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-
-        if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'connectionString' cannot be an empty string."));
-        }
-
-        try {
-            this.credential = new ConfigurationClientCredentials(connectionString);
-        } catch (InvalidKeyException err) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
-                    + " algorithm.", err));
-        } catch (NoSuchAlgorithmException err) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
-        }
-
-        this.endpoint = credential.getBaseUri();
+        this.connectionString = connectionString;
         return this;
     }
 
@@ -369,12 +384,9 @@ public final class ConfigurationClientBuilder implements
      *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code credential} is null.
      */
     @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
-        // token credential can not be null value
-        Objects.requireNonNull(tokenCredential);
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -443,7 +455,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -468,7 +480,7 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;
@@ -542,16 +554,6 @@ public final class ConfigurationClientBuilder implements
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
         return this;
-    }
-
-    private String getBuildEndpoint() {
-        if (endpoint != null) {
-            return endpoint;
-        } else if (credential != null) {
-            return credential.getBaseUri();
-        } else {
-            return null;
-        }
     }
 }
 

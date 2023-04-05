@@ -132,10 +132,11 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && patternsFound) {
-                        PatternCaptureTokenFilter deserializedValue = new PatternCaptureTokenFilter(name, patterns);
-                        deserializedValue.preserveOriginal = preserveOriginal;
+                        PatternCaptureTokenFilter deserializedPatternCaptureTokenFilter =
+                                new PatternCaptureTokenFilter(name, patterns);
+                        deserializedPatternCaptureTokenFilter.preserveOriginal = preserveOriginal;
 
-                        return deserializedValue;
+                        return deserializedPatternCaptureTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

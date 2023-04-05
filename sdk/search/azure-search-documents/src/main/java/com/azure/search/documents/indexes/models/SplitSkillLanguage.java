@@ -11,31 +11,31 @@ import java.util.Collection;
 
 /** The language codes supported for input text by SplitSkill. */
 public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLanguage> {
-    /** Static value da for SplitSkillLanguage. */
+    /** Danish. */
     public static final SplitSkillLanguage DA = fromString("da");
 
-    /** Static value de for SplitSkillLanguage. */
+    /** German. */
     public static final SplitSkillLanguage DE = fromString("de");
 
-    /** Static value en for SplitSkillLanguage. */
+    /** English. */
     public static final SplitSkillLanguage EN = fromString("en");
 
-    /** Static value es for SplitSkillLanguage. */
+    /** Spanish. */
     public static final SplitSkillLanguage ES = fromString("es");
 
-    /** Static value fi for SplitSkillLanguage. */
+    /** Finnish. */
     public static final SplitSkillLanguage FI = fromString("fi");
 
-    /** Static value fr for SplitSkillLanguage. */
+    /** French. */
     public static final SplitSkillLanguage FR = fromString("fr");
 
-    /** Static value it for SplitSkillLanguage. */
+    /** Italian. */
     public static final SplitSkillLanguage IT = fromString("it");
 
-    /** Static value ko for SplitSkillLanguage. */
+    /** Korean. */
     public static final SplitSkillLanguage KO = fromString("ko");
 
-    /** Static value pt for SplitSkillLanguage. */
+    /** Portuguese. */
     public static final SplitSkillLanguage PT = fromString("pt");
 
     /**

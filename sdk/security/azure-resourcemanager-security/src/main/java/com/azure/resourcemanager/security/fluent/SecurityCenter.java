@@ -325,27 +325,6 @@ public interface SecurityCenter {
     ConnectorsClient getConnectors();
 
     /**
-     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentScansClient object.
-     */
-    SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans();
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentScanResultsClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentScanResultsClient object.
-     */
-    SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults();
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
-     */
-    SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules();
-
-    /**
      * Gets the AlertsClient object to access its operations.
      *
      * @return the AlertsClient object.
@@ -386,41 +365,6 @@ public interface SecurityCenter {
      * @return the GovernanceRulesClient object.
      */
     GovernanceRulesClient getGovernanceRules();
-
-    /**
-     * Gets the GovernanceRulesOperationsClient object to access its operations.
-     *
-     * @return the GovernanceRulesOperationsClient object.
-     */
-    GovernanceRulesOperationsClient getGovernanceRulesOperations();
-
-    /**
-     * Gets the SecurityConnectorGovernanceRulesClient object to access its operations.
-     *
-     * @return the SecurityConnectorGovernanceRulesClient object.
-     */
-    SecurityConnectorGovernanceRulesClient getSecurityConnectorGovernanceRules();
-
-    /**
-     * Gets the SecurityConnectorGovernanceRulesOperationsClient object to access its operations.
-     *
-     * @return the SecurityConnectorGovernanceRulesOperationsClient object.
-     */
-    SecurityConnectorGovernanceRulesOperationsClient getSecurityConnectorGovernanceRulesOperations();
-
-    /**
-     * Gets the SubscriptionGovernanceRulesExecuteStatusClient object to access its operations.
-     *
-     * @return the SubscriptionGovernanceRulesExecuteStatusClient object.
-     */
-    SubscriptionGovernanceRulesExecuteStatusClient getSubscriptionGovernanceRulesExecuteStatus();
-
-    /**
-     * Gets the SecurityConnectorGovernanceRulesExecuteStatusClient object to access its operations.
-     *
-     * @return the SecurityConnectorGovernanceRulesExecuteStatusClient object.
-     */
-    SecurityConnectorGovernanceRulesExecuteStatusClient getSecurityConnectorGovernanceRulesExecuteStatus();
 
     /**
      * Gets the GovernanceAssignmentsClient object to access its operations.
@@ -477,4 +421,39 @@ public interface SecurityCenter {
      * @return the ApiCollectionOffboardingsClient object.
      */
     ApiCollectionOffboardingsClient getApiCollectionOffboardings();
+
+    /**
+     * Gets the HealthReportsClient object to access its operations.
+     *
+     * @return the HealthReportsClient object.
+     */
+    HealthReportsClient getHealthReports();
+
+    /**
+     * Gets the HealthReportOperationsClient object to access its operations.
+     *
+     * @return the HealthReportOperationsClient object.
+     */
+    HealthReportOperationsClient getHealthReportOperations();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScansClient object.
+     */
+    SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScanResultsClient object.
+     */
+    SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults();
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
+     */
+    SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules();
 }

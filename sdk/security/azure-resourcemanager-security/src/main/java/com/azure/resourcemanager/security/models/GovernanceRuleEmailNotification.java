@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GovernanceRuleEmailNotification {
     /*
-     * Defines whether manager email notifications are disabled.
+     * Defines whether manager email notifications are disabled
      */
     @JsonProperty(value = "disableManagerEmailNotification")
     private Boolean disableManagerEmailNotification;
 
     /*
-     * Defines whether owner email notifications are disabled.
+     * Defines whether owner email notifications are disabled
      */
     @JsonProperty(value = "disableOwnerEmailNotification")
     private Boolean disableOwnerEmailNotification;
