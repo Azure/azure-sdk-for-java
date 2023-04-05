@@ -118,7 +118,7 @@ to provide validation of any implementation.
 
 ## Examples
 
-Checkout the [samples README][samples_readme] for in-depth examples on how to use Azure JSON.
+Check out the [samples README][samples_readme] for in-depth examples on how to use Azure JSON.
 
 ## Troubleshooting
 
@@ -139,6 +139,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- links -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-json/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/f63e30992f83bc5f4032a1b0cac2e4a4a7a6e0ca/sdk/core/azure-json/src/samples/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-json%2FREADME.png)

@@ -14,47 +14,55 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
 public class ReadingJsonExamples {
-    public FluentJsonSerializableExample readJsonByteArray() throws IOException {
+    public ComputerMemory readJsonByteArray() throws IOException {
         // BEGIN: com.azure.json.JsonReader.readJsonByteArray
         // Sample uses String.getBytes as a convenience to show the JSON string in a human-readable form.
-        byte[] json = "{\"int\":10,\"boolean\":true,\"string\":\"hello\",\"aNullableDecimal\":null}"
-            .getBytes(StandardCharsets.UTF_8);
+        byte[] json = ("{\"memoryInBytes\":10000000000,\"clockSpeedInHertz\":4800000000,"
+            + "\"manufacturer\":\"Memory Corp\",\"errorCorrecting\":true}").getBytes(StandardCharsets.UTF_8);
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            return FluentJsonSerializableExample.fromJson(jsonReader);
+            return ComputerMemory.fromJson(jsonReader);
         }
         // END: com.azure.json.JsonReader.readJsonByteArray
     }
 
-    public FluentJsonSerializableExample readJsonString() throws IOException {
+    public ComputerProcessor readJsonString() throws IOException {
         // BEGIN: com.azure.json.JsonReader.readJsonString
-        String json = "{\"int\":10,\"boolean\":true,\"string\":\"hello\",\"aNullableDecimal\":null}";
+        String json = "{\"cores\":16,\"threads\":32,\"manufacturer\":\"Processor Corp\","
+            + "\"clockSpeedInHertz\":5000000000,\"releaseDate\":null}";
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            return FluentJsonSerializableExample.fromJson(jsonReader);
+            return ComputerProcessor.fromJson(jsonReader);
         }
         // END: com.azure.json.JsonReader.readJsonString
     }
 
-    public FluentJsonSerializableExample readJsonInputStream() throws IOException {
+    public VmStatistics readJsonInputStream() throws IOException {
         // BEGIN: com.azure.json.JsonReader.readJsonInputStream
         // Sample uses String.getBytes as a convenience to show the JSON string in a human-readable form.
-        InputStream json = new ByteArrayInputStream(
-            "{\"int\":10,\"boolean\":true,\"string\":\"hello\",\"aNullableDecimal\":null}"
-                .getBytes(StandardCharsets.UTF_8));
+        InputStream json = new ByteArrayInputStream(("{\"VMSize\":\"large\",\"Processor\":{\"cores\":8,"
+            + "\"threads\"16\",\"manufacturer\":\"Processor Corp\",\"clockSpeedInHertz\":4000000000,"
+            + "\"releaseDate\":\"2023-01-01\"},\"Memory\":{\"memoryInBytes\":10000000000,"
+            + "\"clockSpeedInHertz\":4800000000,\"manufacturer\":\"Memory Corp\",\"errorCorrecting\":true},"
+            + "\"AcceleratedNetwork\":true,\"CloudProvider\":\"Azure\",\"Available\":true}")
+            .getBytes(StandardCharsets.UTF_8));
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            return FluentJsonSerializableExample.fromJson(jsonReader);
+            return VmStatistics.fromJson(jsonReader);
         }
         // END: com.azure.json.JsonReader.readJsonInputStream
     }
 
-    public FluentJsonSerializableExample readJsonReader() throws IOException {
+    public VmStatistics readJsonReader() throws IOException {
         // BEGIN: com.azure.json.JsonReader.readJsonReader
-        Reader json = new StringReader("{\"int\":10,\"boolean\":true,\"string\":\"hello\",\"aNullableDecimal\":null}");
+        Reader json = new StringReader("{\"VMSize\":\"large\",\"Processor\":{\"cores\":8,\"threads\"16\","
+            + "\"manufacturer\":\"Processor Corp\",\"clockSpeedInHertz\":4000000000,\"releaseDate\":\"2023-01-01\"},"
+            + "\"Memory\":{\"memoryInBytes\":10000000000,\"clockSpeedInHertz\":4800000000,"
+            + "\"manufacturer\":\"Memory Corp\",\"errorCorrecting\":true},\"AcceleratedNetwork\":true,"
+            + "\"CloudProvider\":\"Azure\",\"Available\":true}");
 
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
-            return FluentJsonSerializableExample.fromJson(jsonReader);
+            return VmStatistics.fromJson(jsonReader);
         }
         // END: com.azure.json.JsonReader.readJsonReader
     }
