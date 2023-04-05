@@ -289,6 +289,7 @@ public class ConsistencyWriter {
                 if (lsn.v == -1 || globalCommittedLsn.v == -1) {
                     logger.error("ConsistencyWriter: lsn {} or GlobalCommittedLsn {} is not set for global strong request",
                         lsn, globalCommittedLsn);
+                    // Service Generated because no lsn and glsn set by service
                     throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
 
