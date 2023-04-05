@@ -6,6 +6,8 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
@@ -44,6 +46,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -264,7 +267,7 @@ public final class UtilsImpl {
     }
 
     private static <T> Response<Void> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return new SimpleResponse<Void>(
+        return new SimpleResponse<>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
@@ -272,47 +275,31 @@ public final class UtilsImpl {
     }
 
     /**
-     * This method converts the API response codes into well known exceptions.
-     * @param exception The exception returned by the rest client.
-     * @return The exception returned by the public methods.
+     * This method converts AcrErrors inside AcrErrorsException into {@link HttpResponseException}
+     * with {@link ResponseError}
      */
-    public static Throwable mapException(Throwable exception) {
-        HttpResponseException acrException = null;
+    public static HttpResponseException mapAcrErrorsException(AcrErrorsException acrException) {
+        final HttpResponse errorHttpResponse = acrException.getResponse();
 
-        if (exception instanceof HttpResponseException) {
-            acrException = ((HttpResponseException) exception);
-        } else if (exception instanceof RuntimeException) {
-            RuntimeException runtimeException = (RuntimeException) exception;
-            Throwable throwable = runtimeException.getCause();
-            if (throwable instanceof HttpResponseException) {
-                acrException = (HttpResponseException) throwable;
+        if (acrException.getValue() != null && !CoreUtils.isNullOrEmpty(acrException.getValue().getErrors())) {
+            AcrErrorInfo first = acrException.getValue().getErrors().get(0);
+            ResponseError error = new ResponseError(first.getCode(), first.getMessage());
+
+            switch (errorHttpResponse.getStatusCode()) {
+                case 401:
+                    throw  new ClientAuthenticationException(acrException.getMessage(), acrException.getResponse(), error);
+                case 404:
+                    return new ResourceNotFoundException(acrException.getMessage(), acrException.getResponse(), error);
+                case 409:
+                    return new ResourceExistsException(acrException.getMessage(), acrException.getResponse(), error);
+                case 412:
+                    return new ResourceModifiedException(acrException.getMessage(), acrException.getResponse(), error);
+                default:
+                    return new HttpResponseException(acrException.getMessage(), acrException.getResponse(), error);
             }
         }
 
-        if (acrException == null) {
-            return exception;
-        }
-
-        return mapAcrErrorsException(acrException);
-    }
-
-    public static HttpResponseException mapAcrErrorsException(HttpResponseException acrException) {
-        final HttpResponse errorHttpResponse = acrException.getResponse();
-        final int statusCode = errorHttpResponse.getStatusCode();
-        final String errorDetail = acrException.getMessage();
-
-        switch (statusCode) {
-            case 401:
-                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), acrException);
-            case 404:
-                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), acrException);
-            case 409:
-                return new ResourceExistsException(errorDetail, acrException.getResponse(), acrException);
-            case 412:
-                return new ResourceModifiedException(errorDetail, acrException.getResponse(), acrException);
-            default:
-                return new HttpResponseException(errorDetail, acrException.getResponse(), acrException);
-        }
+        return acrException;
     }
 
     /**

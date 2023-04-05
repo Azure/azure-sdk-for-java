@@ -4,10 +4,10 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
@@ -18,6 +18,7 @@ import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
@@ -369,7 +370,7 @@ public class ContainerRegistryContentClientTests {
         BiFunction<HttpRequest, Integer, HttpResponse> onChunk = (r, c) -> {
             if (c == 3) {
                 HttpHeaders responseHeaders = new HttpHeaders().add("Content-Type", String.valueOf("application/json"));
-                String error = "{\"errors\":[{\"code\":\"BLOB_UPLOAD_INVALID\",\"message\":\"blob upload invalid\"}]}";
+                String error = "{\"errors\":[{\"code\":\"BLOB_UPLOAD_INVALID\",\"message\":\"blob upload invalid\"}, {\"code\":\"BLOB_UPLOAD_FOO\",\"message\":\"blob upload foo\"}]}";
                 return new MockHttpResponse(r, 404, responseHeaders, error.getBytes(StandardCharsets.UTF_8));
             }
             return null;
@@ -387,11 +388,10 @@ public class ContainerRegistryContentClientTests {
         assertAcrException(ex, "BLOB_UPLOAD_INVALID");
     }
 
-    private void assertAcrException(Exception ex, String code) {
-        assertInstanceOf(AcrErrorsException.class, ex.getCause());
-        AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
-        assertEquals(1, acrErrors.getValue().getErrors().size());
-        assertEquals(code, acrErrors.getValue().getErrors().get(0).getCode());
+    private void assertAcrException(HttpResponseException ex, String code) {
+        assertInstanceOf(ResponseError.class, ex.getValue());
+        ResponseError error = (ResponseError) ex.getValue();
+        assertEquals(code, error.getCode());
     }
 
     @Test

@@ -3,16 +3,15 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
@@ -96,11 +95,8 @@ public class UploadImage {
             System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(),
                 uploadResult.getSizeInBytes());
         } catch (HttpResponseException ex) {
-            if (ex.getCause() instanceof AcrErrorsException) {
-                AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
-                for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
-                    System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
-                }
+            if (ex.getValue() instanceof ResponseError) {
+                System.out.printf("Uploaded blob failed: code '%s'\n", ((ResponseError) ex.getValue()).getCode());
             }
         }
         // END: com.azure.containers.containerregistry.uploadBlobErrorHandling

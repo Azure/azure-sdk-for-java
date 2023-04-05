@@ -165,11 +165,8 @@ try {
     System.out.printf("Uploaded blob: digest - '%s', size - %s\n", uploadResult.getDigest(),
         uploadResult.getSizeInBytes());
 } catch (HttpResponseException ex) {
-    if (ex.getCause() instanceof AcrErrorsException) {
-        AcrErrorsException acrErrors = (AcrErrorsException) ex.getCause();
-        for (AcrErrorInfo info : acrErrors.getValue().getErrors()) {
-            System.out.printf("Uploaded blob failed: code '%s'\n", info.getCode());
-        }
+    if (ex.getValue() instanceof ResponseError) {
+        System.out.printf("Uploaded blob failed: code '%s'\n", ((ResponseError) ex.getValue()).getCode());
     }
 }
 ```
