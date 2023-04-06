@@ -1,10 +1,22 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2023-03-31-preview)
 
 ### Features Added
 
+- Added new function `listRooms` to list all created rooms by returning `PagedFlux<CommunicationRoom>`,
+- Added pagination support for `listParticipants` by returning `PagedFlux<RoomParticipant>`.
+
 ### Breaking Changes
+
+- Removed `participants` from `CommunicationRoom` model.
+- Removed `roomJoinPolicy`, all rooms are invite-only by default.
+- `updateRoom` no longer accepts participant list as input.
+- Replaced `addParticipants` and `updateParticipants` with `UpsertParticipants`
+- Renamed `RoleType` to `ParticipantRole`
+- Renamed `getParticipants` to `listParticipants`
+- Renamed `CreatedOn` to `CreatedAt` in `CommunicationRoom`
+- `removeParticipants` now takes in a `List<CommunicationIdentifier>` instead of `List<RoomParticipant>`
 
 ### Bugs Fixed
 
