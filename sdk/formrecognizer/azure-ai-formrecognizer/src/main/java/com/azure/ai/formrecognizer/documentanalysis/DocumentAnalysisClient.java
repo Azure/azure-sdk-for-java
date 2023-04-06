@@ -398,6 +398,7 @@ public final class DocumentAnalysisClient {
      *
      * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
      * @param document The data of the document to analyze information from.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
