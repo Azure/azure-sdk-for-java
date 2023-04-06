@@ -15,6 +15,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -323,6 +325,13 @@ public class TestProxyTests extends TestProxyTestBase {
 
         // custom body regex
         assertEquals(record.getResponse().get("TableName"), REDACTED);
+    }
+
+    @Test
+    @Tag("Live")
+    public void canGetTestProxyVersion() {
+        String version = TestProxyUtils.getTestProxyVersion();
+        assertNotNull(version);
     }
 
     private RecordedTestProxyData readDataFromFile() {

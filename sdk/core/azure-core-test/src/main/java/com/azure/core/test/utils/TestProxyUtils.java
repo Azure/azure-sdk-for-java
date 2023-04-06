@@ -15,9 +15,13 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -166,6 +170,33 @@ public class TestProxyUtils {
             throw LOGGER.logExceptionAsError(new RuntimeException("Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
         }
     }
+
+    /**
+     * Finds the test proxy version in the source tree.
+     * @return The version string to use.
+     */
+    public static String getTestProxyVersion() {
+        Path path = TestUtils.getRecordFolder().toPath();
+        Path candidate = null;
+        while (path != null) {
+            candidate = path.resolve("eng");
+            if (Files.exists(candidate)) {
+                break;
+            }
+            path = path.getParent();
+        }
+        if (path == null) {
+            throw new RuntimeException("Could not locate eng folder");
+        }
+        Path versionFile = Path.of("common", "testproxy", "target_version.txt");
+        candidate = candidate.resolve(versionFile);
+        try {
+            return Files.readString(candidate).replace(System.getProperty("line.separator"), "");
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
 
     /**
      * Registers the default set of sanitizers for sanitizing request and responses
