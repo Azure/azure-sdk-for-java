@@ -30,6 +30,8 @@ public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
     /** Static value footnote for ParagraphRole. */
     public static final ParagraphRole FOOTNOTE = fromString("footnote");
 
+    public static final ParagraphRole FORMULA_BLOCK = fromString("formulaBlock");
+
     /**
      * Creates or finds a ParagraphRole from its string representation.
      *

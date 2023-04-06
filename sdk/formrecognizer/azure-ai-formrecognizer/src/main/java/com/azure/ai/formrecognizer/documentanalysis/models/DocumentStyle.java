@@ -29,6 +29,32 @@ public final class DocumentStyle {
      */
     private float confidence;
 
+    /*
+     * Visually most similar font from among the set of supported font families, with fallback fonts following CSS
+     * convention (ex. 'Arial, sans-serif').
+     */
+    private String similarFontFamily;
+
+    /*
+     * Font style.
+     */
+    private FontStyle fontStyle;
+
+    /*
+     * Font weight.
+     */
+    private FontWeight fontWeight;
+
+    /*
+     * Foreground color in #rrggbb hexadecimal format.
+     */
+    private String color;
+
+    /*
+     * Background color in #rrggbb hexadecimal format..
+     */
+    private String backgroundColor;
+
     /**
      * Get the isHandwritten property: Is content handwritten?.
      *
@@ -86,6 +112,54 @@ public final class DocumentStyle {
         this.confidence = confidence;
     }
 
+    public Boolean getHandwritten() {
+        return isHandwritten;
+    }
+
+    private void setHandwritten(Boolean handwritten) {
+        isHandwritten = handwritten;
+    }
+
+    public String getSimilarFontFamily() {
+        return similarFontFamily;
+    }
+
+    private void setSimilarFontFamily(String similarFontFamily) {
+        this.similarFontFamily = similarFontFamily;
+    }
+
+    public FontStyle getFontStyle() {
+        return fontStyle;
+    }
+
+    private void setFontStyle(FontStyle fontStyle) {
+        this.fontStyle = fontStyle;
+    }
+
+    public FontWeight getFontWeight() {
+        return fontWeight;
+    }
+
+    private void setFontWeight(FontWeight fontWeight) {
+        this.fontWeight = fontWeight;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    private void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    private void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
     static {
         DocumentStyleHelper.setAccessor(new DocumentStyleHelper.DocumentStyleAccessor() {
             @Override
@@ -101,6 +175,31 @@ public final class DocumentStyle {
             @Override
             public void setConfidence(DocumentStyle documentStyle, Float confidence) {
                 documentStyle.setConfidence(confidence);
+            }
+
+            @Override
+            public void setSimilarFontFamily(DocumentStyle documentStyle, String similarFontFamily) {
+                documentStyle.setSimilarFontFamily(similarFontFamily);
+            }
+
+            @Override
+            public void setFontStyle(DocumentStyle documentStyle, FontStyle fontStyle) {
+                documentStyle.setFontStyle(fontStyle);
+            }
+
+            @Override
+            public void setFontWeight(DocumentStyle documentStyle, FontWeight fontWeight) {
+                documentStyle.setFontWeight(fontWeight);
+            }
+
+            @Override
+            public void setColor(DocumentStyle documentStyle, String color) {
+                documentStyle.setColor(color);
+            }
+
+            @Override
+            public void setBackgroundColor(DocumentStyle documentStyle, String backgroundColor) {
+                documentStyle.setBackgroundColor(backgroundColor);
             }
         });
     }
