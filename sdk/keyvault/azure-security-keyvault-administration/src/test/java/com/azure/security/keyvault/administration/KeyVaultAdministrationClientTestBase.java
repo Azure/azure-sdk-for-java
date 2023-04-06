@@ -16,6 +16,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
@@ -48,6 +50,10 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
 
     protected List<HttpPipelinePolicy> getPolicies() {
         TokenCredential credential = null;
+
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("token", "REDACTED", TestProxySanitizerType.BODY_KEY));
+        interceptorManager.addSanitizers(customSanitizers);
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
