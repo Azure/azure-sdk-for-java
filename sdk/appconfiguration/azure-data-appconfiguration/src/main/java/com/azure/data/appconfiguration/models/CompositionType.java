@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -34,7 +33,6 @@ public final class CompositionType extends ExpandableStringEnum<CompositionType>
      * @param name a name to look for.
      * @return the corresponding CompositionType.
      */
-    @JsonCreator
     public static CompositionType fromString(String name) {
         return fromString(name, CompositionType.class);
     }
