@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.43.0-beta.1 (Unreleased)
+### 4.43.0 (2023-04-06)
 
 #### Features Added
 * Added option to enable automatic retries for write operations - See [34227](https://github.com/Azure/azure-sdk-for-java/pull/34227)
@@ -9,10 +9,6 @@
 
 #### Breaking Changes
 * Changed the default structure of Open Telemetry events being emitted by the SDK to follow the semantic profile for Cosmos DB. Use the `COSMOS.USE_LEGACY_TRACING` system property to retrun to the previous event structure: `-DCOSMOS.USE_LEGACY_TRACING=true` - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
-
-#### Bugs Fixed
-
-#### Other Changes
 
 ### 4.42.0 (2023-03-17)
 
