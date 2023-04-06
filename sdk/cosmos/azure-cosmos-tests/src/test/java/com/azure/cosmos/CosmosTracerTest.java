@@ -45,6 +45,7 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
@@ -357,10 +358,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             .result(result)
             .build();
 
-        FaultInjectorProvider injectorProvider = (FaultInjectorProvider) cosmosAsyncContainer
-            .getOrConfigureFaultInjectorProvider(() -> new FaultInjectorProvider(cosmosAsyncContainer));
-
-        injectorProvider.configureFaultInjectionRules(Arrays.asList(rule)).block();
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer,Arrays.asList(rule)).block();
 
         ObjectNode item = getDocumentDefinition(ITEM_ID);
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
@@ -371,6 +369,8 @@ public class CosmosTracerTest extends TestSuiteBase {
                 try {
                     if (!injectedFailureEnabled) {
                         rule.disable();
+                    } else {
+                        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer,Arrays.asList(rule)).block();
                     }
 
                     CosmosItemResponse<ObjectNode> cosmosItemResponse = cosmosAsyncContainer
@@ -378,6 +378,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                         .block();
 
                     assertThat(cosmosItemResponse).isNotNull();
+                    logger.info("lalalalalalalla, do some testing: " + cosmosItemResponse.getDiagnostics().toString());
                     assertThat(cosmosItemResponse.getDiagnostics().toString().contains("InjectedResponseDelay"))
                         .isEqualTo(injectedFailureEnabled);
                     verifyTracerAttributes(
@@ -450,7 +451,6 @@ public class CosmosTracerTest extends TestSuiteBase {
             .operationType(FaultInjectionOperationType.READ_ITEM)
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(ITEM_ID)))
-                .replicaCount(4)
                 .includePrimary(true)
                 .build())
             .build();
