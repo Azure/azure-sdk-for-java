@@ -5,59 +5,56 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.Objects;
 
 /** The KeyValue model. */
 @Fluent
-public final class KeyValue {
+public final class KeyValue implements JsonSerializable<KeyValue> {
     /*
      * The key of the key-value.
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * The label the key-value belongs to.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * The content type of the value stored within the key-value.
      */
-    @JsonProperty(value = "content_type")
     private String contentType;
 
     /*
      * The value of the key-value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * A date representing the last time the key-value was modified.
      */
-    @JsonProperty(value = "last_modified")
     private OffsetDateTime lastModified;
 
     /*
      * The tags of the key-value
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * Indicates whether the key-value is locked.
      */
-    @JsonProperty(value = "locked")
     private Boolean locked;
 
     /*
      * A value representing the current state of the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /** Creates an instance of KeyValue class. */
@@ -221,5 +218,63 @@ public final class KeyValue {
     public KeyValue setEtag(String etag) {
         this.etag = etag;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("content_type", this.contentType);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("last_modified", Objects.toString(this.lastModified, null));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("locked", this.locked);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyValue from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyValue if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IOException If an error occurs while reading the KeyValue.
+     */
+    public static KeyValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    KeyValue deserializedKeyValue = new KeyValue();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("key".equals(fieldName)) {
+                            deserializedKeyValue.key = reader.getString();
+                        } else if ("label".equals(fieldName)) {
+                            deserializedKeyValue.label = reader.getString();
+                        } else if ("content_type".equals(fieldName)) {
+                            deserializedKeyValue.contentType = reader.getString();
+                        } else if ("value".equals(fieldName)) {
+                            deserializedKeyValue.value = reader.getString();
+                        } else if ("last_modified".equals(fieldName)) {
+                            deserializedKeyValue.lastModified =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("tags".equals(fieldName)) {
+                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                            deserializedKeyValue.tags = tags;
+                        } else if ("locked".equals(fieldName)) {
+                            deserializedKeyValue.locked = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("etag".equals(fieldName)) {
+                            deserializedKeyValue.etag = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedKeyValue;
+                });
     }
 }

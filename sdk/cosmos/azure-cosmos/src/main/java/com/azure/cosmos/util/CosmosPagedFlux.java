@@ -261,7 +261,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 pagedFluxOptions.getOperationId(),
                 pagedFluxOptions.getEffectiveConsistencyLevel(),
                 pagedFluxOptions.getMaxItemCount(),
-                pagedFluxOptions.getDiagnosticsThresholds());
+                pagedFluxOptions.getDiagnosticsThresholds(),
+                null);
 
             return Flux
                 .deferContextual(reactorCtx -> result

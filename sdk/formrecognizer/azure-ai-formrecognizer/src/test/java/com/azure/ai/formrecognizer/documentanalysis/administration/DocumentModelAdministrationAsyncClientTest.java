@@ -363,6 +363,22 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+        selectionMarkTrainingRunner((trainingFilesUrl) -> {
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "filelist.jsonl")
+                    .setPollInterval(durationTestMode).getSyncPoller();
+            syncPoller1.waitForCompletion();
+            DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
+
+            validateDocumentModelData(createdModel1);
+            client.deleteDocumentModel(createdModel1.getModelId()).block();
+        });
+    }
+
     /**
      * Verifies the result of the copy operation for valid parameters.
      */

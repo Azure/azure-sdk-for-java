@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatusImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -39,23 +39,23 @@ public final class SubscriptionProperties {
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
     private final OffsetDateTime accessedAt;
-    private final MessageCountDetails messageCountDetails;
+    private final MessageCountDetailsImpl messageCountDetails;
     private String userMetadata;
     private String forwardDeadLetteredMessagesTo;
     private Duration autoDeleteOnIdle;
-    private final EntityAvailabilityStatus entityAvailabilityStatus;
+    private final EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setSubscriptionAccessor(new EntityHelper.SubscriptionAccessor() {
             @Override
-            public SubscriptionProperties toModel(SubscriptionDescription description) {
+            public SubscriptionProperties toModel(SubscriptionDescriptionImpl description) {
                 return new SubscriptionProperties(description);
             }
 
             @Override
-            public SubscriptionDescription toImplementation(SubscriptionProperties subscription) {
-                return new SubscriptionDescription()
+            public SubscriptionDescriptionImpl toImplementation(SubscriptionProperties subscription) {
+                return new SubscriptionDescriptionImpl()
                     .setAccessedAt(subscription.getAccessedAt())
                     .setAutoDeleteOnIdle(subscription.getAutoDeleteOnIdle())
                     .setCreatedAt(subscription.getCreatedAt())
@@ -97,7 +97,7 @@ public final class SubscriptionProperties {
      *
      * @param description Options used to create a subscription.
      */
-    SubscriptionProperties(SubscriptionDescription description) {
+    SubscriptionProperties(SubscriptionDescriptionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
         this.accessedAt = description.getAccessedAt();
         this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
@@ -400,7 +400,7 @@ public final class SubscriptionProperties {
      *
      * @return the messageCountDetails value.
      */
-    MessageCountDetails getMessageCountDetails() {
+    MessageCountDetailsImpl getMessageCountDetails() {
         return this.messageCountDetails;
     }
 
@@ -473,7 +473,7 @@ public final class SubscriptionProperties {
      *
      * @return the entityAvailabilityStatus value.
      */
-    EntityAvailabilityStatus getEntityAvailabilityStatus() {
+    EntityAvailabilityStatusImpl getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
     }
 }

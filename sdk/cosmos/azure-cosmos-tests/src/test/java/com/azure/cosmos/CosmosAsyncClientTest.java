@@ -45,6 +45,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
+        this.clientBuilder.buildConnectionPolicy();
         if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.configs() != null) {
             String connectionMode = this.clientBuilder.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT
                     ? "Direct " + this.clientBuilder.configs().getProtocol()

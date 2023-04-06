@@ -189,6 +189,32 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode, String)}
+     */
+    public void beginBuildModelWithFileList() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String fileList = "";
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(blobContainerUrl,
+                DocumentModelBuildMode.TEMPLATE, fileList
+            )
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(documentModel -> {
+                System.out.printf("Model ID: %s%n", documentModel.getModelId());
+                System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                        System.out.printf("Field: %s", field);
+                        System.out.printf("Field type: %s", documentFieldSchema.getType());
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+                    });
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String
+    }
+
+    /**
      * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentModel}
      */
     public void deleteModel() {
@@ -569,6 +595,4 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
     }
-
-
 }
