@@ -213,8 +213,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         // Verifying no error when initializeContainer called on gateway mode
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
-            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
-            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
+            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            gatewayCosmosAsyncContainer.openConnectionsAndInitCaches().block();
         } else {
             gatewayCosmosContainer.openConnectionsAndInitCaches();
             gatewayCosmosContainer.openConnectionsAndInitCaches();
