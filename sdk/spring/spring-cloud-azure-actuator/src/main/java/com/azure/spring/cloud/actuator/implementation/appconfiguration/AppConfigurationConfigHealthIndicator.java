@@ -35,11 +35,11 @@ public class AppConfigurationConfigHealthIndicator extends AbstractHealthIndicat
                 builder.withDetail(store, "NOT LOADED");
             } else {
                 builder.withDetail(store, "UP");
-           }
-       }
-       if (!healthy) {
-           builder.down();
-       }
-       builder.up();
+            }
+        }
+        if (!healthy) {
+            builder.down();
+        }
+        builder.up();
     }
 }
