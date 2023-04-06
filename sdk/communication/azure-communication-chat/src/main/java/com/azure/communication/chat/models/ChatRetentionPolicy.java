@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "policyType",
-        defaultImpl = RetentionPolicy.class)
-@JsonTypeName("RetentionPolicy")
+        defaultImpl = ChatRetentionPolicy.class)
+@JsonTypeName("ChatRetentionPolicy")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = ThreadCreationDatePolicy.class)
+    @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = ThreadCreationDateRetentionPolicy.class)
 })
 @Immutable
-public class RetentionPolicy {}
+public class ChatRetentionPolicy {}

@@ -28,7 +28,7 @@ public final class CreateChatThreadOptions {
      * creation.
      */
     @JsonProperty(value = "retentionPolicy")
-    private RetentionPolicy retentionPolicy;
+    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Get the topic property: The chat thread topic.
@@ -75,7 +75,7 @@ public final class CreateChatThreadOptions {
      *
      * @return the retentionPolicy value.
      */
-    public RetentionPolicy getRetentionPolicy() {
+    public ChatRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -85,7 +85,7 @@ public final class CreateChatThreadOptions {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the CreateChatThreadOptions object itself.
      */
-    public CreateChatThreadOptions setRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public CreateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

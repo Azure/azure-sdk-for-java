@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.models.RetentionPolicy;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
@@ -21,7 +20,7 @@ public final class ChatThreadProperties {
 
     private CommunicationIdentifier createdBy;
 
-    private RetentionPolicy retentionPolicy;
+    private ChatRetentionPolicy chatRetentionPolicy;
 
     /**
      * Get the id property: Chat thread id.
@@ -110,22 +109,22 @@ public final class ChatThreadProperties {
     }
 
     /**
-     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     * Get the chatRetentionPolicy property: Data retention policy for auto deletion.
      *
-     * @return the retentionPolicy value.
+     * @return the chatRetentionPolicy value.
      */
-    public RetentionPolicy getRetentionPolicy() {
-        return this.retentionPolicy;
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.chatRetentionPolicy;
     }
 
     /**
-     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     * Set the chatRetentionPolicy property: Data retention policy for auto deletion.
      *
-     * @param retentionPolicy the retentionPolicy value to set.
+     * @param chatRetentionPolicy the chatRetentionPolicy value to set.
      * @return the ChatThreadProperties object itself.
      */
-    public ChatThreadProperties setRetentionPolicy(RetentionPolicy retentionPolicy) {
-        this.retentionPolicy = retentionPolicy;
+    public ChatThreadProperties setRetentionPolicy(ChatRetentionPolicy chatRetentionPolicy) {
+        this.chatRetentionPolicy = chatRetentionPolicy;
         return this;
     }
 }

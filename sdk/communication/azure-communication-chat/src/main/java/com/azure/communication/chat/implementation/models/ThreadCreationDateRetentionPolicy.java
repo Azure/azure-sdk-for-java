@@ -10,36 +10,36 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Thread retention policy based on thread creation date. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "policyType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("threadCreationDate")
 @Fluent
-public final class ThreadCreationDateRetentionPolicy extends RetentionPolicy {
+public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy {
     /*
      * Indicates how many days after the thread creation the thread will be
      * deleted. Only 90 is accepted for now.
      */
-    @JsonProperty(value = "daysAfterCreation", required = true)
-    private int daysAfterCreation;
+    @JsonProperty(value = "deleteThreadAfterDays", required = true)
+    private int deleteThreadAfterDays;
 
     /**
-     * Get the daysAfterCreation property: Indicates how many days after the thread creation the thread will be deleted.
-     * Only 90 is accepted for now.
+     * Get the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be
+     * deleted. Only 90 is accepted for now.
      *
-     * @return the daysAfterCreation value.
+     * @return the deleteThreadAfterDays value.
      */
-    public int getDaysAfterCreation() {
-        return this.daysAfterCreation;
+    public int getDeleteThreadAfterDays() {
+        return this.deleteThreadAfterDays;
     }
 
     /**
-     * Set the daysAfterCreation property: Indicates how many days after the thread creation the thread will be deleted.
-     * Only 90 is accepted for now.
+     * Set the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be
+     * deleted. Only 90 is accepted for now.
      *
-     * @param daysAfterCreation the daysAfterCreation value to set.
+     * @param deleteThreadAfterDays the deleteThreadAfterDays value to set.
      * @return the ThreadCreationDateRetentionPolicy object itself.
      */
-    public ThreadCreationDateRetentionPolicy setDaysAfterCreation(int daysAfterCreation) {
-        this.daysAfterCreation = daysAfterCreation;
+    public ThreadCreationDateRetentionPolicy setDeleteThreadAfterDays(int deleteThreadAfterDays) {
+        this.deleteThreadAfterDays = deleteThreadAfterDays;
         return this;
     }
 }

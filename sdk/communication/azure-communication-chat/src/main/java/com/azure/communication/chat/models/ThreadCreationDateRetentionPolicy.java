@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "policyType")
 @JsonTypeName("basedOnThreadCreationDate")
 @Fluent
-public final class ThreadCreationDatePolicy extends RetentionPolicy {
+public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy {
     /*
      * Indicates how many days after the thread creation the thread will be
      * deleted. Only 90 is accepted for now.
      */
     @JsonProperty(value = "daysAfterCreation", required = true)
-    private int daysAfterCreation;
+    private int deleteThreadAfterDays;
 
     /**
      * Get the daysAfterCreation property: Indicates how many days after the thread creation the thread will be deleted.
@@ -27,19 +27,19 @@ public final class ThreadCreationDatePolicy extends RetentionPolicy {
      *
      * @return the daysAfterCreation value.
      */
-    public int getDaysAfterCreation() {
-        return this.daysAfterCreation;
+    public int getDeleteThreadAfterDays() {
+        return this.deleteThreadAfterDays;
     }
 
     /**
-     * Set the daysAfterCreation property: Indicates how many days after the thread creation the thread will be deleted.
+     * Set the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be deleted.
      * Only 90 is accepted for now.
      *
-     * @param daysAfterCreation the daysAfterCreation value to set.
+     * @param deleteThreadAfterDays the daysAfterCreation value to set.
      * @return the BasedOnThreadCreationDateRetentionPolicy object itself.
      */
-    public ThreadCreationDatePolicy setDaysAfterCreation(int daysAfterCreation) {
-        this.daysAfterCreation = daysAfterCreation;
+    public ThreadCreationDateRetentionPolicy setDeleteThreadAfterDays(int deleteThreadAfterDays) {
+        this.deleteThreadAfterDays = deleteThreadAfterDays;
         return this;
     }
 }

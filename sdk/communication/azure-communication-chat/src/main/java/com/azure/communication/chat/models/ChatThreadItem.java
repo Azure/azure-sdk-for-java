@@ -4,7 +4,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.models.RetentionPolicy;
+import com.azure.communication.chat.implementation.models.ChatRetentionPolicy;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -43,7 +43,7 @@ public final class ChatThreadItem {
      * creation.
      */
     @JsonProperty(value = "retentionPolicy")
-    private RetentionPolicy retentionPolicy;
+    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Get the id property: Chat thread id.
@@ -122,7 +122,7 @@ public final class ChatThreadItem {
      *
      * @return the retentionPolicy value.
      */
-    public RetentionPolicy getRetentionPolicy() {
+    public ChatRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -132,7 +132,7 @@ public final class ChatThreadItem {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the ChatThreadItem object itself.
      */
-    public ChatThreadItem setRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public ChatThreadItem setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
