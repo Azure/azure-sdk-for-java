@@ -3,6 +3,7 @@ package com.azure.storage.common.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.UrlBuilder;
@@ -25,7 +26,6 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
      * The service permits a timeout maximum of 30 seconds.
      *
      * @param timeout The timeout duration.
-     * @throws IllegalArgumentException If the timeout is greater than 30 seconds.
      */
     public ServiceTimeoutPolicy(Duration timeout) {
         // This can be changed to require a valid timeout of 1-30 seconds.
@@ -34,11 +34,6 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
             timeoutInSeconds = null;
         } else {
             long tempTimeoutInSeconds = timeout.getSeconds();
-            if (tempTimeoutInSeconds > 30) {
-                throw new IllegalArgumentException("'timeout' was greater than the maximum allowed 30 seconds. It was: "
-                    + tempTimeoutInSeconds);
-            }
-
             if (tempTimeoutInSeconds <= 0) {
                 applyTimeout = false;
                 timeoutInSeconds = null;
@@ -53,7 +48,7 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
         if (applyTimeout) {
             // Add 'timeout' URI query parameter to request URL.
             UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            urlBuilder.addQueryParameter("timeout", timeoutInSeconds);
+            urlBuilder.setQueryParameter("timeout", timeoutInSeconds);
             context.getHttpRequest().setUrl(urlBuilder.toString());
         }
 
@@ -67,11 +62,21 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
         if (applyTimeout) {
             // Add 'timeout' URI query parameter to request URL.
             UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            urlBuilder.addQueryParameter("timeout", timeoutInSeconds);
+            urlBuilder.setQueryParameter("timeout", timeoutInSeconds);
             context.getHttpRequest().setUrl(urlBuilder.toString());
         }
 
         return next.processSync();
+    }
+
+    /**
+     * Gets the position to place the policy.
+     * <p>
+     *
+     * @return The position to place the policy.
+     */
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.PER_CALL;
     }
 }
 

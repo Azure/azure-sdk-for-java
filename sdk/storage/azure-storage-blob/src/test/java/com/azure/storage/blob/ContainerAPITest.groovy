@@ -36,8 +36,10 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.ServiceTimeoutPolicy
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -76,6 +78,33 @@ class ContainerAPITest extends APISpec {
 
         then:
         cc.exists()
+    }
+
+    def "test"() {
+        setup:
+        def storageClient = new BlobServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+//            .addPolicy(new OperationalLevelTimeoutExample.TimeoutPolicy())
+            .addPolicy(new ServiceTimeoutPolicy(Duration.ofSeconds(1)))
+            .buildClient()
+
+        def blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis())
+        blobContainerClient.createIfNotExistsWithResponse(null, Duration.ofSeconds(5), null)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        def streamData = new ByteArrayInputStream(getRandomByteArray(Constants.MB))
+
+        when:
+        blobClient.upload(streamData)
+
+        then:
+        notThrown(BlobStorageException)
+
+        when:
+        blobContainerClient.listBlobs()
+
+        then:
+        notThrown(BlobStorageException)
     }
 
     @Unroll
