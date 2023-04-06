@@ -359,7 +359,10 @@ public class CosmosTracerTest extends TestSuiteBase {
             .result(result)
             .build();
 
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer,Arrays.asList(rule)).block();
+        FaultInjectorProvider injectorProvider = (FaultInjectorProvider) cosmosAsyncContainer
+            .getOrConfigureFaultInjectorProvider(() -> new FaultInjectorProvider(cosmosAsyncContainer));
+
+        injectorProvider.configureFaultInjectionRules(Arrays.asList(rule)).block();
 
         ObjectNode item = getDocumentDefinition(ITEM_ID);
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
@@ -370,8 +373,6 @@ public class CosmosTracerTest extends TestSuiteBase {
                 try {
                     if (!injectedFailureEnabled) {
                         rule.disable();
-                    } else {
-                        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer,Arrays.asList(rule)).block();
                     }
 
                     CosmosItemResponse<ObjectNode> cosmosItemResponse = cosmosAsyncContainer
@@ -451,6 +452,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             .operationType(FaultInjectionOperationType.READ_ITEM)
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(ITEM_ID)))
+                .replicaCount(4)
                 .includePrimary(true)
                 .build())
             .build();
