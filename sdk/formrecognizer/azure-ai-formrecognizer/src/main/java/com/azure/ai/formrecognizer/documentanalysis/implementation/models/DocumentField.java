@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
@@ -127,8 +128,15 @@ public final class DocumentField {
     @JsonProperty(value = "confidence")
     private Float confidence;
 
-    /** Creates an instance of DocumentField class. */
-    public DocumentField() {}
+    /**
+     * Creates an instance of DocumentField class.
+     *
+     * @param type the type value to set.
+     */
+    @JsonCreator
+    public DocumentField(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
+        this.type = type;
+    }
 
     /**
      * Get the type property: Data type of the field value.
@@ -137,17 +145,6 @@ public final class DocumentField {
      */
     public DocumentFieldType getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Data type of the field value.
-     *
-     * @param type the type value to set.
-     * @return the DocumentField object itself.
-     */
-    public DocumentField setType(DocumentFieldType type) {
-        this.type = type;
-        return this;
     }
 
     /**

@@ -113,7 +113,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
         return client.send(request).map(response -> {
             TestProxyUtils.checkForTestProxyErrors(response);
-            return response;
+            return TestProxyUtils.revertUrl(response);
         });
     }
 
@@ -130,7 +130,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
         HttpResponse response = client.sendSync(request, context);
         TestProxyUtils.checkForTestProxyErrors(response);
-        return response;
+        return TestProxyUtils.revertUrl(response);
     }
 
     /**

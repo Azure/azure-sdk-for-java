@@ -80,8 +80,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -489,7 +487,7 @@ public class DataLakePathAsyncClient {
                 options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
                 options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
                 leaseDuration, expiryOptions, expiresOnString, options.getEncryptionContext(), options.getPathHttpHeaders(),
-                lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                lac, mac, null, customerProvidedKey, context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
                 response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
@@ -633,8 +631,7 @@ public class DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().deleteWithResponseAsync(null, null, recursive, null, lac, mac,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.dataLakeStorage.getPaths().deleteWithResponseAsync(null, null, recursive, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1095,8 +1092,7 @@ public class DataLakePathAsyncClient {
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().setAccessControlWithResponseAsync(null, owner, group, permissionsString,
-            accessControlListString, null, lac, mac,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            accessControlListString, null, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -1381,7 +1377,7 @@ public class DataLakePathAsyncClient {
         StorageImplUtils.assertNotNull("accessControlList", accessControlList);
 
         context = context == null ? Context.NONE : context;
-        Context contextFinal = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
+        Context contextFinal = context;
 
         AtomicInteger directoriesSuccessfulCount = new AtomicInteger(0);
         AtomicInteger filesSuccessfulCount = new AtomicInteger(0);
@@ -1590,8 +1586,7 @@ public class DataLakePathAsyncClient {
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().getPropertiesWithResponseAsync(null, null,
-            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, lac, mac,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, lac, mac, context)
             .map(response -> new SimpleResponse<>(response, new PathAccessControl(
                 PathAccessControlEntry.parseList(response.getDeserializedHeaders().getXMsAcl()),
                 PathPermissions.parseSymbolic(response.getDeserializedHeaders().getXMsPermissions()),
@@ -1647,7 +1642,7 @@ public class DataLakePathAsyncClient {
                 null /* group */, null /* acl */, null /* proposedLeaseId */, null /* leaseDuration */,
                 null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
                 null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                context)
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 

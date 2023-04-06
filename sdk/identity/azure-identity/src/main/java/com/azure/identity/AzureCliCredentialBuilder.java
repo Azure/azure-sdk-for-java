@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,6 +53,16 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     public AzureCliCredentialBuilder tenantId(String tenantId) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Specifies a {@link Duration} timeout for calling the Azure CLI.
+     * @param duration The {@link Duration} to wait.
+     * @return An updated instance of this builder with the timeout specified.
+     */
+    public AzureCliCredentialBuilder azureCliCredentialTimeout(Duration duration) {
+        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
         return this;
     }
 

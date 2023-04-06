@@ -22,7 +22,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6)
      */
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /*
      * Contact details of the people or organization responsible for the image.
@@ -89,24 +89,24 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     public OciAnnotations() {}
 
     /**
-     * Get the created property: Date and time on which the image was built (string, date-time as defined by
+     * Get the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
      *
-     * @return the created value.
+     * @return the createdOn value.
      */
-    public OffsetDateTime getCreated() {
-        return this.created;
+    public OffsetDateTime getCreatedOn() {
+        return this.createdOn;
     }
 
     /**
-     * Set the created property: Date and time on which the image was built (string, date-time as defined by
+     * Set the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
      *
-     * @param created the created value to set.
+     * @param createdOn the createdOn value to set.
      * @return the OciAnnotations object itself.
      */
-    public OciAnnotations setCreated(OffsetDateTime created) {
-        this.created = created;
+    public OciAnnotations setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
         return this;
     }
 
@@ -357,7 +357,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("org.opencontainers.image.created", Objects.toString(this.created, null));
+        jsonWriter.writeStringField("org.opencontainers.image.created", Objects.toString(this.createdOn, null));
         jsonWriter.writeStringField("org.opencontainers.image.authors", this.authors);
         jsonWriter.writeStringField("org.opencontainers.image.url", this.url);
         jsonWriter.writeStringField("org.opencontainers.image.documentation", this.documentation);
@@ -395,7 +395,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
                         reader.nextToken();
 
                         if ("org.opencontainers.image.created".equals(fieldName)) {
-                            deserializedOciAnnotations.created =
+                            deserializedOciAnnotations.createdOn =
                                     reader.getNullable(
                                             nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                         } else if ("org.opencontainers.image.authors".equals(fieldName)) {

@@ -69,10 +69,10 @@
 /sdk/communication/sdk/communication/azure-communication-chat/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Identity
-/sdk/communication/azure-communication-identity/     @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @ostoliarova-msft @mjafferi-msft
+/sdk/communication/azure-communication-identity/     @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Common
-/sdk/communication/azure-communication-common/       @Azure/acs-identity-sdk @petrsvihlik @AikoBB @maximrytych-ms @ostoliarova-msft @mjafferi-msft
+/sdk/communication/azure-communication-common/       @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Network Traversal
 /sdk/communication/sdk/communication/azure-communication-networktraversal/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
@@ -96,7 +96,7 @@
 /sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                           @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/core/azure-core-amqp/                           @conniey @anuchandy @lmolkova
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/          @samvaity @alzimmermsft @trask @lmolkova
@@ -124,7 +124,7 @@
 /sdk/eventgrid/                                      @mssfang @srnagar @lmolkova @billwert
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                      @conniey @anuchandy @liukun-msft @ZejiaJiang
+/sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/        @JamesBirdsall @sjkwak
@@ -154,16 +154,16 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
-/sdk/loganalytics/microsoft-azure-loganalytics/      @divyajay @alongafni
+/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @ki1729
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @craigktreasure
@@ -178,7 +178,7 @@
 /sdk/search/                                         @alzimmermsft @jairmyree
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                     @anuchandy @ki1729 @conniey @liukun-msft @ZejiaJiang
+/sdk/servicebus/                                     @anuchandy @conniey @lmolkova
 
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
@@ -187,7 +187,7 @@
 /sdk/storage/                                        @ibrahimrabab @jaschrep-msft @alzimmermsft
 
 # PRLabel: %Tables
-/sdk/tables/                                         @vcolin7 @conniey @jairmyree
+/sdk/tables/                                         @jairmyree @vcolin7
 
 # PRLabel: %EngSys
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
@@ -208,7 +208,7 @@
 
 # end to end tests
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                            @g2vinay @joshfree @alzimmermsft
+/sdk/e2e/                                            @g2vinay @billwert
 /common/smoke-tests/                                 @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane

@@ -24,6 +24,15 @@ public final class DigitalTwinsIdentityType extends ExpandableStringEnum<Digital
         fromString("SystemAssigned,UserAssigned");
 
     /**
+     * Creates a new instance of DigitalTwinsIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DigitalTwinsIdentityType() {
+    }
+
+    /**
      * Creates or finds a DigitalTwinsIdentityType from its string representation.
      *
      * @param name a name to look for.

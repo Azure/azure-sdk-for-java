@@ -51,15 +51,11 @@ public class SyncRestProxy extends RestProxyBase {
         return httpPipeline.sendSync(request, contextData);
     }
 
-    public HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        return createHttpRequest(methodParser, serializer, false, args);
-    }
-
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
-        Throwable throwable = null;
+
         context = startTracingSpan(methodParser, context);
         AutoCloseable scope = tracer.makeSpanCurrent(context);
         try {
@@ -75,16 +71,16 @@ public class SyncRestProxy extends RestProxyBase {
 
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
+
+            int statusCode = decodedResponse.getSourceResponse().getStatusCode();
+            tracer.end(statusCode >= 400 ? "" : null, null, context);
+
             return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
                 errorOptions);
         } catch (RuntimeException e) {
-            throwable = e;
+            tracer.end(null, e, context);
             throw LOGGER.logExceptionAsError(e);
         } finally {
-            if (decodedResponse != null || throwable != null) {
-                endTracingSpan(decodedResponse, throwable, context);
-            }
-
             try {
                 scope.close();
             } catch (Exception e) {

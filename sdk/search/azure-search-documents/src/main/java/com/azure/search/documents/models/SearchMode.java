@@ -8,10 +8,10 @@ package com.azure.search.documents.models;
 
 /** Specifies whether any or all of the search terms must be matched in order to count the document as a match. */
 public enum SearchMode {
-    /** Enum value any. */
+    /** Any of the search terms must be matched in order to count the document as a match. */
     ANY("any"),
 
-    /** Enum value all. */
+    /** All of the search terms must be matched in order to count the document as a match. */
     ALL("all");
 
     /** The actual serialized value for a SearchMode instance. */

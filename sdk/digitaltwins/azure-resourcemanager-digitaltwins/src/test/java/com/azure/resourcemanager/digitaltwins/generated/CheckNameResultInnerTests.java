@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.digitaltwins.models.Reason;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckNameResultInner model =
             BinaryData
                 .fromString("{\"nameAvailable\":false,\"message\":\"ulexxbczwtr\",\"reason\":\"Invalid\"}")
@@ -22,8 +21,8 @@ public final class CheckNameResultInnerTests {
         Assertions.assertEquals(Reason.INVALID, model.reason());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CheckNameResultInner model =
             new CheckNameResultInner().withNameAvailable(false).withMessage("ulexxbczwtr").withReason(Reason.INVALID);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);

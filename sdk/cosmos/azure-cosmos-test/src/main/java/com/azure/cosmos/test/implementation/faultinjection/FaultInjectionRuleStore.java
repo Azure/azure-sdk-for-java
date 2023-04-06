@@ -7,8 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import reactor.core.publisher.Mono;
@@ -75,10 +75,10 @@ public class FaultInjectionRuleStore {
             });
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerResponseDelayRule(RxDocumentServiceRequest request) {
+    public FaultInjectionServerErrorRule findRntbdServerResponseDelayRule(RntbdRequestArgs requestArgs) {
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseDelayRuleSet) {
             if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
-                && serverResponseDelayRule.isApplicable(request)) {
+                && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
         }
@@ -86,10 +86,10 @@ public class FaultInjectionRuleStore {
         return null;
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerResponseErrorRule(RxDocumentServiceRequest request) {
+    public FaultInjectionServerErrorRule findRntbdServerResponseErrorRule(RntbdRequestArgs requestArgs) {
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseErrorRuleSet) {
             if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
-                && serverResponseDelayRule.isApplicable(request)) {
+                && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
         }
@@ -97,10 +97,10 @@ public class FaultInjectionRuleStore {
         return null;
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerConnectionDelayRule(RxDocumentServiceRequest request) {
+    public FaultInjectionServerErrorRule findRntbdServerConnectionDelayRule(RntbdRequestArgs requestArgs) {
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverConnectionDelayRuleSet) {
             if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
-                && serverResponseDelayRule.isApplicable(request)) {
+                && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
         }

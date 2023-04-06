@@ -1,10 +1,19 @@
 # Release History
 
+## 1.9.0-beta.3 (Unreleased)
+
+### Bugs Fixed
+- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
+
+### Other Changes
+- Removed feature from previous betas to compute refresh values for managed identity tokens.
+
 ## 1.9.0-beta.2 (2023-03-16)
 
 ### Features Added
 - Added CAE support to service principal authentication.
 - Pass more detailed refresh policy for managed identity tokens to MSAL.
+- Add configurable timeout for developer credentials (Azure CLI, Azure Developer CLI)
 
 ### Bugs Fixed
 - Fixed detection logic for az/azd.

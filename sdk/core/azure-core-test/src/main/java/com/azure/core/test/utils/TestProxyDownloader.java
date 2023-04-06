@@ -34,6 +34,8 @@ public final class TestProxyDownloader {
     private static final String TEST_PROXY_TAG = "test-proxy_1.0.0-dev.20230125.14";
     private static final Path PROXY_PATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
     private static final String TEST_PROXY_VERSION_FILE = "test-proxy-version.txt";
+    private static final Object SYNCHRONIZER = new Object();
+    private static volatile boolean installComplete = false;
 
     private TestProxyDownloader() { }
 
@@ -49,10 +51,18 @@ public final class TestProxyDownloader {
      * Requests that the test proxy be downloaded and unpacked. If it is already present this is a no-op.
      */
     public static void installTestProxy() {
-        if (!checkDownloadedVersion()) {
-            PlatformInfo platformInfo = new PlatformInfo();
-            downloadProxy(platformInfo);
-            extractTestProxy(platformInfo);
+        if (!installComplete) {
+            synchronized (SYNCHRONIZER) {
+                if (!installComplete) {
+                    if (!checkDownloadedVersion()) {
+                        PlatformInfo platformInfo = new PlatformInfo();
+                        downloadProxy(platformInfo);
+                        extractTestProxy(platformInfo);
+                    }
+                }
+
+                installComplete = true;
+            }
         }
     }
 
@@ -167,7 +177,7 @@ public final class TestProxyDownloader {
     }
 
     private static Path getFileVersionPath() {
-        return Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy-version.txt");
+        return Paths.get(System.getProperty("java.io.tmpdir"), TEST_PROXY_VERSION_FILE);
     }
 
     private static String getProxyDownloadUrl(PlatformInfo platformInfo) {

@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** File list in Azure Blob Storage. */
-@Fluent
+@Immutable
 public final class AzureBlobFileListSource {
     /*
      * Azure Blob Storage container URL.
@@ -22,8 +23,19 @@ public final class AzureBlobFileListSource {
     @JsonProperty(value = "fileList", required = true)
     private String fileList;
 
-    /** Creates an instance of AzureBlobFileListSource class. */
-    public AzureBlobFileListSource() {}
+    /**
+     * Creates an instance of AzureBlobFileListSource class.
+     *
+     * @param containerUrl the containerUrl value to set.
+     * @param fileList the fileList value to set.
+     */
+    @JsonCreator
+    public AzureBlobFileListSource(
+            @JsonProperty(value = "containerUrl", required = true) String containerUrl,
+            @JsonProperty(value = "fileList", required = true) String fileList) {
+        this.containerUrl = containerUrl;
+        this.fileList = fileList;
+    }
 
     /**
      * Get the containerUrl property: Azure Blob Storage container URL.
@@ -35,17 +47,6 @@ public final class AzureBlobFileListSource {
     }
 
     /**
-     * Set the containerUrl property: Azure Blob Storage container URL.
-     *
-     * @param containerUrl the containerUrl value to set.
-     * @return the AzureBlobFileListSource object itself.
-     */
-    public AzureBlobFileListSource setContainerUrl(String containerUrl) {
-        this.containerUrl = containerUrl;
-        return this;
-    }
-
-    /**
      * Get the fileList property: Path to a JSONL file within the container specifying a subset of documents for
      * training.
      *
@@ -53,17 +54,5 @@ public final class AzureBlobFileListSource {
      */
     public String getFileList() {
         return this.fileList;
-    }
-
-    /**
-     * Set the fileList property: Path to a JSONL file within the container specifying a subset of documents for
-     * training.
-     *
-     * @param fileList the fileList value to set.
-     * @return the AzureBlobFileListSource object itself.
-     */
-    public AzureBlobFileListSource setFileList(String fileList) {
-        this.fileList = fileList;
-        return this;
     }
 }
