@@ -64,17 +64,7 @@ public final class DocumentStyle {
         return this.isHandwritten;
     }
 
-    /**
-     * Set the isHandwritten property: Is content handwritten?.
-     *
-     * @param isHandwritten the isHandwritten value to set.
-     * @return the DocumentStyle object itself.
-     */
-    private void setIsHandwritten(Boolean isHandwritten) {
-        this.isHandwritten = isHandwritten;
-    }
-
-    /**
+      /**
      * Get the spans property: Location of the text elements in the concatenated content the style applies to.
      *
      * @return the spans value.
@@ -112,52 +102,73 @@ public final class DocumentStyle {
         this.confidence = confidence;
     }
 
-    public Boolean getHandwritten() {
-        return isHandwritten;
-    }
-
-    private void setHandwritten(Boolean handwritten) {
+    private void setIsHandwritten(Boolean handwritten) {
         isHandwritten = handwritten;
-    }
-
-    public String getSimilarFontFamily() {
-        return similarFontFamily;
     }
 
     private void setSimilarFontFamily(String similarFontFamily) {
         this.similarFontFamily = similarFontFamily;
     }
 
-    public FontStyle getFontStyle() {
-        return fontStyle;
-    }
-
     private void setFontStyle(FontStyle fontStyle) {
         this.fontStyle = fontStyle;
-    }
-
-    public FontWeight getFontWeight() {
-        return fontWeight;
     }
 
     private void setFontWeight(FontWeight fontWeight) {
         this.fontWeight = fontWeight;
     }
 
-    public String getColor() {
-        return color;
-    }
-
     private void setColor(String color) {
         this.color = color;
     }
-
-    public String getBackgroundColor() {
-        return backgroundColor;
-    }
-
     private void setBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    /**
+     * Get the similarFontFamily property: Visually most similar font from among the set of supported font families,
+     * with fallback fonts following CSS convention (ex. 'Arial, sans-serif').
+     *
+     * @return the similarFontFamily value.
+     */
+    public String getSimilarFontFamily() {
+        return this.similarFontFamily;
+    }
+
+    /**
+     * Get the fontStyle property: Font style.
+     *
+     * @return the fontStyle value.
+     */
+    public FontStyle getFontStyle() {
+        return this.fontStyle;
+    }
+
+    /**
+     * Get the fontWeight property: Font weight.
+     *
+     * @return the fontWeight value.
+     */
+    public FontWeight getFontWeight() {
+        return this.fontWeight;
+    }
+
+    /**
+     * Get the color property: Foreground color in #rrggbb hexadecimal format.
+     *
+     * @return the color value.
+     */
+    public String getColor() {
+        return this.color;
+    }
+
+    /**
+     * Get the backgroundColor property: Background color in #rrggbb hexadecimal format..
+     *
+     * @return the backgroundColor value.
+     */
+    public String getBackgroundColor() {
+        return this.backgroundColor;
     }
 
     static {

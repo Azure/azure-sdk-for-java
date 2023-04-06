@@ -58,6 +58,11 @@ public final class CurrencyValue {
         this.symbol = symbol;
     }
 
+    /**
+     * Get the resolved currency code (ISO 4217), if any.
+     *
+     * @return the code value.
+     */
     public String getCode() {
         return code;
     }
