@@ -27,7 +27,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 
 /**
@@ -45,8 +44,9 @@ public class TestProxyUtils {
         Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
             "connectionString", "url", "host", "password", "userName"));
 
-    private static final Map<String, String> BODY_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
+    private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
+            put("operation-location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -219,8 +219,13 @@ public class TestProxyUtils {
             // header key value
             return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
         }
-        // header key with regex
-        return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key, value, regex, groupForReplace);
+        if (groupForReplace == null) {
+            // header key with regex
+            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\"}", key, value, regex);
+        } else {
+            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key,
+                value, regex, groupForReplace);
+        }
     }
 
     /**
@@ -334,8 +339,8 @@ public class TestProxyUtils {
 
         // add body key with regex sanitizers
         List<TestProxySanitizer> keyRegexSanitizers = new ArrayList<>();
-        BODY_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
-            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, BODY_KEY)));
+        HEADER_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
+            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, HEADER)));
 
         regexSanitizers.addAll(keyRegexSanitizers);
 
