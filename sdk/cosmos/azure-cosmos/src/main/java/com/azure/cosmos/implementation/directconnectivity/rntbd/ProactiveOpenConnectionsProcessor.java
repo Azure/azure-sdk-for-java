@@ -77,7 +77,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         return openConnectionsTaskSink.asFlux()
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .parallel(concurrency)
-                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).log("Line 80")
+                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .doOnComplete(this::instantiateOpenConnectionsPublisher)
                 .flatMap(openConnectionOperation -> {
                     if (totalEstablishedConnections.get() < MaxConnectionsToOpenAcrossAllEndpoints) {

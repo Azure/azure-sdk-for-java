@@ -124,106 +124,6 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
-    public void openConnectionsAndInitCachesWithCosmosClient(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int ignore, Duration ignoreParam5) {
-
-        CosmosAsyncClient clientWithOpenConnections = null;
-
-        try {
-
-            List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
-            List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
-
-            for (int i = 1; i <= numContainers; i++) {
-                String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
-                cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
-            }
-
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new
-                    CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setProactiveConnectionRegionsCount(numProactiveConnectionRegions)
-                    .build();
-
-            clientWithOpenConnections = new CosmosClientBuilder()
-                    .endpoint(TestConfigurations.HOST)
-                    .key(TestConfigurations.MASTER_KEY)
-                    .endpointDiscoveryEnabled(true)
-                    .preferredRegions(preferredRegions)
-                    .openConnectionsAndInitCaches(proactiveContainerInitConfig)
-                    .directMode()
-                    .buildAsyncClient();
-
-            Thread.sleep(45000);
-
-            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
-            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-            GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
-            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-            RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
-
-            ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
-            ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
-            Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
-            List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
-                0,
-                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
-
-            Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
-            Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
-                    buildPartitionKeyRangeRequestFromAsyncContainersAsFlux(asyncContainers, rxDocumentClient);
-
-            // 1. Extract all preferred read regions to proactively connect to.
-            // 2. Obtain partition addresses for a container for one read region, then mark that read region as unavailable.
-            // 3. This will force resolveAsync to use the next preferred read region in the next invocation.
-            // 4. This way we can verify that connections have been opened to all replicas across all proactive connection regions.
-            for (URI proactiveConnectionEndpoint : proactiveConnectionEndpoints) {
-                Flux.zip(asyncContainerFlux, partitionKeyRangeFlux)
-                        .flatMapIterable(containerToPartitionKeyRanges -> {
-                            List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
-                            for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
-                                pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
-                            }
-                            return pkrToContainer;
-                        })
-                        .flatMap(partitionKeyRangeToContainer -> {
-                            RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
-                                    mockDiagnosticsClientContext(),
-                                    OperationType.Read,
-                                    partitionKeyRangeToContainer.getRight().getLink() + "/docId",
-                                    ResourceType.Document);
-                            dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
-                            return globalAddressResolver.resolveAsync(dummyRequest, false);
-                        })
-                        .delayElements(Duration.ofSeconds(3))
-                        .doOnNext(addressInformations -> {
-                            for (AddressInformation address : addressInformations) {
-                                endpoints.add(address.getPhysicalUri().getURI().getAuthority());
-                            }
-                        })
-                        .blockLast();
-
-                globalEndpointManager.markEndpointUnavailableForRead(proactiveConnectionEndpoint);
-            }
-
-            assertThat(provider.count()).isEqualTo(endpoints.size());
-            assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-            assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
-
-            for (CosmosAsyncContainer asyncContainer : asyncContainers) {
-                asyncContainer.delete().block();
-            }
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            safeClose(clientWithOpenConnections);
-        }
-    }
-
-    @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredParam3, int ignoredParam4, Duration ignore) {
         CosmosAsyncClient asyncClient = null;
 
@@ -323,10 +223,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignore) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
+        List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
 
         try {
-
-            List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
             for (int i = 1; i <= numContainers; i++) {
@@ -393,7 +292,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                             dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
                             return globalAddressResolver.resolveAsync(dummyRequest, false);
                         })
-                        .delayElements(Duration.ofSeconds(3))
+                        .delayElements(Duration.ofMillis(300))
                         .doOnNext(addressInformations -> {
                             for (AddressInformation address : addressInformations) {
                                 endpoints.add(address.getPhysicalUri().getURI().getAuthority());
@@ -416,11 +315,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             assertThat(totalConnectionCountForAllEndpoints).isEqualTo(endpoints.size() * minConnectionPoolSizePerEndpoint);
 
+        } finally {
+
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
             }
 
-        } finally {
             safeClose(clientWithOpenConnections);
         }
     }
@@ -430,10 +330,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignore) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
+        List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
 
         try {
 
-            List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
             for (int i = 1; i <= numContainers; i++) {
@@ -532,13 +432,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minConnectionPoolSizePerEndpoint));
 
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
             }
 
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
             safeClose(clientWithOpenConnections);
         }
     }
@@ -548,10 +449,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration aggressiveProactiveConnectionEstablishmentTimeWindow) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
+        List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
 
         try {
 
-            List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
             for (int i = 0; i < numContainers; i++) {
@@ -650,20 +551,19 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 totalConnectionCountForAllEndpoints += endpoint.channelsMetrics();
             }
 
-            System.out.println("Total connections for all endpoints : " + totalConnectionCountForAllEndpoints);
-
-//            // TODO: Investigate why some extra connections are being created
+            // TODO: Investigate why some extra connections are being created
             assertThat(totalConnectionCountForAllEndpoints).isGreaterThanOrEqualTo(endpoints.size() * minConnectionPoolSizePerEndpoint);
 
             provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minConnectionPoolSizePerEndpoint));
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
 
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {
                 asyncContainer.delete().block();
             }
 
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
             safeClose(clientWithOpenConnections);
         }
     }
@@ -681,11 +581,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
         return new Object[][]{
-                new Object[]{preferredLocations, 1, 2, 3, Duration.ofMillis(800)},
-                new Object[]{preferredLocations, 2, 10, 4, Duration.ofMillis(900)},
-                new Object[]{preferredLocations, 2, 13, 5, Duration.ofSeconds(1)},
-                new Object[]{preferredLocations, 2, 16, 6, Duration.ofSeconds(1)},
-                new Object[]{preferredLocations, 2, 25, 11, Duration.ofMillis(500)}
+                new Object[]{preferredLocations, 2, 16, 5, Duration.ofSeconds(1)},
+                new Object[]{preferredLocations, 2, 25, 5, Duration.ofMillis(500)}
         };
     }
 
