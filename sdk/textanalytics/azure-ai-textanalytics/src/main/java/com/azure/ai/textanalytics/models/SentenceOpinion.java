@@ -49,7 +49,7 @@ public final class SentenceOpinion {
      * @return The assessments of target text.
      */
     public IterableStream<AssessmentSentiment> getAssessments() {
-        return assessments == null ? IterableStream.of(Collections.emptyList()) : assessments;
+        return assessments == null ? IterableStream.of(null) : assessments;
     }
 
     private void setTarget(TargetSentiment target) {
