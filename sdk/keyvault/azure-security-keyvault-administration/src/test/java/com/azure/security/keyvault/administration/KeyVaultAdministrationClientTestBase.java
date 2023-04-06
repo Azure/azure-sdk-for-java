@@ -16,6 +16,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
@@ -54,6 +56,10 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         customSanitizers.add(new TestProxySanitizer("token", "REDACTED", TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(customSanitizers);
+
+        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+        interceptorManager.addMatchers(customMatcher);
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");

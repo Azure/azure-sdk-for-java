@@ -19,6 +19,8 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -89,6 +91,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
         TokenCredential credential = null;
+
+        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+        interceptorManager.addMatchers(customMatcher);
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
