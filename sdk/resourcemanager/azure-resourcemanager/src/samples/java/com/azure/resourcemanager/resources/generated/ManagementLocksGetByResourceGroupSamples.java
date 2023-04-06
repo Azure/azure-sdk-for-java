@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks GetByResourceGroup. */
 public final class ManagementLocksGetByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class ManagementLocksGetByResourceGroupSamples {
             .manager()
             .managementLockClient()
             .getManagementLocks()
-            .getByResourceGroupWithResponse("resourcegroupname", "testlock", Context.NONE);
+            .getByResourceGroupWithResponse("resourcegroupname", "testlock", com.azure.core.util.Context.NONE);
     }
 }

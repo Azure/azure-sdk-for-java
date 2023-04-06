@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -63,7 +62,7 @@ public final class WebPubSubSharedPrivateLinkResourcesGetWithResponseMockTests {
         SharedPrivateLinkResource response =
             manager
                 .webPubSubSharedPrivateLinkResources()
-                .getWithResponse("twjchrdg", "ihxumwctondzj", "uu", Context.NONE)
+                .getWithResponse("twjchrdg", "ihxumwctondzj", "uu", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("lwg", response.groupId());

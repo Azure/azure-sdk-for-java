@@ -44,8 +44,6 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to an append blob. It may only be instantiated through a
@@ -276,7 +274,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.hasLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(rb -> {
                 AppendBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -451,7 +449,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
             appendBlobRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -586,7 +584,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -652,7 +650,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 }

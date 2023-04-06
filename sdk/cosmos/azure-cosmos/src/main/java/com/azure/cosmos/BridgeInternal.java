@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -27,7 +28,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
@@ -54,7 +54,6 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -72,7 +71,6 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
  **/
 @Warning(value = INTERNAL_USE_ONLY_WARNING)
 public final class BridgeInternal {
-
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -82,6 +80,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
+        if (cosmosDiagnostics.clientSideRequestStatistics() == null) {
+            return Collections.emptySet();
+        }
         return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
     }
 
@@ -113,7 +114,7 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T extends Resource> ResourceResponse<T> toResourceResponse(RxDocumentServiceResponse response,
                                                                               Class<T> cls) {
-        return new ResourceResponse<T>(response, cls);
+        return new ResourceResponse<>(response, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -129,25 +130,22 @@ public final class BridgeInternal {
     }
 
     private static <T> FeedResponse<T> applyDiagnosticsToFeedResponse(CosmosDiagnostics diagnostics, FeedResponse<T> response) {
-        if (diagnostics == null) {
+        if (diagnostics == null || diagnostics == response.getCosmosDiagnostics()) {
             return response;
         }
 
         ClientSideRequestStatistics requestStatistics = diagnostics.clientSideRequestStatistics();
         if (requestStatistics != null) {
-            BridgeInternal
-                .addClientSideDiagnosticsToFeed(
-                    response.getCosmosDiagnostics(),
-                    Collections.singletonList(requestStatistics));
+            response.getCosmosDiagnostics()
+                .addClientSideDiagnosticsToFeed(Collections.singletonList(requestStatistics));
         }
 
         FeedResponseDiagnostics feedResponseDiagnosticsFromCosmosDiagnostics = diagnostics
             .getFeedResponseDiagnostics();
 
         if (feedResponseDiagnosticsFromCosmosDiagnostics != null) {
-            BridgeInternal.addClientSideDiagnosticsToFeed(
-                response.getCosmosDiagnostics(),
-                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatisticsList());
+            response.getCosmosDiagnostics().addClientSideDiagnosticsToFeed(
+                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatistics());
         }
 
         return response;
@@ -187,12 +185,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponse(List<T> results,
-            Map<String, String> headers) {
-        return ModelBridgeInternal.createFeedResponse(results, headers);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(
         List<T> results,
         Map<String, String> headers,
@@ -212,13 +204,17 @@ public final class BridgeInternal {
         ClientSideRequestStatistics requestStatistics;
         if (cosmosDiagnostics != null) {
             requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+                ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
             if (requestStatistics != null) {
-                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                              Collections.singletonList(requestStatistics));
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                    Collections.singletonList(requestStatistics));
+            } else {
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                    cosmosDiagnostics.getFeedResponseDiagnostics()
+                                     .getClientSideRequestStatistics());
             }
-            BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                          cosmosDiagnostics.getFeedResponseDiagnostics()
-                                                              .getClientSideRequestStatisticsList());
         }
 
         return feedResponseWithQueryMetrics;
@@ -226,7 +222,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap, null));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -237,23 +233,14 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
                                                   ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        FeedResponseDiagnostics feedDiagnostics = new FeedResponseDiagnostics(queryMetricsMap);
-        List<ClientSideRequestStatistics> requestStatistics = cosmosDiagnostics.getClientSideRequestStatistics();
-        if (requestStatistics != null) {
-            feedDiagnostics.addClientSideRequestStatistics(requestStatistics);
-        }
+
+        FeedResponseDiagnostics feedDiagnostics = new FeedResponseDiagnostics(queryMetricsMap, cosmosDiagnostics.getClientSideRequestStatistics());
         cosmosDiagnostics.setFeedResponseDiagnostics(feedDiagnostics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setQueryPlanDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
         cosmosDiagnostics.getFeedResponseDiagnostics().setDiagnosticsContext(diagnosticsContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
-                         List<ClientSideRequestStatistics> requestStatistics) {
-        cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -538,11 +525,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String extractResourceSelfLink(Resource resource) {
-        return resource.getSelfLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setResourceSelfLink(Resource resource, String selfLink) {
         ModelBridgeInternal.setResourceSelfLink(resource, selfLink);
     }
@@ -550,22 +532,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<ClientSideRequestStatistics> getClientSideRequestStatisticsList(CosmosDiagnostics cosmosDiagnostics) {
-        //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
-        //feedResponseDiagnostics. So we need to add from both the places
-        List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
-
-        if (cosmosDiagnostics != null) {
-            clientSideRequestStatisticsList
-                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsList());
-            if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-                clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
-            }
-        }
-        return clientSideRequestStatisticsList;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -686,51 +652,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncConflict createCosmosAsyncConflict(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncConflict(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainer createCosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
-        return new CosmosAsyncContainer(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncDatabase createCosmosAsyncDatabase(String id, CosmosAsyncClient client) {
-        return new CosmosAsyncDatabase(id, client);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncPermission createCosmosAsyncPermission(String id, CosmosAsyncUser user) {
-        return new CosmosAsyncPermission(id, user);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserDefinedFunction createCosmosAsyncUserDefinedFunction(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncUserDefinedFunction(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
-        return new CosmosAsyncUser(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabase createCosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
-        return new CosmosDatabase(id, client, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static TracerProvider getTracerProvider(CosmosAsyncClient client) {
-        return client.getTracerProvider();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
-        return new CosmosUser(asyncUser, database, id);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
         return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
     }
@@ -772,8 +693,10 @@ public final class BridgeInternal {
         CosmosAsyncDatabase.initialize();
         CosmosClientBuilder.initialize();
         CosmosDiagnostics.initialize();
+        CosmosDiagnosticsContext.initialize();
         CosmosException.initialize();
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
+        CosmosDiagnosticsThresholds.initialize();
     }
 }

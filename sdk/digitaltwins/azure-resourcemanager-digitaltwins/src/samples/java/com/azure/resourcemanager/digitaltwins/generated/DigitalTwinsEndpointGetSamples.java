@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DigitalTwinsEndpoint Get. */
 public final class DigitalTwinsEndpointGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsEndpointGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsEndpointGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoint.
@@ -18,11 +16,13 @@ public final class DigitalTwinsEndpointGetSamples {
      */
     public static void getADigitalTwinsInstanceEndpoint(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwinsEndpoints().getWithResponse("resRg", "myDigitalTwinsService", "myServiceBus", Context.NONE);
+        manager
+            .digitalTwinsEndpoints()
+            .getWithResponse("resRg", "myDigitalTwinsService", "myServiceBus", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsEndpointGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsEndpointGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoint with identity.
@@ -31,6 +31,8 @@ public final class DigitalTwinsEndpointGetSamples {
      */
     public static void getADigitalTwinsInstanceEndpointWithIdentity(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.digitalTwinsEndpoints().getWithResponse("resRg", "myDigitalTwinsService", "myServiceBus", Context.NONE);
+        manager
+            .digitalTwinsEndpoints()
+            .getWithResponse("resRg", "myDigitalTwinsService", "myServiceBus", com.azure.core.util.Context.NONE);
     }
 }

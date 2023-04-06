@@ -26,6 +26,15 @@ public final class RuleSeverity extends ExpandableStringEnum<RuleSeverity> {
     public static final RuleSeverity OBSOLETE = fromString("Obsolete");
 
     /**
+     * Creates a new instance of RuleSeverity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleSeverity() {
+    }
+
+    /**
      * Creates or finds a RuleSeverity from its string representation.
      *
      * @param name a name to look for.

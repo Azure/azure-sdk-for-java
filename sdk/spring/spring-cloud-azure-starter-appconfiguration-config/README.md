@@ -21,7 +21,7 @@ There are two libraries that can be used spring-cloud-azure-appconfiguration-con
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>4.0.0-beta.1</version>
+    <version>4.7.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ or
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>4.0.0-beta.1</version>
+    <version>4.7.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,6 @@ Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | true
 spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-appconfiguration-config or not | No | true
-spring.cloud.azure.appconfiguration.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 spring.cloud.azure.appconfiguration.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. | No | null
 
 `spring.cloud.azure.appconfiguration.stores` is a list of stores, where each store follows the following format:
@@ -71,6 +70,7 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].endpoints | When multiple replica endpoints of an App Configuration store are specified, a managed identity or a token credential provided using `AppConfigCredentialProvider` will be used to connect to the App Configuration service. Replica endpoints should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if multiple authentication methods are provided. | Conditional | null
 spring.cloud.azure.appconfiguration.stores[0].connection-string | When the connection-string of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
+spring.cloud.azure.appconfiguration.stores[0].connection-strings | When the connection-strings of an App Configuration store is specified, HMAC authentication will be used to connect to the App Configuration service.  Replica stores should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
 
 `spring.cloud.azure.appconfiguration.stores[0].monitoring` is a set of configurations dealing with refresh of configurations:
 

@@ -18,11 +18,10 @@ import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WebPubSubPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WebPubSubProperties model =
             BinaryData
                 .fromString(
@@ -44,8 +43,8 @@ public final class WebPubSubPropertiesTests {
         Assertions.assertEquals(true, model.disableAadAuth());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WebPubSubProperties model =
             new WebPubSubProperties()
                 .withTls(new WebPubSubTlsSettings().withClientCertEnabled(false))

@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error response object. */
-@Fluent
+@Immutable
 public final class ErrorResponse {
     /*
      * Error info.
@@ -16,8 +17,15 @@ public final class ErrorResponse {
     @JsonProperty(value = "error", required = true)
     private Error error;
 
-    /** Creates an instance of ErrorResponse class. */
-    public ErrorResponse() {}
+    /**
+     * Creates an instance of ErrorResponse class.
+     *
+     * @param error the error value to set.
+     */
+    @JsonCreator
+    public ErrorResponse(@JsonProperty(value = "error", required = true) Error error) {
+        this.error = error;
+    }
 
     /**
      * Get the error property: Error info.
@@ -26,16 +34,5 @@ public final class ErrorResponse {
      */
     public Error getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: Error info.
-     *
-     * @param error the error value to set.
-     * @return the ErrorResponse object itself.
-     */
-    public ErrorResponse setError(Error error) {
-        this.error = error;
-        return this;
     }
 }

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Addressing IllegalStateException due to double free of Connection reference by the Transport.
+
 ### Other Changes
 
 ## 2.8.3 (2023-03-02)

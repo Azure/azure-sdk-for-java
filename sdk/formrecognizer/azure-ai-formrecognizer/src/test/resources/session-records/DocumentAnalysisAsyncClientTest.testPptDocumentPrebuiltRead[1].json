@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "88369cbb-e675-4e8b-9d58-bc75ca3c0d65",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "231",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "6cc6ac94-3903-419e-826e-fd9146d9eeaf",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/6cc6ac94-3903-419e-826e-fd9146d9eeaf?api-version=2023-02-28-preview",
+      "Date" : "Thu, 23 Mar 2023 20:20:56 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/6cc6ac94-3903-419e-826e-fd9146d9eeaf?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5552cb64-414c-4d7f-9401-60593ce13ec0"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "32",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e8d1cefa-8789-4123-888d-cdaedea47af6",
+      "retry-after" : "0",
+      "Content-Length" : "849",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:20:57Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:20:59Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"This is a pptx example.\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":5,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":8,\"length\":1}},{\"content\":\"pptx\",\"confidence\":1,\"span\":{\"offset\":10,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":8}}],\"spans\":[{\"offset\":0,\"length\":23}],\"kind\":\"slide\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"content\":\"This is a pptx example.\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"locale\":\"en\",\"confidence\":1}]}}",
+      "Date" : "Thu, 23 Mar 2023 20:21:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/6cc6ac94-3903-419e-826e-fd9146d9eeaf?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b46d859e-ce74-4985-a3cc-21ff08159d83"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "37",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "007a9c68-848f-4b72-b9f7-fee48259b2a9",
+      "retry-after" : "0",
+      "Content-Length" : "849",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:20:57Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:20:59Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"This is a pptx example.\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":5,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":8,\"length\":1}},{\"content\":\"pptx\",\"confidence\":1,\"span\":{\"offset\":10,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":8}}],\"spans\":[{\"offset\":0,\"length\":23}],\"kind\":\"slide\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"content\":\"This is a pptx example.\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":23}],\"locale\":\"en\",\"confidence\":1}]}}",
+      "Date" : "Thu, 23 Mar 2023 20:21:03 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
+import com.azure.resourcemanager.resources.models.OverrideModel;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
+import com.azure.resourcemanager.resources.models.ResourceSelector;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -41,8 +43,7 @@ public final class PolicyAssignmentProperties {
     private List<String> notScopes;
 
     /*
-     * The parameter values for the assigned policy rule. The keys are the
-     * parameter names.
+     * The parameter values for the assigned policy rule. The keys are the parameter names.
      */
     @JsonProperty(value = "parameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -55,25 +56,39 @@ public final class PolicyAssignmentProperties {
     private String description;
 
     /*
-     * The policy assignment metadata. Metadata is an open ended object and is
-     * typically a collection of key value pairs.
+     * The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value
+     * pairs.
      */
     @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
-     * The policy assignment enforcement mode. Possible values are Default and
-     * DoNotEnforce.
+     * The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
      */
     @JsonProperty(value = "enforcementMode")
     private EnforcementMode enforcementMode;
 
     /*
-     * The messages that describe why a resource is non-compliant with the
-     * policy.
+     * The messages that describe why a resource is non-compliant with the policy.
      */
     @JsonProperty(value = "nonComplianceMessages")
     private List<NonComplianceMessage> nonComplianceMessages;
+
+    /*
+     * The resource selector list to filter policies by resource properties.
+     */
+    @JsonProperty(value = "resourceSelectors")
+    private List<ResourceSelector> resourceSelectors;
+
+    /*
+     * The policy property value override.
+     */
+    @JsonProperty(value = "overrides")
+    private List<OverrideModel> overrides;
+
+    /** Creates an instance of PolicyAssignmentProperties class. */
+    public PolicyAssignmentProperties() {
+    }
 
     /**
      * Get the displayName property: The display name of the policy assignment.
@@ -251,6 +266,46 @@ public final class PolicyAssignmentProperties {
     }
 
     /**
+     * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @return the resourceSelectors value.
+     */
+    public List<ResourceSelector> resourceSelectors() {
+        return this.resourceSelectors;
+    }
+
+    /**
+     * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
+     *
+     * @param resourceSelectors the resourceSelectors value to set.
+     * @return the PolicyAssignmentProperties object itself.
+     */
+    public PolicyAssignmentProperties withResourceSelectors(List<ResourceSelector> resourceSelectors) {
+        this.resourceSelectors = resourceSelectors;
+        return this;
+    }
+
+    /**
+     * Get the overrides property: The policy property value override.
+     *
+     * @return the overrides value.
+     */
+    public List<OverrideModel> overrides() {
+        return this.overrides;
+    }
+
+    /**
+     * Set the overrides property: The policy property value override.
+     *
+     * @param overrides the overrides value to set.
+     * @return the PolicyAssignmentProperties object itself.
+     */
+    public PolicyAssignmentProperties withOverrides(List<OverrideModel> overrides) {
+        this.overrides = overrides;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -268,6 +323,12 @@ public final class PolicyAssignmentProperties {
         }
         if (nonComplianceMessages() != null) {
             nonComplianceMessages().forEach(e -> e.validate());
+        }
+        if (resourceSelectors() != null) {
+            resourceSelectors().forEach(e -> e.validate());
+        }
+        if (overrides() != null) {
+            overrides().forEach(e -> e.validate());
         }
     }
 }

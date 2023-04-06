@@ -23,6 +23,15 @@ public final class EnvironmentType extends ExpandableStringEnum<EnvironmentType>
     public static final EnvironmentType AZURE_DEV_OPS_SCOPE = fromString("AzureDevOpsScope");
 
     /**
+     * Creates a new instance of EnvironmentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnvironmentType() {
+    }
+
+    /**
      * Creates or finds a EnvironmentType from its string representation.
      *
      * @param name a name to look for.

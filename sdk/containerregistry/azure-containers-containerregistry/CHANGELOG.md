@@ -4,10 +4,22 @@
 
 ### Features Added
 
-### Breaking Changes
+### Breaking Changes from version 1.1.0-beta.3
 
-- Replaced `uploadManifest(OciImageManifest)` method on `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` classes
-  with `uploadManifest(OciImageManifest manifest, String tag)` method.
+- `ContainerRegistryBlobClientBuilder`, `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were renamed to `ContainerRegistryContentClientBuilder`,
+  `ContainerRegistryContentClient`, and `ContainerRegistryContentAsyncClient` and moved to `com.azure.containers.containerregistry` package. 
+- `UploadBlobResult` was renamed to `UploadRegistryBlobResult`
+- `ContainerRegistryContentClient` and `ContainerRegistryContentAsyncClient` changes:
+  - `uploadManifest` method was renamed to `setManifest`, `uploadManifestWithResponse` renamed to `setManifestWithResponse`, the return type of these methods was renamed to `SetManifestResult`.
+    `UploadManifestOptions` renamed to `SetManifestOptions`.
+  - `downloadManifest` method was renamed to `getManifest`, `downloadManifestWithResponse` renamed to `getManifestWithResponse`, the return type of these methods renamed to `GetManifestResult`.
+  - Removed `DownloadBlobAsyncResult` and changes `ContainerRegistryContentAsyncClient.downloadStream` return type to `Mono<BinaryData>`.
+  - Removed `Collection<ManifestMediaType> mediaTypes` parameter from `downloadManifestWithResponse` method on blob clients.
+  - Renamed `ContainerRegistryContentClientBuilder.repository` method to `repositoryName`.
+- Renamed `GetManifestResult.getMediaType` and `UploadManifestOptions.getMediaType` to `getManifestMediaType`.
+- Removed `GetManifestResult.asOciManifest` - use `GetManifestResult.getManifest().toObject(OciImageManifest.class)` instead.
+- Renamed `OciImageManifest.getConfig` and `setConfig` methods to `getConfiguration` and `setConfiguration`.
+- Renamed `OciAnnotations.getCreated` and `setCreated` methods to `getCreatedOn` and `setCreatedOn`.
 
 ### Bugs Fixed
 
@@ -183,8 +195,8 @@
 ## 1.0.0 (2022-01-11)
 
 ### Breaking Changes
- - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
- - Renamed `ArtifactManifestOrderBy` to `ArtifactManifestOrder`.
+  - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
+  - Renamed `ArtifactManifestOrderBy` to `ArtifactManifestOrder`.
 
 ### Other Changes
 

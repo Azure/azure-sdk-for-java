@@ -17,6 +17,15 @@ public final class GovernanceRuleType extends ExpandableStringEnum<GovernanceRul
     public static final GovernanceRuleType SERVICE_NOW = fromString("ServiceNow");
 
     /**
+     * Creates a new instance of GovernanceRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GovernanceRuleType() {
+    }
+
+    /**
      * Creates or finds a GovernanceRuleType from its string representation.
      *
      * @param name a name to look for.

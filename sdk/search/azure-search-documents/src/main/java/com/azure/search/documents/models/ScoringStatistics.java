@@ -12,10 +12,10 @@ package com.azure.search.documents.models;
  * statistics globally before scoring. Using global scoring statistics can increase latency of search queries.
  */
 public enum ScoringStatistics {
-    /** Enum value local. */
+    /** The scoring statistics will be calculated locally for lower latency. */
     LOCAL("local"),
 
-    /** Enum value global. */
+    /** The scoring statistics will be calculated globally for more consistent scoring. */
     GLOBAL("global");
 
     /** The actual serialized value for a ScoringStatistics instance. */

@@ -94,10 +94,10 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
                         }
                     }
                     if (resultsFound) {
-                        AutocompleteResult deserializedValue = new AutocompleteResult(results);
-                        deserializedValue.coverage = coverage;
+                        AutocompleteResult deserializedAutocompleteResult = new AutocompleteResult(results);
+                        deserializedAutocompleteResult.coverage = coverage;
 
-                        return deserializedValue;
+                        return deserializedAutocompleteResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!resultsFound) {

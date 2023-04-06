@@ -215,6 +215,14 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     public static final ShareErrorCode FEATURE_VERSION_MISMATCH = fromString("FeatureVersionMismatch");
 
     /**
+     * Creates a new instance of ShareErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShareErrorCode() {}
+
+    /**
      * Creates or finds a ShareErrorCode from its string representation.
      *
      * @param name a name to look for.

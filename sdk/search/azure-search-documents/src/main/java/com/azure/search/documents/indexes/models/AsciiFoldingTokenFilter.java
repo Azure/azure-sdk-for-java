@@ -109,10 +109,10 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        AsciiFoldingTokenFilter deserializedValue = new AsciiFoldingTokenFilter(name);
-                        deserializedValue.preserveOriginal = preserveOriginal;
+                        AsciiFoldingTokenFilter deserializedAsciiFoldingTokenFilter = new AsciiFoldingTokenFilter(name);
+                        deserializedAsciiFoldingTokenFilter.preserveOriginal = preserveOriginal;
 
-                        return deserializedValue;
+                        return deserializedAsciiFoldingTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

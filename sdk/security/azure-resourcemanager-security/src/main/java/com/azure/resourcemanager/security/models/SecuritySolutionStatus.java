@@ -17,6 +17,15 @@ public final class SecuritySolutionStatus extends ExpandableStringEnum<SecurityS
     public static final SecuritySolutionStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SecuritySolutionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecuritySolutionStatus() {
+    }
+
+    /**
      * Creates or finds a SecuritySolutionStatus from its string representation.
      *
      * @param name a name to look for.

@@ -15,10 +15,9 @@ import java.util.List;
 @Fluent
 public final class ManagementLockProperties {
     /*
-     * The level of the lock. Possible values are: NotSpecified, CanNotDelete,
-     * ReadOnly. CanNotDelete means authorized users are able to read and
-     * modify the resources, but not delete. ReadOnly means authorized users
-     * can only read from a resource, but they can't modify or delete it.
+     * The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
+     * users are able to read and modify the resources, but not delete. ReadOnly means authorized users can only read
+     * from a resource, but they can't modify or delete it.
      */
     @JsonProperty(value = "level", required = true)
     private LockLevel level;
@@ -34,6 +33,10 @@ public final class ManagementLockProperties {
      */
     @JsonProperty(value = "owners")
     private List<ManagementLockOwner> owners;
+
+    /** Creates an instance of ManagementLockProperties class. */
+    public ManagementLockProperties() {
+    }
 
     /**
      * Get the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.

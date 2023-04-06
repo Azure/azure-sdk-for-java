@@ -20,6 +20,15 @@ public final class SubAssessmentStatusCode extends ExpandableStringEnum<SubAsses
     public static final SubAssessmentStatusCode NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
+     * Creates a new instance of SubAssessmentStatusCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SubAssessmentStatusCode() {
+    }
+
+    /**
      * Creates or finds a SubAssessmentStatusCode from its string representation.
      *
      * @param name a name to look for.

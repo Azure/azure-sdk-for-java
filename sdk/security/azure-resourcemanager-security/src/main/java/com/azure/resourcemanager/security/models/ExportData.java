@@ -14,6 +14,15 @@ public final class ExportData extends ExpandableStringEnum<ExportData> {
     public static final ExportData RAW_EVENTS = fromString("RawEvents");
 
     /**
+     * Creates a new instance of ExportData value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportData() {
+    }
+
+    /**
      * Creates or finds a ExportData from its string representation.
      *
      * @param name a name to look for.

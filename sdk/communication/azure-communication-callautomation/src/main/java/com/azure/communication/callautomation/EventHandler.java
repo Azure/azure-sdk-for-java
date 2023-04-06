@@ -18,6 +18,8 @@ import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -121,8 +123,11 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, RecognizeFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCanceled")) {
                 ret = mapper.convertValue(eventData, RecognizeCanceled.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RemoveParticipantFailed")) {
+                ret = mapper.convertValue(eventData, RemoveParticipantFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RemoveParticipantSucceeded")) {
+                ret = mapper.convertValue(eventData, RemoveParticipantSucceeded.class);
             }
-
             return ret;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);

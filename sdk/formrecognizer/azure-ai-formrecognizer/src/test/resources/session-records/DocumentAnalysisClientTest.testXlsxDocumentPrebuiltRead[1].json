@@ -1,0 +1,88 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fdd6dad7-62b8-408e-b9e1-0002f4ce78ea",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "178",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c6909947-c2e3-4e1e-b114-a634ad3183b4",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
+      "Date" : "Thu, 23 Mar 2023 20:29:19 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "33d6c4b5-d14c-416a-994d-d68460790e6e"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "18",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "da76da6f-68b0-48e6-86a5-9906a7a2a0b6",
+      "retry-after" : "0",
+      "Content-Length" : "106",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"running\",\"createdDateTime\":\"2023-03-23T20:29:19Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:29:19Z\"}",
+      "Date" : "Thu, 23 Mar 2023 20:29:19 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5073422-d325-45cb-8a84-003c97ddc62e"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "31",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d6e5a955-cf88-404e-addf-cdc3d915444c",
+      "retry-after" : "0",
+      "Content-Length" : "981",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:29:19Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:29:20Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"Sheet1\\nThis is a xlsx example.\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"Sheet1\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":6}},{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":7,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":12,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":1}},{\"content\":\"xlsx\",\"confidence\":1,\"span\":{\"offset\":17,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":22,\"length\":8}}],\"spans\":[{\"offset\":0,\"length\":30}],\"kind\":\"sheet\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":6}],\"content\":\"Sheet1\"},{\"spans\":[{\"offset\":7,\"length\":23}],\"content\":\"This is a xlsx example.\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":30}],\"locale\":\"en\",\"confidence\":1}]}}",
+      "Date" : "Thu, 23 Mar 2023 20:29:24 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/c6909947-c2e3-4e1e-b114-a634ad3183b4?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ab76166c-aced-4ed8-ba9e-3875cf18753a"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "31",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "bdc9ad56-2180-4e6b-880f-22380bbe297f",
+      "retry-after" : "0",
+      "Content-Length" : "981",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2023-03-23T20:29:19Z\",\"lastUpdatedDateTime\":\"2023-03-23T20:29:20Z\",\"analyzeResult\":{\"apiVersion\":\"2023-02-28-preview\",\"modelId\":\"prebuilt-read\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"Sheet1\\nThis is a xlsx example.\",\"pages\":[{\"pageNumber\":1,\"words\":[{\"content\":\"Sheet1\",\"confidence\":1,\"span\":{\"offset\":0,\"length\":6}},{\"content\":\"This\",\"confidence\":1,\"span\":{\"offset\":7,\"length\":4}},{\"content\":\"is\",\"confidence\":1,\"span\":{\"offset\":12,\"length\":2}},{\"content\":\"a\",\"confidence\":1,\"span\":{\"offset\":15,\"length\":1}},{\"content\":\"xlsx\",\"confidence\":1,\"span\":{\"offset\":17,\"length\":4}},{\"content\":\"example.\",\"confidence\":1,\"span\":{\"offset\":22,\"length\":8}}],\"spans\":[{\"offset\":0,\"length\":30}],\"kind\":\"sheet\"}],\"paragraphs\":[{\"spans\":[{\"offset\":0,\"length\":6}],\"content\":\"Sheet1\"},{\"spans\":[{\"offset\":7,\"length\":23}],\"content\":\"This is a xlsx example.\"}],\"styles\":[],\"languages\":[{\"spans\":[{\"offset\":0,\"length\":30}],\"locale\":\"en\",\"confidence\":1}]}}",
+      "Date" : "Thu, 23 Mar 2023 20:29:24 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

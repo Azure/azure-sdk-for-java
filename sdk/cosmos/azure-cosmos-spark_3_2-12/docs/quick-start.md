@@ -147,4 +147,10 @@ df = spark.read.format("cosmos.oltp").options(**cfg)\
 df.printSchema()
 ```
 
+To write the data in `df` to Cosmos DB, you can use `df.write ...`. Be sure to change the values in `cfg` accordingly first before running this:
+```python
+df.write.format("cosmos.oltp").mode("append").options(**cfg).save()
+```
+Alternatives to "append" mode can be seen [here](https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#save-modes).
+
 For more details related to schema inference, see the full [schema inference configuration](https://aka.ms/azure-cosmos-spark-3-config#schema-inference-config) documentation.

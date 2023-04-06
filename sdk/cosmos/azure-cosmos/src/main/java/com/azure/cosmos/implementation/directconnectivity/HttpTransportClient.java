@@ -237,7 +237,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, RxDocumentServiceRequest openConnectionRequest) {
         throw new NotImplementedException("openConnection is not supported in httpTransportClient");
     }
 

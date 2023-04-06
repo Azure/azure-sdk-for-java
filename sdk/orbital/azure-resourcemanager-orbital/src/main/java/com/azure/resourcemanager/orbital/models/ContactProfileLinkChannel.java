@@ -30,25 +30,22 @@ public final class ContactProfileLinkChannel {
     private float bandwidthMHz;
 
     /*
-     * Customer End point to store/retrieve data during a contact.
+     * Customer end point to store and retrieve data during a contact with the spacecraft.
      */
     @JsonProperty(value = "endPoint", required = true)
     private EndPoint endPoint;
 
     /*
-     * Copy of the modem configuration file such as Kratos QRadio. Only valid
-     * for uplink directions. If provided, the modem connects to the customer
-     * endpoint and accepts commands from the customer instead of a VITA.49
-     * stream.
+     * Copy of the modem configuration file such as Kratos QRadio. Only valid for uplink directions. If provided, the
+     * modem connects to the customer endpoint and accepts commands from the customer instead of a VITA.49 stream.
      */
     @JsonProperty(value = "modulationConfiguration")
     private String modulationConfiguration;
 
     /*
-     * Copy of the modem configuration file such as Kratos QRadio or Kratos
-     * QuantumRx. Only valid for downlink directions. If provided, the modem
-     * connects to the customer endpoint and sends demodulated data instead of
-     * a VITA.49 stream.
+     * Copy of the modem configuration file such as Kratos QRadio or Kratos QuantumRx. Only valid for downlink
+     * directions. If provided, the modem connects to the customer endpoint and sends demodulated data instead of a
+     * VITA.49 stream.
      */
     @JsonProperty(value = "demodulationConfiguration")
     private String demodulationConfiguration;
@@ -64,6 +61,10 @@ public final class ContactProfileLinkChannel {
      */
     @JsonProperty(value = "decodingConfiguration")
     private String decodingConfiguration;
+
+    /** Creates an instance of ContactProfileLinkChannel class. */
+    public ContactProfileLinkChannel() {
+    }
 
     /**
      * Get the name property: Channel name.
@@ -126,7 +127,7 @@ public final class ContactProfileLinkChannel {
     }
 
     /**
-     * Get the endPoint property: Customer End point to store/retrieve data during a contact.
+     * Get the endPoint property: Customer end point to store and retrieve data during a contact with the spacecraft.
      *
      * @return the endPoint value.
      */
@@ -135,7 +136,7 @@ public final class ContactProfileLinkChannel {
     }
 
     /**
-     * Set the endPoint property: Customer End point to store/retrieve data during a contact.
+     * Set the endPoint property: Customer end point to store and retrieve data during a contact with the spacecraft.
      *
      * @param endPoint the endPoint value to set.
      * @return the ContactProfileLinkChannel object itself.

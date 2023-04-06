@@ -5,12 +5,12 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import org.slf4j.Logger;
-
-import java.lang.reflect.Modifier;
 
 /**
  * Customization class for Blob Storage.
@@ -22,60 +22,45 @@ public class BlobStorageCustomization extends Customization {
         // Implementation models customizations
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
-        implementationModels.getClass("BlobPrefix").rename("BlobPrefixInternal");
 
         // Models customizations
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
-        models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
-        models.getClass("PageList").getMethod("getNextMarker").setModifier(Modifier.PRIVATE);
-        models.getClass("PageList").getMethod("setNextMarker").setModifier(Modifier.PRIVATE);
 
-        // Add Accessor to PageList
-        String pageListFileName = "src/main/java/com/azure/storage/blob/models/PageList.java";
+        models.getClass("PageList").customizeAst(ast -> {
+            ast.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize")
+                .addImport("com.azure.storage.blob.implementation.models.PageListHelper");
 
-        String fileContent = customization.getRawEditor().getFileContent(pageListFileName);
-        int startImportIndex = fileContent.indexOf("import com.azure.core.annotation.Fluent;") + 40;
-        int startStaticIndex = fileContent.indexOf("class PageList {") + 16;
-        String updatedFileContent = fileContent.substring(0, startImportIndex)
-            + "import com.azure.storage.blob.implementation.models.PageListHelper;"
-            + fileContent.substring(startImportIndex, startStaticIndex)
-            + "static {\n"
-            + "        PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {\n"
-            + "            @Override\n"
-            + "            public String getNextMarker(PageList pageList) {\n"
-            + "                return pageList.getNextMarker();\n"
-            + "            }\n"
-            + "\n"
-            + "            @Override\n"
-            + "            public PageList setNextMarker(PageList pageList, String marker) {\n"
-            + "                return pageList.setNextMarker(marker);\n"
-            + "            }\n"
-            + "        });\n"
-            + "    } "
-            + fileContent.substring(startStaticIndex);
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("PageList").get();
 
-        customization.getRawEditor().removeFile(pageListFileName);
-        customization.getRawEditor().addFile(pageListFileName, updatedFileContent);
+            clazz.addAnnotation(StaticJavaParser.parseAnnotation("@JsonDeserialize(using = PageListDeserializer.class)"));
 
-        models.getClass("BlobCopySourceTags").rename("BlobCopySourceTagsMode");
+            clazz.getMethodsByName("getNextMarker").get(0).setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
+            clazz.getMethodsByName("setNextMarker").get(0).setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
 
-
-        ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
-        blobHttpHeaders.getMethod("getContentMd5").getJavadoc().setDescription("Get the contentMd5 property: " +
-            "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
-            "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
-            "encoded as the SDK will perform the encoding.");
-        blobHttpHeaders.getMethod("setContentMd5").getJavadoc().setDescription("Set the contentMd5 property: " +
-            "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
-            "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
-            "encoded as the SDK will perform the encoding.");
+            // Add Accessor to PageList
+            clazz.setMembers(clazz.getMembers().addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n",
+                "static {",
+                "    PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {",
+                "        @Override",
+                "        public String getNextMarker(PageList pageList) {",
+                "            return pageList.getNextMarker();",
+                "        }",
+                "",
+                "        @Override",
+                "        public PageList setNextMarker(PageList pageList, String marker) {",
+                "            return pageList.setNextMarker(marker);",
+                "        }",
+                "    });",
+                "}"
+            ))));
+        });
 
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
         blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented")
             .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
 
         // Changes to JacksonXmlRootElement for classes that aren't serialized to maintain backwards compatibility.
-        changeJacksonXmlRootElementName(blobHttpHeaders, "blob-http-headers");
+        changeJacksonXmlRootElementName(models.getClass("BlobHttpHeaders"), "blob-http-headers");
         changeJacksonXmlRootElementName(blobContainerEncryptionScope, "blob-container-encryption-scope");
         changeJacksonXmlRootElementName(models.getClass("CpkInfo"), "cpk-info");
 

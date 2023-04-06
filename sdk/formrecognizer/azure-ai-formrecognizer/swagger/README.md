@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/2022-08-31/FormRecognizer.json?token=GHSAT0AAAAAABJXDFRPV65DHZCSHQ3UQPR6Y6R63CQ
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/preview/2023-02-28-preview/FormRecognizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -35,7 +35,18 @@ service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 custom-types-subpackage: models
+required-fields-as-ctor-args: true
 enable-sync-stack: true
 polling: {}
+```
+
+### Expose PathOperationId & PathResultId as String
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.parameters
+    transform: >
+      delete $.PathOperationId["format"];
+      delete $.PathResultId["format"];
 ```
 

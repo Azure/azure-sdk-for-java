@@ -1,6 +1,16 @@
 # Release History
 
-## 12.18.0-beta.1 (Unreleased)
+## 12.18.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.18.0-beta.1 (2023-03-28)
 
 ### Features Added
 - Added support for 2022-11-02 service version.
@@ -10,12 +20,6 @@ only supported for certain operations in the Data Plane SDK.
 - Added support for `allowTrailingDot` and `allowSourceTrailingDot` on client construction. When `allowTrailingDot` is 
 provided, the service will not silently remove any trailing `.` character from directory/file names for all operations 
 made from that client. `allowSourceTrailingDot` will apply this same rule to source files when performing a rename or copy operation.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 12.17.1 (2023-03-16)
 

@@ -16,6 +16,10 @@ public final class HttpMessage {
     @JsonProperty(value = "content")
     private Object content;
 
+    /** Creates an instance of HttpMessage class. */
+    public HttpMessage() {
+    }
+
     /**
      * Get the content property: HTTP message content.
      *

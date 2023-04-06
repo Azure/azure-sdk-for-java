@@ -384,7 +384,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.nimbusds:nimbus-jose-jwt:[9.22]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+                <include>com.nimbusds:nimbus-jose-jwt:[9.31]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[1.2.4]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->

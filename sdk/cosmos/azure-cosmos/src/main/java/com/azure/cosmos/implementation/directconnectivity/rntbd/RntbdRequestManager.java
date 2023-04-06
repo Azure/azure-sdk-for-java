@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
@@ -48,6 +49,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -94,6 +96,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
+
+    private static final String FAULT_INJECTION_RULE_ID_KEY_NAME = "faultInjectionRuleId";
+    private static final AttributeKey<String> FAULT_INJECTION_RULE_ID_KEY = AttributeKey.newInstance(
+        FAULT_INJECTION_RULE_ID_KEY_NAME);
 
     private static final EventExecutor requestExpirationExecutor = new DefaultEventExecutor(new RntbdThreadFactory(
         "request-expirator",
@@ -429,11 +435,21 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
 
             if (event instanceof RntbdFaultInjectionConnectionResetEvent) {
+                logger.warn(
+                    "Inject Connection reset with ruleId {} ",
+                    ((RntbdFaultInjectionConnectionResetEvent) event).getFaultInjectionRuleId());
+
+                context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionResetEvent) event).getFaultInjectionRuleId());
                 this.exceptionCaught(context, new IOException("Fault Injection Connection Reset"));
                 return;
             }
 
             if (event instanceof RntbdFaultInjectionConnectionCloseEvent) {
+                logger.warn(
+                    "Inject Connection close with ruleId {} ",
+                    ((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
+
+                context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
                 context.close();
                 return;
             }
@@ -611,6 +627,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 if (this.serverErrorInjector != null) {
                     if (this.serverErrorInjector.injectRntbdServerResponseError(record)) {
+                        this.timestamps.channelWriteCompleted();
+                        this.timestamps.channelReadCompleted();
                         return;
                     }
 
@@ -662,6 +680,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         // But if the configured delay > networkRequestTimeout, then do not bother to send the request
         this.addPendingRequestRecord(context, rntbdRequestRecord);
         rntbdRequestRecord.stage(RntbdRequestRecord.Stage.SENT);
+        this.timestamps.channelWriteCompleted();
+
+        // Since this is to simulate a response delay, mark write completed
         this.timestamps.channelWriteCompleted();
 
         long effectiveDelayInNanos = Math.min(this.tcpNetworkRequestTimeoutInNanos, delay.toNanos());
@@ -852,6 +873,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 : new ChannelException(throwable);
         }
 
+        String faultInjectionRuleId = StringUtils.EMPTY;
+        if (context.channel().hasAttr(FAULT_INJECTION_RULE_ID_KEY)) {
+            faultInjectionRuleId = context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).getAndSet(StringUtils.EMPTY);
+        }
+
         for (RntbdRequestRecord record : this.pendingRequests.values()) {
 
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
@@ -859,6 +885,14 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final GoneException error = new GoneException(message, cause, null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
+
+            if (StringUtils.isNotEmpty(faultInjectionRuleId)) {
+                record
+                    .args()
+                    .serviceRequest()
+                    .faultInjectionRequestContext
+                    .applyFaultInjectionRule(record.transportRequestId(), faultInjectionRuleId);
+            }
 
             record.completeExceptionally(error);
         }

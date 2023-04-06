@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.NameAvailability;
 import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
@@ -64,7 +63,9 @@ public final class SignalRsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .signalRs()
                 .checkNameAvailabilityWithResponse(
-                    "lla", new NameAvailabilityParameters().withType("melwuipiccjz").withName("z"), Context.NONE)
+                    "lla",
+                    new NameAvailabilityParameters().withType("melwuipiccjz").withName("z"),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());

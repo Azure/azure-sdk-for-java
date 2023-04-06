@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/OperationsList.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to OrbitalManager.
      */
     public static void operationsList(com.azure.resourcemanager.orbital.OrbitalManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -14,6 +14,15 @@ public final class ScanningMode extends ExpandableStringEnum<ScanningMode> {
     public static final ScanningMode DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of ScanningMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScanningMode() {
+    }
+
+    /**
      * Creates or finds a ScanningMode from its string representation.
      *
      * @param name a name to look for.

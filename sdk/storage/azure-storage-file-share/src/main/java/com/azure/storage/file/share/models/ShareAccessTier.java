@@ -20,6 +20,14 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
     public static final ShareAccessTier COOL = fromString("Cool");
 
     /**
+     * Creates a new instance of ShareAccessTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShareAccessTier() {}
+
+    /**
      * Creates or finds a ShareAccessTier from its string representation.
      *
      * @param name a name to look for.

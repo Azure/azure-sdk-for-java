@@ -21,7 +21,6 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
 import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
@@ -49,7 +48,6 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryPagedFlux;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
@@ -117,7 +115,6 @@ public final class TextAnalyticsAsyncClient {
     final LabelClassifyUtilClient labelClassifyUtilClient;
     final AnalyzeHealthcareEntityUtilClient analyzeHealthcareEntityUtilClient;
     final AnalyzeActionsUtilClient analyzeActionsUtilClient;
-    final DynamicClassifyUtilClient dynamicClassifyUtilClient;
     final AbstractSummaryUtilClient abstractSummaryUtilClient;
     final ExtractSummaryUtilClient extractSummaryUtilClient;
 
@@ -147,7 +144,6 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(legacyService, serviceVersion);
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(legacyService, serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(null, serviceVersion);
-        this.dynamicClassifyUtilClient = new DynamicClassifyUtilClient(null, serviceVersion);
         this.abstractSummaryUtilClient = new AbstractSummaryUtilClient(null, serviceVersion);
         this.extractSummaryUtilClient = new ExtractSummaryUtilClient(null, serviceVersion);
     }
@@ -171,7 +167,6 @@ public final class TextAnalyticsAsyncClient {
             serviceVersion);
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.dynamicClassifyUtilClient = new DynamicClassifyUtilClient(service, serviceVersion);
         this.abstractSummaryUtilClient = new AbstractSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.extractSummaryUtilClient = new ExtractSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
     }
@@ -1704,138 +1699,6 @@ public final class TextAnalyticsAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         return analyzeSentimentUtilClient.analyzeSentimentBatch(documents, options);
-    }
-
-    /**
-     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
-     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
-     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Dynamic classification of each document in a list of {@link String document} with provided
-     * {@link DynamicClassifyOptions} options. Subscribes to the call asynchronously and prints out the
-     * dynamic classification details when a response is received.</p>
-     *
-     * <!-- src_embed AsyncClient.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
-     * <pre>
-     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
-     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
-     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
-     * DynamicClassifyOptions options = new DynamicClassifyOptions&#40;&#41;;
-     * textAnalyticsAsyncClient.dynamicClassifyBatch&#40;documents,
-     *     Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, &quot;en&quot;, options&#41;
-     *     .subscribe&#40;
-     *         resultCollection -&gt; resultCollection.forEach&#40;documentResult -&gt; &#123;
-     *             System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *             for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *                 System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                     classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
-     *             &#125;
-     *         &#125;&#41;,
-     *         error -&gt; System.err.println&#40;&quot;There was an error analyzing dynamic classification of the documents. &quot; + error&#41;,
-     *         &#40;&#41; -&gt; System.out.println&#40;&quot;End of analyzing dynamic classification.&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end AsyncClient.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions -->
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param categories A list of categories to which input is classified to. This parameter can not be empty and at
-     * least has two categories assigned.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     * @param options The additional configurable {@link DynamicClassifyOptions options} that may be passed when
-     * analyzing dynamic classification.
-     *
-     * @return A {@link Mono} that contains a {@link DynamicClassifyDocumentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassifyBatch} is called with
-     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
-     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * 2022-10-01-preview and newer.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DynamicClassifyDocumentResultCollection> dynamicClassifyBatch(
-        Iterable<String> documents, Iterable<String> categories, String language, DynamicClassifyOptions options) {
-        try {
-            return dynamicClassifyBatchWithResponse(
-                mapByIndex(documents, (index, value) -> {
-                    final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                    textDocumentInput.setLanguage(language);
-                    return textDocumentInput;
-                }), categories, options).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
-     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
-     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
-     * {@link DynamicClassifyOptions} options. Subscribes to the call asynchronously and prints out the
-     * dynamic classification details when a response is received.</p>
-     *
-     * <!-- src_embed AsyncClient.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions -->
-     * <pre>
-     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
-     * documents.add&#40;new TextDocumentInput&#40;&quot;1&quot;, &quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;&#41;;
-     * documents.add&#40;new TextDocumentInput&#40;&quot;2&quot;, &quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;&#41;;
-     * DynamicClassifyOptions options = new DynamicClassifyOptions&#40;&#41;;
-     * textAnalyticsAsyncClient.dynamicClassifyBatchWithResponse&#40;documents,
-     *     Arrays.asList&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;, options&#41;
-     *     .subscribe&#40;
-     *         response -&gt; &#123;
-     *             &#47;&#47; Response's status code
-     *             System.out.printf&#40;&quot;Status code of request response: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     *             DynamicClassifyDocumentResultCollection resultCollection = response.getValue&#40;&#41;;
-     *             &#47;&#47; Batch statistics
-     *             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics&#40;&#41;;
-     *             System.out.printf&#40;&quot;Batch statistics, transaction count: %s, valid document count: %s.%n&quot;,
-     *                 batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
-     *             resultCollection.forEach&#40;documentResult -&gt; &#123;
-     *                 System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *                 for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *                     System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                         classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
-     *                 &#125;
-     *             &#125;&#41;;
-     *         &#125;,
-     *         error -&gt; System.err.println&#40;
-     *             &quot;There was an error analyzing dynamic classification of the documents. &quot; + error&#41;,
-     *         &#40;&#41; -&gt; System.out.println&#40;&quot;End of analyzing dynamic classification.&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end AsyncClient.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions -->
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param categories A list of categories to which input is classified to. This parameter can not be empty and at
-     * least has two categories assigned.
-     * @param options The additional configurable {@link DynamicClassifyOptions options} that may be passed when
-     * analyzing dynamic classification.
-     *
-     * @return A {@link Mono} contains a {@link Response} that contains a
-     * {@link DynamicClassifyDocumentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassifyBatchWithResponse} is called with
-     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
-     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * 2022-10-01-preview and newer.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassifyBatchWithResponse(
-        Iterable<TextDocumentInput> documents, Iterable<String> categories, DynamicClassifyOptions options) {
-        return dynamicClassifyUtilClient.dynamicClassifyBatch(documents, categories, options);
     }
 
     /**

@@ -38,6 +38,15 @@ public final class BundleType extends ExpandableStringEnum<BundleType> {
     public static final BundleType COSMOS_DBS = fromString("CosmosDbs");
 
     /**
+     * Creates a new instance of BundleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BundleType() {
+    }
+
+    /**
      * Creates or finds a BundleType from its string representation.
      *
      * @param name a name to look for.

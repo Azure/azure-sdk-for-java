@@ -6,6 +6,7 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
 import java.net.URI;
@@ -55,10 +56,10 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         this.connectionType = connectionType;
     }
 
-    public boolean isApplicable(RxDocumentServiceRequest request) {
+    public boolean isApplicable(RntbdRequestArgs requestArgs) {
         if (this.isValid()
-            && this.condition.isApplicable(request)
-            && this.result.isApplicable(this.id, request)) {
+            && this.condition.isApplicable(requestArgs)
+            && this.result.isApplicable(this.id, requestArgs.serviceRequest())) {
 
             long hitCount = this.hitCount.incrementAndGet();
             return this.hitLimit == null || hitCount <= this.hitLimit;

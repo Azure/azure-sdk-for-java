@@ -3,10 +3,10 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -18,6 +18,9 @@ import java.util.Map;
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
 public class CosmosItemRequestOptions {
+    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
@@ -30,8 +33,8 @@ public class CosmosItemRequestOptions {
     private Boolean contentResponseOnWriteEnabled;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private CosmosDiagnosticsThresholds thresholds;
 
     /**
      * copy constructor
@@ -48,7 +51,7 @@ public class CosmosItemRequestOptions {
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
         throughputControlGroupName = options.throughputControlGroupName;
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
-        thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
+        thresholds = options.thresholds;
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
     }
 
@@ -67,7 +70,9 @@ public class CosmosItemRequestOptions {
      */
     CosmosItemRequestOptions(PartitionKey partitionKey) {
         super();
+
         setPartitionKey(partitionKey);
+        this.thresholds = new CosmosDiagnosticsThresholds();
     }
 
     /**
@@ -316,7 +321,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
         requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
-        requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
+        requestOptions.setDiagnosticsThresholds(thresholds);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
@@ -352,7 +357,8 @@ public class CosmosItemRequestOptions {
      * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
     public Duration getThresholdForDiagnosticsOnTracer() {
-        return thresholdForDiagnosticsOnTracer;
+
+        return thresholdsAccessor.getPointReadLatencyThreshold(this.thresholds);
     }
 
     /**
@@ -365,7 +371,8 @@ public class CosmosItemRequestOptions {
      * @return the CosmosItemRequestOptions
      */
     public CosmosItemRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        this.thresholds.setPointOperationLatencyThreshold(thresholdForDiagnosticsOnTracer);
+
         return this;
     }
 
@@ -382,6 +389,18 @@ public class CosmosItemRequestOptions {
             this.customOptions = new HashMap<>();
         }
         this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosItemRequestOptions setDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
         return this;
     }
 
@@ -434,6 +453,11 @@ public class CosmosItemRequestOptions {
                 @Override
                 public Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions) {
                     return cosmosItemRequestOptions.getHeaders();
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions) {
+                    return cosmosItemRequestOptions.thresholds;
                 }
             }
         );

@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added `MANAGED_HSM` to `AzureEnvironment`.
 
 ## 1.10.2 (2023-03-02)
 

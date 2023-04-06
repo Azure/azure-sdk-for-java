@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed the issue of not retrying for a new session after the last acquire-session timeout. ([#34314](https://github.com/Azure/azure-sdk-for-java/issues/34314))
 ### Other Changes
 
 ## 7.13.3 (2023-03-07)

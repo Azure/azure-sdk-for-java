@@ -13,8 +13,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
-import com.azure.resourcemanager.redisenterprise.models.Name;
 import com.azure.resourcemanager.redisenterprise.models.RegionSkuDetail;
+import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -65,6 +65,6 @@ public final class SkusListMockTests {
 
         Assertions.assertEquals("kqze", response.iterator().next().resourceType());
         Assertions.assertEquals("dltfz", response.iterator().next().locationInfo().location());
-        Assertions.assertEquals(Name.ENTERPRISE_FLASH_F1500, response.iterator().next().skuDetails().name());
+        Assertions.assertEquals(SkuName.ENTERPRISE_FLASH_F1500, response.iterator().next().skuDetails().name());
     }
 }

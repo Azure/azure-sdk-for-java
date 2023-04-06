@@ -17,15 +17,15 @@ import java.util.Map;
  * @param <T> the resource type of the resource response.
  */
 public final class ResourceResponse<T extends Resource> {
-    private Class<T> cls;
-    private RxDocumentServiceResponse response;
-    private Map<String, Long> usageHeaders;
-    private Map<String, Long> quotaHeaders;
+    private final Class<T> cls;
+    private final RxDocumentServiceResponse response;
+    private final Map<String, Long> usageHeaders;
+    private final Map<String, Long> quotaHeaders;
 
     public ResourceResponse(RxDocumentServiceResponse response, Class<T> cls) {
         this.response = response;
-        this.usageHeaders = new HashMap<String, Long>();
-        this.quotaHeaders = new HashMap<String, Long>();
+        this.usageHeaders = new HashMap<>();
+        this.quotaHeaders = new HashMap<>();
         this.cls = cls;
     }
 
@@ -330,6 +330,9 @@ public final class ResourceResponse<T extends Resource> {
      * @return diagnostic statistics for the current request to Azure Cosmos DB service.
      */
     public CosmosDiagnostics getDiagnostics() {
+        if (this.response == null) {
+            return null;
+        }
         return this.response.getCosmosDiagnostics();
     }
 
@@ -339,7 +342,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     public Duration getDuration() {
-        CosmosDiagnostics cosmosDiagnostics = this.response.getCosmosDiagnostics();
+        CosmosDiagnostics cosmosDiagnostics = this.response != null ? this.response.getCosmosDiagnostics() : null;
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;
         }
@@ -362,7 +365,6 @@ public final class ResourceResponse<T extends Resource> {
 
     /**
      * Gets the ETag from the response headers.
-     *
      * Null in case of delete operation.
      *
      * @return ETag

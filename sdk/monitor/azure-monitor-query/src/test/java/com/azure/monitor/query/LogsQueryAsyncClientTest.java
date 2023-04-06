@@ -25,6 +25,7 @@ import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
@@ -51,6 +52,10 @@ public class LogsQueryAsyncClientTest extends TestBase {
 
     private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
+
+    static final String RESOURCE_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_LOGS_RESOURCE_ID", "subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage");
+
     private LogsQueryAsyncClient client;
     private static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
             + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
@@ -109,6 +114,18 @@ public class LogsQueryAsyncClientTest extends TestBase {
                     assertEquals(100, queryResults.getAllTables().get(0).getRows().size());
                 })
                 .verifyComplete();
+    }
+
+    @Test
+    public void testLogsResourceQuery() {
+        StepVerifier.create(client.queryResource(RESOURCE_ID, QUERY_STRING,
+                QueryTimeInterval.ALL))
+            .assertNext(queryResults -> {
+                assertEquals(1, queryResults.getAllTables().size());
+                assertEquals(1200, queryResults.getAllTables().get(0).getAllTableCells().size());
+                assertEquals(100, queryResults.getAllTables().get(0).getRows().size());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -257,6 +274,18 @@ public class LogsQueryAsyncClientTest extends TestBase {
     }
 
     @Test
+    public void testStatisticsResourceQuery() {
+        StepVerifier.create(client.queryResourceWithResponse(RESOURCE_ID,
+                QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE))
+            .assertNext(response -> {
+                LogsQueryResult queryResults = response.getValue();
+                assertEquals(1, queryResults.getAllTables().size());
+                assertNotNull(queryResults.getStatistics());
+            })
+            .verifyComplete();
+    }
+
+    @Test
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING, null);
@@ -285,6 +314,7 @@ public class LogsQueryAsyncClientTest extends TestBase {
             + " not readily reproducible and because the service caches query results, the queries that require extended time "
             + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
             + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
+    @Disabled
     public void testServerTimeout() {
         // The server does not always stop processing the request and return a 504 before the client times out
         // so, retry until a 504 response is returned
@@ -332,6 +362,33 @@ public class LogsQueryAsyncClientTest extends TestBase {
 
                 })
                 .verifyComplete();
+
+
+    }
+
+    @Test
+    public void testVisualizationResourceQuery() {
+        String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
+            + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
+        StepVerifier.create(client.queryResourceWithResponse(RESOURCE_ID,
+                query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+                Context.NONE))
+            .assertNext(response -> {
+                LogsQueryResult queryResults = response.getValue();
+                assertEquals(1, queryResults.getAllTables().size());
+                assertNotNull(queryResults.getVisualization());
+
+                LinkedHashMap<String, Object> linkedHashMap =
+                    queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
+                    });
+                String title = linkedHashMap.get("title").toString();
+                String xTitle = linkedHashMap.get("xTitle").toString();
+
+                assertEquals("the chart title", title);
+                assertEquals("the x axis title", xTitle);
+
+            })
+            .verifyComplete();
 
 
     }

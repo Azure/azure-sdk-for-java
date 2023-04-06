@@ -37,6 +37,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
+import static com.azure.monitor.query.LogsQueryAsyncClientTest.RESOURCE_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -94,6 +95,16 @@ public class LogsQueryClientTest extends TestBase {
         LogsQueryResult queryResults = client.queryWorkspace(WORKSPACE_ID, QUERY_STRING,
                 new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
+        assertEquals(1, queryResults.getAllTables().size());
+        assertEquals(1200, queryResults.getAllTables().get(0).getAllTableCells().size());
+        assertEquals(100, queryResults.getAllTables().get(0).getRows().size());
+    }
+
+    @Test
+    public void testLogsQueryResource() {
+        LogsQueryResult queryResults = client.queryResource(RESOURCE_ID, QUERY_STRING,
+            new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
+                OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getAllTables().size());
         assertEquals(1200, queryResults.getAllTables().get(0).getAllTableCells().size());
         assertEquals(100, queryResults.getAllTables().get(0).getRows().size());
@@ -233,6 +244,15 @@ public class LogsQueryClientTest extends TestBase {
     }
 
     @Test
+    public void testStatisticsResourceQuery() {
+        LogsQueryResult queryResults = client.queryResourceWithResponse(RESOURCE_ID,
+            QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE)
+            .getValue();
+        assertEquals(1, queryResults.getAllTables().size());
+        assertNotNull(queryResults.getStatistics());
+    }
+
+    @Test
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING, null);
@@ -295,12 +315,32 @@ public class LogsQueryClientTest extends TestBase {
         assertNotNull(queryResults.getVisualization());
 
         LinkedHashMap<String, Object> linkedHashMap =
-                queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() { });
+            queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
+            });
         String title = linkedHashMap.get("title").toString();
         String xTitle = linkedHashMap.get("xTitle").toString();
 
         assertEquals("the chart title", title);
         assertEquals("the x axis title", xTitle);
+    }
 
+    @Test
+    public void testVisualizationResourceQuery() {
+        String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
+            + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
+        LogsQueryResult queryResults = client.queryResourceWithResponse(RESOURCE_ID,
+            query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+            Context.NONE).getValue();
+        assertEquals(1, queryResults.getAllTables().size());
+        assertNotNull(queryResults.getVisualization());
+
+        LinkedHashMap<String, Object> linkedHashMap =
+            queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() {
+            });
+        String title = linkedHashMap.get("title").toString();
+        String xTitle = linkedHashMap.get("xTitle").toString();
+
+        assertEquals("the chart title", title);
+        assertEquals("the x axis title", xTitle);
     }
 }

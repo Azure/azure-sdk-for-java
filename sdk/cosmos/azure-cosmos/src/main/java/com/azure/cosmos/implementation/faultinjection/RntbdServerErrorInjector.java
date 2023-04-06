@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 
 import java.time.Duration;
@@ -48,7 +49,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
     @Override
     public boolean injectRntbdServerConnectionDelay(
-        RntbdRequestRecord requestRecord,
+        IRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer) {
 
         for (IRntbdServerErrorInjector injector : this.faultInjectors) {

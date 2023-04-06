@@ -68,6 +68,7 @@
       --add-opens com.azure.core/com.azure.core.implementation.logging=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.tracing=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED

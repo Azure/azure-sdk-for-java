@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JitNetworkAccessPolicies ListByResourceGroupAndRegion. */
 public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionSamples {
     /*
@@ -18,6 +16,8 @@ public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionSamples {
      */
     public static void getJITNetworkAccessPoliciesOnAResourceGroupFromASecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.jitNetworkAccessPolicies().listByResourceGroupAndRegion("myRg1", "westeurope", Context.NONE);
+        manager
+            .jitNetworkAccessPolicies()
+            .listByResourceGroupAndRegion("myRg1", "westeurope", com.azure.core.util.Context.NONE);
     }
 }

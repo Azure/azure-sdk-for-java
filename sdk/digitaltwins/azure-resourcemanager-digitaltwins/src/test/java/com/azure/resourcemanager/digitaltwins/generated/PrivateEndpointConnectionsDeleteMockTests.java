@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -57,6 +56,8 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.privateEndpointConnections().delete("ndoygmifthnzdnd", "l", "nayqi", Context.NONE);
+        manager
+            .privateEndpointConnections()
+            .delete("n", "tshhszhedp", "vwiwubmwmbesld", com.azure.core.util.Context.NONE);
     }
 }

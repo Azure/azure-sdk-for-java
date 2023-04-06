@@ -184,14 +184,15 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        LanguageDetectionSkill deserializedValue = new LanguageDetectionSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultCountryHint = defaultCountryHint;
-                        deserializedValue.modelVersion = modelVersion;
+                        LanguageDetectionSkill deserializedLanguageDetectionSkill =
+                                new LanguageDetectionSkill(inputs, outputs);
+                        deserializedLanguageDetectionSkill.setName(name);
+                        deserializedLanguageDetectionSkill.setDescription(description);
+                        deserializedLanguageDetectionSkill.setContext(context);
+                        deserializedLanguageDetectionSkill.defaultCountryHint = defaultCountryHint;
+                        deserializedLanguageDetectionSkill.modelVersion = modelVersion;
 
-                        return deserializedValue;
+                        return deserializedLanguageDetectionSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

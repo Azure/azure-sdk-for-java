@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceSettings Delete. */
 public final class WorkspaceSettingsDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class WorkspaceSettingsDeleteSamples {
      */
     public static void deleteAWorkspaceSettingDataForResourceGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.workspaceSettings().deleteWithResponse("default", Context.NONE);
+        manager.workspaceSettings().deleteWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

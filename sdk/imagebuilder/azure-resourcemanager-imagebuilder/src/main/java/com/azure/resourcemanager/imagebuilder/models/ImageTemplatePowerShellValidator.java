@@ -19,15 +19,13 @@ import java.util.List;
 @Fluent
 public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMValidator {
     /*
-     * URI of the PowerShell script to be run for validation. It can be a
-     * github link, Azure Storage URI, etc
+     * URI of the PowerShell script to be run for validation. It can be a github link, Azure Storage URI, etc
      */
     @JsonProperty(value = "scriptUri")
     private String scriptUri;
 
     /*
-     * SHA256 checksum of the power shell script provided in the scriptUri
-     * field above
+     * SHA256 checksum of the power shell script provided in the scriptUri field above
      */
     @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
@@ -45,9 +43,8 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
     private Boolean runElevated;
 
     /*
-     * If specified, the PowerShell script will be run with elevated privileges
-     * using the Local System user. Can only be true when the runElevated field
-     * above is set to true.
+     * If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only
+     * be true when the runElevated field above is set to true.
      */
     @JsonProperty(value = "runAsSystem")
     private Boolean runAsSystem;
@@ -57,6 +54,10 @@ public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMVal
      */
     @JsonProperty(value = "validExitCodes")
     private List<Integer> validExitCodes;
+
+    /** Creates an instance of ImageTemplatePowerShellValidator class. */
+    public ImageTemplatePowerShellValidator() {
+    }
 
     /**
      * Get the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link, Azure

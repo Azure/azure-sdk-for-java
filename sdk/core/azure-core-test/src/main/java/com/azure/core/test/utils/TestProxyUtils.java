@@ -3,6 +3,7 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -79,6 +80,10 @@ public class TestProxyUtils {
      * @throws RuntimeException Construction of one of the URLs failed.
      */
     public static void changeHeaders(HttpRequest request, String xRecordingId, String mode) {
+        HttpHeader upstreamUri = request.getHeaders().get("x-recording-upstream-base-uri");
+        if (upstreamUri != null) {
+            return;
+        }
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
         proxyUrlBuilder.setScheme(PROXY_URL_SCHEME);
         proxyUrlBuilder.setHost(PROXY_URL_HOST);
@@ -97,6 +102,31 @@ public class TestProxyUtils {
             headers.add("x-recording-mode", mode);
             headers.add("x-recording-id", xRecordingId);
             request.setUrl(proxyUrlBuilder.toUrl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Sets the response URL back to the original URL before returning it through the pipeline.
+     * @param response The {@link HttpResponse} to modify.
+     * @return The modified response.
+     * @throws RuntimeException Construction of one of the URLs failed.
+     */
+    public static HttpResponse revertUrl(HttpResponse response) {
+        try {
+            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders().getValue("x-recording-upstream-base-uri")).toUrl();
+            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            currentUrl.setScheme(originalUrl.getProtocol());
+            currentUrl.setHost(originalUrl.getHost());
+            int port = originalUrl.getPort();
+            if (port == -1) {
+                currentUrl.setPort(""); // empty string is no port.
+            } else {
+                currentUrl.setPort(port);
+            }
+            response.getRequest().setUrl(currentUrl.toUrl());
+            return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
