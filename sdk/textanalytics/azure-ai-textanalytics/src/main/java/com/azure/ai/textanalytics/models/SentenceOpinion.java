@@ -7,8 +7,6 @@ import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
-import java.util.Collections;
-
 /**
  * The {@link SentenceOpinion} model.
  */

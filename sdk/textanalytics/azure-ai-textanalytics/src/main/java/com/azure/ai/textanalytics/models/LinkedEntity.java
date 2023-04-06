@@ -7,8 +7,6 @@ import com.azure.ai.textanalytics.implementation.LinkedEntityPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
-import java.util.Collections;
-
 /**
  * The {@link LinkedEntity} model.
  */
