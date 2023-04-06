@@ -14,6 +14,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +29,7 @@ public class TestProxyManager {
 
     private static final AtomicInteger PORT_COUNTER = new AtomicInteger(5000);
 
-    private String proxyUrl;
+    private URL proxyUrl;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
@@ -51,18 +53,18 @@ public class TestProxyManager {
         try {
             String commandLine = "test-proxy";
             // if we're not running in CI, construct the local path. TF_BUILD indicates Azure DevOps. CI indicates Github Actions.
-            if (Configuration.getGlobalConfiguration().get("TF_BUILD") == null &&
-                Configuration.getGlobalConfiguration().get("CI") == null) {
+            if (Configuration.getGlobalConfiguration().get("TF_BUILD") == null
+                && Configuration.getGlobalConfiguration().get("CI") == null) {
                 commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
             }
 
-            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl())
+            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl().toString())
                 .directory(TestProxyDownloader.getProxyDirectory().toFile());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
-                String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
+                String.format("%s/admin/isalive", getProxyUrl()));
             for (int i = 0; i < 10; i++) {
                 HttpResponse response = null;
                 try {
@@ -97,16 +99,21 @@ public class TestProxyManager {
      * Get the proxy URL.
      *
      * @return A string containing the proxy URL.
+     * @throws RuntimeException The proxy URL could not be constructed.
      */
-    public String getProxyUrl() {
+    public URL getProxyUrl() {
         if (proxyUrl != null) {
-            return proxyUrl.toString();
+            return proxyUrl;
         }
         UrlBuilder builder = new UrlBuilder();
         builder.setHost("localhost");
         builder.setScheme("http");
         builder.setPort(PORT_COUNTER.getAndIncrement());
-        proxyUrl = builder.toString();
+        try {
+            proxyUrl = builder.toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         return proxyUrl;
     }
 }
