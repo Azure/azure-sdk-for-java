@@ -16,6 +16,10 @@ function credcheck(dir) {
         /\\"keyName\\":\\"key2\\",\\"value\\":\\"(.*?)\\"/g,
         '\\"keyName\\":\\"key2\\",\\"value\\":\\"***REMOVED***\\"'
     );
+    redactDict.set(
+        /\\"name\\":\\"password\\",\\"value\\":\\"(.*?)\\"/g,
+        '\\"name\\":\\"password\\",\\"value\\":\\"***REMOVED***\\"'
+    );
     redactDict.set(/;AccountKey=(.*?)(;|\\")/g, ";AccountKey=***REMOVED***$2");
     redactDict.set(/\\"primaryMasterKey\\":\\"(.*?)\\"/g, '\\"primaryMasterKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"primaryReadonlyMasterKey\\":\\"(.*?)\\"/g, '\\"primaryReadonlyMasterKey\\":\\"***REMOVED***\\"');
