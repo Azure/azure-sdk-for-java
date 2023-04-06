@@ -18,8 +18,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableAccountSasGenerator;
+import com.azure.data.tables.implementation.TableItemAccessHelper;
 import com.azure.data.tables.implementation.TablePaged;
 import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
@@ -497,7 +497,7 @@ public final class TableServiceAsyncClient {
                     }
 
                     final List<TableItem> tables = tableResponsePropertiesList.stream()
-                        .map(ModelHelper::createItem).collect(Collectors.toList());
+                        .map(TableItemAccessHelper::createItem).collect(Collectors.toList());
 
                     return Mono.just(new TablePaged(response, tables,
                         response.getDeserializedHeaders().getXMsContinuationNextTableName()));

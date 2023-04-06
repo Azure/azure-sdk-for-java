@@ -56,6 +56,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RxDocumentClientImplTest {
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private URI serviceEndpointMock;
     private String masterKeyOrResourceTokenMock;
@@ -243,8 +246,8 @@ public class RxDocumentClientImplTest {
                 assertThat(feedResponse.getResults().size()).isEqualTo(expectedResultSize);
                 assertThat(feedResponse.getRequestCharge()).isEqualTo(expectedRequestCharge);
 
-                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
-                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
+                assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
+                assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
                 assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
 
                 List<InternalObjectNode> readManyResults = feedResponse.getResults();

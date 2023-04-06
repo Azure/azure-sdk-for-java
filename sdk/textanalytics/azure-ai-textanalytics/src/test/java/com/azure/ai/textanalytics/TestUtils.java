@@ -830,7 +830,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 17);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity1,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "gentleman");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity2, "Male population group");
@@ -839,10 +839,10 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 29);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 9);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.fromString("Course"));
@@ -850,7 +850,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 11);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "angina");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity4, "Angina Pectoris");
@@ -859,10 +859,10 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 6);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "past several months");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, HealthcareEntityCategory.TIME);
@@ -870,7 +870,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 85);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 19);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult1 = new AnalyzeHealthcareEntitiesResult(documentId,
@@ -932,7 +932,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity1,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "minimal");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, HealthcareEntityCategory.CONDITION_QUALIFIER);
@@ -941,7 +941,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 7);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions in the anterior lateral leads");
 //        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, null);
@@ -951,7 +951,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 44);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "fatigue");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity5, "Fatigue");
@@ -961,7 +961,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 7);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity6 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "wrist pain");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity6, "Pain in wrist");
@@ -971,7 +971,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity6, 10);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity6,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity7 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity7, "anginal equivalent");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity7, "Anginal equivalent");
@@ -981,7 +981,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity7, 18);
         // there are too many entity links, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity7,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult = new AnalyzeHealthcareEntitiesResult("1",
@@ -1314,13 +1314,13 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
+            IterableStream.of(null),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+            IterableStream.of(null),
+            IterableStream.of(null)
         ));
         // Second Page
         startIndex += firstPage;
@@ -1331,13 +1331,13 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
+            IterableStream.of(null),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+            IterableStream.of(null),
+            IterableStream.of(null)
         ));
         return analyzeActionsResults;
     }

@@ -135,9 +135,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040D)));
+            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040D)));
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040A)));
+            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040A)));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes)
             // if polling operation completed, retrieve the final result.
@@ -165,9 +165,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
         HashMap<String, ClassifierDocumentTypeDetails> docTypes = new HashMap<>();
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040D)));
+            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040D)));
         docTypes.put("1040-D", new ClassifierDocumentTypeDetails()
-            .setAzureBlobSource(new AzureBlobContentSource().setContainerUrl(blobContainerUrl1040A)));
+            .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl1040A)));
 
         documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(docTypes,
                 new BuildDocumentClassifierOptions()
@@ -186,6 +186,32 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 });
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map-Options
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode, String)}
+     */
+    public void beginBuildModelWithFileList() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String fileList = "";
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(blobContainerUrl,
+                DocumentModelBuildMode.TEMPLATE, fileList
+            )
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(documentModel -> {
+                System.out.printf("Model ID: %s%n", documentModel.getModelId());
+                System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                        System.out.printf("Field: %s", field);
+                        System.out.printf("Field type: %s", documentFieldSchema.getType());
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+                    });
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String
     }
 
     /**
@@ -569,6 +595,4 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
     }
-
-
 }

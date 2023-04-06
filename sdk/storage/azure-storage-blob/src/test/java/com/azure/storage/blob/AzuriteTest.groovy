@@ -3,12 +3,13 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.test.TestMode
+
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 class AzuriteTest extends APISpec {
@@ -64,8 +65,8 @@ class AzuriteTest extends APISpec {
         "http://localhost:10000/devstoreaccount1/container/blob"                      | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "blob"           | "http://localhost:10000/devstoreaccount1/container/blob"
         "http://localhost:10000/devstoreaccount1/container/path/to]a blob"            | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "path/to]a blob" | "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob"
         "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob"      | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "path/to]a blob" | "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob"
-        "http://localhost:10000/devstoreaccount1/container/斑點"                        | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "斑點"             | "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"
-        "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"        | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "斑點"             | "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"
+        "http://localhost:10000/devstoreaccount1/container/斑點"                      | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "斑點"           | "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"
+        "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"        | "http" | "localhost:10000"                      | "devstoreaccount1" | "container"       | "斑點"           | "http://localhost:10000/devstoreaccount1/container/%E6%96%91%E9%BB%9E"
         "http://azure-storage-emulator-azurite:10000/devstoreaccount1"                | "http" | "azure-storage-emulator-azurite:10000" | "devstoreaccount1" | null              | null             | "http://azure-storage-emulator-azurite:10000/devstoreaccount1"
         "http://azure-storage-emulator-azurite:10000/devstoreaccount1/container"      | "http" | "azure-storage-emulator-azurite:10000" | "devstoreaccount1" | "container"       | null             | "http://azure-storage-emulator-azurite:10000/devstoreaccount1/container"
         "http://azure-storage-emulator-azurite:10000/devstoreaccount1/container/blob" | "http" | "azure-storage-emulator-azurite:10000" | "devstoreaccount1" | "container"       | "blob"           | "http://azure-storage-emulator-azurite:10000/devstoreaccount1/container/blob"
@@ -306,5 +307,24 @@ class AzuriteTest extends APISpec {
         index | _
         0     | _
         1     | _
+    }
+
+    @Ignore("Enable once the April 2023 release of azure-core-http-netty happens")
+    def "Upload empty file"() {
+        setup:
+        def containerName = namer.getRandomName("container", 32)
+        def serviceClient = getServiceClient(azuriteCredential, "http://127.0.0.1:10000/devstoreaccount1")
+        def blobClient = serviceClient.createBlobContainer(containerName)
+            .getBlobClient(namer.getRandomName("blob", 32))
+        def file = getRandomFile(0)
+
+        when:
+        blobClient.uploadFromFile(file.toPath().toString(), true)
+
+        then:
+        noExceptionThrown()
+
+        cleanup:
+        serviceClient.deleteBlobContainer(containerName)
     }
 }

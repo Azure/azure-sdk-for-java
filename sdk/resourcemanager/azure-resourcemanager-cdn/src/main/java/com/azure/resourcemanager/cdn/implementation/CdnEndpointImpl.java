@@ -6,34 +6,42 @@ package com.azure.resourcemanager.cdn.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
+import com.azure.resourcemanager.cdn.models.CdnEndpoint;
+import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
+import com.azure.resourcemanager.cdn.models.CustomDomainValidationResult;
+import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
+import com.azure.resourcemanager.cdn.models.DeliveryRule;
+import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
+import com.azure.resourcemanager.cdn.models.EndpointResourceState;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
+import com.azure.resourcemanager.cdn.models.GeoFilter;
+import com.azure.resourcemanager.cdn.models.GeoFilterActions;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
+import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.cdn.models.CdnEndpoint;
-import com.azure.resourcemanager.cdn.models.CdnProfile;
-import com.azure.resourcemanager.cdn.models.CustomDomainValidationResult;
-import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
-import com.azure.resourcemanager.cdn.models.EndpointResourceState;
-import com.azure.resourcemanager.cdn.models.GeoFilter;
-import com.azure.resourcemanager.cdn.models.GeoFilterActions;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import java.util.stream.Collectors;
 
 /**
  * Implementation for {@link CdnEndpoint}.
  */
+@SuppressWarnings("unchecked")
 class CdnEndpointImpl
     extends ExternalChildResourceImpl<
         CdnEndpoint,
@@ -57,11 +65,14 @@ class CdnEndpointImpl
 
     private List<CustomDomainInner> customDomainList;
     private List<CustomDomainInner> deletedCustomDomainList;
+    // rule map for rules engine in Standard Microsoft SKU, indexed by rule name
+    private final Map<String, DeliveryRule> standardRulesEngineRuleMap = new HashMap<>();
 
     CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
         super(name, parent, inner);
         this.customDomainList = new ArrayList<>();
         this.deletedCustomDomainList = new ArrayList<>();
+        initializeRuleMapForStandardMicrosoftSku();
     }
 
     @Override
@@ -72,6 +83,15 @@ class CdnEndpointImpl
     @Override
     public Mono<CdnEndpoint> createResourceAsync() {
         final CdnEndpointImpl self = this;
+        if (isStandardMicrosoftSku()
+            && this.innerModel().deliveryPolicy() == null
+            && this.standardRulesEngineRuleMap.size() > 0) {
+            this.innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                .withRules(this.standardRulesEngineRuleMap.values()
+                    .stream()
+                    .sorted(Comparator.comparingInt(DeliveryRule::order))
+                    .collect(Collectors.toList())));
+        }
         return this.parent().manager().serviceClient().getEndpoints().createAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -114,6 +134,17 @@ class CdnEndpointImpl
                 .withOptimizationType(this.innerModel().optimizationType())
                 .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
                 .withTags(this.innerModel().tags());
+
+        if (isStandardMicrosoftSku()) {
+            List<DeliveryRule> rules = this.standardRulesEngineRuleMap.values()
+                .stream()
+                .sorted(Comparator.comparingInt(DeliveryRule::order))
+                .collect(Collectors.toList());
+            ensureDeliveryPolicy();
+            endpointUpdateParameters.withDeliveryPolicy(
+                new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                    .withRules(rules));
+        }
 
         DeepCreatedOrigin originInner = this.innerModel().origins().get(0);
         OriginUpdateParameters originUpdateParameters = new OriginUpdateParameters()
@@ -180,6 +211,7 @@ class CdnEndpointImpl
             .flatMap(cdnEndpoint -> {
                 self.customDomainList.clear();
                 self.deletedCustomDomainList.clear();
+                initializeRuleMapForStandardMicrosoftSku();
                 return self.parent().manager().serviceClient().getCustomDomains().listByEndpointAsync(
                         self.parent().resourceGroupName(),
                         self.parent().name(),
@@ -207,6 +239,11 @@ class CdnEndpointImpl
             this.parent().name(),
             this.name()),
             ResourceUsage::new);
+    }
+
+    @Override
+    public Map<String, DeliveryRule> standardRulesEngineRules() {
+        return Collections.unmodifiableMap(this.standardRulesEngineRuleMap);
     }
 
     @Override
@@ -545,6 +582,27 @@ class CdnEndpointImpl
     }
 
     @Override
+    public CdnStandardRulesEngineRuleImpl defineNewStandardRulesEngineRule(String name) {
+        throwIfNotStandardMicrosoftSku();
+        CdnStandardRulesEngineRuleImpl deliveryRule = new CdnStandardRulesEngineRuleImpl(this, name);
+        this.standardRulesEngineRuleMap.put(name, deliveryRule.innerModel());
+        return deliveryRule;
+    }
+
+    @Override
+    public CdnStandardRulesEngineRuleImpl updateStandardRulesEngineRule(String name) {
+        throwIfNotStandardMicrosoftSku();
+        return new CdnStandardRulesEngineRuleImpl(this, standardRulesEngineRules().get(name));
+    }
+
+    @Override
+    public CdnEndpointImpl withoutStandardRulesEngineRule(String name) {
+        throwIfNotStandardMicrosoftSku();
+        this.standardRulesEngineRuleMap.remove(name);
+        return this;
+    }
+
+    @Override
     public CdnEndpointImpl withoutCustomDomain(String hostName) {
         deletedCustomDomainList.add(new CustomDomainInner().withHostname(hostName));
         return this;
@@ -570,5 +628,34 @@ class CdnEndpointImpl
                 .withAction(action);
 
         return geoFilter;
+    }
+
+    private void initializeRuleMapForStandardMicrosoftSku() {
+        standardRulesEngineRuleMap.clear();
+        if (isStandardMicrosoftSku()
+            && innerModel().deliveryPolicy() != null
+            && innerModel().deliveryPolicy().rules() != null) {
+            for (DeliveryRule rule : innerModel().deliveryPolicy().rules()) {
+                this.standardRulesEngineRuleMap.put(rule.name(), rule);
+            }
+        }
+    }
+
+    private boolean isStandardMicrosoftSku() {
+        return SkuName.STANDARD_MICROSOFT.equals(parent().sku().name());
+    }
+
+    private void throwIfNotStandardMicrosoftSku() {
+        if (!isStandardMicrosoftSku()) {
+            throw new IllegalStateException(String.format(
+                "Standard rules engine only supports for Standard Microsoft SKU, "
+                    + "current SKU is %s", parent().sku().name()));
+        }
+    }
+
+    private void ensureDeliveryPolicy() {
+        if (innerModel().deliveryPolicy() == null) {
+            innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy());
+        }
     }
 }

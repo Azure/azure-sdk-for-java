@@ -20,6 +20,7 @@ only supported for certain operations in the Data Plane SDK.
 - Added support for `allowTrailingDot` and `allowSourceTrailingDot` on client construction. When `allowTrailingDot` is 
 provided, the service will not silently remove any trailing `.` character from directory/file names for all operations 
 made from that client. `allowSourceTrailingDot` will apply this same rule to source files when performing a rename or copy operation.
+- Added support for reading and writing a file via SeekableByteChannel.
 
 ## 12.17.1 (2023-03-16)
 

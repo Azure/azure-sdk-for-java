@@ -439,20 +439,20 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
                         }
                     }
                     if (nameFound) {
-                        CustomEntity deserializedValue = new CustomEntity(name);
-                        deserializedValue.description = description;
-                        deserializedValue.type = type;
-                        deserializedValue.subtype = subtype;
-                        deserializedValue.id = id;
-                        deserializedValue.caseSensitive = caseSensitive;
-                        deserializedValue.accentSensitive = accentSensitive;
-                        deserializedValue.fuzzyEditDistance = fuzzyEditDistance;
-                        deserializedValue.defaultCaseSensitive = defaultCaseSensitive;
-                        deserializedValue.defaultAccentSensitive = defaultAccentSensitive;
-                        deserializedValue.defaultFuzzyEditDistance = defaultFuzzyEditDistance;
-                        deserializedValue.aliases = aliases;
+                        CustomEntity deserializedCustomEntity = new CustomEntity(name);
+                        deserializedCustomEntity.description = description;
+                        deserializedCustomEntity.type = type;
+                        deserializedCustomEntity.subtype = subtype;
+                        deserializedCustomEntity.id = id;
+                        deserializedCustomEntity.caseSensitive = caseSensitive;
+                        deserializedCustomEntity.accentSensitive = accentSensitive;
+                        deserializedCustomEntity.fuzzyEditDistance = fuzzyEditDistance;
+                        deserializedCustomEntity.defaultCaseSensitive = defaultCaseSensitive;
+                        deserializedCustomEntity.defaultAccentSensitive = defaultAccentSensitive;
+                        deserializedCustomEntity.defaultFuzzyEditDistance = defaultFuzzyEditDistance;
+                        deserializedCustomEntity.aliases = aliases;
 
-                        return deserializedValue;
+                        return deserializedCustomEntity;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

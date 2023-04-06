@@ -22,12 +22,24 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
     }
 
     @Override
-    public boolean injectRntbdServerResponseDelay(
+    public boolean injectRntbdServerResponseDelayBeforeProcessing(
         RntbdRequestRecord requestRecord,
         Consumer<Duration> writeRequestWithDelayConsumer) {
 
         for (IRntbdServerErrorInjector injector : this.faultInjectors) {
-            if (injector.injectRntbdServerResponseDelay(requestRecord, writeRequestWithDelayConsumer)) {
+            if (injector.injectRntbdServerResponseDelayBeforeProcessing(requestRecord, writeRequestWithDelayConsumer)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean injectRntbdServerResponseDelayAfterProcessing(RntbdRequestRecord requestRecord,
+                                                                 Consumer<Duration> writeRequestWithDelayConsumer) {
+        for (IRntbdServerErrorInjector injector : this.faultInjectors) {
+            if (injector.injectRntbdServerResponseDelayAfterProcessing(requestRecord, writeRequestWithDelayConsumer)) {
                 return true;
             }
         }

@@ -16,10 +16,10 @@ import java.util.Collection;
  * as 'extractive|highlight-true'. Defaults to 'None'.
  */
 public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionType> {
-    /** Static value none for QueryCaptionType. */
+    /** Do not return captions for the query. */
     public static final QueryCaptionType NONE = fromString("none");
 
-    /** Static value extractive for QueryCaptionType. */
+    /** Extracts captions from the matching documents that contain passages relevant to the search query. */
     public static final QueryCaptionType EXTRACTIVE = fromString("extractive");
 
     /**
