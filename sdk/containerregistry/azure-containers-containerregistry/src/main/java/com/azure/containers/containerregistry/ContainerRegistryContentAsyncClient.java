@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.implementation.ConstructorAccessor
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryBlobsImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsGetChunkHeaders;
 import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
@@ -52,6 +53,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.co
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
@@ -182,17 +184,14 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsync -->
      *
-     * <!-- src_embed com.azure.containers.containerregistry.uploadStreamAsync -->
+     * <!-- src_embed com.azure.containers.containerregistry.uploadFileAsync -->
      * <pre>
-     * Flux.using&#40;
-     *         &#40;&#41; -&gt; new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;,
-     *         fileStream -&gt; contentClient.uploadBlob&#40;FluxUtil.toFluxByteBuffer&#40;fileStream, CHUNK_SIZE&#41;&#41;,
-     *         this::closeStream&#41;
+     * contentClient.uploadBlob&#40;BinaryData.fromFile&#40;Paths.get&#40;&quot;artifact.tar.gz&quot;&#41;, CHUNK_SIZE&#41;&#41;
      *     .subscribe&#40;uploadResult -&gt;
      *         System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
      *             uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.containers.containerregistry.uploadStreamAsync -->
+     * <!-- end com.azure.containers.containerregistry.uploadFileAsync -->
      *
      * <!-- src_embed com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      * <pre>
@@ -209,8 +208,13 @@ public final class ContainerRegistryContentAsyncClient {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.uploadBlobAsyncErrorHandling -->
      *
-     * Content is uploaded in chunks of up to 4MB size. Chunk size depends on passed {@link ByteBuffer}
-     * sizes. Buffers that are bigger than 4MB are broken down into smaller chunks, but small buffers are not aggregated.
+     * <p>
+     * Note:
+     * </p>
+     * Content may be uploaded in chunks of up to 4MB size. Chunk size depends on the passed {@link BinaryData} content.
+     * When {@link BinaryData} is created using {@link BinaryData#fromFlux(Flux, Long, boolean)}, it may be uploaded in
+     * chunks matching individual {@link ByteBuffer} in the {@link Flux} and up to 4MB size.
+     * Buffers that are bigger than 4MB can be broken down into smaller chunks, but small buffers are not aggregated.
      * To decrease number of chunks for big content, use buffers of 4MB size.
      *
      * @param content The blob content that needs to be uploaded.
@@ -224,38 +228,7 @@ public final class ContainerRegistryContentAsyncClient {
             return monoError(LOGGER, new NullPointerException("'content' can't be null."));
         }
 
-        return uploadBlob(content.toFluxByteBuffer());
-    }
-
-    /**
-     * Uploads a blob to the repository.
-     *
-     * <p><strong>Code Samples:</strong></p>
-     *
-     * <!-- src_embed com.azure.containers.containerregistry.uploadStreamAsync -->
-     * <pre>
-     * Flux.using&#40;
-     *         &#40;&#41; -&gt; new FileInputStream&#40;&quot;artifact.tar.gz&quot;&#41;,
-     *         fileStream -&gt; contentClient.uploadBlob&#40;FluxUtil.toFluxByteBuffer&#40;fileStream, CHUNK_SIZE&#41;&#41;,
-     *         this::closeStream&#41;
-     *     .subscribe&#40;uploadResult -&gt;
-     *         System.out.printf&#40;&quot;Uploaded blob: digest - '%s', size - %s&#92;n&quot;,
-     *             uploadResult.getDigest&#40;&#41;, uploadResult.getSizeInBytes&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.containers.containerregistry.uploadStreamAsync -->
-     *
-     * Content is uploaded in chunks of up to 4MB size. Chunk size depends on passed {@link ByteBuffer}
-     * sizes. Buffers that are bigger than 4MB are broken down into smaller chunks, but small buffers are not aggregated.
-     * To decrease number of chunks for big content, use buffers of 4MB size.
-     *
-     * @param content The blob content that needs to be uploaded.
-     * @return The rest response containing the operation result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code data} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadRegistryBlobResult> uploadBlob(Flux<ByteBuffer> content) {
-        return withContext(context -> runWithTracing(UPLOAD_BLOB_SPAN_NAME, span -> uploadBlob(content, span), context));
+        return withContext(context -> runWithTracing(UPLOAD_BLOB_SPAN_NAME, span -> uploadBlob(content.toFluxByteBuffer(), span), context));
     }
 
     /**
@@ -463,7 +436,7 @@ public final class ContainerRegistryContentAsyncClient {
                     response.getHeaders(),
                     ConstructorAccessors.createSetManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                     response.getDeserializedHeaders()))
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
 
@@ -474,13 +447,13 @@ public final class ContainerRegistryContentAsyncClient {
 
         return registriesImpl.getManifestWithResponseAsync(repositoryName, tagOrDigest, SUPPORTED_MANIFEST_TYPES, context)
             .map(response -> toGetManifestResponse(tagOrDigest, response))
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
         return this.registriesImpl.deleteManifestWithResponseAsync(repositoryName, digest, context)
-            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-            .onErrorMap(UtilsImpl::mapException);
+            .map(UtilsImpl::deleteResponseToSuccess)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -527,7 +500,7 @@ public final class ContainerRegistryContentAsyncClient {
         content = content
             .doOnNext(buffer -> sha256.update(buffer.asReadOnlyBuffer()))
             .doOnComplete(() -> validateDigest(sha256, digest))
-            .doOnError(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
 
         return BinaryData.fromFlux(content, null, false);
     }
@@ -553,16 +526,16 @@ public final class ContainerRegistryContentAsyncClient {
         }
 
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)
-            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
+            .map(UtilsImpl::deleteResponseToSuccess)
             .onErrorResume(
                 ex -> ex instanceof HttpResponseException && ((HttpResponseException) ex).getResponse().getStatusCode() == 404,
                 ex -> {
                     HttpResponse response = ((HttpResponseException) ex).getResponse();
                     // In case of 404, we still convert it to success i.e. no-op.
-                    return Mono.just(new SimpleResponse<Void>(response.getRequest(), 202,
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), 202,
                         response.getHeaders(), null));
                 })
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<String> upload(Flux<ByteBuffer> data, String location, Context context) {
@@ -593,7 +566,7 @@ public final class ContainerRegistryContentAsyncClient {
             // TODO (limolkova) if we knew when's the last chunk, we could upload it in complete call instead.
             .flatMap(location -> blobsImpl.completeUploadWithResponseAsync("sha256:" + bytesToHexString(sha256.digest()), location, (BinaryData) null, 0L, context))
             .map(response -> ConstructorAccessors.createUploadRegistryBlobResult(response.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME), streamLength.get()))
-            .onErrorMap(UtilsImpl::mapException);
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private <T> Mono<T> runWithTracing(String spanName, Function<Context, Mono<T>> operation, Context context) {

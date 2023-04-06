@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -22,9 +23,27 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
     protected void beforeTest() {
     }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
+    }
+
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
-        return getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true);
+                                                         MetricsAdvisorServiceVersion serviceVersion, boolean isSync) {
+        HttpClient httpClient1;
+        if (isSync) {
+            httpClient1 = buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        } else {
+            httpClient1 = buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        }
+        return getMetricsAdvisorAdministrationBuilderInternal(httpClient1, serviceVersion, true);
     }
 
     static MetricsAdvisorAdministrationClientBuilder getNonRecordAdminClient() {
@@ -33,7 +52,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
             .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
     }
 
-    MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
+    MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilderInternal(HttpClient httpClient,
                                                                                      MetricsAdvisorServiceVersion serviceVersion,
                                                                                      boolean useKeyCredential) {
         MetricsAdvisorAdministrationClientBuilder builder = new MetricsAdvisorAdministrationClientBuilder()

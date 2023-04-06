@@ -41,7 +41,7 @@ public class AnomalyIncidentRootCauseTest extends IncidentRootCauseTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listIncidentRootCauses(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
         List<IncidentRootCause> actualIncidentRootCauses = client.listIncidentRootCauses(
             INCIDENT_ROOT_CAUSE_CONFIGURATION_ID, INCIDENT_ROOT_CAUSE_ID)
             .stream()

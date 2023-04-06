@@ -241,11 +241,63 @@ public final class DocumentModelAdministrationClient {
         String blobContainerUrl, DocumentModelBuildMode buildMode,
         String prefix, BuildDocumentModelOptions buildDocumentModelOptions,
         Context context) {
-        return beginBuildDocumentModelSync(blobContainerUrl, buildMode, prefix, buildDocumentModelOptions, context);
+        return beginBuildDocumentModelSync(blobContainerUrl, buildMode, prefix, null, buildDocumentModelOptions, context);
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     * <p>Models are built using documents that are of the following content
+     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
+     * Other type of content is ignored.
+     * </p>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String -->
+     * <pre>
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String fileList = &quot;&quot;;
+     *
+     * DocumentModelDetails documentModelDetails
+     *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
+     *         DocumentModelBuildMode.TEMPLATE, fileList&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
+     *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String -->
+     *
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
+     * @param buildMode the preferred technique for creating models. For faster training of models use
+     * {@link DocumentModelBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
+     * for more information on building mode for custom documents.
+     * @param fileList Path to a JSONL file within the container specifying the set of documents for training.
+     * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code blobContainerUrl} and {@code fileList} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModel(
+        String blobContainerUrl, DocumentModelBuildMode buildMode,
+        String fileList) {
+        Objects.requireNonNull(fileList, "'fileList' is required and cannot be null.");
+        return beginBuildDocumentModelSync(blobContainerUrl, buildMode, null, fileList, null, Context.NONE);
     }
 
     SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModelSync(String blobContainerUrl,
-        DocumentModelBuildMode buildMode, String prefix, BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
+                                                                                  DocumentModelBuildMode buildMode, String prefix, String fileList, BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
 
         BuildDocumentModelOptions finalBuildDocumentModelOptions
             = getBuildDocumentModelOptions(buildDocumentModelOptions);
@@ -264,6 +316,7 @@ public final class DocumentModelAdministrationClient {
                 buildMode,
                 finalModelId,
                 prefix,
+                fileList,
                 finalBuildDocumentModelOptions,
                 finalContext).apply(cxt)),
             buildModelPollingOperation(finalContext),
@@ -1044,6 +1097,7 @@ public final class DocumentModelAdministrationClient {
         }
     }
 
+
     /**
      * Builds a custom classifier document model.
      * <p>Classifier models can identify multiple documents or multiple instances of a single document. For that,
@@ -1391,13 +1445,13 @@ public final class DocumentModelAdministrationClient {
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> buildModelActivationOperation(
-        String blobContainerUrl, DocumentModelBuildMode buildMode, String modelId, String prefix,
+        String blobContainerUrl, DocumentModelBuildMode buildMode, String modelId, String prefix, String fileList,
         BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(blobContainerUrl, "'blobContainerUrl' cannot be null.");
                 BuildDocumentModelRequest buildDocumentModelRequest =
-                    getBuildDocumentModelRequest(blobContainerUrl, buildMode, modelId, prefix,
+                    getBuildDocumentModelRequest(blobContainerUrl, buildMode, modelId, prefix, fileList,
                         buildDocumentModelOptions);
 
                 ResponseBase<DocumentModelsBuildModelHeaders, Void>

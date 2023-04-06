@@ -14,29 +14,29 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContent;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyContent;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyContent;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContent;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -104,9 +104,9 @@ public final class EntityHelper {
      *
      * @return The corresponding queue.
      */
-    public static QueueDescription getQueueDescription(CreateQueueOptions options) {
+    public static QueueDescriptionImpl getQueueDescription(CreateQueueOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        final QueueDescription description = new QueueDescription()
+        final QueueDescriptionImpl description = new QueueDescriptionImpl()
             .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDeadLetteringOnMessageExpiration(options.isDeadLetteringOnMessageExpiration())
@@ -134,9 +134,9 @@ public final class EntityHelper {
         return description;
     }
 
-    public static SubscriptionDescription getSubscriptionDescription(CreateSubscriptionOptions options) {
+    public static SubscriptionDescriptionImpl getSubscriptionDescription(CreateSubscriptionOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return new SubscriptionDescription()
+        return new SubscriptionDescriptionImpl()
             .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDeadLetteringOnFilterEvaluationExceptions(options.isDeadLetteringOnFilterEvaluationExceptions())
@@ -149,13 +149,13 @@ public final class EntityHelper {
             .setRequiresSession(options.isSessionRequired())
             .setStatus(options.getStatus())
             .setUserMetadata(options.getUserMetadata())
-            .setDefaultRule(options.getDefaultRule() != null
+            .setDefaultRuleDescription(options.getDefaultRule() != null
                 ? EntityHelper.toImplementation(options.getDefaultRule()) : null);
     }
 
-    public static TopicDescription getTopicDescription(CreateTopicOptions options) {
+    public static TopicDescriptionImpl getTopicDescription(CreateTopicOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        final TopicDescription description = new TopicDescription()
+        final TopicDescriptionImpl description = new TopicDescriptionImpl()
             .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
             .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
             .setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow())
@@ -185,7 +185,7 @@ public final class EntityHelper {
      *
      * @return A new {@link QueueProperties} with the set options.
      */
-    public static QueueDescription toImplementation(QueueProperties properties) {
+    public static QueueDescriptionImpl toImplementation(QueueProperties properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (queueAccessor == null) {
@@ -221,9 +221,9 @@ public final class EntityHelper {
      * Creates a new rule description given an existing rule.
      *
      * @param properties Rule properties.
-     * @return A new instance of {@link RuleDescription}.
+     * @return A new instance of {@link RuleDescriptionImpl}.
      */
-    public static RuleDescription toImplementation(RuleProperties properties) {
+    public static RuleDescriptionImpl toImplementation(RuleProperties properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
@@ -258,7 +258,7 @@ public final class EntityHelper {
      *
      * @return A new {@link SubscriptionProperties} with the set options.
      */
-    public static SubscriptionDescription toImplementation(SubscriptionProperties description) {
+    public static SubscriptionDescriptionImpl toImplementation(SubscriptionProperties description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (subscriptionAccessor == null) {
@@ -276,7 +276,7 @@ public final class EntityHelper {
      *
      * @return A new {@link TopicProperties} with the set options.
      */
-    public static TopicDescription toImplementation(TopicProperties properties) {
+    public static TopicDescriptionImpl toImplementation(TopicProperties properties) {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (topicAccessor == null) {
@@ -298,7 +298,7 @@ public final class EntityHelper {
      *
      * @return A new {@link QueueProperties} with the set options.
      */
-    public static QueueProperties toModel(QueueDescription description) {
+    public static QueueProperties toModel(QueueDescriptionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (queueAccessor == null) {
@@ -349,7 +349,7 @@ public final class EntityHelper {
      * @param description The implementation type.
      * @return A new {@link RuleProperties} with the set options.
      */
-    public static RuleProperties toModel(RuleDescription description) {
+    public static RuleProperties toModel(RuleDescriptionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
@@ -367,7 +367,7 @@ public final class EntityHelper {
      *
      * @return A new {@link SubscriptionProperties} with the set options.
      */
-    public static SubscriptionProperties toModel(SubscriptionDescription options) {
+    public static SubscriptionProperties toModel(SubscriptionDescriptionImpl options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (subscriptionAccessor == null) {
@@ -385,7 +385,7 @@ public final class EntityHelper {
      *
      * @return A new {@link TopicProperties} with the set options.
      */
-    public static TopicProperties toModel(TopicDescription description) {
+    public static TopicProperties toModel(TopicDescriptionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (topicAccessor == null) {
@@ -556,7 +556,7 @@ public final class EntityHelper {
          *
          * @return A new queue with the properties set.
          */
-        QueueDescription toImplementation(QueueProperties queueDescription, List<AuthorizationRuleImpl> rules);
+        QueueDescriptionImpl toImplementation(QueueProperties queueDescription, List<AuthorizationRuleImpl> rules);
 
         /**
          * Creates a new queue from the given {@code queueDescription}.
@@ -565,7 +565,7 @@ public final class EntityHelper {
          *
          * @return A new queue with the properties set.
          */
-        QueueProperties toModel(QueueDescription queueDescription);
+        QueueProperties toModel(QueueDescriptionImpl queueDescription);
 
         /**
          * Sets the name on a queueDescription.
@@ -580,13 +580,13 @@ public final class EntityHelper {
      * Interface for accessing methods on a rule.
      */
     public interface RuleAccessor {
-        RuleProperties toModel(RuleDescription ruleDescription);
+        RuleProperties toModel(RuleDescriptionImpl ruleDescriptionImpl);
 
         RuleAction toModel(RuleActionImpl implementation);
 
         RuleFilter toModel(RuleFilterImpl implementation);
 
-        RuleDescription toImplementation(RuleProperties ruleProperties);
+        RuleDescriptionImpl toImplementation(RuleProperties ruleProperties);
 
         RuleActionImpl toImplementation(RuleAction model);
 
@@ -604,7 +604,7 @@ public final class EntityHelper {
          *
          * @return A new subscription.
          */
-        SubscriptionProperties toModel(SubscriptionDescription subscription);
+        SubscriptionProperties toModel(SubscriptionDescriptionImpl subscription);
 
         /**
          * Creates the implementation subscription with the given subscription.
@@ -613,7 +613,7 @@ public final class EntityHelper {
          *
          * @return A new subscription.
          */
-        SubscriptionDescription toImplementation(SubscriptionProperties subscription);
+        SubscriptionDescriptionImpl toImplementation(SubscriptionProperties subscription);
 
         /**
          * Sets the topic name on a subscription.
@@ -643,7 +643,7 @@ public final class EntityHelper {
          *
          * @return A new topic with the properties set.
          */
-        TopicDescription toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules);
+        TopicDescriptionImpl toImplementation(TopicProperties topic, List<AuthorizationRuleImpl> rules);
 
         /**
          * Sets properties on the TopicProperties based on the CreateTopicOptions.
@@ -652,7 +652,7 @@ public final class EntityHelper {
          *
          * @return A new topic with the properties set.
          */
-        TopicProperties toModel(TopicDescription topic);
+        TopicProperties toModel(TopicDescriptionImpl topic);
 
         /**
          * Sets the name on a topicDescription.
@@ -683,91 +683,91 @@ public final class EntityHelper {
      * Create Queue Body
      *
      * @param createQueueOptions Create Queue Body options
-     * @return {@link CreateQueueBody}
+     * @return {@link CreateQueueBodyImpl}
      */
-    public static CreateQueueBody getCreateQueueBody(QueueDescription createQueueOptions) {
-        final CreateQueueBodyContent content = new CreateQueueBodyContent()
+    public static CreateQueueBodyImpl getCreateQueueBody(QueueDescriptionImpl createQueueOptions) {
+        final CreateQueueBodyContentImpl content = new CreateQueueBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setQueueDescription(createQueueOptions);
-        return new CreateQueueBody()
+        return new CreateQueueBodyImpl()
             .setContent(content);
     }
 
-    public static CreateTopicBody getUpdateTopicBody(TopicProperties topic) {
-        final TopicDescription implementation = EntityHelper.toImplementation(topic);
-        final CreateTopicBodyContent content = new CreateTopicBodyContent()
+    public static CreateTopicBodyImpl getUpdateTopicBody(TopicProperties topic) {
+        final TopicDescriptionImpl implementation = EntityHelper.toImplementation(topic);
+        final CreateTopicBodyContentImpl content = new CreateTopicBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setTopicDescription(implementation);
-        return new CreateTopicBody()
+        return new CreateTopicBodyImpl()
             .setContent(content);
     }
 
-    public static CreateTopicBody getCreateTopicBody(TopicDescription topicOptions) {
-        final CreateTopicBodyContent content = new CreateTopicBodyContent()
+    public static CreateTopicBodyImpl getCreateTopicBody(TopicDescriptionImpl topicOptions) {
+        final CreateTopicBodyContentImpl content = new CreateTopicBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setTopicDescription(topicOptions);
-        return new CreateTopicBody()
+        return new CreateTopicBodyImpl()
             .setContent(content);
     }
 
-    public static CreateRuleBody getUpdateRuleBody(RuleProperties rule) {
-        final RuleDescription implementation = EntityHelper.toImplementation(rule);
-        final CreateRuleBodyContent content = new CreateRuleBodyContent()
+    public static CreateRuleBodyImpl getUpdateRuleBody(RuleProperties rule) {
+        final RuleDescriptionImpl implementation = EntityHelper.toImplementation(rule);
+        final CreateRuleBodyContentImpl content = new CreateRuleBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setRuleDescription(implementation);
-        return new CreateRuleBody()
+        return new CreateRuleBodyImpl()
             .setContent(content);
     }
 
-    public static CreateSubscriptionBody getUpdateSubscriptionBody(SubscriptionProperties subscription) {
-        final SubscriptionDescription implementation = EntityHelper.toImplementation(subscription);
-        final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
+    public static CreateSubscriptionBodyImpl getUpdateSubscriptionBody(SubscriptionProperties subscription) {
+        final SubscriptionDescriptionImpl implementation = EntityHelper.toImplementation(subscription);
+        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(implementation);
-        return new CreateSubscriptionBody()
+        return new CreateSubscriptionBodyImpl()
             .setContent(content);
     }
 
-    public static CreateSubscriptionBody getCreateSubscriptionBody(SubscriptionDescription subscriptionDescription) {
-        final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
+    public static CreateSubscriptionBodyImpl getCreateSubscriptionBody(SubscriptionDescriptionImpl subscriptionDescription) {
+        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscriptionDescription);
-        return new CreateSubscriptionBody().setContent(content);
+        return new CreateSubscriptionBodyImpl().setContent(content);
     }
 
-    public static CreateRuleBody getCreateRuleBody(String ruleName, CreateRuleOptions ruleOptions) {
+    public static CreateRuleBodyImpl getCreateRuleBody(String ruleName, CreateRuleOptions ruleOptions) {
         final RuleActionImpl action = ruleOptions.getAction() != null
             ? EntityHelper.toImplementation(ruleOptions.getAction())
             : null;
         final RuleFilterImpl filter = ruleOptions.getFilter() != null
             ? EntityHelper.toImplementation(ruleOptions.getFilter())
             : null;
-        final RuleDescription rule = new RuleDescription()
+        final RuleDescriptionImpl rule = new RuleDescriptionImpl()
             .setAction(action)
             .setFilter(filter)
             .setName(ruleName);
 
-        final CreateRuleBodyContent content = new CreateRuleBodyContent()
+        final CreateRuleBodyContentImpl content = new CreateRuleBodyContentImpl()
             .setType(CONTENT_TYPE)
             .setRuleDescription(rule);
-        return new CreateRuleBody().setContent(content);
+        return new CreateRuleBodyImpl().setContent(content);
     }
 
-    public static List<TopicProperties> getTopics(TopicDescriptionFeed feed) {
+    public static List<TopicProperties> getTopics(TopicDescriptionFeedImpl feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getTopicDescription() != null)
             .map(EntityHelper::getTopicProperties)
             .collect(Collectors.toList());
     }
 
-    public static List<QueueProperties> getQueues(QueueDescriptionFeed feed) {
+    public static List<QueueProperties> getQueues(QueueDescriptionFeedImpl feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
             .map(EntityHelper::getQueueProperties)
             .collect(Collectors.toList());
     }
 
-    public static QueueProperties getQueueProperties(QueueDescriptionEntry e) {
+    public static QueueProperties getQueueProperties(QueueDescriptionEntryImpl e) {
         final String queueName = getTitleValue(e.getTitle());
         final QueueProperties queueProperties = EntityHelper.toModel(
             e.getContent().getQueueDescription());
@@ -777,7 +777,7 @@ public final class EntityHelper {
         return queueProperties;
     }
 
-    public static List<RuleProperties> getRules(RuleDescriptionFeed feed) {
+    public static List<RuleProperties> getRules(RuleDescriptionFeedImpl feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getRuleDescription() != null)
             .map(e -> EntityHelper.toModel(e.getContent().getRuleDescription()))
@@ -785,7 +785,7 @@ public final class EntityHelper {
     }
 
     public static List<SubscriptionProperties> getSubscriptions(String topicName,
-                                                                SubscriptionDescriptionFeed feed) {
+                                                                SubscriptionDescriptionFeedImpl feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
             .map(e -> getSubscriptionProperties(topicName, e))
@@ -793,7 +793,7 @@ public final class EntityHelper {
     }
 
     public static SubscriptionProperties getSubscriptionProperties(String topicName,
-                                                                   SubscriptionDescriptionEntry entry) {
+                                                                   SubscriptionDescriptionEntryImpl entry) {
         final SubscriptionProperties subscription = EntityHelper.toModel(
             entry.getContent().getSubscriptionDescription());
         final String subscriptionName = getTitleValue(entry.getTitle());
@@ -802,16 +802,16 @@ public final class EntityHelper {
         return subscription;
     }
 
-    public static TopicProperties getTopicProperties(TopicDescriptionEntry entry) {
+    public static TopicProperties getTopicProperties(TopicDescriptionEntryImpl entry) {
         final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
         final String topicName = getTitleValue(entry.getTitle());
         EntityHelper.setTopicName(result, topicName);
         return result;
     }
 
-    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(String topicName,
-                                                                                                 Response<Object> response,
-                                                                                                 SubscriptionDescriptionEntry entry) {
+    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(
+        String topicName, Response<Object> response, SubscriptionDescriptionEntryImpl entry) {
+
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -828,8 +828,8 @@ public final class EntityHelper {
             subscription);
     }
 
-    public static SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(Response<Object> response,
-                                                                                 RuleDescriptionEntry entry) {
+    public static SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(
+        Response<Object> response, RuleDescriptionEntryImpl entry) {
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -838,7 +838,7 @@ public final class EntityHelper {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final RuleDescription description = entry.getContent().getRuleDescription();
+        final RuleDescriptionImpl description = entry.getContent().getRuleDescription();
         final RuleProperties result = EntityHelper.toModel(description);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
@@ -854,6 +854,10 @@ public final class EntityHelper {
      */
     @SuppressWarnings("unchecked")
     public static String getTitleValue(Object responseTitle) {
+        if (responseTitle instanceof String) {
+            return (String) responseTitle;
+        }
+
         if (!(responseTitle instanceof Map)) {
             return null;
         }
@@ -1022,10 +1026,11 @@ public final class EntityHelper {
      * @return A {@link FeedPage} indicating whether this can be continued or not.
      * @throws MalformedURLException if the "next" page link does not contain a well-formed URL.
      */
+    @SuppressWarnings({"SimplifyOptionalCallChains"})
     public static <TResult, TFeed> FeedPage<TResult> extractPage(Response<TFeed> response, List<TResult> entities,
-                                                                 List<ResponseLink> responseLinks)
+                                                                 List<ResponseLinkImpl> responseLinks)
         throws MalformedURLException, UnsupportedEncodingException {
-        final Optional<ResponseLink> nextLink = responseLinks.stream()
+        final Optional<ResponseLinkImpl> nextLink = responseLinks.stream()
             .filter(link -> link.getRel().equalsIgnoreCase("next"))
             .findFirst();
 
