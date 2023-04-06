@@ -49,6 +49,8 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
 
     /** Static value address for DocumentFieldType. */
     public static final DocumentFieldType ADDRESS = fromString("address");
+
+    /** Static value boolean for DocumentFieldType. */
     public static final DocumentFieldType BOOLEAN = fromString("boolean");
 
     /**
