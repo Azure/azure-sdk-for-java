@@ -4,48 +4,26 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentAnnotationHelper;
+
 import java.util.List;
 
 /** An annotation object that represents a visual annotation in the document, such as checks ✓ and crosses X. */
-@Immutable
 public final class DocumentAnnotation {
     /*
      * Annotation kind.
      */
-    @JsonProperty(value = "kind", required = true)
     private DocumentAnnotationKind kind;
 
     /*
      * Bounding polygon of the annotation.
      */
-    @JsonProperty(value = "polygon", required = true)
-    private List<Float> polygon;
+    private List<Point> polygon;
 
     /*
      * Confidence of correctly extracting the annotation.
      */
-    @JsonProperty(value = "confidence", required = true)
     private float confidence;
-
-    /**
-     * Creates an instance of DocumentAnnotation class.
-     *
-     * @param kind the kind value to set.
-     * @param polygon the polygon value to set.
-     * @param confidence the confidence value to set.
-     */
-    @JsonCreator
-    public DocumentAnnotation(
-            @JsonProperty(value = "kind", required = true) DocumentAnnotationKind kind,
-            @JsonProperty(value = "polygon", required = true) List<Float> polygon,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.kind = kind;
-        this.polygon = polygon;
-        this.confidence = confidence;
-    }
 
     /**
      * Get the kind property: Annotation kind.
@@ -61,7 +39,7 @@ public final class DocumentAnnotation {
      *
      * @return the polygon value.
      */
-    public List<Float> getPolygon() {
+    public List<Point> getBoundingPolygon() {
         return this.polygon;
     }
 
@@ -72,5 +50,36 @@ public final class DocumentAnnotation {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    void setKind(DocumentAnnotationKind kind) {
+        this.kind = kind;
+    }
+
+    void setPolygon(List<Point> polygon) {
+        this.polygon = polygon;
+    }
+
+    void setConfidence(float confidence) {
+        this.confidence = confidence;
+    }
+
+    static {
+        DocumentAnnotationHelper.setAccessor(new DocumentAnnotationHelper.DocumentAnnotationAccessor() {
+            @Override
+            public void setPolygon(DocumentAnnotation documentAnnotation, List<Point> points) {
+                documentAnnotation.setPolygon(points);
+            }
+
+            @Override
+            public void setKind(DocumentAnnotation documentAnnotation, DocumentAnnotationKind kind) {
+                documentAnnotation.setKind(kind);
+            }
+
+            @Override
+            public void setConfidence(DocumentAnnotation documentAnnotation, float confidence) {
+                documentAnnotation.setConfidence(confidence);
+            }
+        });
     }
 }

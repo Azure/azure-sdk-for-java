@@ -39,10 +39,13 @@ import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotationKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentImage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
@@ -255,22 +258,62 @@ public class Transforms {
         return analyzeResult;
     }
 
-    private static List<DocumentImage> fromInnerImages(List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentImage> images) {
+    private static List<DocumentImage> fromInnerImages(List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentImage> innerImages) {
+        return innerImages
+            .stream()
+            .map(innerImage -> {
+                DocumentImage documentImage = new DocumentImage();
+                DocumentImageHelper.setSpan(documentImage, getDocumentSpan(innerImage.getSpan()));
+                DocumentImageHelper.setBoundingPolygon(documentImage, toPolygonPoints(innerImage.getPolygon()));
+                DocumentImageHelper.setPageNumber(documentImage, documentImage.getPageNumber());
+                DocumentImageHelper.setConfidence(documentImage, documentImage.getConfidence());
+                return documentImage;
+            })
+            .collect(Collectors.toList());
     }
 
     private static List<DocumentBarcode> fromInnerBarcodes(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBarcode> barcodes) {
-        return null;
+        return barcodes.stream().map(innerBarcode -> {
+            DocumentBarcode documentBarcode = new DocumentBarcode();
+            DocumentBarcodeHelper.setKind(documentBarcode,
+                innerBarcode.getKind() == null ? null : DocumentBarcodeKind.fromString(
+                    innerBarcode.getKind().toString()));
+            DocumentBarcodeHelper.setValue(documentBarcode, innerBarcode.getValue());
+            DocumentBarcodeHelper.setConfidence(documentBarcode, innerBarcode.getConfidence());
+            DocumentBarcodeHelper.setSpan(documentBarcode, getDocumentSpan(innerBarcode.getSpan()));
+            return documentBarcode;
+        })
+            .collect(Collectors.toList());
     }
 
     private static List<DocumentFormula> fromInnerFormulas(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFormula> formulas) {
-        return null;
+        return formulas.stream().map(innerFormula -> {
+            DocumentFormula documentFormula = new DocumentFormula();
+            DocumentFormulaHelper.setKind(documentFormula,
+                innerFormula.getKind() == null ? null : DocumentFormulaKind.fromString(
+                    innerFormula.getKind().toString()));
+            DocumentFormulaHelper.setValue(documentFormula, innerFormula.getValue());
+            DocumentFormulaHelper.setConfidence(documentFormula, innerFormula.getConfidence());
+            DocumentFormulaHelper.setSpan(documentFormula, getDocumentSpan(innerFormula.getSpan()));
+            return documentFormula;
+        })
+            .collect(Collectors.toList());
     }
 
     private static List<DocumentAnnotation> fromInnerAnnotations(
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnnotation> annotations) {
-        return null;
+        return annotations.stream().map(innerAnnotation -> {
+            DocumentAnnotation documentAnnotation = new DocumentAnnotation();
+            DocumentAnnotationHelper.setKind(documentAnnotation,
+                innerAnnotation.getKind() == null ? null : DocumentAnnotationKind.fromString(
+                    innerAnnotation.getKind().toString()));
+            DocumentAnnotationHelper.setConfidence(documentAnnotation, innerAnnotation.getConfidence());
+            DocumentAnnotationHelper.setPolygon(documentAnnotation, toPolygonPoints(innerAnnotation.getPolygon()));
+            return documentAnnotation;
+        })
+            .collect(Collectors.toList());
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,

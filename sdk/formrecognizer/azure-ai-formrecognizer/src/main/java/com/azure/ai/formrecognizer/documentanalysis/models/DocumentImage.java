@@ -4,61 +4,38 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentImageHelper;
+
 import java.util.List;
 
 /** An image object detected in the page. */
-@Fluent
 public final class DocumentImage {
     /*
      * Bounding polygon of the image.
      */
-    @JsonProperty(value = "polygon")
-    private List<Float> polygon;
+    private List<Point> polygon;
 
     /*
      * Location of the image in the reading order concatenated content.
      */
-    @JsonProperty(value = "span", required = true)
     private DocumentSpan span;
 
     /*
      * 1-based page number of the page that contains the image.
      */
-    @JsonProperty(value = "pageNumber", required = true)
     private int pageNumber;
 
     /*
      * Confidence of correctly identifying the image.
      */
-    @JsonProperty(value = "confidence", required = true)
     private float confidence;
-
-    /**
-     * Creates an instance of DocumentImage class.
-     *
-     * @param span the span value to set.
-     * @param pageNumber the pageNumber value to set.
-     * @param confidence the confidence value to set.
-     */
-    @JsonCreator
-    public DocumentImage(
-            @JsonProperty(value = "span", required = true) DocumentSpan span,
-            @JsonProperty(value = "pageNumber", required = true) int pageNumber,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.span = span;
-        this.pageNumber = pageNumber;
-        this.confidence = confidence;
-    }
 
     /**
      * Get the polygon property: Bounding polygon of the image.
      *
      * @return the polygon value.
      */
-    public List<Float> getPolygon() {
+    public List<Point> getBoundingPolygon() {
         return this.polygon;
     }
 
@@ -66,11 +43,9 @@ public final class DocumentImage {
      * Set the polygon property: Bounding polygon of the image.
      *
      * @param polygon the polygon value to set.
-     * @return the DocumentImage object itself.
      */
-    public DocumentImage setPolygon(List<Float> polygon) {
+    void setPolygon(List<Point> polygon) {
         this.polygon = polygon;
-        return this;
     }
 
     /**
@@ -98,5 +73,40 @@ public final class DocumentImage {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    void setSpan(DocumentSpan span) {
+        this.span = span;
+    }
+
+    void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    void setConfidence(float confidence) {
+        this.confidence = confidence;
+    }
+
+    static {
+        DocumentImageHelper.setAccessor(new DocumentImageHelper.DocumentImageAccessor() {
+            @Override
+            public void setSpan(DocumentImage documentImage, DocumentSpan span) {
+                documentImage.setSpan(span);
+            }
+
+            @Override
+            public void setPageNumber(DocumentImage documentImage, int pageNumber) {
+                documentImage.setPageNumber(pageNumber);
+            }
+            @Override
+            public void setConfidence(DocumentImage documentImage, float confidence) {
+                documentImage.setConfidence(confidence);
+            }
+
+            @Override
+            public void setBoundingPolygon(DocumentImage documentImage, List<Point> polygon) {
+                documentImage.setPolygon(polygon);
+            }
+        });
     }
 }

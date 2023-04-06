@@ -16,6 +16,9 @@
 - Added properties `unit`, `cityDistrict`, `stateDistrict`, `suburb`, `house`, and `level` to `AddressValue`
 - Added method `isValueBoolean` to model `DocumentField`
 - Added support for `DocumentFieldType.BOOLEAN`
+- Added DocumentAnalysisFeature enum with optional document analysis feature to enable
+- Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
+- Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
 
 ### Breaking Changes
 

@@ -4,63 +4,36 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentBarcodeHelper;
+
 import java.util.List;
 
 /** A barcode object. */
-@Fluent
 public final class DocumentBarcode {
     /*
      * Barcode kind.
      */
-    @JsonProperty(value = "kind", required = true)
     private DocumentBarcodeKind kind;
 
     /*
      * Barcode value
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Bounding polygon of the barcode.
      */
-    @JsonProperty(value = "polygon")
     private List<Float> polygon;
 
     /*
      * Location of the barcode in the reading order concatenated content.
      */
-    @JsonProperty(value = "span", required = true)
     private DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the barcode.
      */
-    @JsonProperty(value = "confidence", required = true)
     private float confidence;
-
-    /**
-     * Creates an instance of DocumentBarcode class.
-     *
-     * @param kind the kind value to set.
-     * @param value the value value to set.
-     * @param span the span value to set.
-     * @param confidence the confidence value to set.
-     */
-    @JsonCreator
-    public DocumentBarcode(
-            @JsonProperty(value = "kind", required = true) DocumentBarcodeKind kind,
-            @JsonProperty(value = "value", required = true) String value,
-            @JsonProperty(value = "span", required = true) DocumentSpan span,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.kind = kind;
-        this.value = value;
-        this.span = span;
-        this.confidence = confidence;
-    }
 
     /**
      * Get the kind property: Barcode kind.
@@ -85,7 +58,7 @@ public final class DocumentBarcode {
      *
      * @return the polygon value.
      */
-    public List<Float> getPolygon() {
+    public List<Float> getBoundingPolygon() {
         return this.polygon;
     }
 
@@ -95,9 +68,8 @@ public final class DocumentBarcode {
      * @param polygon the polygon value to set.
      * @return the DocumentBarcode object itself.
      */
-    public DocumentBarcode setPolygon(List<Float> polygon) {
+    void setPolygon(List<Float> polygon) {
         this.polygon = polygon;
-        return this;
     }
 
     /**
@@ -116,5 +88,45 @@ public final class DocumentBarcode {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    void setKind(DocumentBarcodeKind kind) {
+        this.kind = kind;
+    }
+
+    void setValue(String value) {
+        this.value = value;
+    }
+
+    void setSpan(DocumentSpan span) {
+        this.span = span;
+    }
+
+    void setConfidence(float confidence) {
+        this.confidence = confidence;
+    }
+
+    static {
+        DocumentBarcodeHelper.setAccessor(new DocumentBarcodeHelper.DocumentBarcodeAccessor() {
+            @Override
+            public void setSpan(DocumentBarcode documentBarcode, DocumentSpan span) {
+                documentBarcode.setSpan(span);
+            }
+
+            @Override
+            public void setKind(DocumentBarcode documentBarcode, DocumentBarcodeKind kind) {
+                documentBarcode.setKind(kind);
+            }
+
+            @Override
+            public void setConfidence(DocumentBarcode documentBarcode, float confidence) {
+                documentBarcode.setConfidence(confidence);
+            }
+
+            @Override
+            public void setValue(DocumentBarcode documentBarcode, String value) {
+                documentBarcode.setValue(value);
+            }
+        });
     }
 }

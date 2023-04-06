@@ -4,9 +4,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFormulaHelper;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** A formula object. */
@@ -15,52 +15,27 @@ public final class DocumentFormula {
     /*
      * Formula kind.
      */
-    @JsonProperty(value = "kind", required = true)
     private DocumentFormulaKind kind;
 
     /*
      * LaTex expression describing the formula.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Bounding polygon of the formula.
      */
-    @JsonProperty(value = "polygon")
     private List<Float> polygon;
 
     /*
      * Location of the formula in the reading order concatenated content.
      */
-    @JsonProperty(value = "span", required = true)
     private DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the formula.
      */
-    @JsonProperty(value = "confidence", required = true)
     private float confidence;
-
-    /**
-     * Creates an instance of DocumentFormula class.
-     *
-     * @param kind the kind value to set.
-     * @param value the value value to set.
-     * @param span the span value to set.
-     * @param confidence the confidence value to set.
-     */
-    @JsonCreator
-    public DocumentFormula(
-            @JsonProperty(value = "kind", required = true) DocumentFormulaKind kind,
-            @JsonProperty(value = "value", required = true) String value,
-            @JsonProperty(value = "span", required = true) DocumentSpan span,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
-        this.kind = kind;
-        this.value = value;
-        this.span = span;
-        this.confidence = confidence;
-    }
 
     /**
      * Get the kind property: Formula kind.
@@ -85,7 +60,7 @@ public final class DocumentFormula {
      *
      * @return the polygon value.
      */
-    public List<Float> getPolygon() {
+    public List<Float> getBoundingPolygon() {
         return this.polygon;
     }
 
@@ -95,9 +70,8 @@ public final class DocumentFormula {
      * @param polygon the polygon value to set.
      * @return the DocumentFormula object itself.
      */
-    public DocumentFormula setPolygon(List<Float> polygon) {
+    void setPolygon(List<Float> polygon) {
         this.polygon = polygon;
-        return this;
     }
 
     /**
@@ -116,5 +90,45 @@ public final class DocumentFormula {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    void setKind(DocumentFormulaKind kind) {
+        this.kind = kind;
+    }
+
+    void setValue(String value) {
+        this.value = value;
+    }
+
+    void setSpan(DocumentSpan span) {
+        this.span = span;
+    }
+
+    void setConfidence(float confidence) {
+        this.confidence = confidence;
+    }
+
+    static {
+        DocumentFormulaHelper.setAccessor(new DocumentFormulaHelper.DocumentFormulaAccessor() {
+            @Override
+            public void setSpan(DocumentFormula documentFormula, DocumentSpan span) {
+                documentFormula.setSpan(span);
+            }
+
+            @Override
+            public void setKind(DocumentFormula documentFormula, DocumentFormulaKind kind) {
+                documentFormula.setKind(kind);
+            }
+
+            @Override
+            public void setConfidence(DocumentFormula documentFormula, float confidence) {
+                documentFormula.setConfidence(confidence);
+            }
+
+            @Override
+            public void setValue(DocumentFormula documentFormula, String value) {
+                documentFormula.setValue(value);
+            }
+        });
     }
 }
