@@ -994,18 +994,8 @@ public class GatewayAddressCache implements IAddressCache {
                     return Flux.fromIterable(addressInfos)
                             .flatMap(addressInfo -> {
                                 this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
-
-                                List<AddressInformation> addresses = new ArrayList<>();
-
-                                for (Pair<PartitionKeyRangeIdentity, AddressInformation[]> pair : addressInfos) {
-                                    addresses.addAll(Arrays.stream(pair.getRight()).toList());
-                                }
-                                return Mono.just(addressInfo);
+                                return Flux.fromArray(addressInfo.getRight());
                             }, Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3)
-                            .flatMap(partitionKeyRangeIdentityPair -> {
-                                AddressInformation[] addressInfosForPkr = partitionKeyRangeIdentityPair.getRight();
-                                return Flux.fromArray(addressInfosForPkr);
-                            })
                             .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(containerLink, collection), addressInformation)));
                 });
 

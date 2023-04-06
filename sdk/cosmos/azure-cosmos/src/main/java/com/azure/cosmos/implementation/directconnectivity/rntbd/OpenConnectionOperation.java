@@ -93,6 +93,8 @@ public final class OpenConnectionOperation {
                 logger.debug("In retry policy: {}, retry attempt: {}", this.getClass().getName(), this.retryCount.get());
             }
 
+            logger.info("In retry policy: {}, retry attempt: {}", this.getClass().getName(), this.retryCount.get());
+
             if (this.retryCount.get() >= MaxRetryAttempts || this.waitTimeTimeoutHelper.isElapsed() || e == null) {
                 return Mono.just(ShouldRetryResult.noRetry());
             }

@@ -65,11 +65,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -485,7 +488,7 @@ public class CosmosAsyncContainer {
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(this.database.getId(), this.id);
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(cosmosContainerIdentity))
                     .setProactiveConnectionRegionsCount(1)
-                    .withMinConnectionsPerReplicaForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
+                    .withMinConnectionsPerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
@@ -557,10 +560,7 @@ public class CosmosAsyncContainer {
             )
                     .flatMap(
                         openResult -> {
-                            logger.info("OpenConnectionsAndInitCaches: {}", String.format(
-                                    "EndpointsConnected: %s, Failed: %s",
-                                    openResult.left /*endpoints connected*/,
-                                    openResult.right /*endpoints failed to connect*/));
+                            logger.info("OpenConnectionsAndInitCaches: {}", openResult);
                             return Mono.empty();
                         }));
         } else {
@@ -572,16 +572,19 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Internal implementation to try to initialize the container by warming up the caches and
-     * connections for the current read region.
+     * The internal implementation to try to initialize the container by warming up the caches and
+     * connections for the first {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}
+     * proactive connection regions
      *
-     * @return an {@link ImmutablePair} which represents the no. of endpoints connected to and
-     * no. of endpoints to which connections failed
+     * @return a {@link String} type which represents the total no. of successful and failed
+     * connection attempts for an endpoint
      */
-    private Mono<ImmutablePair<Long, Long>> openConnectionsAndInitCachesInternal(
+    private Mono<String> openConnectionsAndInitCachesInternal(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
         OpenConnectionAggressivenessHint hint
     ) {
+        final Duration idleSinkTimeout = Duration.ofSeconds(1);
+
         this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(
                         proactiveContainerInitConfig,
                         hint
@@ -589,11 +592,29 @@ public class CosmosAsyncContainer {
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
 
-        return database
+        Flux<OpenConnectionResponse> openConnectionResponseFlux = database
                 .getClient()
                 .getProactiveOpenConnectionsProcessor()
                 .getOpenConnectionsPublisher()
-                .sequential()
+                .sequential();
+
+        return wrapOpenConnectionResponseFluxAndAggregateResults(
+                openConnectionResponseFlux,
+                idleSinkTimeout,
+                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC
+        );
+    }
+
+    private Mono<String> wrapOpenConnectionResponseFluxAndAggregateResults(
+            Flux<OpenConnectionResponse> openConnectionResponseFlux,
+            Duration idleSinkTimeout,
+            Scheduler scheduler
+    ) {
+        return Flux.<OpenConnectionResponse>create(sink -> {
+                    openConnectionResponseFlux.subscribeOn(scheduler).subscribe(sink::next);
+                })
+                .timeout(idleSinkTimeout)
+                .onErrorComplete(throwable -> throwable instanceof TimeoutException)
                 .collectList()
                 .flatMap(openConnectionResponses -> {
                     // Generate a simple statistics string for open connections
@@ -611,11 +632,14 @@ public class CosmosAsyncContainer {
                             // if one failed, one succeeded, then it is still good
                             return openConnectionResponse.isConnected() || value;
                         });
-
                     }
 
-                    long endpointsConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
-                    return Mono.just(new ImmutablePair<>(endpointsConnected, endPointOpenConnectionsStatistics.size() - endpointsConnected));
+                    long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
+                    return Mono.just(
+                            String.format(
+                                    "EndpointsConnected: %s, Failed: %s",
+                                    endpointConnected,
+                                    endPointOpenConnectionsStatistics.size() - endpointConnected));
                 });
     }
 

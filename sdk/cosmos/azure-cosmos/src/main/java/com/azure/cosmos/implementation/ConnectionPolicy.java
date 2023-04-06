@@ -105,7 +105,7 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
-        this.minChannelPoolSizePerEndpoint = 1;
+        this.minChannelPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
     }
 
     /**

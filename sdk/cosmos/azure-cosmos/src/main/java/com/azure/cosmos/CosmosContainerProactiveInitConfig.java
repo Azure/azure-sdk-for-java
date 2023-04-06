@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,16 +23,18 @@ public final class CosmosContainerProactiveInitConfig {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private final int numProactiveConnectionRegions;
+    private final Duration aggressiveProactiveConnectionEstablishmentTimeWindow;
 
     CosmosContainerProactiveInitConfig(
         List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
-        Map<String, Integer> containerLinkToMinConnectionsMap
+        Map<String, Integer> containerLinkToMinConnectionsMap,
+        Duration aggressiveProactiveConnectionEstablishmentTimeWindow
     ) {
-
         this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
+        this.aggressiveProactiveConnectionEstablishmentTimeWindow = aggressiveProactiveConnectionEstablishmentTimeWindow;
     }
 
     /**
@@ -74,6 +77,16 @@ public final class CosmosContainerProactiveInitConfig {
      */
     public int getProactiveConnectionRegionsCount() {
         return numProactiveConnectionRegions;
+    }
+
+    /**
+     * Gets the time window within which connections will be opened aggressively and in a blocking manner and outside
+     * which connections will be opened defensively and in a non-blocking manner
+     *
+     * @return the aggressive proactive connection establishment time window
+     * */
+    public Duration getAggressiveProactiveConnectionEstablishmentTimeWindow() {
+        return this.aggressiveProactiveConnectionEstablishmentTimeWindow;
     }
 
     @Override

@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ParallelFlux;
@@ -24,10 +26,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
+    private static final int MaxConnectionsToOpenAcrossAllEndpoints = 50_000;
     private Sinks.Many<OpenConnectionOperation> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionOperation> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, Integer> endpointToMinConnections;
-    private static final int MaxConnectionsToOpenAcrossAllEndpoints = 50_000;
     private final AtomicInteger totalEstablishedConnections;
     private final AtomicReference<OpenConnectionAggressivenessHint> aggressivenessHint;
 
@@ -42,10 +46,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     public synchronized void submitOpenConnectionTask(OpenConnectionOperation openConnectionOperation) {
 
         String addressUriAsString = openConnectionOperation.getAddressUri().getURIAsString();
+        boolean isEndpointTaskInSink = endpointToMinConnections.putIfAbsent(addressUriAsString, openConnectionOperation.getMinConnectionsRequiredForEndpoint()) != null;
 
-        boolean isEndpointTaskInSink = endpointToMinConnections.get(addressUriAsString) != null;
-
-        endpointToMinConnections.putIfAbsent(addressUriAsString, openConnectionOperation.getMinConnectionsRequiredForEndpoint());
         endpointToMinConnections.computeIfPresent(addressUriAsString, (s, min) -> {
             openConnectionOperation.setMinConnectionsRequiredForEndpoint(Math.max(openConnectionOperation.getMinConnectionsRequiredForEndpoint(), min));
             return Math.max(openConnectionOperation.getMinConnectionsRequiredForEndpoint(), min);
@@ -59,8 +61,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     @Override
     public void close() throws IOException {
-        openConnectionsTaskSink.tryEmitComplete();
-        openConnectionsTaskSinkBackUp.tryEmitComplete();
+        completeSink(openConnectionsTaskSink);
+        completeSink(openConnectionsTaskSinkBackUp);
     }
 
     public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisher() {
@@ -73,12 +75,15 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
 
         return openConnectionsTaskSink.asFlux()
+                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .parallel(concurrency)
-                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).log("Line 80")
+                .doOnComplete(this::instantiateOpenConnectionsPublisher)
                 .flatMap(openConnectionOperation -> {
                     if (totalEstablishedConnections.get() < MaxConnectionsToOpenAcrossAllEndpoints) {
 
                         endpointToMinConnections.remove(openConnectionOperation.getAddressUri().getURIAsString());
+
                         IOpenConnectionsHandler openConnectionsHandler = openConnectionOperation.getOpenConnectionsHandler();
                         Uri addressUri = openConnectionOperation.getAddressUri();
                         URI serviceEndpoint = openConnectionOperation.getServiceEndpoint();
@@ -116,7 +121,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 });
     }
 
-    public void reinstantiateOpenConnectionsPublisherAndSubscribe() {
+    public void reinitializeOpenConnectionsPublisherAndSubscribe() {
+        logger.info("In open connections task sink and concurrency reduction flow");
         this.toggleOpenConnectionsAggressiveness();
         this.instantiateOpenConnectionsPublisher();
         this.getOpenConnectionsPublisher().subscribe();
@@ -143,6 +149,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // this method provides for a way to resume emitting pushed tasks to
     // the sink
     private synchronized void instantiateOpenConnectionsPublisher() {
+        logger.info("Reinitialize open connections task sink");
         openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
         openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
@@ -152,6 +159,18 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             aggressivenessHint.set(OpenConnectionAggressivenessHint.DEFENSIVE);
         } else {
             aggressivenessHint.set(OpenConnectionAggressivenessHint.AGGRESSIVE);
+        }
+    }
+
+    private void completeSink(Sinks.Many<OpenConnectionOperation> sink) {
+        Sinks.EmitResult completeEmitResult = sink.tryEmitComplete();
+
+        if (completeEmitResult == Sinks.EmitResult.OK) {
+            logger.debug("");
+        } else if (completeEmitResult == Sinks.EmitResult.FAIL_CANCELLED || completeEmitResult == Sinks.EmitResult.FAIL_TERMINATED) {
+            logger.debug("");
+        } else {
+            logger.warn("");
         }
     }
 

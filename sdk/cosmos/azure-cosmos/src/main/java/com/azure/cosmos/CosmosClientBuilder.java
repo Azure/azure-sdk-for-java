@@ -128,7 +128,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private Duration connectionWarmUpTimeout;
+
     /**
      * Instantiates a new Cosmos client builder.
      */
@@ -700,28 +700,6 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
-     * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
-     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}.
-     *
-     * <p>
-     *     Use the {@link CosmosContainerProactiveInitConfigBuilder} class to instantiate {@link CosmosContainerProactiveInitConfig} class
-     * </p>
-     * @param proactiveContainerInitConfig which encapsulates a list of container identities and no of
-     *                                     proactive connection regions
-     * @param connectionWarmUpTimeout a {@link Duration} type parameter which denotes the time window within
-     *                                which connections will be opened aggressively and in a blocking manner and outside
-     *                                which connections will be opened defensively and in a non-blocking manner
-     * @return current CosmosClientBuilder
-     * */
-    public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, Duration connectionWarmUpTimeout) {
-        this.proactiveContainerInitConfig = proactiveContainerInitConfig;
-        this.connectionWarmUpTimeout = connectionWarmUpTimeout;
-        return this;
-    }
-
-
-    /**
      * Gets the GATEWAY connection configuration to be used.
      *
      * @return gateway connection config
@@ -874,8 +852,10 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
-            if (connectionWarmUpTimeout != null) {
-                cosmosAsyncClient.openConnectionsAndInitCaches(connectionWarmUpTimeout);
+            Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
+                    .getAggressiveProactiveConnectionEstablishmentTimeWindow();
+            if (aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO) {
+                cosmosAsyncClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
             } else {
                 cosmosAsyncClient.openConnectionsAndInitCaches();
             }
@@ -896,8 +876,10 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
         if (proactiveContainerInitConfig != null) {
-            if (connectionWarmUpTimeout != null) {
-                cosmosClient.openConnectionsAndInitCaches(connectionWarmUpTimeout);
+            Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
+                    .getAggressiveProactiveConnectionEstablishmentTimeWindow();
+            if (aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO) {
+                cosmosClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
             } else {
                 cosmosClient.openConnectionsAndInitCaches();
             }

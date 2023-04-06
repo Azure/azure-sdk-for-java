@@ -117,7 +117,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
-    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) throws InterruptedException {
+    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) {
         CosmosAsyncContainer asyncContainer = useAsync ? directCosmosAsyncContainer : directCosmosContainer.asyncContainer;
         CosmosAsyncClient asyncClient = useAsync ? directCosmosAsyncClient : directCosmosClient.asyncClient();
 
@@ -135,14 +135,12 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
-            directCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
-            directCosmosAsyncContainer.openConnectionsAndInitCaches().subscribe();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
+            directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
         } else {
             directCosmosContainer.openConnectionsAndInitCaches();
             directCosmosContainer.openConnectionsAndInitCaches();
         }
-
-        Thread.sleep(500);
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
         assertThat(routingMap.size()).isEqualTo(1);

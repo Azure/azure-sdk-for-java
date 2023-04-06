@@ -4,7 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -34,7 +34,9 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -795,7 +797,14 @@ public class CosmosContainer {
      *
      */
     public void openConnectionsAndInitCaches() {
-        this.asyncContainer.openConnectionsAndInitCaches().subscribe();
+        this.asyncContainer.openConnectionsAndInitCaches().block();
+    }
+
+    <T> Mono<T> wrapMonoAndFallback(Mono<T> source, Mono<T> fallback, Scheduler executionContext) {
+        return Mono.<T>create(sink -> {
+            source.subscribeOn(executionContext)
+                    .subscribe(t -> sink.success(t));
+        }).doOnSuccess(t -> System.out.println("Line 808: On success"));
     }
 
     /***
@@ -810,8 +819,8 @@ public class CosmosContainer {
      * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
      */
     public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
-        this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions)
-                .subscribe();
+//        Mono<ImmutablePair<Long, Long>> source = this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions);
+//        wrapMonoAndFallback(source, Mono.empty(), CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).block();
     }
 
     private void blockVoidResponse(Mono<Void> voidMono) {

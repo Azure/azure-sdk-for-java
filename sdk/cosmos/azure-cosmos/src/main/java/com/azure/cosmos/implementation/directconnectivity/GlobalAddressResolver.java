@@ -169,7 +169,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         .getCosmosContainerIdentityAccessor()
                                                         .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
 
-                                                int connectionsPerReplicaCountForContainer = containerLinkToMinConnectionsMap
+                                                int connectionsPerEndpointCountForContainer = containerLinkToMinConnectionsMap
                                                         .getOrDefault(
                                                                 containerLinkToCollection.left,
                                                                 Configs.getMinConnectionPoolSizePerEndpoint()
@@ -179,7 +179,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         addressInformation,
                                                         containerLinkToCollection.getRight(),
                                                         proactiveContainerInitConfig,
-                                                        connectionsPerReplicaCountForContainer,
+                                                        connectionsPerEndpointCountForContainer,
                                                         hint
                                                 );
                                             });

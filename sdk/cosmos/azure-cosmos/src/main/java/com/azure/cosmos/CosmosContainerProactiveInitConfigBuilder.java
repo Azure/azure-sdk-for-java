@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private int numProactiveConnectionRegions;
-
+    private Duration aggressiveProactiveConnectionEstablishmentTimeWindow = Duration.ZERO;
     /**
      * Instantiates {@link CosmosContainerProactiveInitConfigBuilder}
      *
@@ -60,21 +61,37 @@ public final class CosmosContainerProactiveInitConfigBuilder {
     }
 
     /**
+     * Sets the time window represented as a {@link Duration} within which connections will be opened
+     * aggressively and in a blocking manner and outside which connections will be opened defensively
+     * and in a non-blocking manner
+     *
+     * @param aggressiveProactiveConnectionEstablishmentTimeWindow this denotes the aggressive proactive connection
+     *                                                             establishment time window to be set
+     * @return current {@link CosmosContainerProactiveInitConfigBuilder}
+     */
+    public CosmosContainerProactiveInitConfigBuilder setAggressiveProactiveConnectionEstablishmentTimeWindow(Duration aggressiveProactiveConnectionEstablishmentTimeWindow) {
+        checkArgument(aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO,
+                "aggressiveProactiveConnectionEstablishmentTimeWindow cannot be set to Duration.ZERO");
+        this.aggressiveProactiveConnectionEstablishmentTimeWindow = aggressiveProactiveConnectionEstablishmentTimeWindow;
+        return this;
+    }
+
+    /**
      * Sets the minimum no. of connections required to be opened for each replica of
      * the container specified in the {@link CosmosContainerIdentity} instance.
      *
      * @param cosmosContainerIdentity Encapsulates the identity for the container for which minimum no. of connections
      *                                are to be opened.
-     * @param minConnectionsPerReplica Denotes the minimum no. of connections to be opened for each replica of the container
+     * @param minConnectionsPerEndpoint Denotes the minimum no. of connections to be opened for each endpoint of the container
      *
      * @return Current {@link CosmosContainerProactiveInitConfigBuilder}
      * */
-    CosmosContainerProactiveInitConfigBuilder withMinConnectionsPerReplicaForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerReplica) {
+    CosmosContainerProactiveInitConfigBuilder withMinConnectionsPerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
         String containerLink = ImplementationBridgeHelpers.CosmosContainerIdentityHelper
                 .getCosmosContainerIdentityAccessor()
                 .getContainerLink(cosmosContainerIdentity);
 
-        containerLinkToMinConnectionsMap.put(containerLink, minConnectionsPerReplica);
+        containerLinkToMinConnectionsMap.put(containerLink, minConnectionsPerEndpoint);
         return this;
     }
 
@@ -92,7 +109,8 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         return new CosmosContainerProactiveInitConfig(
                 this.cosmosContainerIdentities,
                 this.numProactiveConnectionRegions,
-                this.containerLinkToMinConnectionsMap
+                this.containerLinkToMinConnectionsMap,
+                this.aggressiveProactiveConnectionEstablishmentTimeWindow
         );
     }
 }

@@ -46,6 +46,7 @@ import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -635,17 +636,23 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
-                .subscribe();
+        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(5);
 
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(
                         proactiveContainerInitConfig,
                         OpenConnectionAggressivenessHint.AGGRESSIVE
                 )
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .blockLast();
+                .subscribe();
+
+        wrapSourceFluxWithSoftTimeoutAndFallback(
+                proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().sequential(),
+                Flux.empty(),
+                lastSuccessResponseTimeout,
+                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC
+        ).blockLast();
     }
+
 
     void openConnectionsAndInitCaches(Duration timeout) {
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(
@@ -662,9 +669,18 @@ public final class CosmosAsyncClient implements Closeable {
         Flux
                 .just(1)
                 .delayElements(timeout)
-                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiateOpenConnectionsPublisherAndSubscribe)
+                .doOnComplete(proactiveOpenConnectionsProcessor::reinitializeOpenConnectionsPublisherAndSubscribe)
                 .blockLast();
+    }
+
+    private <T> Flux<T> wrapSourceFluxWithSoftTimeoutAndFallback(Flux<T> source, Flux<T> fallback, Duration timeout, Scheduler executionContext) {
+        return Flux.<T>create(sink -> {
+                    source
+                            .subscribeOn(executionContext)
+                            .subscribe(t -> sink.next(t));
+                })
+                .timeout(timeout)
+                .onErrorResume(error -> fallback);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

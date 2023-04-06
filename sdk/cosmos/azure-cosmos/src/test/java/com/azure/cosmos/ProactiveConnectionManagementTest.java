@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -450,7 +449,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 0; i < cosmosContainerIdentities.size(); i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
-                        .withMinConnectionsPerReplicaForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
+                        .withMinConnectionsPerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
@@ -465,7 +464,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .directMode()
                     .buildAsyncClient();
 
-            Thread.sleep(10_000);
+            Thread.sleep(0);
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
@@ -508,7 +507,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                             dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
                             return globalAddressResolver.resolveAsync(dummyRequest, false);
                         })
-                        .delayElements(Duration.ofSeconds(3))
+                        .delayElements(Duration.ofMillis(300))
                         .doOnNext(addressInformations -> {
                             for (AddressInformation address : addressInformations) {
                                 endpoints.add(address.getPhysicalUri().getURI().getAuthority());
@@ -546,7 +545,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration connectionWarmUpTimeout) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration aggressiveProactiveConnectionEstablishmentTimeWindow) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
 
@@ -568,10 +567,11 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 0; i < numContainers; i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
-                        .withMinConnectionsPerReplicaForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
+                        .withMinConnectionsPerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
+                    .setAggressiveProactiveConnectionEstablishmentTimeWindow(aggressiveProactiveConnectionEstablishmentTimeWindow)
                     .build();
 
             clientWithOpenConnections = new CosmosClientBuilder()
@@ -579,11 +579,11 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .key(TestConfigurations.MASTER_KEY)
                     .endpointDiscoveryEnabled(true)
                     .preferredRegions(preferredRegions)
-                    .openConnectionsAndInitCaches(proactiveContainerInitConfig, connectionWarmUpTimeout)
+                    .openConnectionsAndInitCaches(proactiveContainerInitConfig)
                     .directMode()
                     .buildAsyncClient();
 
-            Thread.sleep(10_000);
+            Thread.sleep(5);
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
@@ -626,7 +626,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                             dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
                             return globalAddressResolver.resolveAsync(dummyRequest, false);
                         })
-                        .delayElements(Duration.ofSeconds(3))
+                        .delayElements(Duration.ofMillis(300))
                         .doOnNext(addressInformations -> {
                             for (AddressInformation address : addressInformations) {
                                 endpoints.add(address.getPhysicalUri().getURI().getAuthority());
@@ -636,6 +636,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
                 globalEndpointManager.markEndpointUnavailableForRead(proactiveConnectionEndpoint);
             }
+
+            // let connection counts catch up
+            Thread.sleep(10_000);
 
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
@@ -647,7 +650,9 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 totalConnectionCountForAllEndpoints += endpoint.channelsMetrics();
             }
 
-            // TODO: Investigate why some extra connections are being created
+            System.out.println("Total connections for all endpoints : " + totalConnectionCountForAllEndpoints);
+
+//            // TODO: Investigate why some extra connections are being created
             assertThat(totalConnectionCountForAllEndpoints).isGreaterThanOrEqualTo(endpoints.size() * minConnectionPoolSizePerEndpoint);
 
             provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minConnectionPoolSizePerEndpoint));
@@ -675,13 +680,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
 
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
-        return new Object[][] {
+        return new Object[][]{
                 new Object[]{preferredLocations, 1, 2, 3, Duration.ofMillis(800)},
                 new Object[]{preferredLocations, 2, 10, 4, Duration.ofMillis(900)},
                 new Object[]{preferredLocations, 2, 13, 5, Duration.ofSeconds(1)},
-                new Object[]{preferredLocations, 2, 16, 6, Duration.ofSeconds(2)},
-                new Object[]{preferredLocations, 2, 20, 7, Duration.ofSeconds(3)},
-                new Object[]{preferredLocations, 2, 25, 8, Duration.ofSeconds(4)}
+                new Object[]{preferredLocations, 2, 16, 6, Duration.ofSeconds(1)},
+                new Object[]{preferredLocations, 2, 25, 11, Duration.ofMillis(500)}
         };
     }
 
