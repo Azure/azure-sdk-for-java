@@ -797,17 +797,10 @@ public class CosmosContainer {
      *
      */
     public void openConnectionsAndInitCaches() {
-        this.asyncContainer.openConnectionsAndInitCaches().block();
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
 
-    <T> Mono<T> wrapMonoAndFallback(Mono<T> source, Mono<T> fallback, Scheduler executionContext) {
-        return Mono.<T>create(sink -> {
-            source.subscribeOn(executionContext)
-                    .subscribe(t -> sink.success(t));
-        }).doOnSuccess(t -> System.out.println("Line 808: On success"));
-    }
-
-    /***
+    /**
      *  Initializes the container by warming up the caches and connections to a specified no. of proactive connection regions.
      *  For more information about proactive connection regions, see {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}
      *
@@ -819,8 +812,7 @@ public class CosmosContainer {
      * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
      */
     public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
-//        Mono<ImmutablePair<Long, Long>> source = this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions);
-//        wrapMonoAndFallback(source, Mono.empty(), CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).block();
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
     }
 
     private void blockVoidResponse(Mono<Void> voidMono) {
