@@ -30,10 +30,11 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -433,7 +434,13 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
                 .pipeline(getHttpPipeline(httpClient))
                 .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isPlaybackMode()) {
+            // since running in playback mode won't have the token credential, so skipping matching it.
+            interceptorManager.addMatchers(Arrays.asList(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
+        }
+
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -441,17 +448,17 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
-        String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
-        String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-        Objects.requireNonNull(clientId, "The client id cannot be null");
-        Objects.requireNonNull(clientKey, "The client key cannot be null");
-        Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-        TokenCredential credential =  new ClientSecretCredentialBuilder()
-            .clientSecret(clientKey)
-            .clientId(clientId)
-            .tenantId(tenantId)
-            .build();
+        TokenCredential credential = null;
+
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+            Objects.requireNonNull(clientId, "The client id cannot be null");
+            Objects.requireNonNull(clientKey, "The client key cannot be null");
+            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+            credential = new DefaultAzureCredentialBuilder().build();
+        }
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -463,7 +470,11 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
+
+        if (credential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
