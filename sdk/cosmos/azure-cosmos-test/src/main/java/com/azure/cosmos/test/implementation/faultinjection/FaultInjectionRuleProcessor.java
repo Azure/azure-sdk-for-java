@@ -21,7 +21,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -41,7 +40,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -353,24 +351,21 @@ public class FaultInjectionRuleProcessor {
                                         addressEndpoints.isIncludePrimary(),
                                         true)
                                     .flatMapIterable(addresses -> {
+                                        // There are two rules need to happens here:
+                                        // 1. if isIncludePrimary is true, then basically make sure primary replica address will always be returned
+                                        // 2. make sure the same replica addresses will be used across different client instances
                                         return addresses
                                             .stream()
-                                            .sorted(new Comparator<Uri>() {
-                                                // There are two rules need to happens here:
-                                                // 1. if isIncludePrimary is true, then basically make sure primary replica address will always be returned
-                                                // 2. make sure the same replica addresses will be used across different client instances
-                                                @Override
-                                                public int compare(Uri o1, Uri o2) {
-                                                    if (o1.isPrimary()) {
-                                                        return -1;
-                                                    }
-
-                                                    if (o2.isPrimary()) {
-                                                        return 1;
-                                                    }
-
-                                                    return o1.getURIAsString().compareTo(o2.getURIAsString());
+                                            .sorted((o1, o2) -> {
+                                                if (o1.isPrimary()) {
+                                                    return -1;
                                                 }
+
+                                                if (o2.isPrimary()) {
+                                                    return 1;
+                                                }
+
+                                                return o1.getURIAsString().compareTo(o2.getURIAsString());
                                             })
                                             .map(uri -> uri.getURI())
                                             .limit(addressEndpoints.getReplicaCount())
