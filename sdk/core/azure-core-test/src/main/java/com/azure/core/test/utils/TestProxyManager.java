@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -21,7 +20,6 @@ import java.nio.file.Paths;
  */
 public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private static final Path PROXYPATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
     private final File recordingPath;
     private Process proxy;
 
