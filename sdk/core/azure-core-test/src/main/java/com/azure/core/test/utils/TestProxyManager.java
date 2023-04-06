@@ -8,12 +8,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Manages running the test recording proxy server
@@ -22,6 +24,10 @@ public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
     private final File recordingPath;
     private Process proxy;
+
+    private static final AtomicInteger PORT_COUNTER = new AtomicInteger(5000);
+
+    private String proxyUrl;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
@@ -51,7 +57,7 @@ public class TestProxyManager {
                     TestProxyUtils.getProxyProcessName()).toString();
             }
 
-            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath())
+            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl())
                 .directory(TestProxyDownloader.getProxyDirectory().toFile());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
@@ -85,5 +91,22 @@ public class TestProxyManager {
         if (proxy.isAlive()) {
             proxy.destroy();
         }
+    }
+
+    /**
+     * Get the proxy URL.
+     *
+     * @return A string containing the proxy URL.
+     */
+    public String getProxyUrl() {
+        if (proxyUrl != null) {
+            return proxyUrl.toString();
+        }
+        UrlBuilder builder = new UrlBuilder();
+        builder.setHost("localhost");
+        builder.setScheme("http");
+        builder.setPort(PORT_COUNTER.getAndIncrement());
+        proxyUrl = builder.toString();
+        return proxyUrl;
     }
 }
