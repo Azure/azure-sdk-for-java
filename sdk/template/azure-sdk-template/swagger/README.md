@@ -2,11 +2,11 @@
 
 > see https://aka.ms/autorest
 
-This is the template AutoRest configuration file for client SDKs.
+This is the template AutoRest configuration file for <SDK clients here>.
 ---
 ## Getting Started
 
-To build the SDK, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+To build the SDK for <SDK clients here>, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
 
 > `autorest`
 
@@ -15,14 +15,7 @@ To see additional help and options, run:
 > `autorest --help`
 
 ### Setup
-
-Fork and clone [autorest.java](https://github.com/Azure/autorest.java) and run the following:
-
 ```ps
-git checkout main
-git submodule update --init --recursive
-mvn install -Dlocal -DskipTests
-npm install
 npm install -g autorest
 ```
 
@@ -30,6 +23,17 @@ npm install -g autorest
 
 Generating client SDKs from Swagger involves using the `autorest` command installed to the command line above while
 also referencing the Java AutoRest packages, either the local installation performed above or using a released version.
+
+#### Default
+
+Autorest README configuration files should include a `use` configuration which indicates to Autorest which version of
+Java Autorest should be used to generate, meaning it's not necessary to pass `--use` when running the `autorest`
+command.
+
+```ps
+cd <swagger-folder>
+autorest
+```
 
 #### Local Installation
 
@@ -61,6 +65,7 @@ either required or considered best practices by Azure SDKs for Java:
 _Anything inside `<>` should be removed as it's an explanation._
 
 ``` yaml
+use: '@autorest/java@4.1.16' <latest version of Autorest Java at the time of creation or update>
 input-file: <required, can either be a local file or URL with URL preferred>
 java: true <required, indicates this is Java code generation>
 output-folder: ../ <required, where code will be generated>
@@ -76,7 +81,10 @@ models-subpackage: <optional, package where code generated models will be placed
 custom-types: <optional, list of model names that will be generated into the custom-types-subpackage, generally used for generated models that should be public API>
 custom-types-subpackage: <optional, package where custom-types will be placed>
 generic-response-type: true <optional, generated Swagger response types using ResponseBase<Headers, Body> instead of a sub-type, helps reduce usage of reflection>
-custom-strongly-typed-header-deserialization: true <ooptional, generated strongly-typed HTTP header classes will use simplified deserialization that is better performing>
+custom-strongly-typed-header-deserialization: true <optional, generated strongly-typed HTTP header classes will use simplified deserialization that is better performing>
+enable-sync-stack: true <optional, fully synchronous call paths will be generated removing or limiting usage of Reactor>
+disable-client-builder: true <optional, Autorest won't generate a client builder, useful for handwritten SDKs to reduce code area>
+customization-class: <path to Java file extending Customization from azure-autorest-customization>
 ```
 
 Using `azure-storage-blob` as an example with the configurations above:
@@ -100,13 +108,16 @@ custom-types: <list of models that are generated into public API>
 custom-types-subpackage: models
 generic-response-type: true
 custom-strongly-typed-header-deserialization: true
+enable-sync-stack: true
+disable-client-builder: true
+customization-class: src/main/java/TemplateCustomization.java
 ```
 
 Some services may leverage multiple Swagger files, which means that they may require different packages based on the
 file being used in generation to prevent overwriting same-name classes. For this, sections with name `Tag:` and `yaml`
 configurations with `$(tag) == '<tag value>'` can be used to have the Java AutoRest generation have branching generation 
 logic, each tag will need to be generated with a separate run of `autorest`. Fortunately, a top-level configuration, 
-such as above, can be used for common features between each Swagger file, such as `output-folder`, `license-header`, etc, 
+such as above, can be used for common features between each Swagger file, such as `output-folder`, `license-header`, etc., 
 the only configurations that must be different are the `input-file`, `namespace`, `models-subpackage`, `custom-types`, 
 and `custom-types-subpackage`. The following is an example:
 

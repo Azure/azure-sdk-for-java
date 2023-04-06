@@ -31,7 +31,6 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -39,6 +38,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
+import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
@@ -160,7 +160,7 @@ public final class DocumentAnalysisClient {
             analyzeDocumentOptions, context);
     }
 
-    SyncPoller<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrlSync(String documentUrl, String modelId,
+    private SyncPoller<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrlSync(String documentUrl, String modelId,
         AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(documentUrl)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
@@ -178,6 +178,8 @@ public final class DocumentAnalysisClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
+                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
+                finalAnalyzeDocumentOptions.getQueryFields(),
                 null,
                 documentUrl,
                 finalContext).apply(cxt)),
@@ -290,6 +292,8 @@ public final class DocumentAnalysisClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
+                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
+                finalAnalyzeDocumentOptions.getQueryFields(),
                 document,
                 null,
                 finalContext).apply(cxt)),
@@ -299,11 +303,14 @@ public final class DocumentAnalysisClient {
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
-        String modelId, List<String> pages, String locale, BinaryData document, String documentUrl, Context context) {
+        String modelId, List<String> pages, String locale, List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> features, List<String> queryFields,
+        BinaryData document, String documentUrl, Context context) {
         return (pollingContext) ->
             Transforms.toDocumentOperationResult(analyzeDocument(modelId,
                 CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
                 locale,
+                features,
+                queryFields,
                 document,
                 documentUrl,
                 context)
@@ -311,6 +318,7 @@ public final class DocumentAnalysisClient {
     }
 
     private ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
+                                                                                     List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> features, List<String> queryFields,
                                                                                      BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {
@@ -319,8 +327,8 @@ public final class DocumentAnalysisClient {
                     pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
-                    Collections.emptyList(),
-                    Collections.emptyList(),
+                    features,
+                    queryFields,
                     document,
                     document.getLength(),
                     context);
@@ -329,8 +337,8 @@ public final class DocumentAnalysisClient {
                     pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
-                    Collections.emptyList(),
-                    Collections.emptyList(),
+                    features,
+                    queryFields,
                     new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                     context);
             }

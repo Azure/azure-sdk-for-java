@@ -23,6 +23,8 @@ com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
 com.azure:azure-communication-chat # Tests owner: jiminwen
+com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
+com.azure:azure-communication-identity # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-containers-containerregistry # Tests owner: lmolkova
 com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
@@ -38,6 +40,7 @@ com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, Ramon
 com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
 com.azure:azure-monitor-query # Tests owner: srnagar
 com.azure:azure-security-attestation # Tests owner: LarryOsterman
+com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
 com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
@@ -52,5 +55,3 @@ com.azure:azure-storage-file-datalake # Tests owner: ibrahimrabab, jaschrep-msft
 com.azure:azure-storage-file-share # Tests owner: ibrahimrabab, jaschrep-msft
 com.azure:azure-storage-internal-avro # Tests owner: ibrahimrabab, jaschrep-msft
 com.azure:azure-storage-queue # Tests owner: ibrahimrabab, jaschrep-msft
-
-

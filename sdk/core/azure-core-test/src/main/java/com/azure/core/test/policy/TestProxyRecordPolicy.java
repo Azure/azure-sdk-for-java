@@ -103,7 +103,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         TestProxyUtils.changeHeaders(context.getHttpRequest(), xRecordingId, "record");
         HttpResponse response = next.processSync();
         TestProxyUtils.checkForTestProxyErrors(response);
-        return response;
+        return TestProxyUtils.revertUrl(response);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         TestProxyUtils.changeHeaders(request, xRecordingId, "record");
         return next.process().map(response -> {
             TestProxyUtils.checkForTestProxyErrors(response);
-            return response;
+            return TestProxyUtils.revertUrl(response);
         });
     }
 

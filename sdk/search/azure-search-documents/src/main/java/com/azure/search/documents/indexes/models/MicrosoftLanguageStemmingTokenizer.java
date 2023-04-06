@@ -173,13 +173,13 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        MicrosoftLanguageStemmingTokenizer deserializedValue =
+                        MicrosoftLanguageStemmingTokenizer deserializedMicrosoftLanguageStemmingTokenizer =
                                 new MicrosoftLanguageStemmingTokenizer(name);
-                        deserializedValue.maxTokenLength = maxTokenLength;
-                        deserializedValue.isSearchTokenizerUsed = isSearchTokenizerUsed;
-                        deserializedValue.language = language;
+                        deserializedMicrosoftLanguageStemmingTokenizer.maxTokenLength = maxTokenLength;
+                        deserializedMicrosoftLanguageStemmingTokenizer.isSearchTokenizerUsed = isSearchTokenizerUsed;
+                        deserializedMicrosoftLanguageStemmingTokenizer.language = language;
 
-                        return deserializedValue;
+                        return deserializedMicrosoftLanguageStemmingTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

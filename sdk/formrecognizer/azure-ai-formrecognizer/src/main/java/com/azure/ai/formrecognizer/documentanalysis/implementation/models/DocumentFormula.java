@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -41,8 +42,25 @@ public final class DocumentFormula {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentFormula class. */
-    public DocumentFormula() {}
+    /**
+     * Creates an instance of DocumentFormula class.
+     *
+     * @param kind the kind value to set.
+     * @param value the value value to set.
+     * @param span the span value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentFormula(
+            @JsonProperty(value = "kind", required = true) DocumentFormulaKind kind,
+            @JsonProperty(value = "value", required = true) String value,
+            @JsonProperty(value = "span", required = true) DocumentSpan span,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.kind = kind;
+        this.value = value;
+        this.span = span;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the kind property: Formula kind.
@@ -54,34 +72,12 @@ public final class DocumentFormula {
     }
 
     /**
-     * Set the kind property: Formula kind.
-     *
-     * @param kind the kind value to set.
-     * @return the DocumentFormula object itself.
-     */
-    public DocumentFormula setKind(DocumentFormulaKind kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
      * Get the value property: LaTex expression describing the formula.
      *
      * @return the value value.
      */
     public String getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: LaTex expression describing the formula.
-     *
-     * @param value the value value to set.
-     * @return the DocumentFormula object itself.
-     */
-    public DocumentFormula setValue(String value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -114,33 +110,11 @@ public final class DocumentFormula {
     }
 
     /**
-     * Set the span property: Location of the formula in the reading order concatenated content.
-     *
-     * @param span the span value to set.
-     * @return the DocumentFormula object itself.
-     */
-    public DocumentFormula setSpan(DocumentSpan span) {
-        this.span = span;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the formula.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the formula.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentFormula object itself.
-     */
-    public DocumentFormula setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

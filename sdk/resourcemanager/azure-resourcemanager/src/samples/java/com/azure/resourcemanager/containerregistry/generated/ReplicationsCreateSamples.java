@@ -29,7 +29,7 @@ public final class ReplicationsCreateSamples {
                 "myResourceGroup",
                 "myRegistry",
                 "myReplication",
-                new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "value")),
+                new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -53,7 +53,7 @@ public final class ReplicationsCreateSamples {
                 "myReplication",
                 new ReplicationInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withRegionEndpointEnabled(true)
                     .withZoneRedundancy(ZoneRedundancy.ENABLED),
                 com.azure.core.util.Context.NONE);

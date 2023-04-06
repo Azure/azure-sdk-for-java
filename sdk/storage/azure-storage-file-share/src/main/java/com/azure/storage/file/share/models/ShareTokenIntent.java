@@ -17,6 +17,14 @@ public final class ShareTokenIntent extends ExpandableStringEnum<ShareTokenInten
     public static final ShareTokenIntent BACKUP = fromString("backup");
 
     /**
+     * Creates a new instance of ShareTokenIntent value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShareTokenIntent() {}
+
+    /**
      * Creates or finds a ShareTokenIntent from its string representation.
      *
      * @param name a name to look for.

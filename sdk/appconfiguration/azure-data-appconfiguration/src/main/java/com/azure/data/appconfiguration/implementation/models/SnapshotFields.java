@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for SnapshotFields. */
@@ -57,7 +56,6 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
      * @param name a name to look for.
      * @return the corresponding SnapshotFields.
      */
-    @JsonCreator
     public static SnapshotFields fromString(String name) {
         return fromString(name, SnapshotFields.class);
     }
