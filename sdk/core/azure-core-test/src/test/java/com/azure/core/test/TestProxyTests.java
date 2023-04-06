@@ -73,11 +73,10 @@ public class TestProxyTests extends TestProxyTestBase {
     @BeforeAll
     public static void setupClass() {
         server = new TestProxyTestServer();
-        TestProxyTestBase.setup();
+
     }
     @AfterAll
     public static void teardownClass() {
-        TestProxyTestBase.teardown();
         server.close();
     }
     @Test
