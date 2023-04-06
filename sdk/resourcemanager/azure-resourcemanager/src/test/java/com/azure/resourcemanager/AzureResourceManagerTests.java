@@ -238,7 +238,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws IOException
      * @throws ManagementException
      */
-    @Disabled("hostpoolToken in response could be AAD token")
+    @DoNotRecord(skipInPlayback = true) // response contains token in hostpoolToken
     @Test
     public void testDeployments() throws Exception {
         String testId = azureResourceManager.deployments().manager().resourceManager().internalContext().randomResourceName("", 8);
