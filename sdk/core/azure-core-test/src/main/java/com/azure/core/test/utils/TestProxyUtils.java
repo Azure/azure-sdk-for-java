@@ -96,9 +96,9 @@ public class TestProxyUtils {
 
             HttpHeaders headers = request.getHeaders();
             if (upstreamUri == null) {
-                headers.add("x-recording-upstream-base-uri", originalUrl.toString());
-                headers.add("x-recording-mode", mode);
-                headers.add("x-recording-id", xRecordingId);
+                headers.set("x-recording-upstream-base-uri", originalUrl.toString());
+                headers.set("x-recording-mode", mode);
+                headers.set("x-recording-id", xRecordingId);
             }
 
             request.setUrl(proxyUrlBuilder.toUrl());
