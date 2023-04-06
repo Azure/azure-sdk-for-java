@@ -15,6 +15,7 @@
 
 ### Features Added
 - Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
 
 ### Bugs Fixed
 - Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.
