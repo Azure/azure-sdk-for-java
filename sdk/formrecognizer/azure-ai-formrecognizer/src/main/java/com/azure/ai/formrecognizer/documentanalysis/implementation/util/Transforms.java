@@ -314,14 +314,14 @@ public class Transforms {
         List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnnotation> annotations) {
         if (annotations != null) {
             return annotations.stream().map(innerAnnotation -> {
-                    DocumentAnnotation documentAnnotation = new DocumentAnnotation();
-                    DocumentAnnotationHelper.setKind(documentAnnotation,
-                        innerAnnotation.getKind() == null ? null : DocumentAnnotationKind.fromString(
-                            innerAnnotation.getKind().toString()));
-                    DocumentAnnotationHelper.setConfidence(documentAnnotation, innerAnnotation.getConfidence());
-                    DocumentAnnotationHelper.setPolygon(documentAnnotation, toPolygonPoints(innerAnnotation.getPolygon()));
-                    return documentAnnotation;
-                })
+                DocumentAnnotation documentAnnotation = new DocumentAnnotation();
+                DocumentAnnotationHelper.setKind(documentAnnotation,
+                    innerAnnotation.getKind() == null ? null : DocumentAnnotationKind.fromString(
+                        innerAnnotation.getKind().toString()));
+                DocumentAnnotationHelper.setConfidence(documentAnnotation, innerAnnotation.getConfidence());
+                DocumentAnnotationHelper.setPolygon(documentAnnotation, toPolygonPoints(innerAnnotation.getPolygon()));
+                return documentAnnotation;
+            })
                 .collect(Collectors.toList());
         }
         return null;
