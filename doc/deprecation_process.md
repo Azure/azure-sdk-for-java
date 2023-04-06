@@ -17,26 +17,26 @@ Clone the repository and update the following files of your package:
 
 - `README.md` add a disclaimer using this syntax:
 
-> This package is no longer being maintained. Use the [azure-mynewpackage](https://central.sonatype.com/artifact/com.azure/azure-mynewpackage/<version>)
-> package instead.
-> 
-> For migration instructions, see the [migration guide](https://aka.ms/azsdk/migrate/my-new-package).
+> Please note, this package has been deprecated and will no longer be maintained after $EOLDate. We encourage you to
+> upgrade to the replacement package, $Replacement, to continue receiving updates. Refer to the migration guide 
+> $ReplaceGuide for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for
+> more details.
 
 - `CHANGELOG.md` add a new version with the current date and the same disclaimer. For instance:
 
 > ## 1.2.3 (2023-04-03)
 > 
-> This package is no longer being maintained. Use the [azure-mynewpackage](https://central.sonatype.com/artifact/com.azure/azure-mynewpackage/<version>)
-> package instead.
-> 
-> For migration instructions, see the [migration guide](https://aka.ms/azsdk/migrate/my-new-package).
+> Please note, this package has been deprecated and will no longer be maintained after $EOLDate. We encourage you to
+> upgrade to the replacement package, $Replacement, to continue receiving updates. Refer to the migration guide
+> $ReplaceGuide for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for
+> more details.
 
 - `pom.xml` add the disclaimer to the package description. For instance:
 
-> This package is no longer being maintained. Use the [azure-mynewpackage](https://central.sonatype.com/artifact/com.azure/azure-mynewpackage/<version>)
-> package instead.
->
-> For migration instructions, see the [migration guide](https://aka.ms/azsdk/migrate/my-new-package).
+> Please note, this package has been deprecated and will no longer be maintained after $EOLDate. We encourage you to
+> upgrade to the replacement package, $Replacement, to continue receiving updates. Refer to the migration guide
+> $ReplaceGuide for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for
+> more details.
 
 Do a PR targeting the `main` branch. Post your PR in our [channel for Java](https://teams.microsoft.com/l/channel/19%3a5e673e41085f4a7eaaf20823b85b2b53%40thread.skype/Language%2520-%2520Java?groupId=3e17dcb0-4257-4a30-b843-77f47f1d4121&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47).
 
