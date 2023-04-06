@@ -224,8 +224,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @param duration The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public DefaultAzureCredentialBuilder developerCredentialTimeout(Duration duration) {
-        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
+    public DefaultAzureCredentialBuilder credentialTimeout(Duration duration) {
+        this.identityClientOptions.setCredentialTimeout(duration);
         return this;
     }
 
