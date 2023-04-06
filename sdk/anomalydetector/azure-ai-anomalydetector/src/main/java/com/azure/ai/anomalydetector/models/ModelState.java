@@ -12,7 +12,7 @@ import java.util.List;
 @Fluent
 public final class ModelState {
     /*
-     * This indicates the number of passes of the entire training dataset the
+     * Number of passes of the entire training dataset that the
      * algorithm has completed.
      */
     @JsonProperty(value = "epochIds")
@@ -42,8 +42,7 @@ public final class ModelState {
     public ModelState() {}
 
     /**
-     * Get the epochIds property: This indicates the number of passes of the entire training dataset the algorithm has
-     * completed.
+     * Get the epochIds property: Number of passes of the entire training dataset that the algorithm has completed.
      *
      * @return the epochIds value.
      */
@@ -52,8 +51,7 @@ public final class ModelState {
     }
 
     /**
-     * Set the epochIds property: This indicates the number of passes of the entire training dataset the algorithm has
-     * completed.
+     * Set the epochIds property: Number of passes of the entire training dataset that the algorithm has completed.
      *
      * @param epochIds the epochIds value to set.
      * @return the ModelState object itself.

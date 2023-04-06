@@ -10,74 +10,74 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Training result of a model including its status, errors and diagnostics information. */
+/** Training result of a model, including its status, errors, and diagnostics information. */
 @Fluent
 public final class ModelInfo {
     /*
-     * Source link to the input data to indicate an accessible Azure storage Uri,
-     * either pointed to an Azure blob storage folder, or pointed to a CSV file in
-     * Azure blob storage based on you data schema selection.
+     * Source link to the input data to indicate an accessible Azure Storage URI.
+     * It either points to an Azure Blob Storage folder or points to a CSV file in
+     * Azure Blob Storage, based on your data schema selection.
      */
     @JsonProperty(value = "dataSource", required = true)
     private String dataSource;
 
     /*
-     * Data schema of input data source: OneTable or MultiTable. The default
-     * DataSchema is OneTable.
+     * Data schema of the input data source. The default
+     * is OneTable.
      */
     @JsonProperty(value = "dataSchema")
     private DataSchema dataSchema;
 
     /*
-     * A required field, indicating the start time of training data, which should be
-     * date-time of ISO 8601 format.
+     * Start date/time of training data, which should be
+     * in ISO 8601 format.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * A required field, indicating the end time of training data, which should be
-     * date-time of ISO 8601 format.
+     * End date/time of training data, which should be
+     * in ISO 8601 format.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * An optional field. The display name of the model whose maximum length is 24
+     * Display name of the model. Maximum length is 24
      * characters.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * An optional field, indicating how many previous timestamps will be used to
-     * detect whether the timestamp is anomaly or not.
+     * Number of previous time stamps that will be used to
+     * detect whether the time stamp is an anomaly or not.
      */
     @JsonProperty(value = "slidingWindow")
     private Integer slidingWindow;
 
     /*
-     * An optional field, indicating the manner to align multiple variables.
+     * Manner of aligning multiple variables.
      */
     @JsonProperty(value = "alignPolicy")
     private AlignPolicy alignPolicy;
 
     /*
-     * Model status. One of CREATED, RUNNING, READY, and FAILED.
+     * Model status.
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ModelStatus status;
 
     /*
-     * Error messages when failed to create a model.
+     * Error messages after failure to create a model.
      */
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorResponse> errors;
 
     /*
-     * Diagnostics information to help inspect the states of model or variable.
+     * Diagnostics information to help inspect the states of a model or variable.
      */
-    @JsonProperty(value = "diagnosticsInfo")
+    @JsonProperty(value = "diagnosticsInfo", access = JsonProperty.Access.WRITE_ONLY)
     private DiagnosticsInfo diagnosticsInfo;
 
     /**
@@ -98,8 +98,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the dataSource property: Source link to the input data to indicate an accessible Azure storage Uri, either
-     * pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob storage based on you data schema
+     * Get the dataSource property: Source link to the input data to indicate an accessible Azure Storage URI. It either
+     * points to an Azure Blob Storage folder or points to a CSV file in Azure Blob Storage, based on your data schema
      * selection.
      *
      * @return the dataSource value.
@@ -109,8 +109,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the dataSchema property: Data schema of input data source: OneTable or MultiTable. The default DataSchema is
-     * OneTable.
+     * Get the dataSchema property: Data schema of the input data source. The default is OneTable.
      *
      * @return the dataSchema value.
      */
@@ -119,8 +118,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the dataSchema property: Data schema of input data source: OneTable or MultiTable. The default DataSchema is
-     * OneTable.
+     * Set the dataSchema property: Data schema of the input data source. The default is OneTable.
      *
      * @param dataSchema the dataSchema value to set.
      * @return the ModelInfo object itself.
@@ -131,8 +129,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the startTime property: A required field, indicating the start time of training data, which should be
-     * date-time of ISO 8601 format.
+     * Get the startTime property: Start date/time of training data, which should be in ISO 8601 format.
      *
      * @return the startTime value.
      */
@@ -141,8 +138,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the endTime property: A required field, indicating the end time of training data, which should be date-time
-     * of ISO 8601 format.
+     * Get the endTime property: End date/time of training data, which should be in ISO 8601 format.
      *
      * @return the endTime value.
      */
@@ -151,8 +147,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the displayName property: An optional field. The display name of the model whose maximum length is 24
-     * characters.
+     * Get the displayName property: Display name of the model. Maximum length is 24 characters.
      *
      * @return the displayName value.
      */
@@ -161,8 +156,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the displayName property: An optional field. The display name of the model whose maximum length is 24
-     * characters.
+     * Set the displayName property: Display name of the model. Maximum length is 24 characters.
      *
      * @param displayName the displayName value to set.
      * @return the ModelInfo object itself.
@@ -173,8 +167,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the slidingWindow property: An optional field, indicating how many previous timestamps will be used to detect
-     * whether the timestamp is anomaly or not.
+     * Get the slidingWindow property: Number of previous time stamps that will be used to detect whether the time stamp
+     * is an anomaly or not.
      *
      * @return the slidingWindow value.
      */
@@ -183,8 +177,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the slidingWindow property: An optional field, indicating how many previous timestamps will be used to detect
-     * whether the timestamp is anomaly or not.
+     * Set the slidingWindow property: Number of previous time stamps that will be used to detect whether the time stamp
+     * is an anomaly or not.
      *
      * @param slidingWindow the slidingWindow value to set.
      * @return the ModelInfo object itself.
@@ -195,7 +189,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the alignPolicy property: An optional field, indicating the manner to align multiple variables.
+     * Get the alignPolicy property: Manner of aligning multiple variables.
      *
      * @return the alignPolicy value.
      */
@@ -204,7 +198,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the alignPolicy property: An optional field, indicating the manner to align multiple variables.
+     * Set the alignPolicy property: Manner of aligning multiple variables.
      *
      * @param alignPolicy the alignPolicy value to set.
      * @return the ModelInfo object itself.
@@ -215,7 +209,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the status property: Model status. One of CREATED, RUNNING, READY, and FAILED.
+     * Get the status property: Model status.
      *
      * @return the status value.
      */
@@ -224,18 +218,7 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the status property: Model status. One of CREATED, RUNNING, READY, and FAILED.
-     *
-     * @param status the status value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setStatus(ModelStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the errors property: Error messages when failed to create a model.
+     * Get the errors property: Error messages after failure to create a model.
      *
      * @return the errors value.
      */
@@ -244,22 +227,11 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the diagnosticsInfo property: Diagnostics information to help inspect the states of model or variable.
+     * Get the diagnosticsInfo property: Diagnostics information to help inspect the states of a model or variable.
      *
      * @return the diagnosticsInfo value.
      */
     public DiagnosticsInfo getDiagnosticsInfo() {
         return this.diagnosticsInfo;
-    }
-
-    /**
-     * Set the diagnosticsInfo property: Diagnostics information to help inspect the states of model or variable.
-     *
-     * @param diagnosticsInfo the diagnosticsInfo value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setDiagnosticsInfo(DiagnosticsInfo diagnosticsInfo) {
-        this.diagnosticsInfo = diagnosticsInfo;
-        return this;
     }
 }

@@ -31,7 +31,7 @@ public final class AnomalyDetectionModel {
     private OffsetDateTime lastUpdatedTime;
 
     /*
-     * Training result of a model including its status, errors and diagnostics
+     * Training result of a model, including its status, errors, and diagnostics
      * information.
      */
     @JsonProperty(value = "modelInfo")
@@ -79,7 +79,8 @@ public final class AnomalyDetectionModel {
     }
 
     /**
-     * Get the modelInfo property: Training result of a model including its status, errors and diagnostics information.
+     * Get the modelInfo property: Training result of a model, including its status, errors, and diagnostics
+     * information.
      *
      * @return the modelInfo value.
      */
