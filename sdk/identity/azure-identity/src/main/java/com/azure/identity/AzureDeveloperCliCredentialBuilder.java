@@ -14,7 +14,7 @@ import java.util.List;
  * Fluent credential builder for instantiating a {@link AzureDeveloperCliCredential}.
  *
  * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy
- * resources in Microsoft Azure. It is built on top of the Azure CLI and provides additional functionality specific
+ * resources in Azure. It's built on top of the Azure CLI and provides additional functionality specific
  * to Azure developers. It allows users to authenticate as a user and/or a service principal against
  * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a>. The AzureDeveloperCliCredential authenticates in a development environment and acquires a token on behalf of

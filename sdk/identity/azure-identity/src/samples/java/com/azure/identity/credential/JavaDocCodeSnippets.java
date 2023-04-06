@@ -277,13 +277,13 @@ public final class JavaDocCodeSnippets {
      * Method to insert code snippets for {@link WorkloadIdentityCredential}
      */
     public void workloadIdentityCredentialCodeSnippets() {
-        // BEGIN: com.azure.identity.credential.workloadidentityredential.construct
+        // BEGIN: com.azure.identity.credential.workloadidentitycredential.construct
         TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder()
             .clientId("<clientID>")
             .tenantId("<tenantID>")
             .tokenFilePath("<token-file-path>")
             .build();
-        // END: com.azure.identity.credential.workloadidentityredential.construct
+        // END: com.azure.identity.credential.workloadidentitycredential.construct
     }
 
     /**
