@@ -41,7 +41,6 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
@@ -55,7 +54,6 @@ import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
@@ -77,9 +75,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collection;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1648,7 +1643,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 .setPointOperationLatencyThreshold(Duration.ofDays(1))
                 .setNonPointOperationLatencyThreshold(Duration.ofDays(1));
 
-        thresholds.setIsFailureHandler ((statusCode, subStatusCode) -> {
+        thresholds.setFailureHandler((statusCode, subStatusCode) -> {
             checkNotNull(statusCode, "Argument 'statusCode' must not be null." );
             checkNotNull(subStatusCode, "Argument 'subStatusCode' must not be null." );
             if (statusCode >= 500) {
