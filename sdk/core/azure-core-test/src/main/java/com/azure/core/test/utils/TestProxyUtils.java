@@ -144,11 +144,11 @@ public class TestProxyUtils {
     public static String getProxyProcessName() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("windows")) {
-            return "test-proxy.exe";
+            return "Azure.Sdk.Tools.TestProxy.exe";
         } else if (osName.contains("linux")) {
-            return "test-proxy";
+            return "Azure.Sdk.Tools.TestProxy";
         } else if (osName.contains("mac os x")) {
-            return "test-proxy";
+            return "Azure.Sdk.Tools.TestProxy";
         } else {
             throw new UnsupportedOperationException();
         }
