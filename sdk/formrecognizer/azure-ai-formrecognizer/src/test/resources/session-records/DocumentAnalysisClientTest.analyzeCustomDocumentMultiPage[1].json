@@ -85,7 +85,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/dd0e8ed6-fc1f-4c44-a9d5-8013a136afd1:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview&features=&queryFields=",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/dd0e8ed6-fc1f-4c44-a9d5-8013a136afd1:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5d80ca68-37ff-40c3-8fc3-29aef2041f30",

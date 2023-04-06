@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants;
@@ -270,8 +271,9 @@ public class ClientTelemetry {
                     } else {
                         URI targetEndpoint = new URI(endpoint);
                         ByteBuffer byteBuffer =
-                            BridgeInternal.serializeJsonToByteBuffer(this.clientTelemetryInfo,
-                                ClientTelemetry.OBJECT_MAPPER);
+                            InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
+                                ClientTelemetry.OBJECT_MAPPER,
+                                null);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();
