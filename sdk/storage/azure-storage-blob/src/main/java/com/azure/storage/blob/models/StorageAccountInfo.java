@@ -35,7 +35,7 @@ public class StorageAccountInfo {
     public StorageAccountInfo(final SkuName skuName, final AccountKind accountKind, Boolean isHnsEnabled) {
         this.skuName = skuName;
         this.accountKind = accountKind;
-        this.isHnsEnabled = isHnsEnabled == Boolean.TRUE;
+        this.isHnsEnabled = isHnsEnabled != null && isHnsEnabled;
     }
 
     /**
