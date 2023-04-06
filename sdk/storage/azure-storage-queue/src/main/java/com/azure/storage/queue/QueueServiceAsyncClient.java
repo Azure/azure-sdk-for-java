@@ -702,4 +702,8 @@ public final class QueueServiceAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
+    AzureQueueStorageImpl getAzureQueueStorage() {
+        return client;
+    }
+
 }

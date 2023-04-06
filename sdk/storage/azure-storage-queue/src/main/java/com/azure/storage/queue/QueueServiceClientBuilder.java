@@ -229,7 +229,8 @@ public final class QueueServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueServiceClient buildClient() {
-        return new QueueServiceClient(buildAsyncClient());
+        QueueServiceAsyncClient asyncClient = buildAsyncClient();
+        return new QueueServiceClient(asyncClient.getAzureQueueStorage(), accountName, version, messageEncoding, asyncClient);
     }
 
 

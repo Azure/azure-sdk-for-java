@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
@@ -49,14 +50,23 @@ import java.util.Map;
 @ServiceClient(builder = QueueServiceClientBuilder.class)
 public final class QueueServiceClient {
     private final QueueServiceAsyncClient client;
+    private final AzureQueueStorageImpl azureQueueStorage;
+    private final String accountName;
+    private final QueueServiceVersion serviceVersion;
+    private final QueueMessageEncoding messageEncoding;
 
     /**
      * Creates a QueueServiceClient that wraps a QueueServiceAsyncClient and blocks requests.
      *
      * @param client QueueServiceAsyncClient that is used to send requests
      */
-    QueueServiceClient(QueueServiceAsyncClient client) {
+    QueueServiceClient(AzureQueueStorageImpl azureQueueStorage, String accountName, QueueServiceVersion serviceVersion,
+        QueueMessageEncoding messageEncoding, QueueServiceAsyncClient client) {
         this.client = client;
+        this.azureQueueStorage = azureQueueStorage;
+        this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
+        this.messageEncoding = messageEncoding;
     }
 
     /**
@@ -72,7 +82,7 @@ public final class QueueServiceClient {
      * @return the service version the client is using.
      */
     public QueueServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return serviceVersion;
     }
 
     /**
@@ -81,7 +91,7 @@ public final class QueueServiceClient {
      * @return the message encoding the client is using.
      */
     public QueueMessageEncoding getMessageEncoding() {
-        return client.getMessageEncoding();
+        return messageEncoding;
     }
 
     /**
@@ -93,7 +103,8 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        return new QueueClient(client.getQueueAsyncClient(queueName));
+        return new QueueClient(client.getAzureQueueStorage(), queueName, client.getAccountName(),
+            client.getServiceVersion(), client.getMessageEncoding(), client.getQueueAsyncClient(queueName));
     }
 
     /**
@@ -151,7 +162,9 @@ public final class QueueServiceClient {
 
         Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
         Response<QueueAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(asyncResponse, timeout);
-        return new SimpleResponse<>(response, new QueueClient(response.getValue()));
+        return new SimpleResponse<>(response, new QueueClient(response.getValue().getAzureQueueStorage(), queueName,
+            response.getValue().getAccountName(), response.getValue().getServiceVersion(),
+            response.getValue().getMessageEncoding(), response.getValue()));
     }
 
     /**
@@ -540,7 +553,7 @@ public final class QueueServiceClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.client.getAccountName();
+        return accountName;
     }
 
 

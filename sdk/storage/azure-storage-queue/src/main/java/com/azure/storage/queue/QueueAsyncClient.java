@@ -1142,7 +1142,7 @@ public final class QueueAsyncClient {
                             queueMessageItemInternal, QueueMessageEncoding.NONE)
                             .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                 new QueueMessageDecodingError(
-                                    this, new QueueClient(this),
+                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
                                     messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
@@ -1152,7 +1152,7 @@ public final class QueueAsyncClient {
                                 try {
                                     processMessageDecodingErrorHandler.accept(
                                         new QueueMessageDecodingError(
-                                            this, new QueueClient(this),
+                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
                                             messageItem, null, e));
                                     return Mono.<QueueMessageItem>empty();
                                 } catch (RuntimeException re) {
@@ -1303,7 +1303,7 @@ public final class QueueAsyncClient {
                                 peekedMessageItemInternal, QueueMessageEncoding.NONE)
                                 .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                     new QueueMessageDecodingError(
-                                        this,  new QueueClient(this),
+                                        this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
                                         null, messageItem, e)))
                                 .then(Mono.empty());
                         } else if (processMessageDecodingErrorHandler != null) {
@@ -1313,7 +1313,7 @@ public final class QueueAsyncClient {
                                     try {
                                         processMessageDecodingErrorHandler.accept(
                                             new QueueMessageDecodingError(
-                                                this,  new QueueClient(this),
+                                                this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
                                                 null, messageItem, e));
                                         return Mono.<PeekedMessageItem>empty();
                                     } catch (RuntimeException re) {
@@ -1649,5 +1649,9 @@ public final class QueueAsyncClient {
         UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getXMsPopreceipt(),
             headers.getXMsTimeNextVisible());
         return new SimpleResponse<>(response, updateMessageResult);
+    }
+
+    AzureQueueStorageImpl getAzureQueueStorage() {
+        return this.client;
     }
 }
