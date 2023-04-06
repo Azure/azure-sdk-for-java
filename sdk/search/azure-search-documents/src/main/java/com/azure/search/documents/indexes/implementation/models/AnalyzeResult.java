@@ -75,9 +75,9 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                         }
                     }
                     if (tokensFound) {
-                        AnalyzeResult deserializedValue = new AnalyzeResult(tokens);
+                        AnalyzeResult deserializedAnalyzeResult = new AnalyzeResult(tokens);
 
-                        return deserializedValue;
+                        return deserializedAnalyzeResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!tokensFound) {

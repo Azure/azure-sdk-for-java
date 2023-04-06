@@ -118,11 +118,11 @@ public final class DistanceScoringFunction extends ScoringFunction {
                         }
                     }
                     if (fieldNameFound && boostFound && parametersFound) {
-                        DistanceScoringFunction deserializedValue =
+                        DistanceScoringFunction deserializedDistanceScoringFunction =
                                 new DistanceScoringFunction(fieldName, boost, parameters);
-                        deserializedValue.setInterpolation(interpolation);
+                        deserializedDistanceScoringFunction.setInterpolation(interpolation);
 
-                        return deserializedValue;
+                        return deserializedDistanceScoringFunction;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!fieldNameFound) {

@@ -3,6 +3,7 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -26,7 +27,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 
 /**
@@ -44,8 +44,9 @@ public class TestProxyUtils {
         Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
             "connectionString", "url", "host", "password", "userName"));
 
-    private static final Map<String, String> BODY_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
+    private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
+            put("operation-location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -79,6 +80,10 @@ public class TestProxyUtils {
      * @throws RuntimeException Construction of one of the URLs failed.
      */
     public static void changeHeaders(HttpRequest request, String xRecordingId, String mode) {
+        HttpHeader upstreamUri = request.getHeaders().get("x-recording-upstream-base-uri");
+        if (upstreamUri != null) {
+            return;
+        }
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
         proxyUrlBuilder.setScheme(PROXY_URL_SCHEME);
         proxyUrlBuilder.setHost(PROXY_URL_HOST);
@@ -97,6 +102,31 @@ public class TestProxyUtils {
             headers.add("x-recording-mode", mode);
             headers.add("x-recording-id", xRecordingId);
             request.setUrl(proxyUrlBuilder.toUrl());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Sets the response URL back to the original URL before returning it through the pipeline.
+     * @param response The {@link HttpResponse} to modify.
+     * @return The modified response.
+     * @throws RuntimeException Construction of one of the URLs failed.
+     */
+    public static HttpResponse revertUrl(HttpResponse response) {
+        try {
+            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders().getValue("x-recording-upstream-base-uri")).toUrl();
+            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            currentUrl.setScheme(originalUrl.getProtocol());
+            currentUrl.setHost(originalUrl.getHost());
+            int port = originalUrl.getPort();
+            if (port == -1) {
+                currentUrl.setPort(""); // empty string is no port.
+            } else {
+                currentUrl.setPort(port);
+            }
+            response.getRequest().setUrl(currentUrl.toUrl());
+            return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -189,8 +219,13 @@ public class TestProxyUtils {
             // header key value
             return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
         }
-        // header key with regex
-        return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key, value, regex, groupForReplace);
+        if (groupForReplace == null) {
+            // header key with regex
+            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\"}", key, value, regex);
+        } else {
+            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key,
+                value, regex, groupForReplace);
+        }
     }
 
     /**
@@ -304,8 +339,8 @@ public class TestProxyUtils {
 
         // add body key with regex sanitizers
         List<TestProxySanitizer> keyRegexSanitizers = new ArrayList<>();
-        BODY_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
-            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, BODY_KEY)));
+        HEADER_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
+            keyRegexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, HEADER)));
 
         regexSanitizers.addAll(keyRegexSanitizers);
 

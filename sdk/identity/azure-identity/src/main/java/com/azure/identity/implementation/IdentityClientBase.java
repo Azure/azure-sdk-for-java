@@ -344,10 +344,6 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                if (accessToken.getClass().isInstance(MSIToken.class)) {
-                    MSIToken msiToken = (MSIToken) accessToken;
-                    result.setRefreshInSeconds(msiToken.getRefreshAtEpochSeconds());
-                }
                 return result;
             }).toFuture();
         });
@@ -478,7 +474,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -571,7 +567,7 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {

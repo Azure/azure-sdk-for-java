@@ -552,60 +552,55 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     public static IndexingParametersConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    BlobIndexerParsingMode parsingMode = null;
-                    String excludedFileNameExtensions = null;
-                    String indexedFileNameExtensions = null;
-                    Boolean failOnUnsupportedContentType = null;
-                    Boolean failOnUnprocessableDocument = null;
-                    Boolean indexStorageMetadataOnlyForOversizedDocuments = null;
-                    String delimitedTextHeaders = null;
-                    String delimitedTextDelimiter = null;
-                    Boolean firstLineContainsHeaders = null;
-                    String documentRoot = null;
-                    BlobIndexerDataToExtract dataToExtract = null;
-                    BlobIndexerImageAction imageAction = null;
-                    Boolean allowSkillsetToReadFileData = null;
-                    BlobIndexerPdfTextRotationAlgorithm pdfTextRotationAlgorithm = null;
-                    IndexerExecutionEnvironment executionEnvironment = null;
-                    String queryTimeout = null;
+                    IndexingParametersConfiguration deserializedIndexingParametersConfiguration =
+                            new IndexingParametersConfiguration();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("parsingMode".equals(fieldName)) {
-                            parsingMode = BlobIndexerParsingMode.fromString(reader.getString());
+                            deserializedIndexingParametersConfiguration.parsingMode =
+                                    BlobIndexerParsingMode.fromString(reader.getString());
                         } else if ("excludedFileNameExtensions".equals(fieldName)) {
-                            excludedFileNameExtensions = reader.getString();
+                            deserializedIndexingParametersConfiguration.excludedFileNameExtensions = reader.getString();
                         } else if ("indexedFileNameExtensions".equals(fieldName)) {
-                            indexedFileNameExtensions = reader.getString();
+                            deserializedIndexingParametersConfiguration.indexedFileNameExtensions = reader.getString();
                         } else if ("failOnUnsupportedContentType".equals(fieldName)) {
-                            failOnUnsupportedContentType = reader.getNullable(JsonReader::getBoolean);
+                            deserializedIndexingParametersConfiguration.failOnUnsupportedContentType =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("failOnUnprocessableDocument".equals(fieldName)) {
-                            failOnUnprocessableDocument = reader.getNullable(JsonReader::getBoolean);
+                            deserializedIndexingParametersConfiguration.failOnUnprocessableDocument =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("indexStorageMetadataOnlyForOversizedDocuments".equals(fieldName)) {
-                            indexStorageMetadataOnlyForOversizedDocuments = reader.getNullable(JsonReader::getBoolean);
+                            deserializedIndexingParametersConfiguration.indexStorageMetadataOnlyForOversizedDocuments =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("delimitedTextHeaders".equals(fieldName)) {
-                            delimitedTextHeaders = reader.getString();
+                            deserializedIndexingParametersConfiguration.delimitedTextHeaders = reader.getString();
                         } else if ("delimitedTextDelimiter".equals(fieldName)) {
-                            delimitedTextDelimiter = reader.getString();
+                            deserializedIndexingParametersConfiguration.delimitedTextDelimiter = reader.getString();
                         } else if ("firstLineContainsHeaders".equals(fieldName)) {
-                            firstLineContainsHeaders = reader.getNullable(JsonReader::getBoolean);
+                            deserializedIndexingParametersConfiguration.firstLineContainsHeaders =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("documentRoot".equals(fieldName)) {
-                            documentRoot = reader.getString();
+                            deserializedIndexingParametersConfiguration.documentRoot = reader.getString();
                         } else if ("dataToExtract".equals(fieldName)) {
-                            dataToExtract = BlobIndexerDataToExtract.fromString(reader.getString());
+                            deserializedIndexingParametersConfiguration.dataToExtract =
+                                    BlobIndexerDataToExtract.fromString(reader.getString());
                         } else if ("imageAction".equals(fieldName)) {
-                            imageAction = BlobIndexerImageAction.fromString(reader.getString());
+                            deserializedIndexingParametersConfiguration.imageAction =
+                                    BlobIndexerImageAction.fromString(reader.getString());
                         } else if ("allowSkillsetToReadFileData".equals(fieldName)) {
-                            allowSkillsetToReadFileData = reader.getNullable(JsonReader::getBoolean);
+                            deserializedIndexingParametersConfiguration.allowSkillsetToReadFileData =
+                                    reader.getNullable(JsonReader::getBoolean);
                         } else if ("pdfTextRotationAlgorithm".equals(fieldName)) {
-                            pdfTextRotationAlgorithm =
+                            deserializedIndexingParametersConfiguration.pdfTextRotationAlgorithm =
                                     BlobIndexerPdfTextRotationAlgorithm.fromString(reader.getString());
                         } else if ("executionEnvironment".equals(fieldName)) {
-                            executionEnvironment = IndexerExecutionEnvironment.fromString(reader.getString());
+                            deserializedIndexingParametersConfiguration.executionEnvironment =
+                                    IndexerExecutionEnvironment.fromString(reader.getString());
                         } else if ("queryTimeout".equals(fieldName)) {
-                            queryTimeout = reader.getString();
+                            deserializedIndexingParametersConfiguration.queryTimeout = reader.getString();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -614,27 +609,9 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    IndexingParametersConfiguration deserializedValue = new IndexingParametersConfiguration();
-                    deserializedValue.parsingMode = parsingMode;
-                    deserializedValue.excludedFileNameExtensions = excludedFileNameExtensions;
-                    deserializedValue.indexedFileNameExtensions = indexedFileNameExtensions;
-                    deserializedValue.failOnUnsupportedContentType = failOnUnsupportedContentType;
-                    deserializedValue.failOnUnprocessableDocument = failOnUnprocessableDocument;
-                    deserializedValue.indexStorageMetadataOnlyForOversizedDocuments =
-                            indexStorageMetadataOnlyForOversizedDocuments;
-                    deserializedValue.delimitedTextHeaders = delimitedTextHeaders;
-                    deserializedValue.delimitedTextDelimiter = delimitedTextDelimiter;
-                    deserializedValue.firstLineContainsHeaders = firstLineContainsHeaders;
-                    deserializedValue.documentRoot = documentRoot;
-                    deserializedValue.dataToExtract = dataToExtract;
-                    deserializedValue.imageAction = imageAction;
-                    deserializedValue.allowSkillsetToReadFileData = allowSkillsetToReadFileData;
-                    deserializedValue.pdfTextRotationAlgorithm = pdfTextRotationAlgorithm;
-                    deserializedValue.executionEnvironment = executionEnvironment;
-                    deserializedValue.queryTimeout = queryTimeout;
-                    deserializedValue.additionalProperties = additionalProperties;
+                    deserializedIndexingParametersConfiguration.additionalProperties = additionalProperties;
 
-                    return deserializedValue;
+                    return deserializedIndexingParametersConfiguration;
                 });
     }
 }

@@ -107,10 +107,10 @@ public final class UniqueTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        UniqueTokenFilter deserializedValue = new UniqueTokenFilter(name);
-                        deserializedValue.onlyOnSamePosition = onlyOnSamePosition;
+                        UniqueTokenFilter deserializedUniqueTokenFilter = new UniqueTokenFilter(name);
+                        deserializedUniqueTokenFilter.onlyOnSamePosition = onlyOnSamePosition;
 
-                        return deserializedValue;
+                        return deserializedUniqueTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

@@ -11,10 +11,14 @@ import java.util.Collection;
 
 /** A string indicating what maskingMode to use to mask the personal information detected in the input text. */
 public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<PiiDetectionSkillMaskingMode> {
-    /** Static value none for PiiDetectionSkillMaskingMode. */
+    /** No masking occurs and the maskedText output will not be returned. */
     public static final PiiDetectionSkillMaskingMode NONE = fromString("none");
 
-    /** Static value replace for PiiDetectionSkillMaskingMode. */
+    /**
+     * Replaces the detected entities with the character given in the maskingCharacter parameter. The character will be
+     * repeated to the length of the detected entity so that the offsets will correctly correspond to both the input
+     * text as well as the output maskedText.
+     */
     public static final PiiDetectionSkillMaskingMode REPLACE = fromString("replace");
 
     /**

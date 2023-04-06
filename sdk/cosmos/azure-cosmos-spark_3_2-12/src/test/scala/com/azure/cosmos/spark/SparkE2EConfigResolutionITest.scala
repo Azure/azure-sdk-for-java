@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
-
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+
+import java.util.UUID
 
 class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
@@ -81,6 +81,8 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
       .master("local")
       .config(sparkConfig)
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     val options = Map(
       "spark.cosmos.database" -> cosmosDatabase,
