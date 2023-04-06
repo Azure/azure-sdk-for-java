@@ -1,0 +1,88 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5842af86-b213-4291-8ea2-d60c45d7731a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "3718",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31485819378_bc276e83-38ff-4e99-aa88-750f311c0867?api-version=2023-02-28-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "bc276e83-38ff-4e99-aa88-750f311c0867",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 03 Apr 2023 19:03:45 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31485819378_bc276e83-38ff-4e99-aa88-750f311c0867?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1f8f9c01-21bd-4724-9cbb-d4f2384af8b5"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "33",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b79f804d-fab5-4994-8e0a-b8f6232309de",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31485819378_bc276e83-38ff-4e99-aa88-750f311c0867\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"running\",\n  \"createdDateTime\": \"2023-04-03T19:03:42Z\",\n  \"lastUpdatedDateTime\": \"2023-04-03T19:03:45Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/9a30dd76-b08a-4378-9379-3b3b30b14fc4?api-version=2023-02-28-preview\"\n}",
+      "Date" : "Mon, 03 Apr 2023 19:03:45 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31485819378_bc276e83-38ff-4e99-aa88-750f311c0867?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9323a612-c291-4a20-9811-955217935229"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "41",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1c5cb488-584f-450b-980a-6ace97302bbd",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31485819378_bc276e83-38ff-4e99-aa88-750f311c0867\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2023-04-03T19:03:42Z\",\n  \"lastUpdatedDateTime\": \"2023-04-03T19:03:46Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/9a30dd76-b08a-4378-9379-3b3b30b14fc4?api-version=2023-02-28-preview\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"9a30dd76-b08a-4378-9379-3b3b30b14fc4\": {\n        \"fieldSchema\": {\n          \"VISA_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"AMEX_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"MASTERCARD_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"AMEX_SELECTION_MARK\": 0.995,\n          \"MASTERCARD_SELECTION_MARK\": 0.995,\n          \"VISA_SELECTION_MARK\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"9a30dd76-b08a-4378-9379-3b3b30b14fc4\",\n    \"createdDateTime\": \"2023-04-03T19:03:46Z\",\n    \"expirationDateTime\": \"2025-04-02T19:03:46Z\",\n    \"apiVersion\": \"2023-02-28-preview\"\n  }\n}",
+      "Date" : "Mon, 03 Apr 2023 19:03:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31485819378_bc276e83-38ff-4e99-aa88-750f311c0867?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8e3113d0-9259-453d-8e13-acc0cfc33c03"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "27",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "20a75885-64bc-4599-a9de-fb3226fff38b",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31485819378_bc276e83-38ff-4e99-aa88-750f311c0867\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2023-04-03T19:03:42Z\",\n  \"lastUpdatedDateTime\": \"2023-04-03T19:03:46Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/9a30dd76-b08a-4378-9379-3b3b30b14fc4?api-version=2023-02-28-preview\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"9a30dd76-b08a-4378-9379-3b3b30b14fc4\": {\n        \"fieldSchema\": {\n          \"VISA_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"AMEX_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"MASTERCARD_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"AMEX_SELECTION_MARK\": 0.995,\n          \"MASTERCARD_SELECTION_MARK\": 0.995,\n          \"VISA_SELECTION_MARK\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"9a30dd76-b08a-4378-9379-3b3b30b14fc4\",\n    \"createdDateTime\": \"2023-04-03T19:03:46Z\",\n    \"expirationDateTime\": \"2025-04-02T19:03:46Z\",\n    \"apiVersion\": \"2023-02-28-preview\"\n  }\n}",
+      "Date" : "Mon, 03 Apr 2023 19:03:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -193,10 +193,25 @@ public final class MetricsAdvisorImpl {
         Mono<Response<UsageStats>> getActiveSeriesCount(
                 @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
+        @Get("/stats/latest")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<UsageStats> getActiveSeriesCountSync(
+                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
         @Get("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/alert/anomaly/configurations/{configurationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @HeaderParam("Accept") String accept,
@@ -212,10 +227,29 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Patch("/alert/anomaly/configurations/{configurationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @BodyParam("application/merge-patch+json") AnomalyAlertingConfigurationPatch body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteAnomalyAlertingConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/alert/anomaly/configurations/{configurationId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<Void> deleteAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @HeaderParam("Accept") String accept,
@@ -230,10 +264,31 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/alert/anomaly/configurations")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        CreateAnomalyAlertingConfigurationResponse createAnomalyAlertingConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") AnomalyAlertingConfiguration body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/alert/anomaly/configurations/{configurationId}/alerts/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AlertResultList>> getAlertsByAnomalyAlertingConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") AlertingResultQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/alert/anomaly/configurations/{configurationId}/alerts/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AlertResultList> getAlertsByAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$skip") Integer skip,
@@ -254,10 +309,34 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/anomalies")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyResultList> getAnomaliesFromAlertByAnomalyAlertingConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @PathParam("alertId") String alertId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/incidents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @PathParam("alertId") String alertId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/incidents")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IncidentResultList> getIncidentsFromAlertByAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @PathParam("alertId") String alertId,
@@ -275,10 +354,29 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/enrichment/anomalyDetection/configurations/{configurationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Patch("/enrichment/anomalyDetection/configurations/{configurationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfiguration>> updateAnomalyDetectionConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @BodyParam("application/merge-patch+json") AnomalyDetectionConfigurationPatch body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Patch("/enrichment/anomalyDetection/configurations/{configurationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @BodyParam("application/merge-patch+json") AnomalyDetectionConfigurationPatch body,
@@ -294,10 +392,28 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Delete("/enrichment/anomalyDetection/configurations/{configurationId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<Void> deleteAnomalyDetectionConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") AnomalyDetectionConfiguration body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/enrichment/anomalyDetection/configurations")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        CreateAnomalyDetectionConfigurationResponse createAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") AnomalyDetectionConfiguration body,
                 @HeaderParam("Accept") String accept,
@@ -315,6 +431,17 @@ public final class MetricsAdvisorImpl {
                         @HeaderParam("Accept") String accept,
                         Context context);
 
+        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/alert/anomaly/configurations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyAlertingConfigurationList> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/series/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -325,10 +452,32 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/series/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<SeriesResultList> getSeriesByAnomalyDetectionConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @BodyParam("application/json") DetectionSeriesQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") DetectionAnomalyResultQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyResultList> getAnomaliesByAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$skip") Integer skip,
@@ -349,10 +498,33 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/dimension/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyDimensionList> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") AnomalyDimensionQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") DetectionIncidentResultQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$maxpagesize") Integer maxpagesize,
@@ -371,10 +543,31 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationNextPagesSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @QueryParam("$token") String token,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/{incidentId}/rootCause")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfiguration(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("configurationId") UUID configurationId,
+                @PathParam("incidentId") String incidentId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/{incidentId}/rootCause")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @PathParam("incidentId") String incidentId,
@@ -390,10 +583,29 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/credentials")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        CreateCredentialResponse createCredentialSync(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") DataSourceCredential body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/credentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredentialList>> listCredentials(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/credentials")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataSourceCredentialList> listCredentialsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$maxpagesize") Integer maxpagesize,
@@ -410,6 +622,16 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Patch("/credentials/{credentialId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataSourceCredential> updateCredentialSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("credentialId") UUID credentialId,
+                @BodyParam("application/merge-patch+json") DataSourceCredentialPatch body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/credentials/{credentialId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -419,10 +641,28 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Delete("/credentials/{credentialId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<Void> deleteCredentialSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("credentialId") UUID credentialId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/credentials/{credentialId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredential>> getCredential(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("credentialId") UUID credentialId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/credentials/{credentialId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataSourceCredential> getCredentialSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("credentialId") UUID credentialId,
                 @HeaderParam("Accept") String accept,
@@ -443,6 +683,21 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/dataFeeds")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataFeedList> listDataFeedsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("dataFeedName") String dataFeedName,
+                @QueryParam("dataSourceType") DataSourceType dataSourceType,
+                @QueryParam("granularityName") Granularity granularityName,
+                @QueryParam("status") EntityStatus status,
+                @QueryParam("creator") String creator,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/dataFeeds")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -452,10 +707,28 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/dataFeeds")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        CreateDataFeedResponse createDataFeedSync(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") DataFeedDetail body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedDetail>> getDataFeedById(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/dataFeeds/{dataFeedId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataFeedDetail> getDataFeedByIdSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @HeaderParam("Accept") String accept,
@@ -471,6 +744,16 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Patch("/dataFeeds/{dataFeedId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataFeedDetail> updateDataFeedSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @BodyParam("application/merge-patch+json") DataFeedDetailPatch body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -480,10 +763,28 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Delete("/dataFeeds/{dataFeedId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<Void> deleteDataFeedSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/feedback/metric/{feedbackId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedback>> getMetricFeedback(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("feedbackId") UUID feedbackId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/feedback/metric/{feedbackId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricFeedback> getMetricFeedbackSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("feedbackId") UUID feedbackId,
                 @HeaderParam("Accept") String accept,
@@ -500,10 +801,30 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/feedback/metric/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricFeedbackList> listMetricFeedbacksSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") MetricFeedbackFilter body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/feedback/metric")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateMetricFeedbackResponse> createMetricFeedback(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") MetricFeedback body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/feedback/metric")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        CreateMetricFeedbackResponse createMetricFeedbackSync(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") MetricFeedback body,
                 @HeaderParam("Accept") String accept,
@@ -520,6 +841,17 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/hooks")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<HookList> listHooksSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("hookName") String hookName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/hooks")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -529,10 +861,28 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/hooks")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        CreateHookResponse createHookSync(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") HookInfo body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/hooks/{hookId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookInfo>> getHook(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("hookId") UUID hookId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/hooks/{hookId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<HookInfo> getHookSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("hookId") UUID hookId,
                 @HeaderParam("Accept") String accept,
@@ -548,6 +898,16 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Patch("/hooks/{hookId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<HookInfo> updateHookSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("hookId") UUID hookId,
+                @BodyParam("application/merge-patch+json") HookInfoPatch body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/hooks/{hookId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -557,10 +917,31 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Delete("/hooks/{hookId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<Void> deleteHookSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("hookId") UUID hookId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/dataFeeds/{dataFeedId}/ingestionStatus/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IngestionStatusList>> getDataFeedIngestionStatus(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") IngestionStatusQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/dataFeeds/{dataFeedId}/ingestionStatus/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IngestionStatusList> getDataFeedIngestionStatusSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @QueryParam("$skip") Integer skip,
@@ -579,10 +960,29 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/dataFeeds/{dataFeedId}/ingestionProgress/reset")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<Void> resetDataFeedIngestionStatusSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @BodyParam("application/json") IngestionProgressResetOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/dataFeeds/{dataFeedId}/ingestionProgress")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedIngestionProgress>> getIngestionProgress(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("dataFeedId") UUID dataFeedId,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/dataFeeds/{dataFeedId}/ingestionProgress")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataFeedIngestionProgress> getIngestionProgressSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @HeaderParam("Accept") String accept,
@@ -598,10 +998,32 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/metrics/{metricId}/data/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricDataList> getMetricDataSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("metricId") UUID metricId,
+                @BodyParam("application/json") MetricDataQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/metrics/{metricId}/series/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricSeriesList>> getMetricSeries(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("metricId") UUID metricId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") MetricSeriesQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/metrics/{metricId}/series/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricSeriesList> getMetricSeriesSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
                 @QueryParam("$skip") Integer skip,
@@ -622,6 +1044,18 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/metrics/{metricId}/dimension/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricDimensionList> getMetricDimensionSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("metricId") UUID metricId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") MetricDimensionQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/metrics/{metricId}/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -633,10 +1067,33 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/metrics/{metricId}/enrichment/anomalyDetection/configurations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyDetectionConfigurationList> getAnomalyDetectionConfigurationsByMetricSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("metricId") UUID metricId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/metrics/{metricId}/status/enrichment/anomalyDetection/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<EnrichmentStatusList>> getEnrichmentStatusByMetric(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("metricId") UUID metricId,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$maxpagesize") Integer maxpagesize,
+                @BodyParam("application/json") EnrichmentStatusQueryOption body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/metrics/{metricId}/status/enrichment/anomalyDetection/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<EnrichmentStatusList> getEnrichmentStatusByMetricSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
                 @QueryParam("$skip") Integer skip,
@@ -658,7 +1115,27 @@ public final class MetricsAdvisorImpl {
         @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AlertResultList> getAlertsByAnomalyAlertingConfigurationNextSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") AlertingResultQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfigurationNext(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") DetectionAnomalyResultQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyResultList> getAnomaliesByAnomalyDetectionConfigurationNextSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") DetectionAnomalyResultQuery body,
@@ -675,10 +1152,30 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyDimensionList> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") AnomalyDimensionQuery body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedbackList>> listMetricFeedbacksNext(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") MetricFeedbackFilter body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricFeedbackList> listMetricFeedbacksNextSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") MetricFeedbackFilter body,
@@ -698,7 +1195,27 @@ public final class MetricsAdvisorImpl {
         @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IngestionStatusList> getDataFeedIngestionStatusNextSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") IngestionStatusQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricSeriesList>> getMetricSeriesNext(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") MetricSeriesQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricSeriesList> getMetricSeriesNextSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") MetricSeriesQueryOptions body,
@@ -718,7 +1235,27 @@ public final class MetricsAdvisorImpl {
         @Post("/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<MetricDimensionList> getMetricDimensionNextSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") MetricDimensionQueryOptions body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<EnrichmentStatusList>> getEnrichmentStatusByMetricNext(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @BodyParam("application/json") EnrichmentStatusQueryOption body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<EnrichmentStatusList> getEnrichmentStatusByMetricNextSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") EnrichmentStatusQueryOption body,
@@ -737,7 +1274,25 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyResultList> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfigurationNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IncidentResultList> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -756,7 +1311,26 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyAlertingConfigurationList>
+                getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSync(
+                        @PathParam(value = "nextLink", encoded = true) String nextLink,
+                        @HostParam("endpoint") String endpoint,
+                        @HeaderParam("Accept") String accept,
+                        Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -774,7 +1348,25 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredentialList>> listCredentialsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataSourceCredentialList> listCredentialsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -792,6 +1384,15 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<DataFeedList> listDataFeedsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookList>> listHooksNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -801,7 +1402,25 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<HookList> listHooksNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetricNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
+        Response<AnomalyDetectionConfigurationList> getAnomalyDetectionConfigurationsByMetricNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -873,7 +1492,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UsageStats> getActiveSeriesCountWithResponse(Context context) {
-        return getActiveSeriesCountWithResponseAsync(context).block();
+        final String accept = "application/json";
+        return service.getActiveSeriesCountSync(this.getEndpoint(), accept, context);
     }
 
     /**
@@ -968,7 +1588,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationWithResponse(
             UUID configurationId, Context context) {
-        return getAnomalyAlertingConfigurationWithResponseAsync(configurationId, context).block();
+        final String accept = "application/json";
+        return service.getAnomalyAlertingConfigurationSync(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -1072,7 +1693,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationWithResponse(
             UUID configurationId, AnomalyAlertingConfigurationPatch body, Context context) {
-        return updateAnomalyAlertingConfigurationWithResponseAsync(configurationId, body, context).block();
+        final String accept = "application/json";
+        return service.updateAnomalyAlertingConfigurationSync(
+                this.getEndpoint(), configurationId, body, accept, context);
     }
 
     /**
@@ -1168,7 +1791,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAnomalyAlertingConfigurationWithResponse(UUID configurationId, Context context) {
-        return deleteAnomalyAlertingConfigurationWithResponseAsync(configurationId, context).block();
+        final String accept = "application/json";
+        return service.deleteAnomalyAlertingConfigurationSync(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -1260,7 +1884,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateAnomalyAlertingConfigurationResponse createAnomalyAlertingConfigurationWithResponse(
             AnomalyAlertingConfiguration body, Context context) {
-        return createAnomalyAlertingConfigurationWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createAnomalyAlertingConfigurationSync(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -1395,7 +2020,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationSinglePage(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize) {
-        return getAlertsByAnomalyAlertingConfigurationSinglePageAsync(configurationId, body, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<AlertResultList> res =
+                service.getAlertsByAnomalyAlertingConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -1414,8 +2049,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationSinglePage(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize, Context context) {
-        return getAlertsByAnomalyAlertingConfigurationSinglePageAsync(configurationId, body, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<AlertResultList> res =
+                service.getAlertsByAnomalyAlertingConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -1434,7 +2078,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                getAlertsByAnomalyAlertingConfigurationAsync(configurationId, body, skip, maxpagesize));
+                () ->
+                        getAlertsByAnomalyAlertingConfigurationSinglePage(
+                                configurationId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextLink, body));
     }
 
     /**
@@ -1454,7 +2101,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getAlertsByAnomalyAlertingConfigurationAsync(configurationId, body, skip, maxpagesize, context));
+                () ->
+                        getAlertsByAnomalyAlertingConfigurationSinglePage(
+                                configurationId, body, skip, maxpagesize, context),
+                nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -1584,9 +2234,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
-        return getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
-                        configurationId, alertId, skip, maxpagesize)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSync(
+                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -1605,9 +2263,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
-        return getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
-                        configurationId, alertId, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSync(
+                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -1626,7 +2292,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                getAnomaliesFromAlertByAnomalyAlertingConfigurationAsync(configurationId, alertId, skip, maxpagesize));
+                () ->
+                        getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
+                                configurationId, alertId, skip, maxpagesize, Context.NONE),
+                nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink));
     }
 
     /**
@@ -1646,8 +2315,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getAnomaliesFromAlertByAnomalyAlertingConfigurationAsync(
-                        configurationId, alertId, skip, maxpagesize, context));
+                () ->
+                        getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
+                                configurationId, alertId, skip, maxpagesize, context),
+                nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1777,9 +2448,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
-        return getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
-                        configurationId, alertId, skip, maxpagesize)
-                .block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsFromAlertByAnomalyAlertingConfigurationSync(
+                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -1798,9 +2477,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
-        return getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
-                        configurationId, alertId, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsFromAlertByAnomalyAlertingConfigurationSync(
+                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -1819,7 +2506,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                getIncidentsFromAlertByAnomalyAlertingConfigurationAsync(configurationId, alertId, skip, maxpagesize));
+                () ->
+                        getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
+                                configurationId, alertId, skip, maxpagesize, Context.NONE),
+                nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink));
     }
 
     /**
@@ -1839,8 +2529,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getIncidentsFromAlertByAnomalyAlertingConfigurationAsync(
-                        configurationId, alertId, skip, maxpagesize, context));
+                () ->
+                        getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
+                                configurationId, alertId, skip, maxpagesize, context),
+                nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1923,7 +2615,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, Context context) {
-        return getAnomalyDetectionConfigurationWithResponseAsync(configurationId, context).block();
+        final String accept = "application/json";
+        return service.getAnomalyDetectionConfigurationSync(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -2027,7 +2720,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, AnomalyDetectionConfigurationPatch body, Context context) {
-        return updateAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context).block();
+        final String accept = "application/json";
+        return service.updateAnomalyDetectionConfigurationSync(
+                this.getEndpoint(), configurationId, body, accept, context);
     }
 
     /**
@@ -2123,7 +2818,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAnomalyDetectionConfigurationWithResponse(UUID configurationId, Context context) {
-        return deleteAnomalyDetectionConfigurationWithResponseAsync(configurationId, context).block();
+        final String accept = "application/json";
+        return service.deleteAnomalyDetectionConfigurationSync(this.getEndpoint(), configurationId, accept, context);
     }
 
     /**
@@ -2215,7 +2911,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateAnomalyDetectionConfigurationResponse createAnomalyDetectionConfigurationWithResponse(
             AnomalyDetectionConfiguration body, Context context) {
-        return createAnomalyDetectionConfigurationWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createAnomalyDetectionConfigurationSync(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -2353,9 +3050,17 @@ public final class MetricsAdvisorImpl {
     public PagedResponse<AnomalyAlertingConfiguration>
             getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
                     UUID configurationId, Integer skip, Integer maxpagesize) {
-        return getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
-                        configurationId, skip, maxpagesize)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyAlertingConfigurationList> res =
+                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -2374,9 +3079,17 @@ public final class MetricsAdvisorImpl {
     public PagedResponse<AnomalyAlertingConfiguration>
             getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
                     UUID configurationId, Integer skip, Integer maxpagesize, Context context) {
-        return getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
-                        configurationId, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyAlertingConfigurationList> res =
+                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -2394,8 +3107,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
             UUID configurationId, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(
-                        configurationId, skip, maxpagesize));
+                () ->
+                        getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, skip, maxpagesize, Context.NONE),
+                nextLink -> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(nextLink));
     }
 
     /**
@@ -2414,8 +3129,12 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
             UUID configurationId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(
-                        configurationId, skip, maxpagesize, context));
+                () ->
+                        getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, skip, maxpagesize, context),
+                nextLink ->
+                        getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(
+                                nextLink, context));
     }
 
     /**
@@ -2506,7 +3225,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SeriesResultList> getSeriesByAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, DetectionSeriesQuery body, Context context) {
-        return getSeriesByAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context).block();
+        final String accept = "application/json";
+        return service.getSeriesByAnomalyDetectionConfigurationSync(
+                this.getEndpoint(), configurationId, body, accept, context);
     }
 
     /**
@@ -2653,8 +3374,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationSinglePage(
             UUID configurationId, DetectionAnomalyResultQuery body, Integer skip, Integer maxpagesize) {
-        return getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(configurationId, body, skip, maxpagesize)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -2677,9 +3407,17 @@ public final class MetricsAdvisorImpl {
             Integer skip,
             Integer maxpagesize,
             Context context) {
-        return getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
-                        configurationId, body, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -2698,7 +3436,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyResult> getAnomaliesByAnomalyDetectionConfiguration(
             UUID configurationId, DetectionAnomalyResultQuery body, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                getAnomaliesByAnomalyDetectionConfigurationAsync(configurationId, body, skip, maxpagesize));
+                () ->
+                        getAnomaliesByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body));
     }
 
     /**
@@ -2722,7 +3463,10 @@ public final class MetricsAdvisorImpl {
             Integer maxpagesize,
             Context context) {
         return new PagedIterable<>(
-                getAnomaliesByAnomalyDetectionConfigurationAsync(configurationId, body, skip, maxpagesize, context));
+                () ->
+                        getAnomaliesByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, body, skip, maxpagesize, context),
+                nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -2848,9 +3592,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize) {
-        return getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
-                        configurationId, body, skip, maxpagesize)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyDimensionList> res =
+                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -2869,9 +3621,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize, Context context) {
-        return getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
-                        configurationId, body, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyDimensionList> res =
+                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -2890,7 +3650,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<String> getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                getDimensionOfAnomaliesByAnomalyDetectionConfigurationAsync(configurationId, body, skip, maxpagesize));
+                () ->
+                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body));
     }
 
     /**
@@ -2910,8 +3673,11 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<String> getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getDimensionOfAnomaliesByAnomalyDetectionConfigurationAsync(
-                        configurationId, body, skip, maxpagesize, context));
+                () ->
+                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, body, skip, maxpagesize, context),
+                nextLink ->
+                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -3028,7 +3794,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationSinglePage(
             UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize) {
-        return getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(configurationId, body, maxpagesize).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -3046,8 +3822,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationSinglePage(
             UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize, Context context) {
-        return getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(configurationId, body, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationSync(
+                        this.getEndpoint(), configurationId, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -3065,7 +3850,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfiguration(
             UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize) {
         return new PagedIterable<>(
-                getIncidentsByAnomalyDetectionConfigurationAsync(configurationId, body, maxpagesize));
+                () ->
+                        getIncidentsByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, body, maxpagesize, Context.NONE),
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextLink));
     }
 
     /**
@@ -3084,7 +3872,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfiguration(
             UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getIncidentsByAnomalyDetectionConfigurationAsync(configurationId, body, maxpagesize, context));
+                () ->
+                        getIncidentsByAnomalyDetectionConfigurationSinglePage(
+                                configurationId, body, maxpagesize, context),
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextLink, context));
     }
 
     /**
@@ -3203,8 +3994,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
             UUID configurationId, Integer maxpagesize, String token) {
-        return getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(configurationId, maxpagesize, token)
-                .block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationNextPagesSync(
+                        this.getEndpoint(), configurationId, maxpagesize, token, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -3222,9 +4022,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
             UUID configurationId, Integer maxpagesize, String token, Context context) {
-        return getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(
-                        configurationId, maxpagesize, token, context)
-                .block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationNextPagesSync(
+                        this.getEndpoint(), configurationId, maxpagesize, token, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -3242,7 +4050,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
             UUID configurationId, Integer maxpagesize, String token) {
         return new PagedIterable<>(
-                getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(configurationId, maxpagesize, token));
+                () ->
+                        getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
+                                configurationId, maxpagesize, token, Context.NONE),
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(nextLink));
     }
 
     /**
@@ -3261,8 +4072,10 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
             UUID configurationId, Integer maxpagesize, String token, Context context) {
         return new PagedIterable<>(
-                getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(
-                        configurationId, maxpagesize, token, context));
+                () ->
+                        getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
+                                configurationId, maxpagesize, token, context),
+                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(nextLink, context));
     }
 
     /**
@@ -3354,9 +4167,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
             UUID configurationId, String incidentId, Context context) {
-        return getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
-                        configurationId, incidentId, context)
-                .block();
+        final String accept = "application/json";
+        return service.getRootCauseOfIncidentByAnomalyDetectionConfigurationSync(
+                this.getEndpoint(), configurationId, incidentId, accept, context);
     }
 
     /**
@@ -3450,7 +4263,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateCredentialResponse createCredentialWithResponse(DataSourceCredential body, Context context) {
-        return createCredentialWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createCredentialSync(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -3566,7 +4380,16 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataSourceCredential> listCredentialsSinglePage(Integer skip, Integer maxpagesize) {
-        return listCredentialsSinglePageAsync(skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<DataSourceCredentialList> res =
+                service.listCredentialsSync(this.getEndpoint(), skip, maxpagesize, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -3583,7 +4406,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataSourceCredential> listCredentialsSinglePage(
             Integer skip, Integer maxpagesize, Context context) {
-        return listCredentialsSinglePageAsync(skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<DataSourceCredentialList> res =
+                service.listCredentialsSync(this.getEndpoint(), skip, maxpagesize, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -3598,7 +4430,9 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceCredential> listCredentials(Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(listCredentialsAsync(skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> listCredentialsSinglePage(skip, maxpagesize, Context.NONE),
+                nextLink -> listCredentialsNextSinglePage(nextLink));
     }
 
     /**
@@ -3614,7 +4448,9 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceCredential> listCredentials(Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listCredentialsAsync(skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> listCredentialsSinglePage(skip, maxpagesize, context),
+                nextLink -> listCredentialsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -3700,7 +4536,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredential> updateCredentialWithResponse(
             UUID credentialId, DataSourceCredentialPatch body, Context context) {
-        return updateCredentialWithResponseAsync(credentialId, body, context).block();
+        final String accept = "application/json";
+        return service.updateCredentialSync(this.getEndpoint(), credentialId, body, accept, context);
     }
 
     /**
@@ -3791,7 +4628,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCredentialWithResponse(UUID credentialId, Context context) {
-        return deleteCredentialWithResponseAsync(credentialId, context).block();
+        final String accept = "application/json";
+        return service.deleteCredentialSync(this.getEndpoint(), credentialId, accept, context);
     }
 
     /**
@@ -3880,7 +4718,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredential> getCredentialWithResponse(UUID credentialId, Context context) {
-        return getCredentialWithResponseAsync(credentialId, context).block();
+        final String accept = "application/json";
+        return service.getCredentialSync(this.getEndpoint(), credentialId, accept, context);
     }
 
     /**
@@ -4090,9 +4929,26 @@ public final class MetricsAdvisorImpl {
             String creator,
             Integer skip,
             Integer maxpagesize) {
-        return listDataFeedsSinglePageAsync(
-                        dataFeedName, dataSourceType, granularityName, status, creator, skip, maxpagesize)
-                .block();
+        final String accept = "application/json";
+        Response<DataFeedList> res =
+                service.listDataFeedsSync(
+                        this.getEndpoint(),
+                        dataFeedName,
+                        dataSourceType,
+                        granularityName,
+                        status,
+                        creator,
+                        skip,
+                        maxpagesize,
+                        accept,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -4121,9 +4977,26 @@ public final class MetricsAdvisorImpl {
             Integer skip,
             Integer maxpagesize,
             Context context) {
-        return listDataFeedsSinglePageAsync(
-                        dataFeedName, dataSourceType, granularityName, status, creator, skip, maxpagesize, context)
-                .block();
+        final String accept = "application/json";
+        Response<DataFeedList> res =
+                service.listDataFeedsSync(
+                        this.getEndpoint(),
+                        dataFeedName,
+                        dataSourceType,
+                        granularityName,
+                        status,
+                        creator,
+                        skip,
+                        maxpagesize,
+                        accept,
+                        context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -4151,7 +5024,17 @@ public final class MetricsAdvisorImpl {
             Integer skip,
             Integer maxpagesize) {
         return new PagedIterable<>(
-                listDataFeedsAsync(dataFeedName, dataSourceType, granularityName, status, creator, skip, maxpagesize));
+                () ->
+                        listDataFeedsSinglePage(
+                                dataFeedName,
+                                dataSourceType,
+                                granularityName,
+                                status,
+                                creator,
+                                skip,
+                                maxpagesize,
+                                Context.NONE),
+                nextLink -> listDataFeedsNextSinglePage(nextLink));
     }
 
     /**
@@ -4181,8 +5064,17 @@ public final class MetricsAdvisorImpl {
             Integer maxpagesize,
             Context context) {
         return new PagedIterable<>(
-                listDataFeedsAsync(
-                        dataFeedName, dataSourceType, granularityName, status, creator, skip, maxpagesize, context));
+                () ->
+                        listDataFeedsSinglePage(
+                                dataFeedName,
+                                dataSourceType,
+                                granularityName,
+                                status,
+                                creator,
+                                skip,
+                                maxpagesize,
+                                context),
+                nextLink -> listDataFeedsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -4257,7 +5149,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFeedResponse createDataFeedWithResponse(DataFeedDetail body, Context context) {
-        return createDataFeedWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createDataFeedSync(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -4346,7 +5239,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeedDetail> getDataFeedByIdWithResponse(UUID dataFeedId, Context context) {
-        return getDataFeedByIdWithResponseAsync(dataFeedId, context).block();
+        final String accept = "application/json";
+        return service.getDataFeedByIdSync(this.getEndpoint(), dataFeedId, accept, context);
     }
 
     /**
@@ -4444,7 +5338,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeedDetail> updateDataFeedWithResponse(
             UUID dataFeedId, DataFeedDetailPatch body, Context context) {
-        return updateDataFeedWithResponseAsync(dataFeedId, body, context).block();
+        final String accept = "application/json";
+        return service.updateDataFeedSync(this.getEndpoint(), dataFeedId, body, accept, context);
     }
 
     /**
@@ -4534,7 +5429,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataFeedWithResponse(UUID dataFeedId, Context context) {
-        return deleteDataFeedWithResponseAsync(dataFeedId, context).block();
+        final String accept = "application/json";
+        return service.deleteDataFeedSync(this.getEndpoint(), dataFeedId, accept, context);
     }
 
     /**
@@ -4623,7 +5519,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricFeedback> getMetricFeedbackWithResponse(UUID feedbackId, Context context) {
-        return getMetricFeedbackWithResponseAsync(feedbackId, context).block();
+        final String accept = "application/json";
+        return service.getMetricFeedbackSync(this.getEndpoint(), feedbackId, accept, context);
     }
 
     /**
@@ -4751,7 +5648,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricFeedback> listMetricFeedbacksSinglePage(
             MetricFeedbackFilter body, Integer skip, Integer maxpagesize) {
-        return listMetricFeedbacksSinglePageAsync(body, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<MetricFeedbackList> res =
+                service.listMetricFeedbacksSync(this.getEndpoint(), skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -4769,7 +5675,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricFeedback> listMetricFeedbacksSinglePage(
             MetricFeedbackFilter body, Integer skip, Integer maxpagesize, Context context) {
-        return listMetricFeedbacksSinglePageAsync(body, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<MetricFeedbackList> res =
+                service.listMetricFeedbacksSync(this.getEndpoint(), skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -4786,7 +5701,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricFeedback> listMetricFeedbacks(
             MetricFeedbackFilter body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(listMetricFeedbacksAsync(body, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> listMetricFeedbacksSinglePage(body, skip, maxpagesize, Context.NONE),
+                nextLink -> listMetricFeedbacksNextSinglePage(nextLink, body));
     }
 
     /**
@@ -4804,7 +5721,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricFeedback> listMetricFeedbacks(
             MetricFeedbackFilter body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listMetricFeedbacksAsync(body, skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> listMetricFeedbacksSinglePage(body, skip, maxpagesize, context),
+                nextLink -> listMetricFeedbacksNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -4880,7 +5799,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateMetricFeedbackResponse createMetricFeedbackWithResponse(MetricFeedback body, Context context) {
-        return createMetricFeedbackWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createMetricFeedbackSync(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -5001,7 +5921,16 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<HookInfo> listHooksSinglePage(String hookName, Integer skip, Integer maxpagesize) {
-        return listHooksSinglePageAsync(hookName, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<HookList> res =
+                service.listHooksSync(this.getEndpoint(), hookName, skip, maxpagesize, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -5019,7 +5948,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<HookInfo> listHooksSinglePage(
             String hookName, Integer skip, Integer maxpagesize, Context context) {
-        return listHooksSinglePageAsync(hookName, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<HookList> res =
+                service.listHooksSync(this.getEndpoint(), hookName, skip, maxpagesize, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -5035,7 +5973,9 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HookInfo> listHooks(String hookName, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(listHooksAsync(hookName, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> listHooksSinglePage(hookName, skip, maxpagesize, Context.NONE),
+                nextLink -> listHooksNextSinglePage(nextLink));
     }
 
     /**
@@ -5052,7 +5992,9 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HookInfo> listHooks(String hookName, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(listHooksAsync(hookName, skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> listHooksSinglePage(hookName, skip, maxpagesize, context),
+                nextLink -> listHooksNextSinglePage(nextLink, context));
     }
 
     /**
@@ -5127,7 +6069,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateHookResponse createHookWithResponse(HookInfo body, Context context) {
-        return createHookWithResponseAsync(body, context).block();
+        final String accept = "application/json";
+        return service.createHookSync(this.getEndpoint(), body, accept, context);
     }
 
     /**
@@ -5215,7 +6158,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HookInfo> getHookWithResponse(UUID hookId, Context context) {
-        return getHookWithResponseAsync(hookId, context).block();
+        final String accept = "application/json";
+        return service.getHookSync(this.getEndpoint(), hookId, accept, context);
     }
 
     /**
@@ -5309,7 +6253,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HookInfo> updateHookWithResponse(UUID hookId, HookInfoPatch body, Context context) {
-        return updateHookWithResponseAsync(hookId, body, context).block();
+        final String accept = "application/json";
+        return service.updateHookSync(this.getEndpoint(), hookId, body, accept, context);
     }
 
     /**
@@ -5399,7 +6344,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteHookWithResponse(UUID hookId, Context context) {
-        return deleteHookWithResponseAsync(hookId, context).block();
+        final String accept = "application/json";
+        return service.deleteHookSync(this.getEndpoint(), hookId, accept, context);
     }
 
     /**
@@ -5534,7 +6480,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusSinglePage(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize) {
-        return getDataFeedIngestionStatusSinglePageAsync(dataFeedId, body, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<IngestionStatusList> res =
+                service.getDataFeedIngestionStatusSync(
+                        this.getEndpoint(), dataFeedId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -5553,7 +6509,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusSinglePage(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return getDataFeedIngestionStatusSinglePageAsync(dataFeedId, body, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<IngestionStatusList> res =
+                service.getDataFeedIngestionStatusSync(
+                        this.getEndpoint(), dataFeedId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -5571,7 +6537,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> getDataFeedIngestionStatus(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(getDataFeedIngestionStatusAsync(dataFeedId, body, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> getDataFeedIngestionStatusSinglePage(dataFeedId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getDataFeedIngestionStatusNextSinglePage(nextLink, body));
     }
 
     /**
@@ -5590,7 +6558,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> getDataFeedIngestionStatus(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(getDataFeedIngestionStatusAsync(dataFeedId, body, skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> getDataFeedIngestionStatusSinglePage(dataFeedId, body, skip, maxpagesize, context),
+                nextLink -> getDataFeedIngestionStatusNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -5676,7 +6646,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetDataFeedIngestionStatusWithResponse(
             UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
-        return resetDataFeedIngestionStatusWithResponseAsync(dataFeedId, body, context).block();
+        final String accept = "application/json";
+        return service.resetDataFeedIngestionStatusSync(this.getEndpoint(), dataFeedId, body, accept, context);
     }
 
     /**
@@ -5770,7 +6741,8 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeedIngestionProgress> getIngestionProgressWithResponse(UUID dataFeedId, Context context) {
-        return getIngestionProgressWithResponseAsync(dataFeedId, context).block();
+        final String accept = "application/json";
+        return service.getIngestionProgressSync(this.getEndpoint(), dataFeedId, accept, context);
     }
 
     /**
@@ -5867,7 +6839,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricDataList> getMetricDataWithResponse(
             UUID metricId, MetricDataQueryOptions body, Context context) {
-        return getMetricDataWithResponseAsync(metricId, body, context).block();
+        final String accept = "application/json";
+        return service.getMetricDataSync(this.getEndpoint(), metricId, body, accept, context);
     }
 
     /**
@@ -6001,7 +6974,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricSeriesItem> getMetricSeriesSinglePage(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize) {
-        return getMetricSeriesSinglePageAsync(metricId, body, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<MetricSeriesList> res =
+                service.getMetricSeriesSync(
+                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6020,7 +7003,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricSeriesItem> getMetricSeriesSinglePage(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return getMetricSeriesSinglePageAsync(metricId, body, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<MetricSeriesList> res =
+                service.getMetricSeriesSync(this.getEndpoint(), metricId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6038,7 +7030,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesItem> getMetricSeries(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(getMetricSeriesAsync(metricId, body, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> getMetricSeriesSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getMetricSeriesNextSinglePage(nextLink, body));
     }
 
     /**
@@ -6057,7 +7051,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesItem> getMetricSeries(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(getMetricSeriesAsync(metricId, body, skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> getMetricSeriesSinglePage(metricId, body, skip, maxpagesize, context),
+                nextLink -> getMetricSeriesNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -6176,7 +7172,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getMetricDimensionSinglePage(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize) {
-        return getMetricDimensionSinglePageAsync(metricId, body, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<MetricDimensionList> res =
+                service.getMetricDimensionSync(
+                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6195,7 +7201,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getMetricDimensionSinglePage(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return getMetricDimensionSinglePageAsync(metricId, body, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<MetricDimensionList> res =
+                service.getMetricDimensionSync(this.getEndpoint(), metricId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6213,7 +7228,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getMetricDimension(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(getMetricDimensionAsync(metricId, body, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> getMetricDimensionSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getMetricDimensionNextSinglePage(nextLink, body));
     }
 
     /**
@@ -6232,7 +7249,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getMetricDimension(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(getMetricDimensionAsync(metricId, body, skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> getMetricDimensionSinglePage(metricId, body, skip, maxpagesize, context),
+                nextLink -> getMetricDimensionNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -6347,7 +7366,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricSinglePage(
             UUID metricId, Integer skip, Integer maxpagesize) {
-        return getAnomalyDetectionConfigurationsByMetricSinglePageAsync(metricId, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<AnomalyDetectionConfigurationList> res =
+                service.getAnomalyDetectionConfigurationsByMetricSync(
+                        this.getEndpoint(), metricId, skip, maxpagesize, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6365,7 +7394,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricSinglePage(
             UUID metricId, Integer skip, Integer maxpagesize, Context context) {
-        return getAnomalyDetectionConfigurationsByMetricSinglePageAsync(metricId, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<AnomalyDetectionConfigurationList> res =
+                service.getAnomalyDetectionConfigurationsByMetricSync(
+                        this.getEndpoint(), metricId, skip, maxpagesize, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6382,7 +7421,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetric(
             UUID metricId, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(getAnomalyDetectionConfigurationsByMetricAsync(metricId, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> getAnomalyDetectionConfigurationsByMetricSinglePage(metricId, skip, maxpagesize, Context.NONE),
+                nextLink -> getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextLink));
     }
 
     /**
@@ -6401,7 +7442,8 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetric(
             UUID metricId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                getAnomalyDetectionConfigurationsByMetricAsync(metricId, skip, maxpagesize, context));
+                () -> getAnomalyDetectionConfigurationsByMetricSinglePage(metricId, skip, maxpagesize, context),
+                nextLink -> getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextLink, context));
     }
 
     /**
@@ -6521,7 +7563,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricSinglePage(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize) {
-        return getEnrichmentStatusByMetricSinglePageAsync(metricId, body, skip, maxpagesize).block();
+        final String accept = "application/json";
+        Response<EnrichmentStatusList> res =
+                service.getEnrichmentStatusByMetricSync(
+                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6540,7 +7592,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricSinglePage(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize, Context context) {
-        return getEnrichmentStatusByMetricSinglePageAsync(metricId, body, skip, maxpagesize, context).block();
+        final String accept = "application/json";
+        Response<EnrichmentStatusList> res =
+                service.getEnrichmentStatusByMetricSync(
+                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -6558,7 +7620,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrichmentStatus> getEnrichmentStatusByMetric(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(getEnrichmentStatusByMetricAsync(metricId, body, skip, maxpagesize));
+        return new PagedIterable<>(
+                () -> getEnrichmentStatusByMetricSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
+                nextLink -> getEnrichmentStatusByMetricNextSinglePage(nextLink, body));
     }
 
     /**
@@ -6577,7 +7641,9 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrichmentStatus> getEnrichmentStatusByMetric(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(getEnrichmentStatusByMetricAsync(metricId, body, skip, maxpagesize, context));
+        return new PagedIterable<>(
+                () -> getEnrichmentStatusByMetricSinglePage(metricId, body, skip, maxpagesize, context),
+                nextLink -> getEnrichmentStatusByMetricNextSinglePage(nextLink, body, context));
     }
 
     /**
@@ -6649,7 +7715,12 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationNextSinglePage(
             String nextLink, AlertingResultQuery body) {
-        return getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<AlertResultList> res =
+                service.getAlertsByAnomalyAlertingConfigurationNextSync(
+                        this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6666,7 +7737,12 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationNextSinglePage(
             String nextLink, AlertingResultQuery body, Context context) {
-        return getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<AlertResultList> res =
+                service.getAlertsByAnomalyAlertingConfigurationNextSync(
+                        this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6739,7 +7815,12 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
             String nextLink, DetectionAnomalyResultQuery body) {
-        return getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesByAnomalyDetectionConfigurationNextSync(
+                        this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6756,7 +7837,12 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
             String nextLink, DetectionAnomalyResultQuery body, Context context) {
-        return getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesByAnomalyDetectionConfigurationNextSync(
+                        this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6829,7 +7915,12 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
             String nextLink, AnomalyDimensionQuery body) {
-        return getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<AnomalyDimensionList> res =
+                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSync(
+                        this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6846,8 +7937,12 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
             String nextLink, AnomalyDimensionQuery body, Context context) {
-        return getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, body, context)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyDimensionList> res =
+                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSync(
+                        this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6916,7 +8011,11 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricFeedback> listMetricFeedbacksNextSinglePage(String nextLink, MetricFeedbackFilter body) {
-        return listMetricFeedbacksNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<MetricFeedbackList> res =
+                service.listMetricFeedbacksNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -6933,7 +8032,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricFeedback> listMetricFeedbacksNextSinglePage(
             String nextLink, MetricFeedbackFilter body, Context context) {
-        return listMetricFeedbacksNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<MetricFeedbackList> res =
+                service.listMetricFeedbacksNextSync(this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7007,7 +8110,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusNextSinglePage(
             String nextLink, IngestionStatusQueryOptions body) {
-        return getDataFeedIngestionStatusNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<IngestionStatusList> res =
+                service.getDataFeedIngestionStatusNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7024,7 +8131,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusNextSinglePage(
             String nextLink, IngestionStatusQueryOptions body, Context context) {
-        return getDataFeedIngestionStatusNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<IngestionStatusList> res =
+                service.getDataFeedIngestionStatusNextSync(this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7094,7 +8205,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricSeriesItem> getMetricSeriesNextSinglePage(
             String nextLink, MetricSeriesQueryOptions body) {
-        return getMetricSeriesNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<MetricSeriesList> res =
+                service.getMetricSeriesNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7111,7 +8226,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricSeriesItem> getMetricSeriesNextSinglePage(
             String nextLink, MetricSeriesQueryOptions body, Context context) {
-        return getMetricSeriesNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<MetricSeriesList> res =
+                service.getMetricSeriesNextSync(this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7180,7 +8299,11 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getMetricDimensionNextSinglePage(String nextLink, MetricDimensionQueryOptions body) {
-        return getMetricDimensionNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<MetricDimensionList> res =
+                service.getMetricDimensionNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7197,7 +8320,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<String> getMetricDimensionNextSinglePage(
             String nextLink, MetricDimensionQueryOptions body, Context context) {
-        return getMetricDimensionNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<MetricDimensionList> res =
+                service.getMetricDimensionNextSync(this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7269,7 +8396,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricNextSinglePage(
             String nextLink, EnrichmentStatusQueryOption body) {
-        return getEnrichmentStatusByMetricNextSinglePageAsync(nextLink, body).block();
+        final String accept = "application/json";
+        Response<EnrichmentStatusList> res =
+                service.getEnrichmentStatusByMetricNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7286,7 +8417,11 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricNextSinglePage(
             String nextLink, EnrichmentStatusQueryOption body, Context context) {
-        return getEnrichmentStatusByMetricNextSinglePageAsync(nextLink, body, context).block();
+        final String accept = "application/json";
+        Response<EnrichmentStatusList> res =
+                service.getEnrichmentStatusByMetricNextSync(this.getEndpoint(), nextLink, body, accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7359,7 +8494,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(
             String nextLink) {
-        return getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7376,7 +8521,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(
             String nextLink, Context context) {
-        return getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<AnomalyResultList> res =
+                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7449,7 +8604,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(
             String nextLink) {
-        return getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7466,7 +8631,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(
             String nextLink, Context context) {
-        return getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7540,7 +8715,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyAlertingConfiguration>
             getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(String nextLink) {
-        return getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<AnomalyAlertingConfigurationList> res =
+                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7558,8 +8743,17 @@ public final class MetricsAdvisorImpl {
     public PagedResponse<AnomalyAlertingConfiguration>
             getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(
                     String nextLink, Context context) {
-        return getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, context)
-                .block();
+        final String accept = "application/json";
+        Response<AnomalyAlertingConfigurationList> res =
+                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7630,7 +8824,17 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(String nextLink) {
-        return getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7647,7 +8851,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(
             String nextLink, Context context) {
-        return getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationNextSync(
+                        nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7720,7 +8934,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(
             String nextLink) {
-        return getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationNextPagesNextSync(
+                        nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7737,7 +8961,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(
             String nextLink, Context context) {
-        return getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<IncidentResultList> res =
+                service.getIncidentsByAnomalyDetectionConfigurationNextPagesNextSync(
+                        nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7805,7 +9039,16 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataSourceCredential> listCredentialsNextSinglePage(String nextLink) {
-        return listCredentialsNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<DataSourceCredentialList> res =
+                service.listCredentialsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7821,7 +9064,16 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataSourceCredential> listCredentialsNextSinglePage(String nextLink, Context context) {
-        return listCredentialsNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<DataSourceCredentialList> res =
+                service.listCredentialsNextSync(nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7887,7 +9139,15 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataFeedDetail> listDataFeedsNextSinglePage(String nextLink) {
-        return listDataFeedsNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<DataFeedList> res = service.listDataFeedsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7903,7 +9163,15 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DataFeedDetail> listDataFeedsNextSinglePage(String nextLink, Context context) {
-        return listDataFeedsNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<DataFeedList> res = service.listDataFeedsNextSync(nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7969,7 +9237,15 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<HookInfo> listHooksNextSinglePage(String nextLink) {
-        return listHooksNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<HookList> res = service.listHooksNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -7985,7 +9261,15 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<HookInfo> listHooksNextSinglePage(String nextLink, Context context) {
-        return listHooksNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<HookList> res = service.listHooksNextSync(nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -8057,7 +9341,17 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricNextSinglePage(
             String nextLink) {
-        return getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextLink).block();
+        final String accept = "application/json";
+        Response<AnomalyDetectionConfigurationList> res =
+                service.getAnomalyDetectionConfigurationsByMetricNextSync(
+                        nextLink, this.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
@@ -8074,6 +9368,16 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricNextSinglePage(
             String nextLink, Context context) {
-        return getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextLink, context).block();
+        final String accept = "application/json";
+        Response<AnomalyDetectionConfigurationList> res =
+                service.getAnomalyDetectionConfigurationsByMetricNextSync(
+                        nextLink, this.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -500,20 +501,20 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         cancelCertificateOperationRunner((certName) -> {
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+            // Had to use a sync poller as the async version of this test was very flaky.
+            // TODO (vcolin7): Figure out the best way to cancel an operation consistently.
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
+                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()).getSyncPoller();
 
-            StepVerifier.create(certPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
-                    .last().flatMap(AsyncPollResponse::cancelOperation))
-                .assertNext(certificateOperation -> {
-                    assertTrue(certificateOperation.getCancellationRequested());
-                }).verifyComplete();
+            certPoller.poll();
+            certPoller.cancelOperation();
+            certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
 
-            StepVerifier.create(certPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.USER_CANCELLED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(certificate -> {
-                    assertFalse(certificate.getProperties().isEnabled());
-                }).verifyComplete();
+            KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
+
+            assertFalse(certificate.getProperties().isEnabled());
+
+            certPoller.waitForCompletion();
         });
     }
 

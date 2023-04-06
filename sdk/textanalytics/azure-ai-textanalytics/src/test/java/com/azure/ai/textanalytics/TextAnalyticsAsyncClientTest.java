@@ -2231,13 +2231,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW,
                         getRecognizePiiEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2264,13 +2264,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW,
                         getRecognizePiiEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2503,13 +2503,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
                             TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList())
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null)
                     )),
                     result.toStream().collect(Collectors.toList()));
             }
@@ -2552,15 +2552,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList())
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null)
                     )),
                     result.toStream().collect(Collectors.toList()));
             }
@@ -2583,15 +2583,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList())
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null)
                     )),
                     result.toStream().collect(Collectors.toList()));
             }
@@ -2613,15 +2613,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             validateAnalyzeBatchActionsResultList(
                 false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2641,15 +2641,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2668,15 +2668,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getExpectedBatchTextSentiment(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2694,19 +2694,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedAnalyzeHealthcareEntitiesActionResult(false, null, TIME_NOW,
                         getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
                             asList(
                                 getRecognizeHealthcareEntitiesResultWithFhir1("0"),
                                 getRecognizeHealthcareEntitiesResultWithFhir2())),
                             null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         });
@@ -2901,17 +2901,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             // We are expecting the top 3 highest rank score and these scores are sorted by offset by default
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExtractSummaryActionResult(false, null,
                         TIME_NOW,
                         getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
                         null))),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null)
                 )),
                 result.toStream().collect(Collectors.toList()));
         }, null, null);
@@ -3038,13 +3038,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getAbstractSummaryActionResult(false, null,
                         TIME_NOW,
                         new AbstractSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
