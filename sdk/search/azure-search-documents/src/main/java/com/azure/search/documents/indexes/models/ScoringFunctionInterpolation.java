@@ -8,16 +8,22 @@ package com.azure.search.documents.indexes.models;
 
 /** Defines the function used to interpolate score boosting across a range of documents. */
 public enum ScoringFunctionInterpolation {
-    /** Enum value linear. */
+    /** Boosts scores by a linearly decreasing amount. This is the default interpolation for scoring functions. */
     LINEAR("linear"),
 
-    /** Enum value constant. */
+    /** Boosts scores by a constant factor. */
     CONSTANT("constant"),
 
-    /** Enum value quadratic. */
+    /**
+     * Boosts scores by an amount that decreases quadratically. Boosts decrease slowly for higher scores, and more
+     * quickly as the scores decrease. This interpolation option is not allowed in tag scoring functions.
+     */
     QUADRATIC("quadratic"),
 
-    /** Enum value logarithmic. */
+    /**
+     * Boosts scores by an amount that decreases logarithmically. Boosts decrease quickly for higher scores, and more
+     * slowly as the scores decrease. This interpolation option is not allowed in tag scoring functions.
+     */
     LOGARITHMIC("logarithmic");
 
     /** The actual serialized value for a ScoringFunctionInterpolation instance. */

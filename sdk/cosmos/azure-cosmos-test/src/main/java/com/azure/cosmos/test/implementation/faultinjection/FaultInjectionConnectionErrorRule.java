@@ -92,4 +92,8 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
         Instant now = Instant.now();
         return this.enabled && now.isAfter(this.startTime) && now.isBefore(this.expireTime);
     }
+
+    public void applyRule() {
+        this.hitCount.incrementAndGet();
+    }
 }

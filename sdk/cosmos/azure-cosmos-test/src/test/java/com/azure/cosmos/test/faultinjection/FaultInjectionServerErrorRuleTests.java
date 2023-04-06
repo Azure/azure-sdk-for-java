@@ -627,7 +627,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             container.openConnectionsAndInitCaches().block();
 
             if (primaryAddressesOnly) {
-                System.out.println("Partition size is " + partitionSize);
                 assertThat(serverConnectionDelayWarmupRule.getHitCount()).isEqualTo(partitionSize);
             } else {
                 assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);

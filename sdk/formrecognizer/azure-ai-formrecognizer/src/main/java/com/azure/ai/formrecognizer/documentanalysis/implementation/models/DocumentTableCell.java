@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -59,8 +60,25 @@ public final class DocumentTableCell {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
-    /** Creates an instance of DocumentTableCell class. */
-    public DocumentTableCell() {}
+    /**
+     * Creates an instance of DocumentTableCell class.
+     *
+     * @param rowIndex the rowIndex value to set.
+     * @param columnIndex the columnIndex value to set.
+     * @param content the content value to set.
+     * @param spans the spans value to set.
+     */
+    @JsonCreator
+    public DocumentTableCell(
+            @JsonProperty(value = "rowIndex", required = true) int rowIndex,
+            @JsonProperty(value = "columnIndex", required = true) int columnIndex,
+            @JsonProperty(value = "content", required = true) String content,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
+        this.rowIndex = rowIndex;
+        this.columnIndex = columnIndex;
+        this.content = content;
+        this.spans = spans;
+    }
 
     /**
      * Get the kind property: Table cell kind.
@@ -92,34 +110,12 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the rowIndex property: Row index of the cell.
-     *
-     * @param rowIndex the rowIndex value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-        return this;
-    }
-
-    /**
      * Get the columnIndex property: Column index of the cell.
      *
      * @return the columnIndex value.
      */
     public int getColumnIndex() {
         return this.columnIndex;
-    }
-
-    /**
-     * Set the columnIndex property: Column index of the cell.
-     *
-     * @param columnIndex the columnIndex value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
-        return this;
     }
 
     /**
@@ -172,17 +168,6 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the content property: Concatenated content of the table cell in reading order.
-     *
-     * @param content the content value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the boundingRegions property: Bounding regions covering the table cell.
      *
      * @return the boundingRegions value.
@@ -209,16 +194,5 @@ public final class DocumentTableCell {
      */
     public List<DocumentSpan> getSpans() {
         return this.spans;
-    }
-
-    /**
-     * Set the spans property: Location of the table cell in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
     }
 }

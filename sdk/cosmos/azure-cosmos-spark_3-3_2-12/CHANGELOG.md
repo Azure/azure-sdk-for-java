@@ -3,6 +3,7 @@
 ### 4.18.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added throughput control support without using dedicated throughput control container - See [PR 34301](https://github.com/Azure/azure-sdk-for-java/pull/34301)
 
 #### Breaking Changes
 

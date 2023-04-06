@@ -161,12 +161,12 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
                         }
                     }
                     if (textFound) {
-                        CustomEntityAlias deserializedValue = new CustomEntityAlias(text);
-                        deserializedValue.caseSensitive = caseSensitive;
-                        deserializedValue.accentSensitive = accentSensitive;
-                        deserializedValue.fuzzyEditDistance = fuzzyEditDistance;
+                        CustomEntityAlias deserializedCustomEntityAlias = new CustomEntityAlias(text);
+                        deserializedCustomEntityAlias.caseSensitive = caseSensitive;
+                        deserializedCustomEntityAlias.accentSensitive = accentSensitive;
+                        deserializedCustomEntityAlias.fuzzyEditDistance = fuzzyEditDistance;
 
-                        return deserializedValue;
+                        return deserializedCustomEntityAlias;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!textFound) {

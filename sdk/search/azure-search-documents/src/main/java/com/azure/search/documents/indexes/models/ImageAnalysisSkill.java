@@ -208,15 +208,15 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        ImageAnalysisSkill deserializedValue = new ImageAnalysisSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.visualFeatures = visualFeatures;
-                        deserializedValue.details = details;
+                        ImageAnalysisSkill deserializedImageAnalysisSkill = new ImageAnalysisSkill(inputs, outputs);
+                        deserializedImageAnalysisSkill.setName(name);
+                        deserializedImageAnalysisSkill.setDescription(description);
+                        deserializedImageAnalysisSkill.setContext(context);
+                        deserializedImageAnalysisSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedImageAnalysisSkill.visualFeatures = visualFeatures;
+                        deserializedImageAnalysisSkill.details = details;
 
-                        return deserializedValue;
+                        return deserializedImageAnalysisSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

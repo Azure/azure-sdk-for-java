@@ -15,6 +15,8 @@ public final class FaultInjectionServerErrorResultBuilder {
     private int times = Integer.MAX_VALUE;
     private Duration delay;
 
+    private Boolean suppressServiceRequests = null;
+
     FaultInjectionServerErrorResultBuilder(FaultInjectionServerErrorType serverErrorType) {
         this.serverErrorType = serverErrorType;
     }
@@ -50,6 +52,26 @@ public final class FaultInjectionServerErrorResultBuilder {
     }
 
     /***
+     * This is only used for Server_Response_Delay error tye.
+     *
+     * For SERVER_RESPONSE_DELAY, it controls whether the original request should be sent to the service.
+     * The default is that the request will be sent when the delay is lower than the network request timeout, but
+     * if the delay exceeds the network request timeout the request is not even sent to the service. This property
+     * can be used to override the behavior.
+     *
+     * NOTE: If suppressServiceRequests == true the injected delay will not be reported in the transit time
+     * request pipeline step but in the received pipeline step.
+     *
+     * @param suppressServiceRequests a flag indicating whether to send the requests to the service.
+     * @return the builder.
+     */
+    public FaultInjectionServerErrorResultBuilder suppressServiceRequests(boolean suppressServiceRequests) {
+        this.suppressServiceRequests = suppressServiceRequests;
+
+        return this;
+    }
+
+    /***
      * Create a new fault injection server error result.
      *
      * @return the {@link FaultInjectionServerErrorResult}.
@@ -64,6 +86,7 @@ public final class FaultInjectionServerErrorResultBuilder {
         return new FaultInjectionServerErrorResult(
             this.serverErrorType,
             this.times,
-            this.delay);
+            this.delay,
+            this.suppressServiceRequests);
     }
 }

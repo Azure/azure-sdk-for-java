@@ -60,6 +60,8 @@ public class TestProxyTests extends TestProxyTestBase {
     private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
+
 
     static {
         customSanitizer.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
@@ -247,10 +249,9 @@ public class TestProxyTests extends TestProxyTestBase {
         // default sanitizers
         assertEquals("http://REDACTED/fr/path/1", record.getUri());
         assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        assertTrue(record.getResponseHeaders().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
         // custom sanitizers
         assertEquals(REDACTED, record.getResponse().get("modelId"));
-        assertTrue(record.getResponse().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
-
     }
 
     @Test
