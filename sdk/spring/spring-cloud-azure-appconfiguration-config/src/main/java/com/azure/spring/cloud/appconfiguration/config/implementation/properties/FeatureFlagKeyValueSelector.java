@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Properties on what Selects are checked before loading configurations.

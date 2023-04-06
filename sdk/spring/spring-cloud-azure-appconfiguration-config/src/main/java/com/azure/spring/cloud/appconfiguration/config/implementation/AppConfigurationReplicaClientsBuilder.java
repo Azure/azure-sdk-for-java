@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.convert.DurationStyle;
@@ -15,6 +16,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
@@ -25,8 +27,8 @@ import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomi
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.core.service.AzureServiceType.AppConfiguration;

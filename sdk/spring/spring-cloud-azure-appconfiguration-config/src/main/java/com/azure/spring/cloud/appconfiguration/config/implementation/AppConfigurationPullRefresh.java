@@ -14,7 +14,6 @@ import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
@@ -71,7 +70,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
      * elsewhere this method will return right away as <b>false</b>.
      */
-    @Async
     public Mono<Boolean> refreshConfigurations() {
         return Mono.just(refreshStores());
     }

@@ -7,11 +7,11 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.
