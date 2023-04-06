@@ -14,7 +14,20 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
- * Handles loading an instance of {@link JsonProvider} found on the classpath.
+ * Utility class for {@link JsonProvider} that will the first implementation of {@link JsonProvider} found on the
+ * classpath to create instances of {@link JsonReader} or {@link JsonWriter}.
+ * <p>
+ * If no implementation of {@link JsonProvider} is found on the classpath a default implementation provided by this
+ * library will be used.
+ * <p>
+ * At this time, additional implementations of {@link JsonProvider} found on the classpath after the first will be
+ * ignored. Ensure the implementation that should be used is the first one listed in
+ * {@code META-INF/services/com.azure.json.JsonProvider} of your JAR.
+ *
+ * @see com.azure.json
+ * @see JsonProvider
+ * @see JsonReader
+ * @see JsonWriter
  */
 public final class JsonProviders {
     private static final JsonOptions DEFAULT_OPTIONS = new JsonOptions();
@@ -37,6 +50,7 @@ public final class JsonProviders {
         }
 
         while (it.hasNext()) {
+            // For now, ignore other implementations found.
             it.next();
         }
     }

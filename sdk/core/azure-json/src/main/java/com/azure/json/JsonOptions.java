@@ -5,6 +5,9 @@ package com.azure.json;
 
 /**
  * Contains configuration options for creating a {@link JsonReader} or {@link JsonWriter}.
+ *
+ * @see JsonProvider
+ * @see JsonProviders
  */
 public final class JsonOptions {
 
