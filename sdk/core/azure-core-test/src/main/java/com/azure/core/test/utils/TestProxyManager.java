@@ -40,7 +40,9 @@ public class TestProxyManager {
 
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
-        TestProxyDownloader.installTestProxy();
+        if (runningLocally()) {
+            TestProxyDownloader.installTestProxy();
+        }
     }
 
     /**
@@ -53,8 +55,7 @@ public class TestProxyManager {
         try {
             String commandLine = "test-proxy";
             // if we're not running in CI, construct the local path. TF_BUILD indicates Azure DevOps. CI indicates Github Actions.
-            if (Configuration.getGlobalConfiguration().get("TF_BUILD") == null
-                && Configuration.getGlobalConfiguration().get("CI") == null) {
+            if (runningLocally()) {
                 commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
             }
@@ -115,5 +116,14 @@ public class TestProxyManager {
             throw new RuntimeException(e);
         }
         return proxyUrl;
+    }
+
+    /**
+     * Checks the environment variables commonly set in CI to determine if the run is local.
+     * @return True if the run is local.
+     */
+    private boolean runningLocally() {
+        return Configuration.getGlobalConfiguration().get("TF_BUILD") == null
+            && Configuration.getGlobalConfiguration().get("CI") == null;
     }
 }
