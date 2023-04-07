@@ -67,7 +67,7 @@ public class TestProxyManager {
                 "--",
                 "--urls",
                 getProxyUrl().toString());
-            Map environment = builder.environment();
+            Map<String, String> environment = builder.environment();
             environment.put("LOGGING__LOGLEVEL", "Information");
             environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
             environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
