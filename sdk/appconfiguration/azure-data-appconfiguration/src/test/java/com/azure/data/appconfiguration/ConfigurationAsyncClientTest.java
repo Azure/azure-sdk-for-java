@@ -13,6 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -30,6 +31,7 @@ import reactor.util.context.Context;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -81,6 +83,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
+            } else if (interceptorManager.isPlaybackMode()) {
+                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildAsyncClient();
         });

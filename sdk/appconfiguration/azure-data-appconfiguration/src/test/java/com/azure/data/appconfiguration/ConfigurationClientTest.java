@@ -13,6 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -27,6 +28,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -76,6 +78,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
+            } else if (interceptorManager.isPlaybackMode()) {
+                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildClient();
         });
