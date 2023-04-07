@@ -511,7 +511,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
      * @param document The data of the document to analyze information from. For service supported file types, see:
-     * <a href="https://aka.ms/azsdk/formrecognizer/supportedfiles"</a>
+     * <a href="https://aka.ms/azsdk/formrecognizer/supportedfiles"></a>
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.

@@ -25,6 +25,9 @@
 ### Bugs Fixed
 
 ### Other Changes
+#### Known Bug
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClasifyDocument` 
+method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
 
 ## 4.0.5 (2023-03-16)
 

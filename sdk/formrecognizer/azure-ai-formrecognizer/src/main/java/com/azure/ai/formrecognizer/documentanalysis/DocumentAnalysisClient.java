@@ -365,9 +365,9 @@ public final class DocumentAnalysisClient {
                 null,
                 documentUrl,
                 finalContext).apply(cxt)),
-            pollingOperation(classifierId, finalContext),
+            pollingClassifierOperation(classifierId, finalContext),
             getCancellationIsNotSupported(),
-            fetchingOperation(classifierId, finalContext));
+            fetchingClassifierOperation(classifierId, finalContext));
     }
 
     /**
@@ -449,7 +449,7 @@ public final class DocumentAnalysisClient {
     private Function<PollingContext<OperationResult>, OperationResult> classifyActivationOperation(String classifierId, BinaryData document, String documentUrl, Context context) {
         ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> response;
         try {
-            if (documentUrl == null) {
+            if (documentUrl != null) {
                 response = documentClassifiersImpl.classifyDocumentWithResponse(classifierId,
                     StringIndexType.UTF16CODE_UNIT,
                     new ClassifyDocumentRequest().setUrlSource(documentUrl),

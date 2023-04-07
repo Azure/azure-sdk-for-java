@@ -1412,7 +1412,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             dataRunner((data, dataLength) -> {
                 SyncPoller<OperationResult, AnalyzeResult>
                     syncPoller
-                    = client.beginAnalyzeDocument(documentClassifierDetails.get().getClassifierId(),
+                    = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
                         BinaryData.fromStream(data, dataLength))
                     .setPollInterval(durationTestMode).getSyncPoller();
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
