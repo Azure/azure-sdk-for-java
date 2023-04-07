@@ -98,7 +98,6 @@ public final class SqlQuerySpecWithEncryption {
                                 if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
                                     // case: id does not support '/','\','?','#'. Convert Base64 string to Uri safe string
                                     String base64UriSafeString =  convertToBase64UriSafeString(cipherTextWithTypeMarker);
-                                    System.out.println("encrypted id " + base64UriSafeString);
                                     encryptedParameter = new SqlParameter(sqlParameter.getName(),
                                         base64UriSafeString.getBytes(StandardCharsets.UTF_8));
 

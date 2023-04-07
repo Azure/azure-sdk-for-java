@@ -22,6 +22,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.BinaryNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
@@ -103,7 +104,7 @@ public class EncryptionProcessor {
             this.containerRid = cosmosContainerProperties.getResourceId();
             this.databaseRid = cosmosContainerPropertiesAccessor.getSelfLink(cosmosContainerProperties).split("/")[1];
 
-            if (cosmosContainerProperties.getPartitionKeyDefinition().getPaths().isEmpty()) {
+            if (!cosmosContainerProperties.getPartitionKeyDefinition().getPaths().isEmpty()) {
                 this.partitionKeyPaths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
             } else {
                 this.partitionKeyPaths = new ArrayList<>();
@@ -451,9 +452,12 @@ public class EncryptionProcessor {
 
     public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
         JsonNode propertyValueHolder = toJsonNode(propertyValue.getBytes(StandardCharsets.US_ASCII), TypeMarker.STRING);
-        return new String(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName), StandardCharsets.US_ASCII);
+        if (propertyName.equals(Constants.PROPERTY_NAME_ID)) {
+            return new String(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName), StandardCharsets.UTF_8);
+        } else {
+            return BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName)).asText();
+        }
     }
-
 
     public byte[] encryptAndSerializeValue(EncryptionSettings encryptionSettings, ObjectNode objectNode,
                                            JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException {
@@ -677,7 +681,6 @@ public class EncryptionProcessor {
     private byte[] convertFromBase64UriSafeString(String base64UriSafeString) {
         return Base64.getUrlDecoder().decode(base64UriSafeString);
     }
-
 
     public enum TypeMarker {
         NULL(1), // not used
