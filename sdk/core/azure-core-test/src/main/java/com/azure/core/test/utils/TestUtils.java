@@ -80,14 +80,31 @@ public final class TestUtils {
      * @param actual The actual {@link ByteBuffer}.
      */
     public static void assertByteBuffersEqual(ByteBuffer expected, ByteBuffer actual) {
+        int expectedPosition = 0;
+        int actualPosition = 0;
+        if (expected != null) {
+            expectedPosition = expected.position();
+        }
+
+        if (actual != null) {
+            actualPosition = actual.position();
+        }
+
         if (!Objects.equals(expected, actual)) {
             // Reset the ByteBuffers in case their position was changed.
-            expected.reset();
-            actual.reset();
-            byte[] expectedArray = new byte[expected.remaining()];
-            expected.get(expectedArray);
-            byte[] actualArray = new byte[actual.remaining()];
-            actual.get(actualArray);
+            byte[] expectedArray = null;
+            if (expected != null) {
+                expected.position(expectedPosition);
+                expectedArray = new byte[expected.remaining()];
+                expected.get(expectedArray);
+            }
+
+            byte[] actualArray = null;
+            if (actual != null) {
+                actual.position(actualPosition);
+                actualArray = new byte[actual.remaining()];
+                actual.get(actualArray);
+            }
 
             Assertions.assertArrayEquals(expectedArray, actualArray);
         }
