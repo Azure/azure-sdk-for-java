@@ -812,6 +812,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
      * </ul>
      *
+     * <p>
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition to
+     * a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable error
+     * or exhausts the retries, the Subscriber's {@link org.reactivestreams.Subscriber#onError(Throwable)} terminal handler
+     * will be notified with this error. No further messages will be delivered to {@link org.reactivestreams.Subscriber#onNext(Object)}
+     * after the terminal event; the application must create a new client to resume the receive. Re-subscribing to the Flux
+     * of the old client will have no effect.
+     * <br/>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
+     * </p>
+     *
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.

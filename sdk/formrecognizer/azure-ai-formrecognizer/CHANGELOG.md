@@ -6,6 +6,17 @@
 - Added support for analyzing new document types
 - Added support for AzureBlobList source type when building document models
 - Added support for building, getting, listing and deleting classifiers
+- Added support for queryFields premium feature when performing analysis operations
+- Added model `QuotaDetails` and property `customNeuralDocumentModelBuilds` on `ResourceDetails`
+- Added property `expiresOn` to `DocumentModelDetails` and `DocumentModelSummary`
+- Added properties on `DocumentStyle` : `similarFontFamily`, `fontStyle`, `fontWeight`, `color`, `backgroundColor`
+- Added property `commonName` to `DocumentKeyValuePair`.
+- Added support for ParagraphRole `formulaBlock`
+- Added support for `code` property on `CurrencyValue`
+- Added properties `unit`, `cityDistrict`, `stateDistrict`, `suburb`, `house`, and `level` to `AddressValue`
+- Added method `isValueBoolean` to model `DocumentField`
+- Added support for `DocumentFieldType.BOOLEAN`
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -39,7 +39,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImplBuilder;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
@@ -243,12 +242,11 @@ public final class ConfigurationClientBuilder implements
             ? version
             : ConfigurationServiceVersion.getLatest();
         // Don't share the default auto-created pipeline between App Configuration client instances.
-        return new AzureAppConfigurationImplBuilder()
-                   .pipeline(pipeline == null ? createDefaultHttpPipeline(
-                       syncTokenPolicy, credentialsLocal, tokenCredentialLocal) : pipeline)
-                   .apiVersion(serviceVersion.getVersion())
-                   .endpoint(endpointLocal)
-                   .buildClient();
+        HttpPipeline buildPipeline = (pipeline == null)
+            ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
+            : pipeline;
+
+        return new AzureAppConfigurationImpl(buildPipeline, null, endpointLocal, serviceVersion.getVersion());
     }
 
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,

@@ -47,7 +47,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.11.7</version>
+    <version>1.11.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

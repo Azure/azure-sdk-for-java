@@ -10,43 +10,31 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.models.ResponseError;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImpl;
 import com.azure.monitor.query.implementation.logs.models.BatchQueryRequest;
-import com.azure.monitor.query.implementation.logs.models.BatchQueryResponse;
-import com.azure.monitor.query.implementation.logs.models.BatchQueryResults;
 import com.azure.monitor.query.implementation.logs.models.BatchRequest;
-import com.azure.monitor.query.implementation.logs.models.BatchResponse;
 import com.azure.monitor.query.implementation.logs.models.ErrorInfo;
 import com.azure.monitor.query.implementation.logs.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.implementation.logs.models.QueryBody;
-import com.azure.monitor.query.implementation.logs.models.QueryResults;
-import com.azure.monitor.query.implementation.logs.models.Table;
 import com.azure.monitor.query.models.LogsBatchQuery;
-import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
-import com.azure.monitor.query.models.LogsColumnType;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
-import com.azure.monitor.query.models.LogsTable;
-import com.azure.monitor.query.models.LogsTableCell;
-import com.azure.monitor.query.models.LogsTableColumn;
-import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.AZURE_RESPONSE_TIMEOUT;
+import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.CLIENT_TIMEOUT_BUFFER;
+import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.getAllWorkspaces;
+import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.mapLogsQueryError;
 
 /**
  * The asynchronous client for querying Azure Monitor logs.
@@ -63,8 +51,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = LogsQueryClientBuilder.class, isAsync = true)
 public final class LogsQueryAsyncClient {
 
-    private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
-    private static final int CLIENT_TIMEOUT_BUFFER = 5;
     private final AzureLogAnalyticsImpl innerClient;
 
     /**
@@ -197,20 +183,6 @@ public final class LogsQueryAsyncClient {
                         LogsQueryHelper.toObject(response.getValue().getTable(), type)));
     }
 
-    /**
-     * Returns all the Azure Monitor logs matching the given batch of queries in the specified workspaceId.
-     *
-     * @param workspaceId The workspaceId where the batch of queries should be executed.
-     * @param queries A batch of Kusto queries.
-     * @param timeInterval The time period for which the logs should be looked up.
-     * @return A collection of query results corresponding to the input batch of queries.
-     */
-    Mono<LogsBatchQueryResultCollection> queryBatch(String workspaceId, List<String> queries,
-                                                    QueryTimeInterval timeInterval) {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        queries.forEach(query -> logsBatchQuery.addWorkspaceQuery(workspaceId, query, timeInterval));
-        return queryBatchWithResponse(logsBatchQuery).map(Response::getValue);
-    }
 
     /**
      * Returns all the Azure Monitor logs matching the given batch of queries.
@@ -400,7 +372,7 @@ public final class LogsQueryAsyncClient {
                     }
                     return ex;
                 })
-                .map(this::convertToLogQueryBatchResult);
+                .map(LogsQueryHelper::convertToLogQueryBatchResult);
     }
 
     private Context updateContext(Duration serverTimeout, Context context) {
@@ -410,43 +382,6 @@ public final class LogsQueryAsyncClient {
         return context;
     }
 
-    private Response<LogsBatchQueryResultCollection> convertToLogQueryBatchResult(Response<BatchResponse> response) {
-        List<LogsBatchQueryResult> batchResults = new ArrayList<>();
-        LogsBatchQueryResultCollection logsBatchQueryResultCollection = new LogsBatchQueryResultCollection(batchResults);
-
-        BatchResponse batchResponse = response.getValue();
-
-        for (BatchQueryResponse singleQueryResponse : batchResponse.getResponses()) {
-
-            BatchQueryResults queryResults = singleQueryResponse.getBody();
-            LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(),
-                    queryResults.getStatistics(), queryResults.getRender(), queryResults.getError());
-            LogsBatchQueryResult logsBatchQueryResult = new LogsBatchQueryResult(singleQueryResponse.getId(),
-                    singleQueryResponse.getStatus(), logsQueryResult.getAllTables(), logsQueryResult.getStatistics(),
-                    logsQueryResult.getVisualization(), logsQueryResult.getError());
-            batchResults.add(logsBatchQueryResult);
-        }
-        batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), logsBatchQueryResultCollection);
-    }
-
-    private ResponseError mapLogsQueryError(ErrorInfo errors) {
-        if (errors != null) {
-            ErrorInfo innerError = errors.getInnererror();
-            ErrorInfo currentError = errors.getInnererror();
-            while (currentError != null) {
-                innerError = currentError.getInnererror();
-                currentError = currentError.getInnererror();
-            }
-            String code = errors.getCode();
-            if (errors.getCode() != null && innerError != null && errors.getCode().equals(innerError.getCode())) {
-                code = innerError.getCode();
-            }
-            return new ResponseError(code, errors.getMessage());
-        }
-
-        return null;
-    }
 
     Mono<Response<LogsQueryResult>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                                LogsQueryOptions options, Context context) {
@@ -473,7 +408,7 @@ public final class LogsQueryAsyncClient {
                     }
                     return ex;
                 })
-                .map(this::convertToLogQueryResult)
+                .map(LogsQueryHelper::convertToLogQueryResult)
                 .handle((Response<LogsQueryResult> response, SynchronousSink<Response<LogsQueryResult>> sink) -> {
                     if (response.getValue().getQueryResultStatus() == LogsQueryResultStatus.PARTIAL_FAILURE
                         && !options.isAllowPartialErrors()) {
@@ -494,7 +429,6 @@ public final class LogsQueryAsyncClient {
         }
         String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
         context = updateContext(options.getServerTimeout(), context);
-
         QueryBody queryBody = new QueryBody(query);
         if (timeInterval != null) {
             queryBody.setTimespan(LogsQueryHelper.toIso8601Format(timeInterval));
@@ -515,7 +449,7 @@ public final class LogsQueryAsyncClient {
                 }
                 return ex;
             })
-            .map(this::convertToLogQueryResult)
+            .map(LogsQueryHelper::convertToLogQueryResult)
             .handle((Response<LogsQueryResult> response, SynchronousSink<Response<LogsQueryResult>> sink) -> {
                 if (response.getValue().getQueryResultStatus() == LogsQueryResultStatus.PARTIAL_FAILURE
                     && !options.isAllowPartialErrors()) {
@@ -527,69 +461,5 @@ public final class LogsQueryAsyncClient {
                     sink.next(response);
                 }
             });
-    }
-
-    private Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
-        QueryResults queryResults = response.getValue();
-        LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(), queryResults.getStatistics(),
-                queryResults.getRender(), queryResults.getError());
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), logsQueryResult);
-    }
-
-    private LogsQueryResult getLogsQueryResult(List<Table> innerTables, Object innerStats,
-                                               Object innerVisualization, ErrorInfo innerError) {
-        List<LogsTable> tables = null;
-
-        if (innerTables != null) {
-            tables = new ArrayList<>();
-            for (Table table : innerTables) {
-                List<LogsTableCell> tableCells = new ArrayList<>();
-                List<LogsTableRow> tableRows = new ArrayList<>();
-                List<LogsTableColumn> tableColumns = new ArrayList<>();
-                LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
-                tables.add(logsTable);
-                List<List<Object>> rows = table.getRows();
-
-                for (int i = 0; i < rows.size(); i++) {
-                    List<Object> row = rows.get(i);
-                    LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
-                    tableRows.add(tableRow);
-                    for (int j = 0; j < row.size(); j++) {
-                        LogsColumnType columnType = table.getColumns().get(j).getType() == null
-                                ? null
-                                : LogsColumnType.fromString(table.getColumns().get(j).getType().toString());
-                        LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-                                columnType, j, i,
-                                row.get(j));
-                        tableCells.add(cell);
-                        tableRow.getRow().add(cell);
-                    }
-                }
-            }
-        }
-
-        BinaryData queryStatistics = null;
-
-        if (innerStats != null) {
-            queryStatistics = BinaryData.fromObject(innerStats);
-        }
-
-        BinaryData queryVisualization = null;
-        if (innerVisualization != null) {
-            queryVisualization = BinaryData.fromObject(innerVisualization);
-        }
-
-        LogsQueryResult logsQueryResult = new LogsQueryResult(tables, queryStatistics, queryVisualization,
-                mapLogsQueryError(innerError));
-        return logsQueryResult;
-    }
-
-    private List<String> getAllWorkspaces(LogsQueryOptions body) {
-        List<String> allWorkspaces = new ArrayList<>();
-        if (!CoreUtils.isNullOrEmpty(body.getAdditionalWorkspaces())) {
-            allWorkspaces.addAll(body.getAdditionalWorkspaces());
-        }
-        return allWorkspaces;
     }
 }

@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
@@ -38,6 +39,7 @@ import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -1311,6 +1313,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .preferredRegions(preferredRegions)
             .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
             .consistencyLevel(consistencyLevel);
+        ImplementationBridgeHelpers
+            .CosmosClientBuilderHelper
+            .getCosmosClientBuilderAccessor()
+            .buildConnectionPolicy(builder);
 
         if (!retryOnThrottledRequests) {
             builder.throttlingRetryOptions(new ThrottlingRetryOptions().setMaxRetryAttemptsOnThrottledRequests(0));
