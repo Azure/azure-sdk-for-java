@@ -20,7 +20,7 @@ import java.util.UUID;
  * This example shows how to use service level timeouts. These timeouts are set on the service operation. If the server
  * timeout interval elapses before the service has finished processing the request, the service returns an error.
  * For more information on setting service timeouts, see here:
- * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Blobs timeout</a>
+ * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting timeouts for blob service operations</a>
  */
 public class ServiceLevelTimeoutExample {
 
