@@ -72,16 +72,15 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-json</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-json;current} -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-xml</artifactId>
