@@ -17,6 +17,7 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -40,7 +41,9 @@ public class TestProxyManager {
 
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
-        TestProxyDownloader.installTestProxy();
+        if (runningLocally()) {
+            TestProxyDownloader.installTestProxy();
+        }
     }
 
     /**
@@ -53,15 +56,23 @@ public class TestProxyManager {
         try {
             String commandLine = "test-proxy";
             // if we're not running in CI, construct the local path. TF_BUILD indicates Azure DevOps. CI indicates Github Actions.
-            if (Configuration.getGlobalConfiguration().get("TF_BUILD") == null
-                && Configuration.getGlobalConfiguration().get("CI") == null) {
+            if (runningLocally()) {
                 commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
                     TestProxyUtils.getProxyProcessName()).toString();
             }
 
-            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl().toString())
-                .directory(TestProxyDownloader.getProxyDirectory().toFile());
+            ProcessBuilder builder = new ProcessBuilder(commandLine,
+                "--storage-location",
+                recordingPath.getPath(),
+                "--",
+                "--urls",
+                getProxyUrl().toString());
+            Map<String, String> environment = builder.environment();
+            environment.put("LOGGING__LOGLEVEL", "Information");
+            environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+            environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
             proxy = builder.start();
+
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
                 String.format("%s/admin/isalive", getProxyUrl()));
@@ -115,5 +126,14 @@ public class TestProxyManager {
             throw new RuntimeException(e);
         }
         return proxyUrl;
+    }
+
+    /**
+     * Checks the environment variables commonly set in CI to determine if the run is local.
+     * @return True if the run is local.
+     */
+    private boolean runningLocally() {
+        return Configuration.getGlobalConfiguration().get("TF_BUILD") == null
+            && Configuration.getGlobalConfiguration().get("CI") == null;
     }
 }
