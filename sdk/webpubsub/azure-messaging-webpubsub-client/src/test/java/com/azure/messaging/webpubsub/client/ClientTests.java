@@ -383,7 +383,7 @@ public class ClientTests extends TestBase {
             .buildClient();
 
         client.addOnConnectedEventHandler(event -> {
-            connectionId.compareAndExchange(null, event.getConnectionId());
+            connectionId.compareAndSet(null, event.getConnectionId());
             eventReceived.add(event.getClass().getSimpleName());
         });
         client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
@@ -436,7 +436,7 @@ public class ClientTests extends TestBase {
             .buildClient();
 
         client.addOnConnectedEventHandler(event -> {
-            connectionId.compareAndExchange(null, event.getConnectionId());
+            connectionId.compareAndSet(null, event.getConnectionId());
             eventReceived.add(event.getClass().getSimpleName());
         });
         client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
