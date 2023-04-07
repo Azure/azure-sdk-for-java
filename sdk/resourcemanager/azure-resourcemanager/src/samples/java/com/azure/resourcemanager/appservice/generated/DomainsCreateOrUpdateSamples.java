@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
 import com.azure.resourcemanager.appservice.models.Address;
 import com.azure.resourcemanager.appservice.models.Contact;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Samples for Domains CreateOrUpdate. */
 public final class DomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/CreateAppServiceDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/CreateAppServiceDomain.json
      */
     /**
      * Sample code: Create App Service Domain.
@@ -44,7 +43,7 @@ public final class DomainsCreateOrUpdateSamples {
                                     .withAddress1("3400 State St")
                                     .withCity("Chicago")
                                     .withCountry("United States")
-                                    .withPostalCode("67098")
+                                    .withPostalCode("fakeTokenPlaceholder")
                                     .withState("IL"))
                             .withEmail("admin@email.com")
                             .withFax("1-245-534-2242")
@@ -61,7 +60,7 @@ public final class DomainsCreateOrUpdateSamples {
                                     .withAddress1("3400 State St")
                                     .withCity("Chicago")
                                     .withCountry("United States")
-                                    .withPostalCode("67098")
+                                    .withPostalCode("fakeTokenPlaceholder")
                                     .withState("IL"))
                             .withEmail("billing@email.com")
                             .withFax("1-245-534-2242")
@@ -78,7 +77,7 @@ public final class DomainsCreateOrUpdateSamples {
                                     .withAddress1("3400 State St")
                                     .withCity("Chicago")
                                     .withCountry("United States")
-                                    .withPostalCode("67098")
+                                    .withPostalCode("fakeTokenPlaceholder")
                                     .withState("IL"))
                             .withEmail("registrant@email.com")
                             .withFax("1-245-534-2242")
@@ -95,7 +94,7 @@ public final class DomainsCreateOrUpdateSamples {
                                     .withAddress1("3400 State St")
                                     .withCity("Chicago")
                                     .withCountry("United States")
-                                    .withPostalCode("67098")
+                                    .withPostalCode("fakeTokenPlaceholder")
                                     .withState("IL"))
                             .withEmail("tech@email.com")
                             .withFax("1-245-534-2242")
@@ -113,8 +112,8 @@ public final class DomainsCreateOrUpdateSamples {
                             .withAgreedBy("192.0.2.1")
                             .withAgreedAt(OffsetDateTime.parse("2021-09-10T19:30:53Z")))
                     .withDnsType(DnsType.DEFAULT_DOMAIN_REGISTRAR_DNS)
-                    .withAuthCode("exampleAuthCode"),
-                Context.NONE);
+                    .withAuthCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

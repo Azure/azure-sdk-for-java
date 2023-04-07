@@ -129,6 +129,14 @@ public final class DataAction extends ExpandableStringEnum<DataAction> {
     public static final DataAction RANDOM_NUMBERS_GENERATE = fromString("Microsoft.KeyVault/managedHsm/rng/action");
 
     /**
+     * Creates a new instance of DataAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataAction() {}
+
+    /**
      * Creates or finds a DataAction from its string representation.
      *
      * @param name a name to look for.

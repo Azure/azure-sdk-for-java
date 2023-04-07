@@ -18,6 +18,10 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CustomDnsSuffixConfigurationProperties innerProperties;
 
+    /** Creates an instance of CustomDnsSuffixConfigurationInner class. */
+    public CustomDnsSuffixConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: CustomDnsSuffixConfiguration resource specific properties.
      *

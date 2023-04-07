@@ -138,6 +138,7 @@ org.springframework.data:spring-data-commons;2.7.8
 org.springframework.data:spring-data-mongodb;3.4.8
 org.springframework.data:spring-data-redis;2.7.8
 org.springframework.experimental:spring-aot;0.11.4
+org.springframework.experimental:spring-aot-maven-plugin;0.11.4
 org.springframework.integration:spring-integration-core;5.5.16
 org.springframework.kafka:spring-kafka;2.8.11
 org.springframework.security:spring-security-config;5.7.7

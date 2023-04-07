@@ -37,6 +37,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -156,6 +157,13 @@ public class FaultInjectionRuleProcessor {
 
                 List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
                 effectiveCondition.setRegionEndpoints(regionEndpoints);
+
+                if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
+                    // if region is not specific configured, then also add the defaultEndpoint
+                    List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
+                    regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
+                    effectiveCondition.setRegionEndpoints(regionEndpointsWithDefault);
+                }
 
                 // TODO: add handling for gateway mode
 

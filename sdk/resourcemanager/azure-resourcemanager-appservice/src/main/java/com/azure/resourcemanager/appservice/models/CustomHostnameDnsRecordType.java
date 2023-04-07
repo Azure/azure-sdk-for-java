@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CustomHostnameDnsRecordType. */
+/** Type of the DNS record. */
 public enum CustomHostnameDnsRecordType {
     /** Enum value CName. */
     CNAME("CName"),
@@ -30,6 +30,9 @@ public enum CustomHostnameDnsRecordType {
      */
     @JsonCreator
     public static CustomHostnameDnsRecordType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CustomHostnameDnsRecordType[] items = CustomHostnameDnsRecordType.values();
         for (CustomHostnameDnsRecordType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum CustomHostnameDnsRecordType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -181,30 +181,31 @@ public final class ConfigurationSettingDeserializationHelper {
             if (token == JsonToken.VALUE_STRING) {
                 map.put(ID, parser.getText());
             }
+            token = parser.nextToken();
         }
         // description
-        token = parser.nextToken();
         if (token == JsonToken.FIELD_NAME && DESCRIPTION.equals(parser.getCurrentName())) {
             token = parser.nextToken();
             if (token == JsonToken.VALUE_STRING) {
                 map.put(DESCRIPTION, parser.getText());
             }
+            token = parser.nextToken();
         }
         // display name
-        token = parser.nextToken();
         if (token == JsonToken.FIELD_NAME && DISPLAY_NAME.equals(parser.getCurrentName())) {
             token = parser.nextToken();
             if (token == JsonToken.VALUE_STRING) {
                 map.put(DISPLAY_NAME, parser.getText());
             }
+            token = parser.nextToken();
         }
         // is enabled
-        token = parser.nextToken();
         if (token == JsonToken.FIELD_NAME && ENABLED.equals(parser.getCurrentName())) {
             token = parser.nextToken();
             if (token == JsonToken.VALUE_FALSE || token == JsonToken.VALUE_TRUE) {
                 map.put(ENABLED, parser.getBooleanValue());
             }
+            token = parser.nextToken();
         }
 
         // Use the map to get all properties
@@ -214,7 +215,6 @@ public final class ConfigurationSettingDeserializationHelper {
                 .setDescription((String) map.get(DESCRIPTION));
 
         // conditional arrays
-        token = parser.nextToken();
         if (token == JsonToken.FIELD_NAME && CONDITIONS.equals(parser.getCurrentName())) {
             parser.nextToken(); // get object start
             token = parser.nextToken(); // get field name

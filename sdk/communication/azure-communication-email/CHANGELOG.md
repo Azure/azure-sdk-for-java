@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2023-03-31)
 
 ### Features Added
 
-### Breaking Changes
+The public release of the Azure Communication Services SDK for Email has the following features:
 
-### Bugs Fixed
-
-### Other Changes
+- send emails with a variety of options (multiple recipients, attachments, etc.)
+- poll for the status of the email that was sent to track its progress
 
 ## 1.0.0-beta.2 (2023-03-01)
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancingMode. */
+/** Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. */
 public final class LoadBalancingMode extends ExpandableStringEnum<LoadBalancingMode> {
     /** Static value None for LoadBalancingMode. */
     public static final LoadBalancingMode NONE = fromString("None");
@@ -21,6 +21,15 @@ public final class LoadBalancingMode extends ExpandableStringEnum<LoadBalancingM
 
     /** Static value Web, Publishing for LoadBalancingMode. */
     public static final LoadBalancingMode WEB_PUBLISHING = fromString("Web, Publishing");
+
+    /**
+     * Creates a new instance of LoadBalancingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancingMode() {
+    }
 
     /**
      * Creates or finds a LoadBalancingMode from its string representation.

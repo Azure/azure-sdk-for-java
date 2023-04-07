@@ -22,6 +22,10 @@ public final class QueryUtterancesResult {
     @JsonProperty(value = "score")
     private Float score;
 
+    /** Creates an instance of QueryUtterancesResult class. */
+    public QueryUtterancesResult() {
+    }
+
     /**
      * Get the sampleUtterance property: A sample utterance.
      *

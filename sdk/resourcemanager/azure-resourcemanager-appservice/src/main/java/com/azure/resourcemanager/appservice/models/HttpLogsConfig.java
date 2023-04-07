@@ -22,6 +22,10 @@ public final class HttpLogsConfig {
     @JsonProperty(value = "azureBlobStorage")
     private AzureBlobStorageHttpLogsConfig azureBlobStorage;
 
+    /** Creates an instance of HttpLogsConfig class. */
+    public HttpLogsConfig() {
+    }
+
     /**
      * Get the fileSystem property: Http logs to file system configuration.
      *

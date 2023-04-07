@@ -29,6 +29,10 @@ public final class ExpressionTraces {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressionTraces class. */
+    public ExpressionTraces() {
+    }
+
     /**
      * Get the value property: Anything.
      *

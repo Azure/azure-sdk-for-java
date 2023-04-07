@@ -60,6 +60,10 @@ public final class SkuDescription {
     @JsonProperty(value = "capabilities")
     private List<CapabilityInner> capabilities;
 
+    /** Creates an instance of SkuDescription class. */
+    public SkuDescription() {
+    }
+
     /**
      * Get the name property: Name of the resource SKU.
      *

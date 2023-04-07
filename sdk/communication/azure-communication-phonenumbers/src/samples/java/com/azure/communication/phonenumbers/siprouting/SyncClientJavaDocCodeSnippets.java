@@ -3,14 +3,11 @@
 
 package com.azure.communication.phonenumbers.siprouting;
 
-import com.azure.communication.phonenumbers.SipRoutingClient;
-import com.azure.communication.phonenumbers.SipRoutingClientBuilder;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -36,48 +33,26 @@ public class SyncClientJavaDocCodeSnippets {
 
     /**
      * Sample code for listing SIP trunks.
-     * @return the SIP trunks.
      */
-    public List<SipTrunk> listTrunks() {
+    public void listTrunks() {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.listTrunks
-        List<SipTrunk> trunks = sipRoutingClient.listTrunks();
+        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         }
         // END: com.azure.communication.phonenumbers.siprouting.client.listTrunks
-
-        return trunks;
-    }
-
-    /**
-     * Sample code for listing SIP trunks with response.
-     * @return the SIP trunks.
-     */
-    public List<SipTrunk> listTrunksWithResponse() {
-        SipRoutingClient sipRoutingClient = createSipRoutingClient();
-
-        // BEGIN: com.azure.communication.phonenumbers.siprouting.client.listTrunksWithResponse
-        Response<List<SipTrunk>> response = sipRoutingClient.listTrunksWithResponse(Context.NONE);
-        List<SipTrunk> trunks = response.getValue();
-        for (SipTrunk trunk : trunks) {
-            System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
-        }
-        // END: com.azure.communication.phonenumbers.siprouting.client.listTrunksWithResponse
-
-        return trunks;
     }
 
     /**
      * Sample code for listing SIP routing routes.
-     * @return the SIP routes.
      */
-    public List<SipTrunkRoute> listRoutes() {
+    public void listRoutes() {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.listRoutes
-        List<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
+        PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
         for (SipTrunkRoute route : routes) {
             System.out.println("Route name: " + route.getName());
             System.out.println("Route description: " + route.getDescription());
@@ -85,29 +60,6 @@ public class SyncClientJavaDocCodeSnippets {
             System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
         }
         // END: com.azure.communication.phonenumbers.siprouting.client.listRoutes
-
-        return routes;
-    }
-
-    /**
-     * Sample code for listing SIP routing routes with response.
-     * @return the SIP routes.
-     */
-    public List<SipTrunkRoute> listRoutesWithResponse() {
-        SipRoutingClient sipRoutingClient = createSipRoutingClient();
-
-        // BEGIN: com.azure.communication.phonenumbers.siprouting.client.listRoutesWithResponse
-        Response<List<SipTrunkRoute>> response = sipRoutingClient.listRoutesWithResponse(Context.NONE);
-        List<SipTrunkRoute> routes = response.getValue();
-        for (SipTrunkRoute route : routes) {
-            System.out.println("Route name: " + route.getName());
-            System.out.println("Route description: " + route.getDescription());
-            System.out.println("Route number pattern: " + route.getNumberPattern());
-            System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
-        }
-        // END: com.azure.communication.phonenumbers.siprouting.client.listRoutesWithResponse
-
-        return routes;
     }
 
     /**

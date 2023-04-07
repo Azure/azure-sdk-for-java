@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps StartWebSiteNetworkTraceOperation. */
 public final class WebAppsStartWebSiteNetworkTraceOperationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/StartWebSiteNetworkTraceOperation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/StartWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Start a new network trace operation for a site.
@@ -22,6 +20,7 @@ public final class WebAppsStartWebSiteNetworkTraceOperationSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .startWebSiteNetworkTraceOperation("testrg123", "SampleApp", 60, null, null, Context.NONE);
+            .startWebSiteNetworkTraceOperation(
+                "testrg123", "SampleApp", 60, null, null, com.azure.core.util.Context.NONE);
     }
 }

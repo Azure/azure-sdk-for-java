@@ -24,6 +24,10 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
     @JsonProperty(value = "details")
     private List<AzureResourceErrorInfo> details;
 
+    /** Creates an instance of AzureResourceErrorInfo class. */
+    public AzureResourceErrorInfo() {
+    }
+
     /**
      * Get the message property: The error message.
      *

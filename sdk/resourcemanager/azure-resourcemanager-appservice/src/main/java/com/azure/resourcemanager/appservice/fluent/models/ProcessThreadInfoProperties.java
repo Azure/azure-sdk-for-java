@@ -83,6 +83,10 @@ public final class ProcessThreadInfoProperties {
     @JsonProperty(value = "wait_reason")
     private String waitReason;
 
+    /** Creates an instance of ProcessThreadInfoProperties class. */
+    public ProcessThreadInfoProperties() {
+    }
+
     /**
      * Get the identifier property: Site extension ID.
      *

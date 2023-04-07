@@ -11,7 +11,7 @@
 	<groupId>com.azure.spring</groupId>
 	<artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
 	<version>4.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
-	<name>Azure Spring Cloud App Configuration Config Web</name>
+	<name>Spring Cloud Azure App Configuration Config Web</name>
 	<description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
 	<properties>

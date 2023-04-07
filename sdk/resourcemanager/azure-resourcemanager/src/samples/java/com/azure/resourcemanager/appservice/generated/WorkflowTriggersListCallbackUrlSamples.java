@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowTriggers ListCallbackUrl. */
 public final class WorkflowTriggersListCallbackUrlSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowTriggers_ListCallbackUrl.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggers_ListCallbackUrl.json
      */
     /**
      * Sample code: Get the callback URL for a trigger.
@@ -22,6 +20,7 @@ public final class WorkflowTriggersListCallbackUrlSamples {
             .manager()
             .serviceClient()
             .getWorkflowTriggers()
-            .listCallbackUrlWithResponse("test-resource-group", "test-name", "test-workflow", "manual", Context.NONE);
+            .listCallbackUrlWithResponse(
+                "test-resource-group", "test-name", "test-workflow", "manual", com.azure.core.util.Context.NONE);
     }
 }

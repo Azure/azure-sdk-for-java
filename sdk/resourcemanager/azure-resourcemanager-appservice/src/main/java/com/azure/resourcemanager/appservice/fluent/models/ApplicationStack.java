@@ -43,11 +43,14 @@ public final class ApplicationStack {
     private List<ApplicationStack> frameworks;
 
     /*
-     * <code>true</code> if this is the stack is deprecated; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if this is the stack is deprecated; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isDeprecated")
     private List<ApplicationStack> isDeprecated;
+
+    /** Creates an instance of ApplicationStack class. */
+    public ApplicationStack() {
+    }
 
     /**
      * Get the name property: Application stack name.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListAppServicePlans. */
 public final class AppServiceEnvironmentsListAppServicePlansSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListAppServicePlans.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListAppServicePlans.json
      */
     /**
      * Sample code: Get all App Service plans in an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListAppServicePlansSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listAppServicePlans("test-rg", "test-ase", Context.NONE);
+            .listAppServicePlans("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

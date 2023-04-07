@@ -14,15 +14,15 @@ public final class CatalogsResultTests {
         CatalogsResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"ufo\",\"name\":\"jywif\",\"billingPlans\":{\"gdf\":[\"Upfront\",\"Monthly\"],\"j\":[\"Upfront\",\"Monthly\",\"Upfront\",\"Upfront\"]},\"terms\":[\"P3Y\",\"P1Y\",\"P5Y\",\"P1Y\"],\"locations\":[\"ktsizntocipaou\",\"jpsq\",\"cmpoyfdkfogkny\",\"jofjd\"],\"skuProperties\":[],\"msrp\":{},\"restrictions\":[],\"tier\":\"pewnw\",\"size\":\"itjz\",\"capabilities\":[]},{\"resourceType\":\"sarhmofc\",\"name\":\"smy\",\"billingPlans\":{\"he\":[\"Monthly\",\"Monthly\",\"Upfront\",\"Monthly\"],\"txukcdmp\":[\"Upfront\",\"Monthly\",\"Upfront\"],\"anzwuxzdxta\":[\"Upfront\",\"Monthly\",\"Upfront\",\"Monthly\"]},\"terms\":[\"P5Y\",\"P1Y\",\"P3Y\",\"P1Y\"],\"locations\":[\"mrqobmtukknr\",\"rtihfxtijbpz\"],\"skuProperties\":[],\"msrp\":{},\"restrictions\":[],\"tier\":\"glzufc\",\"size\":\"kohdbiha\",\"capabilities\":[]}],\"nextLink\":\"fcbjysagithxqha\",\"totalItems\":581861231239656930}")
+                    "{\"value\":[{\"resourceType\":\"ufo\",\"name\":\"jywif\",\"billingPlans\":{\"gdf\":[\"Upfront\",\"Monthly\"],\"j\":[\"Upfront\",\"Monthly\",\"Upfront\",\"Upfront\"]},\"terms\":[\"P3Y\",\"P1Y\",\"P5Y\",\"P1Y\"],\"locations\":[\"ktsizntocipaou\",\"jpsq\",\"cmpoyfdkfogkny\",\"jofjd\"],\"skuProperties\":[],\"msrp\":{},\"restrictions\":[],\"tier\":\"wnw\",\"size\":\"itjz\",\"capabilities\":[]},{\"resourceType\":\"sarhmofc\",\"name\":\"smy\",\"billingPlans\":{\"he\":[\"Monthly\",\"Monthly\",\"Upfront\",\"Monthly\"],\"txukcdmp\":[\"Upfront\",\"Monthly\",\"Upfront\"],\"anzwuxzdxta\":[\"Upfront\",\"Monthly\",\"Upfront\",\"Monthly\"]},\"terms\":[\"P5Y\",\"P1Y\",\"P3Y\",\"P1Y\"],\"locations\":[\"mrqobmtukknr\",\"rtihfxtijbpz\"],\"skuProperties\":[],\"msrp\":{},\"restrictions\":[],\"tier\":\"zufcyzkohdbi\",\"size\":\"nufhf\",\"capabilities\":[]}],\"nextLink\":\"s\",\"totalItems\":4240171364940315752}")
                 .toObject(CatalogsResult.class);
-        Assertions.assertEquals(581861231239656930L, model.totalItems());
+        Assertions.assertEquals(4240171364940315752L, model.totalItems());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CatalogsResult model = new CatalogsResult().withTotalItems(581861231239656930L);
+        CatalogsResult model = new CatalogsResult().withTotalItems(4240171364940315752L);
         model = BinaryData.fromObject(model).toObject(CatalogsResult.class);
-        Assertions.assertEquals(581861231239656930L, model.totalItems());
+        Assertions.assertEquals(4240171364940315752L, model.totalItems());
     }
 }

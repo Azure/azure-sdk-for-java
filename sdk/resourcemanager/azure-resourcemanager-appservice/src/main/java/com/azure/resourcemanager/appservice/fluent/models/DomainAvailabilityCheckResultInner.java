@@ -18,19 +18,21 @@ public final class DomainAvailabilityCheckResultInner {
     private String name;
 
     /*
-     * <code>true</code> if domain can be purchased using CreateDomain API;
-     * otherwise, <code>false</code>.
+     * <code>true</code> if domain can be purchased using CreateDomain API; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "available")
     private Boolean available;
 
     /*
-     * Valid values are Regular domain: Azure will charge the full price of
-     * domain registration, SoftDeleted: Purchasing this domain will simply
-     * restore it and this operation will not cost anything.
+     * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted:
+     * Purchasing this domain will simply restore it and this operation will not cost anything.
      */
     @JsonProperty(value = "domainType")
     private DomainType domainType;
+
+    /** Creates an instance of DomainAvailabilityCheckResultInner class. */
+    public DomainAvailabilityCheckResultInner() {
+    }
 
     /**
      * Get the name property: Name of the domain.

@@ -22,6 +22,10 @@ public final class RequestsBasedTrigger {
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
+    /** Creates an instance of RequestsBasedTrigger class. */
+    public RequestsBasedTrigger() {
+    }
+
     /**
      * Get the count property: Request Count.
      *

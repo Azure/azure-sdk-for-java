@@ -17,6 +17,10 @@ public final class UserInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private UserProperties innerProperties;
 
+    /** Creates an instance of UserInner class. */
+    public UserInner() {
+    }
+
     /**
      * Get the innerProperties property: User resource specific properties.
      *

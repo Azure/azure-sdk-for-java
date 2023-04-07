@@ -34,6 +34,10 @@ public final class SitePhpErrorLogFlagProperties {
     @JsonProperty(value = "masterLogErrorsMaxLength")
     private String masterLogErrorsMaxLength;
 
+    /** Creates an instance of SitePhpErrorLogFlagProperties class. */
+    public SitePhpErrorLogFlagProperties() {
+    }
+
     /**
      * Get the localLogErrors property: Local log_errors setting.
      *

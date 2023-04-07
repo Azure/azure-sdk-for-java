@@ -5,6 +5,7 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,6 +24,8 @@ public final class SelectiveKeyRestoreOperationHeaders {
     @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
 
+    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SelectiveKeyRestoreOperationHeaders class.
@@ -30,11 +33,11 @@ public final class SelectiveKeyRestoreOperationHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SelectiveKeyRestoreOperationHeaders(HttpHeaders rawHeaders) {
-        String retryAfter = rawHeaders.getValue("Retry-After");
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
         }
-        this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
+        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
     }
 
     /**

@@ -18,6 +18,10 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSite innerProperties;
 
+    /** Creates an instance of StaticSitePatchResource class. */
+    public StaticSitePatchResource() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *
@@ -337,6 +341,15 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
+    }
+
+    /**
+     * Get the databaseConnections property: Database connections for the static site.
+     *
+     * @return the databaseConnections value.
+     */
+    public List<DatabaseConnectionOverview> databaseConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseConnections();
     }
 
     /**

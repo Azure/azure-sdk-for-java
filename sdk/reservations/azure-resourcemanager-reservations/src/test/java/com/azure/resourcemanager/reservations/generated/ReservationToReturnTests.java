@@ -13,18 +13,17 @@ public final class ReservationToReturnTests {
     public void testDeserialize() throws Exception {
         ReservationToReturn model =
             BinaryData
-                .fromString("{\"reservationId\":\"pesapskrdqmhjj\",\"quantity\":871941711}")
+                .fromString("{\"reservationId\":\"rxv\",\"quantity\":76468143}")
                 .toObject(ReservationToReturn.class);
-        Assertions.assertEquals("pesapskrdqmhjj", model.reservationId());
-        Assertions.assertEquals(871941711, model.quantity());
+        Assertions.assertEquals("rxv", model.reservationId());
+        Assertions.assertEquals(76468143, model.quantity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationToReturn model =
-            new ReservationToReturn().withReservationId("pesapskrdqmhjj").withQuantity(871941711);
+        ReservationToReturn model = new ReservationToReturn().withReservationId("rxv").withQuantity(76468143);
         model = BinaryData.fromObject(model).toObject(ReservationToReturn.class);
-        Assertions.assertEquals("pesapskrdqmhjj", model.reservationId());
-        Assertions.assertEquals(871941711, model.quantity());
+        Assertions.assertEquals("rxv", model.reservationId());
+        Assertions.assertEquals(76468143, model.quantity());
     }
 }
