@@ -4,9 +4,10 @@
 /**
  * <p>The Azure JSON library provides interfaces for stream-style JSON reading and writing. Stream-style reading and
  * writing has the type itself define how to read JSON to create an instance of itself and how it writes out to JSON.
- * Azure JSON also allows for external implementations for JSON reading and writing by offering a service provider
- * interface to load implementations from the classpath. However, if one is not found, the Azure JSON library provides
- * a default implementation.</p>
+ * Azure JSON also allows for external implementations for JSON reading and writing by offering a
+ * <a href="https://docs.oracle.com/javase/tutorial/sound/SPI-intro.html">service provider interface</a> to load
+ * implementations from the classpath. However, if one is not found, the Azure JSON library provides a default
+ * implementation.</p>
  *
  * <h2>Getting Started</h2>
  *

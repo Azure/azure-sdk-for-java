@@ -12,11 +12,6 @@ Azure JSON provides shared primitives, abstractions, and helpers for JSON.
 
 ### Include the package
 
-#### Include direct dependency
-
-If you want to take dependency on a particular version of the library that isn't present in the BOM,
-add the direct dependency to your project as follows.
-
 [//]: # ({x-version-update-start;com.azure:azure-json;current})
 ```xml
 <dependency>
@@ -33,8 +28,9 @@ add the direct dependency to your project as follows.
 
 `JsonSerializable` is used to define how an object is JSON serialized and deserialized using stream-style serialization
 where the object itself manages the logic for how it's handled. The interface provides an instance-based `toJson` API 
-that handles writing the object to a `JsonWriter` and a static `fromJson` API which implementations must overwrite to 
-define how to create an object by reading from a `JsonReader`.
+that handles writing the object to a `JsonWriter` and a static `fromJson` API which implementations must provide to 
+define how to create an object by reading from a `JsonReader`, if an implementation isn't provided 
+`UnsupportedOperationException` will be thrown.
 
 ### JsonToken
 
@@ -59,9 +55,8 @@ provided using an `InputStream` or `Reader`.
 
 #### Nesting Limits
 
-To prevent `StackOverflowError`s, `JsonReader`'s generic `readUntyped` API tracks how deeply nested the object being read
-is, if the nesting passes the threshold of `1000` an `IllegalStateException` is thrown in an attempt to prevent the stack 
-from overflowing.
+`JsonReader`'s generic `readUntyped` API tracks how deeply nested the object being read is. If the nesting passes the 
+threshold of `1000`, `IllegalStateException` is thrown to prevent `StackOverflowError`.
 
 ### JsonWriter
 
