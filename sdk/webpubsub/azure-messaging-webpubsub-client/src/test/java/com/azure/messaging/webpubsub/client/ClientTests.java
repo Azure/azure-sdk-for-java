@@ -424,6 +424,63 @@ public class ClientTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    public void testClientReconnectOnSocketClose() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        List<String> eventReceived = new ArrayList<>();
+
+        AtomicReference<String> connectionId = new AtomicReference<>();
+
+        WebPubSubClient client = getClientBuilder()
+            .protocol(new WebPubSubJsonProtocol())
+            .autoReconnect(true)
+            .buildClient();
+
+        client.addOnConnectedEventHandler(event -> {
+            connectionId.compareAndExchange(null, event.getConnectionId());
+            eventReceived.add(event.getClass().getSimpleName());
+        });
+        client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
+        client.addOnStoppedEventHandler(event -> latch.countDown());
+
+        client.start();
+
+        // use internal API to close the socket, it would cause client to RECONNECT, as it is WebPubSubJsonProtocol
+        client.getWebsocketSession().closeSocket();
+
+        // client would recover after some time
+        int maxCount = 100;
+        for (int i = 0; i < maxCount; ++i) {
+            Thread.sleep(100);
+            WebPubSubClientState state = client.getClientState();
+            if (state == WebPubSubClientState.CONNECTED) {
+                break;
+            }
+        }
+        Assertions.assertEquals(WebPubSubClientState.CONNECTED, client.getClientState());
+
+        // make sure connection indeed works
+        WebPubSubResult result = client.sendToGroup("testClientRecoveryOnSocketClose", "message");
+        Assertions.assertNotNull(result.getAckId());
+
+        // validate that connectionId changed after RECONNECT
+        Assertions.assertNotEquals(connectionId.get(), client.getConnectionId());
+
+        client.stop();
+
+        latch.await(1, TimeUnit.SECONDS);
+        Assertions.assertEquals(0, latch.getCount());
+
+        // after RECONNECT, it is a different connectionId, hence a different connection
+        // therefore, 2 pairs of ConnectedEvent and DisconnectedEvent
+        Assertions.assertEquals(4, eventReceived.size());
+        Assertions.assertEquals(ConnectedEvent.class.getSimpleName(), eventReceived.get(0));
+        Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(1));
+        Assertions.assertEquals(ConnectedEvent.class.getSimpleName(), eventReceived.get(2));
+        Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(3));
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testStartInStoppedEvent() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
