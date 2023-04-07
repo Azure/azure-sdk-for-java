@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core.experimental {
+    requires transitive com.azure.json;
     requires transitive com.azure.core;
 
     requires java.xml;
