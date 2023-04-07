@@ -359,6 +359,24 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
     }
 
     /**
+     * Verifies the result of the training operation for a valid labeled model ID and multi-page PDF training set Url.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient,
+                                                           DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
+        selectionMarkTrainingRunner(trainingFilesUrl -> {
+            SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "filelist.jsonl")
+                    .setPollInterval(durationTestMode);
+            buildModelPoller.waitForCompletion();
+
+            validateDocumentModelData(buildModelPoller.getFinalResult());
+        });
+    }
+
+    /**
      * Verifies the result of the create composed model for valid parameters.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

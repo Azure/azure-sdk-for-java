@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 - Fixed the issue of not retrying for a new session after the last acquire-session timeout. ([#34314](https://github.com/Azure/azure-sdk-for-java/issues/34314))
+- Replay the terminal error to backing work of sync receive calls that arrive after the inner async client termination. ([#34332](https://github.com/Azure/azure-sdk-for-java/issues/34332))
 ### Other Changes
 
 ## 7.13.3 (2023-03-07)

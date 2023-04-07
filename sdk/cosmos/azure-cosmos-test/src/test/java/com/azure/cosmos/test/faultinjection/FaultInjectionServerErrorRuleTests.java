@@ -113,7 +113,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { FaultInjectionServerErrorType.TIMEOUT, false, 408, 0 },
-            { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 }
+            { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
+            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 }
         };
     }
 
@@ -785,7 +786,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 || operationType == OperationType.Delete
                 || operationType == OperationType.Replace
                 || operationType == OperationType.Create
-                || operationType == OperationType.Patch) {
+                || operationType == OperationType.Patch
+                || operationType == OperationType.Upsert) {
 
                 if (operationType == OperationType.Read) {
                     return cosmosAsyncContainer.readItem(
@@ -809,6 +811,10 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     return cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getDiagnostics();
                 }
 
+                if (operationType == OperationType.Upsert) {
+                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).block().getDiagnostics();
+                }
+
                 if (operationType == OperationType.Patch) {
                     CosmosPatchOperations patchOperations =
                         CosmosPatchOperations
@@ -823,6 +829,62 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             throw new IllegalArgumentException("The operation type is not supported");
         } catch (CosmosException cosmosException) {
             return cosmosException.getDiagnostics();
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_includePrimary() throws JsonProcessingException {
+        TestItem createdItem = TestItem.createNewItem();
+        CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
+        List<FeedRange> feedRanges = singlePartitionContainer.getFeedRanges().block();
+
+        // Test if includePrimary=true, then primary replica address will always be returned
+        String serverGoneIncludePrimaryRuleId = "serverErrorRule-includePrimary-" + UUID.randomUUID();
+        FaultInjectionRule serverGoneIncludePrimaryErrorRule =
+            new FaultInjectionRuleBuilder(serverGoneIncludePrimaryRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .endpoints(
+                            new FaultInjectionEndpointBuilder(feedRanges.get(0))
+                                .replicaCount(1)
+                                .includePrimary(true)
+                                .build()
+                        )
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(serverGoneIncludePrimaryErrorRule)).block();
+
+            // test for create item operation, the rule will be applied
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(singlePartitionContainer, OperationType.Create, createdItem);
+            this.validateFaultInjectionRuleApplied(
+                cosmosDiagnostics,
+                OperationType.Create,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                serverGoneIncludePrimaryRuleId,
+                true);
+
+            // test for upsert item operation, the rule will be applied
+            cosmosDiagnostics = this.performDocumentOperation(singlePartitionContainer, OperationType.Upsert, createdItem);
+            this.validateFaultInjectionRuleApplied(
+                cosmosDiagnostics,
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                serverGoneIncludePrimaryRuleId,
+                true);
+        } finally {
+            serverGoneIncludePrimaryErrorRule.disable();
         }
     }
 

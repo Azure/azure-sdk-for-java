@@ -42,7 +42,7 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
     @Disabled
     void createEmailHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         Mono<NotificationHook> createHookMono  = client.createHook(CreateEmailHookInput.INSTANCE.hook);
         String[] hookId = new String[1];
@@ -65,7 +65,7 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
     @Override
     void createWebHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         Mono<NotificationHook> createHookMono  = client.createHook(CreateWebHookInput.INSTANCE.hook);
         String[] hookId = new String[1];
@@ -88,7 +88,7 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
     @Disabled
     void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         String[] hookId = new String[2];
         StepVerifier.create(client.createHook(ListHookInput.INSTANCE.emailHook))

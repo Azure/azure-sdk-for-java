@@ -31,9 +31,8 @@ import java.util.zip.GZIPInputStream;
  */
 public final class TestProxyDownloader {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyDownloader.class);
-    private static final String TEST_PROXY_TAG = "test-proxy_1.0.0-dev.20230125.14";
+    private static final String TEST_PROXY_TAG = TestProxyUtils.getTestProxyVersion();
     private static final Path PROXY_PATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
-    private static final String TEST_PROXY_VERSION_FILE = "test-proxy-version.txt";
 
     private TestProxyDownloader() { }
 
@@ -171,7 +170,7 @@ public final class TestProxyDownloader {
     }
 
     private static String getProxyDownloadUrl(PlatformInfo platformInfo) {
-        return String.format("https://github.com/Azure/azure-sdk-tools/releases/download/%s/test-proxy-standalone-%s-%s.%s",
+        return String.format("https://github.com/Azure/azure-sdk-tools/releases/download/Azure.Sdk.Tools.TestProxy_%s/test-proxy-standalone-%s-%s.%s",
             TEST_PROXY_TAG,
             platformInfo.getPlatform(),
             platformInfo.getArchitecture(),

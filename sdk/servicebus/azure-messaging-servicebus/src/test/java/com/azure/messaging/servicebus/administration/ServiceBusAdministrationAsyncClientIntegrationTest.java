@@ -84,14 +84,14 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("createHttpClients")
     /**
      * Test to connect to the service bus with an azure identity TokenCredential.
      * com.azure.identity.ClientSecretCredential is used in this test.
      * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
      * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
      */
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void azureIdentityCredentials(HttpClient httpClient) {
         assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
