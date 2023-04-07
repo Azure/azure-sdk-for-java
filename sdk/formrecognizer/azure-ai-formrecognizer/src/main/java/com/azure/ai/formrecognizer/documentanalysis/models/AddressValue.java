@@ -74,7 +74,7 @@ public final class AddressValue {
     private String suburb;
 
     /*
-     * Build name, such as World Trade Center.
+     * Building name, such as World Trade Center.
      */
     private String house;
 
