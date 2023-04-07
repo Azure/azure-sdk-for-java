@@ -1,15 +1,19 @@
 ## Release History
 
-### 4.18.0-beta.1 (Unreleased)
+### 4.19.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added throughput control support without using dedicated throughput control container - See [PR 34301](https://github.com/Azure/azure-sdk-for-java/pull/34301)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.18.0 (2023-04-06)
+
+#### Features Added
+* Added throughput control support without using dedicated throughput control container - See [PR 34301](https://github.com/Azure/azure-sdk-for-java/pull/34301)
 
 ### 4.17.2 (2023-02-28)
 

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
@@ -109,6 +110,12 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
                 cosmosException = new PartitionIsMigratingException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case PARTITION_IS_SPLITTING:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE));
+                cosmosException = new PartitionKeyRangeIsSplittingException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:
