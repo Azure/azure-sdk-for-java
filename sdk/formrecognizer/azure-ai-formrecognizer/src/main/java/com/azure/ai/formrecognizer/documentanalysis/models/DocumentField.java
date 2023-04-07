@@ -153,6 +153,16 @@ public final class DocumentField extends TypedDocumentField<Object> {
         return (AddressValue) super.getValue();
     }
 
+    /**
+     * Get boolean value of the field.
+     *
+     * @return the value.
+     */
+    @JsonIgnore
+    public Boolean isValueBoolean() {
+        return (Boolean) super.getValue();
+    }
+
     static {
         DocumentFieldHelper.setAccessor(new TypedDocumentFieldHelper.TypedDocumentFieldAccessor() {
 

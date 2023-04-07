@@ -10,7 +10,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Writes a JSON encoded value to a stream.
+ * Writes a JSON value as a stream of tokens.
+ * <p>
+ * Instances of {@link JsonWriter} are created using an instance of {@link JsonProvider} or using the utility methods
+ * in {@link JsonProviders}.
+ *
+ * @see com.azure.json
+ * @see JsonProvider
+ * @see JsonProviders
  */
 @SuppressWarnings("resource")
 public abstract class JsonWriter implements Closeable {

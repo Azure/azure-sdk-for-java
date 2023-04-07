@@ -24,6 +24,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,7 @@ public abstract class TestBase implements BeforeEachCallback {
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
 
+    private URL proxyUrl;
 
     /**
      * Creates a new instance of {@link TestBase}.
@@ -158,6 +160,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
         if (isTestProxyEnabled()) {
             interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
+            interceptorManager.setProxyUrl(this.proxyUrl);
             // The supplier/consumer are used to retrieve/store variables over the wire.
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
@@ -308,6 +311,10 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     protected static void setTestProxyEnabled() {
         enableTestProxy = true;
+    }
+
+    void setProxyUrl(URL proxyUrl) {
+        this.proxyUrl = proxyUrl;
     }
 
     /**

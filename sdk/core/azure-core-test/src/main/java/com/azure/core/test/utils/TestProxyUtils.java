@@ -15,9 +15,14 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -34,11 +39,7 @@ import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
  */
 public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
-    private static final String PROXY_URL_SCHEME = "http";
-    private static final String PROXY_URL_HOST = "localhost";
-    private static final int PROXY_URL_PORT = 5000;
-    private static final String PROXY_URL =
-        String.format("%s://%s:%d", PROXY_URL_SCHEME, PROXY_URL_HOST, PROXY_URL_PORT);
+
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<String>(
         Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
@@ -67,27 +68,25 @@ public class TestProxyUtils {
      *
      * @return A string containing the proxy URL.
      */
-    public static String getProxyUrl() {
-        return PROXY_URL;
-    }
 
     /**
      * Adds headers required for communication with the test proxy.
      *
      * @param request The request to add headers to.
+     * @param proxyUrl The {@link URL} the proxy lives at.
      * @param xRecordingId The x-recording-id value for the current session.
      * @param mode The current test proxy mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, String xRecordingId, String mode) {
+    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode) {
         HttpHeader upstreamUri = request.getHeaders().get("x-recording-upstream-base-uri");
-        if (upstreamUri != null) {
-            return;
-        }
+
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
-        proxyUrlBuilder.setScheme(PROXY_URL_SCHEME);
-        proxyUrlBuilder.setHost(PROXY_URL_HOST);
-        proxyUrlBuilder.setPort(PROXY_URL_PORT);
+        proxyUrlBuilder.setScheme(proxyUrl.getProtocol());
+        proxyUrlBuilder.setHost(proxyUrl.getHost());
+        if (proxyUrl.getPort() != -1) {
+            proxyUrlBuilder.setPort(proxyUrl.getPort());
+        }
 
         UrlBuilder originalUrlBuilder = UrlBuilder.parse(request.getUrl());
         originalUrlBuilder.setPath("");
@@ -97,10 +96,12 @@ public class TestProxyUtils {
             URL originalUrl = originalUrlBuilder.toUrl();
 
             HttpHeaders headers = request.getHeaders();
+            if (upstreamUri == null) {
+                headers.set("x-recording-upstream-base-uri", originalUrl.toString());
+                headers.set("x-recording-mode", mode);
+                headers.set("x-recording-id", xRecordingId);
+            }
 
-            headers.add("x-recording-upstream-base-uri", originalUrl.toString());
-            headers.add("x-recording-mode", mode);
-            headers.add("x-recording-id", xRecordingId);
             request.setUrl(proxyUrlBuilder.toUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -140,11 +141,11 @@ public class TestProxyUtils {
     public static String getProxyProcessName() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("windows")) {
-            return "test-proxy.exe";
+            return "Azure.Sdk.Tools.TestProxy.exe";
         } else if (osName.contains("linux")) {
-            return "test-proxy";
+            return "Azure.Sdk.Tools.TestProxy";
         } else if (osName.contains("mac os x")) {
-            return "test-proxy";
+            return "Azure.Sdk.Tools.TestProxy";
         } else {
             throw new UnsupportedOperationException();
         }
@@ -166,6 +167,35 @@ public class TestProxyUtils {
             throw LOGGER.logExceptionAsError(new RuntimeException("Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
         }
     }
+
+    /**
+     * Finds the test proxy version in the source tree.
+     * @return The version string to use.
+     * @throws RuntimeException The eng folder could not be located in the repo.
+     * @throws UncheckedIOException The version file could not be read properly.
+     */
+    public static String getTestProxyVersion() {
+        Path path = TestUtils.getRecordFolder().toPath();
+        Path candidate = null;
+        while (path != null) {
+            candidate = path.resolve("eng");
+            if (Files.exists(candidate)) {
+                break;
+            }
+            path = path.getParent();
+        }
+        if (path == null) {
+            throw new RuntimeException("Could not locate eng folder");
+        }
+        Path versionFile =  Paths.get("common", "testproxy", "target_version.txt");
+        candidate = candidate.resolve(versionFile);
+        try {
+            return Files.readAllLines(candidate).get(0).replace(System.getProperty("line.separator"), "");
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
 
     /**
      * Registers the default set of sanitizers for sanitizing request and responses
@@ -231,11 +261,12 @@ public class TestProxyUtils {
     /**
      * Creates a list of sanitizer requests to be sent to the test proxy server.
      *
-     * @param sanitizers the list of sanitizers to be added
+     * @param sanitizers the list of sanitizers to be added.
+     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return the list of sanitizer {@link HttpRequest requests} to be sent.
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
      */
-    public static List<HttpRequest> getSanitizerRequests(List<TestProxySanitizer> sanitizers) {
+    public static List<HttpRequest> getSanitizerRequests(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
         return sanitizers.stream().map(testProxySanitizer -> {
             String requestBody;
             String sanitizerType;
@@ -245,17 +276,17 @@ public class TestProxyUtils {
                     requestBody =
                         createRegexRequestBody(null, testProxySanitizer.getRegex(),
                             testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    return createHttpRequest(requestBody, sanitizerType);
+                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
                 case BODY_REGEX:
                     sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
                     requestBody = createRegexRequestBody(null, testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    return createHttpRequest(requestBody, sanitizerType);
+                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
                 case BODY_KEY:
                     sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
                     requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(), testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue());
-                    return createHttpRequest(requestBody, sanitizerType);
+                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
                 case HEADER:
                     sanitizerType = HEADER.getName();
                     if (testProxySanitizer.getKey() == null && testProxySanitizer.getRegex() == null) {
@@ -265,7 +296,7 @@ public class TestProxyUtils {
                     requestBody = createRegexRequestBody(testProxySanitizer.getKey(),
                         testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
-                    return createHttpRequest(requestBody, sanitizerType);
+                    return createHttpRequest(requestBody, sanitizerType, proxyUrl);
                 default:
                     throw new RuntimeException(
                         String.format("Sanitizer type {%s} not supported", testProxySanitizer.getType()));
@@ -273,9 +304,9 @@ public class TestProxyUtils {
         }).collect(Collectors.toList());
     }
 
-    private static HttpRequest createHttpRequest(String requestBody, String sanitizerType) {
+    private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
         HttpRequest request
-            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", proxyUrl.toString()))
             .setBody(requestBody);
         request.setHeader("x-abstraction-identifier", sanitizerType);
         return request;
@@ -284,10 +315,11 @@ public class TestProxyUtils {
     /**
      * Creates a {@link List} of {@link HttpRequest} to be sent to the test proxy to register matchers.
      * @param matchers The {@link TestProxyRequestMatcher}s to encode into requests.
+     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return The {@link HttpRequest}s to send to the proxy.
      * @throws RuntimeException The {@link TestProxyRequestMatcher.TestProxyRequestMatcherType} is unsupported.
      */
-    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers) {
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers, URL proxyUrl) {
         return matchers.stream().map(testProxyMatcher -> {
             HttpRequest request;
             String matcherType;
@@ -295,11 +327,11 @@ public class TestProxyUtils {
                 case HEADERLESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName();
                     request
-                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()));
                     break;
                 case BODILESS:
                     request
-                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl()));
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString()));
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
                     break;
                 case CUSTOM:
@@ -307,7 +339,7 @@ public class TestProxyUtils {
                     String requestBody = createCustomMatcherRequestBody(customMatcher);
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
                     request
-                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", TestProxyUtils.getProxyUrl())).setBody(requestBody);
+                        = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString())).setBody(requestBody);
                     break;
                 default:
                     throw new RuntimeException(String.format("Matcher type {%s} not supported", testProxyMatcher.getType()));
