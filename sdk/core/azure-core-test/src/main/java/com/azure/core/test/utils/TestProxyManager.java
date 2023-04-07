@@ -60,8 +60,7 @@ public class TestProxyManager {
                     TestProxyUtils.getProxyProcessName()).toString();
             }
 
-            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl().toString())
-                .directory(TestProxyDownloader.getProxyDirectory().toFile());
+            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl().toString());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
