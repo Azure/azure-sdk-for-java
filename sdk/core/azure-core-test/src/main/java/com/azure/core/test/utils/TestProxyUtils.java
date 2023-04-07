@@ -81,9 +81,7 @@ public class TestProxyUtils {
      */
     public static void changeHeaders(HttpRequest request, String xRecordingId, String mode) {
         HttpHeader upstreamUri = request.getHeaders().get("x-recording-upstream-base-uri");
-        if (upstreamUri != null) {
-            return;
-        }
+
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
         proxyUrlBuilder.setScheme(PROXY_URL_SCHEME);
         proxyUrlBuilder.setHost(PROXY_URL_HOST);
@@ -97,10 +95,12 @@ public class TestProxyUtils {
             URL originalUrl = originalUrlBuilder.toUrl();
 
             HttpHeaders headers = request.getHeaders();
+            if (upstreamUri == null) {
+                headers.set("x-recording-upstream-base-uri", originalUrl.toString());
+                headers.set("x-recording-mode", mode);
+                headers.set("x-recording-id", xRecordingId);
+            }
 
-            headers.add("x-recording-upstream-base-uri", originalUrl.toString());
-            headers.add("x-recording-mode", mode);
-            headers.add("x-recording-id", xRecordingId);
             request.setUrl(proxyUrlBuilder.toUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
