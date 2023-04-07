@@ -20,4 +20,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "basedOnThreadCreationDate", value = ThreadCreationDateRetentionPolicy.class)
 })
 @Immutable
-public class ChatRetentionPolicy {}
+public abstract class ChatRetentionPolicy {}
