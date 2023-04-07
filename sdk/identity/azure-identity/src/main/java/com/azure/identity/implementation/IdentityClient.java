@@ -63,6 +63,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.Scanner;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -883,8 +884,14 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                    .useDelimiter("\\A");
+                String result = scanner.hasNext() ? scanner.next() : "";
+
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+//                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+//                    SerializerEncoding.JSON);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -929,8 +936,15 @@ public class IdentityClient extends IdentityClientBase {
                     }
                     connection.connect();
 
-                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                        SerializerEncoding.JSON);
+                    Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                        .useDelimiter("\\A");
+                    String result = scanner.hasNext() ? scanner.next() : "";
+
+                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+//
+//                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+//                        SerializerEncoding.JSON);
                 } finally {
                     if (connection != null) {
                         connection.disconnect();
@@ -988,8 +1002,15 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                    .useDelimiter("\\A");
+                String result = scanner.hasNext() ? scanner.next() : "";
+
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+//
+//                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+//                    SerializerEncoding.JSON);
 
             } finally {
                 if (connection != null) {
@@ -1040,7 +1061,7 @@ public class IdentityClient extends IdentityClientBase {
             payload.append("?resource=");
             payload.append(urlEncode(resource));
             payload.append("&api-version=");
-            payload.append(MSI_ENDPOINT_VERSION);
+            payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
                 if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
                     payload.append("&client_id=");
@@ -1135,8 +1156,15 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
-                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                        SerializerEncoding.JSON);
+                    Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                        .useDelimiter("\\A");
+                    String result = scanner.hasNext() ? scanner.next() : "";
+
+                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+//
+//                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+//                        SerializerEncoding.JSON);
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
