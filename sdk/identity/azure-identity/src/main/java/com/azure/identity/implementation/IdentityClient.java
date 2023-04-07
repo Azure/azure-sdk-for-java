@@ -987,6 +987,8 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.setRequestProperty("User-Agent", userAgent);
 
+                connection.connect();
+
                 return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
                     SerializerEncoding.JSON);
 
