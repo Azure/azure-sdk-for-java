@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * Utility class for {@link JsonProvider} that will use the first implementation of {@link JsonProvider} found on the
+ * Utility class for {@link JsonProvider} that will use the implementation of {@link JsonProvider} found on the
  * classpath to create instances of {@link JsonReader} or {@link JsonWriter}.
  * <p>
  * If no implementation of {@link JsonProvider} is found on the classpath a default implementation provided by this
@@ -63,7 +63,7 @@ public final class JsonProviders {
         if (implementationNames.size() > 1) {
             throw new IllegalStateException("More than one implementation of 'com.azure.json.JsonProvider' was found "
                 + "on the classpath. At this time 'azure-json' only supports one implementation being on the "
-                + "classpath. Remove all implementation, except the one that should be used during runtime, from "
+                + "classpath. Remove all implementations, except the one that should be used during runtime, from "
                 + "'META-INF/services/com.azure.json.JsonProvider'. Found implementations were: "
                 + String.join(", ", implementationNames));
         }

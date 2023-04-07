@@ -122,6 +122,8 @@ or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questio
 
 ## Next steps
 
+Get started with Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
