@@ -12,6 +12,10 @@ import java.io.Writer;
 /**
  * An interface to be implemented by any azure-json plugin that wishes to provide an alternate {@link JsonReader} or
  * {@link JsonWriter} implementation.
+ *
+ * @see com.azure.json
+ * @see JsonReader
+ * @see JsonWriter
  */
 public interface JsonProvider {
 
