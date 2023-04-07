@@ -46,7 +46,7 @@
   "variables": {
     "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
     "searchApiVersion": "2020-03-13",
-    "storageAccountName": "[concat('azsstg', parameters('baseName'))]",
+    "storageAccountName": "[concat('search', parameters('baseName'))]",
     "storageApiVersion": "2019-06-01"
   },
   "resources": [
