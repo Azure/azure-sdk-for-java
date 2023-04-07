@@ -18,6 +18,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonSerializable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +30,8 @@ import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class AsyncRestProxy extends RestProxyBase {
     /**
@@ -262,7 +265,7 @@ public class AsyncRestProxy extends RestProxyBase {
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
-            request.setBody(BinaryData.fromByteBuffer(serializeAsJsonSerializable(bodyContentObject)));
+            request.setBody(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject));
             return;
         }
 
