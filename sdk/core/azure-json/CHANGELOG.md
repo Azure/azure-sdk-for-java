@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2023-04-07)
 
-### Features Added
+- Initial GA. Please see the README for more information.
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Renamed `JsonReader.resetSupported` to `JsonReader.isResetSupported`.
+- Removed all overloads in `JsonProvider` that didn't accept `JsonOptions`.
 
 ## 1.0.0-beta.3 (2023-03-02)
 
