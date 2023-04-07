@@ -17,6 +17,7 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -60,8 +61,18 @@ public class TestProxyManager {
                     TestProxyUtils.getProxyProcessName()).toString();
             }
 
-            ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", recordingPath.getPath(), "--", "--urls", getProxyUrl().toString());
+            ProcessBuilder builder = new ProcessBuilder(commandLine,
+                "--storage-location",
+                recordingPath.getPath(),
+                "--",
+                "--urls",
+                getProxyUrl().toString());
+            Map environment = builder.environment();
+            environment.put("LOGGING__LOGLEVEL", "Information");
+            environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+            environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
             proxy = builder.start();
+
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
                 String.format("%s/admin/isalive", getProxyUrl()));
