@@ -73,7 +73,6 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
 
     /**
      * Gets the position to place the policy.
-     * <p>
      *
      * @return The position to place the policy.
      */
