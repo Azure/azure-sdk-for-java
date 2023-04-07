@@ -1,6 +1,6 @@
 # Release History
 
-## 1.38.0-beta.1 (Unreleased)
+## 1.38.0 (2023-04-07)
 
 ### Features Added
 - Added new constructor overload to `DefaultPollingStrategy`, `OperationResourcePollingStrategy`, `LocationPollingStrategy`

@@ -1,10 +1,16 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.11.0 (2023-04-07)
 
 ### Features Added
 
 - Added `MANAGED_HSM` to `AzureEnvironment`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
 
 ## 1.10.2 (2023-03-02)
 
