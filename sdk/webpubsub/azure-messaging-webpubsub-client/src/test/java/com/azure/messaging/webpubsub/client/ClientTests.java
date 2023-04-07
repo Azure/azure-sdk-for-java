@@ -17,6 +17,7 @@ import com.azure.messaging.webpubsub.client.models.EventHandler;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
+import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import org.junit.jupiter.api.Assertions;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ClientTests extends TestBase {
 
@@ -354,6 +356,7 @@ public class ClientTests extends TestBase {
 
         client.start();
 
+        // use internal API to send an invalid frame, it would cause server to Disconnect
         client.getWebsocketSession().sendTextAsync("invalid", result -> {
             // NOOP
         });
@@ -370,23 +373,44 @@ public class ClientTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testServerDisconnectedEventOnSocketClose() throws InterruptedException {
+    public void testClientRecoveryOnSocketClose() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
+
+        AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
             .buildClient();
 
-        client.addOnConnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
+        client.addOnConnectedEventHandler(event -> {
+            connectionId.compareAndExchange(null, event.getConnectionId());
+            eventReceived.add(event.getClass().getSimpleName());
+        });
         client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
         client.addOnStoppedEventHandler(event -> latch.countDown());
 
         client.start();
 
+        // use internal API to close the socket, it would cause client to RECOVER, as it is WebPubSubJsonReliableProtocol
         client.getWebsocketSession().closeSocket();
 
-        // client would recover
-        Thread.sleep(100);
+        // client would recover after some time
+        int maxCount = 100;
+        for (int i = 0; i < maxCount; ++i) {
+            Thread.sleep(100);
+            WebPubSubClientState state = client.getClientState();
+            if (state == WebPubSubClientState.CONNECTED) {
+                break;
+            }
+        }
+        Assertions.assertEquals(WebPubSubClientState.CONNECTED, client.getClientState());
+
+        // make sure connection indeed works
+        WebPubSubResult result = client.sendToGroup("testClientRecoveryOnSocketClose", "message");
+        Assertions.assertNotNull(result.getAckId());
+
+        // validate that connectionId does not change
+        Assertions.assertEquals(connectionId.get(), client.getConnectionId());
 
         client.stop();
 
