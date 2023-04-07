@@ -25,7 +25,7 @@ public final class RetentionPolicyConverter {
                 (com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy) obj;
             chatRetentionPolicy = new ThreadCreationDateRetentionPolicy().setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
         } else {
-            chatRetentionPolicy = new ChatRetentionPolicy();
+            chatRetentionPolicy = null;
         }
         return chatRetentionPolicy;
     }
@@ -48,7 +48,7 @@ public final class RetentionPolicyConverter {
             retentionPolicy = new com.azure.communication.chat.implementation.models.ThreadCreationDateRetentionPolicy()
                 .setDeleteThreadAfterDays(basedOnThreadCreationDateRetentionPolicy.getDeleteThreadAfterDays());
         } else {
-            retentionPolicy = new com.azure.communication.chat.implementation.models.ChatRetentionPolicy();
+            retentionPolicy = null;
         }
         return retentionPolicy;
     }
