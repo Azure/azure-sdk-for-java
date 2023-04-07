@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.Configs;
 import io.netty.handler.codec.http.HttpMethod;
 
 
@@ -19,13 +18,10 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     }
 
     @Override
-    public long maximumRetryTimeLimit() {
-        return Configs.getHttpResponseTimeoutInSeconds();
-    }
-
-    @Override
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        return getTimeoutAndDelays();
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0)));
     }
 
     // Assume that it is not safe to retry unless it is a get method.
@@ -33,11 +29,5 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     @Override
     public boolean isSafeToRetry(HttpMethod httpMethod) {
         return httpMethod == HttpMethod.GET;
-    }
-
-    private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
-        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0)));
     }
 }

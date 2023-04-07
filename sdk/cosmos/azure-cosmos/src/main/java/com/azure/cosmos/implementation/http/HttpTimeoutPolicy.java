@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -27,7 +28,7 @@ public abstract class HttpTimeoutPolicy {
         return getTimeoutList().size();
     }
 
-    public abstract long maximumRetryTimeLimit();
+    public long maximumRetryTimeLimit() { return Configs.getHttpResponseTimeoutInSeconds(); };
 
     public abstract List<ResponseTimeoutAndDelays> getTimeoutList();
 

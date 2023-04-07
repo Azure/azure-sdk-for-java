@@ -79,7 +79,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
-    private Duration responseTimeout;
+    private volatile Duration responseTimeout;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read

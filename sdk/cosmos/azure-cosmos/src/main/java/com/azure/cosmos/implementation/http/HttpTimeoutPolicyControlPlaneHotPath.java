@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.Configs;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.time.Duration;
@@ -18,23 +17,14 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
     }
 
     @Override
-    public long maximumRetryTimeLimit() {
-        return Configs.getHttpResponseTimeoutInSeconds();
-    }
-
-    @Override
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        return getTimeoutAndDelays();
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofMillis(500), 0),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
     }
 
     @Override
     public boolean isSafeToRetry(HttpMethod httpMethod) {
         return true;
-    }
-
-    private List<ResponseTimeoutAndDelays> getTimeoutAndDelays() {
-        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofMillis(500), 0),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
     }
 }
