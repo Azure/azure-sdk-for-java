@@ -8,10 +8,6 @@
   and their sync counterparts that allows setting a service version as query parameter of request URLs for polling and 
   getting the final result of a long-running operation.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - Added dependency on `azure-json` to provide stream-style JSON serialization support for `JsonSerializable`
