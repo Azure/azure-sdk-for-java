@@ -74,7 +74,7 @@ public class ServiceLevelTimeoutExample {
             System.out.println("Creation failed due to timeout: " + ex.getMessage());
         }
 
-        BlobClient blobClient = blobContainerClient.getBlobClient("myblobbasic" + System.currentTimeMillis());
+        BlobClient blobClient = blobContainerClient.getBlobClient("myblob" + System.currentTimeMillis());
 
         //Create a dataset that is guaranteed to take longer than the specified timeout of 3 seconds
         byte[] randomData = getRandomByteArray(16 * Constants.MB);
