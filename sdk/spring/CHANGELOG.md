@@ -1,4 +1,5 @@
-# Release History
+# Release H
+Upgrade Spring Boot dependencies version to 2.7.10 and Spring Cloud dependencies version to 2021.0.6istory
 
 ## 4.7.0 (2023-03-23)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.9. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>9) should be supported, but they aren't tested with this release.)
