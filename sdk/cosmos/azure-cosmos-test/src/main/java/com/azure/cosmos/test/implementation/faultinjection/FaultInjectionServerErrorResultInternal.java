@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
@@ -29,15 +30,20 @@ public class FaultInjectionServerErrorResultInternal {
     private final Integer times;
     private final Duration delay;
 
+    private final Boolean suppressServiceRequests;
+
+
     public FaultInjectionServerErrorResultInternal(
         FaultInjectionServerErrorType serverErrorTypes,
         Integer times,
-        Duration delay) {
+        Duration delay,
+        Boolean suppressServiceRequests) {
 
         checkArgument(serverErrorTypes != null, "Argument 'serverErrorType' can not be null");
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
+        this.suppressServiceRequests = suppressServiceRequests;
     }
 
     public FaultInjectionServerErrorType getServerErrorType() {
@@ -50,6 +56,10 @@ public class FaultInjectionServerErrorResultInternal {
 
     public Duration getDelay() {
         return delay;
+    }
+
+    public Boolean getSuppressServiceRequests() {
+        return this.suppressServiceRequests;
     }
 
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {
@@ -100,6 +110,12 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
                 cosmosException = new PartitionIsMigratingException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case PARTITION_IS_SPLITTING:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE));
+                cosmosException = new PartitionKeyRangeIsSplittingException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:

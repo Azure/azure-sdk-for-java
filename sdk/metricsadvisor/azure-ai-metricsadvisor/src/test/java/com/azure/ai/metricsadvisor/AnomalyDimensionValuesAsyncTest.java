@@ -36,7 +36,7 @@ public final class AnomalyDimensionValuesAsyncTest extends AnomalyDimensionValue
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listAnomalyDimensionValues(HttpClient httpClient,
                                            MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         PagedFlux<String> dimensionValuesFlux = client.listAnomalyDimensionValues(
             ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,

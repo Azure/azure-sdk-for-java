@@ -32,10 +32,9 @@ public final class WebhooksUpdateSamples {
                 "myRegistry",
                 "myWebhook",
                 new WebhookUpdateParameters()
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withServiceUri("http://myservice.com")
-                    .withCustomHeaders(
-                        mapOf("Authorization", "Basic 000000000000000000000000000000000000000000000000000"))
+                    .withCustomHeaders(mapOf("Authorization", "fakeTokenPlaceholder"))
                     .withStatus(WebhookStatus.ENABLED)
                     .withScope("myRepository")
                     .withActions(Arrays.asList(WebhookAction.PUSH)),

@@ -15,13 +15,16 @@ import java.util.Collection;
  * application, or image files such as .jpg and .png, in Azure blobs.
  */
 public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobIndexerDataToExtract> {
-    /** Static value storageMetadata for BlobIndexerDataToExtract. */
+    /** Indexes just the standard blob properties and user-specified metadata. */
     public static final BlobIndexerDataToExtract STORAGE_METADATA = fromString("storageMetadata");
 
-    /** Static value allMetadata for BlobIndexerDataToExtract. */
+    /**
+     * Extracts metadata provided by the Azure blob storage subsystem and the content-type specific metadata (for
+     * example, metadata unique to just .png files are indexed).
+     */
     public static final BlobIndexerDataToExtract ALL_METADATA = fromString("allMetadata");
 
-    /** Static value contentAndMetadata for BlobIndexerDataToExtract. */
+    /** Extracts all metadata and textual content from each blob. */
     public static final BlobIndexerDataToExtract CONTENT_AND_METADATA = fromString("contentAndMetadata");
 
     /**

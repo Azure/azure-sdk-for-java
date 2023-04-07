@@ -140,9 +140,9 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
                         }
                     }
                     if (keyFound && succeededFound && statusCodeFound) {
-                        IndexingResult deserializedValue = new IndexingResult(key, succeeded, statusCode);
-                        deserializedValue.errorMessage = errorMessage;
-                        return deserializedValue;
+                        IndexingResult deserializedIndexingResult = new IndexingResult(key, succeeded, statusCode);
+                        deserializedIndexingResult.errorMessage = errorMessage;
+                        return deserializedIndexingResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!keyFound) {

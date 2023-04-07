@@ -128,11 +128,12 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
                         }
                     }
                     if (boostingRangeStartFound && boostingRangeEndFound) {
-                        MagnitudeScoringParameters deserializedValue =
+                        MagnitudeScoringParameters deserializedMagnitudeScoringParameters =
                                 new MagnitudeScoringParameters(boostingRangeStart, boostingRangeEnd);
-                        deserializedValue.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
+                        deserializedMagnitudeScoringParameters.shouldBoostBeyondRangeByConstant =
+                                shouldBoostBeyondRangeByConstant;
 
-                        return deserializedValue;
+                        return deserializedMagnitudeScoringParameters;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!boostingRangeStartFound) {

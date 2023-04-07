@@ -151,13 +151,13 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
                         }
                     }
                     if (messageFound) {
-                        SearchIndexerWarning deserializedValue = new SearchIndexerWarning(message);
-                        deserializedValue.key = key;
-                        deserializedValue.name = name;
-                        deserializedValue.details = details;
-                        deserializedValue.documentationLink = documentationLink;
+                        SearchIndexerWarning deserializedSearchIndexerWarning = new SearchIndexerWarning(message);
+                        deserializedSearchIndexerWarning.key = key;
+                        deserializedSearchIndexerWarning.name = name;
+                        deserializedSearchIndexerWarning.details = details;
+                        deserializedSearchIndexerWarning.documentationLink = documentationLink;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerWarning;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!messageFound) {

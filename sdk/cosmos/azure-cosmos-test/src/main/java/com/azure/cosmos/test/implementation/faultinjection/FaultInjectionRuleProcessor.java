@@ -156,13 +156,14 @@ public class FaultInjectionRuleProcessor {
                 }
 
                 List<URI> regionEndpoints = this.getRegionEndpoints(rule.getCondition());
-                effectiveCondition.setRegionEndpoints(regionEndpoints);
 
                 if (StringUtils.isEmpty(rule.getCondition().getRegion())) {
                     // if region is not specific configured, then also add the defaultEndpoint
                     List<URI> regionEndpointsWithDefault = new ArrayList<>(regionEndpoints);
                     regionEndpointsWithDefault.add(this.globalEndpointManager.getDefaultEndpoint());
                     effectiveCondition.setRegionEndpoints(regionEndpointsWithDefault);
+                } else {
+                    effectiveCondition.setRegionEndpoints(regionEndpoints);
                 }
 
                 // TODO: add handling for gateway mode
@@ -204,7 +205,8 @@ public class FaultInjectionRuleProcessor {
                     new FaultInjectionServerErrorResultInternal(
                         result.getServerErrorType(),
                         result.getTimes(),
-                        result.getDelay()
+                        result.getDelay(),
+                        result.getSuppressServiceRequests()
                     )
                 );
             });
@@ -350,10 +352,23 @@ public class FaultInjectionRuleProcessor {
                                         addressEndpoints.isIncludePrimary(),
                                         true)
                                     .flatMapIterable(addresses -> {
+                                        // There are two rules need to happens here:
+                                        // 1. if isIncludePrimary is true, then basically make sure primary replica address will always be returned
+                                        // 2. make sure the same replica addresses will be used across different client instances
                                         return addresses
                                             .stream()
+                                            .sorted((o1, o2) -> {
+                                                if (o1.isPrimary()) {
+                                                    return -1;
+                                                }
+
+                                                if (o2.isPrimary()) {
+                                                    return 1;
+                                                }
+
+                                                return o1.getURIAsString().compareTo(o2.getURIAsString());
+                                            })
                                             .map(uri -> uri.getURI())
-                                            .sorted() // important: will be used to make sure the same replica addresses will be used across different client instances
                                             .limit(addressEndpoints.getReplicaCount())
                                             .collect(Collectors.toList());
                                     });

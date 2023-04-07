@@ -116,15 +116,18 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
                         }
                     }
                     if (storageContainerFound) {
-                        SearchIndexerKnowledgeStoreObjectProjectionSelector deserializedValue =
-                                new SearchIndexerKnowledgeStoreObjectProjectionSelector(storageContainer);
-                        deserializedValue.setReferenceKeyName(referenceKeyName);
-                        deserializedValue.setGeneratedKeyName(generatedKeyName);
-                        deserializedValue.setSource(source);
-                        deserializedValue.setSourceContext(sourceContext);
-                        deserializedValue.setInputs(inputs);
+                        SearchIndexerKnowledgeStoreObjectProjectionSelector
+                                deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector =
+                                        new SearchIndexerKnowledgeStoreObjectProjectionSelector(storageContainer);
+                        deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector.setReferenceKeyName(
+                                referenceKeyName);
+                        deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector.setGeneratedKeyName(
+                                generatedKeyName);
+                        deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector.setSource(source);
+                        deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector.setSourceContext(sourceContext);
+                        deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector.setInputs(inputs);
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerKnowledgeStoreObjectProjectionSelector;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!storageContainerFound) {

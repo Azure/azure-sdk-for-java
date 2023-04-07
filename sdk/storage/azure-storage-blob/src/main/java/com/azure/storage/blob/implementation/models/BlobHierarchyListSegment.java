@@ -19,7 +19,7 @@ public final class BlobHierarchyListSegment {
     /*
      * The BlobPrefixes property.
      */
-    @JsonProperty("BlobPrefix")
+    @JsonProperty("BlobPrefixInternal")
     private List<BlobPrefixInternal> blobPrefixes = new ArrayList<>();
 
     /*

@@ -29,6 +29,9 @@ public enum FaultInjectionServerErrorType {
     /** 410-1008 from server */
     PARTITION_IS_MIGRATING,
 
+    /** 410-1007 from server */
+    PARTITION_IS_SPLITTING,
+
     /** Response delay, when it is over request timeout, can simulate transit timeout */
     RESPONSE_DELAY,
 
