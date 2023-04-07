@@ -884,14 +884,8 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
 
-                Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                    .useDelimiter("\\A");
-                String result = scanner.hasNext() ? scanner.next() : "";
-
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
-//                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-//                    SerializerEncoding.JSON);
+                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                    SerializerEncoding.JSON);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -936,15 +930,8 @@ public class IdentityClient extends IdentityClientBase {
                     }
                     connection.connect();
 
-                    Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                        .useDelimiter("\\A");
-                    String result = scanner.hasNext() ? scanner.next() : "";
-
-                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
-//
-//                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-//                        SerializerEncoding.JSON);
+                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                        SerializerEncoding.JSON);
                 } finally {
                     if (connection != null) {
                         connection.disconnect();
@@ -1000,17 +987,8 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.setRequestProperty("User-Agent", userAgent);
 
-                connection.connect();
-
-                Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                    .useDelimiter("\\A");
-                String result = scanner.hasNext() ? scanner.next() : "";
-
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
-//
-//                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-//                    SerializerEncoding.JSON);
+                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                    SerializerEncoding.JSON);
 
             } finally {
                 if (connection != null) {
@@ -1156,15 +1134,8 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
-                    Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
-                        .useDelimiter("\\A");
-                    String result = scanner.hasNext() ? scanner.next() : "";
-
-                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
-//
-//                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-//                        SerializerEncoding.JSON);
+                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                        SerializerEncoding.JSON);
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
