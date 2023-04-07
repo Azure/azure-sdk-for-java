@@ -12,9 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.spring.cloud.actuator.appconfiguration.AppConfigurationConfigHealthIndicator;
+import com.azure.spring.cloud.actuator.implementation.appconfiguration.AppConfigurationConfigHealthIndicator;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
-import com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationAutoConfiguration;
+
 
 /**
  * Configuration class of App Configuration Health
