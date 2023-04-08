@@ -1,4 +1,4 @@
-# Azure Maps SDK Elevation client library for Java
+# Azure Maps SDK Elevation client library for Java (Deprecated)
 
 Azure Maps SDK Elevation client library for Java.
 
@@ -8,7 +8,7 @@ This package contains the Azure Maps SDK Elevation client library which contains
 
 ## Important
 
-The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this retirement. For more details, see [Elevation Services Retirement].
+Please note, this package has been deprecated and will no longer be maintained after 5 May 2023. We encourage you to upgrade to the latest version to continue receiving updates. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this retirement. Refer to the migration guide [Elevation Services Retirement] for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## Documentation
 
@@ -25,10 +25,10 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure-maps-elevation;current})
+[//]: # ({x-version-update-start;com.azure:azure-maps-elevation;current})
 ```xml
 <dependency>
-    <groupId>com.azure.resourcemanager</groupId>
+    <groupId>com.azure</groupId>
     <artifactId>azure-maps-elevation</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
@@ -125,6 +125,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
-[Elevation Services Retirement]: https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/
+[Elevation Services Retirement]: https://azure.microsoft.com/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmaps%2Fazure-maps-elevation%2FREADME.png)
