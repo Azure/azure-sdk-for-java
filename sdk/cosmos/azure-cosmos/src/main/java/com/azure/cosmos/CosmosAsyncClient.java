@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -66,7 +65,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -105,16 +103,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
-
-    static {
-        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
-        Iterator<?> iterator = serviceLoader.iterator();
-        if (iterator.hasNext()) {
-            TRACER = serviceLoader.iterator().next();
-        } else {
-            TRACER = null;
-        }
-    }
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -173,7 +161,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
-                                       .withClientCorrelationId(this.clientCorrelationId)
                                        .withProactiveOpenConnectionsProcessor(this.proactiveOpenConnectionsProcessor)
                                        .build();
 
@@ -576,11 +563,6 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     /**
-    ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-        return this.proactiveOpenConnectionsProcessor;
-    }
-
-    /***
      * Enable throughput control group.
      *
      * @param group Throughput control group going to be enabled.
@@ -612,38 +594,13 @@ public final class CosmosAsyncClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
-    void openConnectionsAndInitCaches() {
-        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(5);
-
-
-
-
-
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
         return this.nonIdempotentWriteRetryPolicy;
     }
 
-    private Mono<List<Void>> openConnectionsAndInitCachesInternal() {
-        int concurrency = 1;
-        int prefetch = 1;
-        if (this.proactiveContainerInitConfig != null) {
-            return Flux.fromIterable(this.proactiveContainerInitConfig.getCosmosContainerIdentities())
-                    .flatMap(
-                        cosmosContainerIdentity -> Mono.just(this
-                            .getDatabase(containerIdentityAccessor.getDatabaseName(cosmosContainerIdentity))
-                            .getContainer(containerIdentityAccessor.getContainerName(cosmosContainerIdentity))),
-                        concurrency,
-                        prefetch
-                    )
-                    .flatMap(
-                        cosmosAsyncContainer -> cosmosAsyncContainer
-                            .openConnectionsAndInitCaches(
-                                this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount()),
-                        concurrency,
-                        prefetch)
-                    .collectList();
-        }
-        return Mono.empty();
+    void openConnectionsAndInitCaches() {
+        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(5);
+
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(
                         proactiveContainerInitConfig,
                         OpenConnectionAggressivenessHint.AGGRESSIVE

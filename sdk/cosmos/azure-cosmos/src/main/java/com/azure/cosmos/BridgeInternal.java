@@ -217,7 +217,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap, null));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -688,6 +688,7 @@ public final class BridgeInternal {
         CosmosAsyncDatabase.initialize();
         CosmosClientBuilder.initialize();
         CosmosDiagnostics.initialize();
+        CosmosDiagnosticsContext.initialize();
         CosmosException.initialize();
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
