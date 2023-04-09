@@ -806,6 +806,10 @@ public final class CosmosAsyncClient implements Closeable {
         return this.asyncDocumentClient.getUserAgent();
     }
 
+    ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+        return this.proactiveOpenConnectionsProcessor;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
