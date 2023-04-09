@@ -112,6 +112,18 @@ public class Configuration {
     @Parameter(names = "-tupleSize", description = "Number of cosmos identity tuples to be queried using readMany")
     private int tupleSize = 1;
 
+    @Parameter(names = "-isProactiveConnectionManagementEnabled", description = "Mode which denotes whether connections are proactively established during warm up.")
+    private boolean isProactiveConnectionManagementEnabled = false;
+
+    @Parameter(names = "-proactiveConnectionRegionsCount", description = "Number of regions where endpoints are to be proactively connected to.")
+    private int proactiveConnectionRegionsCount = 1;
+
+    @Parameter(names = "-minConnectionPoolSizePerEndpoint", description = "Minimum number of connections to establish per endpoint for proactive connection management")
+    private int minConnectionPoolSizePerEndpoint = 1;
+
+    @Parameter(names = "-connectionWarmUpTimeout", converter = DurationConverter.class)
+    private Duration connectionWarmUpTimeout = Duration.ZERO;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -520,6 +532,22 @@ public class Configuration {
 
     public Integer getTupleSize() {
         return tupleSize;
+    }
+
+    public boolean isProactiveConnectionManagementEnabled() {
+        return isProactiveConnectionManagementEnabled;
+    }
+
+    public Integer getProactiveConnectionRegionsCount() {
+        return proactiveConnectionRegionsCount;
+    }
+
+    public Duration getConnectionWarmUpTimeout() {
+        return connectionWarmUpTimeout;
+    }
+
+    public Integer getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
     }
 
     public void tryGetValuesFromSystem() {

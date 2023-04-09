@@ -8,11 +8,14 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -344,6 +347,37 @@ abstract class AsyncBenchmark<T> {
 
         AtomicLong count = new AtomicLong(0);
         long i;
+
+        boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT && configuration.isProactiveConnectionManagementEnabled();
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
+
+        if (shouldOpenConnectionsAndInitCaches) {
+            List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+            CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(
+                    configuration.getDatabaseId(),
+                    configuration.getCollectionId()
+            );
+            cosmosContainerIdentities.add(cosmosContainerIdentity);
+            CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setAggressiveProactiveConnectionEstablishmentTimeWindow(configuration.getConnectionWarmUpTimeout())
+                    .build();
+            if (configuration.getConnectionWarmUpTimeout() == Duration.ZERO) {
+                cosmosClientBuilder = cosmosClientBuilder
+                        .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfig)
+                        .endpointDiscoveryEnabled(true);
+            } else {
+                cosmosClientBuilder = cosmosClientBuilder
+                        .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfig)
+                        .endpointDiscoveryEnabled(true);
+            }
+
+            if (configuration.getMinConnectionPoolSizePerEndpoint() > 1) {
+                System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", configuration.getMinConnectionPoolSizePerEndpoint().toString());
+            }
+
+            cosmosClientBuilder.buildAsyncClient();
+        }
 
         for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
