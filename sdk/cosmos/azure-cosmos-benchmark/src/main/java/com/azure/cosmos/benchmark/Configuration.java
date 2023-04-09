@@ -117,7 +117,7 @@ public class Configuration {
     private int tupleSize = 1;
 
     @Parameter(names = "-isProactiveConnectionManagementEnabled", description = "Mode which denotes whether connections are proactively established during warm up.")
-    private boolean isProactiveConnectionManagementEnabled = false;
+    private String isProactiveConnectionManagementEnabled = String.valueOf(false);
 
     @Parameter(names = "-proactiveConnectionRegionsCount", description = "Number of regions where endpoints are to be proactively connected to.")
     private int proactiveConnectionRegionsCount = 1;
@@ -572,7 +572,7 @@ public class Configuration {
     }
 
     public boolean isProactiveConnectionManagementEnabled() {
-        return isProactiveConnectionManagementEnabled;
+        return Boolean.parseBoolean(isProactiveConnectionManagementEnabled);
     }
 
     public Integer getProactiveConnectionRegionsCount() {

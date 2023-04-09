@@ -366,13 +366,18 @@ abstract class AsyncBenchmark<T> {
                 .directMode();
 
         if (shouldOpenConnectionsAndInitCaches) {
+
+            logger.info("Proactively establishing connections...");
+
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
             CosmosContainerIdentity cosmosContainerIdentity = new CosmosContainerIdentity(
                     configuration.getDatabaseId(),
                     configuration.getCollectionId()
             );
             cosmosContainerIdentities.add(cosmosContainerIdentity);
-            CosmosContainerProactiveInitConfigBuilder cosmosContainerProactiveInitConfigBuilder = new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities);
+            CosmosContainerProactiveInitConfigBuilder cosmosContainerProactiveInitConfigBuilder = new
+                    CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                    .setProactiveConnectionRegionsCount(configuration.getProactiveConnectionRegionsCount());
 
             if (configuration.getConnectionWarmUpTimeout() == Duration.ZERO) {
 
