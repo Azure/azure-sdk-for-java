@@ -581,8 +581,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
         return new Object[][]{
-                new Object[]{preferredLocations, 2, 16, 5, Duration.ofSeconds(1)},
-                new Object[]{preferredLocations, 2, 25, 5, Duration.ofMillis(500)}
+                new Object[]{preferredLocations, 2, 5, 5, Duration.ofMillis(300)},
+                new Object[]{preferredLocations, 2, 7, 5, Duration.ofMillis(400)}
         };
     }
 

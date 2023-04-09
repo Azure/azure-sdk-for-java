@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,15 +86,27 @@ public class RntbdConnectionStateListener {
 
         this.proactiveOpenConnectionsProcessor.decrementTotalConnectionCount();
 
-        this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
-                new OpenConnectionOperation(
-                        rntbdOpenConnectionsHandler,
-                        "",
-                        endpoint.serviceEndpoint(),
-                        this.addressUris.stream().findFirst().get(),
-                        this.endpoint.getMinChannelsRequired()
-                )
-        );
+        // if an application developer has set the default min pool size to 0
+        // (a system config which applies to all endpoints) then it is best
+        // to avoid opening the min connections / channels required for the endpoint
+        // (to reduce CPU cycles to open connections) in the case of a connection
+        // close / reset
+        // connections will be opened proactively on this endpoint only in the
+        // openConnectionsAndInitCaches flow
+        if (Configs.getMinConnectionPoolSizePerEndpoint() > 0) {
+
+            logger.debug("Channel related exception occurred, try to open the connection.");
+
+            this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
+                    new OpenConnectionOperation(
+                            rntbdOpenConnectionsHandler,
+                            "",
+                            endpoint.serviceEndpoint(),
+                            this.addressUris.stream().findFirst().get(),
+                            this.endpoint.getMinChannelsRequired()
+                    )
+            );
+        }
 
         this.proactiveOpenConnectionsProcessor
                 .getOpenConnectionsPublisher()

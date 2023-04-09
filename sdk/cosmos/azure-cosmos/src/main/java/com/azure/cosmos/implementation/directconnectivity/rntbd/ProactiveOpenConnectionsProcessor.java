@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,6 +36,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final ConcurrentHashMap<String, Integer> endpointToMinConnections;
     private final AtomicInteger totalEstablishedConnections;
     private final AtomicReference<OpenConnectionAggressivenessHint> aggressivenessHint;
+    private static final Map<OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
+
+    static {
+        concurrencySettings.put(OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), 1));
+        concurrencySettings.put(OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), Configs.getCPUCnt()));
+    }
 
     public ProactiveOpenConnectionsProcessor() {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
@@ -66,19 +74,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisher() {
-        // aggressive concurrency
-        int concurrency = Configs.getCPUCnt();
 
-        // defensive concurrency
-        if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.DEFENSIVE) {
-            concurrency = 1;
-        }
+        ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
-        return openConnectionsTaskSink.asFlux()
+        return Flux.from(openConnectionsTaskSink.asFlux())
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .parallel(concurrency)
+                .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .doOnComplete(this::instantiateOpenConnectionsPublisher)
                 .flatMap(openConnectionOperation -> {
                     if (totalEstablishedConnections.get() < MaxConnectionsToOpenAcrossAllEndpoints) {
 
@@ -99,7 +101,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         ));
                     }
                     return Flux.empty();
-                })
+                }, false, concurrencyConfiguration.openConnectionExecutionConcurrency)
                 .flatMap(openConnectionOpToResponse -> {
                     OpenConnectionOperation openConnectionOperation = openConnectionOpToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionOpToResponse.getT2();
@@ -122,10 +124,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public void reinitializeOpenConnectionsPublisherAndSubscribe() {
-        logger.info("In open connections task sink and concurrency reduction flow");
+        logger.debug("In open connections task sink and concurrency reduction flow");
         this.toggleOpenConnectionsAggressiveness();
         this.instantiateOpenConnectionsPublisher();
-        this.getOpenConnectionsPublisher().subscribe();
+        this.getOpenConnectionsPublisher().runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).subscribe();
     }
 
     private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(
@@ -149,7 +151,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // this method provides for a way to resume emitting pushed tasks to
     // the sink
     private synchronized void instantiateOpenConnectionsPublisher() {
-        logger.info("Reinitialize open connections task sink");
+        logger.debug("Reinitialize open connections task sink");
         openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
         openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
@@ -177,4 +179,15 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     public void decrementTotalConnectionCount() {
         totalEstablishedConnections.decrementAndGet();
     }
+
+    private static class ConcurrencyConfiguration {
+        int openConnectionOperationEmissionConcurrency;
+        int openConnectionExecutionConcurrency;
+
+        public ConcurrencyConfiguration(int openConnectionOperationEmissionConcurrency, int openConnectionExecutionConcurrency) {
+            this.openConnectionOperationEmissionConcurrency = openConnectionOperationEmissionConcurrency;
+            this.openConnectionExecutionConcurrency = openConnectionExecutionConcurrency;
+        }
+    }
+
 }
