@@ -22,6 +22,7 @@ import com.azure.communication.callautomation.models.CallingServerErrorException
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
@@ -188,6 +189,13 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
+        
+        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
+            CustomContext customContext = new CustomContext();
+            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
+            request.setCustomContext(customContext);
+        }
 
         if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
             MediaStreamingConfigurationInternal streamingConfigurationInternal =
@@ -237,6 +245,14 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
+        
+        // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
+        if (createCallOptions.getCallInvite().getSipHeaders() != null || createCallOptions.getCallInvite().getVoipHeaders() != null) {
+            CustomContext customContext = new CustomContext();
+            customContext.setSipHeaders(createCallOptions.getCallInvite().getSipHeaders());
+            customContext.setVoipHeaders(createCallOptions.getCallInvite().getVoipHeaders());
+            request.setCustomContext(customContext);
+        }
 
         if (createCallOptions.getMediaStreamingConfiguration() != null) {
             MediaStreamingConfigurationInternal streamingConfigurationInternal =
@@ -366,7 +382,15 @@ public final class CallAutomationAsyncClient {
 
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
-                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallImvite().getTarget()));
+                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallInvite().getTarget()));
+            
+            // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
+            if (redirectCallOptions.getTargetCallInvite().getSipHeaders() != null || redirectCallOptions.getTargetCallInvite().getVoipHeaders() != null) {
+                CustomContext customContext = new CustomContext();
+                customContext.setSipHeaders(redirectCallOptions.getTargetCallInvite().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTargetCallInvite().getVoipHeaders());
+                request.setCustomContext(customContext);
+            }
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
                     context)

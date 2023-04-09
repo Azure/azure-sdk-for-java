@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -96,8 +97,22 @@ public final class DocumentPage {
     @JsonProperty(value = "images")
     private List<DocumentImage> images;
 
-    /** Creates an instance of DocumentPage class. */
-    public DocumentPage() {}
+    /**
+     * Creates an instance of DocumentPage class.
+     *
+     * @param kind the kind value to set.
+     * @param pageNumber the pageNumber value to set.
+     * @param spans the spans value to set.
+     */
+    @JsonCreator
+    public DocumentPage(
+            @JsonProperty(value = "kind", required = true) DocumentPageKind kind,
+            @JsonProperty(value = "pageNumber", required = true) int pageNumber,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
+        this.kind = kind;
+        this.pageNumber = pageNumber;
+        this.spans = spans;
+    }
 
     /**
      * Get the kind property: Kind of document page.
@@ -109,34 +124,12 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the kind property: Kind of document page.
-     *
-     * @param kind the kind value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setKind(DocumentPageKind kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
      * Get the pageNumber property: 1-based page number in the input document.
      *
      * @return the pageNumber value.
      */
     public int getPageNumber() {
         return this.pageNumber;
-    }
-
-    /**
-     * Set the pageNumber property: 1-based page number in the input document.
-     *
-     * @param pageNumber the pageNumber value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-        return this;
     }
 
     /**
@@ -230,17 +223,6 @@ public final class DocumentPage {
      */
     public List<DocumentSpan> getSpans() {
         return this.spans;
-    }
-
-    /**
-     * Set the spans property: Location of the page in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
     }
 
     /**

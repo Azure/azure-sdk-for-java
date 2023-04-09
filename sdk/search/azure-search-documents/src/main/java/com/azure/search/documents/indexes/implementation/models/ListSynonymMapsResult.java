@@ -75,9 +75,10 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
                         }
                     }
                     if (synonymMapsFound) {
-                        ListSynonymMapsResult deserializedValue = new ListSynonymMapsResult(synonymMaps);
+                        ListSynonymMapsResult deserializedListSynonymMapsResult =
+                                new ListSynonymMapsResult(synonymMaps);
 
-                        return deserializedValue;
+                        return deserializedListSynonymMapsResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!synonymMapsFound) {

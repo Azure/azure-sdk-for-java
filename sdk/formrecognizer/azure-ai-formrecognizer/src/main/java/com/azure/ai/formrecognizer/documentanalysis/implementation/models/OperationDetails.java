@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -81,8 +82,28 @@ public class OperationDetails {
     @JsonProperty(value = "error")
     private Error error;
 
-    /** Creates an instance of OperationDetails class. */
-    public OperationDetails() {}
+    /**
+     * Creates an instance of OperationDetails class.
+     *
+     * @param operationId the operationId value to set.
+     * @param status the status value to set.
+     * @param createdDateTime the createdDateTime value to set.
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @JsonCreator
+    public OperationDetails(
+            @JsonProperty(value = "operationId", required = true) String operationId,
+            @JsonProperty(value = "status", required = true) OperationStatus status,
+            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
+            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime,
+            @JsonProperty(value = "resourceLocation", required = true) String resourceLocation) {
+        this.operationId = operationId;
+        this.status = status;
+        this.createdDateTime = createdDateTime;
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        this.resourceLocation = resourceLocation;
+    }
 
     /**
      * Get the operationId property: Operation ID.
@@ -94,34 +115,12 @@ public class OperationDetails {
     }
 
     /**
-     * Set the operationId property: Operation ID.
-     *
-     * @param operationId the operationId value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
-    }
-
-    /**
      * Get the status property: Operation status.
      *
      * @return the status value.
      */
     public OperationStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: Operation status.
-     *
-     * @param status the status value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setStatus(OperationStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -154,17 +153,6 @@ public class OperationDetails {
     }
 
     /**
-     * Set the createdDateTime property: Date and time (UTC) when the operation was created.
-     *
-     * @param createdDateTime the createdDateTime value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-        return this;
-    }
-
-    /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
      *
      * @return the lastUpdatedDateTime value.
@@ -174,34 +162,12 @@ public class OperationDetails {
     }
 
     /**
-     * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     *
-     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
-        this.lastUpdatedDateTime = lastUpdatedDateTime;
-        return this;
-    }
-
-    /**
      * Get the resourceLocation property: URL of the resource targeted by this operation.
      *
      * @return the resourceLocation value.
      */
     public String getResourceLocation() {
         return this.resourceLocation;
-    }
-
-    /**
-     * Set the resourceLocation property: URL of the resource targeted by this operation.
-     *
-     * @param resourceLocation the resourceLocation value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setResourceLocation(String resourceLocation) {
-        this.resourceLocation = resourceLocation;
-        return this;
     }
 
     /**

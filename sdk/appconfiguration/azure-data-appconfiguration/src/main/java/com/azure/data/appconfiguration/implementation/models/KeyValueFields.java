@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for KeyValueFields. */
@@ -48,7 +47,6 @@ public final class KeyValueFields extends ExpandableStringEnum<KeyValueFields> {
      * @param name a name to look for.
      * @return the corresponding KeyValueFields.
      */
-    @JsonCreator
     public static KeyValueFields fromString(String name) {
         return fromString(name, KeyValueFields.class);
     }

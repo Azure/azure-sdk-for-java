@@ -17,6 +17,11 @@ public final class Constants {
     /**
      * Default indexing policy automatic.
      */
+    public static final boolean DEFAULT_INDEXING_POLICY_OVERWRITE_POLICY = false;
+
+    /**
+     * Default indexing policy automatic.
+     */
     public static final boolean DEFAULT_INDEXING_POLICY_AUTOMATIC = true;
 
     /**

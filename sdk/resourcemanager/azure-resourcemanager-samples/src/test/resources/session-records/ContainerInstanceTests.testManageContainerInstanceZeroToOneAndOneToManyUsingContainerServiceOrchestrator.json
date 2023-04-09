@@ -75,7 +75,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "154f2b49-1d98-4272-910e-6f04d19bd136",
-      "Body" : "{\"username\":\"acrd57221498718\",\"passwords\":[{\"name\":\"password\",\"value\":\"fakePasswordPlaceholder\"},{\"name\":\"password2\",\"value\":\"fakePasswordPlaceholder\"}]}"
+      "Body" : "{\"username\":\"acrd57221498718\",\"passwords\":[{\"name\":\"password\",\"value\":\"***REMOVED***\"},{\"name\":\"password2\",\"value\":\"***REMOVED***\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -102,7 +102,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "39d5cda8-b800-4e76-8154-f7df3436192b",
-      "Body" : "{\"username\":\"acrd57221498718\",\"passwords\":[{\"name\":\"password\",\"value\":\"fakePasswordPlaceholder\"},{\"name\":\"password2\",\"value\":\"fakePasswordPlaceholder\"}]}"
+      "Body" : "{\"username\":\"acrd57221498718\",\"passwords\":[{\"name\":\"password\",\"value\":\"***REMOVED***\"},{\"name\":\"password2\",\"value\":\"***REMOVED***\"}]}"
     }
   }, {
     "Method" : "PUT",

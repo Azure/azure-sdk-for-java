@@ -137,11 +137,11 @@ public final class LimitTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        LimitTokenFilter deserializedValue = new LimitTokenFilter(name);
-                        deserializedValue.maxTokenCount = maxTokenCount;
-                        deserializedValue.allTokensConsumed = allTokensConsumed;
+                        LimitTokenFilter deserializedLimitTokenFilter = new LimitTokenFilter(name);
+                        deserializedLimitTokenFilter.maxTokenCount = maxTokenCount;
+                        deserializedLimitTokenFilter.allTokensConsumed = allTokensConsumed;
 
-                        return deserializedValue;
+                        return deserializedLimitTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

@@ -193,7 +193,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- suppress eceptions caught to for tracing-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files="com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClient.java"/>
+            files="com.azure.containers.containerregistry.ContainerRegistryContentClient.java"/>
 
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
@@ -336,6 +336,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress ReverseProxyPolicy being package private. It may get moved into azure-core. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
             files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
+            files="com.azure.ai.translation.text.TranslatorRegionAuthenticationPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>
@@ -546,6 +548,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Field additionallyAllowedTenants is not set in constructor and can be changed using the builder option. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.identity.DefaultAzureCredentialBuilder"/>
 
-<suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*(DeviceCodeCredential|InteractiveBrowserCredential|AzureCliCredential|AzureDeveloperCliCredential|ClientCertificateCredential|ClientSecretCredential|EnvironmentCredential|OnBehalfOfCredential|ChainedTokenCredential|ClientAssertionCredential|UsernamePasswordCredential).java"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
 
 </suppressions>

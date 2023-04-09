@@ -109,10 +109,11 @@ public final class LuceneStandardTokenizerV2 extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        LuceneStandardTokenizerV2 deserializedValue = new LuceneStandardTokenizerV2(name);
-                        deserializedValue.maxTokenLength = maxTokenLength;
+                        LuceneStandardTokenizerV2 deserializedLuceneStandardTokenizerV2 =
+                                new LuceneStandardTokenizerV2(name);
+                        deserializedLuceneStandardTokenizerV2.maxTokenLength = maxTokenLength;
 
-                        return deserializedValue;
+                        return deserializedLuceneStandardTokenizerV2;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

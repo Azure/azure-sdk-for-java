@@ -88,6 +88,7 @@
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
     <module>sdk/healthcareapis</module>
+    <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
     <module>sdk/hybridcontainerservice</module>
     <module>sdk/hybridkubernetes</module>
@@ -121,6 +122,7 @@
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/netapp</module>
     <module>sdk/networkfunction</module>
+    <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>

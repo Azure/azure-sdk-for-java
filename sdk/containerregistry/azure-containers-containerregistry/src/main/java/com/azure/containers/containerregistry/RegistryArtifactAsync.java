@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.implementation.ArtifactTagProperti
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -33,6 +34,7 @@ import java.util.Objects;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.formatFullyQualifiedReference;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.isDigest;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -116,14 +118,10 @@ public final class RegistryArtifactAsync {
     }
 
     private Mono<Response<Void>> deleteWithResponse(Context context) {
-        try {
-            return digestMono
-                .flatMap(res -> serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context))
-                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return digestMono
+            .flatMap(res -> serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context))
+            .map(UtilsImpl::deleteResponseToSuccess)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -182,13 +180,9 @@ public final class RegistryArtifactAsync {
             return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
         }
 
-        try {
-            return serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context)
-                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return serviceClient.deleteTagWithResponseAsync(getRepositoryName(), tag, context)
+            .map(UtilsImpl::deleteResponseToSuccess)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -248,15 +242,11 @@ public final class RegistryArtifactAsync {
     }
 
     private  Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
-        try {
-            return digestMono
-                .flatMap(res -> serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
-                .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
-                    ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return digestMono
+            .flatMap(res -> serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
+            .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -319,21 +309,17 @@ public final class RegistryArtifactAsync {
     }
 
     private Mono<Response<ArtifactTagProperties>> getTagPropertiesWithResponse(String tag, Context context) {
-        try {
-            if (tag == null) {
-                return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
-            }
-            if (tag.isEmpty()) {
-                return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
-            }
-
-            return serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context)
-                .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
-                    ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+        if (tag == null) {
+            return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
         }
+        if (tag.isEmpty()) {
+            return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
+        }
+
+        return serviceClient.getTagPropertiesWithResponseAsync(getRepositoryName(), tag, context)
+            .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -433,31 +419,24 @@ public final class RegistryArtifactAsync {
     }
 
     private  Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrder order, Context context) {
-        try {
-            if (pageSize != null && pageSize < 0) {
-                return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
-            }
-
-            final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
-
-            return digestMono
-                .flatMap(digest -> serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, digest, context))
-                .map(digest -> UtilsImpl.getPagedResponseWithContinuationToken(digest,
-                    baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+        if (pageSize != null && pageSize < 0) {
+            return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
         }
+
+        final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
+
+        return digestMono
+            .flatMap(digest -> serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, digest, context))
+            .map(digest -> UtilsImpl.getPagedResponseWithContinuationToken(digest,
+                baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
-        try {
-            return serviceClient.getTagsNextSinglePageAsync(nextLink, context)
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                    baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())));
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
+        return serviceClient.getTagsNextSinglePageAsync(nextLink, context)
+            .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -494,32 +473,28 @@ public final class RegistryArtifactAsync {
 
     private Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
         String tag, ArtifactTagProperties tagProperties, Context context) {
-        try {
-            if (tag == null) {
-                return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
-            }
-
-            if (tag.isEmpty()) {
-                return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
-            }
-
-            if (tagProperties == null) {
-                return monoError(LOGGER, new NullPointerException("'tagProperties' cannot be null."));
-            }
-
-            TagWriteableProperties writeableProperties = new TagWriteableProperties()
-                .setDeleteEnabled(tagProperties.isDeleteEnabled())
-                .setListEnabled(tagProperties.isListEnabled())
-                .setReadEnabled(tagProperties.isReadEnabled())
-                .setWriteEnabled(tagProperties.isWriteEnabled());
-
-            return serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
-                .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
-                    ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+        if (tag == null) {
+            return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
         }
+
+        if (tag.isEmpty()) {
+            return monoError(LOGGER, new IllegalArgumentException("'tag' cannot be empty."));
+        }
+
+        if (tagProperties == null) {
+            return monoError(LOGGER, new NullPointerException("'tagProperties' cannot be null."));
+        }
+
+        TagWriteableProperties writeableProperties = new TagWriteableProperties()
+            .setDeleteEnabled(tagProperties.isDeleteEnabled())
+            .setListEnabled(tagProperties.isListEnabled())
+            .setReadEnabled(tagProperties.isReadEnabled())
+            .setWriteEnabled(tagProperties.isWriteEnabled());
+
+        return serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
+            .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -582,26 +557,22 @@ public final class RegistryArtifactAsync {
 
     private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(
         ArtifactManifestProperties manifestProperties, Context context) {
-        try {
-            if (manifestProperties == null) {
-                return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
-            }
-
-            ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
-                .setDeleteEnabled(manifestProperties.isDeleteEnabled())
-                .setListEnabled(manifestProperties.isListEnabled())
-                .setWriteEnabled(manifestProperties.isWriteEnabled())
-                .setReadEnabled(manifestProperties.isReadEnabled());
-
-            return digestMono
-                .flatMap(digest -> serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), digest,
-                    writeableProperties, context))
-                .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
-                    ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+        if (manifestProperties == null) {
+            return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
         }
+
+        ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
+            .setDeleteEnabled(manifestProperties.isDeleteEnabled())
+            .setListEnabled(manifestProperties.isListEnabled())
+            .setWriteEnabled(manifestProperties.isWriteEnabled())
+            .setReadEnabled(manifestProperties.isReadEnabled());
+
+        return digestMono
+            .flatMap(digest -> serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), digest,
+                writeableProperties, context))
+            .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
+                ArtifactManifestPropertiesHelper.create(internalResponse.getValue())))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**

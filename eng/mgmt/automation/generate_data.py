@@ -29,10 +29,10 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
     spec_root = os.path.abspath(config['specFolder'])
 
     packages = []
-    if 'relatedCadlProjectFolder' not in config:
+    if 'relatedTypeSpecProjectFolder' not in config:
         return packages
 
-    cadl_projects = config['relatedCadlProjectFolder']
+    cadl_projects = config['relatedTypeSpecProjectFolder']
     if isinstance(cadl_projects, str):
         cadl_projects = [cadl_projects]
 
@@ -118,7 +118,7 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                         'eng/versioning',
                         'pom.xml'
                     ],
-                    'cadlProject': [cadl_project],
+                    'typespecProject': [cadl_project],
                     'packageFolder': sdk_folder,
                     'artifacts': artifacts,
                     'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),

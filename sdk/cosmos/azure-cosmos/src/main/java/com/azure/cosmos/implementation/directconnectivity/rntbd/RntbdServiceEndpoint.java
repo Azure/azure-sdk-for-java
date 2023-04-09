@@ -332,7 +332,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.lastFaultInjectionRuleId = faultInjectionRuleId;
         this.lastFaultInjectionTimestamp = Instant.now();
 
-        this.channelPool.injectConnectionErrors(threshold, eventType);
+        this.channelPool.injectConnectionErrors(faultInjectionRuleId, threshold, eventType);
     }
 
     @Override

@@ -6,6 +6,8 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
@@ -13,7 +15,7 @@ import com.azure.containers.containerregistry.implementation.models.TagAttribute
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
-import com.azure.containers.containerregistry.models.DownloadManifestResult;
+import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -44,10 +46,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
@@ -61,12 +63,10 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
@@ -81,16 +81,20 @@ public final class UtilsImpl {
     private static final ContainerRegistryAudience ACR_ACCESS_TOKEN_AUDIENCE = ContainerRegistryAudience.fromString("https://containerregistry.azure.net");
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
-    // TODO (limolkova) should we send index and list too so that we won't need to change the default later on?
-    public static final String SUPPORTED_MANIFEST_TYPES = ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST;
+
+    public static final String SUPPORTED_MANIFEST_TYPES = "*/*"
+        + "," + ManifestMediaType.OCI_MANIFEST
+        + "," + ManifestMediaType.DOCKER_MANIFEST
+        + ",application/vnd.oci.image.index.v1+json"
+        + ",application/vnd.docker.distribution.manifest.list.v2+json"
+        + ",application/vnd.cncf.oras.artifact.manifest.v1+json";
+
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
-    private static final Context CONTEXT_WITH_SYNC = new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
-    public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.uploadBlob";
-    public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryBlobAsyncClient.downloadBlob";
+    public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.uploadBlob";
+    public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.downloadBlob";
 
     private UtilsImpl() { }
 
@@ -226,7 +230,7 @@ public final class UtilsImpl {
         }
     }
 
-    public static Response<DownloadManifestResult> toDownloadManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+    public static Response<GetManifestResult> toGetManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
         String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
 
@@ -242,7 +246,7 @@ public final class UtilsImpl {
             rawResponse.getRequest(),
             rawResponse.getStatusCode(),
             rawResponse.getHeaders(),
-            ConstructorAccessors.createDownloadManifestResult(digest, responseMediaType, rawResponse.getValue()));
+            ConstructorAccessors.createGetManifestResult(digest, responseMediaType, rawResponse.getValue()));
     }
 
     /**
@@ -263,7 +267,7 @@ public final class UtilsImpl {
     }
 
     private static <T> Response<Void> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return new SimpleResponse<Void>(
+        return new SimpleResponse<>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
@@ -271,47 +275,31 @@ public final class UtilsImpl {
     }
 
     /**
-     * This method converts the API response codes into well known exceptions.
-     * @param exception The exception returned by the rest client.
-     * @return The exception returned by the public methods.
+     * This method converts AcrErrors inside AcrErrorsException into {@link HttpResponseException}
+     * with {@link ResponseError}
      */
-    public static Throwable mapException(Throwable exception) {
-        HttpResponseException acrException = null;
+    public static HttpResponseException mapAcrErrorsException(AcrErrorsException acrException) {
+        final HttpResponse errorHttpResponse = acrException.getResponse();
 
-        if (exception instanceof HttpResponseException) {
-            acrException = ((HttpResponseException) exception);
-        } else if (exception instanceof RuntimeException) {
-            RuntimeException runtimeException = (RuntimeException) exception;
-            Throwable throwable = runtimeException.getCause();
-            if (throwable instanceof HttpResponseException) {
-                acrException = (HttpResponseException) throwable;
+        if (acrException.getValue() != null && !CoreUtils.isNullOrEmpty(acrException.getValue().getErrors())) {
+            AcrErrorInfo first = acrException.getValue().getErrors().get(0);
+            ResponseError error = new ResponseError(first.getCode(), first.getMessage());
+
+            switch (errorHttpResponse.getStatusCode()) {
+                case 401:
+                    throw  new ClientAuthenticationException(acrException.getMessage(), acrException.getResponse(), error);
+                case 404:
+                    return new ResourceNotFoundException(acrException.getMessage(), acrException.getResponse(), error);
+                case 409:
+                    return new ResourceExistsException(acrException.getMessage(), acrException.getResponse(), error);
+                case 412:
+                    return new ResourceModifiedException(acrException.getMessage(), acrException.getResponse(), error);
+                default:
+                    return new HttpResponseException(acrException.getMessage(), acrException.getResponse(), error);
             }
         }
 
-        if (acrException == null) {
-            return exception;
-        }
-
-        return mapAcrErrorsException(acrException);
-    }
-
-    public static HttpResponseException mapAcrErrorsException(HttpResponseException acrException) {
-        final HttpResponse errorHttpResponse = acrException.getResponse();
-        final int statusCode = errorHttpResponse.getStatusCode();
-        final String errorDetail = acrException.getMessage();
-
-        switch (statusCode) {
-            case 401:
-                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), acrException);
-            case 404:
-                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), acrException);
-            case 409:
-                return new ResourceExistsException(errorDetail, acrException.getResponse(), acrException);
-            case 412:
-                return new ResourceModifiedException(errorDetail, acrException.getResponse(), acrException);
-            default:
-                return new HttpResponseException(errorDetail, acrException.getResponse(), acrException);
-        }
+        return acrException;
     }
 
     /**
@@ -439,14 +427,6 @@ public final class UtilsImpl {
         }
     }
 
-    public static Context enableSync(Context context) {
-        if (context == null || context == Context.NONE) {
-            return CONTEXT_WITH_SYNC;
-        }
-
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-
     public static <H, T> String getLocation(ResponseBase<H, T> response) {
         String locationHeader = response.getHeaders().getValue(HttpHeaderName.LOCATION);
         // The location header returned in the nextLink for upload chunk operations starts with a '/'
@@ -487,13 +467,5 @@ public final class UtilsImpl {
             // This will not happen.
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
-    }
-
-    public static String getContentTypeString(Collection<ManifestMediaType> mediaTypes) {
-        return CoreUtils.isNullOrEmpty(mediaTypes)
-            ? SUPPORTED_MANIFEST_TYPES
-            : mediaTypes.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
     }
 }
