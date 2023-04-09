@@ -7,6 +7,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -28,7 +29,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -214,7 +214,7 @@ public class GlobalAddressResolverTest {
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
-        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, OpenConnectionAggressivenessHint.AGGRESSIVE))
+        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE))
                 .expectComplete()
                 .verify();
 

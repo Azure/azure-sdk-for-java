@@ -4,11 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +28,7 @@ public interface IAddressResolver {
      */
     Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint
+            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
     );
 
     /***

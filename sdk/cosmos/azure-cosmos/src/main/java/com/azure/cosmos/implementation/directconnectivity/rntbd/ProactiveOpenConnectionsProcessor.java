@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -35,18 +35,18 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionOperation> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, Integer> endpointToMinConnections;
     private final AtomicInteger totalEstablishedConnections;
-    private final AtomicReference<OpenConnectionAggressivenessHint> aggressivenessHint;
-    private static final Map<OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
+    private final AtomicReference<AsyncDocumentClient.OpenConnectionAggressivenessHint> aggressivenessHint;
+    private static final Map<AsyncDocumentClient.OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
 
     static {
-        concurrencySettings.put(OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), 1));
-        concurrencySettings.put(OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), Configs.getCPUCnt()));
+        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), 1));
+        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), Configs.getCPUCnt()));
     }
 
     public ProactiveOpenConnectionsProcessor() {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
-        this.aggressivenessHint = new AtomicReference<>(OpenConnectionAggressivenessHint.AGGRESSIVE);
+        this.aggressivenessHint = new AtomicReference<>(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
         this.totalEstablishedConnections = new AtomicInteger(0);
         this.endpointToMinConnections = new ConcurrentHashMap<>();
     }
@@ -90,7 +90,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         Uri addressUri = openConnectionOperation.getAddressUri();
                         URI serviceEndpoint = openConnectionOperation.getServiceEndpoint();
                         int minConnectionsForEndpoint = openConnectionOperation.getMinConnectionsRequiredForEndpoint();
-                        OpenConnectionAggressivenessHint hint = aggressivenessHint.get();
+                        AsyncDocumentClient.OpenConnectionAggressivenessHint hint = aggressivenessHint.get();
                         String collectionRid = openConnectionOperation.getCollectionRid();
 
                         return Flux.zip(Mono.just(openConnectionOperation), openConnectionsHandler.openConnections(
@@ -157,10 +157,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private synchronized void toggleOpenConnectionsAggressiveness() {
-        if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.AGGRESSIVE) {
-            aggressivenessHint.set(OpenConnectionAggressivenessHint.DEFENSIVE);
+        if (aggressivenessHint.get() == AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE) {
+            aggressivenessHint.set(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE);
         } else {
-            aggressivenessHint.set(OpenConnectionAggressivenessHint.AGGRESSIVE);
+            aggressivenessHint.set(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
         }
     }
 

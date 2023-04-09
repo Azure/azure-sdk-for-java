@@ -25,7 +25,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -58,7 +57,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -730,7 +728,7 @@ public class CosmosAsyncContainer {
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    OpenConnectionAggressivenessHint.AGGRESSIVE
+                    AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
             )
                     .flatMap(openResult -> {
                         logger.info("OpenConnectionsAndInitCaches: {}", openResult);
@@ -793,7 +791,7 @@ public class CosmosAsyncContainer {
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig,
-                    OpenConnectionAggressivenessHint.AGGRESSIVE
+                    AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
             )
                     .flatMap(
                         openResult -> {
@@ -818,7 +816,7 @@ public class CosmosAsyncContainer {
      */
     private Mono<String> openConnectionsAndInitCachesInternal(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-        OpenConnectionAggressivenessHint hint
+        AsyncDocumentClient.OpenConnectionAggressivenessHint hint
     ) {
         final Duration idleSinkTimeout = Duration.ofSeconds(1);
 

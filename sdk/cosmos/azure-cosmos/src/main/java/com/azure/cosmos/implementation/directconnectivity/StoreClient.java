@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -28,7 +29,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -138,7 +138,7 @@ public class StoreClient implements IStoreClient {
     @Override
     public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint
+            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
     ) {
         return this.replicatedResourceClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
     }

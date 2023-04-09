@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosSchedulers;
@@ -23,7 +24,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -99,7 +99,7 @@ public class GlobalAddressResolver implements IAddressResolver {
 
     public Flux<Void> submitOpenConnectionTasksAndInitCaches(
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint
+            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
     ) {
 
         // Strip the leading "/", which follows the same format for document requests
@@ -191,7 +191,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint
+            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
     ) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
@@ -219,7 +219,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             DocumentCollection documentCollection,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             int connectionPerEndpointCount,
-            OpenConnectionAggressivenessHint hint
+            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
     ) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())

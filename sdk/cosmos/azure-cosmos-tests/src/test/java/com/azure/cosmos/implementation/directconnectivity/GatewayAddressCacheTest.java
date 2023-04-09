@@ -25,14 +25,12 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionOperation;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.OpenConnectionAggressivenessHint;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -314,7 +312,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 collectionLink,
                 createdCollection,
                 pkriList,
-                OpenConnectionAggressivenessHint.AGGRESSIVE
+                AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
         ).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
@@ -380,7 +378,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
+        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -450,7 +448,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
+        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -953,7 +951,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         if (openConnectionAndInitCaches) {
             List<PartitionKeyRangeIdentity> pkriList = Arrays.asList(new PartitionKeyRangeIdentity("0"));
-            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList, OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
+            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
             Mockito.clearInvocations(openConnectionsHandlerMock);
             httpClientWrapper.capturedRequests.clear();
         }
