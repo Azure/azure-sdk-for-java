@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
@@ -62,15 +62,25 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
     protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
+
+        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
+
+        if (configuration.isProactiveConnectionManagementEnabled()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
+        }
+        else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+        }
+
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
-            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
+            obs = containerToUse.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()));
         } else {
             // more optimized for write as partition key is already passed as config
-            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
+            obs = containerToUse.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()),

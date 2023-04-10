@@ -8,6 +8,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
@@ -70,6 +71,8 @@ abstract class AsyncBenchmark<T> {
     final CosmosAsyncClient cosmosClient;
     CosmosAsyncContainer cosmosAsyncContainer;
     CosmosAsyncDatabase cosmosAsyncDatabase;
+    CosmosAsyncContainer cosmosAsyncContainerWithConnectionsEstablished;
+    CosmosAsyncContainer cosmosAsyncContainerWithConnectionsUnestablished;
 
     final String partitionKey;
     final Configuration configuration;
@@ -357,7 +360,9 @@ abstract class AsyncBenchmark<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
 
-        boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT && configuration.isProactiveConnectionManagementEnabled();
+        boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT
+                && configuration.isProactiveConnectionManagementEnabled()
+                && !configuration.isUseUnWarmedUpContainer();
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                 .endpoint(configuration.getServiceEndpoint())
@@ -394,15 +399,32 @@ abstract class AsyncBenchmark<T> {
                         .endpointDiscoveryEnabled(true);
             }
 
-            if (configuration.getMinConnectionPoolSizePerEndpoint() > 1) {
+            if (configuration.getMinConnectionPoolSizePerEndpoint() >= 1) {
                 System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", configuration.getMinConnectionPoolSizePerEndpoint().toString());
             }
 
             CosmosAsyncClient openConnectionsAsyncClient = cosmosClientBuilder.buildAsyncClient();
             openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
-            cosmosAsyncDatabase = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
-            cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(configuration.getCollectionId());
+            CosmosAsyncDatabase databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
+            databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            cosmosAsyncContainerWithConnectionsEstablished = databaseForProactiveConnectionManagement.getContainer(configuration.getCollectionId());
+        }
+
+        if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+
+            logger.info("Creating unwarmed container");
+
+            CosmosAsyncClient clientForUnwarmedContainer = new CosmosClientBuilder()
+                    .endpoint(configuration.getServiceEndpoint())
+                    .key(configuration.getMasterKey())
+                    .preferredRegions(configuration.getPreferredRegionsList())
+                    .directMode()
+                    .buildAsyncClient();
+
+            clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
+            CosmosAsyncDatabase databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
+            databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            cosmosAsyncContainerWithConnectionsUnestablished = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
         }
 
         for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {

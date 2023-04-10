@@ -3,17 +3,14 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
-import org.apache.commons.lang3.RandomUtils;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
-import java.time.Duration;
 
 class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
@@ -58,7 +55,12 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
         PojoizedJson doc = docsToRead.get(index);
         String partitionKeyValue = doc.getId();
 
-        Mono<PojoizedJson> result = cosmosAsyncContainer.readItem(doc.getId(),
+        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
+
+        if (configuration.isProactiveConnectionManagementEnabled()) containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
+        if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+
+        Mono<PojoizedJson> result = containerToUse.readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
             PojoizedJson.class).map(CosmosItemResponse::getItem);
 

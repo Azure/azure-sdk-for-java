@@ -119,11 +119,15 @@ public class Configuration {
     @Parameter(names = "-isProactiveConnectionManagementEnabled", description = "Mode which denotes whether connections are proactively established during warm up.")
     private String isProactiveConnectionManagementEnabled = String.valueOf(false);
 
+    @Parameter(names = "-isUseUnWarmedUpContainer", description = "Mode which denotes whether to use a container with no warmed up connections. NOTE: " +
+            "To be used when isProactiveConnectionManagementEnabled is set to false and isUseUnWarmedUpContainer is set to true")
+    private String isUseUnWarmedUpContainer = String.valueOf(false);
+
     @Parameter(names = "-proactiveConnectionRegionsCount", description = "Number of regions where endpoints are to be proactively connected to.")
     private int proactiveConnectionRegionsCount = 1;
 
     @Parameter(names = "-minConnectionPoolSizePerEndpoint", description = "Minimum number of connections to establish per endpoint for proactive connection management")
-    private int minConnectionPoolSizePerEndpoint = 1;
+    private int minConnectionPoolSizePerEndpoint = 0;
 
     @Parameter(names = "-connectionWarmUpTimeout", converter = DurationConverter.class)
     private Duration connectionWarmUpTimeout = Duration.ZERO;
@@ -573,6 +577,10 @@ public class Configuration {
 
     public boolean isProactiveConnectionManagementEnabled() {
         return Boolean.parseBoolean(isProactiveConnectionManagementEnabled);
+    }
+
+    public boolean isUseUnWarmedUpContainer() {
+        return Boolean.parseBoolean(isUseUnWarmedUpContainer);
     }
 
     public Integer getProactiveConnectionRegionsCount() {
