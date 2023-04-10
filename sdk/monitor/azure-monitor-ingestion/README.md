@@ -64,7 +64,7 @@ add the direct dependency to your project as follows.
 ### Create the client
 
 An authenticated client is required to upload logs to Azure Monitor. The library includes both synchronous and asynchronous forms of the clients. To authenticate, 
-the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity/1.9.0-beta.2/versions) package.
+the following examples use `DefaultAzureCredentialBuilder` from the [azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity/1.8.1) package.
 
 #### Authenticating using Azure Active Directory
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].

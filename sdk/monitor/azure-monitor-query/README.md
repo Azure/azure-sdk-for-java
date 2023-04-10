@@ -21,7 +21,7 @@ The Azure Monitor Query client library is used to execute read-only queries agai
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later
 - An [Azure subscription][azure_subscription]
 - A [TokenCredential](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementation, such as an [Azure Identity library credential type](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#credential-classes).
-- To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal].
+- To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal] or an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 - To query Metrics, you need an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 
 ### Include the package
@@ -74,7 +74,7 @@ add the direct dependency to your project as follows.
 
 ### Create the client
 
-An authenticated client is required to query Logs or Metrics. The library includes both synchronous and asynchronous forms of the clients. To authenticate, the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity/1.9.0-beta.2/versions) package.
+An authenticated client is required to query Logs or Metrics. The library includes both synchronous and asynchronous forms of the clients. To authenticate, the following examples use `DefaultAzureCredentialBuilder` from the [azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity/1.8.1) package.
 
 ### Authenticating using Azure Active Directory
 
@@ -148,6 +148,7 @@ Each set of metric values is a time series with the following characteristics:
 - [Logs query](#logs-query)
   - [Map logs query results to a model](#map-logs-query-results-to-a-model)
   - [Handle logs query response](#handle-logs-query-response)
+  - [Logs query by resource id](#logs-query-by-resource-id)
 - [Batch logs query](#batch-logs-query)
 - [Advanced logs query scenarios](#advanced-logs-query-scenarios)
   - [Set logs query timeout](#set-logs-query-timeout)
@@ -222,6 +223,23 @@ LogsQueryResult / LogsBatchQueryResult
     |---columns (list of `LogsTableColumn` objects)
         |---name
         |---type
+```
+
+#### Logs query by resource id
+The `LogsQueryClient` supports querying logs using a workspace id (queryWorkspace methods) or a resource id (queryResource methods).
+An example of querying logs using a resource id is shown below but similar changes can be applied to all other samples.
+
+```java readme-sample-logsquerybyresourceid
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+LogsQueryResult queryResults = logsQueryClient.queryResource("{resource-id}", "{kusto-query}",
+    new QueryTimeInterval(Duration.ofDays(2)));
+
+for (LogsTableRow row : queryResults.getTable().getRows()) {
+    System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
+}
 ```
 
 ### Batch logs query
