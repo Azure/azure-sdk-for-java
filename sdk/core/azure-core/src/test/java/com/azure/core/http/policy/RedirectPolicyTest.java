@@ -20,7 +20,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -408,11 +408,11 @@ public class RedirectPolicyTest {
     }
 
     private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(httpMethod, new URL("http://localhost/"))).block();
+        return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/"))).block();
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.sendSync(new HttpRequest(httpMethod, new URL("http://localhost/")), Context.NONE);
+        return pipeline.sendSync(new HttpRequest(httpMethod, createUrl("http://localhost/")), Context.NONE);
     }
 
     static class RecordingHttpClient implements HttpClient {

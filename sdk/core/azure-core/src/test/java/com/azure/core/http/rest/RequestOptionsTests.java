@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RequestOptionsTests {
     @Test
     public void addQueryParam() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 
         RequestOptions options = new RequestOptions()
             .addQueryParam("foo", "bar")
@@ -32,7 +32,7 @@ public class RequestOptionsTests {
 
     @Test
     public void addHeader() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 
         RequestOptions options = new RequestOptions()
             .addHeader("x-ms-foo", "bar")
@@ -46,7 +46,7 @@ public class RequestOptionsTests {
 
     @Test
     public void setBody() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 
         String expected = "{\"id\":\"123\"}";
 
@@ -63,7 +63,7 @@ public class RequestOptionsTests {
 
     @Test
     public void addRequestCallback() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 
         RequestOptions options = new RequestOptions()
             .addHeader("x-ms-foo", "bar")

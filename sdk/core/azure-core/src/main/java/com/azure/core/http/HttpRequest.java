@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
@@ -141,7 +142,7 @@ public class HttpRequest {
      */
     public HttpRequest setUrl(String url) {
         try {
-            this.url = new URL(url);
+            this.url = URI.create(url).toURL();
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }

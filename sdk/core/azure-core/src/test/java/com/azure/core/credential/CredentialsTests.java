@@ -27,9 +27,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.stream.Stream;
+
+import static com.azure.core.CoreTestUtils.createUrl;
 
 public class CredentialsTests {
 
@@ -83,7 +84,7 @@ public class CredentialsTests {
             .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost"));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl("https://localhost"));
         SyncAsyncExtension.execute(
             () -> pipeline.sendSync(request, Context.NONE),
             () -> pipeline.send(request).block()
@@ -134,7 +135,7 @@ public class CredentialsTests {
             .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(url));
+        HttpRequest request = new HttpRequest(HttpMethod.GET,  createUrl(url));
         pipeline.send(request).block();
     }
 
@@ -160,7 +161,7 @@ public class CredentialsTests {
             .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(url));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl(url));
         pipeline.sendSync(request, Context.NONE);
     }
 
@@ -263,10 +264,10 @@ public class CredentialsTests {
     }
 
     private HttpResponse sendRequest(HttpPipeline pipeline) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost"))).block();
+        return pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("http://localhost"))).block();
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline) throws MalformedURLException {
-        return pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost")), Context.NONE);
+        return pipeline.sendSync(new HttpRequest(HttpMethod.GET, createUrl("http://localhost")), Context.NONE);
     }
 }

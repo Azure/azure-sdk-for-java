@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.implementation.ImplUtils;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -325,7 +326,7 @@ public final class UrlBuilder {
      * @throws MalformedURLException if the URL is not fully formed.
      */
     public URL toUrl() throws MalformedURLException {
-        return new URL(toString());
+        return URI.create(toString()).toURL();
     }
 
     /**

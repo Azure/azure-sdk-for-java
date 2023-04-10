@@ -366,7 +366,7 @@ public class JacksonAdapterTests {
             Arguments.of("1".getBytes(StandardCharsets.UTF_8), byte[].class, "1".getBytes(StandardCharsets.UTF_8)),
             Arguments.of("true".getBytes(StandardCharsets.UTF_8), boolean.class, true),
             Arguments.of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true),
-            Arguments.of(urlUriBytes, URL.class, new URL(urlUri)),
+            Arguments.of(urlUriBytes, URL.class, URI.create(urlUri).toURL()),
             Arguments.of(urlUriBytes, URI.class, URI.create(urlUri)),
             Arguments.of(getObjectBytes(offsetDateTime), OffsetDateTime.class, offsetDateTime),
             Arguments.of(getObjectBytes(dateTimeRfc1123), DateTimeRfc1123.class, dateTimeRfc1123),

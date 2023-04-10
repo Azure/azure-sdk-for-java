@@ -366,7 +366,7 @@ public class ReactorHandlerProviderTest {
     @Test
     public void correctPeerDetailsCustomEndpoint() throws MalformedURLException {
         // Arrange
-        final URL customEndpoint = new URL("https://myappservice.windows.net");
+        final URL customEndpoint = URI.create("https://myappservice.windows.net").toURL();
         final String anotherFakeHostname = "hostname.fake";
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,

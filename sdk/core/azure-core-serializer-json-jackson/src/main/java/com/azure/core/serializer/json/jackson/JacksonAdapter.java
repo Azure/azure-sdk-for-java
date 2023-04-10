@@ -25,6 +25,7 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -324,8 +325,8 @@ public final class JacksonAdapter implements SerializerAdapter {
             return new DateTimeRfc1123(value);
         } else if (type == URL.class) {
             try {
-                return new URL(value);
-            } catch (MalformedURLException ex) {
+                return new URI(value).toURL();
+            } catch (URISyntaxException | MalformedURLException ex) {
                 throw new IOException(ex);
             }
         } else if (type == URI.class) {

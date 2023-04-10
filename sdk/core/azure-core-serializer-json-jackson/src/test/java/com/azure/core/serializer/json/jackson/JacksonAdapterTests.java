@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -335,7 +336,7 @@ public class JacksonAdapterTests {
         }
     }
 
-    private static Stream<Arguments> textDeserializationSupplier() throws MalformedURLException {
+    private static Stream<Arguments> textDeserializationSupplier() throws MalformedURLException, URISyntaxException {
         byte[] helloBytes = "hello".getBytes(StandardCharsets.UTF_8);
         String urlUri = "https://azure.com";
         byte[] urlUriBytes = urlUri.getBytes(StandardCharsets.UTF_8);
@@ -366,8 +367,8 @@ public class JacksonAdapterTests {
             Arguments.of("1".getBytes(StandardCharsets.UTF_8), byte[].class, "1".getBytes(StandardCharsets.UTF_8)),
             Arguments.of("true".getBytes(StandardCharsets.UTF_8), boolean.class, true),
             Arguments.of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true),
-            Arguments.of(urlUriBytes, URL.class, new URL(urlUri)),
-            Arguments.of(urlUriBytes, URI.class, URI.create(urlUri)),
+            Arguments.of(urlUriBytes, URL.class, new URI(urlUri).toURL()),
+            Arguments.of(urlUriBytes, URI.class, new URI(urlUri)),
             Arguments.of(getObjectBytes(offsetDateTime), OffsetDateTime.class, offsetDateTime),
             Arguments.of(getObjectBytes(dateTimeRfc1123), DateTimeRfc1123.class, dateTimeRfc1123),
             Arguments.of(getObjectBytes(localDate), LocalDate.class, localDate),

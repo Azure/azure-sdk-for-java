@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -127,11 +129,11 @@ public final class TestProxyDownloader {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "Downloading test proxy. This may take a few moments.");
 
         try {
-            URL url = new URL(getProxyDownloadUrl(platformInfo));
+            URL url = new URI(getProxyDownloadUrl(platformInfo)).toURL();
             Files.copy(url.openStream(),
                 getZipFileLocation(platformInfo.getExtension()),
                 StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
+        } catch (URISyntaxException | IOException e) {
             throw new RuntimeException("Could not save test proxy download", e);
         }
 

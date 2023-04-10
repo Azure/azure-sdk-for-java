@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -777,7 +778,7 @@ public class UrlBuilderTests {
 
     @Test
     public void parseURLSchemeAndHost() throws MalformedURLException {
-        final UrlBuilder builder = UrlBuilder.parse(new URL("http://www.bing.com"));
+        final UrlBuilder builder = UrlBuilder.parse(createUrl("http://www.bing.com"));
         assertEquals("http://www.bing.com", builder.toString());
     }
 

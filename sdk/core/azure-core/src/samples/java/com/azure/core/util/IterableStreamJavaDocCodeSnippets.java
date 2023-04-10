@@ -11,11 +11,12 @@ import reactor.core.publisher.Flux;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static com.azure.core.CoreTestUtils.createUrl;
 
 /**
  * Code snippets for {@link IterableStream}
@@ -30,7 +31,7 @@ public class IterableStreamJavaDocCodeSnippets {
     public void streamSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
             .set("header2", "value2");
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, createUrl("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
@@ -57,7 +58,7 @@ public class IterableStreamJavaDocCodeSnippets {
     public void iteratorwhileSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
             .set("header2", "value2");
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, createUrl("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
 
@@ -84,7 +85,7 @@ public class IterableStreamJavaDocCodeSnippets {
     public void iteratorStreamFilterSnippet() throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
             .set("header2", "value2");
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, createUrl("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
 

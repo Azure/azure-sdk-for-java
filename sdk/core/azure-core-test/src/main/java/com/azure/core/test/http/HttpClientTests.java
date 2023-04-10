@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -585,8 +587,8 @@ public abstract class HttpClientTests {
     protected URL getRequestUrl(String requestPath) {
         try {
             String prefix = isSecure() ? "https://" : "http://";
-            return new URL(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
-        } catch (MalformedURLException e) {
+            return new URI(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }

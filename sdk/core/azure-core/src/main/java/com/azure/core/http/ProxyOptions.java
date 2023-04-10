@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -286,7 +287,7 @@ public class ProxyOptions {
         }
 
         try {
-            URL proxyUrl = new URL(proxyConfiguration);
+            URL proxyUrl = URI.create(proxyConfiguration).toURL();
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
             InetSocketAddress socketAddress = (createUnresolved)

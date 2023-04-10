@@ -60,6 +60,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -173,7 +174,7 @@ public class HttpLoggingPolicyTests {
     @MethodSource("validateLoggingDoesNotConsumeSupplier")
     public void validateLoggingDoesNotConsumeRequest(Flux<ByteBuffer> stream, byte[] data, int contentLength)
         throws MalformedURLException {
-        URL requestUrl = new URL("https://test.com");
+        URL requestUrl = createUrl("https://test.com");
         HttpHeaders requestHeaders = new HttpHeaders()
             .set("Content-Type", ContentType.APPLICATION_JSON)
             .set("Content-Length", Integer.toString(contentLength));
@@ -204,7 +205,7 @@ public class HttpLoggingPolicyTests {
     @MethodSource("validateLoggingDoesNotConsumeSupplierSync")
     public void validateLoggingDoesNotConsumeRequestSync(BinaryData requestBody, byte[] data, int contentLength)
         throws MalformedURLException {
-        URL requestUrl = new URL("https://test.com");
+        URL requestUrl = createUrl("https://test.com");
         HttpHeaders requestHeaders = new HttpHeaders()
             .set("Content-Type", ContentType.APPLICATION_JSON)
             .set("Content-Length", Integer.toString(contentLength));

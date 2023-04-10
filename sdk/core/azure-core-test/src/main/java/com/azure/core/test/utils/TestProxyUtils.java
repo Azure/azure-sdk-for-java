@@ -64,12 +64,6 @@ public class TestProxyUtils {
     private static final String DELEGATION_KEY_TENANTID_REGEX = "(?:<SignedTid>)(?<secret>.*)(?:</SignedTid>)";
 
     /**
-     * Get the proxy URL.
-     *
-     * @return A string containing the proxy URL.
-     */
-
-    /**
      * Adds headers required for communication with the test proxy.
      *
      * @param request The request to add headers to.
