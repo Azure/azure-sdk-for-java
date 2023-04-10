@@ -20,11 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  */
 public class ReflectionSerializableTests {
     @Test
-    public void supportsJsonSerializableIsFalse() {
-        assertFalse(ReflectionSerializable.JSON_SERIALIZABLE_SUPPORTED);
-    }
-
-    @Test
     public void supportsXmlSerializableIsFalse() {
         assertFalse(ReflectionSerializable.XML_SERIALIZABLE_SUPPORTED);
     }

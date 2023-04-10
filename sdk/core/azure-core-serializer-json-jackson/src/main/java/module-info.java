@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core.serializer.json.jackson {
+    requires com.azure.json;
     requires transitive com.azure.core;
 
     requires transitive com.fasterxml.jackson.core;

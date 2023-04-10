@@ -26,7 +26,7 @@ public final class DocumentKeyValuePairHelper {
      * @param documentKeyValueElementAccessor The accessor.
      */
     public static void setAccessor(
-        final DocumentKeyValuePairHelper.DocumentKeyValuePairAccessor documentKeyValueElementAccessor) {
+        final DocumentKeyValuePairAccessor documentKeyValueElementAccessor) {
         accessor = documentKeyValueElementAccessor;
     }
 
@@ -37,6 +37,8 @@ public final class DocumentKeyValuePairHelper {
         void setKey(DocumentKeyValuePair documentKeyValuePair, DocumentKeyValueElement key);
         void setValue(DocumentKeyValuePair documentKeyValuePair, DocumentKeyValueElement value);
         void setConfidence(DocumentKeyValuePair documentKeyValuePair, float confidence);
+
+        void setCommonName(DocumentKeyValuePair documentKeyValuePair, String commonName);
     }
 
     static void setConfidence(DocumentKeyValuePair documentKeyValuePair, float confidence) {
