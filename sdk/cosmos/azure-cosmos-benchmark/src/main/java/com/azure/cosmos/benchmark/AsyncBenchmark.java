@@ -347,19 +347,6 @@ abstract class AsyncBenchmark<T> {
     }
 
     void run() throws Exception {
-        initializeMeter();
-        if (configuration.getSkipWarmUpOperations() > 0) {
-            logger.info("Starting warm up phase. Executing {} operations to warm up ...", configuration.getSkipWarmUpOperations());
-            warmupMode.set(true);
-        } else {
-            reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
-        }
-
-        long startTime = System.currentTimeMillis();
-
-        AtomicLong count = new AtomicLong(0);
-        long i;
-
         boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT
                 && configuration.isProactiveConnectionManagementEnabled()
                 && !configuration.isUseUnWarmedUpContainer();
@@ -426,6 +413,19 @@ abstract class AsyncBenchmark<T> {
             databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
             cosmosAsyncContainerWithConnectionsUnestablished = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
         }
+
+        initializeMeter();
+        if (configuration.getSkipWarmUpOperations() > 0) {
+            logger.info("Starting warm up phase. Executing {} operations to warm up ...", configuration.getSkipWarmUpOperations());
+            warmupMode.set(true);
+        } else {
+            reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
+        }
+
+        long startTime = System.currentTimeMillis();
+
+        AtomicLong count = new AtomicLong(0);
+        long i;
 
         for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 

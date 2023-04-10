@@ -57,8 +57,11 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
         CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
 
-        if (configuration.isProactiveConnectionManagementEnabled()) containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
-        if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+        if (configuration.isProactiveConnectionManagementEnabled()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
+        } else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+        }
 
         Mono<PojoizedJson> result = containerToUse.readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
