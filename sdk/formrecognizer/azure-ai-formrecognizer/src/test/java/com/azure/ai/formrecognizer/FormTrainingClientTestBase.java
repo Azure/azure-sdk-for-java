@@ -37,6 +37,10 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
+<<<<<<< HEAD
+=======
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.TEST_PROXY_SANITIZER_LIST;
+>>>>>>> 7a9506616faaca886df382791a36ecf35340b397
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -100,6 +104,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
         builder.credential(getCredentialByAuthority(getEndpoint()));
 
+<<<<<<< HEAD
+=======
+        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
+>>>>>>> 7a9506616faaca886df382791a36ecf35340b397
         return builder;
     }
 

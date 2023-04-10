@@ -40,6 +40,10 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
+<<<<<<< HEAD
+=======
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.OPERATION_LOCATION_SANITIZER;
+>>>>>>> 7a9506616faaca886df382791a36ecf35340b397
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -85,6 +89,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             }
             builder.credential(getCredentialByAuthority(endpoint));
         }
+        interceptorManager.addSanitizers(Arrays.asList(OPERATION_LOCATION_SANITIZER));
         return builder;
     }
 
@@ -116,6 +121,10 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             }
             builder.credential(getCredentialByAuthority(endpoint));
         }
+<<<<<<< HEAD
+=======
+        interceptorManager.addSanitizers(Arrays.asList(OPERATION_LOCATION_SANITIZER));
+>>>>>>> 7a9506616faaca886df382791a36ecf35340b397
         return builder;
     }
 

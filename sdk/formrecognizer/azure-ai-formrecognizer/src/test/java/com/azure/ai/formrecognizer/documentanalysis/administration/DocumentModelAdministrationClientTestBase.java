@@ -38,6 +38,10 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIEN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
+<<<<<<< HEAD
+=======
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.OPERATION_LOCATION_SANITIZER;
+>>>>>>> 7a9506616faaca886df382791a36ecf35340b397
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -78,6 +82,10 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             }
             builder.credential(getCredentialByAuthority(endpoint));
         }
+<<<<<<< HEAD
+=======
+        interceptorManager.addSanitizers(Arrays.asList(OPERATION_LOCATION_SANITIZER));
+>>>>>>> 7a9506616faaca886df382791a36ecf35340b397
         return builder;
     }
 
