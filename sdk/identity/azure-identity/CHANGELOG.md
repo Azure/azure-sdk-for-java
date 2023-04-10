@@ -2,6 +2,10 @@
 
 ## 1.8.2 (2023-04-10)
 
+### Bugs Fixed
+
+- Fixed a bug in managed identity not properly URLEncoding a value. [#34375](https://github.com/Azure/azure-sdk-for-java/pull/34375)
+
 ### Other Changes
 
 #### Dependency Updates
