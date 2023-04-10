@@ -75,9 +75,12 @@ public class WorkloadIdentityCredential implements TokenCredential {
         String federatedTokenFilePathInput = CoreUtils.isNullOrEmpty(federatedTokenFilePath)
             ? configuration.get(AZURE_FEDERATED_TOKEN_FILE) : federatedTokenFilePath;
 
+        String clientIdInput = CoreUtils.isNullOrEmpty(clientId)
+            ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
+
         if (!(CoreUtils.isNullOrEmpty(tenantIdInput)
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)
-            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
             identityClient = new IdentityClientBuilder()
                 .clientAssertionPath(federatedTokenFilePathInput)
