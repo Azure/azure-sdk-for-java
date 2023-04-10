@@ -143,6 +143,10 @@ class WebPubSubAsyncClient implements Closeable {
         Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1))
             .filter(thr -> !(thr instanceof StopReconnectException));
 
+    // delay
+    private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofSeconds(1);
+    private static final Duration SEQUENCE_ACK_DELAY = Duration.ofSeconds(5);
+
     WebPubSubAsyncClient(Client client,
                          Mono<String> clientAccessUrlProvider,
                          WebPubSubProtocol webPubSubProtocol,
@@ -665,7 +669,7 @@ class WebPubSubAsyncClient implements Closeable {
             // e.g. CONNECTING, RECOVERING, RECONNECTING
 
             // delay a bit, as handleSessionOpen is in websocket callback
-            Mono.delay(Duration.ofSeconds(1)).then(Mono.fromCallable(() -> {
+            Mono.delay(CLOSE_AFTER_SESSION_OPEN_DELAY).then(Mono.fromCallable(() -> {
                 clientState.changeState(WebPubSubClientState.STOPPING);
 
                 if (session != null && session.isOpen()) {
@@ -681,7 +685,7 @@ class WebPubSubAsyncClient implements Closeable {
         } else {
             // sequenceAck task
             if (webPubSubProtocol.isReliable()) {
-                Flux<Void> sequenceAckFlux = Flux.interval(Duration.ofSeconds(5)).concatMap(ignored -> {
+                Flux<Void> sequenceAckFlux = Flux.interval(SEQUENCE_ACK_DELAY).concatMap(ignored -> {
                     if (clientState.get() == WebPubSubClientState.CONNECTED && session != null && session.isOpen()) {
                         Long id = sequenceAckId.getUpdated();
                         if (id != null) {
