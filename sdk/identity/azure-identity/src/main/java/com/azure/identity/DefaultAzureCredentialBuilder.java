@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
-import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
-
 /**
  * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
  *
