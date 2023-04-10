@@ -950,7 +950,10 @@ public final class AnomalyDetectorClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyDetectionModel> listMultivariateModels() {
         // Generated convenience method for listMultivariateModels
-        return new PagedIterable<>(client.listMultivariateModels());
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient
+                .listMultivariateModels(requestOptions)
+                .mapPage(value -> value.toObject(AnomalyDetectionModel.class));
     }
 
     /**
