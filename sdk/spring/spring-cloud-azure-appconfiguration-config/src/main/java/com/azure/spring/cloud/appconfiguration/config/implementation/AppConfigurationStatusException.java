@@ -13,6 +13,4 @@ class AppConfigurationStatusException extends HttpResponseException {
 
     private static final long serialVersionUID = -2388602959090868645L;
 
-
-
 }
