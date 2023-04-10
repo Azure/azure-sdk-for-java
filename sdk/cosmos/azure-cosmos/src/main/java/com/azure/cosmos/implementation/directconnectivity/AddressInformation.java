@@ -25,6 +25,7 @@ public class AddressInformation {
         this.isPublic = isPublic;
         this.isPrimary = isPrimary;
         this.physicalUri = new Uri(normalizePhysicalUri(physicalUri));
+        this.physicalUri.setPrimary(this.isPrimary);
     }
 
     public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, String protocolScheme) {

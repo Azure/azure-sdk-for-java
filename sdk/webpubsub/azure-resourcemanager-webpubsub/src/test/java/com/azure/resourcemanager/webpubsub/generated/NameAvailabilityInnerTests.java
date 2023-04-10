@@ -7,11 +7,10 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.NameAvailabilityInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NameAvailabilityInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NameAvailabilityInner model =
             BinaryData
                 .fromString("{\"nameAvailable\":true,\"reason\":\"zdzevndh\",\"message\":\"wpdappdsbdkv\"}")
@@ -21,8 +20,8 @@ public final class NameAvailabilityInnerTests {
         Assertions.assertEquals("wpdappdsbdkv", model.message());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NameAvailabilityInner model =
             new NameAvailabilityInner().withNameAvailable(true).withReason("zdzevndh").withMessage("wpdappdsbdkv");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);

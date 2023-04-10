@@ -8,16 +8,16 @@ package com.azure.search.documents.indexes.models;
 
 /** Scripts that can be ignored by CjkBigramTokenFilter. */
 public enum CjkBigramTokenFilterScripts {
-    /** Enum value han. */
+    /** Ignore Han script when forming bigrams of CJK terms. */
     HAN("han"),
 
-    /** Enum value hiragana. */
+    /** Ignore Hiragana script when forming bigrams of CJK terms. */
     HIRAGANA("hiragana"),
 
-    /** Enum value katakana. */
+    /** Ignore Katakana script when forming bigrams of CJK terms. */
     KATAKANA("katakana"),
 
-    /** Enum value hangul. */
+    /** Ignore Hangul script when forming bigrams of CJK terms. */
     HANGUL("hangul");
 
     /** The actual serialized value for a CjkBigramTokenFilterScripts instance. */

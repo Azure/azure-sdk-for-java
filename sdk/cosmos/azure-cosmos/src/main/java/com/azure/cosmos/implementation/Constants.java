@@ -31,6 +31,7 @@ public final class Constants {
         public static final String COUNT = "_count";
         public static final String E_TAG = "_etag";
         public static final String VALUE = "_value";
+        public static final String TRACKING_ID = "_trackingId";
 
         public static final String CONSISTENCY_POLICY = "consistencyPolicy";
         public static final String DEFAULT_CONSISTENCY_LEVEL = "defaultConsistencyLevel";

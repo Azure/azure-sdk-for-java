@@ -161,12 +161,12 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
                         }
                     }
                     if (nameFound) {
-                        InputFieldMappingEntry deserializedValue = new InputFieldMappingEntry(name);
-                        deserializedValue.source = source;
-                        deserializedValue.sourceContext = sourceContext;
-                        deserializedValue.inputs = inputs;
+                        InputFieldMappingEntry deserializedInputFieldMappingEntry = new InputFieldMappingEntry(name);
+                        deserializedInputFieldMappingEntry.source = source;
+                        deserializedInputFieldMappingEntry.sourceContext = sourceContext;
+                        deserializedInputFieldMappingEntry.inputs = inputs;
 
-                        return deserializedValue;
+                        return deserializedInputFieldMappingEntry;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

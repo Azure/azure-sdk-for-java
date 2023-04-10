@@ -53,6 +53,36 @@ public final class AddressValue {
      */
     private String streetAddress;
 
+    /*
+     * Apartment or office number
+     */
+    private String unit;
+
+    /*
+     * Districts or boroughs within a city, such as Brooklyn in New York City or City of Westminster in London.
+     */
+    private String cityDistrict;
+
+    /*
+     * Second-level administrative division used in certain locales.
+     */
+    private String stateDistrict;
+
+    /*
+     * Unofficial neighborhood name, like Chinatown.
+     */
+    private String suburb;
+
+    /*
+     * Building name, such as World Trade Center.
+     */
+    private String house;
+
+    /*
+     * Floor number, such as 3F.
+     */
+    private String level;
+
     /**
      * Get the houseNumber property: Building number.
      *
@@ -187,6 +217,59 @@ public final class AddressValue {
     public String getStreetAddress() {
         return this.streetAddress;
     }
+    /**
+     * Get the unit property: Apartment or office number.
+     *
+     * @return the unit value.
+     */
+    public String getUnit() {
+        return this.unit;
+    }
+ /**
+     * Get the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
+     * Westminster in London.
+     *
+     * @return the cityDistrict value.
+     */
+    public String getCityDistrict() {
+        return this.cityDistrict;
+    }
+
+    /**
+     * Get the stateDistrict property: Second-level administrative division used in certain locales.
+     *
+     * @return the stateDistrict value.
+     */
+    public String getStateDistrict() {
+        return this.stateDistrict;
+    }
+
+    /**
+     * Get the suburb property: Unofficial neighborhood name, like Chinatown.
+     *
+     * @return the suburb value.
+     */
+    public String getSuburb() {
+        return this.suburb;
+    }
+
+    /**
+     * Get the house property: Build name, such as World Trade Center.
+     *
+     * @return the house value.
+     */
+    public String getHouse() {
+        return this.house;
+    }
+
+    /**
+     * Get the level property: Floor number, such as 3F.
+     *
+     * @return the level value.
+     */
+    public String getLevel() {
+        return this.level;
+    }
 
     /**
      * Set the streetAddress property: Street-level address, excluding city, state, countryRegion, and postalCode.
@@ -195,6 +278,29 @@ public final class AddressValue {
      */
     private void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
+    }
+    private void setCityDistrict(String city) {
+        this.cityDistrict = city;
+    }
+
+    private void setStateDistrict(String state) {
+        this.stateDistrict = state;
+    }
+
+    private void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
+
+    private void setHouse(String house) {
+        this.house = house;
+    }
+
+    private void setLevel(String level) {
+        this.level = level;
+    }
+
+    private void setUnit(String unit) {
+        this.unit = unit;
     }
 
     static {
@@ -238,6 +344,36 @@ public final class AddressValue {
             @Override
             public void setStreetAddress(AddressValue addressValue, String streetAddress) {
                 addressValue.setStreetAddress(streetAddress);
+            }
+
+            @Override
+            public void setUnit(AddressValue addressValue, String unit) {
+                addressValue.setUnit(unit);
+            }
+
+            @Override
+            public void setCityDistrict(AddressValue addressValue, String cityDistrict) {
+                addressValue.setCityDistrict(cityDistrict);
+            }
+
+            @Override
+            public void setStateDistrict(AddressValue addressValue, String stateDistrict) {
+                addressValue.setStateDistrict(stateDistrict);
+            }
+
+            @Override
+            public void setSuburb(AddressValue addressValue, String suburb) {
+                addressValue.setSuburb(suburb);
+            }
+
+            @Override
+            public void setHouse(AddressValue addressValue, String house) {
+                addressValue.setHouse(house);
+            }
+
+            @Override
+            public void setLevel(AddressValue addressValue, String level) {
+                addressValue.setLevel(level);
             }
         });
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignalRPrivateEndpointConnections Get. */
 public final class SignalRPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRPrivateEndpointConnections_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalRPrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_Get.
@@ -23,6 +21,6 @@ public final class SignalRPrivateEndpointConnectionsGetSamples {
                 "mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e",
                 "myResourceGroup",
                 "mySignalRService",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

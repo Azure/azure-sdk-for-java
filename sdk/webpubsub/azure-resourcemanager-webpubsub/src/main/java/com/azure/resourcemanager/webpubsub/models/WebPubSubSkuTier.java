@@ -27,6 +27,15 @@ public final class WebPubSubSkuTier extends ExpandableStringEnum<WebPubSubSkuTie
     public static final WebPubSubSkuTier PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of WebPubSubSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebPubSubSkuTier() {
+    }
+
+    /**
      * Creates or finds a WebPubSubSkuTier from its string representation.
      *
      * @param name a name to look for.

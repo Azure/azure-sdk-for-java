@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityConnectorApplications List. */
 public final class SecurityConnectorApplicationsListSamples {
     /*
@@ -18,6 +16,8 @@ public final class SecurityConnectorApplicationsListSamples {
      */
     public static void listSecurityApplicationsBySecurityConnectorLevelScope(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityConnectorApplications().list("gcpResourceGroup", "gcpconnector", Context.NONE);
+        manager
+            .securityConnectorApplications()
+            .list("gcpResourceGroup", "gcpconnector", com.azure.core.util.Context.NONE);
     }
 }

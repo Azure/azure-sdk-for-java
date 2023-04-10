@@ -4,8 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
@@ -13,9 +13,6 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AssessmentSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassificationCategoryPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassifyDocumentResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.DynamicClassifyDocumentResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractSummaryResultPropertiesHelper;
@@ -34,9 +31,9 @@ import com.azure.ai.textanalytics.implementation.SummaryContextPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
@@ -45,8 +42,6 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -90,7 +85,6 @@ import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -143,13 +137,6 @@ final class TestUtils {
     static final List<String> CUSTOM_MULTI_CLASSIFICATION = asList(
         "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music and add"
             + " it to my playlist");
-
-    static final List<String> DYNAMIC_CLASSIFICATION = asList(
-        "The WHO is issuing a warning about Monkey Pox.",
-        "Mo Salah plays in Liverpool FC in England.");
-
-    static final List<String> DYNAMIC_CLASSIFICATION_CATEGORIES =
-        Arrays.asList("Health", "Politics", "Music", "Sports");
 
     static final List<String> SUMMARY_INPUTS = asList(
         "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
@@ -843,7 +830,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 17);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity1,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "gentleman");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity2, "Male population group");
@@ -852,10 +839,10 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 29);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 9);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.fromString("Course"));
@@ -863,7 +850,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 11);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "angina");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity4, "Angina Pectoris");
@@ -872,10 +859,10 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 6);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "past several months");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, HealthcareEntityCategory.TIME);
@@ -883,7 +870,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 85);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 19);
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult1 = new AnalyzeHealthcareEntitiesResult(documentId,
@@ -945,7 +932,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity1,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "minimal");
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, HealthcareEntityCategory.CONDITION_QUALIFIER);
@@ -954,7 +941,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 7);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions in the anterior lateral leads");
 //        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, null);
@@ -964,7 +951,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 44);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "fatigue");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity5, "Fatigue");
@@ -974,7 +961,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 7);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity6 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "wrist pain");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity6, "Pain in wrist");
@@ -984,7 +971,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity6, 10);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity6,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
         final HealthcareEntity healthcareEntity7 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity7, "anginal equivalent");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity7, "Anginal equivalent");
@@ -994,7 +981,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity7, 18);
         // there are too many entity links, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity7,
-            IterableStream.of(Collections.emptyList()));
+            IterableStream.of(null));
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult = new AnalyzeHealthcareEntitiesResult("1",
@@ -1327,13 +1314,13 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
+            IterableStream.of(null),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+            IterableStream.of(null),
+            IterableStream.of(null)
         ));
         // Second Page
         startIndex += firstPage;
@@ -1344,13 +1331,13 @@ final class TestUtils {
                 false, null, TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(
                 false, null, TIME_NOW, getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
+            IterableStream.of(null),
             IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
-            IterableStream.of(Collections.emptyList()),
-            IterableStream.of(Collections.emptyList())
+            IterableStream.of(null),
+            IterableStream.of(null)
         ));
         return analyzeActionsResults;
     }
@@ -1446,43 +1433,6 @@ final class TestUtils {
         summaryContexts.add(summaryContext);
         AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary, IterableStream.of(summaryContexts));
         return abstractiveSummary;
-    }
-
-    // Dynamic classification
-    static DynamicClassifyDocumentResultCollection getExpectedDynamicClassifyDocumentResultCollection() {
-        ClassifyDocumentResult classifyDocumentResult1 = new ClassifyDocumentResult("0",
-            new TextDocumentStatistics(46, 1), null);
-
-        ClassificationCategory classificationCategory1 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory1, "Health");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory1, 0.88);
-        ClassificationCategory classificationCategory2 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory2, "Music");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory2, 0.04);
-
-        ClassificationCategory classificationCategory3 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory3, "Sports");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory3, 0.04);
-
-        ClassificationCategory classificationCategory4 = new ClassificationCategory();
-        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory4, "Politics");
-        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory4, 0.03);
-
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult1,
-            IterableStream.of(asList(classificationCategory1, classificationCategory2, classificationCategory3,
-            classificationCategory4)));
-
-        ClassifyDocumentResult classifyDocumentResult2 = new ClassifyDocumentResult("1",
-            new TextDocumentStatistics(42, 1), null);
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult2,
-            IterableStream.of(asList(classificationCategory3, classificationCategory2, classificationCategory1,
-                classificationCategory4)));
-
-        DynamicClassifyDocumentResultCollection classifyDocumentResults =
-            new DynamicClassifyDocumentResultCollection(asList(classifyDocumentResult1, classifyDocumentResult2));
-        DynamicClassifyDocumentResultCollectionPropertiesHelper.setStatistics(classifyDocumentResults,
-            new TextDocumentBatchStatistics(2, 2, 0, 0));
-        return classifyDocumentResults;
     }
 
     /**

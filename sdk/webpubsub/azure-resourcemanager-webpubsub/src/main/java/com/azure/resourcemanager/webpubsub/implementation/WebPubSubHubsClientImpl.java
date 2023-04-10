@@ -66,8 +66,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     public interface WebPubSubHubsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/hubs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebPubSubHubList>> list(
@@ -81,8 +80,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/hubs/{hubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebPubSubHubInner>> get(
@@ -97,8 +95,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/hubs/{hubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/hubs/{hubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -671,7 +667,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(
         String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters) {
-        return beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -691,7 +687,9 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubHubInner>, WebPubSubHubInner> beginCreateOrUpdate(
         String hubName, String resourceGroupName, String resourceName, WebPubSubHubInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(hubName, resourceGroupName, resourceName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -943,7 +941,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String hubName, String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(hubName, resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(hubName, resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -962,7 +960,7 @@ public final class WebPubSubHubsClientImpl implements WebPubSubHubsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String hubName, String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(hubName, resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(hubName, resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**

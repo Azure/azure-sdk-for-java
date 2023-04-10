@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkServiceConnectionStatus;
@@ -64,7 +63,7 @@ public final class WebPubSubPrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .webPubSubPrivateEndpointConnections()
-                .getWithResponse("tmtdhtmdvypgik", "gszywk", "irryuzhlh", Context.NONE)
+                .getWithResponse("tmtdhtmdvypgik", "gszywk", "irryuzhlh", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("qaatjinrv", response.privateEndpoint().id());

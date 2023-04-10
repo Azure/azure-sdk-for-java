@@ -59,6 +59,10 @@ public final class LocationMetadata {
     @JsonProperty(value = "homeLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String homeLocation;
 
+    /** Creates an instance of LocationMetadata class. */
+    public LocationMetadata() {
+    }
+
     /**
      * Get the regionType property: The type of the region.
      *

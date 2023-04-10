@@ -40,7 +40,7 @@ public final class RedisEnterprisesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"EnterpriseFlash_F1500\",\"capacity\":946722582},\"zones\":[\"ehhseyvjusrts\",\"hspkdeemao\",\"mx\",\"gkvtmelmqkrhah\"],\"identity\":{\"principalId\":\"b53db8cd-73cc-4a07-9f77-6f6a08af5380\",\"tenantId\":\"e419fddd-8c53-446b-9e1f-d3fba9a9f15d\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"minimumTlsVersion\":\"1.2\",\"encryption\":{},\"hostName\":\"mdua\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Updating\",\"redisVersion\":\"vfadmws\",\"privateEndpointConnections\":[]},\"location\":\"vxpvgomz\",\"tags\":{\"ali\":\"isgwbnbbeldawkz\",\"hashsfwxosow\":\"urqhaka\"},\"id\":\"xcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"}";
+            "{\"sku\":{\"name\":\"EnterpriseFlash_F1500\",\"capacity\":946722582},\"zones\":[\"ehhseyvjusrts\",\"hspkdeemao\",\"mx\",\"gkvtmelmqkrhah\"],\"identity\":{\"principalId\":\"50dd1237-7f30-4f28-bca3-7c9de2f1af8d\",\"tenantId\":\"2f6d603e-e2e2-4f45-84e6-bbe28e373dad\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"minimumTlsVersion\":\"1.2\",\"encryption\":{},\"hostName\":\"mdua\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Updating\",\"redisVersion\":\"vfadmws\",\"privateEndpointConnections\":[]},\"location\":\"vxpvgomz\",\"tags\":{\"ali\":\"isgwbnbbeldawkz\",\"hashsfwxosow\":\"urqhaka\"},\"id\":\"xcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

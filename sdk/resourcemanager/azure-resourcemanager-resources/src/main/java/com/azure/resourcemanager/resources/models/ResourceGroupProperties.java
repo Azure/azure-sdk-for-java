@@ -16,6 +16,10 @@ public final class ResourceGroupProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of ResourceGroupProperties class. */
+    public ResourceGroupProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state.
      *

@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 1.13.2 (2023-04-07)
+
+### Bugs Fixed
+
+- Fixed a bug where sending an `http` request with an empty body created from `BinaryData.fromFile` would throw an error. ([#34294](https://github.com/Azure/azure-sdk-for-java/pull/34294))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
+
 ## 1.13.1 (2023-03-02)
 
 ### Bugs Fixed

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -62,7 +61,7 @@ public final class SignalRPrivateLinkResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkResource> response =
-            manager.signalRPrivateLinkResources().list("mkqjj", "wuenvr", Context.NONE);
+            manager.signalRPrivateLinkResources().list("mkqjj", "wuenvr", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ou", response.iterator().next().groupId());
         Assertions.assertEquals("rebqaaysjk", response.iterator().next().requiredMembers().get(0));

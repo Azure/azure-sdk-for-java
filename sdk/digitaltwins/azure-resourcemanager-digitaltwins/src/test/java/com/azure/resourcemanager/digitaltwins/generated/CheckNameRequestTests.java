@@ -7,17 +7,16 @@ package com.azure.resourcemanager.digitaltwins.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckNameRequest model = BinaryData.fromString("{\"name\":\"t\"}").toObject(CheckNameRequest.class);
         Assertions.assertEquals("t", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CheckNameRequest model = new CheckNameRequest().withName("t");
         model = BinaryData.fromObject(model).toObject(CheckNameRequest.class);
         Assertions.assertEquals("t", model.name());

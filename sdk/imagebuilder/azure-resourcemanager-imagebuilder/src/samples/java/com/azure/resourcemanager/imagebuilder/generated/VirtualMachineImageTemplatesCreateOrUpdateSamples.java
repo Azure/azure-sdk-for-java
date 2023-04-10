@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.generated;
 
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
-import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateManagedImageDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateManagedImageSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePowerShellCustomizer;
@@ -14,6 +13,7 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateShellCustomize
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateWindowsUpdateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ResourceIdentityType;
+import com.azure.resourcemanager.imagebuilder.models.UserAssignedIdentity;
 import com.azure.resourcemanager.imagebuilder.models.VirtualNetworkConfig;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for VirtualMachineImageTemplates CreateOrUpdate. */
 public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/CreateImageTemplateLinux.json
+     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/CreateImageTemplateLinux.json
      */
     /**
      * Sample code: Create an Image Template for Linux.
@@ -42,7 +42,7 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
                     .withUserAssignedIdentities(
                         mapOf(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1",
-                            new ImageTemplateIdentityUserAssignedIdentities())))
+                            new UserAssignedIdentity())))
             .withTags(mapOf("imagetemplate_tag1", "IT_T1", "imagetemplate_tag2", "IT_T2"))
             .withSource(
                 new ImageTemplateManagedImageSource()
@@ -75,7 +75,7 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/CreateImageTemplateWindows.json
+     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/CreateImageTemplateWindows.json
      */
     /**
      * Sample code: Create an Image Template for Windows.
@@ -95,7 +95,7 @@ public final class VirtualMachineImageTemplatesCreateOrUpdateSamples {
                     .withUserAssignedIdentities(
                         mapOf(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1",
-                            new ImageTemplateIdentityUserAssignedIdentities())))
+                            new UserAssignedIdentity())))
             .withTags(mapOf("imagetemplate_tag1", "IT_T1", "imagetemplate_tag2", "IT_T2"))
             .withSource(
                 new ImageTemplateManagedImageSource()

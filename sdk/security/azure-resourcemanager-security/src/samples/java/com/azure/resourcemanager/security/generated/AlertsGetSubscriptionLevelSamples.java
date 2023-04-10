@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Alerts GetSubscriptionLevel. */
 public final class AlertsGetSubscriptionLevelSamples {
     /*
@@ -21,6 +19,8 @@ public final class AlertsGetSubscriptionLevelSamples {
         manager
             .alerts()
             .getSubscriptionLevelWithResponse(
-                "westeurope", "2518770965529163669_F144EE95-A3E5-42DA-A279-967D115809AA", Context.NONE);
+                "westeurope",
+                "2518770965529163669_F144EE95-A3E5-42DA-A279-967D115809AA",
+                com.azure.core.util.Context.NONE);
     }
 }

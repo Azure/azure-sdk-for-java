@@ -96,6 +96,15 @@ directive:
     $["x-ms-enum"].modelAsString = true;
 ```
 
+### Remove "Authentication_GetAcrAccessTokenFromLogin" operation as the service team discourage using username/password to authenticate.
+```yaml
+directive:
+  - from: swagger-document
+    where: $["paths"]["/oauth2/token"]
+    transform: >
+      delete $.get
+```
+
 ### Update the field names for RepositoryChangeableAttributes
 ```yaml
 directive:
@@ -163,6 +172,9 @@ directive:
 ```
 
 ### Set readonly flag to properties of TagAttributesBase
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -176,6 +188,9 @@ directive:
 ```
 
 ### Update the field names for TagChangeableAttributes
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -186,6 +201,7 @@ directive:
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
+
 # Add content-type parameter
 ```yaml
 directive:
@@ -230,10 +246,10 @@ directive:
     delete $["x-accessibility"];
     delete $["allOf"];
     $.properties["schemaVersion"] = {
-      "type": "integer",
-      "description": "Schema version",
-      "x-ms-client-default": 2
-    };
+          "type": "integer",
+          "description": "Schema version"
+        };
+    $.properties.config["x-ms-client-name"] = "configuration";
 ```
 
 # Take stream as manifest body
@@ -248,7 +264,10 @@ directive:
       }
 ```
 
-# Replace ManifestWrapper with stream response to calculate MD5
+# Replace ManifestWrapper with stream response to calculate SHA256
+
+<!-- Java specific -->
+
 ```yaml
 directive:
   from: swagger-document
@@ -257,7 +276,7 @@ directive:
       $.schema = {
           "type": "string",
           "format": "binary"
-        }
+      };
 ```
 
 # Rename ArtifactBlobDescriptor to OciDescriptor
@@ -279,4 +298,28 @@ directive:
   transform: >
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
+```
+
+# Rename created to createdOn in OciAnnotations
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Annotations
+  transform: >
+    $.properties["org.opencontainers.image.created"] = {
+      "description": "Date and time on which the image was built (string, date-time as defined by https://tools.ietf.org/html/rfc3339#section-5.6)",
+      "type": "string",
+      "format": "date-time",
+      "x-ms-client-name": "CreatedOn"
+    };
+```
+
+# Remove security definitions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.
+  transform: >
+    delete $["securityDefinitions"];
+    delete $["security"];
 ```

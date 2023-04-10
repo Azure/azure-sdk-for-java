@@ -729,7 +729,11 @@ public class BinaryDataTest {
                     (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)))),
             Arguments.of(
                 Named.named("unbuffered flux",
-                    (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block()))
+                    (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block())),
+            Arguments.of(
+                Named.named("byte array stream",
+                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null))
+            )
         );
     }
 
@@ -807,6 +811,11 @@ public class BinaryDataTest {
             Arguments.of(
                 Named.named("buffered flux",
                     (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()),
+                Named.named("expected bytes", bytes)
+            ),
+            Arguments.of(
+                Named.named("byte array stream",
+                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length)),
                 Named.named("expected bytes", bytes)
             )
         );

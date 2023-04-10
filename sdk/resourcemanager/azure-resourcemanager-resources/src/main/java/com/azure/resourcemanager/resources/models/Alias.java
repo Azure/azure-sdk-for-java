@@ -42,11 +42,14 @@ public final class Alias {
     private AliasPattern defaultPattern;
 
     /*
-     * The default alias path metadata. Applies to the default path and to any
-     * alias path that doesn't have metadata
+     * The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
      */
     @JsonProperty(value = "defaultMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private AliasPathMetadata defaultMetadata;
+
+    /** Creates an instance of Alias class. */
+    public Alias() {
+    }
 
     /**
      * Get the name property: The alias name.

@@ -53,7 +53,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
@@ -124,7 +124,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
@@ -198,7 +198,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(
                         new IdentityProperties()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
@@ -277,7 +277,7 @@ public final class TasksCreateSamples {
                 "mytTask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(
                         new IdentityProperties()
                             .withType(ResourceIdentityType.USER_ASSIGNED)
@@ -358,7 +358,7 @@ public final class TasksCreateSamples {
                 "quicktask",
                 new TaskInner()
                     .withLocation("eastus")
-                    .withTags(mapOf("testkey", "value"))
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withStatus(TaskStatus.ENABLED)
                     .withLogTemplate("acr/tasks:{{.Run.OS}}")
                     .withIsSystemTask(true),

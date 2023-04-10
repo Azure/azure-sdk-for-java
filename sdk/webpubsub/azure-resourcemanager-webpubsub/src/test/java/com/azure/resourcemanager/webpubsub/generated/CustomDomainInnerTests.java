@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.webpubsub.models.ResourceReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomDomainInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomDomainInner model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class CustomDomainInnerTests {
         Assertions.assertEquals("mxiebw", model.customCertificate().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomDomainInner model =
             new CustomDomainInner()
                 .withDomainName("xzvlvqhjkbegib")

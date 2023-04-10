@@ -8,18 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsPatchProperties;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DigitalTwinsPatchPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DigitalTwinsPatchProperties model =
             BinaryData.fromString("{\"publicNetworkAccess\":\"Enabled\"}").toObject(DigitalTwinsPatchProperties.class);
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DigitalTwinsPatchProperties model =
             new DigitalTwinsPatchProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(DigitalTwinsPatchProperties.class);

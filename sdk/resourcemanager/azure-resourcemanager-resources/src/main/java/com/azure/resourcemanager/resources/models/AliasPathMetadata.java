@@ -22,6 +22,10 @@ public final class AliasPathMetadata {
     @JsonProperty(value = "attributes", access = JsonProperty.Access.WRITE_ONLY)
     private AliasPathAttributes attributes;
 
+    /** Creates an instance of AliasPathMetadata class. */
+    public AliasPathMetadata() {
+    }
+
     /**
      * Get the type property: The type of the token that the alias path is referring to.
      *

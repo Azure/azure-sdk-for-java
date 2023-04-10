@@ -10,11 +10,10 @@ import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.ManagedIdentityReference;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnectionProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TimeSeriesDatabaseConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TimeSeriesDatabaseConnectionInner model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class TimeSeriesDatabaseConnectionInnerTests {
         Assertions.assertEquals("cktvfcivfsnkymuc", model.properties().identity().userAssignedIdentity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TimeSeriesDatabaseConnectionInner model =
             new TimeSeriesDatabaseConnectionInner()
                 .withProperties(

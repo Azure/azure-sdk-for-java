@@ -26,6 +26,15 @@ public final class AssessmentType extends ExpandableStringEnum<AssessmentType> {
     public static final AssessmentType VERIFIED_PARTNER = fromString("VerifiedPartner");
 
     /**
+     * Creates a new instance of AssessmentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssessmentType() {
+    }
+
+    /**
      * Creates or finds a AssessmentType from its string representation.
      *
      * @param name a name to look for.

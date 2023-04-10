@@ -49,7 +49,8 @@ import com.azure.resourcemanager.security.implementation.DiscoveredSecuritySolut
 import com.azure.resourcemanager.security.implementation.ExternalSecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.GovernanceAssignmentsImpl;
 import com.azure.resourcemanager.security.implementation.GovernanceRulesImpl;
-import com.azure.resourcemanager.security.implementation.GovernanceRulesOperationsImpl;
+import com.azure.resourcemanager.security.implementation.HealthReportOperationsImpl;
+import com.azure.resourcemanager.security.implementation.HealthReportsImpl;
 import com.azure.resourcemanager.security.implementation.InformationProtectionPoliciesImpl;
 import com.azure.resourcemanager.security.implementation.IngestionSettingsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionAnalyticsImpl;
@@ -70,9 +71,6 @@ import com.azure.resourcemanager.security.implementation.SecureScoresImpl;
 import com.azure.resourcemanager.security.implementation.SecurityCenterBuilder;
 import com.azure.resourcemanager.security.implementation.SecurityConnectorApplicationOperationsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityConnectorApplicationsImpl;
-import com.azure.resourcemanager.security.implementation.SecurityConnectorGovernanceRulesExecuteStatusImpl;
-import com.azure.resourcemanager.security.implementation.SecurityConnectorGovernanceRulesImpl;
-import com.azure.resourcemanager.security.implementation.SecurityConnectorGovernanceRulesOperationsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityConnectorsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityContactsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsImpl;
@@ -84,7 +82,6 @@ import com.azure.resourcemanager.security.implementation.SqlVulnerabilityAssessm
 import com.azure.resourcemanager.security.implementation.SqlVulnerabilityAssessmentScanResultsImpl;
 import com.azure.resourcemanager.security.implementation.SqlVulnerabilityAssessmentScansImpl;
 import com.azure.resourcemanager.security.implementation.SubAssessmentsImpl;
-import com.azure.resourcemanager.security.implementation.SubscriptionGovernanceRulesExecuteStatusImpl;
 import com.azure.resourcemanager.security.implementation.TasksImpl;
 import com.azure.resourcemanager.security.implementation.TopologiesImpl;
 import com.azure.resourcemanager.security.implementation.WorkspaceSettingsImpl;
@@ -113,7 +110,8 @@ import com.azure.resourcemanager.security.models.DiscoveredSecuritySolutions;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutions;
 import com.azure.resourcemanager.security.models.GovernanceAssignments;
 import com.azure.resourcemanager.security.models.GovernanceRules;
-import com.azure.resourcemanager.security.models.GovernanceRulesOperations;
+import com.azure.resourcemanager.security.models.HealthReportOperations;
+import com.azure.resourcemanager.security.models.HealthReports;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicies;
 import com.azure.resourcemanager.security.models.IngestionSettings;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionAnalytics;
@@ -133,9 +131,6 @@ import com.azure.resourcemanager.security.models.SecureScoreControls;
 import com.azure.resourcemanager.security.models.SecureScores;
 import com.azure.resourcemanager.security.models.SecurityConnectorApplicationOperations;
 import com.azure.resourcemanager.security.models.SecurityConnectorApplications;
-import com.azure.resourcemanager.security.models.SecurityConnectorGovernanceRules;
-import com.azure.resourcemanager.security.models.SecurityConnectorGovernanceRulesExecuteStatus;
-import com.azure.resourcemanager.security.models.SecurityConnectorGovernanceRulesOperations;
 import com.azure.resourcemanager.security.models.SecurityConnectors;
 import com.azure.resourcemanager.security.models.SecurityContacts;
 import com.azure.resourcemanager.security.models.SecuritySolutions;
@@ -147,7 +142,6 @@ import com.azure.resourcemanager.security.models.SqlVulnerabilityAssessmentBasel
 import com.azure.resourcemanager.security.models.SqlVulnerabilityAssessmentScanResults;
 import com.azure.resourcemanager.security.models.SqlVulnerabilityAssessmentScans;
 import com.azure.resourcemanager.security.models.SubAssessments;
-import com.azure.resourcemanager.security.models.SubscriptionGovernanceRulesExecuteStatus;
 import com.azure.resourcemanager.security.models.Tasks;
 import com.azure.resourcemanager.security.models.Topologies;
 import com.azure.resourcemanager.security.models.WorkspaceSettings;
@@ -242,12 +236,6 @@ public final class SecurityManager {
 
     private Connectors connectors;
 
-    private SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans;
-
-    private SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults;
-
-    private SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules;
-
     private Alerts alerts;
 
     private Settings settings;
@@ -259,16 +247,6 @@ public final class SecurityManager {
     private SecurityConnectors securityConnectors;
 
     private GovernanceRules governanceRules;
-
-    private GovernanceRulesOperations governanceRulesOperations;
-
-    private SecurityConnectorGovernanceRules securityConnectorGovernanceRules;
-
-    private SecurityConnectorGovernanceRulesOperations securityConnectorGovernanceRulesOperations;
-
-    private SubscriptionGovernanceRulesExecuteStatus subscriptionGovernanceRulesExecuteStatus;
-
-    private SecurityConnectorGovernanceRulesExecuteStatus securityConnectorGovernanceRulesExecuteStatus;
 
     private GovernanceAssignments governanceAssignments;
 
@@ -285,6 +263,16 @@ public final class SecurityManager {
     private ApiCollectionOnboardings apiCollectionOnboardings;
 
     private ApiCollectionOffboardings apiCollectionOffboardings;
+
+    private HealthReports healthReports;
+
+    private HealthReportOperations healthReportOperations;
+
+    private SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans;
+
+    private SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults;
+
+    private SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules;
 
     private final SecurityCenter clientObject;
 
@@ -451,7 +439,7 @@ public final class SecurityManager {
                 .append("-")
                 .append("com.azure.resourcemanager.security")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -1023,47 +1011,6 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of SqlVulnerabilityAssessmentScans.
-     *
-     * @return Resource collection API of SqlVulnerabilityAssessmentScans.
-     */
-    public SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans() {
-        if (this.sqlVulnerabilityAssessmentScans == null) {
-            this.sqlVulnerabilityAssessmentScans =
-                new SqlVulnerabilityAssessmentScansImpl(clientObject.getSqlVulnerabilityAssessmentScans(), this);
-        }
-        return sqlVulnerabilityAssessmentScans;
-    }
-
-    /**
-     * Gets the resource collection API of SqlVulnerabilityAssessmentScanResults.
-     *
-     * @return Resource collection API of SqlVulnerabilityAssessmentScanResults.
-     */
-    public SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults() {
-        if (this.sqlVulnerabilityAssessmentScanResults == null) {
-            this.sqlVulnerabilityAssessmentScanResults =
-                new SqlVulnerabilityAssessmentScanResultsImpl(
-                    clientObject.getSqlVulnerabilityAssessmentScanResults(), this);
-        }
-        return sqlVulnerabilityAssessmentScanResults;
-    }
-
-    /**
-     * Gets the resource collection API of SqlVulnerabilityAssessmentBaselineRules. It manages RuleResults.
-     *
-     * @return Resource collection API of SqlVulnerabilityAssessmentBaselineRules.
-     */
-    public SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules() {
-        if (this.sqlVulnerabilityAssessmentBaselineRules == null) {
-            this.sqlVulnerabilityAssessmentBaselineRules =
-                new SqlVulnerabilityAssessmentBaselineRulesImpl(
-                    clientObject.getSqlVulnerabilityAssessmentBaselineRules(), this);
-        }
-        return sqlVulnerabilityAssessmentBaselineRules;
-    }
-
-    /**
      * Gets the resource collection API of Alerts.
      *
      * @return Resource collection API of Alerts.
@@ -1124,7 +1071,7 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of GovernanceRules.
+     * Gets the resource collection API of GovernanceRules. It manages GovernanceRule.
      *
      * @return Resource collection API of GovernanceRules.
      */
@@ -1133,74 +1080,6 @@ public final class SecurityManager {
             this.governanceRules = new GovernanceRulesImpl(clientObject.getGovernanceRules(), this);
         }
         return governanceRules;
-    }
-
-    /**
-     * Gets the resource collection API of GovernanceRulesOperations. It manages GovernanceRule.
-     *
-     * @return Resource collection API of GovernanceRulesOperations.
-     */
-    public GovernanceRulesOperations governanceRulesOperations() {
-        if (this.governanceRulesOperations == null) {
-            this.governanceRulesOperations =
-                new GovernanceRulesOperationsImpl(clientObject.getGovernanceRulesOperations(), this);
-        }
-        return governanceRulesOperations;
-    }
-
-    /**
-     * Gets the resource collection API of SecurityConnectorGovernanceRules.
-     *
-     * @return Resource collection API of SecurityConnectorGovernanceRules.
-     */
-    public SecurityConnectorGovernanceRules securityConnectorGovernanceRules() {
-        if (this.securityConnectorGovernanceRules == null) {
-            this.securityConnectorGovernanceRules =
-                new SecurityConnectorGovernanceRulesImpl(clientObject.getSecurityConnectorGovernanceRules(), this);
-        }
-        return securityConnectorGovernanceRules;
-    }
-
-    /**
-     * Gets the resource collection API of SecurityConnectorGovernanceRulesOperations.
-     *
-     * @return Resource collection API of SecurityConnectorGovernanceRulesOperations.
-     */
-    public SecurityConnectorGovernanceRulesOperations securityConnectorGovernanceRulesOperations() {
-        if (this.securityConnectorGovernanceRulesOperations == null) {
-            this.securityConnectorGovernanceRulesOperations =
-                new SecurityConnectorGovernanceRulesOperationsImpl(
-                    clientObject.getSecurityConnectorGovernanceRulesOperations(), this);
-        }
-        return securityConnectorGovernanceRulesOperations;
-    }
-
-    /**
-     * Gets the resource collection API of SubscriptionGovernanceRulesExecuteStatus.
-     *
-     * @return Resource collection API of SubscriptionGovernanceRulesExecuteStatus.
-     */
-    public SubscriptionGovernanceRulesExecuteStatus subscriptionGovernanceRulesExecuteStatus() {
-        if (this.subscriptionGovernanceRulesExecuteStatus == null) {
-            this.subscriptionGovernanceRulesExecuteStatus =
-                new SubscriptionGovernanceRulesExecuteStatusImpl(
-                    clientObject.getSubscriptionGovernanceRulesExecuteStatus(), this);
-        }
-        return subscriptionGovernanceRulesExecuteStatus;
-    }
-
-    /**
-     * Gets the resource collection API of SecurityConnectorGovernanceRulesExecuteStatus.
-     *
-     * @return Resource collection API of SecurityConnectorGovernanceRulesExecuteStatus.
-     */
-    public SecurityConnectorGovernanceRulesExecuteStatus securityConnectorGovernanceRulesExecuteStatus() {
-        if (this.securityConnectorGovernanceRulesExecuteStatus == null) {
-            this.securityConnectorGovernanceRulesExecuteStatus =
-                new SecurityConnectorGovernanceRulesExecuteStatusImpl(
-                    clientObject.getSecurityConnectorGovernanceRulesExecuteStatus(), this);
-        }
-        return securityConnectorGovernanceRulesExecuteStatus;
     }
 
     /**
@@ -1302,6 +1181,72 @@ public final class SecurityManager {
                 new ApiCollectionOffboardingsImpl(clientObject.getApiCollectionOffboardings(), this);
         }
         return apiCollectionOffboardings;
+    }
+
+    /**
+     * Gets the resource collection API of HealthReports.
+     *
+     * @return Resource collection API of HealthReports.
+     */
+    public HealthReports healthReports() {
+        if (this.healthReports == null) {
+            this.healthReports = new HealthReportsImpl(clientObject.getHealthReports(), this);
+        }
+        return healthReports;
+    }
+
+    /**
+     * Gets the resource collection API of HealthReportOperations.
+     *
+     * @return Resource collection API of HealthReportOperations.
+     */
+    public HealthReportOperations healthReportOperations() {
+        if (this.healthReportOperations == null) {
+            this.healthReportOperations =
+                new HealthReportOperationsImpl(clientObject.getHealthReportOperations(), this);
+        }
+        return healthReportOperations;
+    }
+
+    /**
+     * Gets the resource collection API of SqlVulnerabilityAssessmentScans.
+     *
+     * @return Resource collection API of SqlVulnerabilityAssessmentScans.
+     */
+    public SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans() {
+        if (this.sqlVulnerabilityAssessmentScans == null) {
+            this.sqlVulnerabilityAssessmentScans =
+                new SqlVulnerabilityAssessmentScansImpl(clientObject.getSqlVulnerabilityAssessmentScans(), this);
+        }
+        return sqlVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * Gets the resource collection API of SqlVulnerabilityAssessmentScanResults.
+     *
+     * @return Resource collection API of SqlVulnerabilityAssessmentScanResults.
+     */
+    public SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults() {
+        if (this.sqlVulnerabilityAssessmentScanResults == null) {
+            this.sqlVulnerabilityAssessmentScanResults =
+                new SqlVulnerabilityAssessmentScanResultsImpl(
+                    clientObject.getSqlVulnerabilityAssessmentScanResults(), this);
+        }
+        return sqlVulnerabilityAssessmentScanResults;
+    }
+
+    /**
+     * Gets the resource collection API of SqlVulnerabilityAssessmentBaselineRules. It manages RuleResults.
+     *
+     * @return Resource collection API of SqlVulnerabilityAssessmentBaselineRules.
+     */
+    public SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules() {
+        if (this.sqlVulnerabilityAssessmentBaselineRules == null) {
+            this.sqlVulnerabilityAssessmentBaselineRules =
+                new SqlVulnerabilityAssessmentBaselineRulesImpl(
+                    clientObject.getSqlVulnerabilityAssessmentBaselineRules(), this);
+        }
+        return sqlVulnerabilityAssessmentBaselineRules;
     }
 
     /**

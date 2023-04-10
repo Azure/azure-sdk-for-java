@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.EventNameFilter;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EventNameFilterTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EventNameFilter model =
             BinaryData
                 .fromString("{\"type\":\"EventName\",\"systemEvents\":[\"n\"],\"userEventPattern\":\"ph\"}")
@@ -21,8 +20,8 @@ public final class EventNameFilterTests {
         Assertions.assertEquals("ph", model.userEventPattern());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EventNameFilter model = new EventNameFilter().withSystemEvents(Arrays.asList("n")).withUserEventPattern("ph");
         model = BinaryData.fromObject(model).toObject(EventNameFilter.class);
         Assertions.assertEquals("n", model.systemEvents().get(0));

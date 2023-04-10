@@ -59,8 +59,11 @@ public final class TestUtils {
     static final String INVOICE_NO_SUB_LINE_PDF = "ErrorImage.tiff";
     static final String W2_JPG = "w2-single.png";
     static final String INSURANCE_PNG = "insurance.png";
-
     static final String GERMAN_PNG = "read-german.png";
+    static final String EXAMPLE_DOCX = "example.docx";
+    static final String EXAMPLE_PPTX = "example.pptx";
+    static final String EXAMPLE_HTML = "example.html";
+    static final String EXAMPLE_XLSX = "example.xlsx";
     static final String INVALID_URL = "htttttttps://localhost:8080";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
@@ -92,6 +95,8 @@ public final class TestUtils {
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+    public static final String FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String AZURE_CLIENT_ID
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
     public static final String AZURE_TENANT_ID
@@ -166,6 +171,11 @@ public final class TestUtils {
         testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
     }
 
+    public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
+        testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
+    }
+
+
     /**
      * Get the testing data set SAS Url value based on the test running mode.
      *
@@ -226,6 +236,15 @@ public final class TestUtils {
     private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "https://isPlaybackmode" : FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url for classifiers
+     */
+    private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**

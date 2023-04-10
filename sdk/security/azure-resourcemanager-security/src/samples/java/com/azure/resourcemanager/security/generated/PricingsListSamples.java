@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Pricings List. */
 public final class PricingsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class PricingsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getPricingsOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.pricings().listWithResponse(Context.NONE);
+        manager.pricings().listWithResponse(com.azure.core.util.Context.NONE);
     }
 }

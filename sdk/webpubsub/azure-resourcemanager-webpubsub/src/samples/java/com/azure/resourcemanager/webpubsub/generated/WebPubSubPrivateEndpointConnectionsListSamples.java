@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSubPrivateEndpointConnections List. */
 public final class WebPubSubPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubPrivateEndpointConnections_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSubPrivateEndpointConnections_List.json
      */
     /**
      * Sample code: WebPubSubPrivateEndpointConnections_List.
@@ -18,6 +16,8 @@ public final class WebPubSubPrivateEndpointConnectionsListSamples {
      */
     public static void webPubSubPrivateEndpointConnectionsList(
         com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubPrivateEndpointConnections().list("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager
+            .webPubSubPrivateEndpointConnections()
+            .list("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

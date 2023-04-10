@@ -17,7 +17,7 @@ public final class BlobSeekableByteChannelReadOptions {
 
     private Long initialPosition;
     private BlobRequestConditions requestConditions;
-    private Integer blockSize;
+    private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
 
     /**
@@ -57,22 +57,22 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
-     * @return The size of each data chunk returned from the service. If block size is large, the channel will make
-     * fewer network calls, but each individual call will send more data and will therefore take longer.
+     * @return The size of each data read from the service. If read size is large, the channel will make
+     * fewer network calls, but each individual call will be larger.
      * The default value is 4 MB.
      */
-    public Integer getBlockSize() {
-        return blockSize;
+    public Integer getReadSizeInBytes() {
+        return readSizeInBytes;
     }
 
     /**
-     * @param blockSize The size of each data chunk returned from the service. If block size is large, the channel
-     * will make fewer network calls, but each individual call will send more data and will therefore take longer.
+     * @param readSizeInBytes The size of each data read from the service. If read size is large, the channel will make
+     * fewer network calls, but each individual call will be larger.
      * The default value is 4 MB.
      * @return The updated options.
      */
-    public BlobSeekableByteChannelReadOptions setBlockSize(Integer blockSize) {
-        this.blockSize = blockSize;
+    public BlobSeekableByteChannelReadOptions setReadSizeInBytes(Integer readSizeInBytes) {
+        this.readSizeInBytes = readSizeInBytes;
         return this;
     }
 

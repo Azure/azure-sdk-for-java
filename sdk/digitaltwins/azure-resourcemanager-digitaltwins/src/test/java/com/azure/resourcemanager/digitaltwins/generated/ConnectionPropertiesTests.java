@@ -11,11 +11,10 @@ import com.azure.resourcemanager.digitaltwins.models.PrivateEndpoint;
 import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ConnectionProperties model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class ConnectionPropertiesTests {
         Assertions.assertEquals("vpjhulsuuv", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ConnectionProperties model =
             new ConnectionProperties()
                 .withPrivateEndpoint(new PrivateEndpoint())

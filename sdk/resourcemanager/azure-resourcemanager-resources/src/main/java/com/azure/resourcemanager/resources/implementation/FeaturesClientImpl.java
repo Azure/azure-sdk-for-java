@@ -55,7 +55,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClientFeature")
-    private interface FeaturesService {
+    public interface FeaturesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
         @ExpectedResponses({200})
@@ -69,8 +69,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FeatureOperationsListResult>> list(
@@ -83,8 +82,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FeatureResultInner>> get(
@@ -98,8 +96,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}/register")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FeatureResultInner>> register(
@@ -113,8 +110,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}/unregister")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/unregister")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FeatureResultInner>> unregister(
@@ -586,21 +582,6 @@ public final class FeaturesClientImpl implements FeaturesClient {
      *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureResultInner get(String resourceProviderNamespace, String featureName) {
-        return getAsync(resourceProviderNamespace, featureName).block();
-    }
-
-    /**
-     * Gets the preview feature with the specified name.
-     *
-     * @param resourceProviderNamespace The resource provider namespace for the feature.
-     * @param featureName The name of the feature to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -611,6 +592,21 @@ public final class FeaturesClientImpl implements FeaturesClient {
     public Response<FeatureResultInner> getWithResponse(
         String resourceProviderNamespace, String featureName, Context context) {
         return getWithResponseAsync(resourceProviderNamespace, featureName, context).block();
+    }
+
+    /**
+     * Gets the preview feature with the specified name.
+     *
+     * @param resourceProviderNamespace The resource provider namespace for the feature.
+     * @param featureName The name of the feature to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the preview feature with the specified name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureResultInner get(String resourceProviderNamespace, String featureName) {
+        return getWithResponse(resourceProviderNamespace, featureName, Context.NONE).getValue();
     }
 
     /**
@@ -732,21 +728,6 @@ public final class FeaturesClientImpl implements FeaturesClient {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureResultInner register(String resourceProviderNamespace, String featureName) {
-        return registerAsync(resourceProviderNamespace, featureName).block();
-    }
-
-    /**
-     * Registers the preview feature for the subscription.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param featureName The name of the feature to register.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -757,6 +738,21 @@ public final class FeaturesClientImpl implements FeaturesClient {
     public Response<FeatureResultInner> registerWithResponse(
         String resourceProviderNamespace, String featureName, Context context) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName, context).block();
+    }
+
+    /**
+     * Registers the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to register.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureResultInner register(String resourceProviderNamespace, String featureName) {
+        return registerWithResponse(resourceProviderNamespace, featureName, Context.NONE).getValue();
     }
 
     /**
@@ -878,21 +874,6 @@ public final class FeaturesClientImpl implements FeaturesClient {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureResultInner unregister(String resourceProviderNamespace, String featureName) {
-        return unregisterAsync(resourceProviderNamespace, featureName).block();
-    }
-
-    /**
-     * Unregisters the preview feature for the subscription.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param featureName The name of the feature to unregister.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -906,9 +887,25 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return previewed feature information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FeatureResultInner unregister(String resourceProviderNamespace, String featureName) {
+        return unregisterWithResponse(resourceProviderNamespace, featureName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -943,7 +940,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -979,7 +977,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1014,7 +1013,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
