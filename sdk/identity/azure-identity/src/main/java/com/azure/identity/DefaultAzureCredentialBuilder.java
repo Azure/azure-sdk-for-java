@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
-import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
-
 /**
  * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
  *
@@ -266,12 +264,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        WorkloadIdentityCredential workloadIdentityCredential = getWorkloadIdentityCredentialIfAvailable();
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(workloadIdentityCredential != null ? 8 : 7);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
-        if (workloadIdentityCredential != null) {
-            output.add(workloadIdentityCredential);
-        }
+        output.add(getWorkloadIdentityCredential());
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
         output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
@@ -282,20 +277,18 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return output;
     }
 
-    private WorkloadIdentityCredential getWorkloadIdentityCredentialIfAvailable() {
+    private WorkloadIdentityCredential getWorkloadIdentityCredential() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
-        String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String federatedTokenFilePath = configuration.get(AZURE_FEDERATED_TOKEN_FILE);
         String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId;
-        if (!(CoreUtils.isNullOrEmpty(tenantId)
-            || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
-            || CoreUtils.isNullOrEmpty(clientId)
-            || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
-            return new WorkloadIdentityCredential(tenantId, clientId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
+        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId)
+            ? managedIdentityClientId : workloadIdentityClientId;
+
+        if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
+            identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return null;
+        return new WorkloadIdentityCredential(null, clientId, null,
+                identityClientOptions.clone());
     }
 }

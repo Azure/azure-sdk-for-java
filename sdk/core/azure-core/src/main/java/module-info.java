@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core {
+    requires com.azure.json;
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
     requires transitive org.slf4j;

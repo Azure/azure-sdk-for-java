@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -1325,5 +1326,41 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             Assertions.assertNotNull(analyzeResult);
             Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
         }, EXAMPLE_XLSX);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void analyzeContentWithQueryFields(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-document",
+                    BinaryData.fromStream(data, dataLength),
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Collections.singletonList(
+                        DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Collections.singletonList("Charges")))
+                .setPollInterval(durationTestMode)
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertEquals("$56,651.49", analyzeResult.getDocuments().get(0).getFields().get("Charges").getValueAsString());
+        }, INVOICE_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void analyzeContentUrlWithQueryFields(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        urlRunner((sourceUrl) -> {
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-document",
+                    sourceUrl,
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Collections.singletonList(
+                        DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM)).setQueryFields(Collections.singletonList("Charges")))
+                .setPollInterval(durationTestMode)
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertEquals("$56,651.49", analyzeResult.getDocuments().get(0).getFields().get("Charges").getValueAsString());
+        }, INVOICE_PDF);
     }
 }
