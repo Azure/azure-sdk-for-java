@@ -162,19 +162,23 @@ public final class UtilsImpl {
             audience = ACR_ACCESS_TOKEN_AUDIENCE;
         }
 
-        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
-            credential,
-            audience,
-            endpoint,
-            serviceVersion,
+        if (serviceVersion == null) {
+            serviceVersion = ContainerRegistryServiceVersion.getLatest();
+        }
+
+        AzureContainerRegistryImpl acrClient = new AzureContainerRegistryImpl(
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .clientOptions(clientOptions)
                 .tracer(tracer)
-                .build());
+                .build(),
+            endpoint,
+            serviceVersion.getVersion());
 
-        ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
+        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(credential, audience, acrClient);
+
+        ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService, audience + "/.default");
 
         policies.add(credentialsPolicy);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
