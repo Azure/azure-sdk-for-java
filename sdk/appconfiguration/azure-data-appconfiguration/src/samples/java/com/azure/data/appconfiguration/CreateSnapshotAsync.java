@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.util.ArrayList;
@@ -11,11 +12,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to create a configuration setting snapshot asynchronous.
+ * Sample demonstrates how to create, retrieve, archive, recover a configuration setting snapshot, and list settings
+ * by snapshot name asynchronously.
  */
 public class CreateSnapshotAsync {
     /**
-     * Runs the sample algorithm and demonstrates how to create a configuration setting snapshot asynchronous.
+     * Runs the sample demonstrates how to create, retrieve, archive, recover a configuration setting snapshot, and
+     * list settings by snapshot name asynchronously.
      *
      * @param args Unused. Arguments to the program.
      * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied,
@@ -57,15 +60,55 @@ public class CreateSnapshotAsync {
         filters.add(new SnapshotSettingFilter("k*"));
         String snapshotName = "{snapshotName}";
 
-        client.beginCreateSnapShot(snapshotName, filters)
+        client.beginCreateSnapshot(snapshotName, filters)
             .flatMap(result -> result.getFinalResult())
             .subscribe(
                 snapshot -> {
-                    System.out.printf("Snapshot name=%s is created at %s%n", snapshot.getName(), snapshot.getCreatedAt());
+                    System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+                        snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
                 },
                 ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
                 () -> System.out.println("Successfully created a snapshot."));
 
+        // Get the snapshot status
+        client.getSnapshot(snapshotName).subscribe(
+            getSnapshot -> {
+                System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+                    getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+            }
+        );
+
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        // Archive a READY snapshot
+        client.archiveSnapshot(snapshotName).subscribe(
+            archivedSnapshot -> {
+                System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
+                    archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
+            }
+        );
+
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        // Recover the Archived snapshot
+        client.recoverSnapshot(snapshotName).subscribe(
+            recoveredSnapshot -> {
+                System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
+                    recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
+            }
+        );
+
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        // List the configuration settings in the snapshot
+        client.listConfigurationSettingsBySnapshot(snapshotName).subscribe(
+            settingInSnapshot -> {
+                System.out.printf(String.format("[ConfigurationSettingInSnapshot] Key: %s, Value: %s",
+                    settingInSnapshot.getKey(), settingInSnapshot.getValue()));
+            }
+        );
+
+        TimeUnit.MILLISECONDS.sleep(1000);
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

@@ -14,11 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sample demonstrates how to create a configuration setting snapshot.
+ * Sample demonstrates how to create, retrieve, archive, recover a configuration setting snapshot, and list settings
+ * by snapshot name.
  */
 public class CreateSnapshot {
     /**
-     * Runs the sample algorithm and demonstrates how to create a configuration setting snapshot.
+     * Runs the sample demonstrates how to create, retrieve, archive, recover a configuration setting snapshot, and
+     * list settings by snapshot name.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -44,14 +46,38 @@ public class CreateSnapshot {
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("k*"));
 
+        // Create a snapshot
         String snapshotName = "{snapshotName}";
         SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-            client.beginCreateSnapShot(snapshotName, filters);
+            client.beginCreateSnapshot(snapshotName, filters);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
+        ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 
-        ConfigurationSettingSnapshot snapshot= poller.getFinalResult();
-        System.out.printf("Snapshot name=%s is created at %s%n", snapshot.getName(), snapshot.getCreatedAt());
+        // Get the snapshot status
+        ConfigurationSettingSnapshot getSnapshot = client.getSnapshot(snapshotName);
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+
+        // Archive a READY snapshot
+        ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
+        System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
+            archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
+
+        // Recover the Archived snapshot
+        ConfigurationSettingSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
+        System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
+            recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
+
+        // List the configuration settings in the snapshot
+        client.listConfigurationSettingsBySnapshot(snapshotName).forEach(
+            settingInSnapshot -> {
+                System.out.printf(String.format("[ConfigurationSettingInSnapshot] Key: %s, Value: %s",
+                    settingInSnapshot.getKey(), settingInSnapshot.getValue()));
+            }
+        );
 
         System.out.println("End of synchronous sample.");
     }

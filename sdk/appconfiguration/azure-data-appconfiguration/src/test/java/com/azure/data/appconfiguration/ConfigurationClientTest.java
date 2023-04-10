@@ -1015,7 +1015,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         filters.add(new SnapshotSettingFilter("k*"));
 
         SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-            client.beginCreateSnapShot("NAME1", filters);
+            client.beginCreateSnapshot("NAME1", filters);
 
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();

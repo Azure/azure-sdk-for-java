@@ -1,0 +1,86 @@
+package com.azure.data.appconfiguration;
+
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
+import com.azure.data.appconfiguration.models.SnapshotSelector;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Sample demonstrates how to list snapshots.
+ */
+public class ListSnapshots {
+    /**
+     * Runs the sample demonstrates how to list snapshots.
+     *
+     * @param args Unused. Arguments to the program.
+     */
+    public static void main(String[] args) {
+        // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
+        // and navigating to "Access Keys" page under the "Settings" section.
+        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+
+        // Instantiate a client that will be used to call the service.
+        final ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .buildClient();
+
+        System.out.println("Beginning of synchronous sample...");
+
+        // 1. Prepare first setting.
+        ConfigurationSetting setting = client.setConfigurationSetting("Test1", null, "value1");
+        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
+        // 1. Prepare second setting.
+        ConfigurationSetting setting2 = client.setConfigurationSetting("Test2", null, "value2");
+        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
+        // 1. Prepare the snapshot filters
+        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+        filters.add(new SnapshotSettingFilter("Test*"));
+
+        // 1. Create first snapshot
+        String snapshotNameTest = "{snapshotName}";
+        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+            client.beginCreateSnapshot(snapshotNameTest, filters);
+        poller.setPollInterval(Duration.ofSeconds(10));
+        poller.waitForCompletion();
+        ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+
+        // 2. Prepare third setting.
+        ConfigurationSetting setting3 = client.setConfigurationSetting("Product1", null, "value1");
+        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
+        // 2. Prepare fourth setting.
+        ConfigurationSetting setting4 = client.setConfigurationSetting("Product2", null, "value2");
+        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
+        // 2. Prepare the snapshot filters
+        List<SnapshotSettingFilter> filters2 = new ArrayList<>();
+        // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+        filters.add(new SnapshotSettingFilter("Product*"));
+
+        // 2. Create second snapshot
+        String snapshotNameProduct = "{snapshotName2}";
+        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> pollerProduct =
+            client.beginCreateSnapshot(snapshotNameProduct, filters);
+        pollerProduct.setPollInterval(Duration.ofSeconds(10));
+        pollerProduct.waitForCompletion();
+        ConfigurationSettingSnapshot productSnapshot = pollerProduct.getFinalResult();
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            productSnapshot.getName(), productSnapshot.getCreatedAt(), productSnapshot.getStatus());
+
+        // List only the snapshot with name = snapshotNameProduct
+        client.listSnapshots(new SnapshotSelector().setName(snapshotNameProduct))
+            .forEach(snapshotResult -> {
+                System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+                    snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
+            });
+
+        System.out.println("End of synchronous sample.");
+    }
+}

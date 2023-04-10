@@ -5,10 +5,12 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -79,6 +81,46 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     private String etag;
 
+
+    static {
+        ConfigurationSettingSnapshotHelper.setAccessor(new ConfigurationSettingSnapshotHelper.ConfigurationSettingSnapshotAccessor() {
+            @Override
+            public ConfigurationSettingSnapshot setName(ConfigurationSettingSnapshot snapshot, String name) {
+                return snapshot.setName(name);
+            }
+
+            @Override
+            public ConfigurationSettingSnapshot setStatus(ConfigurationSettingSnapshot snapshot, SnapshotStatus status) {
+                return snapshot.setStatus(status);
+            }
+
+            @Override
+            public ConfigurationSettingSnapshot setCreatedAt(ConfigurationSettingSnapshot snapshot, OffsetDateTime createdAt) {
+                return null;
+            }
+
+            @Override
+            public ConfigurationSettingSnapshot setExpiresAt(ConfigurationSettingSnapshot snapshot, OffsetDateTime expiresAt) {
+                return null;
+            }
+
+            @Override
+            public ConfigurationSettingSnapshot setSize(ConfigurationSettingSnapshot snapshot, Long size) {
+                return null;
+            }
+
+            @Override
+            public ConfigurationSettingSnapshot setItemCount(ConfigurationSettingSnapshot snapshot, Long itemCount) {
+                return null;
+            }
+
+            @Override
+            public ConfigurationSettingSnapshot setEtag(ConfigurationSettingSnapshot snapshot, String etag) {
+                return null;
+            }
+        });
+    }
+
     /**
      * Creates an instance of ConfigurationSettingSnapshot class.
      *
@@ -97,6 +139,11 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         return this.name;
     }
 
+    private ConfigurationSettingSnapshot setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
      * Get the status property: The current status of the snapshot.
      *
@@ -104,6 +151,11 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     public SnapshotStatus getStatus() {
         return this.status;
+    }
+
+    private ConfigurationSettingSnapshot setStatus(SnapshotStatus status) {
+        this.status = status;
+        return this;
     }
 
     /**
