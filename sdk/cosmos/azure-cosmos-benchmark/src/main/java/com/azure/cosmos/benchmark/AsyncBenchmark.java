@@ -398,7 +398,11 @@ abstract class AsyncBenchmark<T> {
                 System.setProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT", configuration.getMinConnectionPoolSizePerEndpoint().toString());
             }
 
-            cosmosClientBuilder.buildAsyncClient();
+            CosmosAsyncClient openConnectionsAsyncClient = cosmosClientBuilder.buildAsyncClient();
+            openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
+            cosmosAsyncDatabase = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
+            cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(configuration.getCollectionId());
         }
 
         for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
