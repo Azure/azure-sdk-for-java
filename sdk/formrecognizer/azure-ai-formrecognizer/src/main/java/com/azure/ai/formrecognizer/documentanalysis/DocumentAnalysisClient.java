@@ -323,13 +323,8 @@ public final class DocumentAnalysisClient {
      *
      * documentAnalysisClient.beginClassifyDocumentFromUrl&#40;classifierId, documentUrl, Context.NONE&#41;
      *     .getFinalResult&#40;&#41;
-     *     .getDocuments&#40;&#41;.stream&#40;&#41;
-     *     .map&#40;AnalyzedDocument::getFields&#41;
-     *     .forEach&#40;documentFieldMap -&gt; documentFieldMap.forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
-     *         System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
-     *         System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
-     *     &#125;&#41;&#41;;
+     *     .getDocuments&#40;&#41;
+     *     .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context -->
      *
@@ -386,13 +381,8 @@ public final class DocumentAnalysisClient {
      *
      * documentAnalysisClient.beginClassifyDocument&#40;classifierId, BinaryData.fromBytes&#40;fileContent&#41;, Context.NONE&#41;
      *     .getFinalResult&#40;&#41;
-     *     .getDocuments&#40;&#41;.stream&#40;&#41;
-     *     .map&#40;AnalyzedDocument::getFields&#41;
-     *     .forEach&#40;documentFieldMap -&gt; documentFieldMap.forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
-     *         System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
-     *         System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
-     *     &#125;&#41;&#41;;
+     *     .getDocuments&#40;&#41;
+     *     .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData -->
      *

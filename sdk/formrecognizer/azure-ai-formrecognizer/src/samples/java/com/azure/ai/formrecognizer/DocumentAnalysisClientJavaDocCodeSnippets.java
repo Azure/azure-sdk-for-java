@@ -161,13 +161,8 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
         documentAnalysisClient.beginClassifyDocument(classifierId, BinaryData.fromBytes(fileContent), Context.NONE)
             .getFinalResult()
-            .getDocuments().stream()
-            .map(AnalyzedDocument::getFields)
-            .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
-                System.out.printf("Field text: %s%n", key);
-                System.out.printf("Field value data content: %s%n", documentField.getContent());
-                System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
-            }));
+            .getDocuments()
+            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData
     }
 
@@ -184,13 +179,8 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
         documentAnalysisClient.beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE)
             .getFinalResult()
-            .getDocuments().stream()
-            .map(AnalyzedDocument::getFields)
-            .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
-                System.out.printf("Field text: %s%n", key);
-                System.out.printf("Field value data content: %s%n", documentField.getContent());
-                System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
-            }));
+            .getDocuments()
+            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context
     }
 }

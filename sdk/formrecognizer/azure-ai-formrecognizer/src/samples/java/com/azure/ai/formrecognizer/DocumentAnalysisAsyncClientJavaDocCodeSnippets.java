@@ -192,14 +192,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()
-                    .stream()
-                    .forEach(analyzedDocument ->
-                        analyzedDocument.getFields()
-                            .forEach((key, documentField) -> {
-                                System.out.printf("Field text: %s%n", key);
-                                System.out.printf("Field value data content: %s%n", documentField.getContent());
-                                System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
-                            }));
+                    .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData
     }
@@ -219,14 +212,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()
-                    .stream()
-                    .forEach(document ->
-                        document.getFields()
-                            .forEach((key, documentField) -> {
-                                System.out.printf("Field text: %s%n", key);
-                                System.out.printf("Field value data content: %s%n", documentField.getContent());
-                                System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
-                            }));
+                    .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
             });
 
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string
