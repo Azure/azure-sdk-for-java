@@ -71,7 +71,7 @@ stages:
             - $(sub-config-cosmos-azure-cloud-test-resources)
       MatrixConfigs:
         - Name: Cosmos_faultInjection_live_test
-          Path: sdk/cosmos/integration-matrix.json
+          Path: sdk/cosmos/platform-matrix.json
           Selection: all
           GenerateVMJobs: true
       ServiceDirectory: cosmos

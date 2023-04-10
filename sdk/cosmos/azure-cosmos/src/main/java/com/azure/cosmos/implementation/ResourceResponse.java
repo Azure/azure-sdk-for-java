@@ -289,6 +289,20 @@ public final class ResourceResponse<T extends Resource> {
         return Double.parseDouble(value);
     }
 
+    public void addRequestCharge(double requestCharge) {
+        double currentRequestCharge = 0;
+        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (!StringUtils.isEmpty(value)) {
+            currentRequestCharge = Double.parseDouble(value);
+        }
+        currentRequestCharge += requestCharge;
+
+        if (currentRequestCharge > 0) {
+            this.getResponseHeaders().put(
+                HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(currentRequestCharge));
+        }
+    }
+
     /**
      * Gets the headers associated with the response.
      *
@@ -399,6 +413,13 @@ public final class ResourceResponse<T extends Resource> {
         }
 
         return 0;
+    }
+
+    public ResourceResponse<T> withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+        RxDocumentServiceResponse mappedResponse = this
+            .response
+            .withRemappedStatusCode(newStatusCode, additionalRequestCharge);
+        return new ResourceResponse<>(mappedResponse, this.cls);
     }
 
     private void populateQuotaHeader(String headerMaxQuota, String headerCurrentUsage) {

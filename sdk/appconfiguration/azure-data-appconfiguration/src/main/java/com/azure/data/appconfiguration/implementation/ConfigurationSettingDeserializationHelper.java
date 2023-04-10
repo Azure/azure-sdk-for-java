@@ -13,17 +13,14 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.implementation.Utility.CLIENT_FILTERS;
 import static com.azure.data.appconfiguration.implementation.Utility.CONDITIONS;
@@ -33,7 +30,6 @@ import static com.azure.data.appconfiguration.implementation.Utility.ENABLED;
 import static com.azure.data.appconfiguration.implementation.Utility.ID;
 import static com.azure.data.appconfiguration.implementation.Utility.NAME;
 import static com.azure.data.appconfiguration.implementation.Utility.PARAMETERS;
-import static com.fasterxml.jackson.core.JsonToken.END_ARRAY;
 import static com.azure.data.appconfiguration.implementation.Utility.URI;
 
 /**
@@ -45,23 +41,17 @@ public final class ConfigurationSettingDeserializationHelper {
     static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
     static final String SECRET_REFERENCE_CONTENT_TYPE =
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
-    private static final JsonFactory FACTORY = JsonFactory.builder().build();
 
     /*
      * Utility method for translating KeyValue to ConfigurationSetting with PagedResponse.
      */
     public static PagedResponseBase<Object, ConfigurationSetting> toConfigurationSettingWithPagedResponse(
         PagedResponse<KeyValue> pagedResponse) {
-        return new PagedResponseBase<>(
-            pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(),
-            pagedResponse.getValue()
-                .stream()
-                .map(keyValue -> toConfigurationSetting(keyValue))
-                .collect(Collectors.toList()),
-            pagedResponse.getContinuationToken(),
-            null);
+        List<ConfigurationSetting> settings = new ArrayList<>(pagedResponse.getValue().size());
+        pagedResponse.getValue().forEach(keyValue -> settings.add(toConfigurationSetting(keyValue)));
+
+        return new PagedResponseBase<>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(), settings, pagedResponse.getContinuationToken(), null);
     }
 
     /*
@@ -85,31 +75,31 @@ public final class ConfigurationSettingDeserializationHelper {
         final String etag = keyValue.getEtag();
         final Map<String, String> tags = keyValue.getTags();
         final ConfigurationSetting setting = new ConfigurationSetting()
-                                                 .setKey(key)
-                                                 .setValue(value)
-                                                 .setLabel(label)
-                                                 .setContentType(contentType)
-                                                 .setETag(etag)
-                                                 .setTags(tags);
+            .setKey(key)
+            .setValue(value)
+            .setLabel(label)
+            .setContentType(contentType)
+            .setETag(etag)
+            .setTags(tags);
         ConfigurationSettingHelper.setLastModified(setting, keyValue.getLastModified());
-        ConfigurationSettingHelper.setReadOnly(setting, keyValue.isLocked() == null ? false : keyValue.isLocked());
+        ConfigurationSettingHelper.setReadOnly(setting, keyValue.isLocked() != null && keyValue.isLocked());
         try {
             if (FEATURE_FLAG_CONTENT_TYPE.equals(contentType)) {
                 return subclassConfigurationSettingReflection(setting, parseFeatureFlagValue(setting.getValue()))
-                           .setKey(setting.getKey())
-                           .setValue(setting.getValue())
-                           .setLabel(setting.getLabel())
-                           .setETag(setting.getETag())
-                           .setContentType(setting.getContentType())
-                           .setTags(setting.getTags());
+                    .setKey(setting.getKey())
+                    .setValue(setting.getValue())
+                    .setLabel(setting.getLabel())
+                    .setETag(setting.getETag())
+                    .setContentType(setting.getContentType())
+                    .setTags(setting.getTags());
             } else if (SECRET_REFERENCE_CONTENT_TYPE.equals(contentType)) {
                 return subclassConfigurationSettingReflection(setting,
                     parseSecretReferenceFieldValue(setting.getKey(), setting.getValue()))
-                           .setValue(value)
-                           .setLabel(label)
-                           .setETag(etag)
-                           .setContentType(contentType)
-                           .setTags(tags);
+                    .setValue(value)
+                    .setLabel(label)
+                    .setETag(etag)
+                    .setContentType(contentType)
+                    .setTags(tags);
             } else {
                 // Configuration Setting
                 return setting;
@@ -133,8 +123,8 @@ public final class ConfigurationSettingDeserializationHelper {
        Parse the ConfigurationSetting's value into Feature Flag setting's properties.
      */
     public static FeatureFlagConfigurationSetting parseFeatureFlagValue(String valueInJson) {
-        try {
-            return getFeatureFlagPropertyValue(FACTORY.createParser(valueInJson.getBytes(StandardCharsets.UTF_8)));
+        try (JsonReader jsonReader = JsonProviders.createReader(valueInJson)) {
+            return getFeatureFlagPropertyValue(jsonReader);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
@@ -142,150 +132,102 @@ public final class ConfigurationSettingDeserializationHelper {
 
     // Secret reference configuration setting: parsing values
     public static SecretReferenceConfigurationSetting parseSecretReferenceFieldValue(String key, String value) {
-        try {
-            JsonParser parser = FACTORY.createParser(value.getBytes(StandardCharsets.UTF_8));
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            return jsonReader.readObject(reader -> {
+                String secretId = null;
 
-            // Read first object, "{"
-            parser.nextToken();
-            JsonToken token = parser.nextToken();
-            // uri
-            String secretId = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
 
-            if (token == JsonToken.FIELD_NAME && URI.equals(parser.getCurrentName())) {
-                token = parser.nextToken();
-                if (token == JsonToken.VALUE_STRING) {
-                    secretId = parser.getText();
+                    if (URI.equals(fieldName)) {
+                        secretId = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
                 }
-            }
 
-            // Use the map to get all properties
-            SecretReferenceConfigurationSetting secretReferenceConfigurationSetting =
-                new SecretReferenceConfigurationSetting(key, secretId);
-
-            parser.close();
-            return secretReferenceConfigurationSetting;
+                return new SecretReferenceConfigurationSetting(key, secretId);
+            });
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
     // Feature flag configuration setting: parsing feature flag values
-    private static FeatureFlagConfigurationSetting getFeatureFlagPropertyValue(JsonParser parser) throws IOException {
-        // Read first object, "{"
-        JsonToken token = parser.nextToken();
-        token = parser.nextToken();
-        // id
-        Map<String, Object> map = new HashMap<>();
-        if (token == JsonToken.FIELD_NAME && ID.equals(parser.getCurrentName())) {
-            token = parser.nextToken();
-            if (token == JsonToken.VALUE_STRING) {
-                map.put(ID, parser.getText());
-            }
-            token = parser.nextToken();
-        }
-        // description
-        if (token == JsonToken.FIELD_NAME && DESCRIPTION.equals(parser.getCurrentName())) {
-            token = parser.nextToken();
-            if (token == JsonToken.VALUE_STRING) {
-                map.put(DESCRIPTION, parser.getText());
-            }
-            token = parser.nextToken();
-        }
-        // display name
-        if (token == JsonToken.FIELD_NAME && DISPLAY_NAME.equals(parser.getCurrentName())) {
-            token = parser.nextToken();
-            if (token == JsonToken.VALUE_STRING) {
-                map.put(DISPLAY_NAME, parser.getText());
-            }
-            token = parser.nextToken();
-        }
-        // is enabled
-        if (token == JsonToken.FIELD_NAME && ENABLED.equals(parser.getCurrentName())) {
-            token = parser.nextToken();
-            if (token == JsonToken.VALUE_FALSE || token == JsonToken.VALUE_TRUE) {
-                map.put(ENABLED, parser.getBooleanValue());
-            }
-            token = parser.nextToken();
-        }
+    private static FeatureFlagConfigurationSetting getFeatureFlagPropertyValue(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            String featureId = null;
+            boolean isEnabled = false;
+            String description = null;
+            String displayName = null;
+            List<FeatureFlagFilter> clientFilters = null;
 
-        // Use the map to get all properties
-        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
-            new FeatureFlagConfigurationSetting((String) map.get(ID), (boolean) map.get(ENABLED))
-                .setDisplayName((String) map.get(DISPLAY_NAME))
-                .setDescription((String) map.get(DESCRIPTION));
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-        // conditional arrays
-        if (token == JsonToken.FIELD_NAME && CONDITIONS.equals(parser.getCurrentName())) {
-            parser.nextToken(); // get object start
-            token = parser.nextToken(); // get field name
-            if (token == JsonToken.FIELD_NAME && CLIENT_FILTERS.equals(parser.getCurrentName())) {
-                // read JSON array
-                featureFlagConfigurationSetting.setClientFilters(readClientFilters(parser));
+                if (ID.equals(fieldName)) {
+                    featureId = reader.getString();
+                } else if (DESCRIPTION.equals(fieldName)) {
+                    description = reader.getString();
+                } else if (DISPLAY_NAME.equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if (ENABLED.equals(fieldName)) {
+                    isEnabled = reader.getBoolean();
+                } else if (CONDITIONS.equals(fieldName)) {
+                    clientFilters = readClientFilters(reader);
+                } else {
+                    reader.skipChildren();
+                }
+
             }
-        }
 
-        parser.close();
-
-        return featureFlagConfigurationSetting;
+            return new FeatureFlagConfigurationSetting(featureId, isEnabled)
+                .setDescription(description)
+                .setDisplayName(displayName)
+                .setClientFilters(clientFilters);
+        });
     }
 
     // Feature flag configuration setting: client filters
-    @SuppressWarnings("unchecked")
-    private static List<FeatureFlagFilter> readClientFilters(JsonParser parser) throws IOException {
-        List<FeatureFlagFilter> filters = new ArrayList<>();
-        JsonToken token = parser.nextToken();
-        while (token != END_ARRAY) {
-            FeatureFlagFilter flagFilter = null;
-            if (token == JsonToken.FIELD_NAME && NAME.equals(parser.getCurrentName())) {
-                token = parser.nextToken();
-                if (token == JsonToken.VALUE_STRING) {
-                    flagFilter = new FeatureFlagFilter(parser.getText());
+    private static List<FeatureFlagFilter> readClientFilters(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (CLIENT_FILTERS.equals(fieldName)) {
+                    return reader.readArray(ConfigurationSettingDeserializationHelper::readClientFilter);
+                } else {
+                    reader.skipChildren();
                 }
             }
-            token = parser.nextToken();
-            if (token == JsonToken.FIELD_NAME && PARAMETERS.equals(parser.getCurrentName())) {
-                final Object propertyValue = readAdditionalPropertyValue(parser);
-                if (!(propertyValue instanceof Map)) {
-                    throw LOGGER.logExceptionAsError(new IllegalStateException(
-                        "property class type should be Map<String, Object>, it represents a json data format in Java.")
-                    );
+
+            return null;
+        });
+    }
+
+    private static FeatureFlagFilter readClientFilter(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            Map<String, Object> parameters = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (NAME.equals(fieldName)) {
+                    name = reader.getString();
+                } else if (PARAMETERS.equals(fieldName)) {
+                    parameters = reader.readMap(JsonReader::readUntyped);
+                } else {
+                    reader.skipChildren();
                 }
-                flagFilter.setParameters((Map<String, Object>) propertyValue);  // Map<String, Object>
-                filters.add(flagFilter);
             }
-        }
-        return filters;
-    }
 
-    // Feature flag configuration setting: "parameters" values
-    private static Object readAdditionalPropertyValue(JsonParser parser) throws IOException {
-        JsonToken token = parser.nextToken();
-        switch (token) {
-            case END_OBJECT:
-            case START_OBJECT:
-            case END_ARRAY:
-                return readAdditionalPropertyValue(parser);
-            case START_ARRAY:
-                parser.nextToken();
-                return readAdditionalPropertyValue(parser);
-            case FIELD_NAME:
-                final String currentName = parser.getCurrentName();
-                Map<String, Object> kv = new HashMap<>();
-                kv.put(currentName, readAdditionalPropertyValue(parser));
-                return kv;
-            case VALUE_STRING:
-                return parser.getText();
-            case VALUE_NUMBER_INT:
-                return parser.getIntValue();
-            case VALUE_NUMBER_FLOAT:
-                return parser.getFloatValue();
-            case VALUE_FALSE:
-            case VALUE_TRUE:
-                return parser.getBooleanValue();
-            default:
-            case VALUE_NULL:
-                return null;
-        }
+            return new FeatureFlagFilter(name).setParameters(parameters);
+        });
     }
-
 }
