@@ -68,9 +68,6 @@ public final class IdentityClientOptions implements Cloneable {
     private RetryPolicy retryPolicy;
     private List<HttpPipelinePolicy> perCallPolicies;
     private List<HttpPipelinePolicy> perRetryPolicies;
-    private boolean instanceDiscovery;
-
-    private Duration developerCredentialTimeout = Duration.ofSeconds(10);
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -86,7 +83,6 @@ public final class IdentityClientOptions implements Cloneable {
         additionallyAllowedTenants = new HashSet<>();
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
-        instanceDiscovery = true;
     }
 
     /**
@@ -193,7 +189,7 @@ public final class IdentityClientOptions implements Cloneable {
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
+     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
      * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
      * requests might starve and setting up this executor service should be considered.
      * </p>
@@ -659,25 +655,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
-     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
-     *
-     * @return the updated client options
-     */
-    public IdentityClientOptions disableInstanceDisovery() {
-        this.instanceDiscovery = false;
-        return this;
-    }
-
-    /**
-     * Gets the instance discovery policy.
-     * @return boolean indicating if instance discovery is enabled.
-     */
-    public boolean getInstanceDiscovery() {
-        return this.instanceDiscovery;
-    }
-
-    /**
      * Loads the details from the specified Configuration Store.
      */
     private void loadFromConfiguration(Configuration configuration) {
@@ -691,24 +668,8 @@ public final class IdentityClientOptions implements Cloneable {
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
 
-    /**
-     * Gets the timeout to apply to developer credential operations.
-     * @return The timeout value for developer credential operations.
-     */
-    public Duration getDeveloperCredentialTimeout() {
-        return developerCredentialTimeout;
-    }
-
-    /**
-     * Sets the timeout for developer credential operations.
-     * @param developerCredentialTimeout The timeout value for developer credential operations.
-     */
-    public void setDeveloperCredentialTimeout(Duration developerCredentialTimeout) {
-        this.developerCredentialTimeout = developerCredentialTimeout;
-    }
-
     public IdentityClientOptions clone() {
-        IdentityClientOptions clone =  new IdentityClientOptions()
+        return new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
             .setAllowUnencryptedCache(this.allowUnencryptedCache)
             .setHttpClient(this.httpClient)
@@ -736,9 +697,5 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies);
-        if (!getInstanceDiscovery()) {
-            clone.disableInstanceDisovery();
-        }
-        return clone;
     }
 }

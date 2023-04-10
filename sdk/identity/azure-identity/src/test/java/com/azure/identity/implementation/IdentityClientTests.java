@@ -6,30 +6,15 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.util.TestUtils;
-import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IClientCertificate;
-import com.microsoft.aad.msal4j.IClientSecret;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.MsalServiceException;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.SilentParameters;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.*;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.AdditionalMatchers;
-import org.mockito.ArgumentMatchers;
-import org.mockito.MockedConstruction;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.test.StepVerifier;
 
@@ -52,24 +37,16 @@ import java.util.concurrent.CompletableFuture;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.argThat;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockConstruction;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class IdentityClientTests {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private final ClientLogger logger = new ClientLogger(IdentityClientTests.class);
 
     @Test
-    public void testValidSecret() {
+    public void testValidSecret() throws Exception {
         // setup
         String secret = "secret";
         String accessToken = "token";
@@ -81,19 +58,16 @@ public class IdentityClientTests {
             // test
             IdentityClient client = new IdentityClientBuilder()
                 .tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(secret).build();
-            StepVerifier.create(client.authenticateWithConfidentialClient(request))
-                .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.authenticateWithConfidentialClient(request).block();
+            Assert.assertEquals(accessToken, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
 
 
     }
 
     @Test
-    public void testInvalidSecret() {
+    public void testInvalidSecret() throws Exception {
         // setup
         String secret = "secret";
         String accessToken = "token";
@@ -117,7 +91,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testValidCertificate() {
+    public void testValidCertificate() throws Exception {
         // setup
         String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
         String accessToken = "token";
@@ -128,17 +102,14 @@ public class IdentityClientTests {
         mockForClientCertificate(request, accessToken, expiresOn, () -> {
             IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
                 .certificatePath(pfxPath).certificatePassword("StrongPass!123").build();
-            StepVerifier.create(client.authenticateWithConfidentialClient(request))
-                .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.authenticateWithConfidentialClient(request).block();
+            Assert.assertEquals(accessToken, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
     @Test
-    public void testPemCertificate() {
+    public void testPemCertificate() throws Exception {
         // setup
         String pemPath;
         URL pemUrl = getClass().getClassLoader().getResource("certificate.pem");
@@ -156,18 +127,15 @@ public class IdentityClientTests {
             // test
             IdentityClient client = new IdentityClientBuilder()
                 .tenantId(TENANT_ID).clientId(CLIENT_ID).certificatePath(pemPath).build();
-            StepVerifier.create(client.authenticateWithConfidentialClient(request))
-                .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.authenticateWithConfidentialClient(request).block();
+            Assert.assertEquals(accessToken, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
 
     }
 
     @Test
-    public void testInvalidCertificatePassword() {
+    public void testInvalidCertificatePassword() throws Exception {
         // setup
         String pfxPath = getClass().getResource("/keyStore.pfx").getPath();
         String accessToken = "token";
@@ -177,15 +145,19 @@ public class IdentityClientTests {
         // mock
         mockForClientCertificate(request, accessToken, expiresOn, () -> {
             // test
-            IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                .certificatePath(pfxPath).certificatePassword("BadPassword").build();
-            StepVerifier.create(client.authenticateWithConfidentialClient(request))
-                .verifyErrorSatisfies(e -> Assert.assertTrue(e.getMessage().contains("password was incorrect")));
+            try {
+                IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
+                    .certificatePath(pfxPath).certificatePassword("BadPassword").build();
+                client.authenticateWithConfidentialClient(request).block();
+                fail();
+            } catch (Exception e) {
+                Assert.assertTrue(e.getMessage().contains("password was incorrect"));
+            }
         });
     }
 
     @Test
-    public void testValidDeviceCodeFlow() {
+    public void testValidDeviceCodeFlow() throws Exception {
         // setup
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -194,16 +166,10 @@ public class IdentityClientTests {
         // mock
         mockForDeviceCodeFlow(request, accessToken, expiresOn, () -> {
             IdentityClientOptions options = new IdentityClientOptions();
-            IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                .identityClientOptions(options)
-                .build();
-
-            StepVerifier.create(client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }))
-                .assertNext(token -> {
-                    Assert.assertEquals(accessToken, token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
+            AccessToken token = client.authenticateWithDeviceCode(request, deviceCodeChallenge -> { /* do nothing */ }).block();
+            Assert.assertEquals(accessToken, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
@@ -211,15 +177,15 @@ public class IdentityClientTests {
     @Test
     public void testValidServiceFabricCodeFlow() throws Exception {
         // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
         String secret = "secret";
         String thumbprint = "950a2c88d57b5e19ac5119315f9ec199ff3cb823";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("IDENTITY_ENDPOINT", endpoint)
-            .put("IDENTITY_HEADER", secret)
-            .put("IDENTITY_SERVER_THUMBPRINT", thumbprint));
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
+        configuration.put("IDENTITY_SERVER_THUMBPRINT", thumbprint);
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.toEpochSecond() + "\" }";
 
         // mock
@@ -228,30 +194,26 @@ public class IdentityClientTests {
             .setManagedIdentityParameters(new ManagedIdentityParameters()
                 .setIdentityEndpoint(endpoint)
                 .setIdentityHeader(secret)
-                .setIdentityServerThumbprint(thumbprint))
-            .setConfiguration(configuration);
+                .setIdentityServerThumbprint(thumbprint));
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForServiceFabricCodeFlow(tokenJson, () -> {
             // test
-            StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
-                .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
+            Assert.assertEquals("token1", token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
     @Test
     public void testValidIdentityEndpointMSICodeFlow() throws Exception {
         // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
         String secret = "secret";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("IDENTITY_ENDPOINT", endpoint)
-            .put("IDENTITY_HEADER", secret));
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
@@ -260,111 +222,99 @@ public class IdentityClientTests {
             .setManagedIdentityType(ManagedIdentityType.APP_SERVICE)
             .setManagedIdentityParameters(new ManagedIdentityParameters()
                 .setIdentityEndpoint(endpoint)
-                .setIdentityHeader(secret))
-            .setConfiguration(configuration);
+                .setIdentityHeader(secret));
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForMSICodeFlow(tokenJson, () -> {
             // test
-            StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
-                .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
+            Assert.assertEquals("token1", token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test (expected = ClientAuthenticationException.class)
     public void testInValidIdentityEndpointSecretArcCodeFlow() throws Exception {
         // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("IDENTITY_ENDPOINT", endpoint));
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
         // mock
         IdentityClientOptions options = new IdentityClientOptions()
             .setManagedIdentityType(ManagedIdentityType.ARC)
             .setManagedIdentityParameters(new ManagedIdentityParameters()
-                .setIdentityEndpoint(endpoint))
-            .setConfiguration(configuration);
+                .setIdentityEndpoint(endpoint));
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForArcCodeFlow(401, () -> {
             client.getTokenFromTargetManagedIdentity(request).block();
         });
     }
 
-    @Test(expected = ClientAuthenticationException.class)
+    @Test (expected = ClientAuthenticationException.class)
     public void testInValidIdentityEndpointResponseCodeArcCodeFlow() throws Exception {
         // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("IDENTITY_ENDPOINT", endpoint));
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
         IdentityClientOptions options = new IdentityClientOptions()
             .setManagedIdentityType(ManagedIdentityType.ARC)
             .setManagedIdentityParameters(new ManagedIdentityParameters()
-                .setIdentityEndpoint(endpoint))
-            .setConfiguration(configuration);
+                .setIdentityEndpoint(endpoint));
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
-        mockForArcCodeFlow(200, () -> client.getTokenFromTargetManagedIdentity(request).block());
+        mockForArcCodeFlow(200, () -> {
+            client.getTokenFromTargetManagedIdentity(request).block();
+        });
     }
 
     @Test
     public void testValidIMDSCodeFlow() throws Exception {
         // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://localhost";
         String secret = "secret";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("MSI_ENDPOINT", endpoint)
-            .put("MSI_SECRET", secret));
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("MSI_ENDPOINT", endpoint);
+        configuration.put("MSI_SECRET", secret);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
 
         IdentityClientOptions options = new IdentityClientOptions()
-            .setManagedIdentityType(ManagedIdentityType.VM)
-            .setConfiguration(configuration);
+            .setManagedIdentityType(ManagedIdentityType.VM);
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
         mockForIMDSCodeFlow(IdentityConstants.DEFAULT_IMDS_ENDPOINT, tokenJson, () -> {
             // test
-            StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
-                .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
+            Assert.assertEquals("token1", token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
     @Test
     public void testCustomIMDSCodeFlow() throws Exception {
         // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = "http://awesome.pod.url";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL, endpoint));
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put(Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL, endpoint);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
 
         IdentityClientOptions options = new IdentityClientOptions()
-            .setManagedIdentityType(ManagedIdentityType.VM)
-            .setConfiguration(configuration);
+            .setManagedIdentityType(ManagedIdentityType.VM);
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
         mockForIMDSCodeFlow(endpoint, tokenJson, () -> {
             // test
-            StepVerifier.create(client.getTokenFromTargetManagedIdentity(request))
-                .assertNext(token -> {
-                    Assert.assertEquals("token1", token.getToken());
-                    Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
-                })
-                .verifyComplete();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
+            Assert.assertEquals("token1", token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
     }
 
@@ -390,7 +340,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testUserRefreshTokenflow() {
+    public void testUserRefreshTokenflow() throws Exception {
         // setup
         String token1 = "token1";
         String token2 = "token1";
@@ -410,7 +360,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testUsernamePasswordCodeFlow() {
+    public void testUsernamePasswordCodeFlow() throws Exception {
         // setup
         String username = "testuser";
         String password = "testpassword";
@@ -431,7 +381,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testBrowserAuthenicationCodeFlow() {
+    public void testBrowserAuthenicationCodeFlow() throws Exception {
         // setup
         String username = "testuser";
         String password = "testpassword";
@@ -442,7 +392,7 @@ public class IdentityClientTests {
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
         // mock
-        mockForBrowserAuthenticationCodeFlow(token, request, expiresOn, () -> {
+        mocForBrowserAuthenticationCodeFlow(token, request, expiresOn, () -> {
             // test
             StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null, null))
                 .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
@@ -466,7 +416,7 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testAuthWithManagedIdentityFlow() {
+    public void testAuthWithManagedIdentityFlow() throws Exception {
         // setup
         String secret = "SYSTEM-ASSIGNED-CLIENT-SECRET";
         String clientId = "SYSTEM-ASSIGNED-CLIENT-ID";
@@ -491,7 +441,7 @@ public class IdentityClientTests {
     }
 
     /****** mocks ******/
-    private void mockForManagedIdentityFlow(String secret, String clientId, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForManagedIdentityFlow(String secret, String clientId, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
 
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
 
@@ -521,12 +471,11 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
 
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
 
             when(builder.authority(any())).thenReturn(builder);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
@@ -551,11 +500,10 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForClientCertificate(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForClientCertificate(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
 
         try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
             when(builder.authority(any())).thenReturn(builder);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
             ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
             when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
@@ -578,7 +526,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForDeviceCodeFlow(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForDeviceCodeFlow(TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             when(builder.authority(any())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
@@ -598,36 +546,34 @@ public class IdentityClientTests {
                 return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
             });
             when(builder.build()).thenReturn(application);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
         })) {
             test.run();
             Assert.assertNotNull(publicClientApplicationMock);
         }
     }
 
-    private void mockForClientPemCertificate(String accessToken, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForClientPemCertificate(String accessToken, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) throws Exception {
 
         try (MockedStatic<CertificateUtil> certificateUtilMock = mockStatic(CertificateUtil.class);
-             MockedStatic<ClientCredentialFactory> clientCredentialFactoryMock = mockStatic(ClientCredentialFactory.class);
-             MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class);
-             MockedConstruction<ConfidentialClientApplication.Builder> builderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
-                 ConfidentialClientApplication application = mock(ConfidentialClientApplication.class);
-                 when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
-                     ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
-                     if (argument.scopes().size() == 1 && request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
-                         return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
-                     } else {
-                         return CompletableFuture.runAsync(() -> {
-                             throw new MsalServiceException("Invalid request", "InvalidScopes");
-                         });
-                     }
-                 });
-                 when(builder.build()).thenReturn(application);
-                 when(builder.authority(any())).thenReturn(builder);
-                 when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
-                 when(builder.httpClient(any())).thenReturn(builder);
-             })
-        ) {
+            MockedStatic<ClientCredentialFactory> clientCredentialFactoryMock = mockStatic(ClientCredentialFactory.class);
+            MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class);
+            MockedConstruction<ConfidentialClientApplication.Builder> builderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
+                ConfidentialClientApplication application = mock(ConfidentialClientApplication.class);
+                when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
+                    ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
+                    if (argument.scopes().size() == 1 && request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                        return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
+                    } else {
+                        return CompletableFuture.runAsync(() -> {
+                            throw new MsalServiceException("Invalid request", "InvalidScopes");
+                        });
+                    }
+                });
+                when(builder.build()).thenReturn(application);
+                when(builder.authority(any())).thenReturn(builder);
+                when(builder.httpClient(any())).thenReturn(builder);
+            })
+        )  {
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(eq(CLIENT_ID), any())).thenCallRealMethod();
             staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(AdditionalMatchers.not(eq(CLIENT_ID)), any())).thenThrow(new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId"));
             PrivateKey privateKey = mock(PrivateKey.class);
@@ -701,7 +647,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForBrowserAuthenticationCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) {
+    private void mocForBrowserAuthenticationCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) throws Exception {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
             when(application.acquireToken(any(InteractiveRequestParameters.class))).thenAnswer(invocation -> {
@@ -714,7 +660,6 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();
@@ -722,7 +667,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForAuthorizationCodeFlow(String token1, TokenRequestContext request, OffsetDateTime expiresAt, Runnable test) {
+    private void mockForAuthorizationCodeFlow(String token1, TokenRequestContext request, OffsetDateTime expiresAt, Runnable test) throws Exception {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
             when(application.acquireToken(any(AuthorizationCodeParameters.class))).thenAnswer(invocation -> {
@@ -746,7 +691,6 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();
@@ -754,7 +698,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForUsernamePasswordCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForUsernamePasswordCodeFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) throws Exception {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
             when(application.acquireToken(any(UserNamePasswordParameters.class))).thenAnswer(invocation -> {
@@ -767,7 +711,6 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();
@@ -775,7 +718,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForUserRefreshTokenFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) {
+    private void mockForUserRefreshTokenFlow(String token, TokenRequestContext request, OffsetDateTime expiresOn, Runnable test) throws Exception {
         try (MockedConstruction<PublicClientApplication.Builder> publicClientApplicationMock = mockConstruction(PublicClientApplication.Builder.class, (builder, context) -> {
             PublicClientApplication application = Mockito.mock(PublicClientApplication.class);
             when(application.acquireTokenSilently(any())).thenAnswer(invocation -> {
@@ -788,7 +731,6 @@ public class IdentityClientTests {
             });
             when(builder.build()).thenReturn(application);
             when(builder.authority(any())).thenReturn(builder);
-            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.httpClient(any())).thenReturn(builder);
         })) {
             test.run();

@@ -3,162 +3,169 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.util.IdentityUtil;
-import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static org.junit.Assert.assertThrows;
+import java.time.OffsetDateTime;
+
+import static org.junit.Assert.fail;
 
 public class EnvironmentCredentialTests {
     @Test
     public void testCreateEnvironmentClientSecretCredential() {
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+        Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
-            .verifyErrorSatisfies(t -> {
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
+            .doOnSuccess(s -> fail())
+            .onErrorResume(t -> {
                 String message = t.getMessage();
-                Assert.assertFalse(message != null
-                    && message.contains("Cannot create any credentials with the current environment variables"));
-            });
+                Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+                return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
+            }))
+            .expectNextMatches(token -> "token".equals(token.getToken()))
+            .verifyComplete();
+
 
 
         // Validate Sync flow.
-        Exception e = assertThrows(Exception.class,
-            () -> credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default")));
-
-        String message = e.getMessage();
-        Assert.assertFalse(message != null
-            && message.contains("Cannot create any credentials with the current environment variables"));
+        try {
+            credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default"));
+            fail();
+        } catch (Exception e) {
+            String message = e.getMessage();
+            Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+        }
     }
 
     @Test
     public void testCreateEnvironmentClientCertificateCredential() {
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+        Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "bar")
             .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "password")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
         // authentication will fail client-id=foo, but should be able to create ClientCertificateCredential
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
-            .verifyErrorSatisfies(t -> {
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
+            .doOnSuccess(s -> fail())
+            .onErrorResume(t -> {
                 String message = t.getMessage();
-                Assert.assertFalse(message != null
-                    && message.contains("Cannot create any credentials with the current environment variables"));
-            });
+                Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+                return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
+            }))
+            .expectNextMatches(token -> "token".equals(token.getToken()))
+            .verifyComplete();
 
         // Validate Sync flow.
-        Exception e = assertThrows(Exception.class,
-            () -> credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default")));
-
-        String message = e.getMessage();
-        Assert.assertFalse(message != null
-            && message.contains("Cannot create any credentials with the current environment variables"));
+        try {
+            credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default"));
+            fail();
+        } catch (Exception e) {
+            String message = e.getMessage();
+            Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+        }
     }
 
     @Test
     public void testCreateEnvironmentUserPasswordCredential() {
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+        Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_USERNAME, "bar")
-            .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz"));
+            .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
         // authentication will fail client-id=foo, but should be able to create UsernamePasswordCredential
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
-            .verifyErrorSatisfies(t -> {
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
+            .doOnSuccess(s -> fail())
+            .onErrorResume(t -> {
                 String message = t.getMessage();
-                Assert.assertFalse(message != null
-                    && message.contains("Cannot create any credentials with the current environment variables"));
-            });
+                Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+                return Mono.just(new AccessToken("token", OffsetDateTime.MAX));
+            }))
+            .expectNextMatches(token -> "token".equals(token.getToken()))
+            .verifyComplete();
 
         // Validate Sync flow.
-        Exception e = assertThrows(Exception.class,
-            () -> credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default")));
-
-        String message = e.getMessage();
-        Assert.assertFalse(message != null
-            && message.contains("Cannot create any credentials with the current environment variables"));
+        try {
+            credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default"));
+            fail();
+        } catch (Exception e) {
+            String message = e.getMessage();
+            Assert.assertFalse(message != null && message.contains("Cannot create any credentials with the current environment variables"));
+        }
     }
 
     @Test
-    public void testInvalidAdditionalTenant() {
+    public void testInvalidAdditionalTenant() throws Exception {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+        Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
             .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz")
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "RANDOM"));
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "RANDOM");
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential =
+            new EnvironmentCredentialBuilder().build();
 
         StepVerifier.create(credential.getToken(request))
-            .verifyErrorMatches(e -> e instanceof ClientAuthenticationException
-                && (e.getMessage().startsWith("The current credential is not configured to")));
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
     }
 
     @Test
-    public void testInvalidMultiTenantAuth() {
+    public void testInvalidMultiTenantAuth() throws Exception {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+        Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential =
+            new EnvironmentCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .verifyErrorMatches(e -> e instanceof ClientAuthenticationException
-                && (e.getMessage().startsWith("The current credential is not configured to")));
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
     }
 
     @Test
-    public void testValidMultiTenantAuth() {
+    public void testValidMultiTenantAuth() throws Exception {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+        Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
             .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz")
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "*"));
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "*");
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential =
+            new EnvironmentCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .verifyError(MsalServiceException.class);
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
+            .verify();
     }
 }
