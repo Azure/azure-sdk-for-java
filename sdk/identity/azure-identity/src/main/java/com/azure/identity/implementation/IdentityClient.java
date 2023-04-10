@@ -63,7 +63,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.Scanner;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
