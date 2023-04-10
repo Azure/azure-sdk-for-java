@@ -1,46 +1,19 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2e1a061f-c394-4628-983b-9f9c3c907c7a",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "987",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "3535be84-0bef-4942-a239-ea3a278db7e0",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"innererror\": {\n      \"code\": \"TrainingContentMissing\",\n      \"message\": \"Training data is missing: Could not find any training data at the given path.\"\n    }\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:20:56 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-}
-=======
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2022-08-31",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "345",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:39:19 GMT",
+        "Date": "Mon, 10 Apr 2023 19:07:25 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "8ceec5ac-c7b3-4723-8e0a-7a9c56462c87"
+        "x-ms-client-request-id": "40ea91a2-ec81-4d76-a5b9-8d9737e79ab0"
       },
       "RequestBody": {
-        "modelId": "92d853dd-9a30-425a-a3cf-e12c133b4636",
+        "modelId": "a699f5cc-776a-446f-b3f0-f3937ce22c2a",
         "buildMode": "template",
         "azureBlobSource": {
           "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/multipage-training-data?sp=rl\u0026st=2022-01-24T21:28:33Z\u0026se=2026-01-25T05:28:33Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=CWjKGuJXpYtcn%2Bh3Z4FPW8Bu1Tw09t4%2FlY3N9hnU5gU%3D",
@@ -49,13 +22,13 @@
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "2ad2b08f-a7b2-4e90-9ae4-be10e80a6bb5",
+        "apim-request-id": "f48a81b5-64aa-4436-bf36-e85cd442aff2",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:39:19 GMT",
+        "Date": "Mon, 10 Apr 2023 19:07:33 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "744",
+        "x-envoy-upstream-service-time": "1724",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
@@ -72,4 +45,3 @@
   ],
   "Variables": {}
 }
->>>>>>> 294c7d84192 (add new client test recordings with test proxy)

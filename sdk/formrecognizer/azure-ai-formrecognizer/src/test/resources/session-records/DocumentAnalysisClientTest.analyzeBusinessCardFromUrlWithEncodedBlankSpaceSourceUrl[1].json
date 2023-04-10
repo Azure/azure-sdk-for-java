@@ -1,78 +1,30 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit&api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e30f028b-1d1f-4dea-b26f-cfb6f3764069",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "486",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ca5809cc-b350-4d06-a722-d93581cf23ff",
-      "retry-after" : "0",
-      "Content-Length" : "221",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
-      "Date" : "Tue, 14 Mar 2023 18:23:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "ms-azure-ai-errorcode" : "InvalidRequest"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-=======
   "Entries": [
     {
-<<<<<<< HEAD
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview\u0026features=\u0026queryFields=",
-=======
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
->>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "49",
         "Content-Type": "application/json",
-<<<<<<< HEAD
-        "Date": "Tue, 04 Apr 2023 22:58:30 GMT",
+        "Date": "Mon, 10 Apr 2023 20:39:53 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "43f0479d-96da-4cef-93a2-042247aaa96e"
-=======
-        "Date": "Wed, 08 Mar 2023 19:41:26 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a556013f-eddb-487e-86a6-9703771a91de"
->>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
+        "x-ms-client-request-id": "f2d82b00-27fc-4a6a-99b0-a10555882a6b"
       },
       "RequestBody": {
         "urlSource": "https://fakeuri.com/blank%20space"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-<<<<<<< HEAD
-        "apim-request-id": "80912601-5ea5-4f02-a230-81f0c6dddd4f",
+        "apim-request-id": "00d1d0e8-1cb4-4d33-9388-b0ea5551791a",
         "Content-Length": "221",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 04 Apr 2023 22:58:30 GMT",
+        "Date": "Mon, 10 Apr 2023 20:39:56 GMT",
         "ms-azure-ai-errorcode": "InvalidRequest",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "499",
-=======
-        "apim-request-id": "7d5def87-4216-40d9-89bb-05a25998cd62",
-        "Content-Length": "221",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:41:25 GMT",
-        "ms-azure-ai-errorcode": "InvalidRequest",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "591",
->>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)
+        "x-envoy-upstream-service-time": "522",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
@@ -88,5 +40,4 @@
     }
   ],
   "Variables": {}
->>>>>>> 805b767d2c8 (add new client test recordings with test proxy)
 }

@@ -1,62 +1,40 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/info?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ece116eb-4490-4a59-a049-6d4f19b6974c"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "371",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "09288928-b900-47f7-8fe1-b24543b11f92",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\n  \"customDocumentModels\": {\n    \"count\": 4907,\n    \"limit\": 20000\n  },\n  \"customNeuralDocumentModelBuilds\": {\n    \"used\": 0,\n    \"quota\": 20,\n    \"quotaResetDateTime\": \"2023-04-01T00:00:00Z\"\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:21:25 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-}
-=======
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/info?api-version=2022-08-31",
+      "RequestUri": "https://REDACTED/formrecognizer/info?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:39:15 GMT",
+        "Date": "Mon, 10 Apr 2023 19:07:57 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "57467029-452f-4ca8-a8c9-fd3353456faa"
+        "x-ms-client-request-id": "849e37ca-f1d2-4d68-b6be-64cea22d44d9"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e04117c1-95d3-4780-8f25-cb4a207a7d28",
+        "apim-request-id": "b4e5686d-b49e-4ab5-904a-9fa998cf8ee9",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:39:15 GMT",
+        "Date": "Mon, 10 Apr 2023 19:08:06 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "349",
+        "x-envoy-upstream-service-time": "6263",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "customDocumentModels": {
-          "count": 4863,
+          "count": 4924,
           "limit": 20000
+        },
+        "customNeuralDocumentModelBuilds": {
+          "used": 0,
+          "quota": 20,
+          "quotaResetDateTime": "2023-05-01T00:00:00Z"
         }
       }
     }
   ],
   "Variables": {}
 }
->>>>>>> e2a69d20903 (add chnages for older clients + sanitzation)

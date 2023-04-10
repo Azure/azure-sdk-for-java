@@ -1,62 +1,40 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/info?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "713a6c01-27b5-4ec6-99d9-a5b5852a4802"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "344",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e21ecb73-ee44-417b-8ef1-7f6b991b27fb",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\n  \"customDocumentModels\": {\n    \"count\": 4906,\n    \"limit\": 20000\n  },\n  \"customNeuralDocumentModelBuilds\": {\n    \"used\": 0,\n    \"quota\": 20,\n    \"quotaResetDateTime\": \"2023-04-01T00:00:00Z\"\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:21:04 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-}
-=======
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/info?api-version=2022-08-31",
+      "RequestUri": "https://REDACTED/formrecognizer/info?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 08 Mar 2023 19:37:54 GMT",
+        "Date": "Mon, 10 Apr 2023 19:07:46 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e1673ecd-b697-4db8-9b6d-66127e8adb9b"
+        "x-ms-client-request-id": "9e9f1eb4-00ef-47f9-bbe9-87262401025c"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "34400e4b-c42c-4f14-8740-bdd5f9db6245",
+        "apim-request-id": "43c4613b-a98b-4a39-bb4a-e1d4aa761306",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:37:53 GMT",
+        "Date": "Mon, 10 Apr 2023 19:07:50 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "392",
+        "x-envoy-upstream-service-time": "367",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "customDocumentModels": {
-          "count": 4847,
+          "count": 4920,
           "limit": 20000
+        },
+        "customNeuralDocumentModelBuilds": {
+          "used": 0,
+          "quota": 20,
+          "quotaResetDateTime": "2023-05-01T00:00:00Z"
         }
       }
     }
   ],
   "Variables": {}
 }
->>>>>>> 294c7d84192 (add new client test recordings with test proxy)

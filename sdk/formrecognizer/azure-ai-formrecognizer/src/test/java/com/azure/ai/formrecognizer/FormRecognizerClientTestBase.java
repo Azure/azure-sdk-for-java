@@ -56,7 +56,6 @@ import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getAudience;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.TEST_PROXY_SANITIZER_LIST;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getCredentialByAuthority;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -149,7 +148,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
         builder.credential(getCredentialByAuthority(endpoint));
 
-        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
         return builder;
     }
 
@@ -170,8 +168,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         builder.credential(getCredentialByAuthority(endpoint));
-
-        interceptorManager.addSanitizers(TEST_PROXY_SANITIZER_LIST);
 
         return builder;
     }

@@ -1,30 +1,30 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "49",
         "Content-Type": "application/json",
-        "Date": "Wed, 08 Mar 2023 19:40:29 GMT",
+        "Date": "Mon, 10 Apr 2023 20:14:12 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "51b94c5a-3e0c-4679-86eb-ccc830879520"
+        "x-ms-client-request-id": "80b1832d-e99c-408b-9192-130f4e449b31"
       },
       "RequestBody": {
         "urlSource": "https://fakeuri.com/blank%20space"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "2076be62-93e0-4832-955a-a9af0defb493",
+        "apim-request-id": "51f7fa10-1686-406c-881d-d7440c976321",
         "Content-Length": "221",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Mar 2023 19:40:32 GMT",
+        "Date": "Mon, 10 Apr 2023 20:14:16 GMT",
         "ms-azure-ai-errorcode": "InvalidRequest",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3546",
+        "x-envoy-upstream-service-time": "588",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

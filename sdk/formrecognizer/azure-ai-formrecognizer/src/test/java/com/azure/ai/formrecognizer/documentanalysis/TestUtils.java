@@ -109,8 +109,6 @@ public final class TestUtils {
     public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    public static final TestProxySanitizer OPERATION_LOCATION_SANITIZER = new TestProxySanitizer("Operation-Location", URL_REGEX, "REDACTED",TestProxySanitizerType.BODY_KEY);
-
     private TestUtils() {
     }
 
