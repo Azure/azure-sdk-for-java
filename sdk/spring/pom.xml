@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure</artifactId>
@@ -35,8 +35,7 @@
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <!--
-        Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x'
-        branch.
+        Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x' branch.
         <module>spring-cloud-azure-starter-data-cosmos</module>-->
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault</module>
@@ -95,8 +94,7 @@
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <!--
-        Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x'
-        branch.
+        Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x' branch.
         <module>spring-cloud-azure-starter-data-cosmos</module>-->
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault</module>
