@@ -8,9 +8,19 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 2.8.4 (2023-04-07)
+
+### Bugs Fixed
+
 - Addressing IllegalStateException due to double free of Connection reference by the Transport.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
 
 ## 2.8.3 (2023-03-02)
 

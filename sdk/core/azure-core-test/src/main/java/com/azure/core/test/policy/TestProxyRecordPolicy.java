@@ -21,6 +21,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
     private final HttpClient client;
+    private final URL proxyUrl;
     private String xRecordingId;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
@@ -46,9 +48,11 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
+     * @param proxyUrl The {@link URL} for the test proxy instance.
      */
-    public TestProxyRecordPolicy(HttpClient httpClient) {
+    public TestProxyRecordPolicy(HttpClient httpClient, URL proxyUrl) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
+        this.proxyUrl = proxyUrl;
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 
@@ -58,7 +62,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param recordFile The name of the file to save the recording to.
      */
     public void startRecording(String recordFile) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", TestProxyUtils.getProxyUrl()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
 
         HttpResponse response = client.sendSync(request, Context.NONE);
@@ -73,7 +77,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param variables A list of random variables generated during the test which is saved in the recording.
      */
     public void stopRecording(Queue<String> variables) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", TestProxyUtils.getProxyUrl()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", proxyUrl.toString()))
             .setHeader("content-type", "application/json")
             .setHeader("x-recording-id", xRecordingId)
             .setBody(serializeVariables(variables));
@@ -100,7 +104,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        TestProxyUtils.changeHeaders(context.getHttpRequest(), xRecordingId, "record");
+        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, "record");
         HttpResponse response = next.processSync();
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.revertUrl(response);
@@ -109,7 +113,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpRequest request = context.getHttpRequest();
-        TestProxyUtils.changeHeaders(request, xRecordingId, "record");
+        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "record");
         return next.process().map(response -> {
             TestProxyUtils.checkForTestProxyErrors(response);
             return TestProxyUtils.revertUrl(response);
@@ -122,7 +126,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isRecording()) {
-            getSanitizerRequests(sanitizers)
+            getSanitizerRequests(sanitizers, proxyUrl)
                 .forEach(request -> {
                     request.setHeader("x-recording-id", xRecordingId);
                     client.sendSync(request, Context.NONE);
