@@ -26,7 +26,7 @@ public class ContainerRegistryRefreshTokenCredential implements TokenCredential 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryRefreshTokenCredential.class);
     private final TokenCredential aadTokenCredential;
     private final AuthenticationsImpl authenticationsImpl;
-    private final TokenRequestContext authenticationScope;
+    private final TokenRequestContext tokenRequestContext;
 
     /**
      * Creates an instance of RefreshTokenCredential with default scheme "Bearer".
@@ -36,7 +36,7 @@ public class ContainerRegistryRefreshTokenCredential implements TokenCredential 
     ContainerRegistryRefreshTokenCredential(AuthenticationsImpl authenticationsImpl, TokenCredential aadTokenCredential, ContainerRegistryAudience audience) {
         this.authenticationsImpl = authenticationsImpl;
         this.aadTokenCredential = aadTokenCredential;
-        this.authenticationScope = new TokenRequestContext().addScopes(audience + "/.default");
+        this.tokenRequestContext = new TokenRequestContext().addScopes(audience + "/.default");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ContainerRegistryRefreshTokenCredential implements TokenCredential 
             return monoError(LOGGER, new IllegalArgumentException("Unexpected request type - " + request.getClass().getName()));
         }
         ContainerRegistryTokenRequestContext crRequest = (ContainerRegistryTokenRequestContext) request;
-        return aadTokenCredential.getToken(authenticationScope)
+        return aadTokenCredential.getToken(tokenRequestContext)
             .flatMap(token ->
                 authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(PostContentSchemaGrantType.ACCESS_TOKEN, crRequest.getServiceName(), null, null, token.getToken(), Context.NONE))
             .map(this::toAccessToken);
@@ -59,7 +59,7 @@ public class ContainerRegistryRefreshTokenCredential implements TokenCredential 
 
         ContainerRegistryTokenRequestContext crRequest = (ContainerRegistryTokenRequestContext) request;
 
-        AccessToken token = aadTokenCredential.getTokenSync(authenticationScope);
+        AccessToken token = aadTokenCredential.getTokenSync(tokenRequestContext);
         Response<AcrRefreshToken> acrRefreshToken =
             authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponse(PostContentSchemaGrantType.ACCESS_TOKEN, crRequest.getServiceName(), null, null, token.getToken(), Context.NONE);
         return toAccessToken(acrRefreshToken);
