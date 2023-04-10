@@ -191,7 +191,7 @@ The [Managed identity authentication](https://learn.microsoft.com/azure/active-d
 - [Azure Virtual Machines](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
 - [Azure Virtual Machines Scale Sets](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
 
-**Note:** The In Memory token caching support was added for Managed Identity Authentication in version
+**Note:** Use the latest version of `azure-identity`  from maven to utilize recently integrated in memory token caching support for managed identity authentication.
 
 ### Examples
 
@@ -531,7 +531,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 Configuration is attempted in the above order. For example, if values for a client secret and certificate are both present, the client secret will be used.
 
 ## Token Caching
-Token caching is a feature provided by the Azure Identity client library that allows applications to improve their resilience, performance, and reduce the number of requests made to Azure Active Directory (Azure AD) to obtain access tokens.
+Token caching is a feature provided by the Azure Identity client library that allows applications to cache tokens and improve their resilience, performance, and reduce the number of requests made to Azure Active Directory (Azure AD) to obtain access tokens.
 The Azure Identity client library offers both in-memory caching and persistent disk caching. For more details refer to [token caching documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md)
 
 ## Troubleshooting
