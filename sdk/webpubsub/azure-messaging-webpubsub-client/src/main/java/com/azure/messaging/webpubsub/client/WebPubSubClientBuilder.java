@@ -22,7 +22,6 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The builder of WebPubSub client.
@@ -65,7 +64,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      * @return itself.
      */
     public WebPubSubClientBuilder credential(WebPubSubClientCredential credential) {
-        this.credential = Objects.requireNonNull(credential);
+        this.credential = credential;
         return this;
     }
 
@@ -76,7 +75,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      * @return itself.
      */
     public WebPubSubClientBuilder clientAccessUrl(String clientAccessUrl) {
-        this.clientAccessUrl = Objects.requireNonNull(clientAccessUrl);
+        this.clientAccessUrl = clientAccessUrl;
         return this;
     }
 
@@ -87,7 +86,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      * @return itself.
      */
     public WebPubSubClientBuilder protocol(WebPubSubProtocol webPubSubProtocol) {
-        this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
+        this.webPubSubProtocol = webPubSubProtocol;
         return this;
     }
 
@@ -98,7 +97,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      * @return itself.
      */
     public WebPubSubClientBuilder retryOptions(RetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions);
+        this.retryOptions = retryOptions;
         return this;
     }
 
@@ -118,7 +117,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      * {@inheritDoc}
      */
     @Override
-    public WebPubSubClientBuilder configuration(final Configuration configuration) {
+    public WebPubSubClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -176,8 +175,12 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
         }
 
         // credential
-        Mono<String> clientAccessUrlProvider = null;
-        if (credential != null) {
+        Mono<String> clientAccessUrlProvider;
+        if (credential != null && clientAccessUrl != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Both credential and clientAccessUrl have been set. "
+                    + "Set null to one of them to clear that option."));
+        } else if (credential != null) {
             clientAccessUrlProvider = credential.getClientAccessUrl();
         } else if (clientAccessUrl != null) {
             clientAccessUrlProvider = Mono.just(clientAccessUrl);

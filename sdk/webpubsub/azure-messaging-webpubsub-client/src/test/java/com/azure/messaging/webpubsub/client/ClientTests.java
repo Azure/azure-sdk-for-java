@@ -15,6 +15,7 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.EventHandler;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
@@ -203,6 +204,17 @@ public class ClientTests extends TestBase {
     public void testNoCredential() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             WebPubSubClient client = new WebPubSubClientBuilder().buildClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testBothCredential() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            WebPubSubClient client = new WebPubSubClientBuilder()
+                .credential(new WebPubSubClientCredential(Mono.just("mock")))
+                .clientAccessUrl("mock")
+                .buildClient();
         });
     }
 
