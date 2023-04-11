@@ -2,8 +2,6 @@
 
 ## 1.1.0-beta.4 (2023-04-11)
 
-### Features Added
-
 ### Breaking Changes from version 1.1.0-beta.3
 
 - `ContainerRegistryBlobClientBuilder`, `ContainerRegistryBlobClient` and `ContainerRegistryBlobAsyncClient` were renamed to `ContainerRegistryContentClientBuilder`,
@@ -21,8 +19,6 @@
 - Removed `GetManifestResult.asOciManifest` - use `GetManifestResult.getManifest().toObject(OciImageManifest.class)` instead.
 - Renamed `OciImageManifest.getConfig` and `setConfig` methods to `getConfiguration` and `setConfiguration`.
 - Renamed `OciAnnotations.getCreated` and `setCreated` methods to `getCreatedOn` and `setCreatedOn`.
-
-### Bugs Fixed
 
 ### Other Changes
 
