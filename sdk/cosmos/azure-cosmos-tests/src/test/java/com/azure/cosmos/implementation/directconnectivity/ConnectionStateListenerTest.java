@@ -30,6 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.ParallelFlux;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -146,6 +148,10 @@ public class ConnectionStateListenerTest {
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
         RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, rntbdOpenConnectionsHandlerMock, proactiveOpenConnectionsProcessorMock);
+
+        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher())
+                .thenReturn(ParallelFlux.from(Flux.empty()));
+
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);
         RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();
