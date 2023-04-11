@@ -280,7 +280,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getContainer(this.cosmosAsyncContainer.getId());
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(writeRegionServerGoneErrorRule)).block();
-         //   assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(2);
+            assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(2);
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
             if (operationType.isWriteOperation()) {
@@ -958,7 +958,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 JsonNode storeResult = responseStatisticsList.get(i).get("storeResult");
                 assertThat(storeResult.get("faultInjectionRuleId")).isNull();
                 assertThat(storeResult.get("faultInjectionEvaluationResults")).isNotNull();
-                System.out.println("faultInjectionEvaluationResults: " + storeResult.get("faultInjectionEvaluationResults").toString());
                 assertThat(storeResult.get("faultInjectionEvaluationResults").toString().contains(faultInjectionNonApplicableReason));
             }
             assertThat(responseStatisticsList.size()).isOne();
