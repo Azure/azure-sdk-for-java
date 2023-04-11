@@ -22,6 +22,10 @@ public final class MongoIndexOptions {
     @JsonProperty(value = "unique")
     private Boolean unique;
 
+    /** Creates an instance of MongoIndexOptions class. */
+    public MongoIndexOptions() {
+    }
+
     /**
      * Get the expireAfterSeconds property: Expire after seconds.
      *

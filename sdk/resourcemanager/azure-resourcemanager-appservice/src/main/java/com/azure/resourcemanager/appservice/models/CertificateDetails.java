@@ -65,6 +65,10 @@ public final class CertificateDetails {
     @JsonProperty(value = "rawData", access = JsonProperty.Access.WRITE_ONLY)
     private String rawData;
 
+    /** Creates an instance of CertificateDetails class. */
+    public CertificateDetails() {
+    }
+
     /**
      * Get the version property: Certificate Version.
      *

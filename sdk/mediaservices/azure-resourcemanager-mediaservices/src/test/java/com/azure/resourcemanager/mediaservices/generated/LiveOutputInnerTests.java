@@ -16,35 +16,35 @@ public final class LiveOutputInnerTests {
         LiveOutputInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"gymare\",\"assetName\":\"n\",\"archiveWindowLength\":\"PT49H48M38S\",\"rewindWindowLength\":\"PT23H59M19S\",\"manifestName\":\"gjhkycubeddg\",\"hls\":{\"fragmentsPerTsSegment\":1063119881},\"outputSnapTime\":7961323024818262585,\"created\":\"2021-05-03T03:51:25Z\",\"lastModified\":\"2021-01-02T14:20:16Z\",\"provisioningState\":\"rmnjijpx\",\"resourceState\":\"Running\"},\"id\":\"udfnbyxba\",\"name\":\"abjy\",\"type\":\"ayffim\"}")
+                    "{\"properties\":{\"description\":\"mvpp\",\"assetName\":\"o\",\"archiveWindowLength\":\"PT26H6M38S\",\"rewindWindowLength\":\"PT39H37M46S\",\"manifestName\":\"dphqamv\",\"hls\":{\"fragmentsPerTsSegment\":1561885870},\"outputSnapTime\":7096751901031996251,\"created\":\"2021-02-02T13:52:10Z\",\"lastModified\":\"2021-07-20T08:38:57Z\",\"provisioningState\":\"kayh\",\"resourceState\":\"Creating\"},\"id\":\"yqiatkzwp\",\"name\":\"npwzcjaes\",\"type\":\"vvsccyajguq\"}")
                 .toObject(LiveOutputInner.class);
-        Assertions.assertEquals("gymare", model.description());
-        Assertions.assertEquals("n", model.assetName());
-        Assertions.assertEquals(Duration.parse("PT49H48M38S"), model.archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT23H59M19S"), model.rewindWindowLength());
-        Assertions.assertEquals("gjhkycubeddg", model.manifestName());
-        Assertions.assertEquals(1063119881, model.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(7961323024818262585L, model.outputSnapTime());
+        Assertions.assertEquals("mvpp", model.description());
+        Assertions.assertEquals("o", model.assetName());
+        Assertions.assertEquals(Duration.parse("PT26H6M38S"), model.archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT39H37M46S"), model.rewindWindowLength());
+        Assertions.assertEquals("dphqamv", model.manifestName());
+        Assertions.assertEquals(1561885870, model.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(7096751901031996251L, model.outputSnapTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiveOutputInner model =
             new LiveOutputInner()
-                .withDescription("gymare")
-                .withAssetName("n")
-                .withArchiveWindowLength(Duration.parse("PT49H48M38S"))
-                .withRewindWindowLength(Duration.parse("PT23H59M19S"))
-                .withManifestName("gjhkycubeddg")
-                .withHls(new Hls().withFragmentsPerTsSegment(1063119881))
-                .withOutputSnapTime(7961323024818262585L);
+                .withDescription("mvpp")
+                .withAssetName("o")
+                .withArchiveWindowLength(Duration.parse("PT26H6M38S"))
+                .withRewindWindowLength(Duration.parse("PT39H37M46S"))
+                .withManifestName("dphqamv")
+                .withHls(new Hls().withFragmentsPerTsSegment(1561885870))
+                .withOutputSnapTime(7096751901031996251L);
         model = BinaryData.fromObject(model).toObject(LiveOutputInner.class);
-        Assertions.assertEquals("gymare", model.description());
-        Assertions.assertEquals("n", model.assetName());
-        Assertions.assertEquals(Duration.parse("PT49H48M38S"), model.archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT23H59M19S"), model.rewindWindowLength());
-        Assertions.assertEquals("gjhkycubeddg", model.manifestName());
-        Assertions.assertEquals(1063119881, model.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(7961323024818262585L, model.outputSnapTime());
+        Assertions.assertEquals("mvpp", model.description());
+        Assertions.assertEquals("o", model.assetName());
+        Assertions.assertEquals(Duration.parse("PT26H6M38S"), model.archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT39H37M46S"), model.rewindWindowLength());
+        Assertions.assertEquals("dphqamv", model.manifestName());
+        Assertions.assertEquals(1561885870, model.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(7096751901031996251L, model.outputSnapTime());
     }
 }

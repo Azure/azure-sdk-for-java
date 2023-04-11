@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConf
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
-import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzureJdbcPasswordlessProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -30,12 +30,12 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
     private static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
-
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             DataSourceProperties.class,
-            AzurePasswordlessProperties.class,
+            AzureJdbcPasswordlessProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
 
@@ -75,6 +75,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                     String expectedJdbcUrl = enhanceJdbcUrl(
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
+                        PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
                         PUBLIC_AUTHORITY_HOST_STRING,
                         MYSQL_USER_AGENT,
                         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
@@ -114,7 +115,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                 assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
 
                 ConfigurableEnvironment environment = context.getEnvironment();
-                AzurePasswordlessProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzurePasswordlessProperties.class);
+                AzureJdbcPasswordlessProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJdbcPasswordlessProperties.class);
 
                 assertNotEquals("azure-client-id", properties.getCredential().getClientId());
                 assertEquals("fake-jdbc-client-id", properties.getCredential().getClientId());

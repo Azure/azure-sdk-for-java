@@ -1,6 +1,6 @@
 # Release History
 
-## 1.37.0-beta.1 (Unreleased)
+## 1.39.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,46 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.38.0 (2023-04-07)
+
+### Features Added
+
+- Added new constructor overload to `DefaultPollingStrategy`, `OperationResourcePollingStrategy`, `LocationPollingStrategy`
+  and their sync counterparts that allows setting a service version as query parameter of request URLs for polling and 
+  getting the final result of a long-running operation.
+
+### Other Changes
+
+- Added dependency on `azure-json` to provide stream-style JSON serialization support for `JsonSerializable`
+  implementing classes.
+
+## 1.37.0 (2023-03-02)
+
+### Features Added
+
+- Added `CoreUtils.bytesToHexString` as a common utility for creating hex strings.
+- Added `CoreUtils.extractSizeFromContentRange` as a common utility for extracting the entity size from a properly
+  formatted `Content-Range` header.
+- Added support for `JsonSerializable` and `XmlSerializable` in `JacksonAdapter` serialize and deserialize APIs. ([#33685](https://github.com/Azure/azure-sdk-for-java/pull/33685))
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency. XML serialization is still supported when `jackson-dataformat-xml`
+  is found on the classpath, if it's not a class not found exception/error will be thrown when attempting to use XML
+  serialization. ([#33401](https://github.com/Azure/azure-sdk-for-java/pull/33401))
+
+### Bugs Fixed
+
+- Fixed a bug where a method not found error would be thrown when attempting to reflectively access Jackson Databind 2.12+
+  APIs. ([#33448](https://github.com/Azure/azure-sdk-for-java/pull/33448))
+- Fixed a bug where HTTP headers and query parameters weren't included in HTTP request and response logging when
+  `INFORMATIONAL` log level was used.
+
+### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.26` to `3.4.27`.
+- Upgraded Jackson to the latest releases `2.13.5`.
 
 ## 1.36.0 (2023-02-01)
 

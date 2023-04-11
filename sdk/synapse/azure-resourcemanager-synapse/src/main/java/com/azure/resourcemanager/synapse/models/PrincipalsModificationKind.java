@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrincipalsModificationKind. */
+/** The principals modification kind of the database. */
 public final class PrincipalsModificationKind extends ExpandableStringEnum<PrincipalsModificationKind> {
     /** Static value Union for PrincipalsModificationKind. */
     public static final PrincipalsModificationKind UNION = fromString("Union");
@@ -18,6 +18,15 @@ public final class PrincipalsModificationKind extends ExpandableStringEnum<Princ
 
     /** Static value None for PrincipalsModificationKind. */
     public static final PrincipalsModificationKind NONE = fromString("None");
+
+    /**
+     * Creates a new instance of PrincipalsModificationKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrincipalsModificationKind() {
+    }
 
     /**
      * Creates or finds a PrincipalsModificationKind from its string representation.
@@ -30,7 +39,11 @@ public final class PrincipalsModificationKind extends ExpandableStringEnum<Princ
         return fromString(name, PrincipalsModificationKind.class);
     }
 
-    /** @return known PrincipalsModificationKind values. */
+    /**
+     * Gets known PrincipalsModificationKind values.
+     *
+     * @return known PrincipalsModificationKind values.
+     */
     public static Collection<PrincipalsModificationKind> values() {
         return values(PrincipalsModificationKind.class);
     }

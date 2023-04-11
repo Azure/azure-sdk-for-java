@@ -20,6 +20,15 @@ public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupSt
     public static final BackupStorageRedundancy ZONE = fromString("Zone");
 
     /**
+     * Creates a new instance of BackupStorageRedundancy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupStorageRedundancy() {
+    }
+
+    /**
      * Creates or finds a BackupStorageRedundancy from its string representation.
      *
      * @param name a name to look for.

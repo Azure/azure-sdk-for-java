@@ -17,6 +17,15 @@ public final class AlertsState extends ExpandableStringEnum<AlertsState> {
     public static final AlertsState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of AlertsState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertsState() {
+    }
+
+    /**
      * Creates or finds a AlertsState from its string representation.
      *
      * @param name a name to look for.

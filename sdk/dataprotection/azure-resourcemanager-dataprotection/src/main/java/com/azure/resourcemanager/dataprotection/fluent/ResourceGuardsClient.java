@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInner;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
-import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
+import com.azure.resourcemanager.dataprotection.models.PatchResourceGuardInput;
 
 /** An instance of this class provides access to all the operations defined in ResourceGuardsClient. */
 public interface ResourceGuardsClient {
@@ -40,7 +40,7 @@ public interface ResourceGuardsClient {
     /**
      * Returns ResourceGuards collection belonging to a ResourceGroup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,7 +52,7 @@ public interface ResourceGuardsClient {
     /**
      * Returns ResourceGuards collection belonging to a ResourceGroup.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +65,7 @@ public interface ResourceGuardsClient {
     /**
      * Creates or updates a ResourceGuard resource belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -81,7 +81,7 @@ public interface ResourceGuardsClient {
     /**
      * Creates or updates a ResourceGuard resource belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +96,7 @@ public interface ResourceGuardsClient {
     /**
      * Returns a ResourceGuard belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +111,7 @@ public interface ResourceGuardsClient {
     /**
      * Returns a ResourceGuard belonging to a resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +124,7 @@ public interface ResourceGuardsClient {
     /**
      * Deletes a ResourceGuard resource from the resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +138,7 @@ public interface ResourceGuardsClient {
     /**
      * Deletes a ResourceGuard resource from the resource group.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,7 +150,7 @@ public interface ResourceGuardsClient {
     /**
      * Updates a ResourceGuard resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
@@ -161,12 +161,12 @@ public interface ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceGuardResourceInner> patchWithResponse(
-        String resourceGroupName, String resourceGuardsName, PatchResourceRequestInput parameters, Context context);
+        String resourceGroupName, String resourceGuardsName, PatchResourceGuardInput parameters, Context context);
 
     /**
      * Updates a ResourceGuard resource belonging to a resource group. For example, updating tags for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,13 +176,13 @@ public interface ResourceGuardsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceGuardResourceInner patch(
-        String resourceGroupName, String resourceGuardsName, PatchResourceRequestInput parameters);
+        String resourceGroupName, String resourceGuardsName, PatchResourceGuardInput parameters);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +197,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +213,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,7 +228,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +244,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -259,7 +259,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,7 +275,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -290,7 +290,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +306,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -321,7 +321,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,7 +337,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -352,7 +352,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,7 +368,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @param context The context to associate with this operation.
@@ -385,7 +385,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,7 +401,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @param context The context to associate with this operation.
@@ -418,7 +418,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +434,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @param context The context to associate with this operation.
@@ -451,7 +451,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,7 +467,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @param context The context to associate with this operation.
@@ -484,7 +484,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,7 +500,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @param context The context to associate with this operation.
@@ -517,7 +517,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +533,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @param context The context to associate with this operation.
@@ -550,7 +550,7 @@ public interface ResourceGuardsClient {
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

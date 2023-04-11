@@ -17,6 +17,12 @@ import java.io.Writer;
  * Implementation of {@link JsonProvider} that creates instances using GSON.
  */
 public class GsonJsonProvider implements JsonProvider {
+    /**
+     * Creates an instance of {@link GsonJsonProvider}.
+     */
+    public GsonJsonProvider() {
+    }
+
     @Override
     public JsonReader createReader(byte[] json, JsonOptions options) {
         return GsonJsonReader.fromBytes(json, options);

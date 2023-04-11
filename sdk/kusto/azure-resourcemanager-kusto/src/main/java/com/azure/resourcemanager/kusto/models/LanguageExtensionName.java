@@ -17,6 +17,15 @@ public final class LanguageExtensionName extends ExpandableStringEnum<LanguageEx
     public static final LanguageExtensionName R = fromString("R");
 
     /**
+     * Creates a new instance of LanguageExtensionName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LanguageExtensionName() {
+    }
+
+    /**
      * Creates or finds a LanguageExtensionName from its string representation.
      *
      * @param name a name to look for.

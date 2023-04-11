@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CassandraDataCenters List. */
 public final class CassandraDataCentersListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBManagedCassandraDataCenterList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraDataCenterList.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraDataCenterList.
@@ -22,6 +20,6 @@ public final class CassandraDataCentersListSamples {
             .manager()
             .serviceClient()
             .getCassandraDataCenters()
-            .list("cassandra-prod-rg", "cassandra-prod", Context.NONE);
+            .list("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }
 }

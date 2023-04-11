@@ -17,6 +17,10 @@ public final class RestorableSqlContainerProperties {
     @JsonProperty(value = "resource")
     private RestorableSqlContainerPropertiesResource resource;
 
+    /** Creates an instance of RestorableSqlContainerProperties class. */
+    public RestorableSqlContainerProperties() {
+    }
+
     /**
      * Get the resource property: The resource of an Azure Cosmos DB SQL container event.
      *

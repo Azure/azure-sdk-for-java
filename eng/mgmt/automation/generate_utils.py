@@ -291,3 +291,9 @@ def get_suffix_from_api_specs(api_specs_file: str, spec: str):
         return api_spec.get('suffix')
 
     return None
+
+
+def update_spec(spec: str, subspec: str) -> str:
+    if subspec:
+        spec = spec + subspec
+    return spec

@@ -32,7 +32,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
@@ -70,7 +69,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
-    private interface ResourcesService {
+    public interface ResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         @ExpectedResponses({200})
@@ -128,8 +127,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Boolean>> checkExistence(
@@ -146,8 +144,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -164,8 +161,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -183,8 +179,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -202,8 +197,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GenericResourceInner>> get(
@@ -574,9 +568,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -627,9 +623,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -678,9 +676,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -700,9 +700,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -724,9 +726,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -738,13 +742,15 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return beginMoveResourcesAsync(sourceResourceGroupName, parameters).getSyncPoller();
+        return this.beginMoveResourcesAsync(sourceResourceGroupName, parameters).getSyncPoller();
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -757,13 +763,15 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
-        return beginMoveResourcesAsync(sourceResourceGroupName, parameters, context).getSyncPoller();
+        return this.beginMoveResourcesAsync(sourceResourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -780,9 +788,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -801,9 +811,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -817,9 +829,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -834,8 +848,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -889,8 +905,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -942,8 +960,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -967,8 +987,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -993,8 +1015,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -1009,12 +1033,14 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters).getSyncPoller();
+        return this.beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters).getSyncPoller();
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -1030,12 +1056,14 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
-        return beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters, context).getSyncPoller();
+        return this.beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -1055,8 +1083,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -1078,8 +1108,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -1096,8 +1128,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -1565,45 +1599,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistence(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion) {
-        Boolean value =
-            checkExistenceAsync(
-                    resourceGroupName,
-                    resourceProviderNamespace,
-                    parentResourcePath,
-                    resourceType,
-                    resourceName,
-                    apiVersion)
-                .block();
-        if (value != null) {
-            return value;
-        } else {
-            throw LOGGER.logExceptionAsError(new NullPointerException());
-        }
-    }
-
-    /**
-     * Checks whether a resource exists.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The resource provider of the resource to check.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource to check whether it exists.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1628,6 +1623,40 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 apiVersion,
                 context)
             .block();
+    }
+
+    /**
+     * Checks whether a resource exists.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean checkExistence(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return checkExistenceWithResponse(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1883,7 +1912,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         String resourceType,
         String resourceName,
         String apiVersion) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -1918,7 +1948,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         String resourceName,
         String apiVersion,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -2344,7 +2375,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -2381,7 +2413,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         String apiVersion,
         GenericResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -2818,7 +2851,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -2855,7 +2889,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         String apiVersion,
         GenericResourceInner parameters,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3211,39 +3246,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner get(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion) {
-        return getAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                apiVersion)
-            .block();
-    }
-
-    /**
-     * Gets a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3268,6 +3270,40 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 apiVersion,
                 context)
             .block();
+    }
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner get(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return getWithResponse(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3362,28 +3398,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistenceById(String resourceId, String apiVersion) {
-        Boolean value = checkExistenceByIdAsync(resourceId, apiVersion).block();
-        if (value != null) {
-            return value;
-        } else {
-            throw LOGGER.logExceptionAsError(new NullPointerException());
-        }
-    }
-
-    /**
-     * Checks by ID whether a resource exists.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3393,6 +3407,23 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceByIdWithResponse(String resourceId, String apiVersion, Context context) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion, context).block();
+    }
+
+    /**
+     * Checks by ID whether a resource exists.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean checkExistenceById(String resourceId, String apiVersion) {
+        return checkExistenceByIdWithResponse(resourceId, apiVersion, Context.NONE).getValue();
     }
 
     /**
@@ -3519,7 +3550,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion) {
-        return beginDeleteByIdAsync(resourceId, apiVersion).getSyncPoller();
+        return this.beginDeleteByIdAsync(resourceId, apiVersion).getSyncPoller();
     }
 
     /**
@@ -3537,7 +3568,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion, Context context) {
-        return beginDeleteByIdAsync(resourceId, apiVersion, context).getSyncPoller();
+        return this.beginDeleteByIdAsync(resourceId, apiVersion, context).getSyncPoller();
     }
 
     /**
@@ -3762,7 +3793,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters).getSyncPoller();
     }
 
     /**
@@ -3782,7 +3813,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
-        return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters, context).getSyncPoller();
     }
 
     /**
@@ -4016,7 +4047,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginUpdateByIdAsync(resourceId, apiVersion, parameters).getSyncPoller();
+        return this.beginUpdateByIdAsync(resourceId, apiVersion, parameters).getSyncPoller();
     }
 
     /**
@@ -4036,7 +4067,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
-        return beginUpdateByIdAsync(resourceId, apiVersion, parameters, context).getSyncPoller();
+        return this.beginUpdateByIdAsync(resourceId, apiVersion, parameters, context).getSyncPoller();
     }
 
     /**
@@ -4209,23 +4240,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner getById(String resourceId, String apiVersion) {
-        return getByIdAsync(resourceId, apiVersion).block();
-    }
-
-    /**
-     * Gets a resource by ID.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4238,9 +4252,27 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
+     * Gets a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner getById(String resourceId, String apiVersion) {
+        return getByIdWithResponse(resourceId, apiVersion, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4276,7 +4308,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4313,7 +4346,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4348,7 +4382,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4381,6 +4416,4 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().nextLink(),
                         null));
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourcesClientImpl.class);
 }

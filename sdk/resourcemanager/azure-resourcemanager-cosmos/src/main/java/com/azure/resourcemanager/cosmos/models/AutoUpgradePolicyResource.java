@@ -16,6 +16,10 @@ public final class AutoUpgradePolicyResource {
     @JsonProperty(value = "throughputPolicy")
     private ThroughputPolicyResource throughputPolicy;
 
+    /** Creates an instance of AutoUpgradePolicyResource class. */
+    public AutoUpgradePolicyResource() {
+    }
+
     /**
      * Get the throughputPolicy property: Represents throughput policy which service must adhere to for auto-upgrade.
      *

@@ -13,15 +13,15 @@ public final class ArmStreamingEndpointCurrentSkuTests {
     public void testDeserialize() throws Exception {
         ArmStreamingEndpointCurrentSku model =
             BinaryData
-                .fromString("{\"name\":\"rgzdwmsweyp\",\"capacity\":2076786264}")
+                .fromString("{\"name\":\"ejd\",\"capacity\":732496831}")
                 .toObject(ArmStreamingEndpointCurrentSku.class);
-        Assertions.assertEquals(2076786264, model.capacity());
+        Assertions.assertEquals(732496831, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmStreamingEndpointCurrentSku model = new ArmStreamingEndpointCurrentSku().withCapacity(2076786264);
+        ArmStreamingEndpointCurrentSku model = new ArmStreamingEndpointCurrentSku().withCapacity(732496831);
         model = BinaryData.fromObject(model).toObject(ArmStreamingEndpointCurrentSku.class);
-        Assertions.assertEquals(2076786264, model.capacity());
+        Assertions.assertEquals(732496831, model.capacity());
     }
 }

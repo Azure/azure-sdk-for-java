@@ -21,6 +21,10 @@ public final class SingleServerRecommendationResult extends SapSizingRecommendat
     @JsonProperty(value = "vmSku")
     private String vmSku;
 
+    /** Creates an instance of SingleServerRecommendationResult class. */
+    public SingleServerRecommendationResult() {
+    }
+
     /**
      * Get the vmSku property: The recommended VM SKU for single server.
      *

@@ -26,6 +26,10 @@ public final class GremlinGraphCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of GremlinGraphCreateUpdateProperties class. */
+    public GremlinGraphCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a Gremlin graph.
      *

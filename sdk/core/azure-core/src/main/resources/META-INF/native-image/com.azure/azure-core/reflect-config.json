@@ -37,6 +37,13 @@
     "allPublicMethods": true
   },
   {
+    "name":"com.azure.core.util.DateTimeRfc1123",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
     "name":"com.azure.core.http.rest.ResponseBase",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,

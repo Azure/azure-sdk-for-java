@@ -11,20 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of BigDataPools. */
 public interface BigDataPools {
     /**
-     * Get a Big Data pool.
+     * Get Big Data pool
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bigDataPoolName Big Data pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
-     */
-    BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName);
-
-    /**
-     * Get a Big Data pool.
+     * <p>Get a Big Data pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -39,7 +28,9 @@ public interface BigDataPools {
         String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
 
     /**
-     * Delete a Big Data pool from the workspace.
+     * Get Big Data pool
+     *
+     * <p>Get a Big Data pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -47,12 +38,29 @@ public interface BigDataPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return a Big Data pool.
      */
-    Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName);
+    BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName);
 
     /**
-     * Delete a Big Data pool from the workspace.
+     * Delete a Big Data pool.
+     *
+     * <p>Delete a Big Data pool from the workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bigDataPoolName Big Data pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return big Data pool.
+     */
+    BigDataPoolResourceInfo delete(String resourceGroupName, String workspaceName, String bigDataPoolName);
+
+    /**
+     * Delete a Big Data pool.
+     *
+     * <p>Delete a Big Data pool from the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -61,12 +69,15 @@ public interface BigDataPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return big Data pool.
      */
-    Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
+    BigDataPoolResourceInfo delete(
+        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
 
     /**
-     * List Big Data pools in a workspace.
+     * List the Big Data pools in a workspace.
+     *
+     * <p>List Big Data pools in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -78,7 +89,9 @@ public interface BigDataPools {
     PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
-     * List Big Data pools in a workspace.
+     * List the Big Data pools in a workspace.
+     *
+     * <p>List Big Data pools in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -92,7 +105,9 @@ public interface BigDataPools {
         String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Get a Big Data pool.
+     * Get Big Data pool
+     *
+     * <p>Get a Big Data pool.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +118,9 @@ public interface BigDataPools {
     BigDataPoolResourceInfo getById(String id);
 
     /**
-     * Get a Big Data pool.
+     * Get Big Data pool
+     *
+     * <p>Get a Big Data pool.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -115,27 +132,31 @@ public interface BigDataPools {
     Response<BigDataPoolResourceInfo> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Big Data pool from the workspace.
+     * Delete a Big Data pool.
+     *
+     * <p>Delete a Big Data pool from the workspace.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return big Data pool.
      */
-    Object deleteById(String id);
+    BigDataPoolResourceInfo deleteById(String id);
 
     /**
-     * Delete a Big Data pool from the workspace.
+     * Delete a Big Data pool.
+     *
+     * <p>Delete a Big Data pool from the workspace.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return big Data pool.
      */
-    Object deleteByIdWithResponse(String id, Context context);
+    BigDataPoolResourceInfo deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new BigDataPoolResourceInfo resource.

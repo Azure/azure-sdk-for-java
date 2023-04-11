@@ -16,7 +16,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.6</version>
   </dependency>
 </dependencies>
 ```

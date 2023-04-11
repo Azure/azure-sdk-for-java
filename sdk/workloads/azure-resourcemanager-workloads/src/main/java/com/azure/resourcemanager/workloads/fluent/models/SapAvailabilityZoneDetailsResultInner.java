@@ -18,6 +18,10 @@ public final class SapAvailabilityZoneDetailsResultInner {
     @JsonProperty(value = "availabilityZonePairs")
     private List<SapAvailabilityZonePair> availabilityZonePairs;
 
+    /** Creates an instance of SapAvailabilityZoneDetailsResultInner class. */
+    public SapAvailabilityZoneDetailsResultInner() {
+    }
+
     /**
      * Get the availabilityZonePairs property: Gets the list of availability zone pairs.
      *

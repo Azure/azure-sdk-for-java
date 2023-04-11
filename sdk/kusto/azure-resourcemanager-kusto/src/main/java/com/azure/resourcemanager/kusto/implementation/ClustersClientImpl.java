@@ -78,7 +78,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface ClustersService {
+    public interface ClustersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
@@ -470,21 +470,6 @@ public final class ClustersClientImpl implements ClustersClient {
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
-        return getByResourceGroupAsync(resourceGroupName, clusterName).block();
-    }
-
-    /**
-     * Gets a Kusto cluster.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -495,6 +480,21 @@ public final class ClustersClientImpl implements ClustersClient {
     public Response<ClusterInner> getByResourceGroupWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
+    }
+
+    /**
+     * Gets a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
+        return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
     /**
@@ -654,6 +654,30 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String clusterName, ClusterInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch);
+        return this
+            .client
+            .<ClusterInner, ClusterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create or update a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
      *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
@@ -687,10 +711,6 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -698,8 +718,11 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
+        String resourceGroupName, String clusterName, ClusterInner parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch)
             .getSyncPoller();
     }
 
@@ -727,7 +750,8 @@ public final class ClustersClientImpl implements ClustersClient {
         String ifMatch,
         String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
             .getSyncPoller();
     }
 
@@ -802,27 +826,6 @@ public final class ClustersClientImpl implements ClustersClient {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a Kusto cluster.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param parameters The Kusto cluster parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new cluster to be created, but to prevent updating an existing cluster.
-     *     Other values will result in a 412 Pre-condition Failed response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterInner createOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, String ifMatch, String ifNoneMatch) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**
@@ -1014,6 +1017,29 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
+        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, parameters, ifMatch);
+        return this
+            .client
+            .<ClusterInner, ClusterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ClusterInner.class, ClusterInner.class, this.client.getContext());
+    }
+
+    /**
+     * Update a Kusto cluster.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param parameters The Kusto cluster parameters supplied to the Update operation.
      * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
      *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
@@ -1040,8 +1066,6 @@ public final class ClustersClientImpl implements ClustersClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param parameters The Kusto cluster parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1049,8 +1073,9 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch).getSyncPoller();
+        String resourceGroupName, String clusterName, ClusterUpdate parameters) {
+        final String ifMatch = null;
+        return this.beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch).getSyncPoller();
     }
 
     /**
@@ -1070,7 +1095,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
         String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context).getSyncPoller();
     }
 
     /**
@@ -1133,24 +1158,6 @@ public final class ClustersClientImpl implements ClustersClient {
         return beginUpdateAsync(resourceGroupName, clusterName, parameters, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a Kusto cluster.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param parameters The Kusto cluster parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the cluster. Omit this value to always overwrite the current cluster. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdate parameters, String ifMatch) {
-        return updateAsync(resourceGroupName, clusterName, parameters, ifMatch).block();
     }
 
     /**
@@ -1335,7 +1342,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        return beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -1352,7 +1359,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -1562,7 +1569,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String clusterName) {
-        return beginStopAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -1578,7 +1585,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String clusterName, Context context) {
-        return beginStopAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -1788,7 +1795,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName) {
-        return beginStartAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -1805,7 +1812,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String clusterName, Context context) {
-        return beginStartAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -2217,7 +2224,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(
         String resourceGroupName, String clusterName, FollowerDatabaseDefinitionInner followerDatabaseToRemove) {
-        return beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove)
+        return this
+            .beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove)
             .getSyncPoller();
     }
 
@@ -2239,7 +2247,8 @@ public final class ClustersClientImpl implements ClustersClient {
         String clusterName,
         FollowerDatabaseDefinitionInner followerDatabaseToRemove,
         Context context) {
-        return beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context)
+        return this
+            .beginDetachFollowerDatabasesAsync(resourceGroupName, clusterName, followerDatabaseToRemove, context)
             .getSyncPoller();
     }
 
@@ -2479,7 +2488,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnoseVirtualNetworkResultInner>, DiagnoseVirtualNetworkResultInner>
         beginDiagnoseVirtualNetwork(String resourceGroupName, String clusterName) {
-        return beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -2496,7 +2505,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnoseVirtualNetworkResultInner>, DiagnoseVirtualNetworkResultInner>
         beginDiagnoseVirtualNetwork(String resourceGroupName, String clusterName, Context context) {
-        return beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDiagnoseVirtualNetworkAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -3101,21 +3110,6 @@ public final class ClustersClientImpl implements ClustersClient {
      *
      * @param location Azure location (region) name.
      * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(String location, ClusterCheckNameRequest clusterName) {
-        return checkNameAvailabilityAsync(location, clusterName).block();
-    }
-
-    /**
-     * Checks that the cluster name is valid and is not already in use.
-     *
-     * @param location Azure location (region) name.
-     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3126,6 +3120,21 @@ public final class ClustersClientImpl implements ClustersClient {
     public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
         String location, ClusterCheckNameRequest clusterName, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, clusterName, context).block();
+    }
+
+    /**
+     * Checks that the cluster name is valid and is not already in use.
+     *
+     * @param location Azure location (region) name.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(String location, ClusterCheckNameRequest clusterName) {
+        return checkNameAvailabilityWithResponse(location, clusterName, Context.NONE).getValue();
     }
 
     /**
@@ -3826,7 +3835,9 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(
         String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd) {
-        return beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd).getSyncPoller();
+        return this
+            .beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd)
+            .getSyncPoller();
     }
 
     /**
@@ -3844,7 +3855,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(
         String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToAdd, Context context) {
-        return beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context)
+        return this
+            .beginAddLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToAdd, context)
             .getSyncPoller();
     }
 
@@ -4100,7 +4112,8 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(
         String resourceGroupName, String clusterName, LanguageExtensionsList languageExtensionsToRemove) {
-        return beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove)
+        return this
+            .beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove)
             .getSyncPoller();
     }
 
@@ -4122,7 +4135,8 @@ public final class ClustersClientImpl implements ClustersClient {
         String clusterName,
         LanguageExtensionsList languageExtensionsToRemove,
         Context context) {
-        return beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove, context)
+        return this
+            .beginRemoveLanguageExtensionsAsync(resourceGroupName, clusterName, languageExtensionsToRemove, context)
             .getSyncPoller();
     }
 

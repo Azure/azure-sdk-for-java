@@ -68,6 +68,10 @@ public final class ConfigurationProperties {
     @JsonProperty(value = "isDynamicConfig", access = JsonProperty.Access.WRITE_ONLY)
     private IsDynamicConfig isDynamicConfig;
 
+    /** Creates an instance of ConfigurationProperties class. */
+    public ConfigurationProperties() {
+    }
+
     /**
      * Get the value property: Value of the configuration.
      *

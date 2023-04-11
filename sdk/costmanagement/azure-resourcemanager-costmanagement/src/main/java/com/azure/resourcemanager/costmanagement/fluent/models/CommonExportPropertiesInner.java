@@ -34,13 +34,20 @@ public class CommonExportPropertiesInner {
     private ExportDefinition definition;
 
     /*
-     * If requested, has the most recent execution history for the export.
+     * If requested, has the most recent run history for the export.
      */
     @JsonProperty(value = "runHistory")
     private ExportExecutionListResultInner runHistory;
 
     /*
-     * If the export has an active schedule, provides an estimate of the next execution time.
+     * If set to true, exported data will be partitioned by size and placed in a blob directory together with a
+     * manifest file. Note: this option is currently available only for Microsoft Customer Agreement commerce scopes.
+     */
+    @JsonProperty(value = "partitionData")
+    private Boolean partitionData;
+
+    /*
+     * If the export has an active schedule, provides an estimate of the next run time.
      */
     @JsonProperty(value = "nextRunTimeEstimate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextRunTimeEstimate;
@@ -110,7 +117,7 @@ public class CommonExportPropertiesInner {
     }
 
     /**
-     * Get the runHistory property: If requested, has the most recent execution history for the export.
+     * Get the runHistory property: If requested, has the most recent run history for the export.
      *
      * @return the runHistory value.
      */
@@ -119,7 +126,7 @@ public class CommonExportPropertiesInner {
     }
 
     /**
-     * Set the runHistory property: If requested, has the most recent execution history for the export.
+     * Set the runHistory property: If requested, has the most recent run history for the export.
      *
      * @param runHistory the runHistory value to set.
      * @return the CommonExportPropertiesInner object itself.
@@ -130,8 +137,32 @@ public class CommonExportPropertiesInner {
     }
 
     /**
-     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
+     * Get the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
+     *
+     * @return the partitionData value.
+     */
+    public Boolean partitionData() {
+        return this.partitionData;
+    }
+
+    /**
+     * Set the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
+     *
+     * @param partitionData the partitionData value to set.
+     * @return the CommonExportPropertiesInner object itself.
+     */
+    public CommonExportPropertiesInner withPartitionData(Boolean partitionData) {
+        this.partitionData = partitionData;
+        return this;
+    }
+
+    /**
+     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
      *
      * @return the nextRunTimeEstimate value.
      */

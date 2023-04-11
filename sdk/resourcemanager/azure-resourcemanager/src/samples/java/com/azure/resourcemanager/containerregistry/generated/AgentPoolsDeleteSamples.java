@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AgentPools Delete. */
 public final class AgentPoolsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class AgentPoolsDeleteSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .delete("myResourceGroup", "myRegistry", "myAgentPool", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myAgentPool", com.azure.core.util.Context.NONE);
     }
 }

@@ -31,6 +31,12 @@ public final class WebApplicationFirewallCustomRule {
     private int priority;
 
     /*
+     * Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
+     */
+    @JsonProperty(value = "state")
+    private WebApplicationFirewallState state;
+
+    /*
      * The rule type.
      */
     @JsonProperty(value = "ruleType", required = true)
@@ -102,6 +108,28 @@ public final class WebApplicationFirewallCustomRule {
      */
     public WebApplicationFirewallCustomRule withPriority(int priority) {
         this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Get the state property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not
+     * specified.
+     *
+     * @return the state value.
+     */
+    public WebApplicationFirewallState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not
+     * specified.
+     *
+     * @param state the state value to set.
+     * @return the WebApplicationFirewallCustomRule object itself.
+     */
+    public WebApplicationFirewallCustomRule withState(WebApplicationFirewallState state) {
+        this.state = state;
         return this;
     }
 

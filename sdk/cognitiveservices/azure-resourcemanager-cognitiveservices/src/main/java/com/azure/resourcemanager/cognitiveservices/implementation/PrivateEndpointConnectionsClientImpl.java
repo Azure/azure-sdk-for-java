@@ -666,7 +666,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
             .getSyncPoller();
     }
 
@@ -691,7 +692,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, privateEndpointConnectionName, properties, context)
             .getSyncPoller();
     }
@@ -968,7 +970,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).getSyncPoller();
     }
 
     /**
@@ -987,7 +989,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context)
+            .getSyncPoller();
     }
 
     /**

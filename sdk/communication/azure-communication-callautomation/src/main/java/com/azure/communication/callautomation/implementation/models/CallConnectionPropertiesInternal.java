@@ -24,12 +24,6 @@ public final class CallConnectionPropertiesInternal {
     private String serverCallId;
 
     /*
-     * The source of the call, which is the caller.
-     */
-    @JsonProperty(value = "source")
-    private CallSourceInternal source;
-
-    /*
      * The targets of the call.
      */
     @JsonProperty(value = "targets")
@@ -52,6 +46,26 @@ public final class CallConnectionPropertiesInternal {
      */
     @JsonProperty(value = "mediaSubscriptionId")
     private String mediaSubscriptionId;
+
+    /*
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when calling a PSTN callee.
+     */
+    @JsonProperty(value = "sourceCallerIdNumber")
+    private PhoneNumberIdentifierModel sourceCallerIdNumber;
+
+    /*
+     * Display name of the call if dialing out to a pstn number.
+     */
+    @JsonProperty(value = "sourceDisplayName")
+    private String sourceDisplayName;
+
+    /*
+     * Source identity.
+     */
+    @JsonProperty(value = "sourceIdentity")
+    private CommunicationIdentifierModel sourceIdentity;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -90,26 +104,6 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
-        return this;
-    }
-
-    /**
-     * Get the source property: The source of the call, which is the caller.
-     *
-     * @return the source value.
-     */
-    public CallSourceInternal getSource() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: The source of the call, which is the caller.
-     *
-     * @param source the source value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setSource(CallSourceInternal source) {
-        this.source = source;
         return this;
     }
 
@@ -191,6 +185,68 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
         this.mediaSubscriptionId = mediaSubscriptionId;
+        return this;
+    }
+
+    /**
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited. Required only when calling a PSTN callee.
+     *
+     * @return the sourceCallerIdNumber value.
+     */
+    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
+        return this.sourceCallerIdNumber;
+    }
+
+    /**
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited. Required only when calling a PSTN callee.
+     *
+     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
+        return this;
+    }
+
+    /**
+     * Get the sourceDisplayName property: Display name of the call if dialing out to a pstn number.
+     *
+     * @return the sourceDisplayName value.
+     */
+    public String getSourceDisplayName() {
+        return this.sourceDisplayName;
+    }
+
+    /**
+     * Set the sourceDisplayName property: Display name of the call if dialing out to a pstn number.
+     *
+     * @param sourceDisplayName the sourceDisplayName value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setSourceDisplayName(String sourceDisplayName) {
+        this.sourceDisplayName = sourceDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the sourceIdentity property: Source identity.
+     *
+     * @return the sourceIdentity value.
+     */
+    public CommunicationIdentifierModel getSourceIdentity() {
+        return this.sourceIdentity;
+    }
+
+    /**
+     * Set the sourceIdentity property: Source identity.
+     *
+     * @param sourceIdentity the sourceIdentity value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
+        this.sourceIdentity = sourceIdentity;
         return this;
     }
 }

@@ -29,3 +29,18 @@ Supported Configuration in `TBLPROPERTIES`
 | `autoScaleMaxThroughput`     | None    | Specifies the max. throughput for the new Cosmos DB Container when using AutoScale. With AutoScale Cosmos DB will manage the provisioned throughput (within the bandwidth of 10% of autoScaleMaxThroughput - autoScaleMaxThroughput)|
 | `indexingPolicy`     | AllProperties    | Can be used to specify the indexing policy. Possible values are `AllProperties` (default Cosmos DB indexing policy where all properies are indexed. The RU charge for inserts/updates is increasing with the number of properties being indexed - so it can be useful to use a more targeted indexing policy instead. `OnlySystemProperties` can be used ot only index system properties like 'id' or '_ts'. Or if you want to use a custom indexing policy you can just provide the [json representation of the indexing policy](https://docs.microsoft.com/azure/cosmos-db/index-policy) here. |
 | `defaultTtlInSeconds`     | None    | Specifies the default TTL that should be used for the container. If no `defaultTtlInSeconds` is specified TTL enforcement is completely disabled at the container. If `-1` is specified documents by default won't be automatically deleted unless there is a ['ttl' property](https://docs.microsoft.com/azure/cosmos-db/how-to-access-system-properties-gremlin#time-to-live-ttl) defined in an individual document. If the `defaultTtlInSeconds` is a positive value documents which don't override the 'ttl' property will be automatically deleted after `defaultTtlInSeconds` seconds.|
+
+Changing throughput of a container or database
+```sql
+-- container-level throughput, manual
+ALTER TABLE cosmosCatalog.myDB.myContainer SET TBLPROPERTIES(manualThroughput = '400')
+
+-- container-level throughput, auto-scale
+ALTER TABLE cosmosCatalog.myDB.myContainer SET TBLPROPERTIES(autoScaleMaxThroughput = '4000')
+
+-- db-level throughput, manual
+ALTER DATABASE cosmosCatalog.myDB SET DBPROPERTIES(manualThroughput = '400')
+
+-- db-level throughput, auto-scale
+ALTER DATABASE cosmosCatalog.myDB SET DBPROPERTIES(autoScaleMaxThroughput = '4000')
+```

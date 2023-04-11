@@ -29,6 +29,10 @@ public final class ApplicationServerConfiguration {
     @JsonProperty(value = "instanceCount", required = true)
     private long instanceCount;
 
+    /** Creates an instance of ApplicationServerConfiguration class. */
+    public ApplicationServerConfiguration() {
+    }
+
     /**
      * Get the subnetId property: The subnet id.
      *

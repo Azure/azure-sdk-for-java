@@ -22,6 +22,10 @@ public final class EncryptionDetails {
     @JsonProperty(value = "cmk")
     private CustomerManagedKeyDetails cmk;
 
+    /** Creates an instance of EncryptionDetails class. */
+    public EncryptionDetails() {
+    }
+
     /**
      * Get the doubleEncryptionEnabled property: Double Encryption enabled.
      *

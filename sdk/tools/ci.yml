@@ -6,6 +6,10 @@ trigger:
     include:
       - /sdk/tools/azure-sdk-archetype/
       - /sdk/tools/azure-sdk-build-tool/
+    exclude:
+      - sdk/tools/pom.xml
+      - sdk/tools/azure-sdk-build-tool/pom.xml
+      - sdk/tools/azure-sdk-archetype/pom.xml
 
 pr:
   branches:
@@ -18,6 +22,10 @@ pr:
     include:
       - /sdk/tools/azure-sdk-archetype/
       - /sdk/tools/azure-sdk-build-tool/
+    exclude:
+      - sdk/tools/pom.xml
+      - sdk/tools/azure-sdk-build-tool/pom.xml
+      - sdk/tools/azure-sdk-archetype/pom.xml
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -27,6 +35,10 @@ extends:
       - name: azure-sdk-archetype
         groupId: com.azure.tools
         safeName: azuresdkarchetype
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
       - name: azure-sdk-build-tool
         groupId: com.azure.tools
         safeName: azuresdkbuildtool
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true

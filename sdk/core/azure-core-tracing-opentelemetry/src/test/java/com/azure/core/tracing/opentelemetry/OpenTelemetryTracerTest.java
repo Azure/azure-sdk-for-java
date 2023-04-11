@@ -1143,9 +1143,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(2, testExporter.getFinishedSpanItems().size());
 
         SpanData innerSpan = testExporter.getFinishedSpanItems().get(0);
-        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
-        assertEquals(innerSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
-        assertEquals(innerSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
+        assertFalse(innerSpan.getParentSpanContext().isValid());
     }
 
     @Test
@@ -1170,13 +1168,12 @@ public class OpenTelemetryTracerTest {
     @Test
     public void setStatusErrorMessageNoDescription() {
         final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
-        openTelemetryTracer.end("error", null, span);
+        openTelemetryTracer.end("", null, span);
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
         assertEquals("", spanData.getStatus().getDescription());
     }
-
 
     @Test
     public void setStatusThrowable() {

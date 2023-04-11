@@ -16,6 +16,10 @@ public final class ManagementLockOwner {
     @JsonProperty(value = "applicationId")
     private String applicationId;
 
+    /** Creates an instance of ManagementLockOwner class. */
+    public ManagementLockOwner() {
+    }
+
     /**
      * Get the applicationId property: The application ID of the lock owner.
      *

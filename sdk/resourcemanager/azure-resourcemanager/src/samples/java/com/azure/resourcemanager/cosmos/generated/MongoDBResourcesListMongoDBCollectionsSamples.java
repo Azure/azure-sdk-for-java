@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MongoDBResources ListMongoDBCollections. */
 public final class MongoDBResourcesListMongoDBCollectionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBCollectionList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBCollectionList.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionList.
@@ -22,6 +20,6 @@ public final class MongoDBResourcesListMongoDBCollectionsSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .listMongoDBCollections("rgName", "ddb1", "databaseName", Context.NONE);
+            .listMongoDBCollections("rgName", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

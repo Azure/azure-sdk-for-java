@@ -42,22 +42,6 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
         return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
     }
 
-    public AttachedDatabaseConfiguration get(
-        String workspaceName,
-        String kustoPoolName,
-        String attachedDatabaseConfigurationName,
-        String resourceGroupName) {
-        AttachedDatabaseConfigurationInner inner =
-            this
-                .serviceClient()
-                .get(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName);
-        if (inner != null) {
-            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AttachedDatabaseConfiguration> getWithResponse(
         String workspaceName,
         String kustoPoolName,
@@ -75,6 +59,22 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AttachedDatabaseConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AttachedDatabaseConfiguration get(
+        String workspaceName,
+        String kustoPoolName,
+        String attachedDatabaseConfigurationName,
+        String resourceGroupName) {
+        AttachedDatabaseConfigurationInner inner =
+            this
+                .serviceClient()
+                .get(workspaceName, kustoPoolName, attachedDatabaseConfigurationName, resourceGroupName);
+        if (inner != null) {
+            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

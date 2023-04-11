@@ -12,6 +12,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProf
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
@@ -273,6 +274,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "workloadAutoScalerProfile")
     private ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile;
+
+    /*
+     * Azure Monitor addon profiles for monitoring the managed cluster.
+     */
+    @JsonProperty(value = "azureMonitorProfile")
+    private ManagedClusterAzureMonitorProfile azureMonitorProfile;
 
     /** Creates an instance of ManagedClusterProperties class. */
     public ManagedClusterProperties() {
@@ -956,6 +963,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @return the azureMonitorProfile value.
+     */
+    public ManagedClusterAzureMonitorProfile azureMonitorProfile() {
+        return this.azureMonitorProfile;
+    }
+
+    /**
+     * Set the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @param azureMonitorProfile the azureMonitorProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withAzureMonitorProfile(ManagedClusterAzureMonitorProfile azureMonitorProfile) {
+        this.azureMonitorProfile = azureMonitorProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1031,6 +1058,9 @@ public final class ManagedClusterProperties {
         }
         if (workloadAutoScalerProfile() != null) {
             workloadAutoScalerProfile().validate();
+        }
+        if (azureMonitorProfile() != null) {
+            azureMonitorProfile().validate();
         }
     }
 }

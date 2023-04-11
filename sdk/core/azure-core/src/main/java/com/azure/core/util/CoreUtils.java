@@ -33,6 +33,9 @@ public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
+    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
+
     private CoreUtils() {
         // Exists only to defeat instantiation.
     }
@@ -355,8 +358,8 @@ public final class CoreUtils {
     }
 
     /**
-     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small
-     * set of object.
+     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small set of
+     * object.
      *
      * @param delimiter Delimiter between the values.
      * @param values The values to join.
@@ -369,28 +372,119 @@ public final class CoreUtils {
 
         int count = values.size();
         switch (count) {
-            case 0: return "";
-            case 1: return values.get(0);
-            case 2: return values.get(0) + delimiter + values.get(1);
-            case 3: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
-            case 4: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3);
-            case 5: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4);
-            case 6: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
-            case 7: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
-            case 8: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7);
-            case 9: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7) + delimiter + values.get(8);
-            case 10: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
-            default: return String.join(delimiter, values);
+            case 0:
+                return "";
+            case 1:
+                return values.get(0);
+            case 2:
+                return values.get(0) + delimiter + values.get(1);
+            case 3:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+            case 4:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3);
+            case 5:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4);
+            case 6:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+            case 7:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+            case 8:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                    + delimiter + values.get(7);
+            case 9:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                    + delimiter + values.get(7) + delimiter + values.get(8);
+            case 10:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                    + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+            default:
+                return String.join(delimiter, values);
         }
+    }
+
+    /**
+     * Converts a byte array into a hex string.
+     *
+     * <p>The hex string returned uses characters {@code 0123456789abcdef}, if uppercase {@code ABCDEF} is required the
+     * returned string will need to be {@link String#toUpperCase() uppercased}.</p>
+     *
+     * <p>If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
+     * returned.</p>
+     *
+     * @param bytes The byte array to convert into a hex string.
+     * @return A hex string representing the {@code bytes} that were passed, or null if {@code bytes} were null.
+     */
+    public static String bytesToHexString(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        if (bytes.length == 0) {
+            return "";
+        }
+
+        // Hex uses 4 bits, converting a byte to hex will double its size.
+        char[] hexString = new char[bytes.length * 2];
+
+        for (int i = 0; i < bytes.length; i++) {
+            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
+            int b = bytes[i] & 0xFF;
+
+            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
+
+            // Mask all but the last 4 bits and get the corresponding hex character.
+            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
+        }
+
+        return new String(hexString);
+    }
+
+    /**
+     * Extracts the size from a {@code Content-Range} header.
+     * <p>
+     * The {@code Content-Range} header can take the following forms:
+     *
+     * <ul>
+     * <li>{@code <unit> <start>-<end>/<size>}</li>
+     * <li>{@code <unit> <start>-<end>/}&#42;</li>
+     * <li>{@code <unit> }&#42;{@code /<size>}</li>
+     * </ul>
+     *
+     * If the {@code <size>} is represented by &#42; this method will return -1.
+     * <p>
+     * If {@code contentRange} is null a {@link NullPointerException} will be thrown, if it doesn't contain a size
+     * segment ({@code /<size>} or /&#42;) an {@link IllegalArgumentException} will be thrown.
+     *
+     * @param contentRange The {@code Content-Range} header to extract the size from.
+     * @return The size contained in the {@code Content-Range}, or -1 if the size was &#42;.
+     * @throws NullPointerException If {@code contentRange} is null.
+     * @throws IllegalArgumentException If {@code contentRange} doesn't contain a {@code <size>} segment.
+     * @throws NumberFormatException If the {@code <size>} segment of the {@code contentRange} isn't a valid number.
+     */
+    public static long extractSizeFromContentRange(String contentRange) {
+        Objects.requireNonNull(contentRange, "Cannot extract length from null 'contentRange'.");
+        int index = contentRange.indexOf('/');
+
+        if (index == -1) {
+            // No size segment.
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
+                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+        }
+
+        String sizeString = contentRange.substring(index + 1).trim();
+        if ("*".equals(sizeString)) {
+            // Size unknown to the Content-Range header.
+            return -1;
+        }
+
+        return Long.parseLong(sizeString);
     }
 }

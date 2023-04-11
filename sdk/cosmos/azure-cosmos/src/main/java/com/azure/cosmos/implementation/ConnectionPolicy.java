@@ -46,6 +46,7 @@ public final class ConnectionPolicy {
     private boolean tcpConnectionEndpointRediscoveryEnabled;
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
+    private boolean tcpHealthCheckTimeoutDetectionEnabled;
 
     /**
      * Constructor.
@@ -62,7 +63,10 @@ public final class ConnectionPolicy {
         this(ConnectionMode.GATEWAY, DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig);
     }
 
-    private ConnectionPolicy(ConnectionMode connectionMode, DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+    private ConnectionPolicy(
+        ConnectionMode connectionMode,
+        DirectConnectionConfig directConnectionConfig,
+        GatewayConnectionConfig gatewayConnectionConfig) {
         this();
         this.connectionMode = connectionMode;
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
@@ -84,6 +88,11 @@ public final class ConnectionPolicy {
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
+        this.tcpHealthCheckTimeoutDetectionEnabled =
+            ImplementationBridgeHelpers
+                .DirectConnectionConfigHelper
+                .getDirectConnectionConfigAccessor()
+                .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
     }
 
     private ConnectionPolicy() {
@@ -94,6 +103,7 @@ public final class ConnectionPolicy {
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
+        this.tcpHealthCheckTimeoutDetectionEnabled = true;
     }
 
     /**
@@ -550,6 +560,10 @@ public final class ConnectionPolicy {
 
     public int getIoThreadPriority() { return this.ioThreadPriority; }
 
+    public boolean isTcpHealthCheckTimeoutDetectionEnabled() {
+        return this.tcpHealthCheckTimeoutDetectionEnabled;
+    }
+
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
         return this;
@@ -582,6 +596,9 @@ public final class ConnectionPolicy {
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
+            ", ioThreadPriority=" + ioThreadPriority +
+            ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
+            ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
             '}';
     }
 }

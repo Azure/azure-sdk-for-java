@@ -28,6 +28,10 @@ public final class SapSupportedSku {
     @JsonProperty(value = "isDatabaseCertified")
     private Boolean isDatabaseCertified;
 
+    /** Creates an instance of SapSupportedSku class. */
+    public SapSupportedSku() {
+    }
+
     /**
      * Get the vmSku property: The VM Sku.
      *

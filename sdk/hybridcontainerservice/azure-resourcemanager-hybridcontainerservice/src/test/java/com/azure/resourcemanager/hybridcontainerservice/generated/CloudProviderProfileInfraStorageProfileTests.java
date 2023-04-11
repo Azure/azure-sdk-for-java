@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraStorageProfile;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CloudProviderProfileInfraStorageProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CloudProviderProfileInfraStorageProfile model =
             BinaryData
                 .fromString("{\"storageSpaceIds\":[\"qvuhrhcffcyddglm\",\"t\"]}")
@@ -20,8 +19,8 @@ public final class CloudProviderProfileInfraStorageProfileTests {
         Assertions.assertEquals("qvuhrhcffcyddglm", model.storageSpaceIds().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CloudProviderProfileInfraStorageProfile model =
             new CloudProviderProfileInfraStorageProfile().withStorageSpaceIds(Arrays.asList("qvuhrhcffcyddglm", "t"));
         model = BinaryData.fromObject(model).toObject(CloudProviderProfileInfraStorageProfile.class);

@@ -29,6 +29,15 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
     public static final SkuTier ENTERPRISE = fromString("Enterprise");
 
     /**
+     * Creates a new instance of SkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuTier() {
+    }
+
+    /**
      * Creates or finds a SkuTier from its string representation.
      *
      * @param name a name to look for.

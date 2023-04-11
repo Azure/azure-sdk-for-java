@@ -23,6 +23,10 @@ public final class ReadWriteDatabase extends DatabaseInner {
     @JsonProperty(value = "properties")
     private ReadWriteDatabaseProperties innerProperties;
 
+    /** Creates an instance of ReadWriteDatabase class. */
+    public ReadWriteDatabase() {
+    }
+
     /**
      * Get the innerProperties property: The database properties.
      *

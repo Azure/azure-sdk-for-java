@@ -52,7 +52,7 @@ public final class HybridContainerServicesClientImpl implements HybridContainerS
      */
     @Host("{$host}")
     @ServiceInterface(name = "HybridContainerServi")
-    private interface HybridContainerServicesService {
+    public interface HybridContainerServicesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{customLocationResourceUri}/providers/Microsoft.HybridContainerService/orchestrators")
         @ExpectedResponses({200})

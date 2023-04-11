@@ -20,6 +20,10 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
     @JsonProperty(value = "properties")
     private GremlinDatabaseGetProperties innerProperties;
 
+    /** Creates an instance of GremlinDatabaseGetResultsInner class. */
+    public GremlinDatabaseGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB SQL database.
      *

@@ -41,6 +41,10 @@ public final class ReplicationObject {
     @JsonProperty(value = "remoteVolumeRegion")
     private String remoteVolumeRegion;
 
+    /** Creates an instance of ReplicationObject class. */
+    public ReplicationObject() {
+    }
+
     /**
      * Get the replicationId property: Id.
      *

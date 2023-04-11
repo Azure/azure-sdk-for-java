@@ -77,10 +77,12 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
         final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent);
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
+        this.manager.getTimestamps().channelWriteAttempted();
         super.write(context, request, channel.newPromise().addListener((ChannelFutureListener)future -> {
 
             if (future.isSuccess()) {
                 contextRequestFuture.complete(request);
+                this.manager.getTimestamps().channelWriteCompleted();
                 return;
             }
 

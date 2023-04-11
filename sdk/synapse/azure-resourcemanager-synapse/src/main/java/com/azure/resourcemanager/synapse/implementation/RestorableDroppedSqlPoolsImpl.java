@@ -27,17 +27,6 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
         this.serviceManager = serviceManager;
     }
 
-    public RestorableDroppedSqlPool get(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
-        RestorableDroppedSqlPoolInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, restorableDroppedSqlPoolId);
-        if (inner != null) {
-            return new RestorableDroppedSqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RestorableDroppedSqlPool> getWithResponse(
         String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context) {
         Response<RestorableDroppedSqlPoolInner> inner =
@@ -48,6 +37,17 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RestorableDroppedSqlPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RestorableDroppedSqlPool get(
+        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
+        RestorableDroppedSqlPoolInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, restorableDroppedSqlPoolId);
+        if (inner != null) {
+            return new RestorableDroppedSqlPoolImpl(inner, this.manager());
         } else {
             return null;
         }

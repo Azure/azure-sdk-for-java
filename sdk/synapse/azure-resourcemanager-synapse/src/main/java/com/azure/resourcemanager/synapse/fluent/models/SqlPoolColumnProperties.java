@@ -23,6 +23,10 @@ public final class SqlPoolColumnProperties {
     @JsonProperty(value = "isComputed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isComputed;
 
+    /** Creates an instance of SqlPoolColumnProperties class. */
+    public SqlPoolColumnProperties() {
+    }
+
     /**
      * Get the columnType property: The column data type.
      *

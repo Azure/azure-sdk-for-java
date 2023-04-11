@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAccounts ListReadOnlyKeys. */
 public final class DatabaseAccountsListReadOnlyKeysSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListReadOnlyKeys.
@@ -22,6 +20,6 @@ public final class DatabaseAccountsListReadOnlyKeysSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .listReadOnlyKeysWithResponse("rg1", "ddb1", Context.NONE);
+            .listReadOnlyKeysWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

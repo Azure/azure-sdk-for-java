@@ -41,6 +41,10 @@ public final class RestorableMongodbResourcesGetResultInner {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
+    /** Creates an instance of RestorableMongodbResourcesGetResultInner class. */
+    public RestorableMongodbResourcesGetResultInner() {
+    }
+
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
      *

@@ -17,6 +17,10 @@ public final class TransparentDataEncryptionProperties {
     @JsonProperty(value = "status")
     private TransparentDataEncryptionStatus status;
 
+    /** Creates an instance of TransparentDataEncryptionProperties class. */
+    public TransparentDataEncryptionProperties() {
+    }
+
     /**
      * Get the status property: The status of the database transparent data encryption.
      *

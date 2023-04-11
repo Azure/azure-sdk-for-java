@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MongoDBResources GetMongoRoleDefinition. */
 public final class MongoDBResourcesGetMongoRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBRoleDefinitionGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBRoleDefinitionGet.json
      */
     /**
      * Sample code: CosmosDBMongoRoleDefinitionGet.
@@ -23,6 +21,6 @@ public final class MongoDBResourcesGetMongoRoleDefinitionSamples {
             .serviceClient()
             .getMongoDBResources()
             .getMongoRoleDefinitionWithResponse(
-                "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", Context.NONE);
+                "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

@@ -17,6 +17,15 @@ public final class BastionConnectProtocol extends ExpandableStringEnum<BastionCo
     public static final BastionConnectProtocol RDP = fromString("RDP");
 
     /**
+     * Creates a new instance of BastionConnectProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BastionConnectProtocol() {
+    }
+
+    /**
      * Creates or finds a BastionConnectProtocol from its string representation.
      *
      * @param name a name to look for.

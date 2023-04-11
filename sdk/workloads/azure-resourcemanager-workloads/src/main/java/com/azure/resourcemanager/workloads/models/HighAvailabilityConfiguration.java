@@ -17,6 +17,10 @@ public final class HighAvailabilityConfiguration {
     @JsonProperty(value = "highAvailabilityType", required = true)
     private SapHighAvailabilityType highAvailabilityType;
 
+    /** Creates an instance of HighAvailabilityConfiguration class. */
+    public HighAvailabilityConfiguration() {
+    }
+
     /**
      * Get the highAvailabilityType property: The high availability type.
      *

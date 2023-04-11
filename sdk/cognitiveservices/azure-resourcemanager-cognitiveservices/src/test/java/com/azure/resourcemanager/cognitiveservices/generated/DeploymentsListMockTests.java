@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.Deployment;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
@@ -34,7 +33,7 @@ public final class DeploymentsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"etag\":\"dntwjchrdgo\",\"properties\":{\"provisioningState\":\"Succeeded\",\"model\":{\"format\":\"ctondz\",\"name\":\"uu\",\"version\":\"dlwggytsbwtovv\"},\"scaleSettings\":{\"scaleType\":\"Manual\",\"capacity\":800109726,\"activeCapacity\":405729519},\"capabilities\":{\"knpirgnepttwq\":\"x\",\"mqnrojlpijnkr\":\"sniffc\",\"zronasxift\":\"frddhcrati\",\"zh\":\"zq\"},\"raiPolicyName\":\"wesgogczh\",\"callRateLimit\":{\"count\":12.991881,\"renewalPeriod\":55.12035,\"rules\":[]}},\"id\":\"gnyhmossxkkg\",\"name\":\"h\",\"type\":\"rghxjb\"}]}";
+            "{\"value\":[{\"etag\":\"bdyhgkfminsgowz\",\"properties\":{\"provisioningState\":\"Moving\",\"model\":{\"format\":\"ktlahbqa\",\"name\":\"xtgzukxitmmqtgqq\",\"version\":\"hrnxrxc\"},\"scaleSettings\":{\"scaleType\":\"Manual\",\"capacity\":1960010520,\"activeCapacity\":164554341},\"capabilities\":{\"jlfrq\":\"zfvazi\"},\"raiPolicyName\":\"bajlka\",\"callRateLimit\":{\"count\":79.44123,\"renewalPeriod\":26.433247,\"rules\":[]}},\"id\":\"pidkqqfkuvscxkdm\",\"name\":\"igovi\",\"type\":\"rxkpmloazuruoc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +61,16 @@ public final class DeploymentsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Deployment> response = manager.deployments().list("iwii", "htywubxcbihwq", Context.NONE);
+        PagedIterable<Deployment> response =
+            manager.deployments().list("fgcviz", "zdwlvwlyoupfgfb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ctondz", response.iterator().next().properties().model().format());
-        Assertions.assertEquals("uu", response.iterator().next().properties().model().name());
-        Assertions.assertEquals("dlwggytsbwtovv", response.iterator().next().properties().model().version());
+        Assertions.assertEquals("ktlahbqa", response.iterator().next().properties().model().format());
+        Assertions.assertEquals("xtgzukxitmmqtgqq", response.iterator().next().properties().model().name());
+        Assertions.assertEquals("hrnxrxc", response.iterator().next().properties().model().version());
         Assertions
             .assertEquals(
                 DeploymentScaleType.MANUAL, response.iterator().next().properties().scaleSettings().scaleType());
-        Assertions.assertEquals(800109726, response.iterator().next().properties().scaleSettings().capacity());
-        Assertions.assertEquals("wesgogczh", response.iterator().next().properties().raiPolicyName());
+        Assertions.assertEquals(1960010520, response.iterator().next().properties().scaleSettings().capacity());
+        Assertions.assertEquals("bajlka", response.iterator().next().properties().raiPolicyName());
     }
 }

@@ -30,6 +30,10 @@ public final class ServiceResourceCreateUpdateProperties {
     @JsonProperty(value = "serviceType")
     private ServiceType serviceType;
 
+    /** Creates an instance of ServiceResourceCreateUpdateProperties class. */
+    public ServiceResourceCreateUpdateProperties() {
+    }
+
     /**
      * Get the instanceSize property: Instance type for the service.
      *

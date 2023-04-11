@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GroupIdInformationPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GroupIdInformationProperties model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class GroupIdInformationPropertiesTests {
         Assertions.assertEquals("kpoc", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GroupIdInformationProperties model =
             new GroupIdInformationProperties()
                 .withGroupId("yvshxmz")

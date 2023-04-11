@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolReplicationLinks List. */
 public final class SqlPoolReplicationLinksListSamples {
     /*
@@ -18,6 +16,8 @@ public final class SqlPoolReplicationLinksListSamples {
      */
     public static void listsASqlAnalyticPoolSReplicationLinks(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolReplicationLinks().list("sqlcrudtest-4799", "sqlcrudtest-6440", "testdb", Context.NONE);
+        manager
+            .sqlPoolReplicationLinks()
+            .list("sqlcrudtest-4799", "sqlcrudtest-6440", "testdb", com.azure.core.util.Context.NONE);
     }
 }

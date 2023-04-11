@@ -17,6 +17,10 @@ public final class SqlStoredProcedureGetProperties {
     @JsonProperty(value = "resource")
     private SqlStoredProcedureGetPropertiesResource resource;
 
+    /** Creates an instance of SqlStoredProcedureGetProperties class. */
+    public SqlStoredProcedureGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

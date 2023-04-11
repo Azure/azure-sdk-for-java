@@ -18,6 +18,7 @@ public final class ContentKeyPoliciesGetSamples {
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .contentKeyPolicies()
-            .getWithResponse("contoso", "contosomedia", "PolicyWithMultipleOptions", com.azure.core.util.Context.NONE);
+            .getWithResponse(
+                "contosorg", "contosomedia", "PolicyWithMultipleOptions", com.azure.core.util.Context.NONE);
     }
 }

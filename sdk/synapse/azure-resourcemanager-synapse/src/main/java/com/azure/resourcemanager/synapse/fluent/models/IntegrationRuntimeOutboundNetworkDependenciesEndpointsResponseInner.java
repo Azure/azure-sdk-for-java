@@ -18,6 +18,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
     @JsonProperty(value = "value")
     private List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value;
 
+    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner class. */
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner() {
+    }
+
     /**
      * Get the value property: The list of outbound network dependency endpoints.
      *

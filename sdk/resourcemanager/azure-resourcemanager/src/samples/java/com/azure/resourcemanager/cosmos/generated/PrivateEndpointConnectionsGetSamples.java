@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBPrivateEndpointConnectionGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBPrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .getWithResponse("rg1", "ddb1", "privateEndpointConnectionName", Context.NONE);
+            .getWithResponse("rg1", "ddb1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }
 }

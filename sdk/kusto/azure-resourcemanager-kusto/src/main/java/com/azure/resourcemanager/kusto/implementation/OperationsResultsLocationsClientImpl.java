@@ -50,7 +50,7 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface OperationsResultsLocationsService {
+    public interface OperationsResultsLocationsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults"
@@ -172,20 +172,6 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
      *
      * @param location Azure location (region) name.
      * @param operationId The Guid of the operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void get(String location, String operationId) {
-        getAsync(location, operationId).block();
-    }
-
-    /**
-     * Returns operation results.
-     *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -195,5 +181,19 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Returns operation results.
+     *
+     * @param location Azure location (region) name.
+     * @param operationId The Guid of the operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void get(String location, String operationId) {
+        getWithResponse(location, operationId, Context.NONE);
     }
 }

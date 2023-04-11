@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of Azure Monitoring log. */
 @Fluent
 public final class OperationLogSpecificationDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationLogSpecificationDefinition.class);
-
     /*
      * Log name.
      */
@@ -31,6 +27,10 @@ public final class OperationLogSpecificationDefinition {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of OperationLogSpecificationDefinition class. */
+    public OperationLogSpecificationDefinition() {
+    }
 
     /**
      * Get the name property: Log name.

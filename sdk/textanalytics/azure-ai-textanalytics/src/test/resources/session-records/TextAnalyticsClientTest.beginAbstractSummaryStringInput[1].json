@@ -1,0 +1,88 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "36b3ebdc-6485-4ab6-80b5-ef227359b761",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "191",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://eastuslanguage.cognitiveservices.azure.com/language/analyze-text/jobs/f98f9442-4b97-42c5-9d63-e8b0d3345215?api-version=2022-10-01-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0bee978f-3ba2-40da-afef-4b66598d9635",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Date" : "Thu, 26 Jan 2023 22:28:44 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/f98f9442-4b97-42c5-9d63-e8b0d3345215?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2d3a361f-81b1-4645-be50-fe484334c569"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "10",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "cbc5f8d3-b1f3-4d7f-b059-4217af946a42",
+      "retry-after" : "0",
+      "Content-Length" : "280",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"f98f9442-4b97-42c5-9d63-e8b0d3345215\",\"lastUpdatedDateTime\":\"2023-01-26T22:28:45Z\",\"createdDateTime\":\"2023-01-26T22:28:44Z\",\"expirationDateTime\":\"2023-01-27T22:28:44Z\",\"status\":\"running\",\"errors\":[],\"tasks\":{\"completed\":0,\"failed\":0,\"inProgress\":1,\"total\":1,\"items\":[]}}",
+      "Date" : "Thu, 26 Jan 2023 22:28:44 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/f98f9442-4b97-42c5-9d63-e8b0d3345215?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "76a34267-4412-4a7c-b378-c901afca18bb"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "46",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fec2db01-2cfa-49b3-a7c4-25775735bfdd",
+      "retry-after" : "0",
+      "Content-Length" : "740",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"f98f9442-4b97-42c5-9d63-e8b0d3345215\",\"lastUpdatedDateTime\":\"2023-01-26T22:28:46Z\",\"createdDateTime\":\"2023-01-26T22:28:44Z\",\"expirationDateTime\":\"2023-01-27T22:28:44Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"AbstractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2023-01-26T22:28:46.0670925Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"summaries\":[{\"text\":\"Microsoft is taking a more holistic, human-centric approach to learning and understanding.\\nThe goal is to create more powerful AI that can speak, hear, see, and understand humans better.\",\"contexts\":[{\"offset\":0,\"length\":1627}]}],\"id\":\"0\",\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"latest\"}}]}}",
+      "Date" : "Thu, 26 Jan 2023 22:29:14 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/f98f9442-4b97-42c5-9d63-e8b0d3345215?api-version=2022-10-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "29cf41b1-6166-4bd3-8b21-db3261655b47"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "38",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fc12d68d-01d8-4e65-bd06-133eff572c93",
+      "retry-after" : "0",
+      "Content-Length" : "740",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"f98f9442-4b97-42c5-9d63-e8b0d3345215\",\"lastUpdatedDateTime\":\"2023-01-26T22:28:46Z\",\"createdDateTime\":\"2023-01-26T22:28:44Z\",\"expirationDateTime\":\"2023-01-27T22:28:44Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"AbstractiveSummarizationLROResults\",\"lastUpdateDateTime\":\"2023-01-26T22:28:46.0670925Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"summaries\":[{\"text\":\"Microsoft is taking a more holistic, human-centric approach to learning and understanding.\\nThe goal is to create more powerful AI that can speak, hear, see, and understand humans better.\",\"contexts\":[{\"offset\":0,\"length\":1627}]}],\"id\":\"0\",\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"latest\"}}]}}",
+      "Date" : "Thu, 26 Jan 2023 22:29:14 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

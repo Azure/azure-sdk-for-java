@@ -29,6 +29,10 @@ public final class LocationProperties {
     @JsonProperty(value = "backupStorageRedundancies", access = JsonProperty.Access.WRITE_ONLY)
     private List<BackupStorageRedundancy> backupStorageRedundancies;
 
+    /** Creates an instance of LocationProperties class. */
+    public LocationProperties() {
+    }
+
     /**
      * Get the supportsAvailabilityZone property: Flag indicating whether the location supports availability zones or
      * not.

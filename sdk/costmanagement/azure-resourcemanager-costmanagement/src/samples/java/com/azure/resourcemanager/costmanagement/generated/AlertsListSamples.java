@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Alerts List. */
 public final class AlertsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionAlerts.json
      */
     /**
      * Sample code: SubscriptionAlerts.
@@ -21,7 +21,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingProfileAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingProfileAlerts.json
      */
     /**
      * Sample code: BillingProfileAlerts.
@@ -37,7 +37,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupAlerts.json
      */
     /**
      * Sample code: ResourceGroupAlerts.
@@ -53,7 +53,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentAlerts.json
      */
     /**
      * Sample code: DepartmentAlerts.
@@ -69,7 +69,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/InvoiceSectionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/InvoiceSectionAlerts.json
      */
     /**
      * Sample code: InvoiceSectionAlerts.
@@ -85,7 +85,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountAlerts.json
      */
     /**
      * Sample code: BillingAccountAlerts.
@@ -100,7 +100,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountAlerts.json
      */
     /**
      * Sample code: EnrollmentAccountAlerts.

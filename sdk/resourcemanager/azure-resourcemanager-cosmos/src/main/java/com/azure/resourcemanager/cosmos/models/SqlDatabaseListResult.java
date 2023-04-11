@@ -18,6 +18,10 @@ public final class SqlDatabaseListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlDatabaseGetResultsInner> value;
 
+    /** Creates an instance of SqlDatabaseListResult class. */
+    public SqlDatabaseListResult() {
+    }
+
     /**
      * Get the value property: List of SQL databases and their properties.
      *

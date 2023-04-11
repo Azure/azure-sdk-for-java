@@ -95,6 +95,10 @@ public final class WorkflowRunTrigger {
     @JsonProperty(value = "trackedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object trackedProperties;
 
+    /** Creates an instance of WorkflowRunTrigger class. */
+    public WorkflowRunTrigger() {
+    }
+
     /**
      * Get the name property: Gets the name.
      *

@@ -14,8 +14,8 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +38,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
      */
     protected AbstractAzureCredentialBuilderFactory(AzureProperties azureProperties) {
         this.azureProperties = azureProperties;
+        this.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_IDENTITY);
     }
 
     @Override
@@ -61,36 +62,13 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     }
 
     @Override
-    protected void configureRetry(T builder) {
-        RetryOptionsProvider.RetryOptions retry = null;
-        if (azureProperties instanceof RetryOptionsProvider) {
-            retry = ((RetryOptionsProvider) azureProperties).getRetry();
-        }
-
-        if (retry == null) {
-            return;
-        }
-
-        if (RetryOptionsProvider.RetryMode.EXPONENTIAL == retry.getMode()) {
-            if (retry.getExponential() != null && retry.getExponential().getMaxRetries() != null) {
-                builder.maxRetry(retry.getExponential().getMaxRetries());
-            }
-        } else if (RetryOptionsProvider.RetryMode.FIXED == retry.getMode()
-            && retry.getFixed() != null
-            && retry.getFixed().getMaxRetries() != null) {
-            builder.maxRetry(retry.getFixed().getMaxRetries());
-        }
-
-    }
-
-    @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
         return Collections.emptyList();
     }
 
     @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
-        return (a, b) -> { };
+        return T::clientOptions;
     }
 
     @Override
@@ -105,18 +83,17 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
 
     @Override
     protected BiConsumer<T, HttpLogOptions> consumeHttpLogOptions() {
-        return (a, b) -> { };
+        return T::httpLogOptions;
     }
 
     @Override
     protected BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy() {
-        return (a, b) -> { };
+        return T::addPolicy;
     }
 
     @Override
     protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
-        LOGGER.debug("No need to specify retry policy.");
-        return (a, b) -> { };
+        return T::retryPolicy;
     }
 
     @Override

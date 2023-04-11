@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDatabasePrincipalAssignments Delete. */
 public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
     /*
@@ -26,6 +24,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
                 "Kustodatabase8",
                 "kustoprincipal1",
                 "kustorptest",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

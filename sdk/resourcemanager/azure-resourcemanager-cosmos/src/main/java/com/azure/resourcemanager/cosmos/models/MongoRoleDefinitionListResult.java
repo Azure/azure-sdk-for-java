@@ -18,6 +18,10 @@ public final class MongoRoleDefinitionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MongoRoleDefinitionGetResultsInner> value;
 
+    /** Creates an instance of MongoRoleDefinitionListResult class. */
+    public MongoRoleDefinitionListResult() {
+    }
+
     /**
      * Get the value property: List of Mongo Role Definitions and their properties.
      *

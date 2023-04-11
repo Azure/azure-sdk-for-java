@@ -29,7 +29,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"rnysux\",\"name\":\"prafwgckhoc\",\"type\":\"vdff\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"jjrcgegydc\",\"name\":\"boxjumvq\",\"type\":\"olihrra\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,7 +60,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
         PrivateEndpointConnectionListResult response =
             manager
                 .privateEndpointConnections()
-                .listWithResponse("qojpy", "vgtrdcnifmzzs", com.azure.core.util.Context.NONE)
+                .listWithResponse("dunqnd", "fpch", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -5,15 +5,17 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -56,7 +58,12 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.storeClient.openConnectionsAndInitCaches(containerLink);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.storeClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    }
+
+    @Override
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.storeClient.configureFaultInjectorProvider(injectorProvider);
     }
 }

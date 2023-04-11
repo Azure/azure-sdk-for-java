@@ -36,6 +36,10 @@ public final class ContactParameters {
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of ContactParameters class. */
+    public ContactParameters() {
+    }
+
     /**
      * Get the contactProfile property: The reference to the contact profile resource.
      *

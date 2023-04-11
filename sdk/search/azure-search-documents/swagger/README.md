@@ -17,11 +17,6 @@ To see additional help and options, run:
 
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal -DskipTests
-npm install
 npm install -g autorest
 ```
 
@@ -61,7 +56,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/932e261a870475e1a29115f62def7bb84e4d7b38/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,QueryAnswerType,QueryCaptionType,QueryLanguage,QuerySpellerType,QueryType,ScoringStatistics,SearchMode,SuggestOptions
+custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,IndexDocumentsResult,IndexingResult,QueryAnswerType,QueryCaptionType,QueryLanguage,QuerySpellerType,QueryType,ScoringStatistics,SearchMode,SuggestOptions
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -73,9 +68,9 @@ These settings apply only when `--tag=package-2021-04-30-Preview-searchservice` 
 namespace: com.azure.search.documents.indexes
 input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/904899a23a417768ce1ec1d5f89f33817f8ef8ad/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchservice.json
-models-subpackage: implementation.models
-custom-types-subpackage: models
-custom-types: AnalyzedTokenInfo,AzureMachineLearningSkill,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomAnalyzer,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,CustomNormalizer,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityLinkingSkill,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerCurrentState,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerExecutionStatusDetail,IndexerStatus,IndexingMode,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzer,LexicalAnalyzerName,LexicalNormalizer,LexicalNormalizerName,LexicalTokenizerName,LineEnding,LuceneStandardAnalyzer,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternAnalyzer,PatternReplaceCharFilter,PiiDetectionSkill,PiiDetectionSkillMaskingMode,PhoneticEncoder,PrioritizedFields,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchAlias,SearchField,SearchFieldDataType,SearchIndexerCache,SearchIndexerDataContainer,SearchIndexerDataIdentity,SearchIndexerDataNoneIdentity,SearchIndexerDataSourceType,SearchIndexerDataUserAssignedIdentity,SearchIndexerError,SearchIndexerKnowledgeStore,SearchIndexerKnowledgeStoreBlobProjectionSelector,SearchIndexerKnowledgeStoreFileProjectionSelector,SearchIndexerKnowledgeStoreObjectProjectionSelector,SearchIndexerKnowledgeStoreProjection,SearchIndexerKnowledgeStoreProjectionSelector,SearchIndexerKnowledgeStoreTableProjectionSelector,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerSkillset,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchResourceEncryptionKey,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SearchSuggester,SemanticConfiguration,SemanticField,SemanticSettings,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopAnalyzer,StopwordsList,SynonymMap,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
+models-subpackage: models
+custom-types-subpackage: implementation.models
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -96,6 +91,30 @@ directive:
     - rename-model:
         from: PIIDetectionSkill
         to: PiiDetectionSkill
+    - rename-model:
+        from: EntityRecognitionSkill
+        to: EntityRecognitionSkillV1
+    - rename-model:
+        from: SentimentSkill
+        to: SentimentSkillV1
+    - rename-model:
+        from: EdgeNGramTokenFilter
+        to: EdgeNGramTokenFilterV1
+    - rename-model:
+        from: NGramTokenFilter
+        to: NGramTokenFilterV1
+    - rename-model:
+        from: PathHierarchyTokenizerV2
+        to: PathHierarchyTokenizer
+    - rename-model:
+        from: LuceneStandardTokenizer
+        to: LuceneStandardTokenizerV1
+    - rename-model:
+        from: KeywordTokenizer
+        to: KeywordTokenizerV1
+    - rename-model:
+        from: SearchIndexerDataSource
+        to: SearchIndexerDataSourceConnection
 ```
 
 ---
@@ -110,8 +129,8 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.2'
-sync-methods: none
+use: '@autorest/java@4.1.13'
+enable-sync-stack: true
 generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true
@@ -121,6 +140,8 @@ license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
 require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
+stream-style-serialization: true
+include-read-only-in-constructor-args: true
 ```
 
 ### Set odata.metadata Accept header in operations
@@ -164,9 +185,10 @@ directive:
   - from: swagger-document
     where: $.definitions
     transform: >
-      delete $.SearchIndex.required;
-      delete $.SearchIndexer.required;
-      delete $.SearchIndexerDataSource.required;
+      $.SearchIndex.required = $.SearchIndex.required.filter(required => required === 'name');
+      $.SearchIndexer.required = $.SearchIndexer.required.filter(required => required === 'name');
+      $.SearchIndexerDataSourceConnection.required = $.SearchIndexerDataSourceConnection.required.filter(required => required === 'name');
+      $.SearchIndexerSkillset.required = $.SearchIndexerSkillset.required.filter(required => required === 'name');
       delete $.SynonymMap.required;
 ```
 
@@ -310,4 +332,25 @@ directive:
     where: $.definitions.PIIDetectionSkillMaskingMode
     transform: >
       $["x-ms-enum"].name = "PiiDetectionSkillMaskingMode";
+```
+
+### Rename client parameter names
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.CommonGramTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
+      $.CommonGramTokenFilter.properties.queryMode["x-ms-client-name"] = "queryModeUsed";
+      $.DictionaryDecompounderTokenFilter.properties.onlyLongestMatch["x-ms-client-name"] = "onlyLongestMatched";
+      $.KeywordMarkerTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
+      $.LimitTokenFilter.properties.consumeAllTokens["x-ms-client-name"] = "allTokensConsumed";
+      $.MicrosoftLanguageStemmingTokenizer.properties.isSearchTokenizer["x-ms-client-name"] = "isSearchTokenizerUsed";
+      $.PathHierarchyTokenizer.properties.reverse["x-ms-client-name"] = "tokenOrderReversed";
+      $.PhoneticTokenFilter.properties.replace["x-ms-client-name"] = "originalTokensReplaced";
+      $.StopwordsTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
+      $.StopwordsTokenFilter.properties.removeTrailing["x-ms-client-name"] = "trailingStopWordsRemoved";
+      $.SynonymTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
+      $.WordDelimiterTokenFilter.properties.catenateWords["x-ms-client-name"] = "wordsCatenated";
+      $.WordDelimiterTokenFilter.properties.catenateNumbers["x-ms-client-name"] = "numbersCatenated";
 ```

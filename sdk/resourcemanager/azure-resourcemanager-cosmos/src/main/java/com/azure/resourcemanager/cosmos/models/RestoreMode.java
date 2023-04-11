@@ -14,6 +14,15 @@ public final class RestoreMode extends ExpandableStringEnum<RestoreMode> {
     public static final RestoreMode POINT_IN_TIME = fromString("PointInTime");
 
     /**
+     * Creates a new instance of RestoreMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestoreMode() {
+    }
+
+    /**
      * Creates or finds a RestoreMode from its string representation.
      *
      * @param name a name to look for.

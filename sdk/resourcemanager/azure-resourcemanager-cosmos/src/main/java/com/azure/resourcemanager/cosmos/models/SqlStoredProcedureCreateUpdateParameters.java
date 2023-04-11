@@ -19,6 +19,10 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
     @JsonProperty(value = "properties", required = true)
     private SqlStoredProcedureCreateUpdateProperties innerProperties = new SqlStoredProcedureCreateUpdateProperties();
 
+    /** Creates an instance of SqlStoredProcedureCreateUpdateParameters class. */
+    public SqlStoredProcedureCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB storedProcedure.
      *

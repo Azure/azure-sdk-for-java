@@ -45,6 +45,10 @@ public final class MetricDefinitionInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private MetricName name;
 
+    /** Creates an instance of MetricDefinitionInner class. */
+    public MetricDefinitionInner() {
+    }
+
     /**
      * Get the metricAvailabilities property: The list of metric availabilities for the account.
      *

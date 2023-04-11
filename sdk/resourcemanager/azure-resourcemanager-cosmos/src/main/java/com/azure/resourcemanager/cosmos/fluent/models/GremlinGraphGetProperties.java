@@ -24,6 +24,10 @@ public final class GremlinGraphGetProperties {
     @JsonProperty(value = "options")
     private GremlinGraphGetPropertiesOptions options;
 
+    /** Creates an instance of GremlinGraphGetProperties class. */
+    public GremlinGraphGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

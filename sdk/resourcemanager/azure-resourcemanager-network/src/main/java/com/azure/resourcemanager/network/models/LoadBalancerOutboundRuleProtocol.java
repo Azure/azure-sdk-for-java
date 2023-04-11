@@ -20,6 +20,15 @@ public final class LoadBalancerOutboundRuleProtocol extends ExpandableStringEnum
     public static final LoadBalancerOutboundRuleProtocol ALL = fromString("All");
 
     /**
+     * Creates a new instance of LoadBalancerOutboundRuleProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerOutboundRuleProtocol() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerOutboundRuleProtocol from its string representation.
      *
      * @param name a name to look for.

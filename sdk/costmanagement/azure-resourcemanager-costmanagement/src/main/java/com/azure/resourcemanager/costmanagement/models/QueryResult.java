@@ -32,11 +32,32 @@ public interface QueryResult {
     String type();
 
     /**
+     * Gets the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the tags property: Resource tags.
      *
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: SKU of the resource.
+     *
+     * @return the sku value.
+     */
+    String sku();
+
+    /**
+     * Gets the etag property: ETag of the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
 
     /**
      * Gets the nextLink property: The link (url) to the next page of results.

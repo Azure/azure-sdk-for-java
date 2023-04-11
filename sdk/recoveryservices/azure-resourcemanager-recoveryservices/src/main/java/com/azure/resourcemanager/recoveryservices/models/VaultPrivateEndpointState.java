@@ -17,6 +17,15 @@ public final class VaultPrivateEndpointState extends ExpandableStringEnum<VaultP
     public static final VaultPrivateEndpointState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of VaultPrivateEndpointState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VaultPrivateEndpointState() {
+    }
+
+    /**
      * Creates or finds a VaultPrivateEndpointState from its string representation.
      *
      * @param name a name to look for.

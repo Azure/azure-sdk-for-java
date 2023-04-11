@@ -13,7 +13,7 @@ import java.time.Duration;
 public class AmqpRetryProperties extends RetryProperties implements RetryOptionsProvider.AmqpRetryOptions {
 
     /**
-     * How long to wait until a timeout.
+     * Amount of time(Duration) to wait until timeout.
      */
     private Duration tryTimeout;
 

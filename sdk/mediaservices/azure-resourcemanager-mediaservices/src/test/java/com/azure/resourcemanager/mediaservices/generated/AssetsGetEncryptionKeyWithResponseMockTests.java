@@ -32,7 +32,7 @@ public final class AssetsGetEncryptionKeyWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"assetFileEncryptionMetadata\":[{\"initializationVector\":\"mewip\",\"assetFileName\":\"ekdxuku\",\"assetFileId\":\"8ca3ffe5-55ec-43ad-968c-4624bb23a04a\"},{\"initializationVector\":\"sjjxundxgketw\",\"assetFileName\":\"hzjhf\",\"assetFileId\":\"d3bbaca6-d69a-4101-bf7c-8be7d1e5acc9\"},{\"initializationVector\":\"hvvmuvgpmun\",\"assetFileName\":\"sx\",\"assetFileId\":\"05a0bfd6-9855-4f4d-98c0-940abcf07cd0\"},{\"initializationVector\":\"hfbuzjyihsasbhud\",\"assetFileName\":\"ohyuemslynsq\",\"assetFileId\":\"356421e0-2824-40f8-b5de-4cbd976a7e3e\"}]}";
+            "{\"assetFileEncryptionMetadata\":[{\"initializationVector\":\"mifrygznmma\",\"assetFileName\":\"izkzobgo\",\"assetFileId\":\"bc4d205f-5639-4d64-a905-c5294ccc037b\"},{\"initializationVector\":\"lhslnelxieixyn\",\"assetFileName\":\"xecwcro\",\"assetFileId\":\"8393c01d-69dc-48eb-a6c4-da494886a006\"},{\"initializationVector\":\"hslhca\",\"assetFileName\":\"u\",\"assetFileId\":\"8193eeda-091b-4d11-b205-7fa6be37fb32\"},{\"initializationVector\":\"fdwfmvigorqj\",\"assetFileName\":\"tzh\",\"assetFileId\":\"b8b38735-35a1-4f31-863e-18299bcde12f\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,15 @@ public final class AssetsGetEncryptionKeyWithResponseMockTests {
         StorageEncryptedAssetDecryptionData response =
             manager
                 .assets()
-                .getEncryptionKeyWithResponse("aqvlgafcqusr", "vetnwsdtutn", "lduycv", com.azure.core.util.Context.NONE)
+                .getEncryptionKeyWithResponse(
+                    "abpfhvfs", "kvntjlrigjkskyri", "ovzidsx", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mewip", response.assetFileEncryptionMetadata().get(0).initializationVector());
-        Assertions.assertEquals("ekdxuku", response.assetFileEncryptionMetadata().get(0).assetFileName());
+        Assertions.assertEquals("mifrygznmma", response.assetFileEncryptionMetadata().get(0).initializationVector());
+        Assertions.assertEquals("izkzobgo", response.assetFileEncryptionMetadata().get(0).assetFileName());
         Assertions
             .assertEquals(
-                UUID.fromString("8ca3ffe5-55ec-43ad-968c-4624bb23a04a"),
+                UUID.fromString("bc4d205f-5639-4d64-a905-c5294ccc037b"),
                 response.assetFileEncryptionMetadata().get(0).assetFileId());
     }
 }

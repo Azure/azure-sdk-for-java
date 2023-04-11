@@ -79,18 +79,6 @@ public interface LocationsClient {
      * Get the properties of an existing Cosmos DB location.
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an existing Cosmos DB location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LocationGetResultInner get(String location);
-
-    /**
-     * Get the properties of an existing Cosmos DB location.
-     *
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,4 +87,16 @@ public interface LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LocationGetResultInner> getWithResponse(String location, Context context);
+
+    /**
+     * Get the properties of an existing Cosmos DB location.
+     *
+     * @param location Cosmos DB region, with spaces between words and each word capitalized.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an existing Cosmos DB location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LocationGetResultInner get(String location);
 }

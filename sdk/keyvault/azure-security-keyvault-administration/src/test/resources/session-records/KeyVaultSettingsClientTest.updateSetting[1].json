@@ -1,31 +1,31 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/settings/AllowKeyManagementOperationsThroughARM?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/settings/AllowKeyManagementOperationsThroughARM?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)"
     },
     "Response" : {
       "content-length" : "82",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20221020-1-945ffe56-develop",
+      "x-ms-build-version" : "1.0.20230228-2-c856e15e-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-server-latency" : "1",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northcentralus",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "eac01086-61fe-11ed-80e0-0022488d29c2",
+      "x-ms-request-id" : "1b3b6744-c3d2-11ed-86db-0022488d0014",
       "Body" : "{\"name\":\"AllowKeyManagementOperationsThroughARM\",\"type\":\"boolean\",\"value\":\"false\"}"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/settings/AllowKeyManagementOperationsThroughARM?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/settings/AllowKeyManagementOperationsThroughARM?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
@@ -35,21 +35,21 @@
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-server-latency" : "68",
+      "x-ms-server-latency" : "82",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northcentralus",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "eacd131c-61fe-11ed-80e0-0022488d29c2",
+      "x-ms-request-id" : "1b47e5b4-c3d2-11ed-86db-0022488d0014",
       "Body" : "{\"name\":\"AllowKeyManagementOperationsThroughARM\",\"type\":\"boolean\",\"value\":\"true\"}"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/settings/AllowKeyManagementOperationsThroughARM?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/settings/AllowKeyManagementOperationsThroughARM?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
@@ -59,15 +59,15 @@
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-server-latency" : "45",
+      "x-ms-server-latency" : "37",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
-      "x-ms-keyvault-region" : "northus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northcentralus",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "eae1cc58-61fe-11ed-80e0-0022488d29c2",
+      "x-ms-request-id" : "1b5ec66c-c3d2-11ed-86db-0022488d0014",
       "Body" : "{\"name\":\"AllowKeyManagementOperationsThroughARM\",\"type\":\"boolean\",\"value\":\"false\"}"
     },
     "Exception" : null

@@ -7,18 +7,17 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WebPubSubTlsSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WebPubSubTlsSettings model =
             BinaryData.fromString("{\"clientCertEnabled\":true}").toObject(WebPubSubTlsSettings.class);
         Assertions.assertEquals(true, model.clientCertEnabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WebPubSubTlsSettings model = new WebPubSubTlsSettings().withClientCertEnabled(true);
         model = BinaryData.fromObject(model).toObject(WebPubSubTlsSettings.class);
         Assertions.assertEquals(true, model.clientCertEnabled());

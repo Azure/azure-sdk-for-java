@@ -32,7 +32,7 @@ public interface ExportsClient {
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last execution of each export.
+     *     will return information for the last run of each export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -86,7 +86,7 @@ public interface ExportsClient {
      *     partners.
      * @param exportName Export Name.
      * @param expand May be used to expand the properties within an export. Currently only 'runHistory' is supported and
-     *     will return information for the last 10 executions of the export.
+     *     will return information for the last 10 runs of the export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public interface ExportsClient {
     void delete(String scope, String exportName);
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -260,7 +260,7 @@ public interface ExportsClient {
     Response<Void> executeWithResponse(String scope, String exportName, Context context);
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -285,7 +285,7 @@ public interface ExportsClient {
     void execute(String scope, String exportName);
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -306,14 +306,14 @@ public interface ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export along with {@link Response}.
+     * @return result of listing the run history of an export along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(
         String scope, String exportName, Context context);
 
     /**
-     * The operation to get the execution history of an export for the defined scope and export name.
+     * The operation to get the run history of an export for the defined scope and export name.
      *
      * @param scope The scope associated with export operations. This includes '/subscriptions/{subscriptionId}/' for
      *     subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -333,7 +333,7 @@ public interface ExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing the execution history of an export.
+     * @return result of listing the run history of an export.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExportExecutionListResultInner getExecutionHistory(String scope, String exportName);

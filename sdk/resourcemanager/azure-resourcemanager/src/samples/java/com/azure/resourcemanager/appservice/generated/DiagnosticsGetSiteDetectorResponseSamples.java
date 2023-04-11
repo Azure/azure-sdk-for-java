@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostics GetSiteDetectorResponse. */
 public final class DiagnosticsGetSiteDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
      */
     /**
      * Sample code: Get App Slot Detector Response.
@@ -23,11 +21,17 @@ public final class DiagnosticsGetSiteDetectorResponseSamples {
             .serviceClient()
             .getDiagnostics()
             .getSiteDetectorResponseWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", null, null, null, Context.NONE);
+                "Sample-WestUSResourceGroup",
+                "SampleApp",
+                "runtimeavailability",
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_GetSiteDetectorResponse.json
      */
     /**
      * Sample code: Get App Detector Response.
@@ -41,6 +45,12 @@ public final class DiagnosticsGetSiteDetectorResponseSamples {
             .serviceClient()
             .getDiagnostics()
             .getSiteDetectorResponseWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", null, null, null, Context.NONE);
+                "Sample-WestUSResourceGroup",
+                "SampleApp",
+                "runtimeavailability",
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

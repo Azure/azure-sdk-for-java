@@ -23,6 +23,12 @@ public class ApacheAvroSerializerBuilder {
     private SpecificData specificData;
 
     /**
+     * Creates an instance of {@link ApacheAvroSerializerBuilder}.
+     */
+    public ApacheAvroSerializerBuilder() {
+    }
+
+    /**
      * Instantiates a new instance of {@link ApacheAvroSerializer} based on the configurations set on the builder.
      *
      * @return A new instance of {@link ApacheAvroSerializer}.

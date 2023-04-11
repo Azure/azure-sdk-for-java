@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.AgentPoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The collection of agent pools. */
 @Fluent
 public final class AgentPoolListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolListResult.class);
-
     /*
      * The collection value.
      */
@@ -27,6 +23,10 @@ public final class AgentPoolListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of AgentPoolListResult class. */
+    public AgentPoolListResult() {
+    }
 
     /**
      * Get the value property: The collection value.

@@ -27,6 +27,10 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<GraphApiComputeRegionalServiceResource> locations;
 
+    /** Creates an instance of GraphApiComputeServiceResourceProperties class. */
+    public GraphApiComputeServiceResourceProperties() {
+    }
+
     /**
      * Get the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
      *

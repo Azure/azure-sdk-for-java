@@ -19,22 +19,6 @@ public interface DataMaskingPoliciesClient {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param parameters Parameters for creating or updating a data masking policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingPolicyInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters);
-
-    /**
-     * Creates or updates a Sql pool data masking policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param parameters Parameters for creating or updating a data masking policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,18 +34,20 @@ public interface DataMaskingPoliciesClient {
         Context context);
 
     /**
-     * Gets a Sql pool data masking policy.
+     * Creates or updates a Sql pool data masking policy.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
+     * @param parameters Parameters for creating or updating a data masking policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName);
+    DataMaskingPolicyInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters);
 
     /**
      * Gets a Sql pool data masking policy.
@@ -78,4 +64,18 @@ public interface DataMaskingPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataMaskingPolicyInner> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+
+    /**
+     * Gets a Sql pool data masking policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Sql pool data masking policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataMaskingPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName);
 }

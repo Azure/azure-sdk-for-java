@@ -10,9 +10,18 @@ import com.azure.core.util.tracing.TracerProvider;
 import java.util.Objects;
 
 /**
- * {@inheritDoc}
+ * Resolves and provides {@link Tracer} implementation.
+ * <p>
+ * This class is intended to be used by Azure client libraries and provides abstraction over possible tracing implementations.
+ * Application developers should use tracing libraries such as OpenTelemetry or Spring tracing.
  */
 public final class OpenTelemetryTracerProvider implements TracerProvider {
+    /**
+     * Creates an instance of {@link OpenTelemetryTracerProvider}.
+     */
+    public OpenTelemetryTracerProvider() {
+    }
+
     /**
      * Creates named and versioned OpenTelemetry-based implementation of {@link Tracer}
      *

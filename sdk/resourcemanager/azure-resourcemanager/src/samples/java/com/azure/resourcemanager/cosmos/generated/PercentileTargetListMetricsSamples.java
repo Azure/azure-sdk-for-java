@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PercentileTarget ListMetrics. */
 public final class PercentileTargetListMetricsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBPercentileTargetGetMetrics.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBPercentileTargetGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.
@@ -28,6 +26,6 @@ public final class PercentileTargetListMetricsSamples {
                 "East US",
                 "$filter=(name.value eq 'Probabilistic Bounded Staleness') and timeGrain eq duration'PT5M' and"
                     + " startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

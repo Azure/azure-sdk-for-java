@@ -65,6 +65,10 @@ public final class ClusterInner extends Resource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ClusterInner class. */
+    public ClusterInner() {
+    }
+
     /**
      * Get the sku property: The SKU of the cluster.
      *
@@ -379,6 +383,20 @@ public final class ClusterInner extends Resource {
      */
     public LanguageExtensionsList languageExtensions() {
         return this.innerProperties() == null ? null : this.innerProperties().languageExtensions();
+    }
+
+    /**
+     * Set the languageExtensions property: List of the cluster's language extensions.
+     *
+     * @param languageExtensions the languageExtensions value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withLanguageExtensions(LanguageExtensionsList languageExtensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withLanguageExtensions(languageExtensions);
+        return this;
     }
 
     /**

@@ -36,7 +36,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -60,13 +59,15 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
+import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getShowStatsContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getSkipContinuesToken;
+import static com.azure.ai.textanalytics.implementation.Utility.getTopContinuesToken;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
@@ -77,7 +78,6 @@ import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED
 import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
 import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 class LabelClassifyUtilClient {
     private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyUtilClient.class);
@@ -100,8 +100,7 @@ class LabelClassifyUtilClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
-            final Context finalContext = getNotNullContext(context)
-                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = getNotNullContext(context);
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final String displayName = options.getDisplayName();
@@ -153,8 +152,7 @@ class LabelClassifyUtilClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
-            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
-                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
@@ -176,7 +174,7 @@ class LabelClassifyUtilClient {
                         finalIncludeStatistics, finalContext))
             );
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -190,8 +188,7 @@ class LabelClassifyUtilClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
-            final Context finalContext = getNotNullContext(context)
-                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = getNotNullContext(context);
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final String displayName = options.getDisplayName();
@@ -243,8 +240,7 @@ class LabelClassifyUtilClient {
                     TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
-            final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
-                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+            final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
@@ -265,7 +261,7 @@ class LabelClassifyUtilClient {
                     operationId -> getClassifyDocumentPagedIterable(operationId, null, null,
                         finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError((HttpResponseException) mapToHttpResponseExceptionIfExists(ex));
+            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
@@ -288,18 +284,13 @@ class LabelClassifyUtilClient {
         try {
             if (continuationToken != null) {
                 final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
-                return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
-                    context)
-                    .map(this::toClassifyDocumentResultCollectionPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-            } else {
-                return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                    .map(this::toClassifyDocumentResultCollectionPagedResponse)
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                top = getTopContinuesToken(continuationTokenMap);
+                skip = getSkipContinuesToken(continuationTokenMap);
+                showStats = getShowStatsContinuesToken(continuationTokenMap);
             }
+            return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
+                    .map(this::toClassifyDocumentResultCollectionPagedResponse)
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -309,9 +300,9 @@ class LabelClassifyUtilClient {
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
-            top = (Integer) continuationTokenMap.getOrDefault("$top", null);
-            skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
-            showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+            top = getTopContinuesToken(continuationTokenMap);
+            skip = getSkipContinuesToken(continuationTokenMap);
+            showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
         return toClassifyDocumentResultCollectionPagedResponse(service.jobStatusWithResponse(
             operationId, showStats, top, skip, context));

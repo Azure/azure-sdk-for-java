@@ -23,6 +23,10 @@ public final class ResourceTypeAliases {
     @JsonProperty(value = "aliases")
     private List<Alias> aliases;
 
+    /** Creates an instance of ResourceTypeAliases class. */
+    public ResourceTypeAliases() {
+    }
+
     /**
      * Get the resourceType property: The resource type name.
      *

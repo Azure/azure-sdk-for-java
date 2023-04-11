@@ -40,15 +40,6 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsImpl
         return Utils.mapPage(inner, inner1 -> new RecoverableSqlPoolImpl(inner1, this.manager()));
     }
 
-    public RecoverableSqlPool get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        RecoverableSqlPoolInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new RecoverableSqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RecoverableSqlPool> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         Response<RecoverableSqlPoolInner> inner =
@@ -59,6 +50,15 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RecoverableSqlPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RecoverableSqlPool get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        RecoverableSqlPoolInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
+        if (inner != null) {
+            return new RecoverableSqlPoolImpl(inner, this.manager());
         } else {
             return null;
         }

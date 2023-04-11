@@ -32,7 +32,7 @@ public final class OperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"mfnczd\",\"origin\":\"b\",\"isDataAction\":true,\"actionType\":\"Internal\"},{\"name\":\"chp\",\"origin\":\"zevwrdnhfukuv\",\"isDataAction\":false,\"actionType\":\"Internal\"},{\"name\":\"myst\",\"origin\":\"qypfcv\",\"isDataAction\":true,\"actionType\":\"Internal\"},{\"name\":\"qbmfpjbabwidf\",\"origin\":\"spuunnoxyhkxgq\",\"isDataAction\":false,\"actionType\":\"Internal\"}]}";
+            "{\"value\":[{\"name\":\"dzaumweooh\",\"origin\":\"fuzboyjathwtzolb\",\"isDataAction\":false,\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class OperationsListWithResponseMockTests {
         OperationCollection response =
             manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("mfnczd", response.value().get(0).name());
-        Assertions.assertEquals("b", response.value().get(0).origin());
-        Assertions.assertEquals(true, response.value().get(0).isDataAction());
+        Assertions.assertEquals("dzaumweooh", response.value().get(0).name());
+        Assertions.assertEquals("fuzboyjathwtzolb", response.value().get(0).origin());
+        Assertions.assertEquals(false, response.value().get(0).isDataAction());
         Assertions.assertEquals(ActionType.INTERNAL, response.value().get(0).actionType());
     }
 }

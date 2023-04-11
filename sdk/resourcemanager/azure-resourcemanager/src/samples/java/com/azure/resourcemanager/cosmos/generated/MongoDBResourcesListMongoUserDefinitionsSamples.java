@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MongoDBResources ListMongoUserDefinitions. */
 public final class MongoDBResourcesListMongoUserDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBUserDefinitionList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBUserDefinitionList.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionList.
@@ -22,6 +20,6 @@ public final class MongoDBResourcesListMongoUserDefinitionsSamples {
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .listMongoUserDefinitions("myResourceGroupName", "myAccountName", Context.NONE);
+            .listMongoUserDefinitions("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

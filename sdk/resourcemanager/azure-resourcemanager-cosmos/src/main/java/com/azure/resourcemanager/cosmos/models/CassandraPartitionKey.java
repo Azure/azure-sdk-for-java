@@ -16,6 +16,10 @@ public final class CassandraPartitionKey {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of CassandraPartitionKey class. */
+    public CassandraPartitionKey() {
+    }
+
     /**
      * Get the name property: Name of the Cosmos DB Cassandra table partition key.
      *

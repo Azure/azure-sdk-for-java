@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("Docker")
 @Fluent
 public final class DockerTaskStep extends TaskStepProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DockerTaskStep.class);
-
     /*
      * The fully qualified image names including the repository and tag.
      */
@@ -26,15 +23,13 @@ public final class DockerTaskStep extends TaskStepProperties {
     private List<String> imageNames;
 
     /*
-     * The value of this property indicates whether the image built should be
-     * pushed to the registry or not.
+     * The value of this property indicates whether the image built should be pushed to the registry or not.
      */
     @JsonProperty(value = "isPushEnabled")
     private Boolean isPushEnabled;
 
     /*
-     * The value of this property indicates whether the image cache is enabled
-     * or not.
+     * The value of this property indicates whether the image cache is enabled or not.
      */
     @JsonProperty(value = "noCache")
     private Boolean noCache;
@@ -52,11 +47,14 @@ public final class DockerTaskStep extends TaskStepProperties {
     private String target;
 
     /*
-     * The collection of override arguments to be used when executing this
-     * build step.
+     * The collection of override arguments to be used when executing this build step.
      */
     @JsonProperty(value = "arguments")
     private List<Argument> arguments;
+
+    /** Creates an instance of DockerTaskStep class. */
+    public DockerTaskStep() {
+    }
 
     /**
      * Get the imageNames property: The fully qualified image names including the repository and tag.
@@ -203,7 +201,7 @@ public final class DockerTaskStep extends TaskStepProperties {
     public void validate() {
         super.validate();
         if (dockerFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
         }
@@ -211,4 +209,6 @@ public final class DockerTaskStep extends TaskStepProperties {
             arguments().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DockerTaskStep.class);
 }

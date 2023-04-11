@@ -17,6 +17,15 @@ public final class CallerRole extends ExpandableStringEnum<CallerRole> {
     public static final CallerRole NONE = fromString("None");
 
     /**
+     * Creates a new instance of CallerRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CallerRole() {
+    }
+
+    /**
      * Creates or finds a CallerRole from its string representation.
      *
      * @param name a name to look for.

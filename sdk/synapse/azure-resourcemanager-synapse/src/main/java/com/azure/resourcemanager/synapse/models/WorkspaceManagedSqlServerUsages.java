@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of WorkspaceManagedSqlServerUsages. */
 public interface WorkspaceManagedSqlServerUsages {
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -23,7 +25,9 @@ public interface WorkspaceManagedSqlServerUsages {
     PagedIterable<ServerUsage> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

@@ -16,6 +16,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails 
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails class. */
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails() {
+    }
+
     /**
      * Get the port property: The port of endpoint.
      *

@@ -18,11 +18,14 @@ public final class DatabaseCheckNameRequest {
     private String name;
 
     /*
-     * The type of resource, for instance
-     * Microsoft.Synapse/workspaces/kustoPools/databases.
+     * The type of resource, for instance Microsoft.Synapse/workspaces/kustoPools/databases.
      */
     @JsonProperty(value = "type", required = true)
     private Type type;
+
+    /** Creates an instance of DatabaseCheckNameRequest class. */
+    public DatabaseCheckNameRequest() {
+    }
 
     /**
      * Get the name property: Resource name.

@@ -35,6 +35,16 @@ public final class DatabaseConfiguration {
     @JsonProperty(value = "instanceCount", required = true)
     private long instanceCount;
 
+    /*
+     * Gets or sets the disk configuration.
+     */
+    @JsonProperty(value = "diskConfiguration")
+    private DiskConfiguration diskConfiguration;
+
+    /** Creates an instance of DatabaseConfiguration class. */
+    public DatabaseConfiguration() {
+    }
+
     /**
      * Get the databaseType property: The database type.
      *
@@ -117,6 +127,26 @@ public final class DatabaseConfiguration {
     }
 
     /**
+     * Get the diskConfiguration property: Gets or sets the disk configuration.
+     *
+     * @return the diskConfiguration value.
+     */
+    public DiskConfiguration diskConfiguration() {
+        return this.diskConfiguration;
+    }
+
+    /**
+     * Set the diskConfiguration property: Gets or sets the disk configuration.
+     *
+     * @param diskConfiguration the diskConfiguration value to set.
+     * @return the DatabaseConfiguration object itself.
+     */
+    public DatabaseConfiguration withDiskConfiguration(DiskConfiguration diskConfiguration) {
+        this.diskConfiguration = diskConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -134,6 +164,9 @@ public final class DatabaseConfiguration {
                         "Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
+        }
+        if (diskConfiguration() != null) {
+            diskConfiguration().validate();
         }
     }
 

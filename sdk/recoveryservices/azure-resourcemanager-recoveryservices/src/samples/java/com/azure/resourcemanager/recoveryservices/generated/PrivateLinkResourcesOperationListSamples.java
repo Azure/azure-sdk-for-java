@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResourcesOperation List. */
 public final class PrivateLinkResourcesOperationListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListPrivateLinkResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ListPrivateLinkResources.json
      */
     /**
      * Sample code: List PrivateLinkResources.
@@ -18,6 +16,6 @@ public final class PrivateLinkResourcesOperationListSamples {
      */
     public static void listPrivateLinkResources(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.privateLinkResourcesOperations().list("petesting", "pemsi-ecy-rsv2", Context.NONE);
+        manager.privateLinkResourcesOperations().list("petesting", "pemsi-ecy-rsv2", com.azure.core.util.Context.NONE);
     }
 }

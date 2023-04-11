@@ -31,22 +31,6 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String workspaceName,
         String kustoPoolName,
@@ -69,6 +53,22 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String workspaceName,
+        String kustoPoolName,
+        String resourceGroupName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        CheckNameResultInner inner =
+            this
+                .serviceClient()
+                .checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, principalAssignmentName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<ClusterPrincipalAssignment> list(
         String workspaceName, String kustoPoolName, String resourceGroupName) {
         PagedIterable<ClusterPrincipalAssignmentInner> inner =
@@ -81,17 +81,6 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         PagedIterable<ClusterPrincipalAssignmentInner> inner =
             this.serviceClient().list(workspaceName, kustoPoolName, resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
-    }
-
-    public ClusterPrincipalAssignment get(
-        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
-        ClusterPrincipalAssignmentInner inner =
-            this.serviceClient().get(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
-        if (inner != null) {
-            return new ClusterPrincipalAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ClusterPrincipalAssignment> getWithResponse(
@@ -110,6 +99,17 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterPrincipalAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterPrincipalAssignment get(
+        String workspaceName, String kustoPoolName, String principalAssignmentName, String resourceGroupName) {
+        ClusterPrincipalAssignmentInner inner =
+            this.serviceClient().get(workspaceName, kustoPoolName, principalAssignmentName, resourceGroupName);
+        if (inner != null) {
+            return new ClusterPrincipalAssignmentImpl(inner, this.manager());
         } else {
             return null;
         }

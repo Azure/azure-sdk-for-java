@@ -27,6 +27,10 @@ public final class ContainerAppInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of ContainerAppInner class. */
+    public ContainerAppInner() {
+    }
+
     /**
      * Get the innerProperties property: ContainerApp resource specific properties.
      *

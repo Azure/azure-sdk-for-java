@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -23,21 +24,21 @@ public final class ForecastDataset {
      * grouping are provided.
      */
     @JsonProperty(value = "configuration")
-    private QueryDatasetConfiguration configuration;
+    private ForecastDatasetConfiguration configuration;
 
     /*
      * Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias
      * for the aggregated column. forecast can have up to 2 aggregation clauses.
      */
-    @JsonProperty(value = "aggregation")
+    @JsonProperty(value = "aggregation", required = true)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, QueryAggregation> aggregation;
+    private Map<String, ForecastAggregation> aggregation;
 
     /*
      * Has filter expression to use in the forecast.
      */
     @JsonProperty(value = "filter")
-    private QueryFilter filter;
+    private ForecastFilter filter;
 
     /** Creates an instance of ForecastDataset class. */
     public ForecastDataset() {
@@ -69,7 +70,7 @@ public final class ForecastDataset {
      *
      * @return the configuration value.
      */
-    public QueryDatasetConfiguration configuration() {
+    public ForecastDatasetConfiguration configuration() {
         return this.configuration;
     }
 
@@ -80,7 +81,7 @@ public final class ForecastDataset {
      * @param configuration the configuration value to set.
      * @return the ForecastDataset object itself.
      */
-    public ForecastDataset withConfiguration(QueryDatasetConfiguration configuration) {
+    public ForecastDataset withConfiguration(ForecastDatasetConfiguration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -91,7 +92,7 @@ public final class ForecastDataset {
      *
      * @return the aggregation value.
      */
-    public Map<String, QueryAggregation> aggregation() {
+    public Map<String, ForecastAggregation> aggregation() {
         return this.aggregation;
     }
 
@@ -102,7 +103,7 @@ public final class ForecastDataset {
      * @param aggregation the aggregation value to set.
      * @return the ForecastDataset object itself.
      */
-    public ForecastDataset withAggregation(Map<String, QueryAggregation> aggregation) {
+    public ForecastDataset withAggregation(Map<String, ForecastAggregation> aggregation) {
         this.aggregation = aggregation;
         return this;
     }
@@ -112,7 +113,7 @@ public final class ForecastDataset {
      *
      * @return the filter value.
      */
-    public QueryFilter filter() {
+    public ForecastFilter filter() {
         return this.filter;
     }
 
@@ -122,7 +123,7 @@ public final class ForecastDataset {
      * @param filter the filter value to set.
      * @return the ForecastDataset object itself.
      */
-    public ForecastDataset withFilter(QueryFilter filter) {
+    public ForecastDataset withFilter(ForecastFilter filter) {
         this.filter = filter;
         return this;
     }
@@ -136,7 +137,11 @@ public final class ForecastDataset {
         if (configuration() != null) {
             configuration().validate();
         }
-        if (aggregation() != null) {
+        if (aggregation() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property aggregation in model ForecastDataset"));
+        } else {
             aggregation()
                 .values()
                 .forEach(
@@ -150,4 +155,6 @@ public final class ForecastDataset {
             filter().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ForecastDataset.class);
 }

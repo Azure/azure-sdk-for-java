@@ -18,15 +18,15 @@ public final class AssetFilterInnerTests {
         AssetFilterInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":6050958993805304885,\"endTimestamp\":988487328349657078,\"presentationWindowDuration\":4353962267137944263,\"liveBackoffDuration\":4045271831667825207,\"timescale\":5126500575476383860,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":974818519},\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]},{\"trackSelections\":[]},{\"trackSelections\":[]}]},\"id\":\"xnkjzkdesl\",\"name\":\"vlopwiyighx\",\"type\":\"kdwzbaiuebbaumny\"}")
+                    "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1296946549223799191,\"endTimestamp\":6623329081283573494,\"presentationWindowDuration\":5136104931618105926,\"liveBackoffDuration\":7084872588122570574,\"timescale\":8771297433888765314,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":1665401728},\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]},\"id\":\"xpkd\",\"name\":\"zb\",\"type\":\"iuebbaumny\"}")
                 .toObject(AssetFilterInner.class);
-        Assertions.assertEquals(6050958993805304885L, model.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(988487328349657078L, model.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(4353962267137944263L, model.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(4045271831667825207L, model.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(5126500575476383860L, model.presentationTimeRange().timescale());
+        Assertions.assertEquals(1296946549223799191L, model.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(6623329081283573494L, model.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(5136104931618105926L, model.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(7084872588122570574L, model.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(8771297433888765314L, model.presentationTimeRange().timescale());
         Assertions.assertEquals(true, model.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(974818519, model.firstQuality().bitrate());
+        Assertions.assertEquals(1665401728, model.firstQuality().bitrate());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,27 +35,25 @@ public final class AssetFilterInnerTests {
             new AssetFilterInner()
                 .withPresentationTimeRange(
                     new PresentationTimeRange()
-                        .withStartTimestamp(6050958993805304885L)
-                        .withEndTimestamp(988487328349657078L)
-                        .withPresentationWindowDuration(4353962267137944263L)
-                        .withLiveBackoffDuration(4045271831667825207L)
-                        .withTimescale(5126500575476383860L)
+                        .withStartTimestamp(1296946549223799191L)
+                        .withEndTimestamp(6623329081283573494L)
+                        .withPresentationWindowDuration(5136104931618105926L)
+                        .withLiveBackoffDuration(7084872588122570574L)
+                        .withTimescale(8771297433888765314L)
                         .withForceEndTimestamp(true))
-                .withFirstQuality(new FirstQuality().withBitrate(974818519))
+                .withFirstQuality(new FirstQuality().withBitrate(1665401728))
                 .withTracks(
                     Arrays
                         .asList(
                             new FilterTrackSelection().withTrackSelections(Arrays.asList()),
-                            new FilterTrackSelection().withTrackSelections(Arrays.asList()),
-                            new FilterTrackSelection().withTrackSelections(Arrays.asList()),
                             new FilterTrackSelection().withTrackSelections(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(AssetFilterInner.class);
-        Assertions.assertEquals(6050958993805304885L, model.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(988487328349657078L, model.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(4353962267137944263L, model.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(4045271831667825207L, model.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(5126500575476383860L, model.presentationTimeRange().timescale());
+        Assertions.assertEquals(1296946549223799191L, model.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(6623329081283573494L, model.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(5136104931618105926L, model.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(7084872588122570574L, model.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(8771297433888765314L, model.presentationTimeRange().timescale());
         Assertions.assertEquals(true, model.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(974818519, model.firstQuality().bitrate());
+        Assertions.assertEquals(1665401728, model.firstQuality().bitrate());
     }
 }

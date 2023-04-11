@@ -24,6 +24,10 @@ public final class RecoverableSqlPoolListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RecoverableSqlPoolListResult class. */
+    public RecoverableSqlPoolListResult() {
+    }
+
     /**
      * Get the value property: A list of recoverable sql pool.
      *

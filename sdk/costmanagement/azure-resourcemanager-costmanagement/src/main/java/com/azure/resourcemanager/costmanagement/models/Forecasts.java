@@ -34,9 +34,9 @@ public interface Forecasts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response}.
+     * @return result of forecast along with {@link Response}.
      */
-    Response<QueryResult> usageWithResponse(
+    Response<ForecastResult> usageWithResponse(
         String scope, ForecastDefinition parameters, String filter, Context context);
 
     /**
@@ -60,9 +60,9 @@ public interface Forecasts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
-    QueryResult usage(String scope, ForecastDefinition parameters);
+    ForecastResult usage(String scope, ForecastDefinition parameters);
 
     /**
      * Lists the forecast charges for external cloud provider type defined.
@@ -80,9 +80,9 @@ public interface Forecasts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query along with {@link Response}.
+     * @return result of forecast along with {@link Response}.
      */
-    Response<QueryResult> externalCloudProviderUsageWithResponse(
+    Response<ForecastResult> externalCloudProviderUsageWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters,
@@ -101,9 +101,9 @@ public interface Forecasts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of query.
+     * @return result of forecast.
      */
-    QueryResult externalCloudProviderUsage(
+    ForecastResult externalCloudProviderUsage(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
         ForecastDefinition parameters);

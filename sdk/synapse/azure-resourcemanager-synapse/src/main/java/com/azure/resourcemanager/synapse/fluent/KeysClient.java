@@ -46,20 +46,6 @@ public interface KeysClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyInner get(String resourceGroupName, String workspaceName, String keyName);
-
-    /**
-     * Gets a workspace key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param keyName The name of the workspace key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,19 +56,18 @@ public interface KeysClient {
     Response<KeyInner> getWithResponse(String resourceGroupName, String workspaceName, String keyName, Context context);
 
     /**
-     * Creates or updates a workspace key.
+     * Gets a workspace key.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
-     * @param keyProperties Key put request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyInner createOrUpdate(String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties);
+    KeyInner get(String resourceGroupName, String workspaceName, String keyName);
 
     /**
      * Creates or updates a workspace key.
@@ -102,18 +87,19 @@ public interface KeysClient {
         String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties, Context context);
 
     /**
-     * Deletes a workspace key.
+     * Creates or updates a workspace key.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
+     * @param keyProperties Key put request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyInner delete(String resourceGroupName, String workspaceName, String keyName);
+    KeyInner createOrUpdate(String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties);
 
     /**
      * Deletes a workspace key.
@@ -130,4 +116,18 @@ public interface KeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<KeyInner> deleteWithResponse(
         String resourceGroupName, String workspaceName, String keyName, Context context);
+
+    /**
+     * Deletes a workspace key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param keyName The name of the workspace key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KeyInner delete(String resourceGroupName, String workspaceName, String keyName);
 }

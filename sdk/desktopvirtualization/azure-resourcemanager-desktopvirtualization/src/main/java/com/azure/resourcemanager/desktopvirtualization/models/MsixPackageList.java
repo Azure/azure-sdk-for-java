@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackage
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** MsixPackageList List of MSIX Package definitions. */
+/**
+ * MsixPackageList
+ *
+ * <p>List of MSIX Package definitions.
+ */
 @Fluent
 public final class MsixPackageList {
     /*
@@ -23,6 +27,10 @@ public final class MsixPackageList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of MsixPackageList class. */
+    public MsixPackageList() {
+    }
 
     /**
      * Get the value property: List of MSIX Package definitions.

@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** A signed identifier. */
+@JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
 public final class SignedIdentifier {
     /*
@@ -21,6 +23,9 @@ public final class SignedIdentifier {
      */
     @JsonProperty(value = "AccessPolicy", required = true)
     private AccessPolicy accessPolicy;
+
+    /** Creates an instance of SignedIdentifier class. */
+    public SignedIdentifier() {}
 
     /**
      * Get the id property: A unique id.

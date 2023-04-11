@@ -27,6 +27,10 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlDedicatedGatewayRegionalServiceResource> locations;
 
+    /** Creates an instance of SqlDedicatedGatewayServiceResourceProperties class. */
+    public SqlDedicatedGatewayServiceResourceProperties() {
+    }
+
     /**
      * Get the sqlDedicatedGatewayEndpoint property: SqlDedicatedGateway endpoint for the service.
      *

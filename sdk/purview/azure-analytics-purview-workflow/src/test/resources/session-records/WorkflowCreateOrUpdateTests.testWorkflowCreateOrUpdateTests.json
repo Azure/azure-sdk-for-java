@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflows/4afb5752-e47f-43a1-8ba7-c696bf8d2745?api-version=2022-05-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8ab3abf2-563b-4624-b6b8-acabe053f768",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1738",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "42429647-d235-4617-b4af-cd28dd573379",
+      "Body" : "{\"id\":\"4afb5752-e47f-43a1-8ba7-c696bf8d2745\",\"triggers\":[{\"type\":\"when_term_creation_is_requested\",\"underGlossaryHierarchy\":\"/glossaries/20031e20-b4df-4a66-a61d-1b0716f3fa48\"}],\"createdTime\":\"2023-02-03T10:02:35.160618994Z\",\"createdBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"lastUpdateTime\":\"2023-02-03T10:02:35.160618994Z\",\"updatedBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"name\":\"Create glossary term workflow\",\"isEnabled\":true,\"description\":\"\",\"actionDag\":{\"actions\":{\"Startandwaitforanapproval\":{\"type\":\"Approval\",\"inputs\":{\"parameters\":{\"approvalType\":\"PendingOnAll\",\"title\":\"ApprovalRequestforCreateGlossaryTerm\",\"assignedTo\":[\"eece94d9-0619-4669-bb8a-d6ecec5220bc\"]}},\"runAfter\":{}},\"Condition\":{\"type\":\"If\",\"expression\":{\"and\":[{\"equals\":[\"@outputs('Startandwaitforanapproval')['body/outcome']\",\"Approved\"]}]},\"actions\":{\"Createglossaryterm\":{\"type\":\"CreateTerm\",\"runAfter\":{}},\"Sendemailnotification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailSubject\":\"GlossaryTermCreate-APPROVED\",\"emailMessage\":\"YourrequestforGlossaryTerm@{triggerBody()['request']['term']['name']}isapproved.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"]}},\"runAfter\":{\"Createglossaryterm\":[\"Succeeded\"]},\"runtimeConfiguration\":{\"secureInput\":false,\"secureOutput\":false}}},\"else\":{\"actions\":{\"Sendrejectemailnotification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailSubject\":\"GlossaryTermCreate-REJECTED\",\"emailMessage\":\"YourrequestforGlossaryTerm@{triggerBody()['request']['term']['name']}isrejected.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"]}},\"runAfter\":{},\"runtimeConfiguration\":{\"secureInput\":false,\"secureOutput\":false}}}},\"runAfter\":{\"Startandwaitforanapproval\":[\"Succeeded\"]}}}}}",
+      "Date" : "Fri, 03 Feb 2023 10:02:38 GMT",
+      "x-ms-client-request-id" : "8ab3abf2-563b-4624-b6b8-acabe053f768",
+      "x-ms-correlation-request-id" : "b52401ef-8eaa-4595-b5b1-c083fcf9a962",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

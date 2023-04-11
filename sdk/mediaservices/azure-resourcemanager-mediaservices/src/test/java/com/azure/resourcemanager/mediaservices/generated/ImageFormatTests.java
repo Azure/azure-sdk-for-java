@@ -13,15 +13,15 @@ public final class ImageFormatTests {
     public void testDeserialize() throws Exception {
         ImageFormat model =
             BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ImageFormat\",\"filenamePattern\":\"fxtsgum\"}")
+                .fromString("{\"@odata.type\":\"#Microsoft.Media.ImageFormat\",\"filenamePattern\":\"widf\"}")
                 .toObject(ImageFormat.class);
-        Assertions.assertEquals("fxtsgum", model.filenamePattern());
+        Assertions.assertEquals("widf", model.filenamePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageFormat model = new ImageFormat().withFilenamePattern("fxtsgum");
+        ImageFormat model = new ImageFormat().withFilenamePattern("widf");
         model = BinaryData.fromObject(model).toObject(ImageFormat.class);
-        Assertions.assertEquals("fxtsgum", model.filenamePattern());
+        Assertions.assertEquals("widf", model.filenamePattern());
     }
 }

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OS. */
+/** The OS of agent machine. */
 public final class OS extends ExpandableStringEnum<OS> {
     /** Static value Windows for OS. */
     public static final OS WINDOWS = fromString("Windows");
 
     /** Static value Linux for OS. */
     public static final OS LINUX = fromString("Linux");
+
+    /**
+     * Creates a new instance of OS value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OS() {
+    }
 
     /**
      * Creates or finds a OS from its string representation.
@@ -27,7 +36,11 @@ public final class OS extends ExpandableStringEnum<OS> {
         return fromString(name, OS.class);
     }
 
-    /** @return known OS values. */
+    /**
+     * Gets known OS values.
+     *
+     * @return known OS values.
+     */
     public static Collection<OS> values() {
         return values(OS.class);
     }

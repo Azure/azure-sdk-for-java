@@ -43,7 +43,11 @@ public class MediaStreamingAudioData extends MediaStreamingPackageBase {
     MediaStreamingAudioData(String data, String timestamp, String participantRawID, boolean silent) {
         this.data = data;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        this.participant = new CommunicationUserIdentifier(participantRawID);
+        if (participantRawID != null && !participantRawID.isEmpty()) {
+            this.participant = new CommunicationUserIdentifier(participantRawID);
+        } else {
+            participant = null;
+        }
         this.silent = silent;
     }
 

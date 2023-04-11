@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.implementation.jackson.ObjectMapperShim;
+import com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;

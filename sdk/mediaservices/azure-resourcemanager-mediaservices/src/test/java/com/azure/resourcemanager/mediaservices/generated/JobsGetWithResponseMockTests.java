@@ -32,7 +32,7 @@ public final class JobsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"created\":\"2021-04-25T00:58:51Z\",\"state\":\"Queued\",\"description\":\"jptmcgsbost\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-05-03T01:44:42Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{\"neqvcwwyyurmo\":\"utmzlbiojlvfhrbb\",\"rsnm\":\"hppr\"},\"startTime\":\"2021-07-18T02:05:58Z\",\"endTime\":\"2021-03-23T11:52:12Z\"},\"id\":\"jnhlbkpbzpcpiljh\",\"name\":\"hzvechndbnwieho\",\"type\":\"ewjwiuubw\"}";
+            "{\"properties\":{\"created\":\"2021-06-12T10:34:29Z\",\"state\":\"Scheduled\",\"description\":\"wrtmjfjmy\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-04-05T08:29:20Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{\"vnekhenlusfnrdtj\":\"x\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\",\"ughtuqfecjxeygtu\":\"wkasiziesf\",\"cbuewmrswnjlxuz\":\"xu\"},\"startTime\":\"2021-07-05T07:48:33Z\",\"endTime\":\"2021-04-25T15:22:17Z\"},\"id\":\"xjbaqehgpdohzjq\",\"name\":\"tu\",\"type\":\"o\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class JobsGetWithResponseMockTests {
         Job response =
             manager
                 .jobs()
-                .getWithResponse("bkwvzg", "zvd", "bzdixzmq", "noda", com.azure.core.util.Context.NONE)
+                .getWithResponse("rjvzuyt", "rmlmuowo", "bauiropi", "nszonwpngaj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("jptmcgsbost", response.description());
+        Assertions.assertEquals("wrtmjfjmy", response.description());
         Assertions.assertEquals(Priority.LOW, response.priority());
-        Assertions.assertEquals("utmzlbiojlvfhrbb", response.correlationData().get("neqvcwwyyurmo"));
+        Assertions.assertEquals("x", response.correlationData().get("vnekhenlusfnrdtj"));
     }
 }

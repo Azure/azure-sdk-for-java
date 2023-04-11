@@ -74,6 +74,10 @@ public final class KustoPoolProperties {
     @JsonProperty(value = "workspaceUID")
     private String workspaceUid;
 
+    /** Creates an instance of KustoPoolProperties class. */
+    public KustoPoolProperties() {
+    }
+
     /**
      * Get the state property: The state of the resource.
      *

@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f8b62ad-15fc-4c2f-9a9f-5aa1c4d51dc8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "2934",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31485819066_4638eaaa-0c0c-4d43-b59e-24755b9d5d23?api-version=2023-02-28-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "4638eaaa-0c0c-4d43-b59e-24755b9d5d23",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 03 Apr 2023 19:08:56 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31485819066_4638eaaa-0c0c-4d43-b59e-24755b9d5d23?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c24fcdd0-0e41-48d2-8978-392f8a519f6e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "21",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1ec7652d-a706-4839-9249-0fc590ebe2e9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31485819066_4638eaaa-0c0c-4d43-b59e-24755b9d5d23\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2023-04-03T19:08:53Z\",\n  \"lastUpdatedDateTime\": \"2023-04-03T19:08:57Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/d4e5e8e5-5598-42dc-be8b-6170111646ae?api-version=2023-02-28-preview\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"d4e5e8e5-5598-42dc-be8b-6170111646ae\": {\n        \"fieldSchema\": {\n          \"VISA_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"AMEX_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"MASTERCARD_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"AMEX_SELECTION_MARK\": 0.995,\n          \"MASTERCARD_SELECTION_MARK\": 0.995,\n          \"VISA_SELECTION_MARK\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"d4e5e8e5-5598-42dc-be8b-6170111646ae\",\n    \"createdDateTime\": \"2023-04-03T19:08:57Z\",\n    \"expirationDateTime\": \"2025-04-02T19:08:57Z\",\n    \"apiVersion\": \"2023-02-28-preview\"\n  }\n}",
+      "Date" : "Mon, 03 Apr 2023 19:09:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31485819066_4638eaaa-0c0c-4d43-b59e-24755b9d5d23?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "da0b9b6a-1007-4304-907b-19c97cc695c7"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "23",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "81e5593e-ac72-4efa-aaa6-cccc7aff6356",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31485819066_4638eaaa-0c0c-4d43-b59e-24755b9d5d23\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"succeeded\",\n  \"createdDateTime\": \"2023-04-03T19:08:53Z\",\n  \"lastUpdatedDateTime\": \"2023-04-03T19:08:57Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/d4e5e8e5-5598-42dc-be8b-6170111646ae?api-version=2023-02-28-preview\",\n  \"percentCompleted\": 100,\n  \"result\": {\n    \"docTypes\": {\n      \"d4e5e8e5-5598-42dc-be8b-6170111646ae\": {\n        \"fieldSchema\": {\n          \"VISA_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"AMEX_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          },\n          \"MASTERCARD_SELECTION_MARK\": {\n            \"type\": \"selectionMark\"\n          }\n        },\n        \"buildMode\": \"template\",\n        \"fieldConfidence\": {\n          \"AMEX_SELECTION_MARK\": 0.995,\n          \"MASTERCARD_SELECTION_MARK\": 0.995,\n          \"VISA_SELECTION_MARK\": 0.995\n        }\n      }\n    },\n    \"modelId\": \"d4e5e8e5-5598-42dc-be8b-6170111646ae\",\n    \"createdDateTime\": \"2023-04-03T19:08:57Z\",\n    \"expirationDateTime\": \"2025-04-02T19:08:57Z\",\n    \"apiVersion\": \"2023-02-28-preview\"\n  }\n}",
+      "Date" : "Mon, 03 Apr 2023 19:09:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/d4e5e8e5-5598-42dc-be8b-6170111646ae?api-version=2023-02-28-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a768d19f-6c9b-48d9-9baf-dec6f40c1513"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "x-envoy-upstream-service-time" : "319",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b0f3c63a-3795-4f98-90e1-292a8092aff2",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Mon, 03 Apr 2023 19:09:02 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

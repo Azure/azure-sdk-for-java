@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivityName;
 
 /** Samples for SqlPoolDataWarehouseUserActivities Get. */
@@ -21,6 +20,10 @@ public final class SqlPoolDataWarehouseUserActivitiesGetSamples {
         manager
             .sqlPoolDataWarehouseUserActivities()
             .getWithResponse(
-                "Default-SQL-SouthEastAsia", "testsvr", "testdb", DataWarehouseUserActivityName.CURRENT, Context.NONE);
+                "Default-SQL-SouthEastAsia",
+                "testsvr",
+                "testdb",
+                DataWarehouseUserActivityName.CURRENT,
+                com.azure.core.util.Context.NONE);
     }
 }

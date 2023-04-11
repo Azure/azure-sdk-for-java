@@ -21,7 +21,7 @@ import java.util.List;
 @Fluent
 public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     /*
-     * it contains absolute values like "AllBackup"\  / "FirstOfDay"\  / "FirstOfWeek"\  / "FirstOfMonth"
+     * it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" / "FirstOfMonth"
      * and should be part of AbsoluteMarker enum
      */
     @JsonProperty(value = "absoluteCriteria")
@@ -62,8 +62,8 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     }
 
     /**
-     * Get the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\
-     * / "FirstOfMonth" and should be part of AbsoluteMarker enum.
+     * Get the absoluteCriteria property: it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" /
+     * "FirstOfMonth" and should be part of AbsoluteMarker enum.
      *
      * @return the absoluteCriteria value.
      */
@@ -72,8 +72,8 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     }
 
     /**
-     * Set the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\
-     * / "FirstOfMonth" and should be part of AbsoluteMarker enum.
+     * Set the absoluteCriteria property: it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" /
+     * "FirstOfMonth" and should be part of AbsoluteMarker enum.
      *
      * @param absoluteCriteria the absoluteCriteria value to set.
      * @return the ScheduleBasedBackupCriteria object itself.

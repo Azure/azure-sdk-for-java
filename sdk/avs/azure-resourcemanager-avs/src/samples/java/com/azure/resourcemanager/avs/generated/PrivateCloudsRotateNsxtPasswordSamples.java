@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds RotateNsxtPassword. */
 public final class PrivateCloudsRotateNsxtPasswordSamples {
     /*
@@ -17,6 +15,6 @@ public final class PrivateCloudsRotateNsxtPasswordSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsRotateNsxtPassword(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().rotateNsxtPassword("group1", "cloud1", Context.NONE);
+        manager.privateClouds().rotateNsxtPassword("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

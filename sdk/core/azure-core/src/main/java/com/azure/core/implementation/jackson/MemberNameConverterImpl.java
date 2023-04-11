@@ -19,14 +19,13 @@ import com.fasterxml.jackson.databind.util.BeanUtil;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- *  Retrieves the JSON serialized property name from {@link Member}.
+ * Retrieves the JSON serialized property name from {@link Member}.
  */
 final class MemberNameConverterImpl implements MemberNameConverter {
     private static final ClientLogger LOGGER = new ClientLogger(MemberNameConverterImpl.class);
@@ -38,7 +37,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
     private static final MethodHandle FOR_POJO;
     private static final MethodHandle FIND_NAME_FOR_IS_GETTER;
     private static final MethodHandle FIND_NAME_FOR_REGULAR_GETTER;
-    private static final boolean USE_REFLECTION_FOR_MEMBER_NAME;
+    static final boolean USE_REFLECTION_FOR_MEMBER_NAME;
 
     private final ObjectMapper mapper;
 
@@ -52,16 +51,15 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         boolean useReflectionForMemberName = false;
 
         try {
-            Class<?> accessorNamingStrategyProviderClass = Class.forName(ACCESSOR_NAMING_STRATEGY_PROVIDER);
             Class<?> accessorNamingStrategyClass = Class.forName(ACCESSOR_NAMING_STRATEGY);
-            getAccessorNaming = publicLookup.findVirtual(MapperConfig.class, "getAccessorNaming",
-                MethodType.methodType(accessorNamingStrategyProviderClass));
-            forPojo = publicLookup.findVirtual(accessorNamingStrategyProviderClass, "forPOJO",
-                MethodType.methodType(accessorNamingStrategyClass, MapperConfig.class, AnnotatedClass.class));
-            findNameForIsGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForIsGetter",
-                MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
-            findNameForRegularGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForRegularGetter",
-                MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
+            Class<?> accessorNamingStrategyProviderClass = Class.forName(ACCESSOR_NAMING_STRATEGY_PROVIDER);
+            getAccessorNaming = publicLookup.unreflect(MapperConfig.class.getDeclaredMethod("getAccessorNaming"));
+            forPojo = publicLookup.unreflect(accessorNamingStrategyProviderClass.getDeclaredMethod("forPOJO",
+                MapperConfig.class, AnnotatedClass.class));
+            findNameForIsGetter = publicLookup.unreflect(accessorNamingStrategyClass.getDeclaredMethod(
+                "findNameForIsGetter", AnnotatedMethod.class, String.class));
+            findNameForRegularGetter = publicLookup.unreflect(accessorNamingStrategyClass.getDeclaredMethod(
+                "findNameForRegularGetter", AnnotatedMethod.class, String.class));
             useReflectionForMemberName = true;
         } catch (LinkageError | ReflectiveOperationException ex) {
             LOGGER.verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils. "

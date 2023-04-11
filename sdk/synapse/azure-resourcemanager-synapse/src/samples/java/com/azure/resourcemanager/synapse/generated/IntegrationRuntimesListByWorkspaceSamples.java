@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes ListByWorkspace. */
 public final class IntegrationRuntimesListByWorkspaceSamples {
     /*
@@ -17,6 +15,8 @@ public final class IntegrationRuntimesListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listIntegrationRuntimes(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.integrationRuntimes().listByWorkspace("exampleResourceGroup", "exampleWorkspace", Context.NONE);
+        manager
+            .integrationRuntimes()
+            .listByWorkspace("exampleResourceGroup", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.ResourceCertificateDetails;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceCertificateDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceCertificateDetails model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class ResourceCertificateDetailsTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T20:38:19Z"), model.validTo());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceCertificateDetails model =
             new ResourceCertificateDetails()
                 .withFriendlyName("izhwlrxy")

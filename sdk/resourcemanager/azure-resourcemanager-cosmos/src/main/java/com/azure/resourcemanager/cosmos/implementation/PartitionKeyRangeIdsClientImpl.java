@@ -56,7 +56,7 @@ public final class PartitionKeyRangeIdsClientImpl implements PartitionKeyRangeId
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface PartitionKeyRangeIdsService {
+    public interface PartitionKeyRangeIdsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"

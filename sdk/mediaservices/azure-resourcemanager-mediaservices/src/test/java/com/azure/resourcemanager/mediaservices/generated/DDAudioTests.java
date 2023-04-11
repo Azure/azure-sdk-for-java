@@ -14,26 +14,26 @@ public final class DDAudioTests {
         DDAudio model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.DDAudio\",\"channels\":2144403306,\"samplingRate\":402907816,\"bitrate\":554003670,\"label\":\"fbgofeljagrqmqh\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.DDAudio\",\"channels\":1224339207,\"samplingRate\":536315027,\"bitrate\":549450060,\"label\":\"sukokwbqplhl\"}")
                 .toObject(DDAudio.class);
-        Assertions.assertEquals("fbgofeljagrqmqh", model.label());
-        Assertions.assertEquals(2144403306, model.channels());
-        Assertions.assertEquals(402907816, model.samplingRate());
-        Assertions.assertEquals(554003670, model.bitrate());
+        Assertions.assertEquals("sukokwbqplhl", model.label());
+        Assertions.assertEquals(1224339207, model.channels());
+        Assertions.assertEquals(536315027, model.samplingRate());
+        Assertions.assertEquals(549450060, model.bitrate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DDAudio model =
             new DDAudio()
-                .withLabel("fbgofeljagrqmqh")
-                .withChannels(2144403306)
-                .withSamplingRate(402907816)
-                .withBitrate(554003670);
+                .withLabel("sukokwbqplhl")
+                .withChannels(1224339207)
+                .withSamplingRate(536315027)
+                .withBitrate(549450060);
         model = BinaryData.fromObject(model).toObject(DDAudio.class);
-        Assertions.assertEquals("fbgofeljagrqmqh", model.label());
-        Assertions.assertEquals(2144403306, model.channels());
-        Assertions.assertEquals(402907816, model.samplingRate());
-        Assertions.assertEquals(554003670, model.bitrate());
+        Assertions.assertEquals("sukokwbqplhl", model.label());
+        Assertions.assertEquals(1224339207, model.channels());
+        Assertions.assertEquals(536315027, model.samplingRate());
+        Assertions.assertEquals(549450060, model.bitrate());
     }
 }

@@ -18,7 +18,7 @@ public final class ContentKeyPolicyPropertiesInnerTests {
         ContentKeyPolicyPropertiesInner model =
             BinaryData
                 .fromString(
-                    "{\"policyId\":\"3854ad13-5a63-4d44-bf28-2862b9660e92\",\"created\":\"2021-04-20T00:02:54Z\",\"lastModified\":\"2021-11-02T08:41:46Z\",\"description\":\"bnbbeldawkz\",\"options\":[{\"policyOptionId\":\"37e4ee4c-36da-4018-8a52-7e38c70e431b\",\"name\":\"ourqhakau\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]}")
+                    "{\"policyId\":\"d74dd1bf-60e8-4184-a78d-3c5b7acb1ef7\",\"created\":\"2021-04-20T00:02:54Z\",\"lastModified\":\"2021-11-02T08:41:46Z\",\"description\":\"bnbbeldawkz\",\"options\":[{\"policyOptionId\":\"032636e8-063e-4335-94af-e4bc26e3c4e9\",\"name\":\"ourqhakau\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]}")
                 .toObject(ContentKeyPolicyPropertiesInner.class);
         Assertions.assertEquals("bnbbeldawkz", model.description());
         Assertions.assertEquals("ourqhakau", model.options().get(0).name());

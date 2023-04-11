@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps StopNetworkTrace. */
 public final class WebAppsStopNetworkTraceSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/StopWebSiteNetworkTrace.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/StopWebSiteNetworkTrace.json
      */
     /**
      * Sample code: Stop a currently running network trace operation for a site.
@@ -23,6 +21,6 @@ public final class WebAppsStopNetworkTraceSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .stopNetworkTraceWithResponse("testrg123", "SampleApp", Context.NONE);
+            .stopNetworkTraceWithResponse("testrg123", "SampleApp", com.azure.core.util.Context.NONE);
     }
 }

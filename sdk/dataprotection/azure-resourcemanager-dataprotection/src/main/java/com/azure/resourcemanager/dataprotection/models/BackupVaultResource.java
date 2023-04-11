@@ -55,6 +55,13 @@ public interface BackupVaultResource {
     String etag();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the identity property: DppIdentityDetails
      *
      * <p>Input Managed Identity Details.
@@ -62,13 +69,6 @@ public interface BackupVaultResource {
      * @return the identity value.
      */
     DppIdentityDetails identity();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the properties property: BackupVault
@@ -143,7 +143,7 @@ public interface BackupVaultResource {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group where the backup vault is present.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithProperties withExistingResourceGroup(String resourceGroupName);

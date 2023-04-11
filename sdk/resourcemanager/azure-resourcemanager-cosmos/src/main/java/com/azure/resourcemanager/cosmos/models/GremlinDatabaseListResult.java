@@ -18,6 +18,10 @@ public final class GremlinDatabaseListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GremlinDatabaseGetResultsInner> value;
 
+    /** Creates an instance of GremlinDatabaseListResult class. */
+    public GremlinDatabaseListResult() {
+    }
+
     /**
      * Get the value property: List of Gremlin databases and their properties.
      *

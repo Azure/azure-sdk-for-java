@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlResources GetSqlContainer. */
 public final class SqlResourcesGetSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlContainerGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlContainerGet.json
      */
     /**
      * Sample code: CosmosDBSqlContainerGet.
@@ -22,6 +20,7 @@ public final class SqlResourcesGetSqlContainerSamples {
             .manager()
             .serviceClient()
             .getSqlResources()
-            .getSqlContainerWithResponse("rgName", "ddb1", "databaseName", "containerName", Context.NONE);
+            .getSqlContainerWithResponse(
+                "rgName", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
     }
 }

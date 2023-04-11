@@ -13,13 +13,17 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -97,6 +101,8 @@ public class CosmosClientBuilder implements
     TokenCredentialTrait<CosmosClientBuilder>,
     AzureKeyCredentialTrait<CosmosClientBuilder>,
     EndpointTrait<CosmosClientBuilder> {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilder.class);
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -118,9 +124,12 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+
+    private WriteRetryPolicy writeRetryPolicy = WriteRetryPolicy.DISABLED;
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
+    private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -132,6 +141,7 @@ public class CosmosClientBuilder implements
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
+        this.resetNonIdempotentWriteRetryPolicy();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -185,8 +195,8 @@ public class CosmosClientBuilder implements
 
     /**
      * Enables connections sharing across multiple Cosmos Clients. The default is false.
-     *
-     *
+     * <br/>
+     * <br/>
      * <pre>
      * {@code
      * CosmosAsyncClient client1 = new CosmosClientBuilder()
@@ -206,13 +216,13 @@ public class CosmosClientBuilder implements
      * // when configured this way client1 and client2 will share connections when possible.
      * }
      * </pre>
-     *
+     * <br/>
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
-     *
+     * <br/>
      * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout
      * config) of the first instantiated client will be used for all other client instances.
-     *
+     * <br/>
      * @param connectionSharingAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
@@ -223,10 +233,10 @@ public class CosmosClientBuilder implements
 
     /**
      * Indicates whether connection sharing is enabled. The default is false.
-     *
+     * <br/>
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
-     *
+     * <br/>
      * @return the connection sharing across multiple clients
      */
     boolean isConnectionSharingAcrossClientsEnabled() {
@@ -235,7 +245,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Gets the token resolver
-     *
+     * <br/>
      * @return the token resolver
      */
     CosmosAuthorizationTokenResolver getAuthorizationTokenResolver() {
@@ -389,9 +399,9 @@ public class CosmosClientBuilder implements
 
     /**
      * Gets the {@link ConsistencyLevel} to be used
-     *
+     * <br/>
      * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
-     *
+     * <br/>
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel() {
@@ -400,7 +410,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the {@link ConsistencyLevel} to be used
-     *
+     * <br/>
      * By default, {@link ConsistencyLevel#SESSION} consistency will be used.
      *
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
@@ -430,6 +440,15 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Gets the {@link CosmosContainerProactiveInitConfig} to be used
+     *
+     * @return {@link CosmosContainerProactiveInitConfig}
+     * */
+    CosmosContainerProactiveInitConfig getProactiveContainerInitConfig() {
+        return proactiveContainerInitConfig;
+    }
+
+    /**
      * Sets the {@link AzureKeyCredential} to be used
      *
      * @param credential {@link AzureKeyCredential}
@@ -448,11 +467,11 @@ public class CosmosClientBuilder implements
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <br/>
      * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it
      * on the client.
-     *
+     * <br/>
      * By-default, this is false.
      *
      * @return a boolean indicating whether payload will be included in the response or not
@@ -464,12 +483,12 @@ public class CosmosClientBuilder implements
     /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <br/>
      * If set to false (which is by default), service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
+     * <br/>
      * This feature does not impact RU usage for read or write operations.
-     *
+     * <br/>
      * By-default, this is false.
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included in the response or not
@@ -503,7 +522,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the default DIRECT connection configuration to be used.
-     *
+     * <br/>
      * By default, the builder is initialized with directMode()
      *
      * @return current CosmosClientBuilder
@@ -515,7 +534,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Sets the DIRECT connection configuration to be used.
-     *
+     * <br/>
      * By default, the builder is initialized with directMode()
      *
      * @param directConnectionConfig direct connection configuration
@@ -529,9 +548,9 @@ public class CosmosClientBuilder implements
     /**
      * Sets the DIRECT connection configuration to be used.
      * gatewayConnectionConfig - represents basic configuration to be used for gateway client.
-     *
+     * <br/>
      * Even in direct connection mode, some of the meta data operations go through gateway client,
-     *
+     * <br/>
      * Setting gateway connection config in this API doesn't affect the connection mode,
      * which will be Direct in this case.
      *
@@ -643,20 +662,6 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
-            ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor();
-
-        Boolean explicitlySetInConfig = accessor.isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
-
-        if (explicitlySetInConfig != null) {
-            CosmosClientTelemetryConfig newTelemetryConfig = accessor
-                .createSnapshot(this.clientTelemetryConfig, clientTelemetryEnabled);
-            accessor.resetIsSendClientTelemetryToServiceEnabled(newTelemetryConfig);
-            this.clientTelemetryConfig = newTelemetryConfig;
-        }
-
         this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
         return this;
     }
@@ -677,6 +682,107 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder readRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+        return this;
+    }
+
+    /**
+     * Enables automatic retries for write operations even when the SDK can't
+     * guarantee that they are idempotent. This is the default behavior for the entire Cosmos client - the policy can be
+     * overridden for individual operations in the request options.
+     * <br/>>
+     * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
+     * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch
+     * operations by default (unless overridden in the request options) retries are always disabled by default.
+     * <br/>
+     * - Create: retries can result in surfacing (more) 409-Conflict requests to the application when a retry tries
+     * to create a document that the initial attempt successfully created. When enabling
+     * useTrackingIdPropertyForCreateAndReplace this can be avoided for 409-Conflict caused by retries.
+     * <br/>
+     * - Replace: retries can result in surfacing (more) 412-Precondition failure requests to the application when a
+     * replace operations are using a pre-condition check (etag) and a retry tries to update a document that the
+     * initial attempt successfully updated (causing the etag to change). When enabling
+     * useTrackingIdPropertyForCreateAndReplace this can be avoided for 412-Precondition failures caused by retries.
+     * <br/>
+     * - Delete: retries can result in surfacing (more) 404-NotFound requests when a delete operation is retried and the
+     * initial attempt succeeded. Ideally, write retries should only be enabled when applications can gracefully
+     * handle 404 - Not Found.
+     * <br/>
+     * - Upsert: retries can result in surfacing a 200 - looking like the document was updated when actually the
+     * document has been created by the initial attempt - so logically within the same operation. This will only
+     * impact applications who have special casing for 201 vs. 200 for upsert operations.
+     * <br/>
+     * Patch: retries for patch can but will not always be idempotent - it completely depends on the patch operations
+     * being executed and the precondition filters being used. Before enabling write retries for patch this needs
+     * to be carefully reviewed and tests - which is wht retries for patch can only be enabled on request options
+     * - any CosmosClient wide configuration will be ignored.
+     * <br/>
+     * Bulk/Delete by PK/Transactional Batch/Stroed Procedure execution: No automatic retries are supported.
+     * @param nonIdempotentWriteRetriesEnabled  a flag indicating whether the SDK should enable automatic retries for
+     * an operation when idempotency can't be guaranteed because for the previous attempt a request has been sent
+     * on the network.
+     * @param useTrackingIdPropertyForCreateAndReplace a flag indicating whether write operations can use the
+     * trackingId system property '/_trackingId' to allow identification of conflicts and pre-condition failures due
+     * to retries. If enabled, each document being created or replaced will have an additional '/_trackingId' property
+     * for which the value will be updated by the SDK. If it is not desired to add this new json property (for example
+     * due to the RU-increase based on the payload size or because it causes documents to exceed the max payload size
+     * upper limit), the usage of this system property can be disabled by setting this parameter to false. This means
+     * there could be a higher level of 409/312 due to retries - and applications would need to handle them gracefully
+     * on their own.
+     * @return the CosmosItemRequestOptions
+     */
+    CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean useTrackingIdPropertyForCreateAndReplace) {
+
+        if (nonIdempotentWriteRetriesEnabled) {
+            if (useTrackingIdPropertyForCreateAndReplace) {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
+            } else {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
+            }
+        } else {
+            this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
+        }
+        return this;
+    }
+
+    WriteRetryPolicy getNonIdempotentWriteRetryPolicy()
+    {
+        return this.writeRetryPolicy;
+    }
+
+    void resetNonIdempotentWriteRetryPolicy()
+    {
+        String writePolicyName = Configs.getNonIdempotentWriteRetryPolicy();
+        if (writePolicyName != null) {
+            if (writePolicyName.equalsIgnoreCase("NO_RETRIES")) {
+                this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
+                return;
+            } else if (writePolicyName.equalsIgnoreCase("WITH_TRACKING_ID")) {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_TRACKING_ID;
+                return;
+            } else if (writePolicyName.equalsIgnoreCase("WITH_RETRIES")) {
+                this.writeRetryPolicy = WriteRetryPolicy.WITH_RETRIES;
+                return;
+            }
+        }
+        this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
+    }
+
+    /**
+     * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
+     * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
+     * obtained from the first <em>k</em> preferred regions where <em>k</em> evaluates to {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}.
+     *
+     * <p>
+     *     Use the {@link CosmosContainerProactiveInitConfigBuilder} class to instantiate {@link CosmosContainerProactiveInitConfig} class
+     * </p>
+     * @param proactiveContainerInitConfig which encapsulates a list of container identities and no of
+     *                                     proactive connection regions
+     * @return current CosmosClientBuilder
+     * */
+    public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         return this;
     }
 
@@ -764,8 +870,6 @@ public class CosmosClientBuilder implements
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
 
-        assert(this.clientTelemetryEnabledOverride == null || explicitlySetInConfig == null);
-
         if (this.clientTelemetryEnabledOverride != null) {
             return this.clientTelemetryEnabledOverride;
         }
@@ -829,9 +933,14 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosAsyncClient(this);
+        CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
+        cosmosAsyncClient.openConnectionsAndInitCaches();
+        logStartupInfo(stopwatch, cosmosAsyncClient);
+        return cosmosAsyncClient;
     }
 
     /**
@@ -840,14 +949,18 @@ public class CosmosClientBuilder implements
      * @return CosmosClient
      */
     public CosmosClient buildClient() {
-
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosClient(this);
+        CosmosClient cosmosClient = new CosmosClient(this);
+        cosmosClient.openConnectionsAndInitCaches();
+        logStartupInfo(stopwatch, cosmosClient.asyncClient());
+        return cosmosClient;
     }
 
     //  Connection policy has to be built before it can be used by this builder
-    private void buildConnectionPolicy() {
+    ConnectionPolicy buildConnectionPolicy() {
         if (this.directConnectionConfig != null) {
             //  Check if the user passed additional gateway connection configuration
             //  If this is null, initialize with default values
@@ -864,6 +977,7 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        return this.connectionPolicy;
     }
 
     private void validateConfig() {
@@ -883,6 +997,12 @@ public class CosmosClientBuilder implements
                     LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
                 }
             );
+        }
+
+        if (proactiveContainerInitConfig != null) {
+            Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
+            Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
+                    "cannot be greater than the no.of preferred regions");
         }
 
         ifThrowIllegalArgException(this.serviceEndpoint == null,
@@ -913,6 +1033,23 @@ public class CosmosClientBuilder implements
     private void ifThrowIllegalArgException(boolean value, String error) {
         if (value) {
             throw new IllegalArgumentException(error);
+        }
+    }
+
+    private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
+        stopwatch.stop();
+
+        if (logger.isInfoEnabled()) {
+            long time = stopwatch.getTime();
+            // NOTE: if changing the logging below - do not log any confidential info like master key credentials etc.
+            logger.info("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
+                    "configuration: serviceEndpoint [{}], preferredRegions [{}], connectionPolicy [{}], " +
+                    "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}].",
+                client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(),
+                getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
+                isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig());
         }
     }
 
@@ -950,6 +1087,11 @@ public class CosmosClientBuilder implements
                 }
 
                 @Override
+                public ConnectionPolicy buildConnectionPolicy(CosmosClientBuilder builder) {
+                    return builder.buildConnectionPolicy();
+                }
+
+                @Override
                 public Configs getConfigs(CosmosClientBuilder builder) {
                     return builder.configs();
                 }
@@ -957,6 +1099,11 @@ public class CosmosClientBuilder implements
                 @Override
                 public ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder) {
                     return builder.getConsistencyLevel();
+                }
+
+                @Override
+                public String getEndpoint(CosmosClientBuilder builder) {
+                    return builder.getEndpoint();
                 }
             });
     }

@@ -16,6 +16,10 @@ public final class ClfsTarget {
     @JsonProperty(value = "target")
     private String target;
 
+    /** Creates an instance of ClfsTarget class. */
+    public ClfsTarget() {
+    }
+
     /**
      * Get the target property: Resource ID of storage container.
      *

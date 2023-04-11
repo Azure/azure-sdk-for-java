@@ -30,10 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public final class LongRunningOperations {
     public void beginUploadTestFile() {
         // BEGIN: java-longRunningOperations-sample-beginUploadTestFile
-        LoadTestAdministrationClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationClient();
+                .buildClient();
 
         String inputTestId = "12345678-1234-1234-1234-123456789abc";
         String inputFileName = "input-test-file.jmx";
@@ -85,10 +85,10 @@ public final class LongRunningOperations {
 
     public void beginTestRun() {
         // BEGIN: java-longRunningOperations-sample-beginTestRun
-        LoadTestRunClient client = new LoadTestingClientBuilder()
+        LoadTestRunClient client = new LoadTestRunClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestRunClient();
+                .buildClient();
 
         String inputTestRunId = "12345678-1234-1234-1234-123456789abc";
         String inputTestId = "87654321-1234-1234-1234-123456789abc";

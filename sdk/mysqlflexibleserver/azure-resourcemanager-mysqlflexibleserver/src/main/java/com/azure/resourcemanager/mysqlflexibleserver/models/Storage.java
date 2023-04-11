@@ -34,6 +34,16 @@ public final class Storage {
     @JsonProperty(value = "storageSku", access = JsonProperty.Access.WRITE_ONLY)
     private String storageSku;
 
+    /*
+     * Enable IO Auto Scaling or not.
+     */
+    @JsonProperty(value = "autoIoScaling")
+    private EnableStatusEnum autoIoScaling;
+
+    /** Creates an instance of Storage class. */
+    public Storage() {
+    }
+
     /**
      * Get the storageSizeGB property: Max storage size allowed for a server.
      *
@@ -101,6 +111,26 @@ public final class Storage {
      */
     public String storageSku() {
         return this.storageSku;
+    }
+
+    /**
+     * Get the autoIoScaling property: Enable IO Auto Scaling or not.
+     *
+     * @return the autoIoScaling value.
+     */
+    public EnableStatusEnum autoIoScaling() {
+        return this.autoIoScaling;
+    }
+
+    /**
+     * Set the autoIoScaling property: Enable IO Auto Scaling or not.
+     *
+     * @param autoIoScaling the autoIoScaling value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withAutoIoScaling(EnableStatusEnum autoIoScaling) {
+        this.autoIoScaling = autoIoScaling;
+        return this;
     }
 
     /**

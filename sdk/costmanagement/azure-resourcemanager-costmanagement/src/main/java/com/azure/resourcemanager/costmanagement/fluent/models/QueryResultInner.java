@@ -5,35 +5,27 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.costmanagement.models.CostManagementResource;
 import com.azure.resourcemanager.costmanagement.models.QueryColumn;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Result of query. It contains all columns listed under groupings and aggregation. */
 @Fluent
-public final class QueryResultInner extends ProxyResource {
+public final class QueryResultInner extends CostManagementResource {
     /*
-     * The properties property.
+     * Query properties
      */
     @JsonProperty(value = "properties")
     private QueryProperties innerProperties;
-
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of QueryResultInner class. */
     public QueryResultInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties property.
+     * Get the innerProperties property: Query properties.
      *
      * @return the innerProperties value.
      */
@@ -41,13 +33,18 @@ public final class QueryResultInner extends ProxyResource {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
+    /** {@inheritDoc} */
+    @Override
+    public QueryResultInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public QueryResultInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
@@ -124,7 +121,9 @@ public final class QueryResultInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

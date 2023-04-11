@@ -23,6 +23,20 @@ public interface Operation {
     OperationDisplay display();
 
     /**
+     * Gets the origin property: The intended executor of the operation.
+     *
+     * @return the origin value.
+     */
+    String origin();
+
+    /**
+     * Gets the serviceSpecification property: One property of operation, include metric specifications.
+     *
+     * @return the serviceSpecification value.
+     */
+    ServiceSpecification serviceSpecification();
+
+    /**
      * Gets the inner com.azure.resourcemanager.timeseriesinsights.fluent.models.OperationInner object.
      *
      * @return the inner object.

@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure.com/workflow/workflowtasks/69b57a00-f5de-4a17-a44a-6479adae373d",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-purview-workflow/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2ddbd039-15bb-468a-a5c5-b961091459ed"
+    },
+    "Response" : {
+      "content-length" : "742",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "MicrosoftPurview",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dda6c8c8-da69-48b9-9f05-e0ec07c5dea9",
+      "Body" : "{\"type\":\"Approval\",\"id\":\"69b57a00-f5de-4a17-a44a-6479adae373d\",\"workflowRunId\":\"f2542621-aae2-4b97-a5e4-85c7c47dabfa\",\"workflowId\":\"4afb5752-e47f-43a1-8ba7-c696bf8d2745\",\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"createdTime\":\"2023-02-03T10:11:51.083369671Z\",\"lastUpdateTime\":\"2023-02-03T10:11:59.111586216Z\",\"payload\":{\"type\":\"CreateTerm\",\"targetValue\":\"sample-term\",\"payload\":{\"glossaryTerm\":{\"name\":\"sample-term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"status\":\"Approved\",\"nickName\":\"sample-term\",\"attributes\":{}}}},\"title\":\"ApprovalRequestforCreateGlossaryTerm\",\"approvalDetail\":{\"approvalType\":\"PendingOnAll\",\"status\":\"Pending\",\"approvers\":{\"eece94d9-0619-4669-bb8a-d6ecec5220bc\":{\"reply\":\"Pending\"}}}}",
+      "Date" : "Fri, 03 Feb 2023 10:13:29 GMT",
+      "x-ms-client-request-id" : "2ddbd039-15bb-468a-a5c5-b961091459ed",
+      "x-ms-correlation-request-id" : "1ee77f15-7943-4991-946b-229e93548b7d",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

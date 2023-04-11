@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseResource;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for MongoDBResources CreateUpdateMongoDBDatabase. */
 public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseCreateUpdate.
@@ -36,7 +35,7 @@ public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
                     .withTags(mapOf())
                     .withResource(new MongoDBDatabaseResource().withId("databaseName"))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

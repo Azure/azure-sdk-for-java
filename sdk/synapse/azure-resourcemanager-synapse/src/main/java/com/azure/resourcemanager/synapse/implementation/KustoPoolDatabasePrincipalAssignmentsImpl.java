@@ -31,24 +31,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        CheckNameResultInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(
-                    workspaceName, kustoPoolName, databaseName, resourceGroupName, principalAssignmentName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String workspaceName,
         String kustoPoolName,
@@ -72,6 +54,24 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        String resourceGroupName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        CheckNameResultInner inner =
+            this
+                .serviceClient()
+                .checkNameAvailability(
+                    workspaceName, kustoPoolName, databaseName, resourceGroupName, principalAssignmentName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<DatabasePrincipalAssignment> list(
         String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName) {
         PagedIterable<DatabasePrincipalAssignmentInner> inner =
@@ -84,23 +84,6 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
         PagedIterable<DatabasePrincipalAssignmentInner> inner =
             this.serviceClient().list(workspaceName, kustoPoolName, databaseName, resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
-    }
-
-    public DatabasePrincipalAssignment get(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName) {
-        DatabasePrincipalAssignmentInner inner =
-            this
-                .serviceClient()
-                .get(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName);
-        if (inner != null) {
-            return new DatabasePrincipalAssignmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<DatabasePrincipalAssignment> getWithResponse(
@@ -121,6 +104,23 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DatabasePrincipalAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DatabasePrincipalAssignment get(
+        String workspaceName,
+        String kustoPoolName,
+        String databaseName,
+        String principalAssignmentName,
+        String resourceGroupName) {
+        DatabasePrincipalAssignmentInner inner =
+            this
+                .serviceClient()
+                .get(workspaceName, kustoPoolName, databaseName, principalAssignmentName, resourceGroupName);
+        if (inner != null) {
+            return new DatabasePrincipalAssignmentImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -58,7 +58,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface CollectionPartitionsService {
+    public interface CollectionPartitionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"

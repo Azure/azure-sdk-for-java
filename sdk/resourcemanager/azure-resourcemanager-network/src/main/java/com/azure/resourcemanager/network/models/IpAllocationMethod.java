@@ -17,6 +17,15 @@ public final class IpAllocationMethod extends ExpandableStringEnum<IpAllocationM
     public static final IpAllocationMethod DYNAMIC = fromString("Dynamic");
 
     /**
+     * Creates a new instance of IpAllocationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpAllocationMethod() {
+    }
+
+    /**
      * Creates or finds a IpAllocationMethod from its string representation.
      *
      * @param name a name to look for.

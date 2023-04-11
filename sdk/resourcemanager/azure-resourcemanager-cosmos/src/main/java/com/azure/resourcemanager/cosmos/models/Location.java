@@ -55,6 +55,10 @@ public final class Location {
     @JsonProperty(value = "isZoneRedundant")
     private Boolean isZoneRedundant;
 
+    /** Creates an instance of Location class. */
+    public Location() {
+    }
+
     /**
      * Get the id property: The unique identifier of the region within the database account. Example:
      * &amp;lt;accountName&amp;gt;-&amp;lt;locationName&amp;gt;.

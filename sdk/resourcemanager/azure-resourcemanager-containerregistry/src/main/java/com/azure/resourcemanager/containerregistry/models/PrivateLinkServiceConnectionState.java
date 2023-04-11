@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The state of a private link service connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
-
     /*
      * The private link service connection status.
      */
@@ -21,18 +17,21 @@ public final class PrivateLinkServiceConnectionState {
     private ConnectionStatus status;
 
     /*
-     * The description for connection status. For example if connection is
-     * rejected it can indicate reason for rejection.
+     * The description for connection status. For example if connection is rejected it can indicate reason for
+     * rejection.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * A message indicating if changes on the service provider require any
-     * updates on the consumer.
+     * A message indicating if changes on the service provider require any updates on the consumer.
      */
     @JsonProperty(value = "actionsRequired")
     private ActionsRequired actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
 
     /**
      * Get the status property: The private link service connection status.

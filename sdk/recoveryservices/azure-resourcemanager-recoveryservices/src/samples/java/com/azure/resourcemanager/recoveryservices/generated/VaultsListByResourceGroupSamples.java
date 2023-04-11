@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults ListByResourceGroup. */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ListResources.json
      */
     /**
      * Sample code: List of Recovery Services Resources in ResourceGroup.
@@ -18,6 +16,8 @@ public final class VaultsListByResourceGroupSamples {
      */
     public static void listOfRecoveryServicesResourcesInResourceGroup(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.vaults().listByResourceGroup("Default-RecoveryServices-ResourceGroup", Context.NONE);
+        manager
+            .vaults()
+            .listByResourceGroup("Default-RecoveryServices-ResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

@@ -18,6 +18,10 @@ public final class SqlPoolColumnInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SqlPoolColumnProperties innerProperties;
 
+    /** Creates an instance of SqlPoolColumnInner class. */
+    public SqlPoolColumnInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

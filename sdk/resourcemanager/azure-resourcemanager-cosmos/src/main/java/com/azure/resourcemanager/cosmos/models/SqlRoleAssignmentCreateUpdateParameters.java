@@ -17,6 +17,10 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
 
+    /** Creates an instance of SqlRoleAssignmentCreateUpdateParameters class. */
+    public SqlRoleAssignmentCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB SQL Role Assignment.
      *

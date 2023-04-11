@@ -20,6 +20,10 @@ public final class ServerBlobAuditingPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerBlobAuditingPolicyProperties innerProperties;
 
+    /** Creates an instance of ServerBlobAuditingPolicyInner class. */
+    public ServerBlobAuditingPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

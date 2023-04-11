@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Get. */
 public final class VirtualMachinesGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class VirtualMachinesGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void getVirtualMachine(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.virtualMachines().getWithResponse("group1", "cloud1", "cluster1", "vm-209", Context.NONE);
+        manager
+            .virtualMachines()
+            .getWithResponse("group1", "cloud1", "cluster1", "vm-209", com.azure.core.util.Context.NONE);
     }
 }

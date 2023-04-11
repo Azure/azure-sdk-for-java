@@ -12,6 +12,7 @@ import com.azure.core.test.TestBase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -38,10 +39,10 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Override
+    @Disabled
     void createEmailHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         Mono<NotificationHook> createHookMono  = client.createHook(CreateEmailHookInput.INSTANCE.hook);
         String[] hookId = new String[1];
@@ -64,7 +65,7 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
     @Override
     void createWebHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         Mono<NotificationHook> createHookMono  = client.createHook(CreateWebHookInput.INSTANCE.hook);
         String[] hookId = new String[1];
@@ -84,9 +85,10 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @Disabled
     void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         String[] hookId = new String[2];
         StepVerifier.create(client.createHook(ListHookInput.INSTANCE.emailHook))

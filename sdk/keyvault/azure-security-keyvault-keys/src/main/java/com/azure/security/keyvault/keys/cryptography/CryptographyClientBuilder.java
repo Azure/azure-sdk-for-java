@@ -27,8 +27,11 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
@@ -111,13 +114,16 @@ public final class CryptographyClientBuilder implements
     TokenCredentialTrait<CryptographyClientBuilder>,
     HttpTrait<CryptographyClientBuilder>,
     ConfigurationTrait<CryptographyClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
@@ -194,7 +200,7 @@ public final class CryptographyClientBuilder implements
     public CryptographyAsyncClient buildAsyncClient() {
         if (jsonWebKey == null) {
             if (Strings.isNullOrEmpty(keyId)) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
                         + " is not provided."));
             }
@@ -206,7 +212,7 @@ public final class CryptographyClientBuilder implements
             }
 
             if (credential == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "Azure Key Vault credentials are required to build the cryptography client if a JSON Web Key is not"
                         + " provided."));
             }
@@ -256,9 +262,14 @@ public final class CryptographyClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
     }
 
@@ -292,7 +303,7 @@ public final class CryptographyClientBuilder implements
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         if (keyId == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'keyId' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'keyId' cannot be null."));
         }
 
         this.keyId = keyId;
@@ -314,7 +325,7 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
@@ -335,7 +346,7 @@ public final class CryptographyClientBuilder implements
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
         if (jsonWebKey == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'jsonWebKey' must not be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'jsonWebKey' must not be null."));
         }
 
         this.jsonWebKey = jsonWebKey;
@@ -383,7 +394,7 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {

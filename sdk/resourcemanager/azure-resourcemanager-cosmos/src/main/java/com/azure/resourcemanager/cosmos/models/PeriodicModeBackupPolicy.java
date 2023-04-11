@@ -20,6 +20,10 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
     @JsonProperty(value = "periodicModeProperties")
     private PeriodicModeProperties periodicModeProperties;
 
+    /** Creates an instance of PeriodicModeBackupPolicy class. */
+    public PeriodicModeBackupPolicy() {
+    }
+
     /**
      * Get the periodicModeProperties property: Configuration values for periodic mode backup.
      *

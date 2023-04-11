@@ -15,6 +15,8 @@ public final class AssetFiltersListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listAllAssetFilters(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.assetFilters().list("contoso", "contosomedia", "ClimbingMountRainer", com.azure.core.util.Context.NONE);
+        manager
+            .assetFilters()
+            .list("contosorg", "contosomedia", "ClimbingMountRainer", com.azure.core.util.Context.NONE);
     }
 }

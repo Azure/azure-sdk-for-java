@@ -28,6 +28,10 @@ public final class SqlStoredProcedureGetPropertiesResource extends SqlStoredProc
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of SqlStoredProcedureGetPropertiesResource class. */
+    public SqlStoredProcedureGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

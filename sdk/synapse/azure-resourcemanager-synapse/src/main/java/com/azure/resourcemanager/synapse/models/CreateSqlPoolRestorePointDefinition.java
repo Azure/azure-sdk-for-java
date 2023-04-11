@@ -17,6 +17,10 @@ public final class CreateSqlPoolRestorePointDefinition {
     @JsonProperty(value = "restorePointLabel", required = true)
     private String restorePointLabel;
 
+    /** Creates an instance of CreateSqlPoolRestorePointDefinition class. */
+    public CreateSqlPoolRestorePointDefinition() {
+    }
+
     /**
      * Get the restorePointLabel property: The restore point label to apply.
      *

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.CertificatePatchResource;
 
 /** Samples for Certificates Update. */
 public final class CertificatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/PatchCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/PatchCertificate.json
      */
     /**
      * Sample code: Patch Certificate.
@@ -24,6 +23,9 @@ public final class CertificatesUpdateSamples {
             .serviceClient()
             .getCertificates()
             .updateWithResponse(
-                "testrg123", "testc6282", new CertificatePatchResource().withPassword("<password>"), Context.NONE);
+                "testrg123",
+                "testc6282",
+                new CertificatePatchResource().withPassword("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

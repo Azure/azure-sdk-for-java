@@ -113,21 +113,6 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MongoDBDatabaseGetResultsInner getMongoDBDatabase(
-        String resourceGroupName, String accountName, String databaseName);
-
-    /**
-     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,6 +123,21 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseWithResponse(
         String resourceGroupName, String accountName, String databaseName, Context context);
+
+    /**
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MongoDBDatabaseGetResultsInner getMongoDBDatabase(
+        String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
@@ -422,23 +422,6 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     *     provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getMongoDBDatabaseThroughput(
-        String resourceGroupName, String accountName, String databaseName);
-
-    /**
-     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -449,6 +432,23 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ThroughputSettingsGetResultsInner> getMongoDBDatabaseThroughputWithResponse(
         String resourceGroupName, String accountName, String databaseName, Context context);
+
+    /**
+     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner getMongoDBDatabaseThroughput(
+        String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
@@ -908,22 +908,6 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MongoDBCollectionGetResultsInner getMongoDBCollection(
-        String resourceGroupName, String accountName, String databaseName, String collectionName);
-
-    /**
-     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -933,6 +917,22 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoDBCollectionGetResultsInner> getMongoDBCollectionWithResponse(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context);
+
+    /**
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MongoDBCollectionGetResultsInner getMongoDBCollection(
+        String resourceGroupName, String accountName, String databaseName, String collectionName);
 
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
@@ -1245,24 +1245,6 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     *     provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getMongoDBCollectionThroughput(
-        String resourceGroupName, String accountName, String databaseName, String collectionName);
-
-    /**
-     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1273,6 +1255,24 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ThroughputSettingsGetResultsInner> getMongoDBCollectionThroughputWithResponse(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context);
+
+    /**
+     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner getMongoDBCollectionThroughput(
+        String resourceGroupName, String accountName, String databaseName, String collectionName);
 
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
@@ -1709,21 +1709,6 @@ public interface MongoDBResourcesClient {
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MongoRoleDefinitionGetResultsInner getMongoRoleDefinition(
-        String mongoRoleDefinitionId, String resourceGroupName, String accountName);
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1733,6 +1718,21 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoRoleDefinitionGetResultsInner> getMongoRoleDefinitionWithResponse(
         String mongoRoleDefinitionId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
+     *
+     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Mongo Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MongoRoleDefinitionGetResultsInner getMongoRoleDefinition(
+        String mongoRoleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo Role Definition.
@@ -2058,21 +2058,6 @@ public interface MongoDBResourcesClient {
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MongoUserDefinitionGetResultsInner getMongoUserDefinition(
-        String mongoUserDefinitionId, String resourceGroupName, String accountName);
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2082,6 +2067,21 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoUserDefinitionGetResultsInner> getMongoUserDefinitionWithResponse(
         String mongoUserDefinitionId, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
+     *
+     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB User Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MongoUserDefinitionGetResultsInner getMongoUserDefinition(
+        String mongoUserDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Creates or updates an Azure Cosmos DB Mongo User Definition.

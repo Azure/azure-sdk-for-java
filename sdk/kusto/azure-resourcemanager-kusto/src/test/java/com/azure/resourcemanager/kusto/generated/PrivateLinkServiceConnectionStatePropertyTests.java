@@ -7,28 +7,24 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.PrivateLinkServiceConnectionStateProperty;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceConnectionStatePropertyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionStateProperty model =
             BinaryData
-                .fromString(
-                    "{\"status\":\"fiyipjxsqwpgrj\",\"description\":\"norcjxvsnbyxqab\",\"actionsRequired\":\"ocpcy\"}")
+                .fromString("{\"status\":\"wclxxwrl\",\"description\":\"ouskcqvkocrc\",\"actionsRequired\":\"kwt\"}")
                 .toObject(PrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.status());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.description());
+        Assertions.assertEquals("wclxxwrl", model.status());
+        Assertions.assertEquals("ouskcqvkocrc", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionStateProperty model =
-            new PrivateLinkServiceConnectionStateProperty()
-                .withStatus("fiyipjxsqwpgrj")
-                .withDescription("norcjxvsnbyxqab");
+            new PrivateLinkServiceConnectionStateProperty().withStatus("wclxxwrl").withDescription("ouskcqvkocrc");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.status());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.description());
+        Assertions.assertEquals("wclxxwrl", model.status());
+        Assertions.assertEquals("ouskcqvkocrc", model.description());
     }
 }

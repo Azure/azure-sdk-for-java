@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeCredentials Sync. */
 public final class IntegrationRuntimeCredentialsSyncSamples {
     /*
@@ -19,6 +17,10 @@ public final class IntegrationRuntimeCredentialsSyncSamples {
     public static void syncCredentials(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .integrationRuntimeCredentials()
-            .syncWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+            .syncWithResponse(
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

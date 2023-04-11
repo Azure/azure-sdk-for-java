@@ -24,6 +24,10 @@ public final class ReplicationLinkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ReplicationLinkListResult class. */
+    public ReplicationLinkListResult() {
+    }
+
     /**
      * Get the value property: The list of Sql pool replication links housed in the Sql pool.
      *

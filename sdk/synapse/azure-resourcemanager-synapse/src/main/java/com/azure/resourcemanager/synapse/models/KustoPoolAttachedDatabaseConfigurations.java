@@ -48,21 +48,6 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
-     */
-    AttachedDatabaseConfiguration get(
-        String workspaceName, String kustoPoolName, String attachedDatabaseConfigurationName, String resourceGroupName);
-
-    /**
-     * Returns an attached database configuration.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,6 +60,21 @@ public interface KustoPoolAttachedDatabaseConfigurations {
         String attachedDatabaseConfigurationName,
         String resourceGroupName,
         Context context);
+
+    /**
+     * Returns an attached database configuration.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an attached database configuration.
+     */
+    AttachedDatabaseConfiguration get(
+        String workspaceName, String kustoPoolName, String attachedDatabaseConfigurationName, String resourceGroupName);
 
     /**
      * Deletes the attached database configuration with the given name.

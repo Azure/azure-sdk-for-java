@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 
 /** Samples for Configurations Update. */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationUpdate.json
      */
     /**
      * Sample code: Update a user configuration.
@@ -26,6 +25,6 @@ public final class ConfigurationsUpdateSamples {
                 "testserver",
                 "event_scheduler",
                 new ConfigurationInner().withValue("on").withSource(ConfigurationSource.USER_OVERRIDE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

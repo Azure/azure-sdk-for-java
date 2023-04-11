@@ -17,6 +17,15 @@ public final class AddressPrefixType extends ExpandableStringEnum<AddressPrefixT
     public static final AddressPrefixType SERVICE_TAG = fromString("ServiceTag");
 
     /**
+     * Creates a new instance of AddressPrefixType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AddressPrefixType() {
+    }
+
+    /**
      * Creates or finds a AddressPrefixType from its string representation.
      *
      * @param name a name to look for.

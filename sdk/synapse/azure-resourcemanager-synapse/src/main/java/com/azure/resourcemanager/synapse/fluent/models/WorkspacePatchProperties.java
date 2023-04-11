@@ -57,6 +57,10 @@ public final class WorkspacePatchProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private WorkspacePublicNetworkAccess publicNetworkAccess;
 
+    /** Creates an instance of WorkspacePatchProperties class. */
+    public WorkspacePatchProperties() {
+    }
+
     /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
      *

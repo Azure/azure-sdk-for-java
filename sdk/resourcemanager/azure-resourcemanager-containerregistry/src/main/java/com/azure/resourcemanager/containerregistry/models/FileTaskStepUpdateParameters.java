@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("FileTask")
 @Fluent
 public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileTaskStepUpdateParameters.class);
-
     /*
      * The task template/definition file path relative to the source context.
      */
@@ -32,11 +28,14 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
     private String valuesFilePath;
 
     /*
-     * The collection of overridable values that can be passed when running a
-     * task.
+     * The collection of overridable values that can be passed when running a task.
      */
     @JsonProperty(value = "values")
     private List<SetValue> values;
+
+    /** Creates an instance of FileTaskStepUpdateParameters class. */
+    public FileTaskStepUpdateParameters() {
+    }
 
     /**
      * Get the taskFilePath property: The task template/definition file path relative to the source context.

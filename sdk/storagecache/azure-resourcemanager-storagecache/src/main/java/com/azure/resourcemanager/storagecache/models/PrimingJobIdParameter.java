@@ -17,6 +17,10 @@ public final class PrimingJobIdParameter {
     @JsonProperty(value = "primingJobId", required = true)
     private String primingJobId;
 
+    /** Creates an instance of PrimingJobIdParameter class. */
+    public PrimingJobIdParameter() {
+    }
+
     /**
      * Get the primingJobId property: The unique identifier of the priming job.
      *

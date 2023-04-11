@@ -22,7 +22,7 @@ public final class AssetsListContainerSasSamples {
         manager
             .assets()
             .listContainerSasWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "ClimbingMountBaker",
                 new ListContainerSasInput()

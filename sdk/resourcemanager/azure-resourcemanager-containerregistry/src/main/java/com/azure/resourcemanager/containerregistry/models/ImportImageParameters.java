@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ImportImageParameters model. */
 @Fluent
 public final class ImportImageParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportImageParameters.class);
-
     /*
      * The source of the image.
      */
@@ -22,26 +19,28 @@ public final class ImportImageParameters {
     private ImportSource source;
 
     /*
-     * List of strings of the form repo[:tag]. When tag is omitted the source
-     * will be used (or 'latest' if source tag is also omitted).
+     * List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag
+     * is also omitted).
      */
     @JsonProperty(value = "targetTags")
     private List<String> targetTags;
 
     /*
-     * List of strings of repository names to do a manifest only copy. No tag
-     * will be created.
+     * List of strings of repository names to do a manifest only copy. No tag will be created.
      */
     @JsonProperty(value = "untaggedTargetRepositories")
     private List<String> untaggedTargetRepositories;
 
     /*
-     * When Force, any existing target tags will be overwritten. When NoForce,
-     * any existing target tags will fail the operation before any copying
-     * begins.
+     * When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the
+     * operation before any copying begins.
      */
     @JsonProperty(value = "mode")
     private ImportMode mode;
+
+    /** Creates an instance of ImportImageParameters class. */
+    public ImportImageParameters() {
+    }
 
     /**
      * Get the source property: The source of the image.
@@ -136,11 +135,13 @@ public final class ImportImageParameters {
      */
     public void validate() {
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property source in model ImportImageParameters"));
         } else {
             source().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportImageParameters.class);
 }

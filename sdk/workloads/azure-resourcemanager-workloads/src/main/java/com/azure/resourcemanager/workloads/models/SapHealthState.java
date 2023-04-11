@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapHealthState. */
+/** Defines the health of SAP Instances. */
 public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
     /** Static value Unknown for SapHealthState. */
     public static final SapHealthState UNKNOWN = fromString("Unknown");
@@ -21,6 +21,15 @@ public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
 
     /** Static value Degraded for SapHealthState. */
     public static final SapHealthState DEGRADED = fromString("Degraded");
+
+    /**
+     * Creates a new instance of SapHealthState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapHealthState() {
+    }
 
     /**
      * Creates or finds a SapHealthState from its string representation.

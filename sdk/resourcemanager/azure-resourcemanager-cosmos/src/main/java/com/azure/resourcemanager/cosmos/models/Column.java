@@ -22,6 +22,10 @@ public final class Column {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of Column class. */
+    public Column() {
+    }
+
     /**
      * Get the name property: Name of the Cosmos DB Cassandra table column.
      *

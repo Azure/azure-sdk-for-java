@@ -38,8 +38,14 @@ public final class ReportConfigDefinition {
     /*
      * Has definition for data in this report config.
      */
-    @JsonProperty(value = "dataset")
-    private ReportConfigDataset dataset;
+    @JsonProperty(value = "dataSet")
+    private ReportConfigDataset dataSet;
+
+    /*
+     * If true, report includes monetary commitment.
+     */
+    @JsonProperty(value = "includeMonetaryCommitment")
+    private Boolean includeMonetaryCommitment;
 
     /** Creates an instance of ReportConfigDefinition class. */
     public ReportConfigDefinition() {
@@ -112,22 +118,42 @@ public final class ReportConfigDefinition {
     }
 
     /**
-     * Get the dataset property: Has definition for data in this report config.
+     * Get the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    public ReportConfigDataset dataset() {
-        return this.dataset;
+    public ReportConfigDataset dataSet() {
+        return this.dataSet;
     }
 
     /**
-     * Set the dataset property: Has definition for data in this report config.
+     * Set the dataSet property: Has definition for data in this report config.
      *
-     * @param dataset the dataset value to set.
+     * @param dataSet the dataSet value to set.
      * @return the ReportConfigDefinition object itself.
      */
-    public ReportConfigDefinition withDataset(ReportConfigDataset dataset) {
-        this.dataset = dataset;
+    public ReportConfigDefinition withDataSet(ReportConfigDataset dataSet) {
+        this.dataSet = dataSet;
+        return this;
+    }
+
+    /**
+     * Get the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @return the includeMonetaryCommitment value.
+     */
+    public Boolean includeMonetaryCommitment() {
+        return this.includeMonetaryCommitment;
+    }
+
+    /**
+     * Set the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @param includeMonetaryCommitment the includeMonetaryCommitment value to set.
+     * @return the ReportConfigDefinition object itself.
+     */
+    public ReportConfigDefinition withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        this.includeMonetaryCommitment = includeMonetaryCommitment;
         return this;
     }
 
@@ -151,8 +177,8 @@ public final class ReportConfigDefinition {
         if (timePeriod() != null) {
             timePeriod().validate();
         }
-        if (dataset() != null) {
-            dataset().validate();
+        if (dataSet() != null) {
+            dataSet().validate();
         }
     }
 

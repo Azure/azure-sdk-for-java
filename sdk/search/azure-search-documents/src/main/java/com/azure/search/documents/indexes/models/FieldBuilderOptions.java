@@ -20,6 +20,12 @@ public final class FieldBuilderOptions {
     private JsonSerializer jsonSerializer;
 
     /**
+     * Creates an instance of {@link FieldBuilderOptions}.
+     */
+    public FieldBuilderOptions() {
+    }
+
+    /**
      * Gets the serializer used to aid the construction of {@link SearchField SearchFields} in {@link
      * SearchIndexClient#buildSearchFields(Class, FieldBuilderOptions)} buildSearchFields} or {@link
      * SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions) buildSearchFields}.

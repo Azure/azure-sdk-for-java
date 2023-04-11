@@ -25,6 +25,10 @@ public final class DomainResourceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DomainResourceList class. */
+    public DomainResourceList() {
+    }
+
     /**
      * Get the value property: List of Domains resource.
      *

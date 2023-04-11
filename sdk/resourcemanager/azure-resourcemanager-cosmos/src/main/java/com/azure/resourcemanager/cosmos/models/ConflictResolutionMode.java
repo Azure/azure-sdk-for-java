@@ -17,6 +17,15 @@ public final class ConflictResolutionMode extends ExpandableStringEnum<ConflictR
     public static final ConflictResolutionMode CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of ConflictResolutionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConflictResolutionMode() {
+    }
+
+    /**
      * Creates or finds a ConflictResolutionMode from its string representation.
      *
      * @param name a name to look for.

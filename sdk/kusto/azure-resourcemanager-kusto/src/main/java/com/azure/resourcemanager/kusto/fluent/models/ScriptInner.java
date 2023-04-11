@@ -25,6 +25,10 @@ public final class ScriptInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ScriptInner class. */
+    public ScriptInner() {
+    }
+
     /**
      * Get the innerProperties property: The database script.
      *

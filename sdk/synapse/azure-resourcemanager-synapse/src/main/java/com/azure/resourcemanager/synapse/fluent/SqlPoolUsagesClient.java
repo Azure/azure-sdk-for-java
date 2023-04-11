@@ -13,7 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolUsageInner;
 /** An instance of this class provides access to all the operations defined in SqlPoolUsagesClient. */
 public interface SqlPoolUsagesClient {
     /**
-     * Gets SQL pool usages.
+     * Gets SQL pool usages
+     *
+     * <p>Gets SQL pool usages.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -27,7 +29,9 @@ public interface SqlPoolUsagesClient {
     PagedIterable<SqlPoolUsageInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Gets SQL pool usages.
+     * Gets SQL pool usages
+     *
+     * <p>Gets SQL pool usages.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

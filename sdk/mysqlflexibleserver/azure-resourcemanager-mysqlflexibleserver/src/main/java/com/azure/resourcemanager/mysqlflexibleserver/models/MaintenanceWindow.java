@@ -34,6 +34,10 @@ public final class MaintenanceWindow {
     @JsonProperty(value = "dayOfWeek")
     private Integer dayOfWeek;
 
+    /** Creates an instance of MaintenanceWindow class. */
+    public MaintenanceWindow() {
+    }
+
     /**
      * Get the customWindow property: indicates whether custom window is enabled or disabled.
      *

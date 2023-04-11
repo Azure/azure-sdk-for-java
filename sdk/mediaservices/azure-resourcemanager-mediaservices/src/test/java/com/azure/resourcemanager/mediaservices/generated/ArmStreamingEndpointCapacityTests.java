@@ -13,24 +13,23 @@ public final class ArmStreamingEndpointCapacityTests {
     public void testDeserialize() throws Exception {
         ArmStreamingEndpointCapacity model =
             BinaryData
-                .fromString(
-                    "{\"scaleType\":\"qiby\",\"default\":1643458041,\"minimum\":601869733,\"maximum\":1874068657}")
+                .fromString("{\"scaleType\":\"vh\",\"default\":55110922,\"minimum\":1149174942,\"maximum\":751350709}")
                 .toObject(ArmStreamingEndpointCapacity.class);
-        Assertions.assertEquals(1643458041, model.defaultProperty());
-        Assertions.assertEquals(601869733, model.minimum());
-        Assertions.assertEquals(1874068657, model.maximum());
+        Assertions.assertEquals(55110922, model.defaultProperty());
+        Assertions.assertEquals(1149174942, model.minimum());
+        Assertions.assertEquals(751350709, model.maximum());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArmStreamingEndpointCapacity model =
             new ArmStreamingEndpointCapacity()
-                .withDefaultProperty(1643458041)
-                .withMinimum(601869733)
-                .withMaximum(1874068657);
+                .withDefaultProperty(55110922)
+                .withMinimum(1149174942)
+                .withMaximum(751350709);
         model = BinaryData.fromObject(model).toObject(ArmStreamingEndpointCapacity.class);
-        Assertions.assertEquals(1643458041, model.defaultProperty());
-        Assertions.assertEquals(601869733, model.minimum());
-        Assertions.assertEquals(1874068657, model.maximum());
+        Assertions.assertEquals(55110922, model.defaultProperty());
+        Assertions.assertEquals(1149174942, model.minimum());
+        Assertions.assertEquals(751350709, model.maximum());
     }
 }

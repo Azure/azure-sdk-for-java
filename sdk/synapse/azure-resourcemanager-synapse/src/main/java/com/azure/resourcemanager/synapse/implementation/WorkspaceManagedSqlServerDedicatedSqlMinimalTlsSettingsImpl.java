@@ -64,17 +64,6 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
         }
     }
 
-    public DedicatedSQLminimalTlsSettings get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
-        DedicatedSQLminimalTlsSettingsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName);
-        if (inner != null) {
-            return new DedicatedSQLminimalTlsSettingsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DedicatedSQLminimalTlsSettings> getWithResponse(
         String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context) {
         Response<DedicatedSQLminimalTlsSettingsInner> inner =
@@ -87,6 +76,17 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DedicatedSQLminimalTlsSettingsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DedicatedSQLminimalTlsSettings get(
+        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
+        DedicatedSQLminimalTlsSettingsInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName);
+        if (inner != null) {
+            return new DedicatedSQLminimalTlsSettingsImpl(inner, this.manager());
         } else {
             return null;
         }

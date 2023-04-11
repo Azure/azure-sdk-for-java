@@ -56,6 +56,6 @@ public final class LiveEventsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.liveEvents().delete("pgawtxxpkyjcxcjx", "rytfmpcycil", "mcayk", com.azure.core.util.Context.NONE);
+        manager.liveEvents().delete("mtkhlowkxxpvbr", "fjmzsyzfho", "lhikcyychunsj", com.azure.core.util.Context.NONE);
     }
 }

@@ -28,6 +28,10 @@ public final class TableGetPropertiesResource extends TableResource {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of TableGetPropertiesResource class. */
+    public TableGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

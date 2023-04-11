@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ScriptCmdlets Get. */
 public final class ScriptCmdletsGetSamples {
     /*
@@ -20,6 +18,10 @@ public final class ScriptCmdletsGetSamples {
         manager
             .scriptCmdlets()
             .getWithResponse(
-                "group1", "{privateCloudName}", "{scriptPackageName}", "New-ExternalSsoDomain", Context.NONE);
+                "group1",
+                "{privateCloudName}",
+                "{scriptPackageName}",
+                "New-ExternalSsoDomain",
+                com.azure.core.util.Context.NONE);
     }
 }

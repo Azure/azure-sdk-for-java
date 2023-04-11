@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SparkConfigurationsOperations. */
 public interface SparkConfigurationsOperations {
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -22,7 +24,9 @@ public interface SparkConfigurationsOperations {
     PagedIterable<SparkConfigurationResource> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
-     * List sparkConfigurations in a workspace.
+     * List the sparkConfigurations in a workspace.
+     *
+     * <p>List sparkConfigurations in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

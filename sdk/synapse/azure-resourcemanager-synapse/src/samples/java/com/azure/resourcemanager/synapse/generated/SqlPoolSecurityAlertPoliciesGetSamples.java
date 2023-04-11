@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 
 /** Samples for SqlPoolSecurityAlertPolicies Get. */
@@ -21,6 +20,10 @@ public final class SqlPoolSecurityAlertPoliciesGetSamples {
         manager
             .sqlPoolSecurityAlertPolicies()
             .getWithResponse(
-                "securityalert-6852", "securityalert-2080", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE);
+                "securityalert-6852",
+                "securityalert-2080",
+                "testdb",
+                SecurityAlertPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

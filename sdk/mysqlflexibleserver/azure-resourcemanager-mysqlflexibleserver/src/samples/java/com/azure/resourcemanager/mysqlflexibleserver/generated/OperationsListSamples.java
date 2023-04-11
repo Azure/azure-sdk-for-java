@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/OperationsList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/OperationsList.json
      */
     /**
      * Sample code: OperationList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void operationList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

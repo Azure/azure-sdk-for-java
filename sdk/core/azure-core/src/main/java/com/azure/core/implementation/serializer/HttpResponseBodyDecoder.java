@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.rest.ReflectionSerializable;
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;

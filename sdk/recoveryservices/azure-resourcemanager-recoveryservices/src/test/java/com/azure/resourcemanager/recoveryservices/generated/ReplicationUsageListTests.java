@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservices.models.MonitoringSummary;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsageList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReplicationUsageListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ReplicationUsageList model =
             BinaryData
                 .fromString(
@@ -36,8 +35,8 @@ public final class ReplicationUsageListTests {
         Assertions.assertEquals(280766823, model.value().get(0).recoveryServicesProviderAuthType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ReplicationUsageList model =
             new ReplicationUsageList()
                 .withValue(

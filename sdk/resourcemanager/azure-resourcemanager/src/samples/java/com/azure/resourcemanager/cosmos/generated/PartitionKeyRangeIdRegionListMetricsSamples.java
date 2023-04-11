@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PartitionKeyRangeIdRegion ListMetrics. */
 public final class PartitionKeyRangeIdRegionListMetricsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBPKeyRangeIdRegionGetMetrics.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBPKeyRangeIdRegionGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.
@@ -31,6 +29,6 @@ public final class PartitionKeyRangeIdRegionListMetricsSamples {
                 "0",
                 "$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq"
                     + " '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

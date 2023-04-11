@@ -20,55 +20,64 @@ public final class StreamingEndpointInnerTests {
         StreamingEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"ongbjcnt\",\"scaleUnits\":1376846032,\"availabilitySetName\":\"tcje\",\"accessControl\":{},\"maxCacheAge\":1961213753419982705,\"customHostNames\":[\"ojvdcpzfoqo\",\"i\"],\"hostName\":\"bxarzgszufoxci\",\"cdnEnabled\":false,\"cdnProvider\":\"doamciodhkha\",\"cdnProfile\":\"khnzbonlw\",\"provisioningState\":\"oegokdwbwh\",\"resourceState\":\"Stopped\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"mrv\",\"crossDomainPolicy\":\"ztvbtqgsfr\"},\"freeTrialEndTime\":\"2021-01-05T13:13:02Z\",\"created\":\"2021-07-15T09:51:15Z\",\"lastModified\":\"2021-02-13T11:43:40Z\"},\"sku\":{\"name\":\"mnguxawqaldsyu\",\"capacity\":1074129183},\"location\":\"merqfobwyznkb\",\"tags\":{\"pfhpagmhrskdsnfd\":\"t\",\"ewpusdsttwvogvb\":\"doakgtdlmkkzevdl\"},\"id\":\"ejdcngqqmoakuf\",\"name\":\"m\",\"type\":\"zr\"}")
+                    "{\"properties\":{\"description\":\"ilqu\",\"scaleUnits\":1776914172,\"availabilitySetName\":\"dxtqmieoxo\",\"accessControl\":{},\"maxCacheAge\":6726931432797365258,\"customHostNames\":[\"mtbghh\",\"vgrvkffo\",\"jzhpjbibgjmfx\",\"mv\"],\"hostName\":\"luyovwxnbkfezzx\",\"cdnEnabled\":true,\"cdnProvider\":\"wzdgirujbzbo\",\"cdnProfile\":\"zzbtdcqvpniyujvi\",\"provisioningState\":\"wdsh\",\"resourceState\":\"Running\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"bgye\",\"crossDomainPolicy\":\"ymsgaojfmwnc\"},\"freeTrialEndTime\":\"2021-04-29T14:25:51Z\",\"created\":\"2021-07-03T18:59:53Z\",\"lastModified\":\"2021-11-17T23:30:45Z\"},\"sku\":{\"name\":\"ymoxoftpipiwyczu\",\"capacity\":148157875},\"location\":\"cpqjlihhyu\",\"tags\":{\"wdgzxulucv\":\"kasdvlm\",\"urisjnhnytxifqj\":\"amrsreuzv\",\"esutrgjupauutpw\":\"gxmrhublwp\",\"jqgwzp\":\"qhih\"},\"id\":\"fqntcyp\",\"name\":\"xjvfoimwksl\",\"type\":\"rcizjxvyd\"}")
                 .toObject(StreamingEndpointInner.class);
-        Assertions.assertEquals("merqfobwyznkb", model.location());
-        Assertions.assertEquals("t", model.tags().get("pfhpagmhrskdsnfd"));
-        Assertions.assertEquals(1074129183, model.sku().capacity());
-        Assertions.assertEquals("ongbjcnt", model.description());
-        Assertions.assertEquals(1376846032, model.scaleUnits());
-        Assertions.assertEquals("tcje", model.availabilitySetName());
-        Assertions.assertEquals(1961213753419982705L, model.maxCacheAge());
-        Assertions.assertEquals("ojvdcpzfoqo", model.customHostNames().get(0));
-        Assertions.assertEquals(false, model.cdnEnabled());
-        Assertions.assertEquals("doamciodhkha", model.cdnProvider());
-        Assertions.assertEquals("khnzbonlw", model.cdnProfile());
-        Assertions.assertEquals("mrv", model.crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("ztvbtqgsfr", model.crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("cpqjlihhyu", model.location());
+        Assertions.assertEquals("kasdvlm", model.tags().get("wdgzxulucv"));
+        Assertions.assertEquals(148157875, model.sku().capacity());
+        Assertions.assertEquals("ilqu", model.description());
+        Assertions.assertEquals(1776914172, model.scaleUnits());
+        Assertions.assertEquals("dxtqmieoxo", model.availabilitySetName());
+        Assertions.assertEquals(6726931432797365258L, model.maxCacheAge());
+        Assertions.assertEquals("mtbghh", model.customHostNames().get(0));
+        Assertions.assertEquals(true, model.cdnEnabled());
+        Assertions.assertEquals("wzdgirujbzbo", model.cdnProvider());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.cdnProfile());
+        Assertions.assertEquals("bgye", model.crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions.assertEquals("ymsgaojfmwnc", model.crossSiteAccessPolicies().crossDomainPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StreamingEndpointInner model =
             new StreamingEndpointInner()
-                .withLocation("merqfobwyznkb")
-                .withTags(mapOf("pfhpagmhrskdsnfd", "t", "ewpusdsttwvogvb", "doakgtdlmkkzevdl"))
-                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(1074129183))
-                .withDescription("ongbjcnt")
-                .withScaleUnits(1376846032)
-                .withAvailabilitySetName("tcje")
+                .withLocation("cpqjlihhyu")
+                .withTags(
+                    mapOf(
+                        "wdgzxulucv",
+                        "kasdvlm",
+                        "urisjnhnytxifqj",
+                        "amrsreuzv",
+                        "esutrgjupauutpw",
+                        "gxmrhublwp",
+                        "jqgwzp",
+                        "qhih"))
+                .withSku(new ArmStreamingEndpointCurrentSku().withCapacity(148157875))
+                .withDescription("ilqu")
+                .withScaleUnits(1776914172)
+                .withAvailabilitySetName("dxtqmieoxo")
                 .withAccessControl(new StreamingEndpointAccessControl())
-                .withMaxCacheAge(1961213753419982705L)
-                .withCustomHostNames(Arrays.asList("ojvdcpzfoqo", "i"))
-                .withCdnEnabled(false)
-                .withCdnProvider("doamciodhkha")
-                .withCdnProfile("khnzbonlw")
+                .withMaxCacheAge(6726931432797365258L)
+                .withCustomHostNames(Arrays.asList("mtbghh", "vgrvkffo", "jzhpjbibgjmfx", "mv"))
+                .withCdnEnabled(true)
+                .withCdnProvider("wzdgirujbzbo")
+                .withCdnProfile("zzbtdcqvpniyujvi")
                 .withCrossSiteAccessPolicies(
-                    new CrossSiteAccessPolicies().withClientAccessPolicy("mrv").withCrossDomainPolicy("ztvbtqgsfr"));
+                    new CrossSiteAccessPolicies().withClientAccessPolicy("bgye").withCrossDomainPolicy("ymsgaojfmwnc"));
         model = BinaryData.fromObject(model).toObject(StreamingEndpointInner.class);
-        Assertions.assertEquals("merqfobwyznkb", model.location());
-        Assertions.assertEquals("t", model.tags().get("pfhpagmhrskdsnfd"));
-        Assertions.assertEquals(1074129183, model.sku().capacity());
-        Assertions.assertEquals("ongbjcnt", model.description());
-        Assertions.assertEquals(1376846032, model.scaleUnits());
-        Assertions.assertEquals("tcje", model.availabilitySetName());
-        Assertions.assertEquals(1961213753419982705L, model.maxCacheAge());
-        Assertions.assertEquals("ojvdcpzfoqo", model.customHostNames().get(0));
-        Assertions.assertEquals(false, model.cdnEnabled());
-        Assertions.assertEquals("doamciodhkha", model.cdnProvider());
-        Assertions.assertEquals("khnzbonlw", model.cdnProfile());
-        Assertions.assertEquals("mrv", model.crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("ztvbtqgsfr", model.crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("cpqjlihhyu", model.location());
+        Assertions.assertEquals("kasdvlm", model.tags().get("wdgzxulucv"));
+        Assertions.assertEquals(148157875, model.sku().capacity());
+        Assertions.assertEquals("ilqu", model.description());
+        Assertions.assertEquals(1776914172, model.scaleUnits());
+        Assertions.assertEquals("dxtqmieoxo", model.availabilitySetName());
+        Assertions.assertEquals(6726931432797365258L, model.maxCacheAge());
+        Assertions.assertEquals("mtbghh", model.customHostNames().get(0));
+        Assertions.assertEquals(true, model.cdnEnabled());
+        Assertions.assertEquals("wzdgirujbzbo", model.cdnProvider());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.cdnProfile());
+        Assertions.assertEquals("bgye", model.crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions.assertEquals("ymsgaojfmwnc", model.crossSiteAccessPolicies().crossDomainPolicy());
     }
 
     @SuppressWarnings("unchecked")

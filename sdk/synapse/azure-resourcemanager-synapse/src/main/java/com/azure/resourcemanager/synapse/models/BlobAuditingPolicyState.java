@@ -7,7 +7,9 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for BlobAuditingPolicyState. */
+/**
+ * Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
+ */
 public enum BlobAuditingPolicyState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +32,9 @@ public enum BlobAuditingPolicyState {
      */
     @JsonCreator
     public static BlobAuditingPolicyState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         BlobAuditingPolicyState[] items = BlobAuditingPolicyState.values();
         for (BlobAuditingPolicyState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +44,7 @@ public enum BlobAuditingPolicyState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

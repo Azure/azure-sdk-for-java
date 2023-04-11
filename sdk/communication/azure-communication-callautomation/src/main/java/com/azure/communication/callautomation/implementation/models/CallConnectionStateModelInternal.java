@@ -42,7 +42,11 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
         return fromString(name, CallConnectionStateModelInternal.class);
     }
 
-    /** @return known CallConnectionStateModelInternal values. */
+    /**
+     * Gets known CallConnectionStateModelInternal values.
+     *
+     * @return known CallConnectionStateModelInternal values.
+     */
     public static Collection<CallConnectionStateModelInternal> values() {
         return values(CallConnectionStateModelInternal.class);
     }

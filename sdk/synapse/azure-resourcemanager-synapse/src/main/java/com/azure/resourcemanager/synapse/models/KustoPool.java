@@ -155,6 +155,13 @@ public interface KustoPool {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.KustoPoolInner object.
      *
      * @return the inner object.
@@ -331,7 +338,6 @@ public interface KustoPool {
             UpdateStages.WithOptimizedAutoscale,
             UpdateStages.WithEnableStreamingIngest,
             UpdateStages.WithEnablePurge,
-            UpdateStages.WithWorkspaceUid,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -400,16 +406,6 @@ public interface KustoPool {
              * @return the next definition stage.
              */
             Update withEnablePurge(Boolean enablePurge);
-        }
-        /** The stage of the KustoPool update allowing to specify workspaceUid. */
-        interface WithWorkspaceUid {
-            /**
-             * Specifies the workspaceUid property: The workspace unique identifier..
-             *
-             * @param workspaceUid The workspace unique identifier.
-             * @return the next definition stage.
-             */
-            Update withWorkspaceUid(String workspaceUid);
         }
         /** The stage of the KustoPool update allowing to specify ifMatch. */
         interface WithIfMatch {

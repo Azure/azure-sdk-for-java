@@ -17,13 +17,18 @@ trigger:
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/      -
+      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
+      - sdk/cosmos/azure-cosmos-test/
+      - sdk/cosmos/azure-cosmos-tests/
       - sdk/cosmos/azure-spring-data-cosmos/
       - sdk/cosmos/azure-spring-data-cosmos-test/
       - sdk/cosmos/faq/
+      - eng/pipelines/templates/stages/archetype-sdk-client.yml
+      - eng/pipelines/templates/jobs/ci.yml
     exclude:
       - sdk/cosmos/pom.xml
       - sdk/cosmos/azure-cosmos/pom.xml
+      - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
@@ -50,6 +55,8 @@ pr:
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-test/
+      - sdk/cosmos/azure-cosmos-tests/
       - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
@@ -69,32 +76,38 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml      -
       - sdk/cosmos/azure-spring-data-cosmos/pom.xml
       - sdk/cosmos/azure-spring-data-cosmos-test/pom.xml
+      - sdk/cosmos/azure-cosmos-test/pom.xml
+      - sdk/cosmos/azure-cosmos-tests/pom.xml
 
 parameters:
-- name: release_azurecosmos
-  displayName: 'azure-cosmos'
-  type: boolean
-  default: true
-- name: release_azurespringdatacosmos
-  displayName: 'azure-spring-data-cosmos'
-  type: boolean
-  default: true
-- name: release_azurecosmosencryption
-  displayName: 'azure-cosmos-encryption'
-  type: boolean
-  default: true
-- name: release_azurecosmosspark31
-  displayName: 'azure-cosmos-spark_3-1_2-12'
-  type: boolean
-  default: true
-- name: release_azurecosmosspark32
-  displayName: 'azure-cosmos-spark_3-2_2-12'
-  type: boolean
-  default: true
-- name: release_azurecosmosspark33
-  displayName: 'azure-cosmos-spark_3-3_2-12'
-  type: boolean
-  default: true
+  - name: release_azurecosmos
+    displayName: 'azure-cosmos'
+    type: boolean
+    default: true
+  - name: release_azurespringdatacosmos
+    displayName: 'azure-spring-data-cosmos'
+    type: boolean
+    default: true
+  - name: release_azurecosmosencryption
+    displayName: 'azure-cosmos-encryption'
+    type: boolean
+    default: true
+  - name: release_azurecosmosspark31
+    displayName: 'azure-cosmos-spark_3-1_2-12'
+    type: boolean
+    default: true
+  - name: release_azurecosmosspark32
+    displayName: 'azure-cosmos-spark_3-2_2-12'
+    type: boolean
+    default: true
+  - name: release_azurecosmosspark33
+    displayName: 'azure-cosmos-spark_3-3_2-12'
+    type: boolean
+    default: true
+  - name: release_azurecosmostest
+    displayName: 'azure-cosmos-test'
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
@@ -136,7 +149,13 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark33 }}
+      - name: azure-cosmos-test
+        groupId: com.azure
+        safeName: azurecosmostest
+        releaseInBatch: ${{ parameters.release_azurecosmostest }}
     AdditionalModules:
+      - name: azure-cosmos-tests
+        groupId: com.azure
       - name: azure-cosmos-benchmark
         groupId: com.azure
       - name: azure-spring-data-cosmos-test

@@ -19,6 +19,10 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private SqlContainerCreateUpdateProperties innerProperties = new SqlContainerCreateUpdateProperties();
 
+    /** Creates an instance of SqlContainerCreateUpdateParameters class. */
+    public SqlContainerCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB container.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Databases ListPrincipals. */
 public final class DatabasesListPrincipalsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabaseListPrincipals.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDatabaseListPrincipals.json
      */
     /**
      * Sample code: KustoDatabaseListPrincipals.
@@ -17,6 +15,8 @@ public final class DatabasesListPrincipalsSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabaseListPrincipals(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.databases().listPrincipals("kustorptest", "kustoCluster", "KustoDatabase8", Context.NONE);
+        manager
+            .databases()
+            .listPrincipals("kustorptest", "kustoCluster", "KustoDatabase8", com.azure.core.util.Context.NONE);
     }
 }

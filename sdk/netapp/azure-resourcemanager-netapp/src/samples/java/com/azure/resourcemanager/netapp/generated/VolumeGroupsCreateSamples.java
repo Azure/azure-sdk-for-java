@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VolumeGroups Create. */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeGroups_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/VolumeGroups_Create.json
      */
     /**
      * Sample code: VolumeGroups_Create.
@@ -31,13 +31,13 @@ public final class VolumeGroupsCreateSamples {
                     .withGroupDescription("Volume group")
                     .withApplicationType(ApplicationType.SAP_HANA)
                     .withApplicationIdentifier("DEV")
-                    .withDeploymentSpecId("fb04dbeb-005d-2703-197e-6208dfadb5d9"))
+                    .withDeploymentSpecId("20542149-bfca-5618-1879-9863dc6767f1"))
             .withVolumes(
                 Arrays
                     .asList(
                         new VolumeGroupVolumeProperties()
-                            .withName("testVol1")
-                            .withCreationToken("testVol1")
+                            .withName("test-data-mnt00001")
+                            .withCreationToken("fakeTokenPlaceholder")
                             .withServiceLevel(ServiceLevel.PREMIUM)
                             .withUsageThreshold(107374182400L)
                             .withSubnetId(
@@ -49,8 +49,8 @@ public final class VolumeGroupsCreateSamples {
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                             .withVolumeSpecName("data"),
                         new VolumeGroupVolumeProperties()
-                            .withName("testVol2")
-                            .withCreationToken("testVol2")
+                            .withName("test-log-mnt00001")
+                            .withCreationToken("fakeTokenPlaceholder")
                             .withServiceLevel(ServiceLevel.PREMIUM)
                             .withUsageThreshold(107374182400L)
                             .withSubnetId(
@@ -62,8 +62,8 @@ public final class VolumeGroupsCreateSamples {
                                 "/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg")
                             .withVolumeSpecName("log"),
                         new VolumeGroupVolumeProperties()
-                            .withName("testVol3")
-                            .withCreationToken("testVol3")
+                            .withName("test-shared")
+                            .withCreationToken("fakeTokenPlaceholder")
                             .withServiceLevel(ServiceLevel.PREMIUM)
                             .withUsageThreshold(107374182400L)
                             .withSubnetId(

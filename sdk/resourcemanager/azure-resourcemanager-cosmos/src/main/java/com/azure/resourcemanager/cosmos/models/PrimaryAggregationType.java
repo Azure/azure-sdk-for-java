@@ -29,6 +29,15 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
     public static final PrimaryAggregationType LAST = fromString("Last");
 
     /**
+     * Creates a new instance of PrimaryAggregationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrimaryAggregationType() {
+    }
+
+    /**
      * Creates or finds a PrimaryAggregationType from its string representation.
      *
      * @param name a name to look for.

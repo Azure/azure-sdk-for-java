@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters Delete. */
 public final class ClustersDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class ClustersDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().delete("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().delete("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,63 +14,61 @@ import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesProp
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageSpacesInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageSpacesInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"hciStorageProfile\":{\"mocGroup\":\"bwemhairs\",\"mocLocation\":\"gzd\",\"mocStorageContainer\":\"swe\"},\"vmwareStorageProfile\":{\"datacenter\":\"w\",\"datastore\":\"ggicccnxqhue\",\"folder\":\"ktt\",\"resourcePool\":\"tvlz\"},\"provisioningState\":\"Updating\",\"status\":{}},\"extendedLocation\":{\"type\":\"csdtclusiypbs\",\"name\":\"ytguslf\"},\"location\":\"adcy\",\"tags\":{\"elolppvksrpqvuj\":\"kyhejhzisxgf\",\"wib\":\"raehtwdwrft\",\"cstwity\":\"rcdlbhshfwpr\"},\"id\":\"hevxcced\",\"name\":\"pnmdyodnwzxltjcv\",\"type\":\"hlt\"}")
+                    "{\"properties\":{\"hciStorageProfile\":{\"mocGroup\":\"xpbtgiwbwo\",\"mocLocation\":\"washr\",\"mocStorageContainer\":\"tkcnqxwb\"},\"vmwareStorageProfile\":{\"datacenter\":\"ulpiuj\",\"datastore\":\"asipqiio\",\"folder\":\"uqerpqlpqwc\",\"resourcePool\":\"uqgbdbutauvfbt\"},\"provisioningState\":\"Deleting\",\"status\":{}},\"extendedLocation\":{\"type\":\"k\",\"name\":\"oxafn\"},\"location\":\"dlpichkoymkcdyhb\",\"tags\":{\"vljxywsu\":\"pwdreqnovvqf\"},\"id\":\"syrsndsytgadgvra\",\"name\":\"aeneqnzarrwl\",\"type\":\"uu\"}")
                 .toObject(StorageSpacesInner.class);
-        Assertions.assertEquals("adcy", model.location());
-        Assertions.assertEquals("kyhejhzisxgf", model.tags().get("elolppvksrpqvuj"));
-        Assertions.assertEquals("bwemhairs", model.properties().hciStorageProfile().mocGroup());
-        Assertions.assertEquals("gzd", model.properties().hciStorageProfile().mocLocation());
-        Assertions.assertEquals("swe", model.properties().hciStorageProfile().mocStorageContainer());
-        Assertions.assertEquals("w", model.properties().vmwareStorageProfile().datacenter());
-        Assertions.assertEquals("ggicccnxqhue", model.properties().vmwareStorageProfile().datastore());
-        Assertions.assertEquals("ktt", model.properties().vmwareStorageProfile().folder());
-        Assertions.assertEquals("tvlz", model.properties().vmwareStorageProfile().resourcePool());
-        Assertions.assertEquals("csdtclusiypbs", model.extendedLocation().type());
-        Assertions.assertEquals("ytguslf", model.extendedLocation().name());
+        Assertions.assertEquals("dlpichkoymkcdyhb", model.location());
+        Assertions.assertEquals("pwdreqnovvqf", model.tags().get("vljxywsu"));
+        Assertions.assertEquals("xpbtgiwbwo", model.properties().hciStorageProfile().mocGroup());
+        Assertions.assertEquals("washr", model.properties().hciStorageProfile().mocLocation());
+        Assertions.assertEquals("tkcnqxwb", model.properties().hciStorageProfile().mocStorageContainer());
+        Assertions.assertEquals("ulpiuj", model.properties().vmwareStorageProfile().datacenter());
+        Assertions.assertEquals("asipqiio", model.properties().vmwareStorageProfile().datastore());
+        Assertions.assertEquals("uqerpqlpqwc", model.properties().vmwareStorageProfile().folder());
+        Assertions.assertEquals("uqgbdbutauvfbt", model.properties().vmwareStorageProfile().resourcePool());
+        Assertions.assertEquals("k", model.extendedLocation().type());
+        Assertions.assertEquals("oxafn", model.extendedLocation().name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StorageSpacesInner model =
             new StorageSpacesInner()
-                .withLocation("adcy")
-                .withTags(mapOf("elolppvksrpqvuj", "kyhejhzisxgf", "wib", "raehtwdwrft", "cstwity", "rcdlbhshfwpr"))
+                .withLocation("dlpichkoymkcdyhb")
+                .withTags(mapOf("vljxywsu", "pwdreqnovvqf"))
                 .withProperties(
                     new StorageSpacesProperties()
                         .withHciStorageProfile(
                             new StorageSpacesPropertiesHciStorageProfile()
-                                .withMocGroup("bwemhairs")
-                                .withMocLocation("gzd")
-                                .withMocStorageContainer("swe"))
+                                .withMocGroup("xpbtgiwbwo")
+                                .withMocLocation("washr")
+                                .withMocStorageContainer("tkcnqxwb"))
                         .withVmwareStorageProfile(
                             new StorageSpacesPropertiesVmwareStorageProfile()
-                                .withDatacenter("w")
-                                .withDatastore("ggicccnxqhue")
-                                .withFolder("ktt")
-                                .withResourcePool("tvlz"))
+                                .withDatacenter("ulpiuj")
+                                .withDatastore("asipqiio")
+                                .withFolder("uqerpqlpqwc")
+                                .withResourcePool("uqgbdbutauvfbt"))
                         .withStatus(new StorageSpacesPropertiesStatus()))
-                .withExtendedLocation(
-                    new StorageSpacesExtendedLocation().withType("csdtclusiypbs").withName("ytguslf"));
+                .withExtendedLocation(new StorageSpacesExtendedLocation().withType("k").withName("oxafn"));
         model = BinaryData.fromObject(model).toObject(StorageSpacesInner.class);
-        Assertions.assertEquals("adcy", model.location());
-        Assertions.assertEquals("kyhejhzisxgf", model.tags().get("elolppvksrpqvuj"));
-        Assertions.assertEquals("bwemhairs", model.properties().hciStorageProfile().mocGroup());
-        Assertions.assertEquals("gzd", model.properties().hciStorageProfile().mocLocation());
-        Assertions.assertEquals("swe", model.properties().hciStorageProfile().mocStorageContainer());
-        Assertions.assertEquals("w", model.properties().vmwareStorageProfile().datacenter());
-        Assertions.assertEquals("ggicccnxqhue", model.properties().vmwareStorageProfile().datastore());
-        Assertions.assertEquals("ktt", model.properties().vmwareStorageProfile().folder());
-        Assertions.assertEquals("tvlz", model.properties().vmwareStorageProfile().resourcePool());
-        Assertions.assertEquals("csdtclusiypbs", model.extendedLocation().type());
-        Assertions.assertEquals("ytguslf", model.extendedLocation().name());
+        Assertions.assertEquals("dlpichkoymkcdyhb", model.location());
+        Assertions.assertEquals("pwdreqnovvqf", model.tags().get("vljxywsu"));
+        Assertions.assertEquals("xpbtgiwbwo", model.properties().hciStorageProfile().mocGroup());
+        Assertions.assertEquals("washr", model.properties().hciStorageProfile().mocLocation());
+        Assertions.assertEquals("tkcnqxwb", model.properties().hciStorageProfile().mocStorageContainer());
+        Assertions.assertEquals("ulpiuj", model.properties().vmwareStorageProfile().datacenter());
+        Assertions.assertEquals("asipqiio", model.properties().vmwareStorageProfile().datastore());
+        Assertions.assertEquals("uqerpqlpqwc", model.properties().vmwareStorageProfile().folder());
+        Assertions.assertEquals("uqgbdbutauvfbt", model.properties().vmwareStorageProfile().resourcePool());
+        Assertions.assertEquals("k", model.extendedLocation().type());
+        Assertions.assertEquals("oxafn", model.extendedLocation().name());
     }
 
     @SuppressWarnings("unchecked")

@@ -17,7 +17,7 @@ public interface ExportJobsOperationResultsClient {
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @param context The context to associate with this operation.
@@ -35,7 +35,7 @@ public interface ExportJobsOperationResultsClient {
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

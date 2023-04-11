@@ -10,6 +10,10 @@ import com.azure.resourcemanager.orbital.models.ContactInstanceProperties;
 /** Properties of Contact resource. */
 @Immutable
 public final class AvailableContactsProperties extends ContactInstanceProperties {
+    /** Creates an instance of AvailableContactsProperties class. */
+    public AvailableContactsProperties() {
+    }
+
     /**
      * Validates the instance.
      *

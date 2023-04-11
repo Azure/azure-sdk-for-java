@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 
 /** Samples for DatabaseAccounts OnlineRegion. */
 public final class DatabaseAccountsOnlineRegionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountOnlineRegion.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountOnlineRegion.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountOnlineRegion.
@@ -23,6 +22,6 @@ public final class DatabaseAccountsOnlineRegionSamples {
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .onlineRegion("rg1", "ddb1", new RegionForOnlineOffline(), Context.NONE);
+            .onlineRegion("rg1", "ddb1", new RegionForOnlineOffline(), com.azure.core.util.Context.NONE);
     }
 }

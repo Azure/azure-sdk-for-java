@@ -796,6 +796,21 @@ public class CosmosContainer {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
 
+    /***
+     *  Initializes the container by warming up the caches and connections to a specified no. of proactive connection regions.
+     *  For more information about proactive connection regions, see {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}
+     *
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
+     *
+     * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
+     */
+    public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
+    }
+
     private void blockVoidResponse(Mono<Void> voidMono) {
         try {
             voidMono.block();

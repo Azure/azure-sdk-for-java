@@ -17,6 +17,10 @@ public final class BackupInformationInner {
     @JsonProperty(value = "continuousBackupInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ContinuousBackupInformation continuousBackupInformation;
 
+    /** Creates an instance of BackupInformationInner class. */
+    public BackupInformationInner() {
+    }
+
     /**
      * Get the continuousBackupInformation property: Information about the status of continuous backups.
      *

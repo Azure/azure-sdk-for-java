@@ -17,6 +17,10 @@ public class SqlDatabaseResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of SqlDatabaseResource class. */
+    public SqlDatabaseResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB SQL database.
      *

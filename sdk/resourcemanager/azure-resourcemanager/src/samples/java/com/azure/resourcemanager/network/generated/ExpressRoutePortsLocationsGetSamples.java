@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRoutePortsLocations Get. */
 public final class ExpressRoutePortsLocationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRoutePortsLocationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRoutePortsLocationGet.json
      */
     /**
      * Sample code: ExpressRoutePortsLocationGet.
@@ -22,6 +20,6 @@ public final class ExpressRoutePortsLocationsGetSamples {
             .manager()
             .serviceClient()
             .getExpressRoutePortsLocations()
-            .getWithResponse("locationName", Context.NONE);
+            .getWithResponse("locationName", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites ListStaticSiteAppSettings. */
 public final class StaticSitesListStaticSiteAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListStaticSiteAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListStaticSiteAppSettings.json
      */
     /**
      * Sample code: Get app settings of a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesListStaticSiteAppSettingsSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .listStaticSiteAppSettingsWithResponse("rg", "testStaticSite0", Context.NONE);
+            .listStaticSiteAppSettingsWithResponse("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

@@ -24,6 +24,10 @@ public final class DatabaseListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DatabaseListResult class. */
+    public DatabaseListResult() {
+    }
+
     /**
      * Get the value property: The list of databases housed in a server.
      *

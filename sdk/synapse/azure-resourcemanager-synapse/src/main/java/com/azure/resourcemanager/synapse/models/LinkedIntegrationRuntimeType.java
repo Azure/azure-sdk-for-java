@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class LinkedIntegrationRuntimeType {
+    /** Creates an instance of LinkedIntegrationRuntimeType class. */
+    public LinkedIntegrationRuntimeType() {
+    }
+
     /**
      * Validates the instance.
      *

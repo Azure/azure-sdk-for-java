@@ -17,6 +17,10 @@ public final class RestorableMongodbDatabaseProperties {
     @JsonProperty(value = "resource")
     private RestorableMongodbDatabasePropertiesResource resource;
 
+    /** Creates an instance of RestorableMongodbDatabaseProperties class. */
+    public RestorableMongodbDatabaseProperties() {
+    }
+
     /**
      * Get the resource property: The resource of an Azure Cosmos DB MongoDB database event.
      *

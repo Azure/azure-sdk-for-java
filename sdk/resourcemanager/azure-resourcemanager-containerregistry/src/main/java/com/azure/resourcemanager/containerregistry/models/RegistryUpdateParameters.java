@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters for updating a container registry. */
 @Fluent
 public final class RegistryUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUpdateParameters.class);
-
     /*
      * The identity of the container registry.
      */
@@ -41,6 +37,10 @@ public final class RegistryUpdateParameters {
      */
     @JsonProperty(value = "properties")
     private RegistryPropertiesUpdateParameters innerProperties;
+
+    /** Creates an instance of RegistryUpdateParameters class. */
+    public RegistryUpdateParameters() {
+    }
 
     /**
      * Get the identity property: The identity of the container registry.

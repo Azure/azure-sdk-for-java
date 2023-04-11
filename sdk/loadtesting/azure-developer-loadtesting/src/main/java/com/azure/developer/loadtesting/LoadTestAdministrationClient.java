@@ -19,7 +19,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 
 /** Initializes a new instance of the synchronous LoadTestingClient type. */
-@ServiceClient(builder = LoadTestingClientBuilder.class)
+@ServiceClient(builder = LoadTestAdministrationClientBuilder.class)
 public final class LoadTestAdministrationClient {
 
     @Generated private final LoadTestAdministrationAsyncClient client;

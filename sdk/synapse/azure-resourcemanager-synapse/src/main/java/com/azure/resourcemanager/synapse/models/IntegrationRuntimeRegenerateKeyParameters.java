@@ -16,6 +16,10 @@ public final class IntegrationRuntimeRegenerateKeyParameters {
     @JsonProperty(value = "keyName")
     private IntegrationRuntimeAuthKeyName keyName;
 
+    /** Creates an instance of IntegrationRuntimeRegenerateKeyParameters class. */
+    public IntegrationRuntimeRegenerateKeyParameters() {
+    }
+
     /**
      * Get the keyName property: The name of the authentication key to regenerate.
      *

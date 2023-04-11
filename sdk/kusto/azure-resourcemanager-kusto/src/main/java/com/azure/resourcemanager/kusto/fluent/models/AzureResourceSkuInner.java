@@ -30,6 +30,10 @@ public final class AzureResourceSkuInner {
     @JsonProperty(value = "capacity")
     private AzureCapacity capacity;
 
+    /** Creates an instance of AzureResourceSkuInner class. */
+    public AzureResourceSkuInner() {
+    }
+
     /**
      * Get the resourceType property: Resource Namespace and Type.
      *

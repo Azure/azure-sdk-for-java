@@ -28,6 +28,10 @@ public final class OperationMetaMetricDimensionSpecification {
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
 
+    /** Creates an instance of OperationMetaMetricDimensionSpecification class. */
+    public OperationMetaMetricDimensionSpecification() {
+    }
+
     /**
      * Get the displayName property: Dimension display name.
      *

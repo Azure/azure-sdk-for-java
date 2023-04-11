@@ -19,7 +19,7 @@ public class AzureResourceMetadataConfigurationProperties implements AzureResour
      */
     private String resourceId;
     /**
-     * The region of an Azure resource.
+     * The region of an Azure resource. For instance, '"eastus"'.
      */
     private String region;
 

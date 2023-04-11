@@ -55,7 +55,7 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolTableColumnsService {
+    public interface SqlPoolTableColumnsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -87,7 +87,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -168,7 +170,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -248,7 +252,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -277,7 +283,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -301,7 +309,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -332,7 +342,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -353,7 +365,9 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     }
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -384,7 +398,8 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,7 +434,8 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

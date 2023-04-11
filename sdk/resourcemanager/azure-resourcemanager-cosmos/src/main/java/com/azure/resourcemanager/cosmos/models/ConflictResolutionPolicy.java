@@ -28,6 +28,10 @@ public final class ConflictResolutionPolicy {
     @JsonProperty(value = "conflictResolutionProcedure")
     private String conflictResolutionProcedure;
 
+    /** Creates an instance of ConflictResolutionPolicy class. */
+    public ConflictResolutionPolicy() {
+    }
+
     /**
      * Get the mode property: Indicates the conflict resolution mode.
      *

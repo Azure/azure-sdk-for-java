@@ -20,8 +20,7 @@ public final class ReadWriteDatabaseProperties {
     private ResourceProvisioningState provisioningState;
 
     /*
-     * The time the data should be kept before it stops being accessible to
-     * queries in TimeSpan.
+     * The time the data should be kept before it stops being accessible to queries in TimeSpan.
      */
     @JsonProperty(value = "softDeletePeriod")
     private Duration softDeletePeriod;
@@ -43,6 +42,10 @@ public final class ReadWriteDatabaseProperties {
      */
     @JsonProperty(value = "isFollowed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFollowed;
+
+    /** Creates an instance of ReadWriteDatabaseProperties class. */
+    public ReadWriteDatabaseProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.

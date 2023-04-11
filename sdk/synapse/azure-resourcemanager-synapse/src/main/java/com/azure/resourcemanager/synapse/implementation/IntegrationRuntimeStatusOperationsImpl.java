@@ -27,17 +27,6 @@ public final class IntegrationRuntimeStatusOperationsImpl implements Integration
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeStatusResponse get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeStatusResponseInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeStatusResponse> getWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         Response<IntegrationRuntimeStatusResponseInner> inner =
@@ -48,6 +37,17 @@ public final class IntegrationRuntimeStatusOperationsImpl implements Integration
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeStatusResponse get(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeStatusResponseInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }

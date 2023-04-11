@@ -20,6 +20,10 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RestoreRequestProperties innerProperties;
 
+    /** Creates an instance of RestoreRequestInner class. */
+    public RestoreRequestInner() {
+    }
+
     /**
      * Get the innerProperties property: RestoreRequest resource specific properties.
      *

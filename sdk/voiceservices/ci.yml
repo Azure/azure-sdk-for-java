@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/voiceservices/ci.yml
+      - sdk/voiceservices/azure-resourcemanager-voiceservices/
+    exclude:
+      - sdk/voiceservices/pom.xml
+      - sdk/voiceservices/azure-resourcemanager-voiceservices/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/voiceservices/ci.yml
+      - sdk/voiceservices/azure-resourcemanager-voiceservices/
+    exclude:
+      - sdk/voiceservices/pom.xml
+      - sdk/voiceservices/azure-resourcemanager-voiceservices/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagervoiceservices
+    displayName: azure-resourcemanager-voiceservices
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: voiceservices
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-voiceservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagervoiceservices
+        releaseInBatch: ${{ parameters.release_azureresourcemanagervoiceservices }}

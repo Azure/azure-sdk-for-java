@@ -54,7 +54,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolMetadataSyncConfigsService {
+    public interface SqlPoolMetadataSyncConfigsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -75,7 +75,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
                 + "/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MetadataSyncConfigInner>> create(
             @HostParam("$host") String endpoint,
@@ -90,7 +90,9 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     }
 
     /**
-     * Get the metadata sync configuration for a SQL pool.
+     * Get SQL pool metadata sync config
+     *
+     * <p>Get the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -145,7 +147,9 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     }
 
     /**
-     * Get the metadata sync configuration for a SQL pool.
+     * Get SQL pool metadata sync config
+     *
+     * <p>Get the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -198,7 +202,9 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     }
 
     /**
-     * Get the metadata sync configuration for a SQL pool.
+     * Get SQL pool metadata sync config
+     *
+     * <p>Get the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -211,34 +217,13 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MetadataSyncConfigInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .flatMap(
-                (Response<MetadataSyncConfigInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the metadata sync configuration for a SQL pool.
+     * Get SQL pool metadata sync config
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata sync configuration for a SQL pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetadataSyncConfigInner get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName).block();
-    }
-
-    /**
-     * Get the metadata sync configuration for a SQL pool.
+     * <p>Get the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -256,7 +241,27 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     }
 
     /**
-     * Set the metadata sync configuration for a SQL pool.
+     * Get SQL pool metadata sync config
+     *
+     * <p>Get the metadata sync configuration for a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the metadata sync configuration for a SQL pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetadataSyncConfigInner get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
+    }
+
+    /**
+     * Set SQL pool metadata sync config
+     *
+     * <p>Set the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -323,7 +328,9 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     }
 
     /**
-     * Set the metadata sync configuration for a SQL pool.
+     * Set SQL pool metadata sync config
+     *
+     * <p>Set the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -389,7 +396,9 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     }
 
     /**
-     * Set the metadata sync configuration for a SQL pool.
+     * Set SQL pool metadata sync config
+     *
+     * <p>Set the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -407,39 +416,13 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         String sqlPoolName,
         MetadataSyncConfigInner metadataSyncConfiguration) {
         return createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration)
-            .flatMap(
-                (Response<MetadataSyncConfigInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Set the metadata sync configuration for a SQL pool.
+     * Set SQL pool metadata sync config
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param metadataSyncConfiguration Metadata sync configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata sync configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetadataSyncConfigInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration) {
-        return createAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration).block();
-    }
-
-    /**
-     * Set the metadata sync configuration for a SQL pool.
+     * <p>Set the metadata sync configuration for a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -461,5 +444,30 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         return createWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration, context)
             .block();
+    }
+
+    /**
+     * Set SQL pool metadata sync config
+     *
+     * <p>Set the metadata sync configuration for a SQL pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param metadataSyncConfiguration Metadata sync configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata sync configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetadataSyncConfigInner create(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        MetadataSyncConfigInner metadataSyncConfiguration) {
+        return createWithResponse(
+                resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration, Context.NONE)
+            .getValue();
     }
 }

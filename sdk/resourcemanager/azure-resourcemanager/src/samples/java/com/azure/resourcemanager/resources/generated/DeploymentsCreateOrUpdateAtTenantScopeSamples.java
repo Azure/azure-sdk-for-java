@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
@@ -45,7 +44,7 @@ public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
                                     .deserialize("{}", Object.class, SerializerEncoding.JSON))
                             .withMode(DeploymentMode.INCREMENTAL))
                     .withTags(mapOf("tagKey1", "tag-value-1", "tagKey2", "tag-value-2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

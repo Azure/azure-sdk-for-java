@@ -1,6 +1,6 @@
 # Release History
 
-## 2.24.0-beta.1 (Unreleased)
+## 2.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.25.0 (2023-03-24)
+
+### Bugs Fixed
+
+- Fixed bug that `refresh` method on `RegistryTaskRun` class fails, when `RegistryTaskRun` is initialized via `RegistryTaskRuns.listByRegistry`.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-12-01`.
 
 ## 2.23.0 (2023-01-27)
 

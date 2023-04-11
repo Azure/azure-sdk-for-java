@@ -29,6 +29,10 @@ public final class SqlRoleAssignmentResource {
     @JsonProperty(value = "principalId")
     private String principalId;
 
+    /** Creates an instance of SqlRoleAssignmentResource class. */
+    public SqlRoleAssignmentResource() {
+    }
+
     /**
      * Get the roleDefinitionId property: The unique identifier for the associated Role Definition.
      *

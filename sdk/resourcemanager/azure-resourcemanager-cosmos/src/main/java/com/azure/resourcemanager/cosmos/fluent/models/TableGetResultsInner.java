@@ -20,6 +20,10 @@ public final class TableGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private TableGetProperties innerProperties;
 
+    /** Creates an instance of TableGetResultsInner class. */
+    public TableGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Table.
      *

@@ -48,6 +48,10 @@ public final class MongoUserDefinitionResource {
     @JsonProperty(value = "mechanisms")
     private String mechanisms;
 
+    /** Creates an instance of MongoUserDefinitionResource class. */
+    public MongoUserDefinitionResource() {
+    }
+
     /**
      * Get the username property: The user name for User Definition.
      *

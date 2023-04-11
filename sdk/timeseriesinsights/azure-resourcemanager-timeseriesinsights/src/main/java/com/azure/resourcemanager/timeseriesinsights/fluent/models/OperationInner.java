@@ -4,17 +4,14 @@
 
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.timeseriesinsights.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.models.ServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A Time Series Insights REST API operation. */
-@Immutable
+@Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * The name of the operation being performed on this particular object.
      */
@@ -22,11 +19,26 @@ public final class OperationInner {
     private String name;
 
     /*
-     * Contains the localized display information for this particular operation
-     * / action.
+     * Contains the localized display information for this particular operation / action.
      */
     @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
     private OperationDisplay display;
+
+    /*
+     * The intended executor of the operation.
+     */
+    @JsonProperty(value = "origin")
+    private String origin;
+
+    /*
+     * Properties of operation, include metric specifications.
+     */
+    @JsonProperty(value = "properties")
+    private OperationProperties innerOperationProperties;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.
@@ -47,6 +59,58 @@ public final class OperationInner {
     }
 
     /**
+     * Get the origin property: The intended executor of the operation.
+     *
+     * @return the origin value.
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Set the origin property: The intended executor of the operation.
+     *
+     * @param origin the origin value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withOrigin(String origin) {
+        this.origin = origin;
+        return this;
+    }
+
+    /**
+     * Get the innerOperationProperties property: Properties of operation, include metric specifications.
+     *
+     * @return the innerOperationProperties value.
+     */
+    private OperationProperties innerOperationProperties() {
+        return this.innerOperationProperties;
+    }
+
+    /**
+     * Get the serviceSpecification property: One property of operation, include metric specifications.
+     *
+     * @return the serviceSpecification value.
+     */
+    public ServiceSpecification serviceSpecification() {
+        return this.innerOperationProperties() == null ? null : this.innerOperationProperties().serviceSpecification();
+    }
+
+    /**
+     * Set the serviceSpecification property: One property of operation, include metric specifications.
+     *
+     * @param serviceSpecification the serviceSpecification value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withServiceSpecification(ServiceSpecification serviceSpecification) {
+        if (this.innerOperationProperties() == null) {
+            this.innerOperationProperties = new OperationProperties();
+        }
+        this.innerOperationProperties().withServiceSpecification(serviceSpecification);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -54,6 +118,9 @@ public final class OperationInner {
     public void validate() {
         if (display() != null) {
             display().validate();
+        }
+        if (innerOperationProperties() != null) {
+            innerOperationProperties().validate();
         }
     }
 }

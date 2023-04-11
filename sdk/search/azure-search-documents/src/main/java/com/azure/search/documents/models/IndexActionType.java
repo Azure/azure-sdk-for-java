@@ -6,21 +6,32 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IndexActionType. */
+/** The operation to perform on a document in an indexing batch. */
 public enum IndexActionType {
-    /** Enum value upload. */
+    /**
+     * Inserts the document into the index if it is new and updates it if it exists. All fields are replaced in the
+     * update case.
+     */
     UPLOAD("upload"),
 
-    /** Enum value merge. */
+    /**
+     * Merges the specified field values with an existing document. If the document does not exist, the merge will fail.
+     * Any field you specify in a merge will replace the existing field in the document. This also applies to
+     * collections of primitive and complex types.
+     */
     MERGE("merge"),
 
-    /** Enum value mergeOrUpload. */
+    /**
+     * Behaves like merge if a document with the given key already exists in the index. If the document does not exist,
+     * it behaves like upload with a new document.
+     */
     MERGE_OR_UPLOAD("mergeOrUpload"),
 
-    /** Enum value delete. */
+    /**
+     * Removes the specified document from the index. Any field you specify in a delete operation other than the key
+     * field will be ignored. If you want to remove an individual field from a document, use merge instead and set the
+     * field explicitly to null.
+     */
     DELETE("delete");
 
     /** The actual serialized value for a IndexActionType instance. */
@@ -36,7 +47,6 @@ public enum IndexActionType {
      * @param value the serialized value to parse.
      * @return the parsed IndexActionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IndexActionType fromString(String value) {
         if (value == null) {
             return null;
@@ -50,7 +60,7 @@ public enum IndexActionType {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

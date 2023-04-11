@@ -25,15 +25,21 @@ class DefaultTokenCredentialProviderTest {
     @Test
     void testOptionsIsNull() {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(null);
-        TokenCredential tokenCredential = provider.get();
-        assertTrue(tokenCredential instanceof DefaultAzureCredential);
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
+        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
+        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
     }
 
     @Test
     void testDefaultConstructor() {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider();
-        TokenCredential tokenCredential = provider.get();
-        assertTrue(tokenCredential instanceof DefaultAzureCredential);
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
+        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
+        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
     }
 
     private static Stream<Arguments> provideAuthorityHosts() {
@@ -48,7 +54,7 @@ class DefaultTokenCredentialProviderTest {
 
     @ParameterizedTest
     @MethodSource("provideAuthorityHosts")
-    void testClientSecretCredential(String providedAuthorityHost, String expectedAuthorityHost) throws NoSuchFieldException, IllegalAccessException {
+    void testClientSecretCredential(String providedAuthorityHost) {
         // setUp
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         options.setTenantId("fake-tenantId");
@@ -58,15 +64,19 @@ class DefaultTokenCredentialProviderTest {
             options.setAuthorityHost(providedAuthorityHost);
         }
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
-        TokenCredential tokenCredential = provider.get();
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential instanceof ClientSecretCredential);
+        assertTrue(tokenCredential1 instanceof ClientSecretCredential);
+        assertTrue(tokenCredential2 instanceof ClientSecretCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
+
     }
 
     @ParameterizedTest
     @MethodSource("provideAuthorityHosts")
-    void testClientCertificateCredential(String providedAuthorityHost, String expectedAuthorityHost) throws NoSuchFieldException, IllegalAccessException {
+    void testClientCertificateCredential(String providedAuthorityHost) {
         // setUp
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         options.setTenantId("fake-tenantId");
@@ -76,10 +86,13 @@ class DefaultTokenCredentialProviderTest {
             options.setAuthorityHost(providedAuthorityHost);
         }
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
-        TokenCredential tokenCredential = provider.get();
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential instanceof ClientCertificateCredential);
+        assertTrue(tokenCredential1 instanceof ClientCertificateCredential);
+        assertTrue(tokenCredential2 instanceof ClientCertificateCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
     }
 
     @ParameterizedTest
@@ -95,10 +108,14 @@ class DefaultTokenCredentialProviderTest {
             options.setAuthorityHost(providedAuthorityHost);
         }
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
-        TokenCredential tokenCredential = provider.get();
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential instanceof UsernamePasswordCredential);
+        assertTrue(tokenCredential1 instanceof UsernamePasswordCredential);
+        assertTrue(tokenCredential2 instanceof UsernamePasswordCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
+
     }
 
     @Test
@@ -108,18 +125,27 @@ class DefaultTokenCredentialProviderTest {
         options.setManagedIdentityEnabled(true);
 
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
-        TokenCredential tokenCredential = provider.get();
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
 
         // verify
-        assertTrue(tokenCredential instanceof ManagedIdentityCredential);
+        assertTrue(tokenCredential1 instanceof ManagedIdentityCredential);
+        assertTrue(tokenCredential2 instanceof ManagedIdentityCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
+
     }
 
     @Test
     void testDefaultAzureCredential() {
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(options);
-        TokenCredential tokenCredential = provider.get();
-        assertTrue(tokenCredential instanceof DefaultAzureCredential);
+        TokenCredential tokenCredential1 = provider.get();
+        TokenCredential tokenCredential2 = provider.get();
+
+        // verify
+        assertTrue(tokenCredential1 instanceof DefaultAzureCredential);
+        assertTrue(tokenCredential2 instanceof DefaultAzureCredential);
+        assertTrue(tokenCredential1 == tokenCredential2);
     }
 
 }

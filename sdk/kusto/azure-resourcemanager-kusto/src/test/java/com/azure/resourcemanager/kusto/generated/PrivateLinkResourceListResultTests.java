@@ -8,22 +8,28 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.kusto.models.PrivateLinkResourceListResult;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"sdqrhzoymibmrq\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"hwflu\",\"name\":\"zdtmhrkwofy\",\"type\":\"voqacpiexpbt\"}]}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"y\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"l\",\"name\":\"ssl\",\"type\":\"lfmmdnbbglzpswi\"},{\"properties\":{\"groupId\":\"cwyhzdxssa\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"nvdfznuda\",\"name\":\"dvxzbncblylpst\",\"type\":\"bhhxsrzdzuc\"},{\"properties\":{\"groupId\":\"cdntnevfiwjmy\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"slswtm\",\"name\":\"eriofzpyqs\",\"type\":\"mwabnetshhszhedp\"},{\"properties\":{\"groupId\":\"iwubmwmbesldnk\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"pjflcxogao\",\"name\":\"onz\",\"type\":\"nsikvmkqzeqqkdl\"}]}")
                 .toObject(PrivateLinkResourceListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceListResult model =
-            new PrivateLinkResourceListResult().withValue(Arrays.asList(new PrivateLinkResourceInner()));
+            new PrivateLinkResourceListResult()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new PrivateLinkResourceInner(),
+                            new PrivateLinkResourceInner(),
+                            new PrivateLinkResourceInner(),
+                            new PrivateLinkResourceInner()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
     }
 }

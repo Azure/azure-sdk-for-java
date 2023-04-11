@@ -19,6 +19,10 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
     @JsonProperty(value = "properties")
     private ThroughputSettingsGetProperties innerProperties;
 
+    /** Creates an instance of ThroughputSettingsGetResultsInner class. */
+    public ThroughputSettingsGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB resource throughput.
      *

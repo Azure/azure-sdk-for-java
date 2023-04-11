@@ -3,8 +3,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
-
 /**
  * This is a sample for listing tags asynchronously.
  */
@@ -16,7 +14,6 @@ public class ListTagsAsync {
     public static void main(String[] args) {
         ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
             .endpoint(ENDPOINT)
-            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildAsyncClient();
 
         RegistryArtifactAsync image = anonymousClient.getArtifact(REPOSITORY_NAME, DIGEST);

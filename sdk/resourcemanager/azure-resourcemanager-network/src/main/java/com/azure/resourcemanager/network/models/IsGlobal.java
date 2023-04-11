@@ -17,6 +17,15 @@ public final class IsGlobal extends ExpandableStringEnum<IsGlobal> {
     public static final IsGlobal TRUE = fromString("True");
 
     /**
+     * Creates a new instance of IsGlobal value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IsGlobal() {
+    }
+
+    /**
      * Creates or finds a IsGlobal from its string representation.
      *
      * @param name a name to look for.

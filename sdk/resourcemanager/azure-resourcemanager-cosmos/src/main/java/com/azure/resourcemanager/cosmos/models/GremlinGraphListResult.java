@@ -18,6 +18,10 @@ public final class GremlinGraphListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GremlinGraphGetResultsInner> value;
 
+    /** Creates an instance of GremlinGraphListResult class. */
+    public GremlinGraphListResult() {
+    }
+
     /**
      * Get the value property: List of graphs and their properties.
      *

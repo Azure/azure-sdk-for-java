@@ -43,10 +43,12 @@ public class PathProperties {
     private final Boolean isDirectory;
     private final OffsetDateTime expiresOn;
     private String encryptionScope;
+    private String encryptionContext;
 
     static {
-        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope) -> {
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext) -> {
             properties.encryptionScope = encryptionScope;
+            properties.encryptionContext = encryptionContext;
             return properties;
         });
     }
@@ -381,5 +383,12 @@ public class PathProperties {
      */
     public String getEncryptionScope() {
         return encryptionScope;
+    }
+
+    /**
+     * @return the encryption context for this path. Only applicable for files.
+     */
+    public String getEncryptionContext() {
+        return encryptionContext;
     }
 }

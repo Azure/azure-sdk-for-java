@@ -68,7 +68,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface ClusterPrincipalAssignmentsService {
+    public interface ClusterPrincipalAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
@@ -295,25 +295,6 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the principal assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, principalAssignmentName).block();
-    }
-
-    /**
-     * Checks that the principal assignment name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param principalAssignmentName The name of the principal assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -328,6 +309,26 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
         Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, principalAssignmentName, context)
             .block();
+    }
+
+    /**
+     * Checks that the principal assignment name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param principalAssignmentName The name of the principal assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, principalAssignmentName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -462,23 +463,6 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterPrincipalAssignmentInner get(
-        String resourceGroupName, String clusterName, String principalAssignmentName) {
-        return getAsync(resourceGroupName, clusterName, principalAssignmentName).block();
-    }
-
-    /**
-     * Gets a Kusto cluster principalAssignment.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param principalAssignmentName The name of the Kusto principalAssignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,6 +473,23 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     public Response<ClusterPrincipalAssignmentInner> getWithResponse(
         String resourceGroupName, String clusterName, String principalAssignmentName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, principalAssignmentName, context).block();
+    }
+
+    /**
+     * Gets a Kusto cluster principalAssignment.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param principalAssignmentName The name of the Kusto principalAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Kusto cluster principalAssignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterPrincipalAssignmentInner get(
+        String resourceGroupName, String clusterName, String principalAssignmentName) {
+        return getWithResponse(resourceGroupName, clusterName, principalAssignmentName, Context.NONE).getValue();
     }
 
     /**
@@ -706,7 +707,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
         String clusterName,
         String principalAssignmentName,
         ClusterPrincipalAssignmentInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters)
             .getSyncPoller();
     }
 
@@ -730,7 +732,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
         String principalAssignmentName,
         ClusterPrincipalAssignmentInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, principalAssignmentName, parameters, context)
             .getSyncPoller();
     }
 
@@ -994,7 +997,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String principalAssignmentName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName).getSyncPoller();
     }
 
     /**
@@ -1012,7 +1015,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String principalAssignmentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName, context).getSyncPoller();
     }
 
     /**

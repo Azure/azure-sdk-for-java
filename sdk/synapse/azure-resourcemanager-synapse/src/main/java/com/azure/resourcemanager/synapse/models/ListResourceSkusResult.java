@@ -18,6 +18,10 @@ public final class ListResourceSkusResult {
     @JsonProperty(value = "value")
     private List<AzureResourceSkuInner> value;
 
+    /** Creates an instance of ListResourceSkusResult class. */
+    public ListResourceSkusResult() {
+    }
+
     /**
      * Get the value property: The collection of available SKUs for an existing resource.
      *

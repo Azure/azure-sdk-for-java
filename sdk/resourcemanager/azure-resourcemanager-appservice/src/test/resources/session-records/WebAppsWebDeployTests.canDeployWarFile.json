@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/serverfarms/java-webapp-859894plan58001be?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/serverfarms/java-webapp-859894plan58001be?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "c49d7db9-4a32-4c1a-8bb8-166151d4df1c",
@@ -57,7 +57,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "f3b9b538-74f8-4b57-bb95-c89db2860de9",
@@ -87,7 +87,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/config/web?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/config/web?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "83427205-c08b-43d2-9ecb-c1a098fe28dc",
@@ -117,7 +117,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/serverfarms/java-webapp-859894plan58001be?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/serverfarms/java-webapp-859894plan58001be?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "3633a8c8-0621-49f9-b71c-637fb05dd48b",
@@ -146,7 +146,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "e8ee43fb-167c-4066-9ae1-886bf4cffd3d",
@@ -168,7 +168,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Set-Cookie" : "ARRAffinity=b26b89a84bcd062c0413222b066bb56594b9ddf291bc18a8b83d74abbba0eede;Path=/;HttpOnly;Secure;Domain=java-webapp-859894.scm.azurewebsites.net,ARRAffinitySameSite=b26b89a84bcd062c0413222b066bb56594b9ddf291bc18a8b83d74abbba0eede;Path=/;HttpOnly;SameSite=None;Secure;Domain=java-webapp-859894.scm.azurewebsites.net",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy/status?api-version=2022-03-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy/status?api-version=2022-09-01",
       "x-ms-request-id" : "d3e36510-d192-43e5-bf97-41d2e5de593b",
       "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy\",\r\n  \"name\": \"MSDeploy\",\r\n  \"type\": \"Microsoft.Web/sites/extensions\",\r\n  \"location\": \"West US\",\r\n  \"properties\": {\r\n    \"deployer\": \"38D0FF2857E86BE83DE2C60797757591275468A3\",\r\n    \"provisioningState\": \"accepted\",\r\n    \"startTime\": \"0001-01-01T00:00:00\",\r\n    \"endTime\": \"0001-01-01T00:00:00\",\r\n    \"complete\": false\r\n  }\r\n}",
       "Content-Type" : "application/json; charset=utf-8",
@@ -177,7 +177,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy/status?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy/status?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "27404887-1677-4a86-b2a4-d3c3c203ced2"
@@ -207,7 +207,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy?api-version=2022-03-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71220351/providers/Microsoft.Web/sites/java-webapp-859894/extensions/MSDeploy?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "2651908d-67e7-456e-8775-7994894157b8"

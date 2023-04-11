@@ -43,6 +43,10 @@ public final class DatabaseAccountUpdateParameters {
     @JsonProperty(value = "properties")
     private DatabaseAccountUpdateProperties innerProperties;
 
+    /** Creates an instance of DatabaseAccountUpdateParameters class. */
+    public DatabaseAccountUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
      * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
@@ -726,6 +730,31 @@ public final class DatabaseAccountUpdateParameters {
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
         this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 

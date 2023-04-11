@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentifierInner;
 
 /** Samples for Domains UpdateOwnershipIdentifier. */
 public final class DomainsUpdateOwnershipIdentifierSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/UpdateAppServiceDomainOwnershipIdentifier.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/UpdateAppServiceDomainOwnershipIdentifier.json
      */
     /**
      * Sample code: Update App Service Domain OwnershipIdentifier.
@@ -28,6 +27,6 @@ public final class DomainsUpdateOwnershipIdentifierSamples {
                 "example.com",
                 "SampleOwnershipId",
                 new DomainOwnershipIdentifierInner().withOwnershipId("SampleOwnershipId"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

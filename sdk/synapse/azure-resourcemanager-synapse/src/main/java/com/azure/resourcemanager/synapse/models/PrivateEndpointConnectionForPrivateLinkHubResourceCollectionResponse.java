@@ -24,6 +24,10 @@ public final class PrivateEndpointConnectionForPrivateLinkHubResourceCollectionR
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse class. */
+    public PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse() {
+    }
+
     /**
      * Get the value property: The value property.
      *

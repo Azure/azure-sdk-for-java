@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
 
 /** Samples for SqlPoolTransparentDataEncryptions Get. */
@@ -26,6 +25,6 @@ public final class SqlPoolTransparentDataEncryptionsGetSamples {
                 "sqlcrudtest-2080",
                 "sqlcrudtest-9187",
                 TransparentDataEncryptionName.CURRENT,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

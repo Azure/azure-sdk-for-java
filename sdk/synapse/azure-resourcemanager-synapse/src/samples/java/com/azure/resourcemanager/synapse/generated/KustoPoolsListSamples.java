@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools List. */
 public final class KustoPoolsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class KustoPoolsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsListSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().list(Context.NONE);
+        manager.kustoPools().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -9,33 +9,29 @@ import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependencies
 import com.azure.resourcemanager.kusto.models.OutboundNetworkDependenciesEndpointListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundNetworkDependenciesEndpointListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OutboundNetworkDependenciesEndpointListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"category\":\"wlquuijfqkace\",\"endpoints\":[],\"provisioningState\":\"Failed\"},\"etag\":\"pubjibw\",\"id\":\"iftohqkvpu\",\"name\":\"ksgplsa\",\"type\":\"nynfsynljphuo\"},{\"properties\":{\"category\":\"dlqiyntorzih\",\"endpoints\":[],\"provisioningState\":\"Running\"},\"etag\":\"swsrms\",\"id\":\"yzrpzbchckqqzq\",\"name\":\"ox\",\"type\":\"ysuiizynkedya\"}],\"nextLink\":\"wyhqmibzyhwits\"}")
+                    "{\"value\":[{\"properties\":{\"category\":\"ohfwds\",\"endpoints\":[],\"provisioningState\":\"Canceled\"},\"etag\":\"jutiiswacff\",\"id\":\"dkzzewkfvhqcrail\",\"name\":\"pnppfuf\",\"type\":\"rwdmhdlxyjrxsa\"}],\"nextLink\":\"fcnihgwq\"}")
                 .toObject(OutboundNetworkDependenciesEndpointListResult.class);
-        Assertions.assertEquals("wlquuijfqkace", model.value().get(0).category());
+        Assertions.assertEquals("ohfwds", model.value().get(0).category());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OutboundNetworkDependenciesEndpointListResult model =
             new OutboundNetworkDependenciesEndpointListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new OutboundNetworkDependenciesEndpointInner()
-                                .withCategory("wlquuijfqkace")
-                                .withEndpoints(Arrays.asList()),
-                            new OutboundNetworkDependenciesEndpointInner()
-                                .withCategory("dlqiyntorzih")
+                                .withCategory("ohfwds")
                                 .withEndpoints(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointListResult.class);
-        Assertions.assertEquals("wlquuijfqkace", model.value().get(0).category());
+        Assertions.assertEquals("ohfwds", model.value().get(0).category());
     }
 }

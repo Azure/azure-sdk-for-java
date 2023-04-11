@@ -19,6 +19,10 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateVMPr
 import java.util.ArrayList;
 
 class VMSSPatchPayload {
+    /*
+     * Note: innerModel().virtualMachineProfile().storageProfile().osDisk() won't be set if the scale set has ephemeral OS disk.
+     * This may change if backend service decides that ephemeral osDisk can be updated.
+     */
     static VirtualMachineScaleSetUpdate preparePatchPayload(VirtualMachineScaleSet scaleSet) {
         VirtualMachineScaleSetUpdate updateParameter = new VirtualMachineScaleSetUpdate();
         //
@@ -49,7 +53,14 @@ class VMSSPatchPayload {
                     .withImageReference(
                         scaleSet.innerModel().virtualMachineProfile().storageProfile().imageReference());
 
-                if (scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk() != null) {
+                if (scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk() != null
+                    // Filling patch payload with osDisk property for VMSS with ephemeral OS disks will be considered updating VM model.
+                    // This may have impact if user want to update the scale set without leaving existing VMs outdated,
+                    // e.g. scale out using `withCapacity`, especially if the scale set's `updatePolicy` is `Rolling` or `Automatic`, which may trigger
+                    // a VM restart.
+                    // Thus, we won't fill for VMSS with ephemeral OS disks.
+                    && !scaleSet.isEphemeralOSDisk()
+                ) {
                     VirtualMachineScaleSetUpdateOSDisk osDisk = new VirtualMachineScaleSetUpdateOSDisk();
                     osDisk
                         .withCaching(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().caching());

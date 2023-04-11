@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanInner;
+import java.util.Map;
 
 /** An immutable client-side representation of CommitmentPlan. */
 public interface CommitmentPlan {
@@ -46,11 +48,53 @@ public interface CommitmentPlan {
     String etag();
 
     /**
+     * Gets the kind property: The Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
+     * Gets the sku property: The resource model definition representing SKU.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the properties property: Properties of Cognitive Services account commitment plan.
      *
      * @return the properties value.
      */
     CommitmentPlanProperties properties();
+
+    /**
+     * Gets the region of the resource.
+     *
+     * @return the region of the resource.
+     */
+    Region region();
+
+    /**
+     * Gets the name of the resource region.
+     *
+     * @return the name of the resource region.
+     */
+    String regionName();
 
     /**
      * Gets the name of the resource group.
@@ -68,29 +112,33 @@ public interface CommitmentPlan {
 
     /** The entirety of the CommitmentPlan definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
     /** The CommitmentPlan definition stages. */
     interface DefinitionStages {
         /** The first stage of the CommitmentPlan definition. */
-        interface Blank extends WithParentResource {
+        interface Blank extends WithResourceGroup {
         }
         /** The stage of the CommitmentPlan definition allowing to specify parent resource. */
-        interface WithParentResource {
+        interface WithResourceGroup {
             /**
-             * Specifies resourceGroupName, accountName.
+             * Specifies resourceGroupName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param accountName The name of Cognitive Services account.
              * @return the next definition stage.
              */
-            WithCreate withExistingAccount(String resourceGroupName, String accountName);
+            WithCreate withExistingResourceGroup(String resourceGroupName);
         }
         /**
          * The stage of the CommitmentPlan definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate
+            extends DefinitionStages.WithLocation,
+                DefinitionStages.WithTags,
+                DefinitionStages.WithKind,
+                DefinitionStages.WithSku,
+                DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -105,6 +153,54 @@ public interface CommitmentPlan {
              * @return the created resource.
              */
             CommitmentPlan create(Context context);
+        }
+        /** The stage of the CommitmentPlan definition allowing to specify location. */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
+        /** The stage of the CommitmentPlan definition allowing to specify tags. */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             *
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the CommitmentPlan definition allowing to specify kind. */
+        interface WithKind {
+            /**
+             * Specifies the kind property: The Kind of the resource..
+             *
+             * @param kind The Kind of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(String kind);
+        }
+        /** The stage of the CommitmentPlan definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The resource model definition representing SKU.
+             *
+             * @param sku The resource model definition representing SKU.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
         }
         /** The stage of the CommitmentPlan definition allowing to specify properties. */
         interface WithProperties {
@@ -125,7 +221,7 @@ public interface CommitmentPlan {
     CommitmentPlan.Update update();
 
     /** The template for CommitmentPlan update. */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku {
         /**
          * Executes the update request.
          *
@@ -143,15 +239,25 @@ public interface CommitmentPlan {
     }
     /** The CommitmentPlan update stages. */
     interface UpdateStages {
-        /** The stage of the CommitmentPlan update allowing to specify properties. */
-        interface WithProperties {
+        /** The stage of the CommitmentPlan update allowing to specify tags. */
+        interface WithTags {
             /**
-             * Specifies the properties property: Properties of Cognitive Services account commitment plan..
+             * Specifies the tags property: Resource tags..
              *
-             * @param properties Properties of Cognitive Services account commitment plan.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
-            Update withProperties(CommitmentPlanProperties properties);
+            Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the CommitmentPlan update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The resource model definition representing SKU.
+             *
+             * @param sku The resource model definition representing SKU.
+             * @return the next definition stage.
+             */
+            Update withSku(Sku sku);
         }
     }
     /**

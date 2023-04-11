@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import reactor.test.StepVerifier;
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests scenarios on {@link EventHubAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
     private static final String PARTITION_ID = "1";
@@ -56,24 +59,20 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @EnumSource(value = AmqpTransportType.class)
     void receiveMessage(AmqpTransportType transportType) {
         // Arrange
-        final EventHubConsumerAsyncClient consumer = createBuilder()
+        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .transportType(transportType)
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
 
         final Instant lastEnqueued = testEventData.getPartitionProperties().getLastEnqueuedTime();
         final EventPosition startingPosition = EventPosition.fromEnqueuedTime(lastEnqueued);
 
         // Act & Assert
-        try {
-            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition)
-                .take(NUMBER_OF_EVENTS))
-                .expectNextCount(NUMBER_OF_EVENTS)
-                .expectComplete()
-                .verify();
-        } finally {
-            consumer.close();
-        }
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition)
+            .take(NUMBER_OF_EVENTS))
+            .expectNextCount(NUMBER_OF_EVENTS)
+            .expectComplete()
+            .verify();
     }
 
     /**
@@ -92,40 +91,34 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final EventHubConsumerAsyncClient[] clients = new EventHubConsumerAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = builder.buildAsyncConsumerClient();
+            clients[i] = toClose(builder.buildAsyncConsumerClient());
         }
 
         final long sequenceNumber = testEventData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        try {
-
-            //@formatter:off
-            for (final EventHubConsumerAsyncClient consumer : clients) {
-                consumer.receiveFromPartition(PARTITION_ID, position)
-                    .filter(partitionEvent -> isMatchingEvent(partitionEvent.getData(), testEventData.getMessageId()))
-                    .take(numberOfEvents)
-                    .subscribe(partitionEvent -> {
-                        EventData event = partitionEvent.getData();
-                        logger.info("Event[{}] matched.", event.getSequenceNumber());
-                    }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
-                        () -> {
-                            long count = countDownLatch.getCount();
-                            logger.info("Finished consuming events. Counting down: {}", count);
-                            countDownLatch.countDown();
-                        });
-            }
-            //@formatter:on
-
-            // Assert
-            // Wait for all the events we sent to be received by each of the consumers.
-            Assertions.assertTrue(countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
-
-            logger.info("Completed successfully.");
-        } finally {
-            logger.info("Disposing of subscriptions, consumers and clients.");
-            dispose(clients);
+        //@formatter:off
+        for (final EventHubConsumerAsyncClient consumer : clients) {
+            toClose(consumer.receiveFromPartition(PARTITION_ID, position)
+                .filter(partitionEvent -> isMatchingEvent(partitionEvent.getData(), testEventData.getMessageId()))
+                .take(numberOfEvents)
+                .subscribe(partitionEvent -> {
+                    EventData event = partitionEvent.getData();
+                    logger.info("Event[{}] matched.", event.getSequenceNumber());
+                }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
+                        long count = countDownLatch.getCount();
+                        logger.info("Finished consuming events. Counting down: {}", count);
+                        countDownLatch.countDown();
+                    }));
         }
+        //@formatter:on
+
+        // Assert
+        // Wait for all the events we sent to be received by each of the consumers.
+        Assertions.assertTrue(countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
+
+        logger.info("Completed successfully.");
     }
 
     /**
@@ -158,20 +151,17 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
-        EventHubProducerAsyncClient asyncProducerClient = new EventHubClientBuilder()
+        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
                 .credential(fullyQualifiedNamespace, eventHubName,
                         new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-                .buildAsyncProducerClient();
-        try {
-            StepVerifier.create(
-                    asyncProducerClient.createBatch().flatMap(batch -> {
-                        assertTrue(batch.tryAdd(testData));
-                        return asyncProducerClient.send(batch);
-                    })
-            ).verifyComplete();
-        } finally {
-            asyncProducerClient.close();
-        }
+                .buildAsyncProducerClient());
+
+        StepVerifier.create(
+                asyncProducerClient.createBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAdd(testData));
+                    return asyncProducerClient.send(batch);
+                })
+        ).verifyComplete();
     }
 
     @Test
@@ -186,19 +176,16 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
-        EventHubProducerAsyncClient asyncProducerClient = new EventHubClientBuilder()
+        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
                 .credential(fullyQualifiedNamespace, eventHubName,
                         new AzureSasCredential(sharedAccessSignature))
-                .buildAsyncProducerClient();
-        try {
-            StepVerifier.create(
-                    asyncProducerClient.createBatch().flatMap(batch -> {
-                        assertTrue(batch.tryAdd(testData));
-                        return asyncProducerClient.send(batch);
-                    })
-            ).verifyComplete();
-        } finally {
-            asyncProducerClient.close();
-        }
+                .buildAsyncProducerClient());
+
+        StepVerifier.create(
+                asyncProducerClient.createBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAdd(testData));
+                    return asyncProducerClient.send(batch);
+                })
+        ).verifyComplete();
     }
 }

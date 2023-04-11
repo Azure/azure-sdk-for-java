@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -33,6 +34,7 @@ import com.azure.resourcemanager.resources.fluent.models.PolicyExemptionInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.models.PolicyExemptionListResult;
+import com.azure.resourcemanager.resources.models.PolicyExemptionUpdate;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyExemptionsClient. */
@@ -61,7 +63,7 @@ public final class PolicyExemptionsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "PolicyClientPolicyEx")
-    private interface PolicyExemptionsService {
+    public interface PolicyExemptionsService {
         @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}")
         @ExpectedResponses({200, 204})
@@ -100,6 +102,19 @@ public final class PolicyExemptionsClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Patch("/{scope}/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicyExemptionInner>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope,
+            @PathParam("policyExemptionName") String policyExemptionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PolicyExemptionUpdate parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyExemptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -113,8 +128,7 @@ public final class PolicyExemptionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization"
-                + "/policyExemptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyExemptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyExemptionListResult>> listByResourceGroup(
@@ -128,9 +142,7 @@ public final class PolicyExemptionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization"
-                + "/policyExemptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyExemptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyExemptionListResult>> listForResource(
@@ -148,8 +160,7 @@ public final class PolicyExemptionsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization"
-                + "/policyExemptions")
+            "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyExemptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyExemptionListResult>> listForManagementGroup(
@@ -202,8 +213,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a policy
-     * exemption is the part of its ID preceding
+     * Deletes a policy exemption.
+     *
+     * <p>This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a
+     * policy exemption is the part of its ID preceding
      * '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
@@ -232,7 +245,7 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter policyExemptionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,8 +255,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a policy
-     * exemption is the part of its ID preceding
+     * Deletes a policy exemption.
+     *
+     * <p>This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a
+     * policy exemption is the part of its ID preceding
      * '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
@@ -273,15 +288,17 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter policyExemptionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, policyExemptionName, apiVersion, accept, context);
     }
 
     /**
-     * This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a policy
-     * exemption is the part of its ID preceding
+     * Deletes a policy exemption.
+     *
+     * <p>This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a
+     * policy exemption is the part of its ID preceding
      * '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
@@ -301,28 +318,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a policy
-     * exemption is the part of its ID preceding
-     * '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
+     * Deletes a policy exemption.
      *
-     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
-     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     '/subscriptions/{subscriptionId}'), resource group (format:
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
-     * @param policyExemptionName The name of the policy exemption to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String scope, String policyExemptionName) {
-        deleteAsync(scope, policyExemptionName).block();
-    }
-
-    /**
-     * This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a policy
-     * exemption is the part of its ID preceding
+     * <p>This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a
+     * policy exemption is the part of its ID preceding
      * '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
@@ -343,7 +342,31 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
+     * Deletes a policy exemption.
+     *
+     * <p>This operation deletes a policy exemption, given its name and the scope it was created in. The scope of a
+     * policy exemption is the part of its ID preceding
+     * '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String scope, String policyExemptionName) {
+        deleteWithResponse(scope, policyExemptionName, Context.NONE);
+    }
+
+    /**
+     * Creates or updates a policy exemption.
+     *
+     * <p>This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
      * all resources contained within their scope. For example, when you create a policy exemption at resource group
      * scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
      * the resource group.
@@ -381,7 +404,7 @@ public final class PolicyExemptionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -399,7 +422,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
+     * Creates or updates a policy exemption.
+     *
+     * <p>This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
      * all resources contained within their scope. For example, when you create a policy exemption at resource group
      * scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
      * the resource group.
@@ -438,7 +463,7 @@ public final class PolicyExemptionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -447,7 +472,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
+     * Creates or updates a policy exemption.
+     *
+     * <p>This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
      * all resources contained within their scope. For example, when you create a policy exemption at resource group
      * scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
      * the resource group.
@@ -472,31 +499,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
-     * all resources contained within their scope. For example, when you create a policy exemption at resource group
-     * scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
-     * the resource group.
+     * Creates or updates a policy exemption.
      *
-     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
-     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     '/subscriptions/{subscriptionId}'), resource group (format:
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
-     * @param policyExemptionName The name of the policy exemption to delete.
-     * @param parameters Parameters for the policy exemption.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy exemption.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyExemptionInner createOrUpdate(
-        String scope, String policyExemptionName, PolicyExemptionInner parameters) {
-        return createOrUpdateAsync(scope, policyExemptionName, parameters).block();
-    }
-
-    /**
-     * This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
+     * <p>This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
      * all resources contained within their scope. For example, when you create a policy exemption at resource group
      * scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
      * the resource group.
@@ -521,7 +526,35 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves a single policy exemption, given its name and the scope it was created at.
+     * Creates or updates a policy exemption.
+     *
+     * <p>This operation creates or updates a policy exemption with the given scope and name. Policy exemptions apply to
+     * all resources contained within their scope. For example, when you create a policy exemption at resource group
+     * scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
+     * the resource group.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @param parameters Parameters for the policy exemption.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyExemptionInner createOrUpdate(
+        String scope, String policyExemptionName, PolicyExemptionInner parameters) {
+        return createOrUpdateWithResponse(scope, policyExemptionName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves a policy exemption.
+     *
+     * <p>This operation retrieves a single policy exemption, given its name and the scope it was created at.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
      *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
@@ -549,7 +582,7 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter policyExemptionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +592,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves a single policy exemption, given its name and the scope it was created at.
+     * Retrieves a policy exemption.
+     *
+     * <p>This operation retrieves a single policy exemption, given its name and the scope it was created at.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
      *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
@@ -589,14 +624,16 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter policyExemptionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, policyExemptionName, apiVersion, accept, context);
     }
 
     /**
-     * This operation retrieves a single policy exemption, given its name and the scope it was created at.
+     * Retrieves a policy exemption.
+     *
+     * <p>This operation retrieves a single policy exemption, given its name and the scope it was created at.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
      *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
@@ -615,26 +652,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves a single policy exemption, given its name and the scope it was created at.
+     * Retrieves a policy exemption.
      *
-     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
-     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
-     *     '/subscriptions/{subscriptionId}'), resource group (format:
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
-     * @param policyExemptionName The name of the policy exemption to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy exemption.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyExemptionInner get(String scope, String policyExemptionName) {
-        return getAsync(scope, policyExemptionName).block();
-    }
-
-    /**
-     * This operation retrieves a single policy exemption, given its name and the scope it was created at.
+     * <p>This operation retrieves a single policy exemption, given its name and the scope it was created at.
      *
      * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
      *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
@@ -654,8 +674,202 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves a policy exemption.
+     *
+     * <p>This operation retrieves a single policy exemption, given its name and the scope it was created at.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyExemptionInner get(String scope, String policyExemptionName) {
+        return getWithResponse(scope, policyExemptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Updates a policy exemption.
+     *
+     * <p>This operation updates a policy exemption with the given scope and name.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @param parameters Parameters for policy exemption patch request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyExemptionInner>> updateWithResponseAsync(
+        String scope, String policyExemptionName, PolicyExemptionUpdate parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (policyExemptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyExemptionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2022-07-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            scope,
+                            policyExemptionName,
+                            apiVersion,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates a policy exemption.
+     *
+     * <p>This operation updates a policy exemption with the given scope and name.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @param parameters Parameters for policy exemption patch request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PolicyExemptionInner>> updateWithResponseAsync(
+        String scope, String policyExemptionName, PolicyExemptionUpdate parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (policyExemptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyExemptionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2022-07-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .update(this.client.getEndpoint(), scope, policyExemptionName, apiVersion, parameters, accept, context);
+    }
+
+    /**
+     * Updates a policy exemption.
+     *
+     * <p>This operation updates a policy exemption with the given scope and name.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @param parameters Parameters for policy exemption patch request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyExemptionInner> updateAsync(
+        String scope, String policyExemptionName, PolicyExemptionUpdate parameters) {
+        return updateWithResponseAsync(scope, policyExemptionName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates a policy exemption.
+     *
+     * <p>This operation updates a policy exemption with the given scope and name.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @param parameters Parameters for policy exemption patch request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyExemptionInner> updateWithResponse(
+        String scope, String policyExemptionName, PolicyExemptionUpdate parameters, Context context) {
+        return updateWithResponseAsync(scope, policyExemptionName, parameters, context).block();
+    }
+
+    /**
+     * Updates a policy exemption.
+     *
+     * <p>This operation updates a policy exemption with the given scope and name.
+     *
+     * @param scope The scope of the policy exemption. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyExemptionName The name of the policy exemption to delete.
+     * @param parameters Parameters for policy exemption patch request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy exemption.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyExemptionInner update(String scope, String policyExemptionName, PolicyExemptionUpdate parameters) {
+        return updateWithResponse(scope, policyExemptionName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -689,7 +903,7 @@ public final class PolicyExemptionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -715,8 +929,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -751,7 +967,7 @@ public final class PolicyExemptionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -768,8 +984,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -795,8 +1013,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -812,8 +1032,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -841,8 +1063,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -858,8 +1082,10 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-     * optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
+     * Retrieves all policy exemptions that apply to a subscription.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given subscription that match
+     * the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy exemptions
      * associated with the subscription, including those that apply directly or from management groups that contain the
      * given subscription, as well as any applied to objects contained within the subscription.
@@ -886,11 +1112,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
@@ -927,7 +1156,7 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -954,11 +1183,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
@@ -996,7 +1228,7 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1020,11 +1252,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
@@ -1050,11 +1285,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1071,11 +1309,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
@@ -1103,11 +1344,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1122,11 +1366,14 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the given resource group in the given
-     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
-     * 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes
-     * all policy exemptions associated with the resource group, including those that apply directly or apply from
-     * containing scopes, as well as any applied to resources contained within the resource group.
+     * Retrieves all policy exemptions that apply to a resource group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the given resource group in the
+     * given subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
+     * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
+     * unfiltered list includes all policy exemptions associated with the resource group, including those that apply
+     * directly or apply from containing scopes, as well as any applied to resources contained within the resource
+     * group.
      *
      * @param resourceGroupName The name of the resource group containing the resource.
      * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
@@ -1152,7 +1399,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1230,7 +1479,7 @@ public final class PolicyExemptionsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1261,7 +1510,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1341,7 +1592,7 @@ public final class PolicyExemptionsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1369,7 +1620,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1428,7 +1681,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1477,7 +1732,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1539,7 +1796,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1581,7 +1840,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions associated with the specified resource in the given
+     * Retrieves all policy exemptions that apply to a resource.
+     *
+     * <p>This operation retrieves the list of all policy exemptions associated with the specified resource in the given
      * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()',
      * 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
      * unfiltered list includes all policy exemptions associated with the resource, including those that apply directly
@@ -1641,7 +1902,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1675,7 +1938,7 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1696,7 +1959,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1731,7 +1996,7 @@ public final class PolicyExemptionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01-preview";
+        final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1748,7 +2013,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1777,7 +2044,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1797,7 +2066,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1828,7 +2099,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1846,7 +2119,9 @@ public final class PolicyExemptionsClientImpl
     }
 
     /**
-     * This operation retrieves the list of all policy exemptions applicable to the management group that match the
+     * Retrieves all policy exemptions that apply to a management group.
+     *
+     * <p>This operation retrieves the list of all policy exemptions applicable to the management group that match the
      * given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
      * 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy
      * exemptions that are assigned to the management group or the management group's ancestors.
@@ -1877,7 +2152,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1912,7 +2188,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1948,7 +2225,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1984,7 +2262,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2021,7 +2300,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2056,7 +2336,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2093,7 +2374,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2129,7 +2411,8 @@ public final class PolicyExemptionsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

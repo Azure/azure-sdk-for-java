@@ -33,8 +33,6 @@ stages:
                 parameters:
                   Paths:
                     - '**/*.xml'
-                    - '!sdk/**/test-recordings'
-                    - '!sdk/**/session-records'
 
           - task: UsePythonVersion@0
             displayName: 'Use Python $(PythonVersion)'

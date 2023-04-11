@@ -7,16 +7,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** A field that is used as part of the semantic configuration. */
 @Fluent
-public final class SemanticField {
+public final class SemanticField implements JsonSerializable<SemanticField> {
     /*
      * The fieldName property.
      */
-    @JsonProperty(value = "fieldName")
     private String fieldName;
+
+    /** Creates an instance of SemanticField class. */
+    public SemanticField() {}
 
     /**
      * Get the fieldName property: The fieldName property.
@@ -36,5 +42,39 @@ public final class SemanticField {
     public SemanticField setFieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fieldName", this.fieldName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SemanticField from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SemanticField if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SemanticField.
+     */
+    public static SemanticField fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    SemanticField deserializedSemanticField = new SemanticField();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String jsonFieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("fieldName".equals(jsonFieldName)) {
+                            deserializedSemanticField.fieldName = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedSemanticField;
+                });
     }
 }

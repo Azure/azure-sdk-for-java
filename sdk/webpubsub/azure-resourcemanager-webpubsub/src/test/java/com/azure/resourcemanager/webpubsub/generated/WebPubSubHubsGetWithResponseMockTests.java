@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class WebPubSubHubsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WebPubSubHub response =
-            manager.webPubSubHubs().getWithResponse("lsj", "dhszfjv", "bgofeljag", Context.NONE).getValue();
+            manager
+                .webPubSubHubs()
+                .getWithResponse("lsj", "dhszfjv", "bgofeljag", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("vriiio", response.properties().anonymousConnectPolicy());
     }

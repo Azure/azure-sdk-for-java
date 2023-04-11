@@ -56,15 +56,6 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Configuration get(String resourceGroupName, String serverName, String configurationName) {
-        ConfigurationInner inner = this.serviceClient().get(resourceGroupName, serverName, configurationName);
-        if (inner != null) {
-            return new ConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Configuration> getWithResponse(
         String resourceGroupName, String serverName, String configurationName, Context context) {
         Response<ConfigurationInner> inner =
@@ -75,6 +66,15 @@ public final class ConfigurationsImpl implements Configurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Configuration get(String resourceGroupName, String serverName, String configurationName) {
+        ConfigurationInner inner = this.serviceClient().get(resourceGroupName, serverName, configurationName);
+        if (inner != null) {
+            return new ConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -107,9 +107,16 @@ public final class ConfigurationsImpl implements Configurations {
         return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<Configuration> listByServer(
+        String resourceGroupName,
+        String serverName,
+        String tags,
+        String keyword,
+        Integer page,
+        Integer pageSize,
+        Context context) {
         PagedIterable<ConfigurationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
+            this.serviceClient().listByServer(resourceGroupName, serverName, tags, keyword, page, pageSize, context);
         return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 

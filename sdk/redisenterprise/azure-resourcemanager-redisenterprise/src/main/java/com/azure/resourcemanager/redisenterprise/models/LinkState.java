@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinkState. */
+/** State of the link between the database resources. */
 public final class LinkState extends ExpandableStringEnum<LinkState> {
     /** Static value Linked for LinkState. */
     public static final LinkState LINKED = fromString("Linked");
@@ -26,6 +26,15 @@ public final class LinkState extends ExpandableStringEnum<LinkState> {
     public static final LinkState UNLINK_FAILED = fromString("UnlinkFailed");
 
     /**
+     * Creates a new instance of LinkState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinkState() {
+    }
+
+    /**
      * Creates or finds a LinkState from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class LinkState extends ExpandableStringEnum<LinkState> {
         return fromString(name, LinkState.class);
     }
 
-    /** @return known LinkState values. */
+    /**
+     * Gets known LinkState values.
+     *
+     * @return known LinkState values.
+     */
     public static Collection<LinkState> values() {
         return values(LinkState.class);
     }

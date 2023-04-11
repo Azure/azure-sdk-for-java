@@ -13,7 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolOperationInner;
 /** An instance of this class provides access to all the operations defined in SqlPoolOperationsClient. */
 public interface SqlPoolOperationsClient {
     /**
-     * Gets a list of operations performed on the SQL pool.
+     * Gets a list of operations performed on the SQL pool
+     *
+     * <p>Gets a list of operations performed on the SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -27,7 +29,9 @@ public interface SqlPoolOperationsClient {
     PagedIterable<SqlPoolOperationInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Gets a list of operations performed on the SQL pool.
+     * Gets a list of operations performed on the SQL pool
+     *
+     * <p>Gets a list of operations performed on the SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

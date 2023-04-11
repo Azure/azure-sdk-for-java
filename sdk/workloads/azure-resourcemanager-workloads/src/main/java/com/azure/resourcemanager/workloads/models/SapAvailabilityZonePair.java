@@ -22,6 +22,10 @@ public final class SapAvailabilityZonePair {
     @JsonProperty(value = "zoneB")
     private Long zoneB;
 
+    /** Creates an instance of SapAvailabilityZonePair class. */
+    public SapAvailabilityZonePair() {
+    }
+
     /**
      * Get the zoneA property: The zone A.
      *

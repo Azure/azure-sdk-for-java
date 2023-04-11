@@ -38,6 +38,10 @@ public class ManagedIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
+    /** Creates an instance of ManagedIdentity class. */
+    public ManagedIdentity() {
+    }
+
     /**
      * Get the principalId property: The principal ID of the workspace managed identity.
      *

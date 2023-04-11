@@ -69,7 +69,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface DataConnectionsService {
+    public interface DataConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
@@ -585,7 +585,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             String clusterName,
             String databaseName,
             DataConnectionValidationInner parameters) {
-        return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters)
+        return this
+            .beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters)
             .getSyncPoller();
     }
 
@@ -610,7 +611,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             String databaseName,
             DataConnectionValidationInner parameters,
             Context context) {
-        return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+        return this
+            .beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
@@ -858,27 +860,6 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).block();
-    }
-
-    /**
-     * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -895,6 +876,29 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         return checkNameAvailabilityWithResponseAsync(
                 resourceGroupName, clusterName, databaseName, dataConnectionName, context)
             .block();
+    }
+
+    /**
+     * Checks that the data connection name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName) {
+        return checkNameAvailabilityWithResponse(
+                resourceGroupName, clusterName, databaseName, dataConnectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1041,24 +1045,6 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionInner get(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        return getAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).block();
-    }
-
-    /**
-     * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1069,6 +1055,25 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     public Response<DataConnectionInner> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context).block();
+    }
+
+    /**
+     * Returns a data connection.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an data connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataConnectionInner get(
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
+        return getWithResponse(resourceGroupName, clusterName, databaseName, dataConnectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1297,7 +1302,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         String databaseName,
         String dataConnectionName,
         DataConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -1323,7 +1329,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         String dataConnectionName,
         DataConnectionInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
             .getSyncPoller();
     }
@@ -1657,7 +1664,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         String databaseName,
         String dataConnectionName,
         DataConnectionInner parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
             .getSyncPoller();
     }
 
@@ -1683,7 +1691,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         String dataConnectionName,
         DataConnectionInner parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1966,7 +1975,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).getSyncPoller();
     }
 
     /**
@@ -1985,7 +1994,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context)
             .getSyncPoller();
     }
 

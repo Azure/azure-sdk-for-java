@@ -17,6 +17,15 @@ public final class ApplicationGatewayFirewallMode extends ExpandableStringEnum<A
     public static final ApplicationGatewayFirewallMode PREVENTION = fromString("Prevention");
 
     /**
+     * Creates a new instance of ApplicationGatewayFirewallMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayFirewallMode() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayFirewallMode from its string representation.
      *
      * @param name a name to look for.

@@ -30,17 +30,6 @@ public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationR
         this.serviceManager = serviceManager;
     }
 
-    public SsisObjectMetadataListResponse list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        SsisObjectMetadataListResponseInner inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new SsisObjectMetadataListResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SsisObjectMetadataListResponse> listWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -58,6 +47,17 @@ public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationR
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SsisObjectMetadataListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SsisObjectMetadataListResponse list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        SsisObjectMetadataListResponseInner inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new SsisObjectMetadataListResponseImpl(inner, this.manager());
         } else {
             return null;
         }

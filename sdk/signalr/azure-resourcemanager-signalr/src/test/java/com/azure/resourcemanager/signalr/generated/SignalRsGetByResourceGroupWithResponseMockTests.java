@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.AclAction;
 import com.azure.resourcemanager.signalr.models.ManagedIdentityType;
@@ -65,7 +64,10 @@ public final class SignalRsGetByResourceGroupWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SignalRResource response =
-            manager.signalRs().getByResourceGroupWithResponse("emmsbvdkc", "odtji", Context.NONE).getValue();
+            manager
+                .signalRs()
+                .getByResourceGroupWithResponse("emmsbvdkc", "odtji", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("mncwsobqwcsdb", response.location());
         Assertions.assertEquals("cf", response.tags().get("ucqdpfuvglsb"));

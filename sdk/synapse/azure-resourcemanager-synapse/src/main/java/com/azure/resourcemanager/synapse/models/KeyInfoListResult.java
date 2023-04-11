@@ -24,6 +24,10 @@ public final class KeyInfoListResult {
     @JsonProperty(value = "value")
     private List<KeyInner> value;
 
+    /** Creates an instance of KeyInfoListResult class. */
+    public KeyInfoListResult() {
+    }
+
     /**
      * Get the nextLink property: Link to the next page of results.
      *

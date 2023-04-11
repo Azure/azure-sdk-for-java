@@ -28,6 +28,10 @@ public final class RevisionInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of RevisionInner class. */
+    public RevisionInner() {
+    }
+
     /**
      * Get the innerProperties property: Revision resource specific properties.
      *

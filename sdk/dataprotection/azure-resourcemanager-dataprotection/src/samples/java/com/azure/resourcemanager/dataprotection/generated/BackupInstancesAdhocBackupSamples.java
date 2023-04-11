@@ -11,7 +11,7 @@ import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 /** Samples for BackupInstances AdhocBackup. */
 public final class BackupInstancesAdhocBackupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/TriggerBackup.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/TriggerBackup.json
      */
     /**
      * Sample code: Trigger Adhoc Backup.

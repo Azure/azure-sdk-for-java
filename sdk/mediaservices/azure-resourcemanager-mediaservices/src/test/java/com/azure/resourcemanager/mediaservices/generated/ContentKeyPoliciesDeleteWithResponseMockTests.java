@@ -58,6 +58,6 @@ public final class ContentKeyPoliciesDeleteWithResponseMockTests {
 
         manager
             .contentKeyPolicies()
-            .deleteWithResponse("boldforobwj", "vizbfhfo", "vacqpbtuodxesz", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("czytqjtwhauunfpr", "jletlxsmrpddo", "ifamowazi", com.azure.core.util.Context.NONE);
     }
 }

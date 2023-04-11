@@ -28,20 +28,6 @@ public final class SqlPoolDataWarehouseUserActivitiesImpl implements SqlPoolData
         this.serviceManager = serviceManager;
     }
 
-    public DataWarehouseUserActivities get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName) {
-        DataWarehouseUserActivitiesInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName);
-        if (inner != null) {
-            return new DataWarehouseUserActivitiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataWarehouseUserActivities> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -58,6 +44,20 @@ public final class SqlPoolDataWarehouseUserActivitiesImpl implements SqlPoolData
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataWarehouseUserActivitiesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataWarehouseUserActivities get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        DataWarehouseUserActivityName dataWarehouseUserActivityName) {
+        DataWarehouseUserActivitiesInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName);
+        if (inner != null) {
+            return new DataWarehouseUserActivitiesImpl(inner, this.manager());
         } else {
             return null;
         }

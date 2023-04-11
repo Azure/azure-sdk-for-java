@@ -73,6 +73,10 @@ public final class SqlPoolSecurityAlertPolicyImpl
         return this.innerModel().creationTime();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SqlPoolSecurityAlertPolicyInner innerModel() {
         return this.innerObject;
     }

@@ -26,6 +26,10 @@ public final class SqlDatabaseCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of SqlDatabaseCreateUpdateProperties class. */
+    public SqlDatabaseCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a SQL database.
      *

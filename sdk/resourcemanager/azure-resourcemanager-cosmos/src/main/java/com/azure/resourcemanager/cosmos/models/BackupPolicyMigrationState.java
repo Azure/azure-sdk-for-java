@@ -29,6 +29,10 @@ public final class BackupPolicyMigrationState {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
+    /** Creates an instance of BackupPolicyMigrationState class. */
+    public BackupPolicyMigrationState() {
+    }
+
     /**
      * Get the status property: Describes the status of migration between backup policy types.
      *

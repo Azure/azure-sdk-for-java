@@ -17,6 +17,15 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
     public static final AssociationType CONTAINS = fromString("Contains");
 
     /**
+     * Creates a new instance of AssociationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssociationType() {
+    }
+
+    /**
      * Creates or finds a AssociationType from its string representation.
      *
      * @param name a name to look for.

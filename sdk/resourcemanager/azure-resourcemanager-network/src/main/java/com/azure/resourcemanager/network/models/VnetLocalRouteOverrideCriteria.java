@@ -17,6 +17,15 @@ public final class VnetLocalRouteOverrideCriteria extends ExpandableStringEnum<V
     public static final VnetLocalRouteOverrideCriteria EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of VnetLocalRouteOverrideCriteria value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VnetLocalRouteOverrideCriteria() {
+    }
+
+    /**
      * Creates or finds a VnetLocalRouteOverrideCriteria from its string representation.
      *
      * @param name a name to look for.

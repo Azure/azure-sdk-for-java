@@ -7,42 +7,42 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents an item-level warning. */
 @Immutable
-public final class SearchIndexerWarning {
+public final class SearchIndexerWarning implements JsonSerializable<SearchIndexerWarning> {
     /*
      * The key of the item which generated a warning.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
      * The message describing the warning that occurred while processing the item.
      */
-    @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String message;
+    private final String message;
 
     /*
      * The name of the source at which the warning originated. For example, this could refer to a particular skill in
      * the attached skillset. This may not be always available.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Additional, verbose details about the warning to assist in debugging the indexer. This may not be always
      * available.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /*
      * A link to a troubleshooting guide for these classes of warnings. This may not be always available.
      */
-    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
     /**
@@ -50,9 +50,7 @@ public final class SearchIndexerWarning {
      *
      * @param message the message value to set.
      */
-    @JsonCreator
-    public SearchIndexerWarning(
-            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
+    public SearchIndexerWarning(String message) {
         this.message = message;
     }
 
@@ -102,5 +100,72 @@ public final class SearchIndexerWarning {
      */
     public String getDocumentationLink() {
         return this.documentationLink;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("details", this.details);
+        jsonWriter.writeStringField("documentationLink", this.documentationLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchIndexerWarning from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerWarning if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SearchIndexerWarning.
+     */
+    public static SearchIndexerWarning fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean messageFound = false;
+                    String message = null;
+                    String key = null;
+                    String name = null;
+                    String details = null;
+                    String documentationLink = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("message".equals(fieldName)) {
+                            message = reader.getString();
+                            messageFound = true;
+                        } else if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("details".equals(fieldName)) {
+                            details = reader.getString();
+                        } else if ("documentationLink".equals(fieldName)) {
+                            documentationLink = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (messageFound) {
+                        SearchIndexerWarning deserializedSearchIndexerWarning = new SearchIndexerWarning(message);
+                        deserializedSearchIndexerWarning.key = key;
+                        deserializedSearchIndexerWarning.name = name;
+                        deserializedSearchIndexerWarning.details = details;
+                        deserializedSearchIndexerWarning.documentationLink = documentationLink;
+
+                        return deserializedSearchIndexerWarning;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!messageFound) {
+                        missingProperties.add("message");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -62,14 +62,13 @@ public final class HybridIdentityMetadataImpl
 
     private String resourceGroupName;
 
-    private String provisionedClustersName;
+    private String resourceName;
 
     private String hybridIdentityMetadataResourceName;
 
-    public HybridIdentityMetadataImpl withExistingProvisionedCluster(
-        String resourceGroupName, String provisionedClustersName) {
+    public HybridIdentityMetadataImpl withExistingProvisionedCluster(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
-        this.provisionedClustersName = provisionedClustersName;
+        this.resourceName = resourceName;
         return this;
     }
 
@@ -80,7 +79,7 @@ public final class HybridIdentityMetadataImpl
                 .getHybridIdentityMetadatas()
                 .putWithResponse(
                     resourceGroupName,
-                    provisionedClustersName,
+                    resourceName,
                     hybridIdentityMetadataResourceName,
                     this.innerModel(),
                     Context.NONE)
@@ -94,11 +93,7 @@ public final class HybridIdentityMetadataImpl
                 .serviceClient()
                 .getHybridIdentityMetadatas()
                 .putWithResponse(
-                    resourceGroupName,
-                    provisionedClustersName,
-                    hybridIdentityMetadataResourceName,
-                    this.innerModel(),
-                    context)
+                    resourceGroupName, resourceName, hybridIdentityMetadataResourceName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -121,7 +116,7 @@ public final class HybridIdentityMetadataImpl
                 .getHybridIdentityMetadatas()
                 .putWithResponse(
                     resourceGroupName,
-                    provisionedClustersName,
+                    resourceName,
                     hybridIdentityMetadataResourceName,
                     this.innerModel(),
                     Context.NONE)
@@ -135,11 +130,7 @@ public final class HybridIdentityMetadataImpl
                 .serviceClient()
                 .getHybridIdentityMetadatas()
                 .putWithResponse(
-                    resourceGroupName,
-                    provisionedClustersName,
-                    hybridIdentityMetadataResourceName,
-                    this.innerModel(),
-                    context)
+                    resourceGroupName, resourceName, hybridIdentityMetadataResourceName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -150,7 +141,7 @@ public final class HybridIdentityMetadataImpl
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisionedClustersName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
+        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
         this.hybridIdentityMetadataResourceName =
             Utils.getValueFromIdByName(innerObject.id(), "hybridIdentityMetadata");
     }
@@ -160,8 +151,7 @@ public final class HybridIdentityMetadataImpl
             serviceManager
                 .serviceClient()
                 .getHybridIdentityMetadatas()
-                .getWithResponse(
-                    resourceGroupName, provisionedClustersName, hybridIdentityMetadataResourceName, Context.NONE)
+                .getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -171,8 +161,7 @@ public final class HybridIdentityMetadataImpl
             serviceManager
                 .serviceClient()
                 .getHybridIdentityMetadatas()
-                .getWithResponse(
-                    resourceGroupName, provisionedClustersName, hybridIdentityMetadataResourceName, context)
+                .getWithResponse(resourceGroupName, resourceName, hybridIdentityMetadataResourceName, context)
                 .getValue();
         return this;
     }

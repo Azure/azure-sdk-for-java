@@ -7,14 +7,15 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Alerts Get. */
 public final class AlertsGetSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SingleSubscriptionAlert.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SingleSubscriptionAlert.json
      */
     /**
-     * Sample code: SubscriptionAlerts.
+     * Sample code: SingleSubscriptionAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void subscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void singleSubscriptionAlerts(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .getWithResponse(
@@ -24,14 +25,15 @@ public final class AlertsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SingleResourceGroupAlert.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SingleResourceGroupAlert.json
      */
     /**
-     * Sample code: ResourceGroupAlerts.
+     * Sample code: SingleResourceGroupAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void singleResourceGroupAlerts(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .getWithResponse(

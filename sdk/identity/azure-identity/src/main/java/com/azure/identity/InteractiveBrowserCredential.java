@@ -20,13 +20,62 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An AAD credential that acquires a token for an AAD application by prompting the login in the default browser. When
- * authenticated, the oauth2 flow will notify the credential of the authentication code through the reply URL.
+ * <p>Interactive browser authentication is a type of authentication flow offered by
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a> that enables users to sign in to applications and services using a web browser. This authentication method is
+ * commonly used for web applications, where users enter their credentials directly into a web page.
+ * With interactive browser authentication, the user navigates to a web application and is prompted to enter their
+ * username and password credentials. The application then redirects the user to the Azure AD sign-in page, where
+ * they are prompted to enter their credentials again. After the user successfully authenticates, Azure AD issues a
+ * security token that the application can use to authorize the user's access to its resources.
+ * The InteractiveBrowserCredential interactively authenticates a user and acquires a token with the default system
+ * browser and offers a smooth authentication experience by letting a user use their own credentials to authenticate the
+ * application. When authenticated, the oauth2 flow notifies the credential of the authentication code through the
+ * reply URL. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/interactivebrowsercredential/docs">interactive browser authentication
+ * documentation</a>.</p>
+
+ * <p><strong>Required configuration:</strong></p>
  *
- * <p>
- * The application to authenticate to must have delegated user login permissions and have {@code
- * http://localhost:{port}}
- * listed as a valid reply URL.
+ * <p>To use InteractiveBrowserCredential, you need to register an application in Azure Active Directory with
+ * permissions to log in on behalf of a user. Follow the steps below to configure your registered application.</p>
+ *
+ * <ol>
+ *     <li>Go to Azure Active Directory in Azure portal and find your app registration.</li>
+ *     <li>Navigate to the Authentication section.</li>
+ *     <li>Under Suggested Redirected URIs, check the URI that ends with /common/oauth2/nativeclient.</li>
+ *     <li>Under Default Client Type, select yes for Treat application as a public client.</li>
+ * </ol>
+ *
+ * <p>These steps will let the application authenticate, but it still won't have permission to log you into
+ * Active Directory, or access resources on your behalf. To address this issue, navigate to API Permissions, and enable
+ * Microsoft Graph and the resources you want to access, such as Azure Service Management, Key Vault, and so on.
+ * You also need to be the admin of your tenant to grant consent to your application when you log in for the first time.
+ * In {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)}, a redirect URL can be specified. It configures
+ * the Redirect URL where STS will callback the application with the security code. It is required if a custom
+ * client id is specified via {@link InteractiveBrowserCredentialBuilder#clientId(String)} and must match the
+ * redirect URL specified during the application registration. You can add the redirect URL to the Redirect URIs
+ * subsection under the Authentication section of your registered Azure AD application.</p>
+ *
+ * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.InteractiveBrowserCredential},
+ * using the {@link com.azure.identity.InteractiveBrowserCredentialBuilder} to configure it. By default, the credential
+ * targets a localhost redirect URL, to override that behaviour a
+ * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} can be optionally specified. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
+ * <pre>
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
+ *     .redirectUrl&#40;&quot;http:&#47;&#47;localhost:8765&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see InteractiveBrowserCredentialBuilder
  */
 @Immutable
 public class InteractiveBrowserCredential implements TokenCredential {

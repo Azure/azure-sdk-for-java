@@ -31,7 +31,7 @@ public final class MediaServicesOperationStatusesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"name\":\"lcqcuubgqibrt\",\"id\":\"metttwgd\",\"startTime\":\"2021-02-11T10:44:47Z\",\"endTime\":\"2021-06-19T08:41:21Z\",\"status\":\"hhrmooizqsey\"}";
+            "{\"name\":\"mkyi\",\"id\":\"ysi\",\"startTime\":\"2021-11-07T03:46:32Z\",\"endTime\":\"2021-06-23T13:22:14Z\",\"status\":\"wdhohsdtmcdzsu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class MediaServicesOperationStatusesGetWithResponseMockTests {
         MediaServiceOperationStatus response =
             manager
                 .mediaServicesOperationStatuses()
-                .getWithResponse("tikteusqczkvykl", "ubyjaffmmf", com.azure.core.util.Context.NONE)
+                .getWithResponse("dbzqgqqihed", "vqwt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("lcqcuubgqibrt", response.name());
-        Assertions.assertEquals("metttwgd", response.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T10:44:47Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T08:41:21Z"), response.endTime());
-        Assertions.assertEquals("hhrmooizqsey", response.status());
+        Assertions.assertEquals("mkyi", response.name());
+        Assertions.assertEquals("ysi", response.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T03:46:32Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T13:22:14Z"), response.endTime());
+        Assertions.assertEquals("wdhohsdtmcdzsu", response.status());
     }
 }

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DashSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DashSettings model = BinaryData.fromString("{\"role\":\"krribdeibqi\"}").toObject(DashSettings.class);
-        Assertions.assertEquals("krribdeibqi", model.role());
+        DashSettings model = BinaryData.fromString("{\"role\":\"smlmbtxhwgfwsrta\"}").toObject(DashSettings.class);
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DashSettings model = new DashSettings().withRole("krribdeibqi");
+        DashSettings model = new DashSettings().withRole("smlmbtxhwgfwsrta");
         model = BinaryData.fromObject(model).toObject(DashSettings.class);
-        Assertions.assertEquals("krribdeibqi", model.role());
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.role());
     }
 }

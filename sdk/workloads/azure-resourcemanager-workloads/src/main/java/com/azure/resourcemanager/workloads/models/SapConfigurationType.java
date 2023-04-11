@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapConfigurationType. */
+/** The configuration Type. */
 public final class SapConfigurationType extends ExpandableStringEnum<SapConfigurationType> {
     /** Static value Deployment for SapConfigurationType. */
     public static final SapConfigurationType DEPLOYMENT = fromString("Deployment");
@@ -18,6 +18,15 @@ public final class SapConfigurationType extends ExpandableStringEnum<SapConfigur
 
     /** Static value DeploymentWithOSConfig for SapConfigurationType. */
     public static final SapConfigurationType DEPLOYMENT_WITH_OSCONFIG = fromString("DeploymentWithOSConfig");
+
+    /**
+     * Creates a new instance of SapConfigurationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapConfigurationType() {
+    }
 
     /**
      * Creates or finds a SapConfigurationType from its string representation.

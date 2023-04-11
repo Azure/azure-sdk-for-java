@@ -18,6 +18,10 @@ public final class ListClusters {
     @JsonProperty(value = "value")
     private List<ClusterResourceInner> value;
 
+    /** Creates an instance of ListClusters class. */
+    public ListClusters() {
+    }
+
     /**
      * Get the value property: Container for the array of clusters.
      *

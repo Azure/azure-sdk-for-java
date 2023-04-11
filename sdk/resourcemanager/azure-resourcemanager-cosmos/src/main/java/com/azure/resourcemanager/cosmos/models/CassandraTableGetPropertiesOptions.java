@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The CassandraTableGetPropertiesOptions model. */
 @Fluent
 public final class CassandraTableGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of CassandraTableGetPropertiesOptions class. */
+    public CassandraTableGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public CassandraTableGetPropertiesOptions withThroughput(Integer throughput) {

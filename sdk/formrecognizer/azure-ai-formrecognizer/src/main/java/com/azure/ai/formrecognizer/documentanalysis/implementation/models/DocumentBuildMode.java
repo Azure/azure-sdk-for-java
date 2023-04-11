@@ -17,6 +17,14 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
     public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
+     * Creates a new instance of DocumentBuildMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentBuildMode() {}
+
+    /**
      * Creates or finds a DocumentBuildMode from its string representation.
      *
      * @param name a name to look for.

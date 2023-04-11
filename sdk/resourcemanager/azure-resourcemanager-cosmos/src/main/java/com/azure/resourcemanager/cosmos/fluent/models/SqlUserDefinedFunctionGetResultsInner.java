@@ -19,6 +19,10 @@ public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProp
     @JsonProperty(value = "properties")
     private SqlUserDefinedFunctionGetProperties innerProperties;
 
+    /** Creates an instance of SqlUserDefinedFunctionGetResultsInner class. */
+    public SqlUserDefinedFunctionGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB userDefinedFunction.
      *

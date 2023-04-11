@@ -233,20 +233,6 @@ public interface ServicesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner get(String resourceGroupName, String accountName, String serviceName);
-
-    /**
-     * Gets the status of service.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -256,6 +242,20 @@ public interface ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceResourceInner> getWithResponse(
         String resourceGroupName, String accountName, String serviceName, Context context);
+
+    /**
+     * Gets the status of service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceName Cosmos DB service name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceResourceInner get(String resourceGroupName, String accountName, String serviceName);
 
     /**
      * Deletes service with the given serviceName.

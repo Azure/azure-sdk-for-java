@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataMaskingPolicies Get. */
 public final class DataMaskingPoliciesGetSamples {
     /*
@@ -19,6 +17,7 @@ public final class DataMaskingPoliciesGetSamples {
     public static void getDataMaskingPolicy(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .dataMaskingPolicies()
-            .getWithResponse("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", Context.NONE);
+            .getWithResponse(
+                "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", com.azure.core.util.Context.NONE);
     }
 }

@@ -18,6 +18,10 @@ public final class NotebookWorkspaceListResult {
     @JsonProperty(value = "value")
     private List<NotebookWorkspaceInner> value;
 
+    /** Creates an instance of NotebookWorkspaceListResult class. */
+    public NotebookWorkspaceListResult() {
+    }
+
     /**
      * Get the value property: Array of notebook workspace resources.
      *

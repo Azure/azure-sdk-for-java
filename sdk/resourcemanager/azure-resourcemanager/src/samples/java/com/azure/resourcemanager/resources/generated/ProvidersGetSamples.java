@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Providers Get. */
 public final class ProvidersGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class ProvidersGetSamples {
             .manager()
             .serviceClient()
             .getProviders()
-            .getWithResponse("Microsoft.TestRP1", null, Context.NONE);
+            .getWithResponse("Microsoft.TestRP1", null, com.azure.core.util.Context.NONE);
     }
 }

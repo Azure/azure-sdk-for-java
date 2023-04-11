@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Topology Get. */
 public final class TopologyGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class TopologyGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getTopology(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.topologies().getWithResponse("myservers", "centralus", "vnets", Context.NONE);
+        manager.topologies().getWithResponse("myservers", "centralus", "vnets", com.azure.core.util.Context.NONE);
     }
 }

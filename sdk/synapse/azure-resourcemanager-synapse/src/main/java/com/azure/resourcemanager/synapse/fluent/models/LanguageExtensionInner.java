@@ -17,6 +17,10 @@ public final class LanguageExtensionInner {
     @JsonProperty(value = "languageExtensionName")
     private LanguageExtensionName languageExtensionName;
 
+    /** Creates an instance of LanguageExtensionInner class. */
+    public LanguageExtensionInner() {
+    }
+
     /**
      * Get the languageExtensionName property: The language extension name.
      *

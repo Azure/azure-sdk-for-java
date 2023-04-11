@@ -19,6 +19,10 @@ public final class MaintenanceWindowsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private MaintenanceWindowsProperties innerProperties;
 
+    /** Creates an instance of MaintenanceWindowsInner class. */
+    public MaintenanceWindowsInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

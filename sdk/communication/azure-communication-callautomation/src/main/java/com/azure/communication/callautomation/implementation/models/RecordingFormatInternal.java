@@ -30,7 +30,11 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
         return fromString(name, RecordingFormatInternal.class);
     }
 
-    /** @return known RecordingFormatInternal values. */
+    /**
+     * Gets known RecordingFormatInternal values.
+     *
+     * @return known RecordingFormatInternal values.
+     */
     public static Collection<RecordingFormatInternal> values() {
         return values(RecordingFormatInternal.class);
     }

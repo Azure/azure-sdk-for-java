@@ -17,13 +17,13 @@ public final class StorageEncryptedAssetDecryptionDataInnerTests {
         StorageEncryptedAssetDecryptionDataInner model =
             BinaryData
                 .fromString(
-                    "{\"assetFileEncryptionMetadata\":[{\"initializationVector\":\"pvecxgodeb\",\"assetFileName\":\"kk\",\"assetFileId\":\"dccf2728-8b94-453a-b3de-3ff81ebdf0cb\"},{\"initializationVector\":\"mpukgriw\",\"assetFileName\":\"zlfbxzpuzycispnq\",\"assetFileId\":\"ab43727f-d77e-4f0e-af13-64796ac16cf6\"}]}")
+                    "{\"assetFileEncryptionMetadata\":[{\"initializationVector\":\"fclhaaxdbabphlwr\",\"assetFileName\":\"fkts\",\"assetFileId\":\"09bc26ad-fb31-4a9f-b61c-4c5e0272bb68\"}]}")
                 .toObject(StorageEncryptedAssetDecryptionDataInner.class);
-        Assertions.assertEquals("pvecxgodeb", model.assetFileEncryptionMetadata().get(0).initializationVector());
-        Assertions.assertEquals("kk", model.assetFileEncryptionMetadata().get(0).assetFileName());
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.assetFileEncryptionMetadata().get(0).initializationVector());
+        Assertions.assertEquals("fkts", model.assetFileEncryptionMetadata().get(0).assetFileName());
         Assertions
             .assertEquals(
-                UUID.fromString("dccf2728-8b94-453a-b3de-3ff81ebdf0cb"),
+                UUID.fromString("09bc26ad-fb31-4a9f-b61c-4c5e0272bb68"),
                 model.assetFileEncryptionMetadata().get(0).assetFileId());
     }
 
@@ -35,19 +35,15 @@ public final class StorageEncryptedAssetDecryptionDataInnerTests {
                     Arrays
                         .asList(
                             new AssetFileEncryptionMetadata()
-                                .withInitializationVector("pvecxgodeb")
-                                .withAssetFileName("kk")
-                                .withAssetFileId(UUID.fromString("dccf2728-8b94-453a-b3de-3ff81ebdf0cb")),
-                            new AssetFileEncryptionMetadata()
-                                .withInitializationVector("mpukgriw")
-                                .withAssetFileName("zlfbxzpuzycispnq")
-                                .withAssetFileId(UUID.fromString("ab43727f-d77e-4f0e-af13-64796ac16cf6"))));
+                                .withInitializationVector("fclhaaxdbabphlwr")
+                                .withAssetFileName("fkts")
+                                .withAssetFileId(UUID.fromString("09bc26ad-fb31-4a9f-b61c-4c5e0272bb68"))));
         model = BinaryData.fromObject(model).toObject(StorageEncryptedAssetDecryptionDataInner.class);
-        Assertions.assertEquals("pvecxgodeb", model.assetFileEncryptionMetadata().get(0).initializationVector());
-        Assertions.assertEquals("kk", model.assetFileEncryptionMetadata().get(0).assetFileName());
+        Assertions.assertEquals("fclhaaxdbabphlwr", model.assetFileEncryptionMetadata().get(0).initializationVector());
+        Assertions.assertEquals("fkts", model.assetFileEncryptionMetadata().get(0).assetFileName());
         Assertions
             .assertEquals(
-                UUID.fromString("dccf2728-8b94-453a-b3de-3ff81ebdf0cb"),
+                UUID.fromString("09bc26ad-fb31-4a9f-b61c-4c5e0272bb68"),
                 model.assetFileEncryptionMetadata().get(0).assetFileId());
     }
 }

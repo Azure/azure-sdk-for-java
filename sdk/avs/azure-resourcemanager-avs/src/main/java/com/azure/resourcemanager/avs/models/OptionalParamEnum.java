@@ -17,6 +17,15 @@ public final class OptionalParamEnum extends ExpandableStringEnum<OptionalParamE
     public static final OptionalParamEnum REQUIRED = fromString("Required");
 
     /**
+     * Creates a new instance of OptionalParamEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OptionalParamEnum() {
+    }
+
+    /**
      * Creates or finds a OptionalParamEnum from its string representation.
      *
      * @param name a name to look for.

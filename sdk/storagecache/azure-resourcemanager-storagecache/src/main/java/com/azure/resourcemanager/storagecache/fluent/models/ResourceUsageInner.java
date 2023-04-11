@@ -35,6 +35,10 @@ public final class ResourceUsageInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceUsageName name;
 
+    /** Creates an instance of ResourceUsageInner class. */
+    public ResourceUsageInner() {
+    }
+
     /**
      * Get the limit property: The limit (quota) for this resource.
      *

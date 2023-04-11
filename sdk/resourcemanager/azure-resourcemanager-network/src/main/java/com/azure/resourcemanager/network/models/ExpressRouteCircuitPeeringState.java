@@ -17,6 +17,15 @@ public final class ExpressRouteCircuitPeeringState extends ExpandableStringEnum<
     public static final ExpressRouteCircuitPeeringState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of ExpressRouteCircuitPeeringState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteCircuitPeeringState() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteCircuitPeeringState from its string representation.
      *
      * @param name a name to look for.

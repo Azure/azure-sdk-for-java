@@ -23,6 +23,15 @@ public final class ProbeProtocol extends ExpandableStringEnum<ProbeProtocol> {
     public static final ProbeProtocol HTTPS = fromString("Https");
 
     /**
+     * Creates a new instance of ProbeProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProbeProtocol() {
+    }
+
+    /**
      * Creates or finds a ProbeProtocol from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,15 @@ public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<E
     public static final ExpressRouteLinkMacSecSciState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of ExpressRouteLinkMacSecSciState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteLinkMacSecSciState() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteLinkMacSecSciState from its string representation.
      *
      * @param name a name to look for.

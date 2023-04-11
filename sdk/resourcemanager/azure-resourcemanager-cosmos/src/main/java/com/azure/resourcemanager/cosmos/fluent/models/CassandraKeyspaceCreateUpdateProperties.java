@@ -26,6 +26,10 @@ public final class CassandraKeyspaceCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of CassandraKeyspaceCreateUpdateProperties class. */
+    public CassandraKeyspaceCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a Cassandra keyspace.
      *

@@ -30,6 +30,15 @@ public final class OwaspCrsExclusionEntrySelectorMatchOperator
     public static final OwaspCrsExclusionEntrySelectorMatchOperator EQUALS_ANY = fromString("EqualsAny");
 
     /**
+     * Creates a new instance of OwaspCrsExclusionEntrySelectorMatchOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OwaspCrsExclusionEntrySelectorMatchOperator() {
+    }
+
+    /**
      * Creates or finds a OwaspCrsExclusionEntrySelectorMatchOperator from its string representation.
      *
      * @param name a name to look for.

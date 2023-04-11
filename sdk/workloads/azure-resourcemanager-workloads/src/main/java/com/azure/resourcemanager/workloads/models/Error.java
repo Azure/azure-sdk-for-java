@@ -36,11 +36,14 @@ public class Error {
     private List<Error> details;
 
     /*
-     * Object containing more specific information than  the current object
-     * about the error.
+     * Object containing more specific information than  the current object about the error.
      */
     @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorInnerError innerError;
+
+    /** Creates an instance of Error class. */
+    public Error() {
+    }
 
     /**
      * Get the code property: Server-defined set of error codes.

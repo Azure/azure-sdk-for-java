@@ -23,6 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusResourceGroupContextsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
@@ -69,7 +70,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("subscriptionId") UUID subscriptionId,
             @PathParam("operationId") String operationId,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -78,7 +79,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -127,7 +128,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +175,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -191,7 +192,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +209,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadClassifier Get. */
 public final class SqlPoolWorkloadClassifierGetSamples {
     /*
@@ -26,6 +24,6 @@ public final class SqlPoolWorkloadClassifierGetSamples {
                 "sqlcrudtest-9187",
                 "wlm_workloadgroup",
                 "wlm_classifier",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -21,7 +21,7 @@ public interface VolumeGroupsClient {
      *
      * <p>List all volume groups for given account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +36,7 @@ public interface VolumeGroupsClient {
      *
      * <p>List all volume groups for given account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,23 +52,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Get details of the specified volume group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param volumeGroupName The name of the volumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeGroupDetailsInner get(String resourceGroupName, String accountName, String volumeGroupName);
-
-    /**
-     * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -82,13 +66,29 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param volumeGroupName The name of the volumeGroup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified volume group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeGroupDetailsInner get(String resourceGroupName, String accountName, String volumeGroupName);
+
+    /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
      *
      * <p>Create a volume group along with specified volumes.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -108,7 +108,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Create a volume group along with specified volumes.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -133,7 +133,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Create a volume group along with specified volumes.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -153,7 +153,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Create a volume group along with specified volumes.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -176,7 +176,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +193,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -211,7 +211,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +226,7 @@ public interface VolumeGroupsClient {
      *
      * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.

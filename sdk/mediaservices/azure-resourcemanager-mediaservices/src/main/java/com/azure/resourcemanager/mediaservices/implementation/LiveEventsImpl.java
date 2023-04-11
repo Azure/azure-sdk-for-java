@@ -12,9 +12,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStatusInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStreamEventInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventTrackEventInner;
 import com.azure.resourcemanager.mediaservices.models.AsyncOperationResult;
 import com.azure.resourcemanager.mediaservices.models.LiveEvent;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
+import com.azure.resourcemanager.mediaservices.models.LiveEventStatus;
+import com.azure.resourcemanager.mediaservices.models.LiveEventStreamEvent;
+import com.azure.resourcemanager.mediaservices.models.LiveEventTrackEvent;
 import com.azure.resourcemanager.mediaservices.models.LiveEvents;
 
 public final class LiveEventsImpl implements LiveEvents {
@@ -108,6 +114,48 @@ public final class LiveEventsImpl implements LiveEvents {
 
     public void reset(String resourceGroupName, String accountName, String liveEventName, Context context) {
         this.serviceClient().reset(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventStatus> listGetStatus(
+        String resourceGroupName, String accountName, String liveEventName) {
+        PagedIterable<LiveEventStatusInner> inner =
+            this.serviceClient().listGetStatus(resourceGroupName, accountName, liveEventName);
+        return Utils.mapPage(inner, inner1 -> new LiveEventStatusImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LiveEventStatus> listGetStatus(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        PagedIterable<LiveEventStatusInner> inner =
+            this.serviceClient().listGetStatus(resourceGroupName, accountName, liveEventName, context);
+        return Utils.mapPage(inner, inner1 -> new LiveEventStatusImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LiveEventStreamEvent> listGetStreamEvents(
+        String resourceGroupName, String accountName, String liveEventName) {
+        PagedIterable<LiveEventStreamEventInner> inner =
+            this.serviceClient().listGetStreamEvents(resourceGroupName, accountName, liveEventName);
+        return Utils.mapPage(inner, inner1 -> new LiveEventStreamEventImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LiveEventStreamEvent> listGetStreamEvents(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        PagedIterable<LiveEventStreamEventInner> inner =
+            this.serviceClient().listGetStreamEvents(resourceGroupName, accountName, liveEventName, context);
+        return Utils.mapPage(inner, inner1 -> new LiveEventStreamEventImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(
+        String resourceGroupName, String accountName, String liveEventName) {
+        PagedIterable<LiveEventTrackEventInner> inner =
+            this.serviceClient().listGetTrackIngestHeartbeats(resourceGroupName, accountName, liveEventName);
+        return Utils.mapPage(inner, inner1 -> new LiveEventTrackEventImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(
+        String resourceGroupName, String accountName, String liveEventName, Context context) {
+        PagedIterable<LiveEventTrackEventInner> inner =
+            this.serviceClient().listGetTrackIngestHeartbeats(resourceGroupName, accountName, liveEventName, context);
+        return Utils.mapPage(inner, inner1 -> new LiveEventTrackEventImpl(inner1, this.manager()));
     }
 
     public Response<AsyncOperationResult> asyncOperationWithResponse(

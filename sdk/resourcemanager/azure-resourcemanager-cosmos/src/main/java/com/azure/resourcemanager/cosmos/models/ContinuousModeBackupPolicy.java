@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Continuous")
 @Fluent
 public final class ContinuousModeBackupPolicy extends BackupPolicy {
+    /** Creates an instance of ContinuousModeBackupPolicy class. */
+    public ContinuousModeBackupPolicy() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ContinuousModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {

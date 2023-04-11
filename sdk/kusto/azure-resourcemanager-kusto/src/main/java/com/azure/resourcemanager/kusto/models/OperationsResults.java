@@ -14,18 +14,6 @@ public interface OperationsResults {
      *
      * @param location Azure location (region) name.
      * @param operationId The Guid of the operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation Result Entity.
-     */
-    OperationResult get(String location, String operationId);
-
-    /**
-     * Returns operation results.
-     *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,4 +21,16 @@ public interface OperationsResults {
      * @return operation Result Entity along with {@link Response}.
      */
     Response<OperationResult> getWithResponse(String location, String operationId, Context context);
+
+    /**
+     * Returns operation results.
+     *
+     * @param location Azure location (region) name.
+     * @param operationId The Guid of the operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation Result Entity.
+     */
+    OperationResult get(String location, String operationId);
 }

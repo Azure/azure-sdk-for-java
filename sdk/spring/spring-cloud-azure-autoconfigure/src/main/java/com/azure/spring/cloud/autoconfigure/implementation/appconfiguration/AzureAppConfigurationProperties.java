@@ -16,7 +16,7 @@ public class AzureAppConfigurationProperties extends AbstractAzureHttpConfigurat
     public static final String PREFIX = "spring.cloud.azure.appconfiguration";
 
     /**
-     * Endpoint of the Azure App Configuration instance.
+     * Endpoint of the Azure App Configuration instance. For instance, 'https://{appConfigurationName}.azconfig.io'.
      */
     private String endpoint;
     /**
@@ -24,7 +24,7 @@ public class AzureAppConfigurationProperties extends AbstractAzureHttpConfigurat
      */
     private String connectionString;
     /**
-     * Version of the app configuration service to be used when making request.
+     * Version of the app configuration service to be used when making request. The default value is `"1.0"`.
      */
     private ConfigurationServiceVersion serviceVersion;
 

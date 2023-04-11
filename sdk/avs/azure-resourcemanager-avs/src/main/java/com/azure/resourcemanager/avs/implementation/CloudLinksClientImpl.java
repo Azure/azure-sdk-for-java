@@ -63,7 +63,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientCloudLinks")
-    private interface CloudLinksService {
+    public interface CloudLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -672,7 +672,9 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String cloudLinkName, CloudLinkInner cloudLink) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink)
+            .getSyncPoller();
     }
 
     /**
@@ -695,7 +697,8 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
         String cloudLinkName,
         CloudLinkInner cloudLink,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink, context)
             .getSyncPoller();
     }
 
@@ -950,7 +953,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String cloudLinkName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName).getSyncPoller();
     }
 
     /**
@@ -968,7 +971,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName, context).getSyncPoller();
     }
 
     /**

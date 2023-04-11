@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mediaservices.generated;
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/private-link-resources-get-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/private-link-resources-get-by-name.json
      */
     /**
      * Sample code: Get details of a group ID.
@@ -17,6 +17,6 @@ public final class PrivateLinkResourcesGetSamples {
     public static void getDetailsOfAGroupID(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
             .privateLinkResources()
-            .getWithResponse("contoso", "contososports", "keydelivery", com.azure.core.util.Context.NONE);
+            .getWithResponse("contosorg", "contososports", "keydelivery", com.azure.core.util.Context.NONE);
     }
 }

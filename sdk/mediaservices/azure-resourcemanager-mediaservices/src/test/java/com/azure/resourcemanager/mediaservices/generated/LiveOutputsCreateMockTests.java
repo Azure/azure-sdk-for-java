@@ -33,7 +33,7 @@ public final class LiveOutputsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"hlfbcgwgc\",\"assetName\":\"oxoebqi\",\"archiveWindowLength\":\"PT40H22M15S\",\"rewindWindowLength\":\"PT227H37M58S\",\"manifestName\":\"wjfuj\",\"hls\":{\"fragmentsPerTsSegment\":1724104669},\"outputSnapTime\":6281671660461813390,\"created\":\"2021-01-27T18:27:01Z\",\"lastModified\":\"2021-05-24T18:45:57Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Creating\"},\"id\":\"ilkmk\",\"name\":\"holvdn\",\"type\":\"viauogphua\"}";
+            "{\"properties\":{\"description\":\"qowxwcom\",\"assetName\":\"ikytwvczcswka\",\"archiveWindowLength\":\"PT206H19M22S\",\"rewindWindowLength\":\"PT81H56M32S\",\"manifestName\":\"fdv\",\"hls\":{\"fragmentsPerTsSegment\":133046174},\"outputSnapTime\":506262228039984631,\"created\":\"2021-07-08T00:02:29Z\",\"lastModified\":\"2021-08-22T01:15:59Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Deleting\"},\"id\":\"yank\",\"name\":\"oe\",\"type\":\"swankltytmh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,23 +64,23 @@ public final class LiveOutputsCreateMockTests {
         LiveOutput response =
             manager
                 .liveOutputs()
-                .define("qwm")
-                .withExistingLiveEvent("ribi", "ttgplucfotangcf", "nykzcugswvxwlm")
-                .withDescription("njmxmcuqudtcvcl")
-                .withAssetName("ynpdkvgfab")
-                .withArchiveWindowLength(Duration.parse("PT187H35M8S"))
-                .withRewindWindowLength(Duration.parse("PT163H10M58S"))
-                .withManifestName("buzphdugn")
-                .withHls(new Hls().withFragmentsPerTsSegment(15341893))
-                .withOutputSnapTime(2729731278853847628L)
+                .define("hcecybmrqbr")
+                .withExistingLiveEvent("qejo", "ovyrrleaesinu", "tljqobbpih")
+                .withDescription("mpxdlvy")
+                .withAssetName("frexcrseqw")
+                .withArchiveWindowLength(Duration.parse("PT110H29M37S"))
+                .withRewindWindowLength(Duration.parse("PT48H32M10S"))
+                .withManifestName("udgzhxogjgg")
+                .withHls(new Hls().withFragmentsPerTsSegment(210376116))
+                .withOutputSnapTime(8090537844238536185L)
                 .create();
 
-        Assertions.assertEquals("hlfbcgwgc", response.description());
-        Assertions.assertEquals("oxoebqi", response.assetName());
-        Assertions.assertEquals(Duration.parse("PT40H22M15S"), response.archiveWindowLength());
-        Assertions.assertEquals(Duration.parse("PT227H37M58S"), response.rewindWindowLength());
-        Assertions.assertEquals("wjfuj", response.manifestName());
-        Assertions.assertEquals(1724104669, response.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(6281671660461813390L, response.outputSnapTime());
+        Assertions.assertEquals("qowxwcom", response.description());
+        Assertions.assertEquals("ikytwvczcswka", response.assetName());
+        Assertions.assertEquals(Duration.parse("PT206H19M22S"), response.archiveWindowLength());
+        Assertions.assertEquals(Duration.parse("PT81H56M32S"), response.rewindWindowLength());
+        Assertions.assertEquals("fdv", response.manifestName());
+        Assertions.assertEquals(133046174, response.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(506262228039984631L, response.outputSnapTime());
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Topology List. */
 public final class TopologyListSamples {
     /*
@@ -17,6 +15,6 @@ public final class TopologyListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getTopologyOnASubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.topologies().list(Context.NONE);
+        manager.topologies().list(com.azure.core.util.Context.NONE);
     }
 }

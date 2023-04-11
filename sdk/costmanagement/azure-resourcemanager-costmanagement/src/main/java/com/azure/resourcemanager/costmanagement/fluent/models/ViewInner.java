@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
+import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
 import com.azure.resourcemanager.costmanagement.models.MetricType;
 import com.azure.resourcemanager.costmanagement.models.PivotProperties;
@@ -21,19 +21,12 @@ import java.util.List;
 
 /** States and configurations of Cost Analysis. */
 @Fluent
-public final class ViewInner extends ProxyResource {
+public final class ViewInner extends CostManagementProxyResource {
     /*
      * The properties of the view.
      */
     @JsonProperty(value = "properties")
     private ViewProperties innerProperties;
-
-    /*
-     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the
-     * user is updating the latest version or not.
-     */
-    @JsonProperty(value = "eTag")
-    private String etag;
 
     /** Creates an instance of ViewInner class. */
     public ViewInner() {
@@ -48,25 +41,10 @@ public final class ViewInner extends ProxyResource {
         return this.innerProperties;
     }
 
-    /**
-     * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @param etag the etag value to set.
-     * @return the ViewInner object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public ViewInner withEtag(String etag) {
-        this.etag = etag;
+        super.withEtag(etag);
         return this;
     }
 
@@ -158,6 +136,24 @@ public final class ViewInner extends ProxyResource {
      */
     public OffsetDateTime modifiedOn() {
         return this.innerProperties() == null ? null : this.innerProperties().modifiedOn();
+    }
+
+    /**
+     * Get the dateRange property: Date range of the current view.
+     *
+     * @return the dateRange value.
+     */
+    public String dateRange() {
+        return this.innerProperties() == null ? null : this.innerProperties().dateRange();
+    }
+
+    /**
+     * Get the currency property: Currency of the current view.
+     *
+     * @return the currency value.
+     */
+    public String currency() {
+        return this.innerProperties() == null ? null : this.innerProperties().currency();
     }
 
     /**
@@ -351,25 +347,48 @@ public final class ViewInner extends ProxyResource {
     }
 
     /**
-     * Get the dataset property: Has definition for data in this report config.
+     * Get the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    public ReportConfigDataset dataset() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataset();
+    public ReportConfigDataset dataSet() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataSet();
     }
 
     /**
-     * Set the dataset property: Has definition for data in this report config.
+     * Set the dataSet property: Has definition for data in this report config.
      *
-     * @param dataset the dataset value to set.
+     * @param dataSet the dataSet value to set.
      * @return the ViewInner object itself.
      */
-    public ViewInner withDataset(ReportConfigDataset dataset) {
+    public ViewInner withDataSet(ReportConfigDataset dataSet) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ViewProperties();
         }
-        this.innerProperties().withDataset(dataset);
+        this.innerProperties().withDataSet(dataSet);
+        return this;
+    }
+
+    /**
+     * Get the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @return the includeMonetaryCommitment value.
+     */
+    public Boolean includeMonetaryCommitment() {
+        return this.innerProperties() == null ? null : this.innerProperties().includeMonetaryCommitment();
+    }
+
+    /**
+     * Set the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @param includeMonetaryCommitment the includeMonetaryCommitment value to set.
+     * @return the ViewInner object itself.
+     */
+    public ViewInner withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ViewProperties();
+        }
+        this.innerProperties().withIncludeMonetaryCommitment(includeMonetaryCommitment);
         return this;
     }
 
@@ -378,7 +397,9 @@ public final class ViewInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

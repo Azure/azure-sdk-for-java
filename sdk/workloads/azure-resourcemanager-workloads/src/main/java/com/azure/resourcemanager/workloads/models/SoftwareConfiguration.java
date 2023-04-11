@@ -18,10 +18,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SoftwareConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ServiceInitiated", value = ServiceInitiatedSoftwareConfiguration.class),
-    @JsonSubTypes.Type(name = "SAPInstallWithoutOSConfig", value = SapInstallWithoutOSConfigSoftwareConfiguration.class)
+    @JsonSubTypes.Type(
+        name = "SAPInstallWithoutOSConfig",
+        value = SapInstallWithoutOSConfigSoftwareConfiguration.class),
+    @JsonSubTypes.Type(name = "External", value = ExternalInstallationSoftwareConfiguration.class)
 })
 @Immutable
 public class SoftwareConfiguration {
+    /** Creates an instance of SoftwareConfiguration class. */
+    public SoftwareConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

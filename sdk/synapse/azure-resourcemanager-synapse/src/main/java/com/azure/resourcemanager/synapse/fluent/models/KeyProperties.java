@@ -22,6 +22,10 @@ public final class KeyProperties {
     @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
+    /** Creates an instance of KeyProperties class. */
+    public KeyProperties() {
+    }
+
     /**
      * Get the isActiveCmk property: Used to activate the workspace after a customer managed key is provided.
      *

@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -24,6 +25,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -243,6 +247,22 @@ public class DocumentQueryExecutionContextFactory {
                    && cosmosQueryRequestOptions.getPartitionKey() != PartitionKey.NONE;
     }
 
+    private static List<FeedRangeEpkImpl> resolveFeedRangeBasedOnPrefixContainer(
+        List<FeedRangeEpkImpl> feedRanges,
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKey partitionKey) {
+        PartitionKeyInternal partitionKeyInternal = ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
+        if (partitionKeyInternal.getComponents().size() >= partitionKeyDefinition.getPaths().size()) {
+            return feedRanges;
+        }
+        List<FeedRangeEpkImpl> feedRanges2 = new ArrayList<>();
+        for (int i = 0; i < feedRanges.size(); i++) {
+            feedRanges2.add(new FeedRangeEpkImpl(partitionKeyInternal
+                .getEPKRangeForPrefixPartitionKey(partitionKeyDefinition)));
+        }
+        return feedRanges2;
+    }
+
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
@@ -300,7 +320,7 @@ public class DocumentQueryExecutionContextFactory {
                     isContinuationExpected,
                     queryPlan.getRight(),
                     queryPlan.getLeft(),
-                    collectionValueHolder.v.getResourceId(),
+                    collectionValueHolder.v,
                     correlatedActivityId)
                     .single());
         }).flux();
@@ -317,7 +337,7 @@ public class DocumentQueryExecutionContextFactory {
             boolean isContinuationExpected,
             QueryInfo queryInfo,
             List<Range<String>> targetRanges,
-            String collectionRid,
+            DocumentCollection collection,
             UUID correlatedActivityId) {
 
         int initialPageSize = Utils.getValueOrDefault(
@@ -366,12 +386,18 @@ public class DocumentQueryExecutionContextFactory {
         List<FeedRangeEpkImpl> feedRangeEpks = targetRanges.stream().map(FeedRangeEpkImpl::new)
                                                    .collect(Collectors.toList());
 
+        if (collection.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != null
+            && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)) {
+            feedRangeEpks = resolveFeedRangeBasedOnPrefixContainer(feedRangeEpks, collection.getPartitionKey(),
+                cosmosQueryRequestOptions.getPartitionKey());
+        }
+
         PipelinedDocumentQueryParams<T> documentQueryParams = new PipelinedDocumentQueryParams<>(
             resourceTypeEnum,
             resourceType,
             query,
             resourceLink,
-            collectionRid,
+            collection.getResourceId(),
             getLazyFeedResponse,
             isContinuationExpected,
             initialPageSize,
@@ -381,7 +407,7 @@ public class DocumentQueryExecutionContextFactory {
             feedRangeEpks);
 
         return PipelinedQueryExecutionContextBase.createAsync(
-            diagnosticsClientContext, client, documentQueryParams, resourceType);
+            diagnosticsClientContext, client, documentQueryParams, resourceType, collection);
     }
 
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(

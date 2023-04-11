@@ -24,6 +24,10 @@ public final class SpacecraftListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SpacecraftListResult class. */
+    public SpacecraftListResult() {
+    }
+
     /**
      * Get the value property: A list of spacecraft resources in a resource group.
      *

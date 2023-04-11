@@ -23,6 +23,10 @@ public final class FilePathAvailabilityRequest {
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
+    /** Creates an instance of FilePathAvailabilityRequest class. */
+    public FilePathAvailabilityRequest() {
+    }
+
     /**
      * Get the name property: File path to verify.
      *

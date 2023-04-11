@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.models.ExportTemplateRequest;
 import java.util.Arrays;
 
@@ -29,7 +28,7 @@ public final class ResourceGroupsExportTemplateSamples {
                 new ExportTemplateRequest()
                     .withResources(Arrays.asList("*"))
                     .withOptions("IncludeParameterDefaultValue,IncludeComments"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -54,6 +53,6 @@ public final class ResourceGroupsExportTemplateSamples {
                             .asList(
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/My.RP/myResourceType/myFirstResource"))
                     .withOptions("SkipResourceNameParameterization"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the export execution. */
+/** The type of the export run. */
 public final class ExecutionType extends ExpandableStringEnum<ExecutionType> {
     /** Static value OnDemand for ExecutionType. */
     public static final ExecutionType ON_DEMAND = fromString("OnDemand");

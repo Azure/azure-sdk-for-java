@@ -18,6 +18,10 @@ public final class AttachedDatabaseConfigurationListResult {
     @JsonProperty(value = "value")
     private List<AttachedDatabaseConfigurationInner> value;
 
+    /** Creates an instance of AttachedDatabaseConfigurationListResult class. */
+    public AttachedDatabaseConfigurationListResult() {
+    }
+
     /**
      * Get the value property: The list of attached database configurations.
      *

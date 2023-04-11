@@ -18,6 +18,10 @@ public final class SqlRoleAssignmentListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlRoleAssignmentGetResultsInner> value;
 
+    /** Creates an instance of SqlRoleAssignmentListResult class. */
+    public SqlRoleAssignmentListResult() {
+    }
+
     /**
      * Get the value property: List of Role Assignments and their properties.
      *

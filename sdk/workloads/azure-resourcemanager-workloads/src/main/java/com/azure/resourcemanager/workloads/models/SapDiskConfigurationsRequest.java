@@ -47,6 +47,10 @@ public final class SapDiskConfigurationsRequest {
     @JsonProperty(value = "dbVmSku", required = true)
     private String dbVmSku;
 
+    /** Creates an instance of SapDiskConfigurationsRequest class. */
+    public SapDiskConfigurationsRequest() {
+    }
+
     /**
      * Get the appLocation property: The geo-location where the SAP resources will be created.
      *

@@ -20,6 +20,15 @@ public final class ImmutabilityState extends ExpandableStringEnum<ImmutabilitySt
     public static final ImmutabilityState LOCKED = fromString("Locked");
 
     /**
+     * Creates a new instance of ImmutabilityState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImmutabilityState() {
+    }
+
+    /**
      * Creates or finds a ImmutabilityState from its string representation.
      *
      * @param name a name to look for.

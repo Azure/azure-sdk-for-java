@@ -22,6 +22,10 @@ public final class DataConnectionValidationInner {
     @JsonProperty(value = "properties")
     private DataConnectionInner properties;
 
+    /** Creates an instance of DataConnectionValidationInner class. */
+    public DataConnectionValidationInner() {
+    }
+
     /**
      * Get the dataConnectionName property: The name of the data connection.
      *

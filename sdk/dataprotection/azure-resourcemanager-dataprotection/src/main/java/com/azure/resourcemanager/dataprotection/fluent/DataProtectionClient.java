@@ -6,15 +6,16 @@ package com.azure.resourcemanager.dataprotection.fluent;
 
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
+import java.util.UUID;
 
 /** The interface for DataProtectionClient class. */
 public interface DataProtectionClient {
     /**
-     * Gets The subscription Id.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
-    String getSubscriptionId();
+    UUID getSubscriptionId();
 
     /**
      * Gets server parameter.
@@ -115,13 +116,6 @@ public interface DataProtectionClient {
     BackupInstancesClient getBackupInstances();
 
     /**
-     * Gets the BackupInstancesExtensionRoutingsClient object to access its operations.
-     *
-     * @return the BackupInstancesExtensionRoutingsClient object.
-     */
-    BackupInstancesExtensionRoutingsClient getBackupInstancesExtensionRoutings();
-
-    /**
      * Gets the RecoveryPointsClient object to access its operations.
      *
      * @return the RecoveryPointsClient object.
@@ -169,11 +163,4 @@ public interface DataProtectionClient {
      * @return the ResourceGuardsClient object.
      */
     ResourceGuardsClient getResourceGuards();
-
-    /**
-     * Gets the DppResourceGuardProxiesClient object to access its operations.
-     *
-     * @return the DppResourceGuardProxiesClient object.
-     */
-    DppResourceGuardProxiesClient getDppResourceGuardProxies();
 }

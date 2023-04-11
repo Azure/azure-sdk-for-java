@@ -29,6 +29,15 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
     public static final UsagesUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
+     * Creates a new instance of UsagesUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsagesUnit() {
+    }
+
+    /**
      * Creates or finds a UsagesUnit from its string representation.
      *
      * @param name a name to look for.

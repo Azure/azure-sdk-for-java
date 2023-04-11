@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.getDigestFromHeader;
 
 /**
  * <p> Redirect policy for the container registry.</p>
@@ -57,7 +56,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
     }
 
     private static HttpResponse mapResponse(HttpResponse oldResponse, HttpResponse newResponse) {
-        String digest = getDigestFromHeader(oldResponse.getHeaders());
+        String digest = oldResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         if (digest != null) {
             newResponse.getHeaders().set(DOCKER_DIGEST_HEADER_NAME, digest);
         }
@@ -78,6 +77,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
         HttpRequest redirectRequest = createRedirectRequest(redirectResponse, redirectUrl);
         context.setHttpRequest(redirectRequest.copy());
+        redirectResponse.close();
 
         return next.clone().process().flatMap((httpResponse) -> {
             if (!isRedirectResponse(httpResponse)) {
@@ -99,6 +99,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
         HttpRequest redirectRequest = createRedirectRequest(redirectResponse, redirectUrl);
         context.setHttpRequest(redirectRequest.copy());
+        redirectResponse.close();
 
         HttpResponse httpResponse = next.clone().processSync();
         if (!isRedirectResponse(httpResponse)) {

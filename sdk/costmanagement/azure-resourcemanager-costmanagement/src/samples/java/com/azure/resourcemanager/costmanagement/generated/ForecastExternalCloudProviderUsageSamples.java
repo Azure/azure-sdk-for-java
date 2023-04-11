@@ -5,20 +5,27 @@
 package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType;
+import com.azure.resourcemanager.costmanagement.models.ForecastAggregation;
+import com.azure.resourcemanager.costmanagement.models.ForecastComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ForecastDataset;
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
-import com.azure.resourcemanager.costmanagement.models.ForecastTimeframeType;
+import com.azure.resourcemanager.costmanagement.models.ForecastFilter;
+import com.azure.resourcemanager.costmanagement.models.ForecastOperatorType;
+import com.azure.resourcemanager.costmanagement.models.ForecastTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.ForecastTimeframe;
 import com.azure.resourcemanager.costmanagement.models.ForecastType;
+import com.azure.resourcemanager.costmanagement.models.FunctionName;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
 import com.azure.resourcemanager.costmanagement.models.GranularityType;
-import com.azure.resourcemanager.costmanagement.models.QueryComparisonExpression;
-import com.azure.resourcemanager.costmanagement.models.QueryFilter;
-import com.azure.resourcemanager.costmanagement.models.QueryOperatorType;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for Forecast ExternalCloudProviderUsage. */
 public final class ForecastExternalCloudProviderUsageSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalSubscriptionForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalSubscriptionForecast.json
      */
     /**
      * Sample code: ExternalSubscriptionForecast.
@@ -34,46 +41,56 @@ public final class ForecastExternalCloudProviderUsageSamples {
                 "100",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API"))))))),
                 null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExternalBillingAccountForecast.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExternalBillingAccountForecast.json
      */
     /**
      * Sample code: ExternalBillingAccountForecast.
@@ -89,41 +106,62 @@ public final class ForecastExternalCloudProviderUsageSamples {
                 "100",
                 new ForecastDefinition()
                     .withType(ForecastType.USAGE)
-                    .withTimeframe(ForecastTimeframeType.MONTH_TO_DATE)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(
+                        new ForecastTimePeriod()
+                            .withFrom(OffsetDateTime.parse("2022-08-01T00:00:00+00:00"))
+                            .withTo(OffsetDateTime.parse("2022-08-31T23:59:59+00:00")))
                     .withDataset(
                         new ForecastDataset()
                             .withGranularity(GranularityType.DAILY)
+                            .withAggregation(
+                                mapOf(
+                                    "totalCost",
+                                    new ForecastAggregation()
+                                        .withName(FunctionName.COST)
+                                        .withFunction(FunctionType.SUM)))
                             .withFilter(
-                                new QueryFilter()
+                                new ForecastFilter()
                                     .withAnd(
                                         Arrays
                                             .asList(
-                                                new QueryFilter()
+                                                new ForecastFilter()
                                                     .withOr(
                                                         Arrays
                                                             .asList(
-                                                                new QueryFilter()
-                                                                    .withDimension(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withDimensions(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays
                                                                                     .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTag(
-                                                                        new QueryComparisonExpression()
+                                                                new ForecastFilter()
+                                                                    .withTags(
+                                                                        new ForecastComparisonExpression()
                                                                             .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
+                                                                            .withOperator(ForecastOperatorType.IN)
                                                                             .withValues(
                                                                                 Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimension(
-                                                        new QueryComparisonExpression()
+                                                new ForecastFilter()
+                                                    .withDimensions(
+                                                        new ForecastComparisonExpression()
                                                             .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
+                                                            .withOperator(ForecastOperatorType.IN)
                                                             .withValues(Arrays.asList("API"))))))),
                 null,
                 com.azure.core.util.Context.NONE);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

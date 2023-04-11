@@ -63,6 +63,10 @@ public final class ClusterPrincipalProperties {
     @JsonProperty(value = "aadObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String aadObjectId;
 
+    /** Creates an instance of ClusterPrincipalProperties class. */
+    public ClusterPrincipalProperties() {
+    }
+
     /**
      * Get the principalId property: The principal ID assigned to the cluster principal. It can be a user email,
      * application ID, or security group name.

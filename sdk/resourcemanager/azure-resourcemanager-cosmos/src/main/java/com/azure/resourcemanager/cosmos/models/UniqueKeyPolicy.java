@@ -21,6 +21,10 @@ public final class UniqueKeyPolicy {
     @JsonProperty(value = "uniqueKeys")
     private List<UniqueKey> uniqueKeys;
 
+    /** Creates an instance of UniqueKeyPolicy class. */
+    public UniqueKeyPolicy() {
+    }
+
     /**
      * Get the uniqueKeys property: List of unique keys on that enforces uniqueness constraint on documents in the
      * collection in the Azure Cosmos DB service.

@@ -27,23 +27,6 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         this.serviceManager = serviceManager;
     }
 
-    public WorkloadClassifier get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        WorkloadClassifierInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName);
-        if (inner != null) {
-            return new WorkloadClassifierImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkloadClassifier> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -62,6 +45,23 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkloadClassifierImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkloadClassifier get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String workloadGroupName,
+        String workloadClassifierName) {
+        WorkloadClassifierInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName);
+        if (inner != null) {
+            return new WorkloadClassifierImpl(inner, this.manager());
         } else {
             return null;
         }

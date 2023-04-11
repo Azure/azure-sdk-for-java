@@ -40,15 +40,6 @@ public final class SqlPoolSchemasImpl implements SqlPoolSchemas {
         return Utils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
     }
 
-    public SqlPoolSchema get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
-        SqlPoolSchemaInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName);
-        if (inner != null) {
-            return new SqlPoolSchemaImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolSchema> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context) {
         Response<SqlPoolSchemaInner> inner =
@@ -59,6 +50,15 @@ public final class SqlPoolSchemasImpl implements SqlPoolSchemas {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolSchemaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolSchema get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+        SqlPoolSchemaInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName);
+        if (inner != null) {
+            return new SqlPoolSchemaImpl(inner, this.manager());
         } else {
             return null;
         }

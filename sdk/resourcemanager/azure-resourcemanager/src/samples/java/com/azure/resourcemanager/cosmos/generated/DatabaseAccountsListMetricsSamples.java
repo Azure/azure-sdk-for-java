@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DatabaseAccounts ListMetrics. */
 public final class DatabaseAccountsListMetricsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountGetMetrics.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountGetMetrics.
@@ -27,6 +25,6 @@ public final class DatabaseAccountsListMetricsSamples {
                 "ddb1",
                 "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq"
                     + " '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

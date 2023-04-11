@@ -17,27 +17,27 @@ public final class JobInputClipTests {
         JobInputClip model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputClip\",\"files\":[\"vnuuepzl\",\"phwzsoldweyuqdu\",\"vmnnrw\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"rk\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
+                    "{\"@odata.type\":\"#Microsoft.Media.JobInputClip\",\"files\":[\"euaulxu\",\"smjbnkppxyn\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"vxei\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
                 .toObject(JobInputClip.class);
-        Assertions.assertEquals("vnuuepzl", model.files().get(0));
-        Assertions.assertEquals("rk", model.label());
+        Assertions.assertEquals("euaulxu", model.files().get(0));
+        Assertions.assertEquals("vxei", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobInputClip model =
             new JobInputClip()
-                .withFiles(Arrays.asList("vnuuepzl", "phwzsoldweyuqdu", "vmnnrw"))
+                .withFiles(Arrays.asList("euaulxu", "smjbnkppxyn"))
                 .withStart(new ClipTime())
                 .withEnd(new ClipTime())
-                .withLabel("rk")
+                .withLabel("vxei")
                 .withInputDefinitions(
                     Arrays
                         .asList(
                             new InputDefinition().withIncludedTracks(Arrays.asList()),
                             new InputDefinition().withIncludedTracks(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(JobInputClip.class);
-        Assertions.assertEquals("vnuuepzl", model.files().get(0));
-        Assertions.assertEquals("rk", model.label());
+        Assertions.assertEquals("euaulxu", model.files().get(0));
+        Assertions.assertEquals("vxei", model.label());
     }
 }

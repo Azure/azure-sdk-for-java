@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The target of the event. */
 @Fluent
 public final class Target {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Target.class);
-
     /*
      * The MIME type of the referenced object.
      */
@@ -27,8 +23,7 @@ public final class Target {
     private Long size;
 
     /*
-     * The digest of the content, as defined by the Registry V2 HTTP API
-     * Specification.
+     * The digest of the content, as defined by the Registry V2 HTTP API Specification.
      */
     @JsonProperty(value = "digest")
     private String digest;
@@ -68,6 +63,10 @@ public final class Target {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /** Creates an instance of Target class. */
+    public Target() {
+    }
 
     /**
      * Get the mediaType property: The MIME type of the referenced object.

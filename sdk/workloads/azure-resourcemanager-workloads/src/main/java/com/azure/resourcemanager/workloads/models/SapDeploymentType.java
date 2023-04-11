@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapDeploymentType. */
+/** The type of SAP deployment, single server or Three tier. */
 public final class SapDeploymentType extends ExpandableStringEnum<SapDeploymentType> {
     /** Static value SingleServer for SapDeploymentType. */
     public static final SapDeploymentType SINGLE_SERVER = fromString("SingleServer");
 
     /** Static value ThreeTier for SapDeploymentType. */
     public static final SapDeploymentType THREE_TIER = fromString("ThreeTier");
+
+    /**
+     * Creates a new instance of SapDeploymentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapDeploymentType() {
+    }
 
     /**
      * Creates or finds a SapDeploymentType from its string representation.

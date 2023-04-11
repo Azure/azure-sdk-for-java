@@ -13,6 +13,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -38,8 +40,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -53,7 +53,6 @@ import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
-import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -91,12 +90,13 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
-        try {
-            ObjectNode jsonData = (ObjectNode) MAPPER.readTree(TestHelpers.loadResource(jsonFile));
-            jsonData.set("name", new TextNode(testResourceNamer.randomName(jsonData.get("name").asText(), 64)));
-            return setupIndex(MAPPER.treeToValue(jsonData, SearchIndex.class));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        try (JsonReader jsonReader = JsonProviders.createReader(TestHelpers.loadResource(jsonFile))) {
+            SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
+            String testIndexName = testResourceNamer.randomName(baseIndex.getName(), 64);
+
+            return setupIndex(TestHelpers.createTestIndex(testIndexName, baseIndex));
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class SearchTestBase extends TestBase {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(isSync));
+            .httpClient(getHttpClient(true, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
@@ -131,7 +131,7 @@ public abstract class SearchTestBase extends TestBase {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(isSync));
+            .httpClient(getHttpClient(true, isSync));
 
         addPolicies(builder, policies);
 
@@ -170,11 +170,20 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected SearchClientBuilder getSearchClientBuilder(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, true, isSync);
+
+    }
+
+    protected SearchClientBuilder getSearchClientBuilderWithoutAssertingClient(String indexName, boolean isSync) {
+        return getSearchClientBuilderHelper(indexName, false, isSync);
+    }
+
+    private SearchClientBuilder getSearchClientBuilderHelper(String indexName, boolean wrapWithAssertingClient, boolean isSync) {
         SearchClientBuilder builder = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(indexName)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(isSync));
+            .httpClient(getHttpClient(wrapWithAssertingClient, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
@@ -189,21 +198,24 @@ public abstract class SearchTestBase extends TestBase {
         return builder;
     }
 
-    private HttpClient getHttpClient(boolean isSync) {
+    private HttpClient getHttpClient(boolean wrapWithAssertingClient, boolean isSync) {
         HttpClient httpClient = (interceptorManager.isPlaybackMode())
             ? interceptorManager.getPlaybackClient()
             : HttpClient.createDefault();
 
-        if (!isSync) {
-            httpClient = new AssertingHttpClientBuilder(httpClient)
-                .assertAsync()
-                // TODO (alzimmer): Remove skipRequest when next azure-core-test is released
-                .skipRequest((ignored1, ignored2) -> false)
-                .build();
+        if (wrapWithAssertingClient) {
+            if (!isSync) {
+                httpClient = new AssertingHttpClientBuilder(httpClient)
+                    .assertAsync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            } else {
+                httpClient = new AssertingHttpClientBuilder(httpClient)
+                    .assertSync()
+                    .skipRequest((ignored1, ignored2) -> false)
+                    .build();
+            }
         }
-
-        // TODO (alzimmer): Add support for sync when sync stack is enabled.
-
         return httpClient;
     }
 

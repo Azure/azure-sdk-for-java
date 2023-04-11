@@ -28,6 +28,10 @@ public final class ResourceReference {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ResourceReference class. */
+    public ResourceReference() {
+    }
+
     /**
      * Get the id property: The resource id.
      *

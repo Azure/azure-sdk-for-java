@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceCertificateOrders DeleteCertificate. */
 public final class AppServiceCertificateOrdersDeleteCertificateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/DeleteAppServiceCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/DeleteAppServiceCertificate.json
      */
     /**
      * Sample code: Delete App Service Certificate.
@@ -22,6 +20,7 @@ public final class AppServiceCertificateOrdersDeleteCertificateSamples {
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .deleteCertificateWithResponse("testrg123", "SampleCertificateOrderName", "SampleCertName1", Context.NONE);
+            .deleteCertificateWithResponse(
+                "testrg123", "SampleCertificateOrderName", "SampleCertName1", com.azure.core.util.Context.NONE);
     }
 }

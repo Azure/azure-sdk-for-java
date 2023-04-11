@@ -15,6 +15,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProf
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
@@ -916,6 +917,29 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withWorkloadAutoScalerProfile(workloadAutoScalerProfile);
+        return this;
+    }
+
+    /**
+     * Get the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @return the azureMonitorProfile value.
+     */
+    public ManagedClusterAzureMonitorProfile azureMonitorProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureMonitorProfile();
+    }
+
+    /**
+     * Set the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @param azureMonitorProfile the azureMonitorProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withAzureMonitorProfile(ManagedClusterAzureMonitorProfile azureMonitorProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withAzureMonitorProfile(azureMonitorProfile);
         return this;
     }
 

@@ -22,6 +22,10 @@ public final class VerificationStatusRecord {
     @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
+    /** Creates an instance of VerificationStatusRecord class. */
+    public VerificationStatusRecord() {
+    }
+
     /**
      * Get the status property: Status of the verification operation.
      *

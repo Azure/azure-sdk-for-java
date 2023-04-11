@@ -62,6 +62,10 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
         }
     }
 
+    public Boolean partitionData() {
+        return this.innerModel().partitionData();
+    }
+
     public OffsetDateTime nextRunTimeEstimate() {
         return this.innerModel().nextRunTimeEstimate();
     }
@@ -203,6 +207,11 @@ public final class ExportImpl implements Export, Export.Definition, Export.Updat
 
     public ExportImpl withRunHistory(ExportExecutionListResultInner runHistory) {
         this.innerModel().withRunHistory(runHistory);
+        return this;
+    }
+
+    public ExportImpl withPartitionData(Boolean partitionData) {
+        this.innerModel().withPartitionData(partitionData);
         return this;
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.security.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.security.models.ApplicationSourceResourceType;
@@ -43,6 +42,6 @@ public final class SecurityConnectorApplicationOperationCreateOrUpdateSamples {
                                         "{\"conditions\":[{\"operator\":\"contains\",\"property\":\"$.Id\",\"value\":\"-prod-\"}]}",
                                         Object.class,
                                         SerializerEncoding.JSON))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

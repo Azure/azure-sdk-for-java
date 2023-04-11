@@ -15,6 +15,6 @@ public final class AccountFiltersListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listAllAccountFilters(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.accountFilters().list("contoso", "contosomedia", com.azure.core.util.Context.NONE);
+        manager.accountFilters().list("contosorg", "contosomedia", com.azure.core.util.Context.NONE);
     }
 }

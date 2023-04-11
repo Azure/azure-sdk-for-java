@@ -235,6 +235,14 @@ class CdnProfileImpl
     }
 
     @Override
+    public CdnProfileImpl withStandardMicrosoftSku() {
+        this.innerModel()
+                .withSku(new Sku()
+                        .withName(SkuName.STANDARD_MICROSOFT));
+        return this;
+    }
+
+    @Override
     public CdnProfileImpl withSku(SkuName skuName) {
         this.innerModel().withSku(new Sku().withName(skuName));
         return this;

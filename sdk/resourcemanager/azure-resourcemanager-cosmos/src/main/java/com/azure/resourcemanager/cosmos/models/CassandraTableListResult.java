@@ -18,6 +18,10 @@ public final class CassandraTableListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CassandraTableGetResultsInner> value;
 
+    /** Creates an instance of CassandraTableListResult class. */
+    public CassandraTableListResult() {
+    }
+
     /**
      * Get the value property: List of Cassandra tables and their properties.
      *

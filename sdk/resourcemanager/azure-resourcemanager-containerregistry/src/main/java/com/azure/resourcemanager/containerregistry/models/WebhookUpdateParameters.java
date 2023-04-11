@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.WebhookPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The parameters for updating a webhook. */
 @Fluent
 public final class WebhookUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookUpdateParameters.class);
-
     /*
      * The tags for the webhook.
      */
@@ -30,6 +26,10 @@ public final class WebhookUpdateParameters {
      */
     @JsonProperty(value = "properties")
     private WebhookPropertiesUpdateParameters innerProperties;
+
+    /** Creates an instance of WebhookUpdateParameters class. */
+    public WebhookUpdateParameters() {
+    }
 
     /**
      * Get the tags property: The tags for the webhook.

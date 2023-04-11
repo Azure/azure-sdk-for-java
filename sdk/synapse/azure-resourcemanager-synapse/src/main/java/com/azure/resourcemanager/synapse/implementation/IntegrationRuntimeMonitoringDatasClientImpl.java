@@ -56,7 +56,7 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface IntegrationRuntimeMonitoringDatasService {
+    public interface IntegrationRuntimeMonitoringDatasService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -75,7 +75,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
     }
 
     /**
-     * Get monitoring data for an integration runtime.
+     * Get integration runtime monitoring data
+     *
+     * <p>Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -132,7 +134,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
     }
 
     /**
-     * Get monitoring data for an integration runtime.
+     * Get integration runtime monitoring data
+     *
+     * <p>Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -187,7 +191,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
     }
 
     /**
-     * Get monitoring data for an integration runtime.
+     * Get integration runtime monitoring data
+     *
+     * <p>Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -201,35 +207,13 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
     private Mono<IntegrationRuntimeMonitoringDataInner> listAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return listWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeMonitoringDataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get monitoring data for an integration runtime.
+     * Get integration runtime monitoring data
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeMonitoringDataInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return listAsync(resourceGroupName, workspaceName, integrationRuntimeName).block();
-    }
-
-    /**
-     * Get monitoring data for an integration runtime.
+     * <p>Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -244,5 +228,24 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
     public Response<IntegrationRuntimeMonitoringDataInner> listWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return listWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
+    }
+
+    /**
+     * Get integration runtime monitoring data
+     *
+     * <p>Get monitoring data for an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return monitoring data for an integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IntegrationRuntimeMonitoringDataInner list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return listWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE).getValue();
     }
 }

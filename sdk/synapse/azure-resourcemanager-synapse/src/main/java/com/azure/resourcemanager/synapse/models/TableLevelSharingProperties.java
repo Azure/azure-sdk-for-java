@@ -47,6 +47,10 @@ public final class TableLevelSharingProperties {
     @JsonProperty(value = "materializedViewsToExclude")
     private List<String> materializedViewsToExclude;
 
+    /** Creates an instance of TableLevelSharingProperties class. */
+    public TableLevelSharingProperties() {
+    }
+
     /**
      * Get the tablesToInclude property: List of tables to include in the follower database.
      *

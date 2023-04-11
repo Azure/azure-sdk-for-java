@@ -444,7 +444,7 @@ public class SearchTests extends SearchTestBase {
 
         Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
-            .key("132")
+            .key("123")
             .count(3)
             .isEnabled(true)
             .rating(5)
@@ -480,7 +480,7 @@ public class SearchTests extends SearchTestBase {
 
         Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
-            .key("132")
+            .key("123")
             .count(3)
             .isEnabled(true)
             .rating(5)
@@ -1522,7 +1522,7 @@ public class SearchTests extends SearchTestBase {
 
     static List<SearchDocument> createDocsListWithValueTypes() {
         SearchDocument element1 = new SearchDocument();
-        element1.put("Key", "132");
+        element1.put("Key", "123");
         element1.put("IntValue", 0);
 
         Map<String, Object> subElement1 = new HashMap<>();

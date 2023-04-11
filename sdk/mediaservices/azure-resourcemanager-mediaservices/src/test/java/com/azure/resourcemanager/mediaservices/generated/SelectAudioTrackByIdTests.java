@@ -15,18 +15,18 @@ public final class SelectAudioTrackByIdTests {
         SelectAudioTrackById model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackById\",\"trackId\":2089851457082178659,\"channelMapping\":\"Center\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackById\",\"trackId\":4942011391135790969,\"channelMapping\":\"StereoLeft\"}")
                 .toObject(SelectAudioTrackById.class);
-        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
-        Assertions.assertEquals(2089851457082178659L, model.trackId());
+        Assertions.assertEquals(ChannelMapping.STEREO_LEFT, model.channelMapping());
+        Assertions.assertEquals(4942011391135790969L, model.trackId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelectAudioTrackById model =
-            new SelectAudioTrackById().withChannelMapping(ChannelMapping.CENTER).withTrackId(2089851457082178659L);
+            new SelectAudioTrackById().withChannelMapping(ChannelMapping.STEREO_LEFT).withTrackId(4942011391135790969L);
         model = BinaryData.fromObject(model).toObject(SelectAudioTrackById.class);
-        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
-        Assertions.assertEquals(2089851457082178659L, model.trackId());
+        Assertions.assertEquals(ChannelMapping.STEREO_LEFT, model.channelMapping());
+        Assertions.assertEquals(4942011391135790969L, model.trackId());
     }
 }

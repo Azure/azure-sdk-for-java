@@ -13,7 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolColumnInner;
 /** An instance of this class provides access to all the operations defined in SqlPoolTableColumnsClient. */
 public interface SqlPoolTableColumnsClient {
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -30,7 +32,9 @@ public interface SqlPoolTableColumnsClient {
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
 
     /**
-     * Gets columns in a given table in a SQL pool.
+     * Gets columns in a given table in a SQL pool
+     *
+     * <p>Gets columns in a given table in a SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

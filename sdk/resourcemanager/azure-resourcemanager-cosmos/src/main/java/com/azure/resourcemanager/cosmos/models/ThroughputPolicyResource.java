@@ -22,6 +22,10 @@ public final class ThroughputPolicyResource {
     @JsonProperty(value = "incrementPercent")
     private Integer incrementPercent;
 
+    /** Creates an instance of ThroughputPolicyResource class. */
+    public ThroughputPolicyResource() {
+    }
+
     /**
      * Get the isEnabled property: Determines whether the ThroughputPolicy is active or not.
      *

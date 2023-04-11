@@ -18,6 +18,10 @@ public final class ClusterPrincipalAssignmentListResult {
     @JsonProperty(value = "value")
     private List<ClusterPrincipalAssignmentInner> value;
 
+    /** Creates an instance of ClusterPrincipalAssignmentListResult class. */
+    public ClusterPrincipalAssignmentListResult() {
+    }
+
     /**
      * Get the value property: The list of Kusto cluster principal assignments.
      *

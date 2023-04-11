@@ -23,6 +23,10 @@ public final class EventHubDataConnection extends DataConnectionInner {
     @JsonProperty(value = "properties")
     private EventHubConnectionProperties innerProperties;
 
+    /** Creates an instance of EventHubDataConnection class. */
+    public EventHubDataConnection() {
+    }
+
     /**
      * Get the innerProperties property: The Event Hub data connection properties to validate.
      *

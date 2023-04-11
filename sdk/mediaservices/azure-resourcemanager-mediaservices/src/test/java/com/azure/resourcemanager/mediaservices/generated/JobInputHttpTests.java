@@ -17,30 +17,31 @@ public final class JobInputHttpTests {
         JobInputHttp model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputHttp\",\"baseUri\":\"pwoqo\",\"files\":[\"cje\",\"nizshqvcim\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"gmblrri\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
+                    "{\"@odata.type\":\"#Microsoft.Media.JobInputHttp\",\"baseUri\":\"wsawddjibabxvi\",\"files\":[\"v\",\"zeexavoxtfgle\",\"dmdqb\",\"pypqtgsfj\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"lhhxudbxvodhtnsi\",\"inputDefinitions\":[{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]},{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[]}]}")
                 .toObject(JobInputHttp.class);
-        Assertions.assertEquals("cje", model.files().get(0));
-        Assertions.assertEquals("gmblrri", model.label());
-        Assertions.assertEquals("pwoqo", model.baseUri());
+        Assertions.assertEquals("v", model.files().get(0));
+        Assertions.assertEquals("lhhxudbxvodhtnsi", model.label());
+        Assertions.assertEquals("wsawddjibabxvi", model.baseUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobInputHttp model =
             new JobInputHttp()
-                .withFiles(Arrays.asList("cje", "nizshqvcim"))
+                .withFiles(Arrays.asList("v", "zeexavoxtfgle", "dmdqb", "pypqtgsfj"))
                 .withStart(new ClipTime())
                 .withEnd(new ClipTime())
-                .withLabel("gmblrri")
+                .withLabel("lhhxudbxvodhtnsi")
                 .withInputDefinitions(
                     Arrays
                         .asList(
                             new InputDefinition().withIncludedTracks(Arrays.asList()),
+                            new InputDefinition().withIncludedTracks(Arrays.asList()),
                             new InputDefinition().withIncludedTracks(Arrays.asList())))
-                .withBaseUri("pwoqo");
+                .withBaseUri("wsawddjibabxvi");
         model = BinaryData.fromObject(model).toObject(JobInputHttp.class);
-        Assertions.assertEquals("cje", model.files().get(0));
-        Assertions.assertEquals("gmblrri", model.label());
-        Assertions.assertEquals("pwoqo", model.baseUri());
+        Assertions.assertEquals("v", model.files().get(0));
+        Assertions.assertEquals("lhhxudbxvodhtnsi", model.label());
+        Assertions.assertEquals("wsawddjibabxvi", model.baseUri());
     }
 }

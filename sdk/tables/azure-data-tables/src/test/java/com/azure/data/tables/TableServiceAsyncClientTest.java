@@ -8,6 +8,7 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
@@ -58,6 +59,13 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     private TableServiceAsyncClient serviceClient;
 
+    protected HttpClient buildAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
+
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(TIMEOUT);
@@ -106,6 +114,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableServiceAsyncClient tableServiceAsyncClient =

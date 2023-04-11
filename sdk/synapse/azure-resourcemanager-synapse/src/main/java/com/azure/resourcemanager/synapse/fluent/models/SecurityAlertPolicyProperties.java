@@ -15,16 +15,15 @@ import java.util.List;
 @Fluent
 public final class SecurityAlertPolicyProperties {
     /*
-     * Specifies the state of the policy, whether it is enabled or disabled or
-     * a policy has not been applied yet on the specific Sql pool.
+     * Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the
+     * specific Sql pool.
      */
     @JsonProperty(value = "state", required = true)
     private SecurityAlertPolicyState state;
 
     /*
-     * Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly,
-     * Data_Exfiltration, Unsafe_Action
+     * Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability,
+     * Access_Anomaly, Data_Exfiltration, Unsafe_Action
      */
     @JsonProperty(value = "disabledAlerts")
     private List<String> disabledAlerts;
@@ -42,16 +41,14 @@ public final class SecurityAlertPolicyProperties {
     private Boolean emailAccountAdmins;
 
     /*
-     * Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold
+     * Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold
      * all Threat Detection audit logs.
      */
     @JsonProperty(value = "storageEndpoint")
     private String storageEndpoint;
 
     /*
-     * Specifies the identifier key of the Threat Detection audit storage
-     * account.
+     * Specifies the identifier key of the Threat Detection audit storage account.
      */
     @JsonProperty(value = "storageAccountAccessKey")
     private String storageAccountAccessKey;
@@ -67,6 +64,10 @@ public final class SecurityAlertPolicyProperties {
      */
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
+
+    /** Creates an instance of SecurityAlertPolicyProperties class. */
+    public SecurityAlertPolicyProperties() {
+    }
 
     /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Collection ListMetricDefinitions. */
 public final class CollectionListMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBCollectionGetMetricDefinitions.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCollectionGetMetricDefinitions.json
      */
     /**
      * Sample code: CosmosDBCollectionGetMetricDefinitions.
@@ -22,6 +20,6 @@ public final class CollectionListMetricDefinitionsSamples {
             .manager()
             .serviceClient()
             .getCollections()
-            .listMetricDefinitions("rg1", "ddb1", "databaseRid", "collectionRid", Context.NONE);
+            .listMetricDefinitions("rg1", "ddb1", "databaseRid", "collectionRid", com.azure.core.util.Context.NONE);
     }
 }

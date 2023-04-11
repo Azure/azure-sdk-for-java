@@ -48,6 +48,10 @@ public final class SkuDescriptionInner {
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> restrictions;
 
+    /** Creates an instance of SkuDescriptionInner class. */
+    public SkuDescriptionInner() {
+    }
+
     /**
      * Get the resourceType property: The resource type.
      *

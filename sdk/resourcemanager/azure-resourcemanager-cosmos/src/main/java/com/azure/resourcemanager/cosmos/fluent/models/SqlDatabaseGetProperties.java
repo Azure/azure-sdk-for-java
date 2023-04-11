@@ -24,6 +24,10 @@ public final class SqlDatabaseGetProperties {
     @JsonProperty(value = "options")
     private SqlDatabaseGetPropertiesOptions options;
 
+    /** Creates an instance of SqlDatabaseGetProperties class. */
+    public SqlDatabaseGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

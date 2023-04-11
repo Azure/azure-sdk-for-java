@@ -343,4 +343,45 @@ public class CoreUtilsTests {
             assertEquals(expected.getValue(), actual.getValue());
         }
     }
+
+    @ParameterizedTest
+    @MethodSource("bytesToHexSupplier")
+    public void bytesToHex(byte[] bytes, String expectedHex) {
+        assertEquals(expectedHex, CoreUtils.bytesToHexString(bytes));
+    }
+
+    private static Stream<Arguments> bytesToHexSupplier() {
+        return Stream.of(
+            Arguments.of(null, null),
+            Arguments.of(new byte[0], ""),
+            Arguments.of("1234567890".getBytes(StandardCharsets.UTF_8), "31323334353637383930")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("contentRangeSizeExtractionSupplier")
+    public void contentRangeSizeExtraction(String contentRange, long expectedSize) {
+        assertEquals(expectedSize, CoreUtils.extractSizeFromContentRange(contentRange));
+    }
+
+    private static Stream<Arguments> contentRangeSizeExtractionSupplier() {
+        return Stream.of(
+            Arguments.of("0-1023/1024", 1024),
+            Arguments.of("0-1023/*", -1)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidContentRangeSizeExtractionSupplier")
+    public void invalidContentRangeSizeExtraction(String contentRange, Class<Throwable> expectedException) {
+        assertThrows(expectedException, () -> CoreUtils.extractSizeFromContentRange(contentRange));
+    }
+
+    private static Stream<Arguments> invalidContentRangeSizeExtractionSupplier() {
+        return Stream.of(
+            Arguments.of(null, NullPointerException.class),
+            Arguments.of("", IllegalArgumentException.class),
+            Arguments.of("0-1023/notanumber", NumberFormatException.class)
+        );
+    }
 }

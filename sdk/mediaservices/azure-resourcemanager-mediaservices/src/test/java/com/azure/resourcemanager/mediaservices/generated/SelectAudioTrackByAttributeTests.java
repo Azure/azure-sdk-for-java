@@ -17,26 +17,26 @@ public final class SelectAudioTrackByAttributeTests {
         SelectAudioTrackByAttribute model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackByAttribute\",\"attribute\":\"Bitrate\",\"filter\":\"Bottom\",\"filterValue\":\"ikdgszywkbir\",\"channelMapping\":\"BackRight\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.SelectAudioTrackByAttribute\",\"attribute\":\"Bitrate\",\"filter\":\"Bottom\",\"filterValue\":\"yiopi\",\"channelMapping\":\"Center\"}")
                 .toObject(SelectAudioTrackByAttribute.class);
-        Assertions.assertEquals(ChannelMapping.BACK_RIGHT, model.channelMapping());
+        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
         Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
         Assertions.assertEquals(AttributeFilter.BOTTOM, model.filter());
-        Assertions.assertEquals("ikdgszywkbir", model.filterValue());
+        Assertions.assertEquals("yiopi", model.filterValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelectAudioTrackByAttribute model =
             new SelectAudioTrackByAttribute()
-                .withChannelMapping(ChannelMapping.BACK_RIGHT)
+                .withChannelMapping(ChannelMapping.CENTER)
                 .withAttribute(TrackAttribute.BITRATE)
                 .withFilter(AttributeFilter.BOTTOM)
-                .withFilterValue("ikdgszywkbir");
+                .withFilterValue("yiopi");
         model = BinaryData.fromObject(model).toObject(SelectAudioTrackByAttribute.class);
-        Assertions.assertEquals(ChannelMapping.BACK_RIGHT, model.channelMapping());
+        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
         Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
         Assertions.assertEquals(AttributeFilter.BOTTOM, model.filter());
-        Assertions.assertEquals("ikdgszywkbir", model.filterValue());
+        Assertions.assertEquals("yiopi", model.filterValue());
     }
 }

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.ServerUsageInner;
 /** An instance of this class provides access to all the operations defined in WorkspaceManagedSqlServerUsagesClient. */
 public interface WorkspaceManagedSqlServerUsagesClient {
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -27,7 +29,9 @@ public interface WorkspaceManagedSqlServerUsagesClient {
     PagedIterable<ServerUsageInner> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

@@ -65,6 +65,10 @@ public final class PrivateLinkHubImpl implements PrivateLinkHub, PrivateLinkHub.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateLinkHubInner innerModel() {
         return this.innerObject;
     }

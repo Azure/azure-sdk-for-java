@@ -8,34 +8,33 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.AzureCapacity;
 import com.azure.resourcemanager.kusto.models.AzureScaleType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureCapacityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureCapacity model =
             BinaryData
                 .fromString(
-                    "{\"scaleType\":\"manual\",\"minimum\":1762722977,\"maximum\":611347280,\"default\":168254793}")
+                    "{\"scaleType\":\"manual\",\"minimum\":471939229,\"maximum\":485576970,\"default\":1074996435}")
                 .toObject(AzureCapacity.class);
         Assertions.assertEquals(AzureScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(1762722977, model.minimum());
-        Assertions.assertEquals(611347280, model.maximum());
-        Assertions.assertEquals(168254793, model.defaultProperty());
+        Assertions.assertEquals(471939229, model.minimum());
+        Assertions.assertEquals(485576970, model.maximum());
+        Assertions.assertEquals(1074996435, model.defaultProperty());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureCapacity model =
             new AzureCapacity()
                 .withScaleType(AzureScaleType.MANUAL)
-                .withMinimum(1762722977)
-                .withMaximum(611347280)
-                .withDefaultProperty(168254793);
+                .withMinimum(471939229)
+                .withMaximum(485576970)
+                .withDefaultProperty(1074996435);
         model = BinaryData.fromObject(model).toObject(AzureCapacity.class);
         Assertions.assertEquals(AzureScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(1762722977, model.minimum());
-        Assertions.assertEquals(611347280, model.maximum());
-        Assertions.assertEquals(168254793, model.defaultProperty());
+        Assertions.assertEquals(471939229, model.minimum());
+        Assertions.assertEquals(485576970, model.maximum());
+        Assertions.assertEquals(1074996435, model.defaultProperty());
     }
 }

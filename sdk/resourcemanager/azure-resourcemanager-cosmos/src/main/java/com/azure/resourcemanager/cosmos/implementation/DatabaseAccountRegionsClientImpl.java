@@ -56,7 +56,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface DatabaseAccountRegionsService {
+    public interface DatabaseAccountRegionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"

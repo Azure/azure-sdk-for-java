@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyMutableProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AccessPolicyUpdateParameters model. */
-@JsonFlatten
 @Fluent
-public class AccessPolicyUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyUpdateParameters.class);
-
+public final class AccessPolicyUpdateParameters {
     /*
-     * An description of the access policy.
+     * An object that represents a set of mutable access policy resource properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private AccessPolicyMutableProperties innerProperties;
 
-    /*
-     * The list of roles the principal is assigned on the environment.
+    /** Creates an instance of AccessPolicyUpdateParameters class. */
+    public AccessPolicyUpdateParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: An object that represents a set of mutable access policy resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.roles")
-    private List<AccessPolicyRole> roles;
+    private AccessPolicyMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: An description of the access policy.
@@ -35,7 +37,7 @@ public class AccessPolicyUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -45,7 +47,10 @@ public class AccessPolicyUpdateParameters {
      * @return the AccessPolicyUpdateParameters object itself.
      */
     public AccessPolicyUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyMutableProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -55,7 +60,7 @@ public class AccessPolicyUpdateParameters {
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
-        return this.roles;
+        return this.innerProperties() == null ? null : this.innerProperties().roles();
     }
 
     /**
@@ -65,7 +70,10 @@ public class AccessPolicyUpdateParameters {
      * @return the AccessPolicyUpdateParameters object itself.
      */
     public AccessPolicyUpdateParameters withRoles(List<AccessPolicyRole> roles) {
-        this.roles = roles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyMutableProperties();
+        }
+        this.innerProperties().withRoles(roles);
         return this;
     }
 
@@ -75,5 +83,8 @@ public class AccessPolicyUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

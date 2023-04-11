@@ -21,6 +21,15 @@ public final class ConnectionMonitorTestConfigurationProtocol
     public static final ConnectionMonitorTestConfigurationProtocol ICMP = fromString("Icmp");
 
     /**
+     * Creates a new instance of ConnectionMonitorTestConfigurationProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorTestConfigurationProtocol() {
+    }
+
+    /**
      * Creates or finds a ConnectionMonitorTestConfigurationProtocol from its string representation.
      *
      * @param name a name to look for.

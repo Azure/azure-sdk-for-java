@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for updating base image dependency trigger. */
 @Fluent
 public final class BaseImageTriggerUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaseImageTriggerUpdateParameters.class);
-
     /*
      * The type of the auto trigger for base image dependency updates.
      */
@@ -43,6 +40,10 @@ public final class BaseImageTriggerUpdateParameters {
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of BaseImageTriggerUpdateParameters class. */
+    public BaseImageTriggerUpdateParameters() {
+    }
 
     /**
      * Get the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
@@ -152,10 +153,12 @@ public final class BaseImageTriggerUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model BaseImageTriggerUpdateParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BaseImageTriggerUpdateParameters.class);
 }

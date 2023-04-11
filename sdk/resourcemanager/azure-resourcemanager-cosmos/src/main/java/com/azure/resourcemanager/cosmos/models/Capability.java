@@ -17,6 +17,10 @@ public final class Capability {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of Capability class. */
+    public Capability() {
+    }
+
     /**
      * Get the name property: Name of the Cosmos DB capability. For example, "name": "EnableCassandra". Current values
      * also include "EnableTable" and "EnableGremlin".

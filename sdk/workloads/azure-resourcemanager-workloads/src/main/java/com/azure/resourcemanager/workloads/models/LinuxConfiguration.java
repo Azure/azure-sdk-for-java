@@ -25,8 +25,8 @@ public final class LinuxConfiguration extends OSConfiguration {
     private Boolean disablePasswordAuthentication;
 
     /*
-     * Specifies the ssh key configuration for a Linux OS. (This property is
-     * deprecated, please use 'sshKeyPair' instead)
+     * Specifies the ssh key configuration for a Linux OS. (This property is deprecated, please use 'sshKeyPair'
+     * instead)
      */
     @JsonProperty(value = "ssh")
     private SshConfiguration ssh;
@@ -36,6 +36,10 @@ public final class LinuxConfiguration extends OSConfiguration {
      */
     @JsonProperty(value = "sshKeyPair")
     private SshKeyPair sshKeyPair;
+
+    /** Creates an instance of LinuxConfiguration class. */
+    public LinuxConfiguration() {
+    }
 
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.

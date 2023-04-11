@@ -29,6 +29,10 @@ public final class AutoHealActions {
     @JsonProperty(value = "minProcessExecutionTime")
     private String minProcessExecutionTime;
 
+    /** Creates an instance of AutoHealActions class. */
+    public AutoHealActions() {
+    }
+
     /**
      * Get the actionType property: Predefined action to be taken.
      *

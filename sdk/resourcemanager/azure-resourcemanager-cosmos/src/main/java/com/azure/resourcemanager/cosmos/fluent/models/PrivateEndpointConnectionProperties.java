@@ -36,6 +36,10 @@ public final class PrivateEndpointConnectionProperties {
     @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    public PrivateEndpointConnectionProperties() {
+    }
+
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
      *

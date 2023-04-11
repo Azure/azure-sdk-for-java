@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -659,4 +660,76 @@ public interface LiveEvent {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void reset(Context context);
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStatus> listGetStatus();
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStatus> listGetStatus(Context context);
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStreamEvent> listGetStreamEvents();
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventStreamEvent> listGetStreamEvents(Context context);
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats();
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(Context context);
 }

@@ -39,6 +39,15 @@ public final class CommunicationServicesProvisioningState
     public static final CommunicationServicesProvisioningState MOVING = fromString("Moving");
 
     /**
+     * Creates a new instance of CommunicationServicesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommunicationServicesProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CommunicationServicesProvisioningState from its string representation.
      *
      * @param name a name to look for.

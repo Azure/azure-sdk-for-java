@@ -16,6 +16,10 @@ public final class PrivateEndpointProperty {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of PrivateEndpointProperty class. */
+    public PrivateEndpointProperty() {
+    }
+
     /**
      * Get the id property: Resource id of the private endpoint.
      *

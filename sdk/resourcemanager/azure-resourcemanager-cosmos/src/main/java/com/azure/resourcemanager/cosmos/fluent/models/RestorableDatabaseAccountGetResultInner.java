@@ -44,6 +44,10 @@ public final class RestorableDatabaseAccountGetResultInner {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of RestorableDatabaseAccountGetResultInner class. */
+    public RestorableDatabaseAccountGetResultInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a restorable database account.
      *

@@ -57,7 +57,7 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface RestorableDatabaseAccountsService {
+    public interface RestorableDatabaseAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
@@ -518,22 +518,6 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorableDatabaseAccountGetResultInner getByLocation(String location, String instanceId) {
-        return getByLocationAsync(location, instanceId).block();
-    }
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
-     *
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param instanceId The instanceId GUID of a restorable database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -544,5 +528,21 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
     public Response<RestorableDatabaseAccountGetResultInner> getByLocationWithResponse(
         String location, String instanceId, Context context) {
         return getByLocationWithResponseAsync(location, instanceId, context).block();
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
+     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
+     *
+     * @param location Cosmos DB region, with spaces between words and each word capitalized.
+     * @param instanceId The instanceId GUID of a restorable database account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Azure Cosmos DB restorable database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorableDatabaseAccountGetResultInner getByLocation(String location, String instanceId) {
+        return getByLocationWithResponse(location, instanceId, Context.NONE).getValue();
     }
 }

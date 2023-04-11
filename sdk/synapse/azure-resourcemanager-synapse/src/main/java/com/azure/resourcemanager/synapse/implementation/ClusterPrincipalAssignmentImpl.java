@@ -62,6 +62,14 @@ public final class ClusterPrincipalAssignmentImpl
         return this.innerModel().provisioningState();
     }
 
+    public String aadObjectId() {
+        return this.innerModel().aadObjectId();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ClusterPrincipalAssignmentInner innerModel() {
         return this.innerObject;
     }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
 /** Samples for SqlResources CreateUpdateSqlUserDefinedFunction. */
 public final class SqlResourcesCreateUpdateSqlUserDefinedFunctionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionCreateUpdate.
@@ -36,6 +35,6 @@ public final class SqlResourcesCreateUpdateSqlUserDefinedFunctionSamples {
                     .withResource(
                         new SqlUserDefinedFunctionResource().withId("userDefinedFunctionName").withBody("body"))
                     .withOptions(new CreateUpdateOptions()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

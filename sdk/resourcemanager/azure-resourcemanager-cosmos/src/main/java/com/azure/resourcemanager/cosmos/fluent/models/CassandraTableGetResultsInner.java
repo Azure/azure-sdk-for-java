@@ -20,6 +20,10 @@ public final class CassandraTableGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private CassandraTableGetProperties innerProperties;
 
+    /** Creates an instance of CassandraTableGetResultsInner class. */
+    public CassandraTableGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Cassandra table.
      *

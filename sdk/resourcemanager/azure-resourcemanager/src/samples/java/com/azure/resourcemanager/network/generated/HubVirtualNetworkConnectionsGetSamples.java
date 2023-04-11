@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for HubVirtualNetworkConnections Get. */
 public final class HubVirtualNetworkConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/HubVirtualNetworkConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/HubVirtualNetworkConnectionGet.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionGet.
@@ -22,6 +20,6 @@ public final class HubVirtualNetworkConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getHubVirtualNetworkConnections()
-            .getWithResponse("rg1", "virtualHub1", "connection1", Context.NONE);
+            .getWithResponse("rg1", "virtualHub1", "connection1", com.azure.core.util.Context.NONE);
     }
 }

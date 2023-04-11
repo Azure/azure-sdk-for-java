@@ -15,6 +15,6 @@ public final class TracksListSamples {
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listsAllTracks(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.tracks().list("contoso", "contosomedia", "ClimbingMountRainer", com.azure.core.util.Context.NONE);
+        manager.tracks().list("contosorg", "contosomedia", "ClimbingMountRainer", com.azure.core.util.Context.NONE);
     }
 }

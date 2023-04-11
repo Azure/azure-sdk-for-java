@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.Role;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for MongoDBResources CreateUpdateMongoUserDefinition. */
 public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionCreateUpdate.
@@ -31,11 +30,11 @@ public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
                 "myAccountName",
                 new MongoUserDefinitionCreateUpdateParameters()
                     .withUsername("myUserName")
-                    .withPassword("myPassword")
+                    .withPassword("fakeTokenPlaceholder")
                     .withDatabaseName("sales")
                     .withCustomData("My custom data")
                     .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myReadRole")))
                     .withMechanisms("SCRAM-SHA-256"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

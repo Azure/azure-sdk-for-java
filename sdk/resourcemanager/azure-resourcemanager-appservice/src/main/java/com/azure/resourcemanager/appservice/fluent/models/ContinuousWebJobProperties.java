@@ -75,6 +75,10 @@ public final class ContinuousWebJobProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
 
+    /** Creates an instance of ContinuousWebJobProperties class. */
+    public ContinuousWebJobProperties() {
+    }
+
     /**
      * Get the status property: Job status.
      *

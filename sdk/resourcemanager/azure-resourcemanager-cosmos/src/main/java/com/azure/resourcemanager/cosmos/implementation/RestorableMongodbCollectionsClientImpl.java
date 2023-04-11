@@ -57,7 +57,7 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface RestorableMongodbCollectionsService {
+    public interface RestorableMongodbCollectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
@@ -71,6 +71,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
             @PathParam("location") String location,
             @PathParam("instanceId") String instanceId,
             @QueryParam("restorableMongodbDatabaseRid") String restorableMongodbDatabaseRid,
+            @QueryParam("startTime") String startTime,
+            @QueryParam("endTime") String endTime,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -83,6 +85,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,7 +95,7 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid) {
+        String location, String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -122,6 +126,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
                             location,
                             instanceId,
                             restorableMongodbDatabaseRid,
+                            startTime,
+                            endTime,
                             accept,
                             context))
             .<PagedResponse<RestorableMongodbCollectionGetResultInner>>map(
@@ -139,6 +145,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -148,7 +156,12 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid, Context context) {
+        String location,
+        String instanceId,
+        String restorableMongodbDatabaseRid,
+        String startTime,
+        String endTime,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -177,6 +190,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
                 location,
                 instanceId,
                 restorableMongodbDatabaseRid,
+                startTime,
+                endTime,
                 accept,
                 context)
             .map(
@@ -193,6 +208,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,8 +218,9 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid) {
-        return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid));
+        String location, String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime));
     }
 
     /**
@@ -221,7 +239,10 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(String location, String instanceId) {
         final String restorableMongodbDatabaseRid = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid));
+        final String startTime = null;
+        final String endTime = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime));
     }
 
     /**
@@ -232,6 +253,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -241,8 +264,14 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid, context));
+        String location,
+        String instanceId,
+        String restorableMongodbDatabaseRid,
+        String startTime,
+        String endTime,
+        Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime, context));
     }
 
     /**
@@ -261,7 +290,9 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbCollectionGetResultInner> list(String location, String instanceId) {
         final String restorableMongodbDatabaseRid = null;
-        return new PagedIterable<>(listAsync(location, instanceId, restorableMongodbDatabaseRid));
+        final String startTime = null;
+        final String endTime = null;
+        return new PagedIterable<>(listAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime));
     }
 
     /**
@@ -272,6 +303,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
+     * @param startTime Restorable MongoDB collections event feed start time.
+     * @param endTime Restorable MongoDB collections event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -281,7 +314,13 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbCollectionGetResultInner> list(
-        String location, String instanceId, String restorableMongodbDatabaseRid, Context context) {
-        return new PagedIterable<>(listAsync(location, instanceId, restorableMongodbDatabaseRid, context));
+        String location,
+        String instanceId,
+        String restorableMongodbDatabaseRid,
+        String startTime,
+        String endTime,
+        Context context) {
+        return new PagedIterable<>(
+            listAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime, context));
     }
 }

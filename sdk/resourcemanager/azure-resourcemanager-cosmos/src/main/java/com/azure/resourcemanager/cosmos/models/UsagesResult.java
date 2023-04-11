@@ -18,6 +18,10 @@ public final class UsagesResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<UsageInner> value;
 
+    /** Creates an instance of UsagesResult class. */
+    public UsagesResult() {
+    }
+
     /**
      * Get the value property: The list of usages for the database. A usage is a point in time metric.
      *

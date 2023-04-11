@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.Deployment;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
@@ -33,7 +32,7 @@ public final class DeploymentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"ycnunvjsrtk\",\"properties\":{\"provisioningState\":\"Deleting\",\"model\":{\"format\":\"qg\",\"name\":\"yzirtxdyuxzejn\",\"version\":\"sewgioilqukr\"},\"scaleSettings\":{\"scaleType\":\"Standard\",\"capacity\":2118513593,\"activeCapacity\":323647852},\"capabilities\":{\"yaomtb\":\"rgguf\",\"pjbi\":\"hhavgrvkffovjz\"},\"raiPolicyName\":\"jmfxumvf\",\"callRateLimit\":{\"count\":6.4399242,\"renewalPeriod\":49.07215,\"rules\":[]}},\"id\":\"xnbkfezzxscyhwzd\",\"name\":\"irujbz\",\"type\":\"omvzzbtd\"}";
+            "{\"etag\":\"mywwtkgkxnyed\",\"properties\":{\"provisioningState\":\"Accepted\",\"model\":{\"format\":\"dtj\",\"name\":\"wbcihxuuwh\",\"version\":\"yxccyb\"},\"scaleSettings\":{\"scaleType\":\"Standard\",\"capacity\":184122584,\"activeCapacity\":240734224},\"capabilities\":{\"fkyrk\":\"xgwjplmagstcyoh\"},\"raiPolicyName\":\"dg\",\"callRateLimit\":{\"count\":49.6279,\"renewalPeriod\":99.05967,\"rules\":[]}},\"id\":\"nwqjnoba\",\"name\":\"yhddvia\",\"type\":\"egfnmntfpmvmemfn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +61,16 @@ public final class DeploymentsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Deployment response =
-            manager.deployments().getWithResponse("hqxvcxgfrpdsofbs", "rnsvbuswd", "z", Context.NONE).getValue();
+            manager
+                .deployments()
+                .getWithResponse("goorbteo", "bfhjxakvvjgsl", "r", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("qg", response.properties().model().format());
-        Assertions.assertEquals("yzirtxdyuxzejn", response.properties().model().name());
-        Assertions.assertEquals("sewgioilqukr", response.properties().model().version());
+        Assertions.assertEquals("dtj", response.properties().model().format());
+        Assertions.assertEquals("wbcihxuuwh", response.properties().model().name());
+        Assertions.assertEquals("yxccyb", response.properties().model().version());
         Assertions.assertEquals(DeploymentScaleType.STANDARD, response.properties().scaleSettings().scaleType());
-        Assertions.assertEquals(2118513593, response.properties().scaleSettings().capacity());
-        Assertions.assertEquals("jmfxumvf", response.properties().raiPolicyName());
+        Assertions.assertEquals(184122584, response.properties().scaleSettings().capacity());
+        Assertions.assertEquals("dg", response.properties().raiPolicyName());
     }
 }

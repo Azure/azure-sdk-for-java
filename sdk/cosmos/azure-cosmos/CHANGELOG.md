@@ -1,19 +1,65 @@
 ## Release History
 
-### 4.41.0-beta.1 (Unreleased)
+### 4.44.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added internal merge handling - See [PR 31428](https://github.com/Azure/azure-sdk-for-java/pull/31428). See [PR 32097](https://github.com/Azure/azure-sdk-for-java/pull/32097). See [PR 32078](https://github.com/Azure/azure-sdk-for-java/pull/32078). See [PR 32165](https://github.com/Azure/azure-sdk-for-java/pull/32165). See [32259](https://github.com/Azure/azure-sdk-for-java/pull/32259). See [32496](https://github.com/Azure/azure-sdk-for-java/pull/32496)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where throughput control is not triggered properly when target throughput is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
 
 #### Other Changes
 
+### 4.43.0 (2023-04-06)
+
+#### Features Added
+* Added option to enable automatic retries for write operations - See [34227](https://github.com/Azure/azure-sdk-for-java/pull/34227)
+* Added option to enable automatic logging of Cosmos diagnostics for errors or requests exceeding latency threshold - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+* Added support for OpenTelemetry traces following the Semantic profile for Cosmos DB - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+
+#### Breaking Changes
+* Changed the default structure of Open Telemetry events being emitted by the SDK to follow the semantic profile for Cosmos DB. Use the `COSMOS.USE_LEGACY_TRACING` system property to retrun to the previous event structure: `-DCOSMOS.USE_LEGACY_TRACING=true` - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+
+### 4.42.0 (2023-03-17)
+
+#### Features Added
+* Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
+* GA of `subpartition` functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* Added ability for SDK to use partial partition keys for queries in subpartitioned containers - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* Enable `handleLatestVersionChanges` in ChangeFeedProcessor - See [33972](https://github.com/Azure/azure-sdk-for-java/pull/33972)
+* Added Merge support. NOTE: to use Change Feed Processor with merge support, onboard to the new API `handleLatestVersionChanges()` in `ChangeFeedProcessorBuilder`.
+
+#### Bugs Fixed
+* Fixed `readMany` API to take in hierarchical partition keys - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* Fixed an issue in the Direct Transport metrics for acquired/closed channels which would be triggered when endpoint get closed/evicted due to exceeding idle timeouts. This would surface as stale metrics for these endpoints. - See [33969](https://github.com/Azure/azure-sdk-for-java/pull/33969) 
+
+#### Other Changes
+* Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329).
+
+### 4.41.0 (2023-02-17)
+
+#### Features Added
+* Added ability to configure proactive connection management via `CosmosClientBuilder.openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)`. - See [PR 33267](https://github.com/Azure/azure-sdk-for-java/pull/33267)
+* Added internal merge handling - See [PR 31428](https://github.com/Azure/azure-sdk-for-java/pull/31428). See [PR 32097](https://github.com/Azure/azure-sdk-for-java/pull/32097). See [PR 32078](https://github.com/Azure/azure-sdk-for-java/pull/32078). See [PR 32165](https://github.com/Azure/azure-sdk-for-java/pull/32165). See [32259](https://github.com/Azure/azure-sdk-for-java/pull/32259). See [32496](https://github.com/Azure/azure-sdk-for-java/pull/32496)
+* Added more granular control of which Cosmos client-side metrics to emit, whether to collect histograms and percentiles (and which) and also which tags/dimensions to associate with individual metrics.  - See [PR 33436](https://github.com/Azure/azure-sdk-for-java/pull/33436)
+
+#### Breaking Changes
+* NOTE: the PR to provide more granular control over metrics - See [PR 33436](https://github.com/Azure/azure-sdk-for-java/pull/33436) - includes two technically breaking changes. We don't expect any customers to be impacted by this, but the PR description as well as information below provides some context and options on how to revert the behavior to previous version.
+  * The API `CosmosClientTelemetryConfig.metricTagNames` has been marked deprecated in favor of `CosmosMicrometerMetricsOptions.defaultTagNames` or `CosmosMicrometerMeterOptions.suppressTagNames` - the `CosmosClientTelemetryConfig.metricTagNames` API can still be used as long as none of the new configuration APIs is used - but we recommend starting to switch over to the new APIs.
+  * Capturing metrics - especially `Timer` and `DistributionSummary` with percentiles/histograms has some performance overhead. We got feedback that initially we were emitting some metrics with relatively high cardinality on tags with percentiles/histograms of questionable value (only useful in certain scenarios). So, we decided to disable collecting these metrics by default - but still allow them to be collected when enabled manually via the APIs described in [PR 33436](https://github.com/Azure/azure-sdk-for-java/pull/33436).   
+
+#### Bugs Fixed
+* Change feed pull API is using an incorrect key value for collection lookup, which can result in using the old collection in collection recreate scenarios. - See [PR 33178](https://github.com/Azure/azure-sdk-for-java/pull/33178)
+
+#### Other Changes
+* Give a meaningful name to the GlobalEndpointManager worker thread. - See [PR 33507](https://github.com/Azure/azure-sdk-for-java/pull/33507)
+* Adding activity id in header of gateway address refresh call. - See [PR 33074](https://github.com/Azure/azure-sdk-for-java/pull/33074)
+* Direct mode - `RNTBD` connection health check improvements in `RntbdClientChannelHealthChecker` to allow recovering quicker when existing connections get broken (without TCP close or reset, just timeouts because packets get dropped). - See [PR 33464](https://github.com/Azure/azure-sdk-for-java/pull/33464) and - See [PR 33566](https://github.com/Azure/azure-sdk-for-java/pull/33566)  
+
 ### 4.40.0 (2023-01-13)
 #### Features Added
-* Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added `retryAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [PR 31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
 * Added `CosmosDiagnostics` to `readMany` API - See [PR 32290](https://github.com/Azure/azure-sdk-for-java/pull/32290)
 
 #### Bugs Fixed

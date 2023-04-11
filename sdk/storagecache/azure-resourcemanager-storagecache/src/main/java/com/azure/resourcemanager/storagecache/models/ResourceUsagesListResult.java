@@ -22,11 +22,14 @@ public final class ResourceUsagesListResult {
     private String nextLink;
 
     /*
-     * List of usages and limits for resources controlled by the
-     * Microsoft.StorageCache resource provider.
+     * List of usages and limits for resources controlled by the Microsoft.StorageCache resource provider.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceUsageInner> value;
+
+    /** Creates an instance of ResourceUsagesListResult class. */
+    public ResourceUsagesListResult() {
+    }
 
     /**
      * Get the nextLink property: URL to get the next set of resource usage list results if there are any.

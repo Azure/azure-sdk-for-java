@@ -9,11 +9,10 @@ import com.azure.resourcemanager.signalr.models.NetworkAcl;
 import com.azure.resourcemanager.signalr.models.SignalRRequestType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NetworkAclTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NetworkAcl model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class NetworkAclTests {
         Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NetworkAcl model =
             new NetworkAcl()
                 .withAllow(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION))

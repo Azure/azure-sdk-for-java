@@ -34,6 +34,10 @@ public final class AadAdminProperties {
     @JsonProperty(value = "sid")
     private String sid;
 
+    /** Creates an instance of AadAdminProperties class. */
+    public AadAdminProperties() {
+    }
+
     /**
      * Get the tenantId property: Tenant ID of the workspace active directory administrator.
      *

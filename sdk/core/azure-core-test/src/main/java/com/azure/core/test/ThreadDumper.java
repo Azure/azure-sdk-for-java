@@ -30,6 +30,12 @@ public class ThreadDumper implements BeforeAllCallback {
     private static final int RATE_IN_MINUTES = 2;
 
     /**
+     * Creates a new instance of {@link ThreadDumper}.
+     */
+    public ThreadDumper() {
+    }
+
+    /**
      * Initializes the singleton dumper. Can be called multiple times safely.
      */
     public static void initialize() {

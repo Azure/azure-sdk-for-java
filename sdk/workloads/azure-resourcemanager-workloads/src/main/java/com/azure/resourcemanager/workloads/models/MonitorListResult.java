@@ -24,6 +24,10 @@ public final class MonitorListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of MonitorListResult class. */
+    public MonitorListResult() {
+    }
+
     /**
      * Get the value property: The list of SAP monitors.
      *

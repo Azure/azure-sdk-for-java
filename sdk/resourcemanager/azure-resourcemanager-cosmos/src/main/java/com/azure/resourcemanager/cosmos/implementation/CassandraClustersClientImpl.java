@@ -75,7 +75,7 @@ public final class CassandraClustersClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface CassandraClustersService {
+    public interface CassandraClustersService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/cassandraClusters")
         @ExpectedResponses({200})
@@ -624,21 +624,6 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterResourceInner getByResourceGroup(String resourceGroupName, String clusterName) {
-        return getByResourceGroupAsync(resourceGroupName, clusterName).block();
-    }
-
-    /**
-     * Get the properties of a managed Cassandra cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -649,6 +634,21 @@ public final class CassandraClustersClientImpl
     public Response<ClusterResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
+    }
+
+    /**
+     * Get the properties of a managed Cassandra cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a managed Cassandra cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterResourceInner getByResourceGroup(String resourceGroupName, String clusterName) {
+        return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
     /**
@@ -796,7 +796,7 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        return beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -813,7 +813,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -1056,7 +1056,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterResourceInner>, ClusterResourceInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, ClusterResourceInner body) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, body).getSyncPoller();
+        return this.beginCreateUpdateAsync(resourceGroupName, clusterName, body).getSyncPoller();
     }
 
     /**
@@ -1075,7 +1075,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterResourceInner>, ClusterResourceInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, ClusterResourceInner body, Context context) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
+        return this.beginCreateUpdateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
     }
 
     /**
@@ -1327,7 +1327,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterResourceInner>, ClusterResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, ClusterResourceInner body) {
-        return beginUpdateAsync(resourceGroupName, clusterName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, body).getSyncPoller();
     }
 
     /**
@@ -1345,7 +1345,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterResourceInner>, ClusterResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, ClusterResourceInner body, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
     }
 
     /**
@@ -1592,7 +1592,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommandOutputInner>, CommandOutputInner> beginInvokeCommand(
         String resourceGroupName, String clusterName, CommandPostBody body) {
-        return beginInvokeCommandAsync(resourceGroupName, clusterName, body).getSyncPoller();
+        return this.beginInvokeCommandAsync(resourceGroupName, clusterName, body).getSyncPoller();
     }
 
     /**
@@ -1610,7 +1610,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommandOutputInner>, CommandOutputInner> beginInvokeCommand(
         String resourceGroupName, String clusterName, CommandPostBody body, Context context) {
-        return beginInvokeCommandAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
+        return this.beginInvokeCommandAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
     }
 
     /**
@@ -1841,7 +1841,7 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName) {
-        return beginDeallocateAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDeallocateAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -1860,7 +1860,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDeallocateAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDeallocateAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -2090,7 +2090,7 @@ public final class CassandraClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName) {
-        return beginStartAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -2109,7 +2109,7 @@ public final class CassandraClustersClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String clusterName, Context context) {
-        return beginStartAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -2299,21 +2299,6 @@ public final class CassandraClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CassandraClusterPublicStatusInner status(String resourceGroupName, String clusterName) {
-        return statusAsync(resourceGroupName, clusterName).block();
-    }
-
-    /**
-     * Gets the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2325,5 +2310,20 @@ public final class CassandraClustersClientImpl
     public Response<CassandraClusterPublicStatusInner> statusWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         return statusWithResponseAsync(resourceGroupName, clusterName, context).block();
+    }
+
+    /**
+     * Gets the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CPU, memory, and disk usage statistics for each Cassandra node in a cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraClusterPublicStatusInner status(String resourceGroupName, String clusterName) {
+        return statusWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 }

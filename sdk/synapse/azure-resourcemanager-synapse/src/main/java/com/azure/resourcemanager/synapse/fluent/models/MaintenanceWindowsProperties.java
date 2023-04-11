@@ -18,6 +18,10 @@ public final class MaintenanceWindowsProperties {
     @JsonProperty(value = "timeRanges")
     private List<MaintenanceWindowTimeRange> timeRanges;
 
+    /** Creates an instance of MaintenanceWindowsProperties class. */
+    public MaintenanceWindowsProperties() {
+    }
+
     /**
      * Get the timeRanges property: The timeRanges property.
      *

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class AccountsListSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"p\"},{\"resourceType\":\"gymare\"},{\"resourceType\":\"jxqugjhky\"}]}";
+            "{\"value\":[{\"resourceType\":\"fi\"},{\"resourceType\":\"botzingamvppho\"},{\"resourceType\":\"zudphqamvdkfw\"},{\"resourceType\":\"cvtbv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +60,8 @@ public final class AccountsListSkusWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AccountSkuListResult response =
-            manager.accounts().listSkusWithResponse("hhyxxrw", "yc", Context.NONE).getValue();
+            manager.accounts().listSkusWithResponse("kndxdigrjgu", "fzdm", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("p", response.value().get(0).resourceType());
+        Assertions.assertEquals("fi", response.value().get(0).resourceType());
     }
 }

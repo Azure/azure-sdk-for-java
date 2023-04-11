@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 /** Samples for Mediaservices ListEdgePolicies. */
 public final class MediaservicesListEdgePoliciesSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/accounts-list-media-edge-policies.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/accounts-list-media-edge-policies.json
      */
     /**
      * Sample code: List the media edge policies.
@@ -20,7 +20,7 @@ public final class MediaservicesListEdgePoliciesSamples {
         manager
             .mediaservices()
             .listEdgePoliciesWithResponse(
-                "contoso",
+                "contosorg",
                 "contososports",
                 new ListEdgePoliciesInput().withDeviceId("contosiothubhost_contosoiotdevice"),
                 com.azure.core.util.Context.NONE);

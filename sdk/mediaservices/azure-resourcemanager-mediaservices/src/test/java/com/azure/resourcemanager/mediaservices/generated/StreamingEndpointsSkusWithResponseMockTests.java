@@ -30,7 +30,7 @@ public final class StreamingEndpointsSkusWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"resourceType\":\"ogsf\"}]}";
+        String responseStr = "{\"value\":[{\"resourceType\":\"bta\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class StreamingEndpointsSkusWithResponseMockTests {
         StreamingEndpointSkuInfoListResult response =
             manager
                 .streamingEndpoints()
-                .skusWithResponse("jk", "sysidfvclglxnf", "ijtk", com.azure.core.util.Context.NONE)
+                .skusWithResponse("dlrgms", "lzgaufcshhvnew", "nxkympqanxrjk", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ogsf", response.value().get(0).resourceType());
+        Assertions.assertEquals("bta", response.value().get(0).resourceType());
     }
 }

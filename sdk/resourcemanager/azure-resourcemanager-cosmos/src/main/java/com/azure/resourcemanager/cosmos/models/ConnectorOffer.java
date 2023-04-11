@@ -14,6 +14,15 @@ public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
     public static final ConnectorOffer SMALL = fromString("Small");
 
     /**
+     * Creates a new instance of ConnectorOffer value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectorOffer() {
+    }
+
+    /**
      * Creates or finds a ConnectorOffer from its string representation.
      *
      * @param name a name to look for.

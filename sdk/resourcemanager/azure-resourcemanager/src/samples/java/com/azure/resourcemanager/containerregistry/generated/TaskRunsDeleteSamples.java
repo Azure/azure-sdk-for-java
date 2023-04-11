@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TaskRuns Delete. */
 public final class TaskRunsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class TaskRunsDeleteSamples {
             .manager()
             .serviceClient()
             .getTaskRuns()
-            .delete("myResourceGroup", "myRegistry", "myRun", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myRun", com.azure.core.util.Context.NONE);
     }
 }

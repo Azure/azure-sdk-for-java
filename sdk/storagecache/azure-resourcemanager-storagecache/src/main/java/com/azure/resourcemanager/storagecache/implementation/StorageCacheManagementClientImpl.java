@@ -22,10 +22,12 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.storagecache.fluent.AmlFilesystemsClient;
 import com.azure.resourcemanager.storagecache.fluent.AscOperationsClient;
 import com.azure.resourcemanager.storagecache.fluent.AscUsagesClient;
 import com.azure.resourcemanager.storagecache.fluent.CachesClient;
 import com.azure.resourcemanager.storagecache.fluent.OperationsClient;
+import com.azure.resourcemanager.storagecache.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.storagecache.fluent.SkusClient;
 import com.azure.resourcemanager.storagecache.fluent.StorageCacheManagementClient;
 import com.azure.resourcemanager.storagecache.fluent.StorageTargetOperationsClient;
@@ -43,15 +45,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the StorageCacheManagementClientImpl type. */
 @ServiceClient(builder = StorageCacheManagementClientBuilder.class)
 public final class StorageCacheManagementClientImpl implements StorageCacheManagementClient {
-    /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -215,6 +213,30 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         return this.storageTargetOperations;
     }
 
+    /** The AmlFilesystemsClient object to access its operations. */
+    private final AmlFilesystemsClient amlFilesystems;
+
+    /**
+     * Gets the AmlFilesystemsClient object to access its operations.
+     *
+     * @return the AmlFilesystemsClient object.
+     */
+    public AmlFilesystemsClient getAmlFilesystems() {
+        return this.amlFilesystems;
+    }
+
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
     /**
      * Initializes an instance of StorageCacheManagementClient client.
      *
@@ -222,8 +244,7 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     StorageCacheManagementClientImpl(
@@ -238,7 +259,7 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-01";
+        this.apiVersion = "2023-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.usageModels = new UsageModelsClientImpl(this);
@@ -247,6 +268,8 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.caches = new CachesClientImpl(this);
         this.storageTargets = new StorageTargetsClientImpl(this);
         this.storageTargetOperations = new StorageTargetOperationsClientImpl(this);
+        this.amlFilesystems = new AmlFilesystemsClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
     }
 
     /**

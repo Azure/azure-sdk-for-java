@@ -52,7 +52,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface DataMaskingPoliciesService {
+    public interface DataMaskingPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -233,32 +233,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
     private Mono<DataMaskingPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
-            .flatMap(
-                (Response<DataMaskingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a Sql pool data masking policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param parameters Parameters for creating or updating a data masking policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingPolicyInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -283,6 +258,25 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a Sql pool data masking policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param parameters Parameters for creating or updating a data masking policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataMaskingPolicyInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String sqlPoolName, DataMaskingPolicyInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -409,30 +403,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingPolicyInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .flatMap(
-                (Response<DataMaskingPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a Sql pool data masking policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataMaskingPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -451,5 +422,21 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
     public Response<DataMaskingPolicyInner> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
+    }
+
+    /**
+     * Gets a Sql pool data masking policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Sql pool data masking policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataMaskingPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Servers GetByResourceGroup. */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerGetWithVnet.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerGetWithVnet.json
      */
     /**
      * Sample code: Get a server with vnet.
@@ -17,11 +15,11 @@ public final class ServersGetByResourceGroupSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void getAServerWithVnet(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", Context.NONE);
+        manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerGet.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerGet.json
      */
     /**
      * Sample code: Get a server.
@@ -29,6 +27,6 @@ public final class ServersGetByResourceGroupSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void getAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", Context.NONE);
+        manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE);
     }
 }

@@ -52,21 +52,6 @@ public interface KustoPoolDatabasesClient {
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName);
-
-    /**
-     * Returns a database.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param databaseName The name of the database in the Kusto pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,6 +61,21 @@ public interface KustoPoolDatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseInner> getWithResponse(
         String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+
+    /**
+     * Returns a database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param databaseName The name of the database in the Kusto pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseInner get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName);
 
     /**
      * Creates or updates a database.

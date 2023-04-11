@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolDataConnections Get. */
 public final class KustoPoolDataConnectionsGetSamples {
     /*
@@ -25,6 +23,6 @@ public final class KustoPoolDataConnectionsGetSamples {
                 "kustoclusterrptest4",
                 "KustoDatabase8",
                 "DataConnections8",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

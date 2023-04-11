@@ -26,6 +26,10 @@ public final class OutboundNetworkDependenciesEndpointInner extends ProxyResourc
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of OutboundNetworkDependenciesEndpointInner class. */
+    public OutboundNetworkDependenciesEndpointInner() {
+    }
+
     /**
      * Get the innerProperties property: The outbound environment endpoint properties.
      *

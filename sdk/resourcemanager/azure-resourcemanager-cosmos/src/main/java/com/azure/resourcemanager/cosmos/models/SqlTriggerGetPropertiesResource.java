@@ -28,6 +28,10 @@ public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of SqlTriggerGetPropertiesResource class. */
+    public SqlTriggerGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

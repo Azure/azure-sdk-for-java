@@ -8,13 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataSchema. */
+/** Data schema of input data source: OneTable or MultiTable. The default DataSchema is OneTable. */
 public final class DataSchema extends ExpandableStringEnum<DataSchema> {
-    /** Static value OneTable for DataSchema. */
+    /**
+     * OneTable means that your input data are all in one CSV file, which contains one 'timestamp' column and several
+     * variable columns. The default DataSchema is OneTable.
+     */
     public static final DataSchema ONE_TABLE = fromString("OneTable");
 
-    /** Static value MultiTable for DataSchema. */
+    /**
+     * MultiTable means that your input data are separated in multiple CSV files, in each file containing one
+     * 'timestamp' column and one 'variable' column, and the CSV file name should indicate the name of the variable. The
+     * default DataSchema is OneTable.
+     */
     public static final DataSchema MULTI_TABLE = fromString("MultiTable");
+
+    /**
+     * Creates a new instance of DataSchema value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataSchema() {}
 
     /**
      * Creates or finds a DataSchema from its string representation.

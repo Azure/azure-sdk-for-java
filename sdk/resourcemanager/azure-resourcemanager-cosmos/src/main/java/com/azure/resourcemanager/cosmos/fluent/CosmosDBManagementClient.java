@@ -262,6 +262,41 @@ public interface CosmosDBManagementClient {
     RestorableMongodbResourcesClient getRestorableMongodbResources();
 
     /**
+     * Gets the RestorableGremlinDatabasesClient object to access its operations.
+     *
+     * @return the RestorableGremlinDatabasesClient object.
+     */
+    RestorableGremlinDatabasesClient getRestorableGremlinDatabases();
+
+    /**
+     * Gets the RestorableGremlinGraphsClient object to access its operations.
+     *
+     * @return the RestorableGremlinGraphsClient object.
+     */
+    RestorableGremlinGraphsClient getRestorableGremlinGraphs();
+
+    /**
+     * Gets the RestorableGremlinResourcesClient object to access its operations.
+     *
+     * @return the RestorableGremlinResourcesClient object.
+     */
+    RestorableGremlinResourcesClient getRestorableGremlinResources();
+
+    /**
+     * Gets the RestorableTablesClient object to access its operations.
+     *
+     * @return the RestorableTablesClient object.
+     */
+    RestorableTablesClient getRestorableTables();
+
+    /**
+     * Gets the RestorableTableResourcesClient object to access its operations.
+     *
+     * @return the RestorableTableResourcesClient object.
+     */
+    RestorableTableResourcesClient getRestorableTableResources();
+
+    /**
      * Gets the ServicesClient object to access its operations.
      *
      * @return the ServicesClient object.

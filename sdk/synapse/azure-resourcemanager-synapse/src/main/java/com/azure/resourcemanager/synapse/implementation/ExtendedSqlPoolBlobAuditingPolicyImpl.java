@@ -77,6 +77,10 @@ public final class ExtendedSqlPoolBlobAuditingPolicyImpl
         return this.innerModel().queueDelayMs();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ExtendedSqlPoolBlobAuditingPolicyInner innerModel() {
         return this.innerObject;
     }

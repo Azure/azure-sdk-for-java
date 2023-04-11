@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsResource;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for MongoDBResources UpdateMongoDBDatabaseThroughput. */
 public final class MongoDBResourcesUpdateMongoDBDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseThroughputUpdate.
@@ -34,7 +33,7 @@ public final class MongoDBResourcesUpdateMongoDBDatabaseThroughputSamples {
                     .withLocation("West US")
                     .withTags(mapOf())
                     .withResource(new ThroughputSettingsResource().withThroughput(400)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

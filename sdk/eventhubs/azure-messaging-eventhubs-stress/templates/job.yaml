@@ -6,8 +6,6 @@ metadata:
     testName: eventhubs-stress-test
     chaos: "true"
 spec:
-  nodeSelector:
-    sku: 'highMem'
   containers:
     - name: sender
       image: {{ .Stress.imageTag }}

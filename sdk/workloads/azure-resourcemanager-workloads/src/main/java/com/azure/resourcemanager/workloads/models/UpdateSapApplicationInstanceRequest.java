@@ -19,6 +19,10 @@ public final class UpdateSapApplicationInstanceRequest {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of UpdateSapApplicationInstanceRequest class. */
+    public UpdateSapApplicationInstanceRequest() {
+    }
+
     /**
      * Get the tags property: Gets or sets the Resource tags.
      *

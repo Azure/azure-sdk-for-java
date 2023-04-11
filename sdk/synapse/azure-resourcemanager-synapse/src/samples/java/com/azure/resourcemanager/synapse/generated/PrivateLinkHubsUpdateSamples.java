@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHub;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,7 @@ public final class PrivateLinkHubsUpdateSamples {
         PrivateLinkHub resource =
             manager
                 .privateLinkHubs()
-                .getByResourceGroupWithResponse("resourceGroup1", "privateLinkHub1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "privateLinkHub1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("key", "value")).apply();
     }

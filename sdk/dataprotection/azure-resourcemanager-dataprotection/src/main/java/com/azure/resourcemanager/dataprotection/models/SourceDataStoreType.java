@@ -16,6 +16,9 @@ public final class SourceDataStoreType extends ExpandableStringEnum<SourceDataSt
     /** Static value SnapshotStore for SourceDataStoreType. */
     public static final SourceDataStoreType SNAPSHOT_STORE = fromString("SnapshotStore");
 
+    /** Static value OperationalStore for SourceDataStoreType. */
+    public static final SourceDataStoreType OPERATIONAL_STORE = fromString("OperationalStore");
+
     /** Static value VaultStore for SourceDataStoreType. */
     public static final SourceDataStoreType VAULT_STORE = fromString("VaultStore");
 

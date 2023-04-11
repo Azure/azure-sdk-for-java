@@ -21,30 +21,35 @@ import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Define the Virtual Instance for SAP. */
+/** Define the Virtual Instance for SAP solutions resource. */
 @Fluent
 public final class SapVirtualInstanceInner extends Resource {
     /*
-     * Managed service identity (user assigned identities)
+     * A pre-created user assigned identity with appropriate roles assigned. To learn more on identity and roles
+     * required, visit the ACSS how-to-guide.
      */
     @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
 
     /*
-     * Defines the Virtual Instance for SAP properties.
+     * Defines the Virtual Instance for SAP solutions resource properties.
      */
     @JsonProperty(value = "properties", required = true)
     private SapVirtualInstanceProperties innerProperties = new SapVirtualInstanceProperties();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SapVirtualInstanceInner class. */
+    public SapVirtualInstanceInner() {
+    }
+
     /**
-     * Get the identity property: Managed service identity (user assigned identities).
+     * Get the identity property: A pre-created user assigned identity with appropriate roles assigned. To learn more on
+     * identity and roles required, visit the ACSS how-to-guide.
      *
      * @return the identity value.
      */
@@ -53,7 +58,8 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Set the identity property: Managed service identity (user assigned identities).
+     * Set the identity property: A pre-created user assigned identity with appropriate roles assigned. To learn more on
+     * identity and roles required, visit the ACSS how-to-guide.
      *
      * @param identity the identity value to set.
      * @return the SapVirtualInstanceInner object itself.
@@ -64,7 +70,7 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Defines the Virtual Instance for SAP properties.
+     * Get the innerProperties property: Defines the Virtual Instance for SAP solutions resource properties.
      *
      * @return the innerProperties value.
      */
@@ -142,8 +148,8 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Get the configuration property: Defines if an existing SAP system is being registered or a new SAP system is
-     * being created.
+     * Get the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
+     * (ACSS) or if an existing SAP system is being registered with ACSS.
      *
      * @return the configuration value.
      */
@@ -152,8 +158,8 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Set the configuration property: Defines if an existing SAP system is being registered or a new SAP system is
-     * being created.
+     * Set the configuration property: Defines if the SAP system is being created using Azure Center for SAP solutions
+     * (ACSS) or if an existing SAP system is being registered with ACSS.
      *
      * @param configuration the configuration value to set.
      * @return the SapVirtualInstanceInner object itself.
@@ -200,7 +206,7 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
+     * Get the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */
@@ -227,7 +233,7 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Get the errors property: Defines the Virtual Instance for SAP errors.
+     * Get the errors property: Indicates any errors on the Virtual Instance for SAP solutions resource.
      *
      * @return the errors value.
      */

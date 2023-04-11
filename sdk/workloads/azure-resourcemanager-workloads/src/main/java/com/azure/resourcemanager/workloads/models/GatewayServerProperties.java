@@ -11,19 +11,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class GatewayServerProperties {
     /*
-     * The gateway Port.
+     * Gateway Port.
      */
     @JsonProperty(value = "port", access = JsonProperty.Access.WRITE_ONLY)
     private Long port;
 
     /*
-     * Defines the SAP Instance health.
+     * Defines the health of SAP Instances.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
+    /** Creates an instance of GatewayServerProperties class. */
+    public GatewayServerProperties() {
+    }
+
     /**
-     * Get the port property: The gateway Port.
+     * Get the port property: Gateway Port.
      *
      * @return the port value.
      */
@@ -32,7 +36,7 @@ public final class GatewayServerProperties {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
+     * Get the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */

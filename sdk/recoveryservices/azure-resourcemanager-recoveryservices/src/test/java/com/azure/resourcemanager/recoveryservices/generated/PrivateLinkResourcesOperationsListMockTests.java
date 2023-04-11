@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -61,6 +60,6 @@ public final class PrivateLinkResourcesOperationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkResource> response =
-            manager.privateLinkResourcesOperations().list("oayqc", "wrtz", Context.NONE);
+            manager.privateLinkResourcesOperations().list("oayqc", "wrtz", com.azure.core.util.Context.NONE);
     }
 }

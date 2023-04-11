@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualHubBgpConnections ListAdvertisedRoutes. */
 public final class VirtualHubBgpConnectionsListAdvertisedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualRouterPeerListAdvertisedRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualRouterPeerListAdvertisedRoute.json
      */
     /**
      * Sample code: VirtualRouterPeerListAdvertisedRoutes.
@@ -22,6 +20,6 @@ public final class VirtualHubBgpConnectionsListAdvertisedRoutesSamples {
             .manager()
             .serviceClient()
             .getVirtualHubBgpConnections()
-            .listAdvertisedRoutes("rg1", "virtualRouter1", "peer1", Context.NONE);
+            .listAdvertisedRoutes("rg1", "virtualRouter1", "peer1", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.fluent.models.OperationResourceInner;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationResourceInner model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class OperationResourceInnerTests {
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T03:57:36Z"), model.startTime());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationResourceInner model =
             new OperationResourceInner()
                 .withEndTime(OffsetDateTime.parse("2021-04-13T23:02:25Z"))

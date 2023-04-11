@@ -60,6 +60,9 @@ public final class SeriesResult {
     @JsonProperty(value = "upperBoundaryList", required = true)
     private List<Double> upperBoundaryList;
 
+    /** Creates an instance of SeriesResult class. */
+    public SeriesResult() {}
+
     /**
      * Get the series property: The series property.
      *

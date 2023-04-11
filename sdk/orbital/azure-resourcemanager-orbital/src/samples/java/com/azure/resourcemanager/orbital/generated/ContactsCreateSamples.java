@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /** Samples for Contacts Create. */
 public final class ContactsCreateSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/ContactCreate.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactCreate.json
      */
     /**
      * Sample code: Create a contact.
@@ -22,8 +22,8 @@ public final class ContactsCreateSamples {
             .contacts()
             .define("contact1")
             .withExistingSpacecraft("contoso-Rgp", "CONTOSO_SAT")
-            .withReservationStartTime(OffsetDateTime.parse("2022-03-02T10:58:30Z"))
-            .withReservationEndTime(OffsetDateTime.parse("2022-03-02T11:10:45Z"))
+            .withReservationStartTime(OffsetDateTime.parse("2023-02-22T10:58:30Z"))
+            .withReservationEndTime(OffsetDateTime.parse("2023-02-22T11:10:45Z"))
             .withGroundStationName("EASTUS2_0")
             .withContactProfile(
                 new ContactsPropertiesContactProfile()

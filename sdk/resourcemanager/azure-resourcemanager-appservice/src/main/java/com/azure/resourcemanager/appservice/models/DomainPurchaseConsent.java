@@ -13,9 +13,8 @@ import java.util.List;
 @Fluent
 public final class DomainPurchaseConsent {
     /*
-     * List of applicable legal agreement keys. This list can be retrieved
-     * using ListLegalAgreements API under <code>TopLevelDomain</code>
-     * resource.
+     * List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under
+     * <code>TopLevelDomain</code> resource.
      */
     @JsonProperty(value = "agreementKeys")
     private List<String> agreementKeys;
@@ -31,6 +30,10 @@ public final class DomainPurchaseConsent {
      */
     @JsonProperty(value = "agreedAt")
     private OffsetDateTime agreedAt;
+
+    /** Creates an instance of DomainPurchaseConsent class. */
+    public DomainPurchaseConsent() {
+    }
 
     /**
      * Get the agreementKeys property: List of applicable legal agreement keys. This list can be retrieved using

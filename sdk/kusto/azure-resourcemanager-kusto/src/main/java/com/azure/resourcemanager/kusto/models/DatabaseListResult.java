@@ -18,6 +18,10 @@ public final class DatabaseListResult {
     @JsonProperty(value = "value")
     private List<DatabaseInner> value;
 
+    /** Creates an instance of DatabaseListResult class. */
+    public DatabaseListResult() {
+    }
+
     /**
      * Get the value property: The list of Kusto databases.
      *

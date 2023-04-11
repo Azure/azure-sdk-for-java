@@ -59,7 +59,7 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface WorkspaceManagedSqlServerUsagesService {
+    public interface WorkspaceManagedSqlServerUsagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -87,7 +87,9 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     }
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -145,7 +147,9 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     }
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -202,7 +206,9 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     }
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -219,7 +225,9 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     }
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -238,7 +246,9 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     }
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -254,7 +264,9 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     }
 
     /**
-     * Get list of server usages metric for workspace managed sql server.
+     * Get list of usages metric for the server.
+     *
+     * <p>Get list of server usages metric for workspace managed sql server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -273,7 +285,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -309,7 +322,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolOperationResults GetLocationHeaderResult. */
 public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
     /*
@@ -20,11 +18,11 @@ public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolOperationResults()
-            .getLocationHeaderResultWithResponse(
+            .getLocationHeaderResult(
                 "ExampleResourceGroup",
                 "ExampleWorkspace",
                 "ExampleSqlPool",
                 "fedcba98-7654-4210-fedc-ba9876543210",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AgentPools Get. */
 public final class AgentPoolsGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class AgentPoolsGetSamples {
             .manager()
             .serviceClient()
             .getAgentPools()
-            .getWithResponse("myResourceGroup", "myRegistry", "myAgentPool", Context.NONE);
+            .getWithResponse("myResourceGroup", "myRegistry", "myAgentPool", com.azure.core.util.Context.NONE);
     }
 }

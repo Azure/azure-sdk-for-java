@@ -12,23 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SnapshotRestoreRequestProperties {
     /*
-     * Point in time in which the app restore should be done, formatted as a
-     * DateTime string.
+     * Point in time in which the app restore should be done, formatted as a DateTime string.
      */
     @JsonProperty(value = "snapshotTime")
     private String snapshotTime;
 
     /*
-     * Optional. Specifies the web app that snapshot contents will be retrieved
-     * from.
+     * Optional. Specifies the web app that snapshot contents will be retrieved from.
      * If empty, the targeted web app will be used as the source.
      */
     @JsonProperty(value = "recoverySource")
     private SnapshotRecoverySource recoverySource;
 
     /*
-     * If <code>true</code> the restore operation can overwrite source app;
-     * otherwise, <code>false</code>.
+     * If <code>true</code> the restore operation can overwrite source app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "overwrite", required = true)
     private boolean overwrite;
@@ -40,8 +37,7 @@ public final class SnapshotRestoreRequestProperties {
     private Boolean recoverConfiguration;
 
     /*
-     * If true, custom hostname conflicts will be ignored when recovering to a
-     * target web app.
+     * If true, custom hostname conflicts will be ignored when recovering to a target web app.
      * This setting is only necessary when RecoverConfiguration is enabled.
      */
     @JsonProperty(value = "ignoreConflictingHostNames")
@@ -52,6 +48,10 @@ public final class SnapshotRestoreRequestProperties {
      */
     @JsonProperty(value = "useDRSecondary")
     private Boolean useDRSecondary;
+
+    /** Creates an instance of SnapshotRestoreRequestProperties class. */
+    public SnapshotRestoreRequestProperties() {
+    }
 
     /**
      * Get the snapshotTime property: Point in time in which the app restore should be done, formatted as a DateTime

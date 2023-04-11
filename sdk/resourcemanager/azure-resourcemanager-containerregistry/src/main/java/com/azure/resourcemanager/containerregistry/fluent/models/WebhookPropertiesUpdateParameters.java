@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** The parameters for updating the properties of a webhook. */
 @Fluent
 public final class WebhookPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookPropertiesUpdateParameters.class);
-
     /*
      * The service URI for the webhook to post notifications.
      */
@@ -39,10 +35,9 @@ public final class WebhookPropertiesUpdateParameters {
     private WebhookStatus status;
 
     /*
-     * The scope of repositories where the event can be triggered. For example,
-     * 'foo:*' means events for all tags under repository 'foo'. 'foo:bar'
-     * means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'.
-     * Empty means all events.
+     * The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under
+     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means
+     * all events.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -52,6 +47,10 @@ public final class WebhookPropertiesUpdateParameters {
      */
     @JsonProperty(value = "actions")
     private List<WebhookAction> actions;
+
+    /** Creates an instance of WebhookPropertiesUpdateParameters class. */
+    public WebhookPropertiesUpdateParameters() {
+    }
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.

@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SapDatabaseType. */
+/** Defines the supported SAP Database types. */
 public final class SapDatabaseType extends ExpandableStringEnum<SapDatabaseType> {
     /** Static value HANA for SapDatabaseType. */
     public static final SapDatabaseType HANA = fromString("HANA");
 
     /** Static value DB2 for SapDatabaseType. */
     public static final SapDatabaseType DB2 = fromString("DB2");
+
+    /**
+     * Creates a new instance of SapDatabaseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapDatabaseType() {
+    }
 
     /**
      * Creates or finds a SapDatabaseType from its string representation.

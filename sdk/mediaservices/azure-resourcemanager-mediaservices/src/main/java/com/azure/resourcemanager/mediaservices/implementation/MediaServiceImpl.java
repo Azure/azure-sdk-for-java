@@ -17,6 +17,7 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceUpdate;
+import com.azure.resourcemanager.mediaservices.models.MinimumTlsVersion;
 import com.azure.resourcemanager.mediaservices.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mediaservices.models.ProvisioningState;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
@@ -112,6 +113,10 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.innerModel().minimumTlsVersion();
     }
 
     public Region region() {
@@ -316,6 +321,16 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             return this;
         } else {
             this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public MediaServiceImpl withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumTlsVersion(minimumTlsVersion);
+            return this;
+        } else {
+            this.updateParameters.withMinimumTlsVersion(minimumTlsVersion);
             return this;
         }
     }

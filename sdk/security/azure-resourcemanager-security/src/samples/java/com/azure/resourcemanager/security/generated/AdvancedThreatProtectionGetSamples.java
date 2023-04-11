@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdvancedThreatProtection Get. */
 public final class AdvancedThreatProtectionGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class AdvancedThreatProtectionGetSamples {
             .advancedThreatProtections()
             .getWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -14,17 +14,15 @@ public final class AudioTrackDescriptorTests {
     public void testDeserialize() throws Exception {
         AudioTrackDescriptor model =
             BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AudioTrackDescriptor\",\"channelMapping\":\"LowFrequencyEffects\"}")
+                .fromString("{\"@odata.type\":\"#Microsoft.Media.AudioTrackDescriptor\",\"channelMapping\":\"Center\"}")
                 .toObject(AudioTrackDescriptor.class);
-        Assertions.assertEquals(ChannelMapping.LOW_FREQUENCY_EFFECTS, model.channelMapping());
+        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AudioTrackDescriptor model =
-            new AudioTrackDescriptor().withChannelMapping(ChannelMapping.LOW_FREQUENCY_EFFECTS);
+        AudioTrackDescriptor model = new AudioTrackDescriptor().withChannelMapping(ChannelMapping.CENTER);
         model = BinaryData.fromObject(model).toObject(AudioTrackDescriptor.class);
-        Assertions.assertEquals(ChannelMapping.LOW_FREQUENCY_EFFECTS, model.channelMapping());
+        Assertions.assertEquals(ChannelMapping.CENTER, model.channelMapping());
     }
 }

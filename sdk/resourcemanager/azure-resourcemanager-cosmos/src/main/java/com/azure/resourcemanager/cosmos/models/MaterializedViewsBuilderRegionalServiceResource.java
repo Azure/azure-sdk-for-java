@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** Resource for a regional service location. */
 @Immutable
 public final class MaterializedViewsBuilderRegionalServiceResource extends RegionalServiceResource {
+    /** Creates an instance of MaterializedViewsBuilderRegionalServiceResource class. */
+    public MaterializedViewsBuilderRegionalServiceResource() {
+    }
+
     /**
      * Validates the instance.
      *

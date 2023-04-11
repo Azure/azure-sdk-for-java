@@ -29,11 +29,14 @@ public final class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
         // create client using DefaultAzureCredential
-        LoadTestingClientBuilder builder = new LoadTestingClientBuilder()
-            .credential(credential)
-            .endpoint("<Enter Azure Load Testing Data-Plane URL>");
-        LoadTestAdministrationClient adminClient = builder.buildLoadTestAdministrationClient();
-        LoadTestRunClient testRunClient = builder.buildLoadTestRunClient();
+        LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
+                .credential(credential)
+                .endpoint("<Enter Azure Load Testing Data-Plane URL>")
+                .buildClient();
+        LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
+                .credential(credential)
+                .endpoint("<Enter Azure Load Testing Data-Plane URL>")
+                .buildClient();
 
         RequestOptions reqOpts = new RequestOptions()
             .addQueryParam("orderBy", "lastModifiedDateTime")
@@ -50,10 +53,10 @@ public final class ReadmeSamples {
 
     public void createTest() {
         // BEGIN: java-readme-sample-createTest
-        LoadTestAdministrationClient adminClient = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
-                .buildLoadTestAdministrationClient();
+                .buildClient();
 
         // construct Test object using nested String:Object Maps
         Map<String, Object> testMap = new HashMap<String, Object>();
@@ -103,10 +106,10 @@ public final class ReadmeSamples {
 
     public void uploadTestFile() throws IOException {
         // BEGIN: java-readme-sample-uploadTestFile
-        LoadTestAdministrationClient adminClient = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
-            .buildLoadTestAdministrationClient();
+            .buildClient();
 
         // extract file contents to BinaryData
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
@@ -119,10 +122,10 @@ public final class ReadmeSamples {
 
     public void runTest() {
         // BEGIN: java-readme-sample-runTest
-        LoadTestRunClient testRunClient = new LoadTestingClientBuilder()
+        LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
-            .buildLoadTestRunClient();
+            .buildClient();
 
         // construct Test Run object using nested String:Object Maps
         Map<String, Object> testRunMap = new HashMap<String, Object>();
@@ -175,7 +178,7 @@ public final class ReadmeSamples {
         String endDateTime = testRunJson.get("endDateTime").asText();
 
         // get list of all metric namespaces and pick the first one
-        Response<BinaryData> metricNamespacesOut = testRunClient.listMetricNamespacesWithResponse("testrun12345", null);
+        Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
         String metricNamespace = null;
         // parse JSON and read first value
         try {
@@ -187,7 +190,7 @@ public final class ReadmeSamples {
         }
 
         // get list of all metric definitions and pick the first one
-        Response<BinaryData> metricDefinitionsOut = testRunClient.listMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
+        Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
         String metricName = null;
         // parse JSON and read first value
         try {

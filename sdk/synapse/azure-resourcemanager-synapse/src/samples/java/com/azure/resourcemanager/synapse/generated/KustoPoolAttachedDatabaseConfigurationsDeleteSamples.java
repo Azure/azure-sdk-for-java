@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPoolAttachedDatabaseConfigurations Delete. */
 public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
     /*
@@ -21,6 +19,10 @@ public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
         manager
             .kustoPoolAttachedDatabaseConfigurations()
             .delete(
-                "kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest", Context.NONE);
+                "kustorptest",
+                "kustoclusterrptest4",
+                "attachedDatabaseConfigurations1",
+                "kustorptest",
+                com.azure.core.util.Context.NONE);
     }
 }

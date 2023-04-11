@@ -93,6 +93,10 @@ public final class DataCenterResourceProperties {
     @JsonProperty(value = "availabilityZone")
     private Boolean availabilityZone;
 
+    /** Creates an instance of DataCenterResourceProperties class. */
+    public DataCenterResourceProperties() {
+    }
+
     /**
      * Get the provisioningState property: The status of the resource at the time the operation was called.
      *

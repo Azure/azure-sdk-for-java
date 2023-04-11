@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBOperationsList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBOperationsList.json
      */
     /**
      * Sample code: CosmosDBOperationsList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBOperationsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getOperations().list(Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

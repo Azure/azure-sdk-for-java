@@ -17,15 +17,14 @@ import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -111,11 +110,11 @@ public final class SearchIndexAsyncClient {
      * @return a {@link SearchAsyncClient} created from the service client configuration
      */
     public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName)
+        return getSearchClientBuilder(indexName, endpoint, serviceVersion, httpPipeline, serializer)
             .buildAsyncClient();
     }
 
-    SearchClientBuilder getSearchClientBuilder(String indexName) {
+    static SearchClientBuilder getSearchClientBuilder(String indexName, String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline, JsonSerializer serializer) {
         return new SearchClientBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
@@ -187,9 +186,8 @@ public final class SearchIndexAsyncClient {
         try {
             Objects.requireNonNull(index, "'Index' cannot be null");
             return restClient.getIndexes()
-                .createWithResponseAsync(SearchIndexConverter.map(index), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .createWithResponseAsync(index, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -247,8 +245,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.getIndexes()
                 .getWithResponseAsync(indexName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -341,14 +338,6 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<SearchIndex> listIndexes(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse(null, context));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * Lists all indexes names for an Azure Cognitive Search service.
      *
@@ -375,20 +364,10 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<String> listIndexNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
-                .map(MappingUtils::mappingPagingSearchIndexNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, Context context) {
         return restClient.getIndexes()
             .listSinglePageAsync(select, null, context)
-            .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingListingSearchIndex);
+            .onErrorMap(MappingUtils::exceptionMapper);
     }
 
     /**
@@ -460,10 +439,9 @@ public final class SearchIndexAsyncClient {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.getIndexes()
-                .createOrUpdateWithResponseAsync(index.getName(), SearchIndexConverter.map(index),
-                    allowIndexDowntime, ifMatch, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .createOrUpdateWithResponseAsync(index.getName(), index, allowIndexDowntime, ifMatch, null, null,
+                    context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -558,15 +536,6 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(() -> withContext(context ->
                 analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<AnalyzedTokenInfo> analyzeText(String indexName, AnalyzeTextOptions analyzeTextOptions,
-        Context context) {
-        try {
-            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -730,15 +699,6 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<SynonymMap> listSynonymMaps(Context context) {
-        try {
-            return new PagedFlux<>(() -> listSynonymMapsWithResponse(null, context)
-                .map(MappingUtils::mappingPagingSynonymMap));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     /**
      * Lists all synonym map names for an Azure Cognitive Search service.
      *
@@ -759,15 +719,6 @@ public final class SearchIndexAsyncClient {
     public PagedFlux<String> listSynonymMapNames() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listSynonymMapsWithResponse("name", context))
-                .map(MappingUtils::mappingPagingSynonymMapNames));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<String> listSynonymMapNames(Context context) {
-        try {
-            return new PagedFlux<>(() -> listSynonymMapsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
@@ -1253,14 +1204,6 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(context -> restClient.getAliases().listSinglePageAsync(null, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
-    PagedFlux<SearchAlias> listAliases(Context context) {
-        try {
-            return new PagedFlux<>(() -> restClient.getAliases().listSinglePageAsync(null, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

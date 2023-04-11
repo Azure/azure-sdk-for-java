@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,18 +30,18 @@ public class StoreResponseDiagnostics {
     private final String correlatedActivityId;
     private final int statusCode;
     private final int subStatusCode;
-    private final int pendingRequestQueueSize;
     private final int requestPayloadLength;
     private final int responsePayloadLength;
     private final RequestTimeline requestTimeline;
     private final RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
-    private final int rntbdChannelTaskQueueSize;
     private final RntbdEndpointStatistics rntbdEndpointStatistics;
+    private final RntbdChannelStatistics rntbdChannelStatistics;
     private final int rntbdRequestLength;
     private final int rntbdResponseLength;
     private final String exceptionMessage;
     private final String exceptionResponseHeaders;
     private final List<String> replicaStatusList;
+    private final String faultInjectionRuleId;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,
@@ -66,18 +67,18 @@ public class StoreResponseDiagnostics {
         this.sessionTokenAsString = storeResponse.getSessionTokenString();
         this.statusCode = storeResponse.getStatus();
         this.subStatusCode = storeResponse.getSubStatusCode();
-        this.pendingRequestQueueSize = storeResponse.getPendingRequestQueueSize();
         this.requestPayloadLength = storeResponse.getRequestPayloadLength();
         this.responsePayloadLength = storeResponse.getResponseBodyLength();
         this.requestTimeline = storeResponse.getRequestTimeline();
         this.channelAcquisitionTimeline = storeResponse.getChannelAcquisitionTimeline();
-        this.rntbdChannelTaskQueueSize = storeResponse.getRntbdChannelTaskQueueSize();
         this.rntbdEndpointStatistics = storeResponse.getEndpointStatistics();
+        this.rntbdChannelStatistics  = storeResponse.getChannelStatistics();
         this.rntbdRequestLength = storeResponse.getRntbdRequestLength();
         this.rntbdResponseLength = storeResponse.getRntbdResponseLength();
         this.exceptionMessage = null;
         this.exceptionResponseHeaders = null;
         this.replicaStatusList = storeResponse.getReplicaStatusList();
+        this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -90,18 +91,23 @@ public class StoreResponseDiagnostics {
         this.sessionTokenAsString = e.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         this.statusCode = e.getStatusCode();
         this.subStatusCode = e.getSubStatusCode();
-        this.pendingRequestQueueSize = BridgeInternal.getRntbdPendingRequestQueueSize(e);
         this.requestPayloadLength = BridgeInternal.getRequestBodyLength(e);
         this.responsePayloadLength = BridgeInternal.getRntbdResponseLength(e);
         this.requestTimeline = BridgeInternal.getRequestTimeline(e);
         this.channelAcquisitionTimeline = BridgeInternal.getChannelAcqusitionTimeline(e);
-        this.rntbdChannelTaskQueueSize = BridgeInternal.getChannelTaskQueueSize(e);
         this.rntbdEndpointStatistics = BridgeInternal.getServiceEndpointStatistics(e);
+        this.rntbdChannelStatistics =
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .getRntbdChannelStatistics(e);
         this.rntbdRequestLength = BridgeInternal.getRntbdRequestLength(e);
         this.rntbdResponseLength = BridgeInternal.getRntbdResponseLength(e);
         this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
         this.replicaStatusList = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getReplicaStatusList(e);
+        this.faultInjectionRuleId =
+            ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getFaultInjectionRuleId(e);
     }
 
     public int getStatusCode() {
@@ -110,10 +116,6 @@ public class StoreResponseDiagnostics {
 
     public int getSubStatusCode() {
         return subStatusCode;
-    }
-
-    public int getPendingRequestQueueSize() {
-        return pendingRequestQueueSize;
     }
 
     public int getRequestPayloadLength() {
@@ -132,12 +134,12 @@ public class StoreResponseDiagnostics {
         return channelAcquisitionTimeline;
     }
 
-    public int getRntbdChannelTaskQueueSize() {
-        return rntbdChannelTaskQueueSize;
-    }
-
     public RntbdEndpointStatistics getRntbdEndpointStatistics() {
         return rntbdEndpointStatistics;
+    }
+
+    public RntbdChannelStatistics getRntbdChannelStatistics() {
+        return this.rntbdChannelStatistics;
     }
 
     public int getRntbdRequestLength() {
@@ -174,6 +176,10 @@ public class StoreResponseDiagnostics {
 
     public String getExceptionResponseHeaders() {
         return exceptionResponseHeaders;
+    }
+
+    public String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
     }
 
     public List<String> getReplicaStatusList() { return this.replicaStatusList; }

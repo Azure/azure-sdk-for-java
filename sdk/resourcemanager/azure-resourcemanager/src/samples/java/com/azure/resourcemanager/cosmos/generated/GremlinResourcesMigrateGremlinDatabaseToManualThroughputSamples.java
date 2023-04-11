@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GremlinResources MigrateGremlinDatabaseToManualThroughput. */
 public final class GremlinResourcesMigrateGremlinDatabaseToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseMigrateToManualThroughput.
@@ -23,6 +21,6 @@ public final class GremlinResourcesMigrateGremlinDatabaseToManualThroughputSampl
             .manager()
             .serviceClient()
             .getGremlinResources()
-            .migrateGremlinDatabaseToManualThroughput("rg1", "ddb1", "databaseName", Context.NONE);
+            .migrateGremlinDatabaseToManualThroughput("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

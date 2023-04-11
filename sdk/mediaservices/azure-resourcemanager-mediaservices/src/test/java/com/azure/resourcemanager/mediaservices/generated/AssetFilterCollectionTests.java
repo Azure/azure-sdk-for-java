@@ -15,21 +15,14 @@ public final class AssetFilterCollectionTests {
         AssetFilterCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"xdbabphlwr\",\"name\":\"lfktsths\",\"type\":\"cocmnyyaztt\"},{\"properties\":{\"tracks\":[]},\"id\":\"puedckzywbiexzf\",\"name\":\"yueaxibxujwb\",\"type\":\"qwalmuzyoxaepd\"},{\"properties\":{\"tracks\":[]},\"id\":\"ux\",\"name\":\"hdwbavxbniwdjs\",\"type\":\"zt\"},{\"properties\":{\"tracks\":[]},\"id\":\"xytxhpzxbz\",\"name\":\"fzab\",\"type\":\"lcuhxwtctyqiklb\"}],\"@odata.nextLink\":\"vplwzbhv\"}")
+                    "{\"value\":[{\"properties\":{\"tracks\":[]},\"id\":\"klbb\",\"name\":\"vplwzbhv\",\"type\":\"yuguosvmkfssx\"}],\"@odata.nextLink\":\"kkfpl\"}")
                 .toObject(AssetFilterCollection.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssetFilterCollection model =
-            new AssetFilterCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AssetFilterInner().withTracks(Arrays.asList()),
-                            new AssetFilterInner().withTracks(Arrays.asList()),
-                            new AssetFilterInner().withTracks(Arrays.asList()),
-                            new AssetFilterInner().withTracks(Arrays.asList())));
+            new AssetFilterCollection().withValue(Arrays.asList(new AssetFilterInner().withTracks(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(AssetFilterCollection.class);
     }
 }

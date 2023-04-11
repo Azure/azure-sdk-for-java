@@ -26,27 +26,23 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.WorkloadsClient;
 import com.azure.resourcemanager.workloads.implementation.MonitorsImpl;
 import com.azure.resourcemanager.workloads.implementation.OperationsImpl;
-import com.azure.resourcemanager.workloads.implementation.PhpWorkloadsImpl;
 import com.azure.resourcemanager.workloads.implementation.ProviderInstancesImpl;
 import com.azure.resourcemanager.workloads.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.workloads.implementation.SapApplicationServerInstancesImpl;
 import com.azure.resourcemanager.workloads.implementation.SapCentralInstancesImpl;
 import com.azure.resourcemanager.workloads.implementation.SapDatabaseInstancesImpl;
+import com.azure.resourcemanager.workloads.implementation.SapLandscapeMonitorsImpl;
 import com.azure.resourcemanager.workloads.implementation.SapVirtualInstancesImpl;
-import com.azure.resourcemanager.workloads.implementation.SkusImpl;
-import com.azure.resourcemanager.workloads.implementation.WordpressInstancesImpl;
 import com.azure.resourcemanager.workloads.implementation.WorkloadsClientBuilder;
 import com.azure.resourcemanager.workloads.models.Monitors;
 import com.azure.resourcemanager.workloads.models.Operations;
-import com.azure.resourcemanager.workloads.models.PhpWorkloads;
 import com.azure.resourcemanager.workloads.models.ProviderInstances;
 import com.azure.resourcemanager.workloads.models.ResourceProviders;
 import com.azure.resourcemanager.workloads.models.SapApplicationServerInstances;
 import com.azure.resourcemanager.workloads.models.SapCentralInstances;
 import com.azure.resourcemanager.workloads.models.SapDatabaseInstances;
+import com.azure.resourcemanager.workloads.models.SapLandscapeMonitors;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstances;
-import com.azure.resourcemanager.workloads.models.Skus;
-import com.azure.resourcemanager.workloads.models.WordpressInstances;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -54,12 +50,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to WorkloadsManager. Workloads client provides access to various workload operations. */
+/**
+ * Entry point to WorkloadsManager. Workloads client provides access to various workload operations.&lt;br&gt;Azure
+ * Center for SAP solutions is currently in PREVIEW. See the [Azure Center for SAP solutions - Legal
+ * Terms](https://learn.microsoft.com/en-us/legal/azure-center-for-sap-solutions/azure-center-for-sap-solutions-legal-terms)
+ * for legal notices applicable to Azure Center for SAP solutions.
+ */
 public final class WorkloadsManager {
-    private PhpWorkloads phpWorkloads;
-
-    private WordpressInstances wordpressInstances;
-
     private ResourceProviders resourceProviders;
 
     private SapVirtualInstances sapVirtualInstances;
@@ -70,13 +67,13 @@ public final class WorkloadsManager {
 
     private SapApplicationServerInstances sapApplicationServerInstances;
 
-    private Operations operations;
-
     private Monitors monitors;
 
     private ProviderInstances providerInstances;
 
-    private Skus skus;
+    private SapLandscapeMonitors sapLandscapeMonitors;
+
+    private Operations operations;
 
     private final WorkloadsClient clientObject;
 
@@ -243,7 +240,7 @@ public final class WorkloadsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.workloads")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -298,30 +295,6 @@ public final class WorkloadsManager {
                     .build();
             return new WorkloadsManager(httpPipeline, profile, defaultPollInterval);
         }
-    }
-
-    /**
-     * Gets the resource collection API of PhpWorkloads. It manages PhpWorkloadResource.
-     *
-     * @return Resource collection API of PhpWorkloads.
-     */
-    public PhpWorkloads phpWorkloads() {
-        if (this.phpWorkloads == null) {
-            this.phpWorkloads = new PhpWorkloadsImpl(clientObject.getPhpWorkloads(), this);
-        }
-        return phpWorkloads;
-    }
-
-    /**
-     * Gets the resource collection API of WordpressInstances.
-     *
-     * @return Resource collection API of WordpressInstances.
-     */
-    public WordpressInstances wordpressInstances() {
-        if (this.wordpressInstances == null) {
-            this.wordpressInstances = new WordpressInstancesImpl(clientObject.getWordpressInstances(), this);
-        }
-        return wordpressInstances;
     }
 
     /**
@@ -386,18 +359,6 @@ public final class WorkloadsManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
-     *
-     * @return Resource collection API of Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
-    }
-
-    /**
      * Gets the resource collection API of Monitors. It manages Monitor.
      *
      * @return Resource collection API of Monitors.
@@ -422,15 +383,27 @@ public final class WorkloadsManager {
     }
 
     /**
-     * Gets the resource collection API of Skus.
+     * Gets the resource collection API of SapLandscapeMonitors.
      *
-     * @return Resource collection API of Skus.
+     * @return Resource collection API of SapLandscapeMonitors.
      */
-    public Skus skus() {
-        if (this.skus == null) {
-            this.skus = new SkusImpl(clientObject.getSkus(), this);
+    public SapLandscapeMonitors sapLandscapeMonitors() {
+        if (this.sapLandscapeMonitors == null) {
+            this.sapLandscapeMonitors = new SapLandscapeMonitorsImpl(clientObject.getSapLandscapeMonitors(), this);
         }
-        return skus;
+        return sapLandscapeMonitors;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**

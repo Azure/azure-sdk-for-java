@@ -26,7 +26,7 @@ import java.util.Map;
 /** Samples for AgentPools CreateOrUpdate. */
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_EnableFIPS.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_EnableFIPS.json
      */
     /**
      * Sample code: Create Agent Pool with FIPS enabled OS.
@@ -53,7 +53,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPools_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPools_Update.json
      */
     /**
      * Sample code: Update Agent Pool.
@@ -85,7 +85,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_GPUMIG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Agent Pool with GPUMIG.
@@ -133,7 +133,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_WindowsOSSKU.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_WindowsOSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with Windows OSSKU.
@@ -160,7 +160,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_DedicatedHostGroup.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Agent Pool with Dedicated Host Group.
@@ -188,7 +188,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Agent Pool.
@@ -220,7 +220,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPools_Start.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPools_Start.json
      */
     /**
      * Sample code: Start Agent Pool.
@@ -242,7 +242,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_Spot.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_Spot.json
      */
     /**
      * Sample code: Create Spot Agent Pool.
@@ -273,7 +273,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_Ephemeral.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_Ephemeral.json
      */
     /**
      * Sample code: Create Agent Pool with Ephemeral OS Disk.
@@ -301,7 +301,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_EnableEncryptionAtHost.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Agent Pool with EncryptionAtHost enabled.
@@ -329,7 +329,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_EnableUltraSSD.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Agent Pool with UltraSSD enabled.
@@ -356,7 +356,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_WasmWasi.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_WasmWasi.json
      */
     /**
      * Sample code: Create Agent Pool with Krustlet and the WASI runtime.
@@ -386,7 +386,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_Snapshot.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_Snapshot.json
      */
     /**
      * Sample code: Create Agent Pool using an agent pool snapshot.
@@ -417,7 +417,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_PPG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_PPG.json
      */
     /**
      * Sample code: Create Agent Pool with PPG.
@@ -445,7 +445,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_CustomNodeConfig.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_CustomNodeConfig.json
      */
     /**
      * Sample code: Create Agent Pool with KubeletConfig and LinuxOSConfig.
@@ -493,7 +493,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPools_Stop.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPools_Stop.json
      */
     /**
      * Sample code: Stop Agent Pool.
@@ -515,7 +515,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-11-01/examples/AgentPoolsCreate_OSSKU.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-01-01/examples/AgentPoolsCreate_OSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with OSSKU.

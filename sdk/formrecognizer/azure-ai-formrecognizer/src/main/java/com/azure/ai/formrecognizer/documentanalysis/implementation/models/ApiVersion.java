@@ -14,6 +14,14 @@ public final class ApiVersion extends ExpandableStringEnum<ApiVersion> {
     public static final ApiVersion TWO_THOUSAND_TWENTY_TWO0831 = fromString("2022-08-31");
 
     /**
+     * Creates a new instance of ApiVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApiVersion() {}
+
+    /**
      * Creates or finds a ApiVersion from its string representation.
      *
      * @param name a name to look for.

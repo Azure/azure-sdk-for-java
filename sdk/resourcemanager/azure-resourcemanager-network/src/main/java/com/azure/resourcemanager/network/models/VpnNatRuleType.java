@@ -17,6 +17,15 @@ public final class VpnNatRuleType extends ExpandableStringEnum<VpnNatRuleType> {
     public static final VpnNatRuleType DYNAMIC = fromString("Dynamic");
 
     /**
+     * Creates a new instance of VpnNatRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnNatRuleType() {
+    }
+
+    /**
      * Creates or finds a VpnNatRuleType from its string representation.
      *
      * @param name a name to look for.

@@ -13,19 +13,19 @@ public final class HlsSettingsTests {
     public void testDeserialize() throws Exception {
         HlsSettings model =
             BinaryData
-                .fromString("{\"default\":true,\"forced\":false,\"characteristics\":\"q\"}")
+                .fromString("{\"default\":false,\"forced\":true,\"characteristics\":\"kxtrq\"}")
                 .toObject(HlsSettings.class);
-        Assertions.assertEquals(true, model.defaultProperty());
-        Assertions.assertEquals(false, model.forced());
-        Assertions.assertEquals("q", model.characteristics());
+        Assertions.assertEquals(false, model.defaultProperty());
+        Assertions.assertEquals(true, model.forced());
+        Assertions.assertEquals("kxtrq", model.characteristics());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HlsSettings model = new HlsSettings().withDefaultProperty(true).withForced(false).withCharacteristics("q");
+        HlsSettings model = new HlsSettings().withDefaultProperty(false).withForced(true).withCharacteristics("kxtrq");
         model = BinaryData.fromObject(model).toObject(HlsSettings.class);
-        Assertions.assertEquals(true, model.defaultProperty());
-        Assertions.assertEquals(false, model.forced());
-        Assertions.assertEquals("q", model.characteristics());
+        Assertions.assertEquals(false, model.defaultProperty());
+        Assertions.assertEquals(true, model.forced());
+        Assertions.assertEquals("kxtrq", model.characteristics());
     }
 }

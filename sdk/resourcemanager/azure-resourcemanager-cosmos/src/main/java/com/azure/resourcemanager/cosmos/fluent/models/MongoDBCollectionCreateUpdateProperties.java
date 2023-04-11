@@ -26,6 +26,10 @@ public final class MongoDBCollectionCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of MongoDBCollectionCreateUpdateProperties class. */
+    public MongoDBCollectionCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a MongoDB collection.
      *

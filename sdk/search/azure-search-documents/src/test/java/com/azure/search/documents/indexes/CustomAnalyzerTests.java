@@ -857,7 +857,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setMaxGram(3),
                 new PatternCaptureTokenFilter(generateName(), Collections.singletonList(".*"))
                     .setPreserveOriginal(false),
-                new PatternReplaceTokenFilter(generateName(), "abc", "132"),
+                new PatternReplaceTokenFilter(generateName(), "abc", "123"),
                 new PhoneticTokenFilter(generateName())
                     .setEncoder(PhoneticEncoder.SOUNDEX)
                     .setOriginalTokensReplaced(false),
@@ -901,7 +901,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
             .setCharFilters(new MappingCharFilter(customCharFilterName.toString(),
                     Collections.singletonList("a => b")), // One custom char filter for CustomeAnalyer above.
                 new MappingCharFilter(generateName(), Arrays.asList("s => $", "S => $")),
-                new PatternReplaceCharFilter(generateName(), "abc", "132"));
+                new PatternReplaceCharFilter(generateName(), "abc", "123"));
     }
 
     SearchIndex createIndexWithSpecialDefaults() {

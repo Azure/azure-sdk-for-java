@@ -81,7 +81,10 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
 
                     return this.leaseManager
                             .createLeaseIfNotExist(newEpkRange, effectiveChildLeaseContinuationToken)
-                            .doOnSuccess(newLease -> leaseTokens.add(newLease.getLeaseToken()));
+                            .map(newLease -> {
+                                leaseTokens.add(newLease.getLeaseToken());
+                                return newLease;
+                            });
                 })
                 .doOnComplete(() -> {
                     logger.info(

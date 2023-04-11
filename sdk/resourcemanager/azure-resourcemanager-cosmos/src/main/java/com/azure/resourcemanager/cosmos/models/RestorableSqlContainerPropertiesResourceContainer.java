@@ -34,6 +34,10 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of RestorableSqlContainerPropertiesResourceContainer class. */
+    public RestorableSqlContainerPropertiesResourceContainer() {
+    }
+
     /**
      * Get the self property: A system generated property that specifies the addressable path of the container resource.
      *
@@ -111,6 +115,14 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     public RestorableSqlContainerPropertiesResourceContainer withConflictResolutionPolicy(
         ConflictResolutionPolicy conflictResolutionPolicy) {
         super.withConflictResolutionPolicy(conflictResolutionPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer withClientEncryptionPolicy(
+        ClientEncryptionPolicy clientEncryptionPolicy) {
+        super.withClientEncryptionPolicy(clientEncryptionPolicy);
         return this;
     }
 

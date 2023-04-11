@@ -15,18 +15,6 @@ public interface WorkspaceAadAdmins {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace active directory admin.
-     */
-    WorkspaceAadAdminInfo get(String resourceGroupName, String workspaceName);
-
-    /**
-     * Gets a workspace active directory admin.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,6 +22,18 @@ public interface WorkspaceAadAdmins {
      * @return a workspace active directory admin along with {@link Response}.
      */
     Response<WorkspaceAadAdminInfo> getWithResponse(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Gets a workspace active directory admin.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace active directory admin.
+     */
+    WorkspaceAadAdminInfo get(String resourceGroupName, String workspaceName);
 
     /**
      * Creates or updates a workspace active directory admin.

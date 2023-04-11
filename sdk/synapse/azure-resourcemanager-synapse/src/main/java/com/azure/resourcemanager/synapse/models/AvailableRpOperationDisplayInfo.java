@@ -34,6 +34,10 @@ public final class AvailableRpOperationDisplayInfo {
     @JsonProperty(value = "operation")
     private String operation;
 
+    /** Creates an instance of AvailableRpOperationDisplayInfo class. */
+    public AvailableRpOperationDisplayInfo() {
+    }
+
     /**
      * Get the description property: Operation description.
      *

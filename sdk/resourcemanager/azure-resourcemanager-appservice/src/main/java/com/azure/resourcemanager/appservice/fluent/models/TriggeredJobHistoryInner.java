@@ -19,6 +19,10 @@ public final class TriggeredJobHistoryInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private TriggeredJobHistoryProperties innerProperties;
 
+    /** Creates an instance of TriggeredJobHistoryInner class. */
+    public TriggeredJobHistoryInner() {
+    }
+
     /**
      * Get the innerProperties property: TriggeredJobHistory resource specific properties.
      *

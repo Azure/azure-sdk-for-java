@@ -32,6 +32,10 @@ public final class WorkspacePatchInfo {
     @JsonProperty(value = "properties")
     private WorkspacePatchProperties innerProperties;
 
+    /** Creates an instance of WorkspacePatchInfo class. */
+    public WorkspacePatchInfo() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

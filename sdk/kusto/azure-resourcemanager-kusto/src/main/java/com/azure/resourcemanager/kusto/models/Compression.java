@@ -17,6 +17,15 @@ public final class Compression extends ExpandableStringEnum<Compression> {
     public static final Compression GZIP = fromString("GZip");
 
     /**
+     * Creates a new instance of Compression value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Compression() {
+    }
+
+    /**
      * Creates or finds a Compression from its string representation.
      *
      * @param name a name to look for.

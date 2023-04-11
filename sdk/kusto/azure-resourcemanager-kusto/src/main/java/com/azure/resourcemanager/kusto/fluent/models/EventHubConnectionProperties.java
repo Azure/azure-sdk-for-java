@@ -91,6 +91,10 @@ public final class EventHubConnectionProperties {
     @JsonProperty(value = "retrievalStartDate")
     private OffsetDateTime retrievalStartDate;
 
+    /** Creates an instance of EventHubConnectionProperties class. */
+    public EventHubConnectionProperties() {
+    }
+
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
      *

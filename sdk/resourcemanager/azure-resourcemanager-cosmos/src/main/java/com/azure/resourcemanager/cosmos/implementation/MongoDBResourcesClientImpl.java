@@ -78,7 +78,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface MongoDBResourcesService {
+    public interface MongoDBResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
@@ -805,23 +805,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoDBDatabaseGetResultsInner getMongoDBDatabase(
-        String resourceGroupName, String accountName, String databaseName) {
-        return getMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).block();
-    }
-
-    /**
-     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -833,6 +816,23 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public Response<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseWithResponse(
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return getMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context).block();
+    }
+
+    /**
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBDatabaseGetResultsInner getMongoDBDatabase(
+        String resourceGroupName, String accountName, String databaseName) {
+        return getMongoDBDatabaseWithResponse(resourceGroupName, accountName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -1052,7 +1052,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String accountName,
             String databaseName,
             MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        return beginCreateUpdateMongoDBDatabaseAsync(
+        return this
+            .beginCreateUpdateMongoDBDatabaseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters)
             .getSyncPoller();
     }
@@ -1078,7 +1079,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String databaseName,
             MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
             Context context) {
-        return beginCreateUpdateMongoDBDatabaseAsync(
+        return this
+            .beginCreateUpdateMongoDBDatabaseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, context)
             .getSyncPoller();
     }
@@ -1340,7 +1342,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
         String resourceGroupName, String accountName, String databaseName) {
-        return beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
+        return this.beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1358,7 +1360,9 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
+        return this
+            .beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1566,25 +1570,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     *     provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getMongoDBDatabaseThroughput(
-        String resourceGroupName, String accountName, String databaseName) {
-        return getMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName).block();
-    }
-
-    /**
-     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1597,6 +1582,26 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return getMongoDBDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, context)
             .block();
+    }
+
+    /**
+     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getMongoDBDatabaseThroughput(
+        String resourceGroupName, String accountName, String databaseName) {
+        return getMongoDBDatabaseThroughputWithResponse(resourceGroupName, accountName, databaseName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1823,7 +1828,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String accountName,
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateMongoDBDatabaseThroughputAsync(
+        return this
+            .beginUpdateMongoDBDatabaseThroughputAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters)
             .getSyncPoller();
     }
@@ -1850,7 +1856,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        return beginUpdateMongoDBDatabaseThroughputAsync(
+        return this
+            .beginUpdateMongoDBDatabaseThroughputAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
             .getSyncPoller();
     }
@@ -2132,7 +2139,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
-        return beginMigrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
+        return this
+            .beginMigrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
             .getSyncPoller();
     }
 
@@ -2152,7 +2160,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscale(
             String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginMigrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context)
+        return this
+            .beginMigrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context)
             .getSyncPoller();
     }
 
@@ -2408,7 +2417,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName) {
-        return beginMigrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
+        return this
+            .beginMigrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
             .getSyncPoller();
     }
 
@@ -2428,7 +2438,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, Context context) {
-        return beginMigrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
+        return this
+            .beginMigrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
             .getSyncPoller();
     }
 
@@ -2840,24 +2851,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoDBCollectionGetResultsInner getMongoDBCollection(
-        String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return getMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName).block();
-    }
-
-    /**
-     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2870,6 +2863,26 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         return getMongoDBCollectionWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName, context)
             .block();
+    }
+
+    /**
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBCollectionGetResultsInner getMongoDBCollection(
+        String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return getMongoDBCollectionWithResponse(
+                resourceGroupName, accountName, databaseName, collectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3114,7 +3127,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String databaseName,
             String collectionName,
             MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        return beginCreateUpdateMongoDBCollectionAsync(
+        return this
+            .beginCreateUpdateMongoDBCollectionAsync(
                 resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters)
             .getSyncPoller();
     }
@@ -3142,7 +3156,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String collectionName,
             MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
             Context context) {
-        return beginCreateUpdateMongoDBCollectionAsync(
+        return this
+            .beginCreateUpdateMongoDBCollectionAsync(
                 resourceGroupName,
                 accountName,
                 databaseName,
@@ -3441,7 +3456,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return beginDeleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName)
+        return this
+            .beginDeleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName)
             .getSyncPoller();
     }
 
@@ -3461,7 +3477,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
-        return beginDeleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName, context)
+        return this
+            .beginDeleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName, context)
             .getSyncPoller();
     }
 
@@ -3689,27 +3706,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     *     provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getMongoDBCollectionThroughput(
-        String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return getMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName)
-            .block();
-    }
-
-    /**
-     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     * provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param collectionName Cosmos DB collection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3723,6 +3719,28 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         return getMongoDBCollectionThroughputWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName, context)
             .block();
+    }
+
+    /**
+     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getMongoDBCollectionThroughput(
+        String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return getMongoDBCollectionThroughputWithResponse(
+                resourceGroupName, accountName, databaseName, collectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3967,7 +3985,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String databaseName,
             String collectionName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateMongoDBCollectionThroughputAsync(
+        return this
+            .beginUpdateMongoDBCollectionThroughputAsync(
                 resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters)
             .getSyncPoller();
     }
@@ -3996,7 +4015,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String collectionName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        return beginUpdateMongoDBCollectionThroughputAsync(
+        return this
+            .beginUpdateMongoDBCollectionThroughputAsync(
                 resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, context)
             .getSyncPoller();
     }
@@ -4303,8 +4323,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return beginMigrateMongoDBCollectionToAutoscaleAsync(
-                resourceGroupName, accountName, databaseName, collectionName)
+        return this
+            .beginMigrateMongoDBCollectionToAutoscaleAsync(resourceGroupName, accountName, databaseName, collectionName)
             .getSyncPoller();
     }
 
@@ -4325,7 +4345,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
-        return beginMigrateMongoDBCollectionToAutoscaleAsync(
+        return this
+            .beginMigrateMongoDBCollectionToAutoscaleAsync(
                 resourceGroupName, accountName, databaseName, collectionName, context)
             .getSyncPoller();
     }
@@ -4605,7 +4626,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return beginMigrateMongoDBCollectionToManualThroughputAsync(
+        return this
+            .beginMigrateMongoDBCollectionToManualThroughputAsync(
                 resourceGroupName, accountName, databaseName, collectionName)
             .getSyncPoller();
     }
@@ -4627,7 +4649,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
-        return beginMigrateMongoDBCollectionToManualThroughputAsync(
+        return this
+            .beginMigrateMongoDBCollectionToManualThroughputAsync(
                 resourceGroupName, accountName, databaseName, collectionName, context)
             .getSyncPoller();
     }
@@ -4848,23 +4871,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Mongo Role Definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoRoleDefinitionGetResultsInner getMongoRoleDefinition(
-        String mongoRoleDefinitionId, String resourceGroupName, String accountName) {
-        return getMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
-     *
-     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4876,6 +4882,24 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         String mongoRoleDefinitionId, String resourceGroupName, String accountName, Context context) {
         return getMongoRoleDefinitionWithResponseAsync(mongoRoleDefinitionId, resourceGroupName, accountName, context)
             .block();
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
+     *
+     * @param mongoRoleDefinitionId The ID for the Role Definition {dbName.roleName}.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Mongo Role Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoRoleDefinitionGetResultsInner getMongoRoleDefinition(
+        String mongoRoleDefinitionId, String resourceGroupName, String accountName) {
+        return getMongoRoleDefinitionWithResponse(mongoRoleDefinitionId, resourceGroupName, accountName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -5103,7 +5127,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String resourceGroupName,
             String accountName,
             MongoRoleDefinitionCreateUpdateParameters createUpdateMongoRoleDefinitionParameters) {
-        return beginCreateUpdateMongoRoleDefinitionAsync(
+        return this
+            .beginCreateUpdateMongoRoleDefinitionAsync(
                 mongoRoleDefinitionId, resourceGroupName, accountName, createUpdateMongoRoleDefinitionParameters)
             .getSyncPoller();
     }
@@ -5129,7 +5154,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String accountName,
             MongoRoleDefinitionCreateUpdateParameters createUpdateMongoRoleDefinitionParameters,
             Context context) {
-        return beginCreateUpdateMongoRoleDefinitionAsync(
+        return this
+            .beginCreateUpdateMongoRoleDefinitionAsync(
                 mongoRoleDefinitionId,
                 resourceGroupName,
                 accountName,
@@ -5409,7 +5435,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoRoleDefinition(
         String mongoRoleDefinitionId, String resourceGroupName, String accountName) {
-        return beginDeleteMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName)
+        return this
+            .beginDeleteMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName)
             .getSyncPoller();
     }
 
@@ -5428,7 +5455,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoRoleDefinition(
         String mongoRoleDefinitionId, String resourceGroupName, String accountName, Context context) {
-        return beginDeleteMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName, context)
+        return this
+            .beginDeleteMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName, context)
             .getSyncPoller();
     }
 
@@ -5803,23 +5831,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB User Definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoUserDefinitionGetResultsInner getMongoUserDefinition(
-        String mongoUserDefinitionId, String resourceGroupName, String accountName) {
-        return getMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
-     *
-     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5831,6 +5842,24 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         String mongoUserDefinitionId, String resourceGroupName, String accountName, Context context) {
         return getMongoUserDefinitionWithResponseAsync(mongoUserDefinitionId, resourceGroupName, accountName, context)
             .block();
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
+     *
+     * @param mongoUserDefinitionId The ID for the User Definition {dbName.userName}.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB User Definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoUserDefinitionGetResultsInner getMongoUserDefinition(
+        String mongoUserDefinitionId, String resourceGroupName, String accountName) {
+        return getMongoUserDefinitionWithResponse(mongoUserDefinitionId, resourceGroupName, accountName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -6056,7 +6085,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String resourceGroupName,
             String accountName,
             MongoUserDefinitionCreateUpdateParameters createUpdateMongoUserDefinitionParameters) {
-        return beginCreateUpdateMongoUserDefinitionAsync(
+        return this
+            .beginCreateUpdateMongoUserDefinitionAsync(
                 mongoUserDefinitionId, resourceGroupName, accountName, createUpdateMongoUserDefinitionParameters)
             .getSyncPoller();
     }
@@ -6082,7 +6112,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String accountName,
             MongoUserDefinitionCreateUpdateParameters createUpdateMongoUserDefinitionParameters,
             Context context) {
-        return beginCreateUpdateMongoUserDefinitionAsync(
+        return this
+            .beginCreateUpdateMongoUserDefinitionAsync(
                 mongoUserDefinitionId,
                 resourceGroupName,
                 accountName,
@@ -6362,7 +6393,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoUserDefinition(
         String mongoUserDefinitionId, String resourceGroupName, String accountName) {
-        return beginDeleteMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName)
+        return this
+            .beginDeleteMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName)
             .getSyncPoller();
     }
 
@@ -6381,7 +6413,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoUserDefinition(
         String mongoUserDefinitionId, String resourceGroupName, String accountName, Context context) {
-        return beginDeleteMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName, context)
+        return this
+            .beginDeleteMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName, context)
             .getSyncPoller();
     }
 
@@ -6853,7 +6886,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String databaseName,
             String collectionName,
             ContinuousBackupRestoreLocation location) {
-        return beginRetrieveContinuousBackupInformationAsync(
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(
                 resourceGroupName, accountName, databaseName, collectionName, location)
             .getSyncPoller();
     }
@@ -6881,7 +6915,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
             String collectionName,
             ContinuousBackupRestoreLocation location,
             Context context) {
-        return beginRetrieveContinuousBackupInformationAsync(
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(
                 resourceGroupName, accountName, databaseName, collectionName, location, context)
             .getSyncPoller();
     }

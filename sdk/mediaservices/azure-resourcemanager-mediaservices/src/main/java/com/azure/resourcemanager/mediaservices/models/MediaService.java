@@ -123,6 +123,14 @@ public interface MediaService {
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
+     * Gets the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    MinimumTlsVersion minimumTlsVersion();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -201,7 +209,8 @@ public interface MediaService {
                 DefinitionStages.WithStorageAuthentication,
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithKeyDelivery,
-                DefinitionStages.WithPublicNetworkAccess {
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithMinimumTlsVersion {
             /**
              * Executes the create request.
              *
@@ -289,6 +298,18 @@ public interface MediaService {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+        /** The stage of the MediaService definition allowing to specify minimumTlsVersion. */
+        interface WithMinimumTlsVersion {
+            /**
+             * Specifies the minimumTlsVersion property: The minimum TLS version allowed for this account's requests.
+             * This is an optional property. If unspecified, a secure default value will be used..
+             *
+             * @param minimumTlsVersion The minimum TLS version allowed for this account's requests. This is an optional
+             *     property. If unspecified, a secure default value will be used.
+             * @return the next definition stage.
+             */
+            WithCreate withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion);
+        }
     }
     /**
      * Begins update for the MediaService resource.
@@ -305,7 +326,8 @@ public interface MediaService {
             UpdateStages.WithStorageAuthentication,
             UpdateStages.WithEncryption,
             UpdateStages.WithKeyDelivery,
-            UpdateStages.WithPublicNetworkAccess {
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithMinimumTlsVersion {
         /**
          * Executes the update request.
          *
@@ -394,6 +416,18 @@ public interface MediaService {
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the MediaService update allowing to specify minimumTlsVersion. */
+        interface WithMinimumTlsVersion {
+            /**
+             * Specifies the minimumTlsVersion property: The minimum TLS version allowed for this account's requests.
+             * This is an optional property. If unspecified, a secure default value will be used..
+             *
+             * @param minimumTlsVersion The minimum TLS version allowed for this account's requests. This is an optional
+             *     property. If unspecified, a secure default value will be used.
+             * @return the next definition stage.
+             */
+            Update withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion);
         }
     }
     /**

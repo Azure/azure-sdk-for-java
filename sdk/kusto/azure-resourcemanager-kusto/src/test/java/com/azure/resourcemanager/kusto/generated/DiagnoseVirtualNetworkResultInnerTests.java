@@ -8,24 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.DiagnoseVirtualNetworkResultInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnoseVirtualNetworkResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnoseVirtualNetworkResultInner model =
             BinaryData
-                .fromString("{\"findings\":[\"jdeyeamdpha\",\"alpbuxwgipwhon\",\"wkgshwa\",\"kix\"]}")
+                .fromString("{\"findings\":[\"kuofqweykhme\"]}")
                 .toObject(DiagnoseVirtualNetworkResultInner.class);
-        Assertions.assertEquals("jdeyeamdpha", model.findings().get(0));
+        Assertions.assertEquals("kuofqweykhme", model.findings().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnoseVirtualNetworkResultInner model =
-            new DiagnoseVirtualNetworkResultInner()
-                .withFindings(Arrays.asList("jdeyeamdpha", "alpbuxwgipwhon", "wkgshwa", "kix"));
+            new DiagnoseVirtualNetworkResultInner().withFindings(Arrays.asList("kuofqweykhme"));
         model = BinaryData.fromObject(model).toObject(DiagnoseVirtualNetworkResultInner.class);
-        Assertions.assertEquals("jdeyeamdpha", model.findings().get(0));
+        Assertions.assertEquals("kuofqweykhme", model.findings().get(0));
     }
 }

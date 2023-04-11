@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolWorkloadClassifier Delete. */
 public final class SqlPoolWorkloadClassifierDeleteSamples {
     /*
@@ -26,6 +24,6 @@ public final class SqlPoolWorkloadClassifierDeleteSamples {
                 "sqlcrudtest-9187",
                 "wlm_workloadgroup",
                 "wlm_workloadclassifier",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

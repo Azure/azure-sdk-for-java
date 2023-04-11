@@ -10,36 +10,37 @@ import com.azure.resourcemanager.costmanagement.models.DismissAlertPayload;
 /** Samples for Alerts Dismiss. */
 public final class AlertsDismissSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DismissSubscriptionAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DismissResourceGroupAlerts.json
      */
     /**
-     * Sample code: SubscriptionAlerts.
+     * Sample code: PatchResourceGroupAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void subscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void patchResourceGroupAlerts(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .dismissWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
                 "22222222-2222-2222-2222-222222222222",
                 new DismissAlertPayload().withStatus(AlertStatus.DISMISSED),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DismissResourceGroupAlerts.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DismissSubscriptionAlerts.json
      */
     /**
-     * Sample code: ResourceGroupAlerts.
+     * Sample code: PatchSubscriptionAlerts.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+    public static void patchSubscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .alerts()
             .dismissWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
+                "subscriptions/00000000-0000-0000-0000-000000000000",
                 "22222222-2222-2222-2222-222222222222",
                 new DismissAlertPayload().withStatus(AlertStatus.DISMISSED),
                 com.azure.core.util.Context.NONE);

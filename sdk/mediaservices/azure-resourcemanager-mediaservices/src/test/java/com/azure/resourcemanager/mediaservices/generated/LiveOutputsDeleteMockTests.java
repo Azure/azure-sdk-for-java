@@ -56,6 +56,6 @@ public final class LiveOutputsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.liveOutputs().delete("niypfpubcpzg", "xtiv", "j", "nidibgqjxg", com.azure.core.util.Context.NONE);
+        manager.liveOutputs().delete("dwv", "phcnzqtpj", "mqrhvthl", "iwdcxsmlzzhzd", com.azure.core.util.Context.NONE);
     }
 }

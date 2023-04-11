@@ -32,7 +32,7 @@ public final class AssetsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"assetId\":\"353edbee-e7f9-4592-b2f3-cc395f2dd261\",\"created\":\"2021-11-01T14:17:44Z\",\"lastModified\":\"2021-08-22T11:20:42Z\",\"alternateId\":\"mpimaqxzhemjyh\",\"description\":\"uj\",\"container\":\"t\",\"storageAccountName\":\"ozzwculkba\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"jnjwltlwt\",\"name\":\"j\",\"type\":\"uktalhsnvkcdmxz\"}]}";
+            "{\"value\":[{\"properties\":{\"assetId\":\"d9958169-091d-49bf-a7d9-07f59a17e87b\",\"created\":\"2021-11-04T22:14:01Z\",\"lastModified\":\"2021-07-04T23:14:39Z\",\"alternateId\":\"d\",\"description\":\"zmqpnodawopqhewj\",\"container\":\"mcgsbostzelnd\",\"storageAccountName\":\"tutmzl\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"lvfhrbbp\",\"name\":\"eqvcwwyyurmoch\",\"type\":\"prprsnmokay\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class AssetsListMockTests {
         PagedIterable<Asset> response =
             manager
                 .assets()
-                .list("zjcjbtr", "aehvvibrxjjstoq", "eitpkxztmo", 2143901348, "klf", com.azure.core.util.Context.NONE);
+                .list("mygvkzqkj", "eokbze", "ezrxcczurtleipqx", 796775151, "wvz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mpimaqxzhemjyh", response.iterator().next().alternateId());
-        Assertions.assertEquals("uj", response.iterator().next().description());
-        Assertions.assertEquals("t", response.iterator().next().container());
-        Assertions.assertEquals("ozzwculkba", response.iterator().next().storageAccountName());
+        Assertions.assertEquals("d", response.iterator().next().alternateId());
+        Assertions.assertEquals("zmqpnodawopqhewj", response.iterator().next().description());
+        Assertions.assertEquals("mcgsbostzelnd", response.iterator().next().container());
+        Assertions.assertEquals("tutmzl", response.iterator().next().storageAccountName());
     }
 }

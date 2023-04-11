@@ -31,7 +31,7 @@ public final class TracksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"meisls\",\"name\":\"vasylwxdzau\",\"type\":\"weoohguufuzboyj\"}";
+            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"sxwpndfcpfnznthj\",\"name\":\"wkjaos\",\"type\":\"xuzvoamktcqi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class TracksCreateOrUpdateMockTests {
         AssetTrack response =
             manager
                 .tracks()
-                .define("p")
-                .withExistingAsset("cwsldri", "etpwbralll", "bphbqzmizakakank")
+                .define("g")
+                .withExistingAsset("ftgz", "npbs", "vefloccsrmozihmi")
                 .withTrack(new TrackBase())
                 .create();
     }

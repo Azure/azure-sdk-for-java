@@ -16,6 +16,10 @@ public final class VirtualNetworkProfile {
     @JsonProperty(value = "computeSubnetId")
     private String computeSubnetId;
 
+    /** Creates an instance of VirtualNetworkProfile class. */
+    public VirtualNetworkProfile() {
+    }
+
     /**
      * Get the computeSubnetId property: Subnet ID used for computes in workspace.
      *

@@ -57,7 +57,6 @@ public class EventData extends MessageContent {
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
-    static final AmqpAnnotatedMessage EMPTY_MESSAGE = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(new byte[0]));
 
     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
@@ -81,7 +80,7 @@ public class EventData extends MessageContent {
      */
     public EventData() {
         this.context = Context.NONE;
-        this.annotatedMessage = EMPTY_MESSAGE;
+        this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(new byte[0]));
         this.properties = annotatedMessage.getApplicationProperties();
         this.systemProperties = new SystemProperties();
     }

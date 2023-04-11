@@ -182,7 +182,6 @@ extends:
   parameters:
     ServiceDirectory: resourcemanager
     EnableBatchRelease: true
-    UseEsrpRelease: false
     Artifacts:
       - name: azure-resourcemanager
         groupId: com.azure.resourcemanager

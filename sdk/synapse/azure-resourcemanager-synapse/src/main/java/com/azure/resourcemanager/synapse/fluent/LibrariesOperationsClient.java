@@ -13,7 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 /** An instance of this class provides access to all the operations defined in LibrariesOperationsClient. */
 public interface LibrariesOperationsClient {
     /**
-     * List libraries in a workspace.
+     * List the libraries in a workspace.
+     *
+     * <p>List libraries in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -26,7 +28,9 @@ public interface LibrariesOperationsClient {
     PagedIterable<LibraryResourceInner> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
-     * List libraries in a workspace.
+     * List the libraries in a workspace.
+     *
+     * <p>List libraries in a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

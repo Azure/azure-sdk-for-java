@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.models.NameAvailabilityRequest;
 
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability.
@@ -23,6 +22,6 @@ public final class CheckNameAvailabilityExecuteSamples {
             .executeWithResponse(
                 "SouthEastAsia",
                 new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforMySQL/flexibleServers"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

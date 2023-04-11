@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.costmanagement.fluent.models.OperationInner;
+import com.azure.resourcemanager.costmanagement.fluent.models.CostManagementOperationInner;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
@@ -20,7 +20,7 @@ public interface OperationsClient {
      * @return result of listing cost management operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationInner> list();
+    PagedIterable<CostManagementOperationInner> list();
 
     /**
      * Lists all of the available cost management REST API operations.
@@ -32,5 +32,5 @@ public interface OperationsClient {
      * @return result of listing cost management operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationInner> list(Context context);
+    PagedIterable<CostManagementOperationInner> list(Context context);
 }

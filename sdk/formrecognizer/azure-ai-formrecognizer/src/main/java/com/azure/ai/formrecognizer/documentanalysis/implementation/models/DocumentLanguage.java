@@ -4,12 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object representing the detected language for a given text span. */
-@Fluent
+@Immutable
 public final class DocumentLanguage {
     /*
      * Detected language.  Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex.
@@ -30,8 +31,22 @@ public final class DocumentLanguage {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentLanguage class. */
-    public DocumentLanguage() {}
+    /**
+     * Creates an instance of DocumentLanguage class.
+     *
+     * @param locale the locale value to set.
+     * @param spans the spans value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentLanguage(
+            @JsonProperty(value = "locale", required = true) String locale,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.locale = locale;
+        this.spans = spans;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
@@ -44,18 +59,6 @@ public final class DocumentLanguage {
     }
 
     /**
-     * Set the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
-     * language tag (ex. "zh-Hans").
-     *
-     * @param locale the locale value to set.
-     * @return the DocumentLanguage object itself.
-     */
-    public DocumentLanguage setLocale(String locale) {
-        this.locale = locale;
-        return this;
-    }
-
-    /**
      * Get the spans property: Location of the text elements in the concatenated content the language applies to.
      *
      * @return the spans value.
@@ -65,33 +68,11 @@ public final class DocumentLanguage {
     }
 
     /**
-     * Set the spans property: Location of the text elements in the concatenated content the language applies to.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentLanguage object itself.
-     */
-    public DocumentLanguage setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly identifying the language.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly identifying the language.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentLanguage object itself.
-     */
-    public DocumentLanguage setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }

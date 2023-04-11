@@ -33,6 +33,10 @@ public final class ConsistencyPolicy {
     @JsonProperty(value = "maxIntervalInSeconds")
     private Integer maxIntervalInSeconds;
 
+    /** Creates an instance of ConsistencyPolicy class. */
+    public ConsistencyPolicy() {
+    }
+
     /**
      * Get the defaultConsistencyLevel property: The default consistency level and configuration settings of the Cosmos
      * DB account.

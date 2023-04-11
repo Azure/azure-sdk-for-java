@@ -18,6 +18,10 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private MongoRoleDefinitionResource innerProperties;
 
+    /** Creates an instance of MongoRoleDefinitionCreateUpdateParameters class. */
+    public MongoRoleDefinitionCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB Mongo Role Definition.
      *

@@ -95,6 +95,13 @@ public interface EncryptionProtector {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.EncryptionProtectorInner object.
      *
      * @return the inner object.
@@ -227,7 +234,9 @@ public interface EncryptionProtector {
     EncryptionProtector refresh(Context context);
 
     /**
-     * Revalidates workspace managed sql server's existing encryption protector.
+     * Revalidates server's existing encryption protector.
+     *
+     * <p>Revalidates workspace managed sql server's existing encryption protector.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,7 +244,9 @@ public interface EncryptionProtector {
     void revalidate();
 
     /**
-     * Revalidates workspace managed sql server's existing encryption protector.
+     * Revalidates server's existing encryption protector.
+     *
+     * <p>Revalidates workspace managed sql server's existing encryption protector.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

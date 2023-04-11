@@ -21,7 +21,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
      */
     private String subscriptionId;
     /**
-     * Name of the Azure cloud to connect to.
+     * Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.
      */
     private AzureProfileOptionsProvider.CloudType cloudType;
 

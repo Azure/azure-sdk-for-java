@@ -47,6 +47,10 @@ public final class IndexingPolicy {
     @JsonProperty(value = "spatialIndexes")
     private List<SpatialSpec> spatialIndexes;
 
+    /** Creates an instance of IndexingPolicy class. */
+    public IndexingPolicy() {
+    }
+
     /**
      * Get the automatic property: Indicates if the indexing policy is automatic.
      *

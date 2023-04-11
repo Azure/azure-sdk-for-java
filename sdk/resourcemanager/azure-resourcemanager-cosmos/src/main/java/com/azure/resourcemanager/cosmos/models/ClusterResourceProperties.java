@@ -131,6 +131,10 @@ public final class ClusterResourceProperties {
     @JsonProperty(value = "cassandraAuditLoggingEnabled")
     private Boolean cassandraAuditLoggingEnabled;
 
+    /** Creates an instance of ClusterResourceProperties class. */
+    public ClusterResourceProperties() {
+    }
+
     /**
      * Get the provisioningState property: The status of the resource at the time the operation was called.
      *

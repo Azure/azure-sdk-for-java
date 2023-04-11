@@ -18,8 +18,10 @@ import com.azure.resourcemanager.workloads.models.UpdateMonitorRequest;
 /** An instance of this class provides access to all the operations defined in MonitorsClient. */
 public interface MonitorsClient {
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
+     * Gets a list of SAP monitors in the specified subscription.
+     *
+     * <p>Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each
+     * SAP monitor.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -29,8 +31,10 @@ public interface MonitorsClient {
     PagedIterable<MonitorInner> list();
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
+     * Gets a list of SAP monitors in the specified subscription.
+     *
+     * <p>Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each
+     * SAP monitor.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +46,9 @@ public interface MonitorsClient {
     PagedIterable<MonitorInner> list(Context context);
 
     /**
-     * Gets a list of SAP monitors in the specified resource group.
+     * Gets a list of SAP monitors
+     *
+     * <p>Gets a list of SAP monitors in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,7 +60,9 @@ public interface MonitorsClient {
     PagedIterable<MonitorInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets a list of SAP monitors in the specified resource group.
+     * Gets a list of SAP monitors
+     *
+     * <p>Gets a list of SAP monitors in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -67,20 +75,9 @@ public interface MonitorsClient {
     PagedIterable<MonitorInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * Gets properties of a SAP monitor.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the SAP monitor resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitorInner getByResourceGroup(String resourceGroupName, String monitorName);
-
-    /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * <p>Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -96,7 +93,24 @@ public interface MonitorsClient {
         String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Creates a SAP monitor for the specified subscription, resource group, and resource name.
+     * Gets properties of a SAP monitor.
+     *
+     * <p>Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MonitorInner getByResourceGroup(String resourceGroupName, String monitorName);
+
+    /**
+     * Creates a SAP monitor.
+     *
+     * <p>Creates a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -112,7 +126,9 @@ public interface MonitorsClient {
         String resourceGroupName, String monitorName, MonitorInner monitorParameter);
 
     /**
-     * Creates a SAP monitor for the specified subscription, resource group, and resource name.
+     * Creates a SAP monitor.
+     *
+     * <p>Creates a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -129,7 +145,9 @@ public interface MonitorsClient {
         String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context);
 
     /**
-     * Creates a SAP monitor for the specified subscription, resource group, and resource name.
+     * Creates a SAP monitor.
+     *
+     * <p>Creates a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -143,7 +161,9 @@ public interface MonitorsClient {
     MonitorInner create(String resourceGroupName, String monitorName, MonitorInner monitorParameter);
 
     /**
-     * Creates a SAP monitor for the specified subscription, resource group, and resource name.
+     * Creates a SAP monitor.
+     *
+     * <p>Creates a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -158,7 +178,9 @@ public interface MonitorsClient {
     MonitorInner create(String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -172,7 +194,9 @@ public interface MonitorsClient {
         String resourceGroupName, String monitorName);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -187,7 +211,9 @@ public interface MonitorsClient {
         String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -200,7 +226,9 @@ public interface MonitorsClient {
     OperationStatusResultInner delete(String resourceGroupName, String monitorName);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -214,21 +242,9 @@ public interface MonitorsClient {
     OperationStatusResultInner delete(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
+     * Patches the Tags field of a SAP monitor.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the SAP monitor resource.
-     * @param body The Update SAP workload monitor request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitorInner update(String resourceGroupName, String monitorName, UpdateMonitorRequest body);
-
-    /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
+     * <p>Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -242,4 +258,20 @@ public interface MonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitorInner> updateWithResponse(
         String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context);
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     *
+     * <p>Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the SAP monitor resource.
+     * @param body The Update SAP workload monitor request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sAP monitor info on Azure (ARM properties and SAP monitor properties).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MonitorInner update(String resourceGroupName, String monitorName, UpdateMonitorRequest body);
 }

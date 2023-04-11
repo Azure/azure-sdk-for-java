@@ -36,6 +36,10 @@ public final class DataMaskingPolicyInner extends ProxyResource {
     @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
+    /** Creates an instance of DataMaskingPolicyInner class. */
+    public DataMaskingPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the data masking policy.
      *

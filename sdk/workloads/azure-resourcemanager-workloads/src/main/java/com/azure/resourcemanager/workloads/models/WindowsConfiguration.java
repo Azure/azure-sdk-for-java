@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Windows")
 @Immutable
 public final class WindowsConfiguration extends OSConfiguration {
+    /** Creates an instance of WindowsConfiguration class. */
+    public WindowsConfiguration() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -57,7 +57,7 @@ public final class KeysClientImpl implements KeysClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface KeysService {
+    public interface KeysService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -433,30 +433,7 @@ public final class KeysClientImpl implements KeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KeyInner> getAsync(String resourceGroupName, String workspaceName, String keyName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, keyName)
-            .flatMap(
-                (Response<KeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a workspace key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param keyName The name of the workspace key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyInner get(String resourceGroupName, String workspaceName, String keyName) {
-        return getAsync(resourceGroupName, workspaceName, keyName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -475,6 +452,22 @@ public final class KeysClientImpl implements KeysClient {
     public Response<KeyInner> getWithResponse(
         String resourceGroupName, String workspaceName, String keyName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, keyName, context).block();
+    }
+
+    /**
+     * Gets a workspace key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param keyName The name of the workspace key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyInner get(String resourceGroupName, String workspaceName, String keyName) {
+        return getWithResponse(resourceGroupName, workspaceName, keyName, Context.NONE).getValue();
     }
 
     /**
@@ -613,32 +606,7 @@ public final class KeysClientImpl implements KeysClient {
     private Mono<KeyInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, keyName, keyProperties)
-            .flatMap(
-                (Response<KeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a workspace key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param keyName The name of the workspace key.
-     * @param keyProperties Key put request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, keyName, keyProperties).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -659,6 +627,25 @@ public final class KeysClientImpl implements KeysClient {
         String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, keyName, keyProperties, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a workspace key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param keyName The name of the workspace key.
+     * @param keyProperties Key put request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, keyProperties, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -781,30 +768,7 @@ public final class KeysClientImpl implements KeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KeyInner> deleteAsync(String resourceGroupName, String workspaceName, String keyName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, keyName)
-            .flatMap(
-                (Response<KeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Deletes a workspace key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param keyName The name of the workspace key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyInner delete(String resourceGroupName, String workspaceName, String keyName) {
-        return deleteAsync(resourceGroupName, workspaceName, keyName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -826,9 +790,26 @@ public final class KeysClientImpl implements KeysClient {
     }
 
     /**
+     * Deletes a workspace key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param keyName The name of the workspace key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyInner delete(String resourceGroupName, String workspaceName, String keyName) {
+        return deleteWithResponse(resourceGroupName, workspaceName, keyName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -863,7 +844,8 @@ public final class KeysClientImpl implements KeysClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

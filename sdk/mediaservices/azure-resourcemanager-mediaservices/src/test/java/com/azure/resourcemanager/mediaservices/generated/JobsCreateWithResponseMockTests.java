@@ -36,7 +36,7 @@ public final class JobsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"created\":\"2021-08-14T15:24:28Z\",\"state\":\"Canceled\",\"description\":\"yrio\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-07-26T11:46:41Z\",\"outputs\":[],\"priority\":\"Normal\",\"correlationData\":{\"ygznmmaxrizk\":\"aabzmif\",\"lhslnelxieixyn\":\"obgop\",\"awjutifd\":\"lxecwcrojphslh\",\"aglkafhon\":\"fmvigorqjbttzh\"},\"startTime\":\"2021-10-29T19:39:45Z\",\"endTime\":\"2021-12-07T11:29:57Z\"},\"id\":\"ckpzvcpopmxeln\",\"name\":\"clt\",\"type\":\"jedexxmlf\"}";
+            "{\"properties\":{\"created\":\"2021-01-01T01:01:21Z\",\"state\":\"Scheduled\",\"description\":\"gsfikayiansha\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-08-12T09:06:22Z\",\"outputs\":[],\"priority\":\"High\",\"correlationData\":{\"vwkpqh\":\"fzyjqt\"},\"startTime\":\"2021-07-09T12:00:41Z\",\"endTime\":\"2021-10-28T18:12:29Z\"},\"id\":\"gbqe\",\"name\":\"qekewvnqvcd\",\"type\":\"guaucmfdjwnla\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,18 +67,18 @@ public final class JobsCreateWithResponseMockTests {
         Job response =
             manager
                 .jobs()
-                .define("sf")
-                .withExistingTransform("um", "qwazlnqnmcjngzq", "qxtbjwgnyf")
-                .withDescription("zh")
+                .define("uooqjagmdit")
+                .withExistingTransform("tkw", "eg", "amlbnseqacjjvpil")
+                .withDescription("jbsahrtdtpde")
                 .withInput(new JobInput())
                 .withOutputs(Arrays.asList())
-                .withPriority(Priority.NORMAL)
-                .withCorrelationData(mapOf("dpsovwxznptgo", "mlrqryxynqnz"))
+                .withPriority(Priority.LOW)
+                .withCorrelationData(mapOf("o", "toebnf", "razftxejwabmdujt", "vcjkgd", "m", "vcopex"))
                 .create();
 
-        Assertions.assertEquals("yrio", response.description());
-        Assertions.assertEquals(Priority.NORMAL, response.priority());
-        Assertions.assertEquals("aabzmif", response.correlationData().get("ygznmmaxrizk"));
+        Assertions.assertEquals("gsfikayiansha", response.description());
+        Assertions.assertEquals(Priority.HIGH, response.priority());
+        Assertions.assertEquals("fzyjqt", response.correlationData().get("vwkpqh"));
     }
 
     @SuppressWarnings("unchecked")

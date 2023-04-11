@@ -29,6 +29,10 @@ public final class AzureSku {
     @JsonProperty(value = "size", required = true)
     private SkuSize size;
 
+    /** Creates an instance of AzureSku class. */
+    public AzureSku() {
+    }
+
     /**
      * Get the name property: SKU name.
      *

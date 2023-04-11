@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.Gen1EnvironmentMutableProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,11 +15,8 @@ import java.util.Map;
 /** Parameters supplied to the Update Environment operation to update a Gen1 environment. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("Gen1")
-@JsonFlatten
 @Fluent
-public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Gen1EnvironmentUpdateParameters.class);
-
+public final class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters {
     /*
      * The sku of the environment.
      */
@@ -29,22 +24,14 @@ public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters
     private Sku sku;
 
     /*
-     * ISO8601 timespan specifying the minimum number of days the environment's
-     * events will be available for query.
+     * Properties of the Gen1 environment.
      */
-    @JsonProperty(value = "properties.dataRetentionTime")
-    private Duration dataRetentionTime;
+    @JsonProperty(value = "properties")
+    private Gen1EnvironmentMutableProperties innerProperties;
 
-    /*
-     * The behavior the Time Series Insights service should take when the
-     * environment's capacity has been exceeded. If "PauseIngress" is
-     * specified, new events will not be read from the event source. If
-     * "PurgeOldData" is specified, new events will continue to be read and old
-     * events will be deleted from the environment. The default behavior is
-     * PurgeOldData.
-     */
-    @JsonProperty(value = "properties.storageLimitExceededBehavior")
-    private StorageLimitExceededBehavior storageLimitExceededBehavior;
+    /** Creates an instance of Gen1EnvironmentUpdateParameters class. */
+    public Gen1EnvironmentUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The sku of the environment.
@@ -67,13 +54,29 @@ public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters
     }
 
     /**
+     * Get the innerProperties property: Properties of the Gen1 environment.
+     *
+     * @return the innerProperties value.
+     */
+    private Gen1EnvironmentMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Gen1EnvironmentUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the dataRetentionTime property: ISO8601 timespan specifying the minimum number of days the environment's
      * events will be available for query.
      *
      * @return the dataRetentionTime value.
      */
     public Duration dataRetentionTime() {
-        return this.dataRetentionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().dataRetentionTime();
     }
 
     /**
@@ -84,7 +87,10 @@ public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      * @return the Gen1EnvironmentUpdateParameters object itself.
      */
     public Gen1EnvironmentUpdateParameters withDataRetentionTime(Duration dataRetentionTime) {
-        this.dataRetentionTime = dataRetentionTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen1EnvironmentMutableProperties();
+        }
+        this.innerProperties().withDataRetentionTime(dataRetentionTime);
         return this;
     }
 
@@ -97,7 +103,7 @@ public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      * @return the storageLimitExceededBehavior value.
      */
     public StorageLimitExceededBehavior storageLimitExceededBehavior() {
-        return this.storageLimitExceededBehavior;
+        return this.innerProperties() == null ? null : this.innerProperties().storageLimitExceededBehavior();
     }
 
     /**
@@ -111,14 +117,10 @@ public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      */
     public Gen1EnvironmentUpdateParameters withStorageLimitExceededBehavior(
         StorageLimitExceededBehavior storageLimitExceededBehavior) {
-        this.storageLimitExceededBehavior = storageLimitExceededBehavior;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Gen1EnvironmentUpdateParameters withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen1EnvironmentMutableProperties();
+        }
+        this.innerProperties().withStorageLimitExceededBehavior(storageLimitExceededBehavior);
         return this;
     }
 
@@ -132,6 +134,9 @@ public class Gen1EnvironmentUpdateParameters extends EnvironmentUpdateParameters
         super.validate();
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

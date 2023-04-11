@@ -29,6 +29,10 @@ public final class CassandraClusterPublicStatusDataCentersItem {
     @JsonProperty(value = "nodes")
     private List<CassandraClusterPublicStatusDataCentersItemNode> nodes;
 
+    /** Creates an instance of CassandraClusterPublicStatusDataCentersItem class. */
+    public CassandraClusterPublicStatusDataCentersItem() {
+    }
+
     /**
      * Get the name property: The name of this Datacenter.
      *

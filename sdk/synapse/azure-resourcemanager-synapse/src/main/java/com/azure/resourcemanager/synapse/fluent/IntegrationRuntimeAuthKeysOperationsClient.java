@@ -17,26 +17,9 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyP
  */
 public interface IntegrationRuntimeAuthKeysOperationsClient {
     /**
-     * Regenerate the authentication key for an integration runtime.
+     * Regenerate integration runtime authentication key
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeAuthKeysInner regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
-
-    /**
-     * Regenerate the authentication key for an integration runtime.
+     * <p>Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -57,21 +40,30 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
         Context context);
 
     /**
-     * List authentication keys in an integration runtime.
+     * Regenerate integration runtime authentication key
+     *
+     * <p>Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
+     * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeAuthKeysInner list(String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeAuthKeysInner regenerate(
+        String resourceGroupName,
+        String workspaceName,
+        String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
 
     /**
-     * List authentication keys in an integration runtime.
+     * List integration runtime authentication keys
+     *
+     * <p>List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -85,4 +77,20 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeAuthKeysInner> listWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+
+    /**
+     * List integration runtime authentication keys
+     *
+     * <p>List authentication keys in an integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime authentication keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeAuthKeysInner list(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 }

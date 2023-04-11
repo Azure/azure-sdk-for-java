@@ -17,6 +17,15 @@ public final class SubPlan extends ExpandableStringEnum<SubPlan> {
     public static final SubPlan P2 = fromString("P2");
 
     /**
+     * Creates a new instance of SubPlan value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SubPlan() {
+    }
+
+    /**
      * Creates or finds a SubPlan from its string representation.
      *
      * @param name a name to look for.

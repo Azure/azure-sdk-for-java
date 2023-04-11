@@ -13,19 +13,19 @@ public final class PngLayerTests {
     public void testDeserialize() throws Exception {
         PngLayer model =
             BinaryData
-                .fromString("{\"width\":\"dznx\",\"height\":\"dsrhnjiv\",\"label\":\"v\"}")
+                .fromString("{\"width\":\"imlnwiaaomylw\",\"height\":\"z\",\"label\":\"cse\"}")
                 .toObject(PngLayer.class);
-        Assertions.assertEquals("dznx", model.width());
-        Assertions.assertEquals("dsrhnjiv", model.height());
-        Assertions.assertEquals("v", model.label());
+        Assertions.assertEquals("imlnwiaaomylw", model.width());
+        Assertions.assertEquals("z", model.height());
+        Assertions.assertEquals("cse", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PngLayer model = new PngLayer().withWidth("dznx").withHeight("dsrhnjiv").withLabel("v");
+        PngLayer model = new PngLayer().withWidth("imlnwiaaomylw").withHeight("z").withLabel("cse");
         model = BinaryData.fromObject(model).toObject(PngLayer.class);
-        Assertions.assertEquals("dznx", model.width());
-        Assertions.assertEquals("dsrhnjiv", model.height());
-        Assertions.assertEquals("v", model.label());
+        Assertions.assertEquals("imlnwiaaomylw", model.width());
+        Assertions.assertEquals("z", model.height());
+        Assertions.assertEquals("cse", model.label());
     }
 }

@@ -14,6 +14,15 @@ public final class GovernanceRuleSourceResourceType extends ExpandableStringEnum
     public static final GovernanceRuleSourceResourceType ASSESSMENTS = fromString("Assessments");
 
     /**
+     * Creates a new instance of GovernanceRuleSourceResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GovernanceRuleSourceResourceType() {
+    }
+
+    /**
      * Creates or finds a GovernanceRuleSourceResourceType from its string representation.
      *
      * @param name a name to look for.

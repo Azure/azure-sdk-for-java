@@ -35,6 +35,10 @@ public final class WorkspaceInner extends Resource {
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
+    /** Creates an instance of WorkspaceInner class. */
+    public WorkspaceInner() {
+    }
+
     /**
      * Get the innerProperties property: Workspace resource properties.
      *
@@ -218,20 +222,6 @@ public final class WorkspaceInner extends Resource {
     }
 
     /**
-     * Set the connectivityEndpoints property: Connectivity endpoints.
-     *
-     * @param connectivityEndpoints the connectivityEndpoints value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WorkspaceProperties();
-        }
-        this.innerProperties().withConnectivityEndpoints(connectivityEndpoints);
-        return this;
-    }
-
-    /**
      * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
      * is in a virtual network managed on behalf of the user.
      *
@@ -317,7 +307,7 @@ public final class WorkspaceInner extends Resource {
      *
      * @return the extraProperties value.
      */
-    public Map<String, Object> extraProperties() {
+    public Object extraProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().extraProperties();
     }
 

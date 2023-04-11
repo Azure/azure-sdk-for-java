@@ -38,6 +38,22 @@ public final class PrometheusHaClusterProviderInstanceProperties extends Provide
     @JsonProperty(value = "clusterName")
     private String clusterName;
 
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    @JsonProperty(value = "sslPreference")
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the blob URI to SSL certificate for the HA cluster exporter.
+     */
+    @JsonProperty(value = "sslCertificateUri")
+    private String sslCertificateUri;
+
+    /** Creates an instance of PrometheusHaClusterProviderInstanceProperties class. */
+    public PrometheusHaClusterProviderInstanceProperties() {
+    }
+
     /**
      * Get the prometheusUrl property: URL of the Node Exporter endpoint.
      *
@@ -115,6 +131,46 @@ public final class PrometheusHaClusterProviderInstanceProperties extends Provide
      */
     public PrometheusHaClusterProviderInstanceProperties withClusterName(String clusterName) {
         this.clusterName = clusterName;
+        return this;
+    }
+
+    /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     *
+     * @param sslPreference the sslPreference value to set.
+     * @return the PrometheusHaClusterProviderInstanceProperties object itself.
+     */
+    public PrometheusHaClusterProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the HA cluster exporter.
+     *
+     * @return the sslCertificateUri value.
+     */
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
+    }
+
+    /**
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the HA cluster exporter.
+     *
+     * @param sslCertificateUri the sslCertificateUri value to set.
+     * @return the PrometheusHaClusterProviderInstanceProperties object itself.
+     */
+    public PrometheusHaClusterProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
         return this;
     }
 

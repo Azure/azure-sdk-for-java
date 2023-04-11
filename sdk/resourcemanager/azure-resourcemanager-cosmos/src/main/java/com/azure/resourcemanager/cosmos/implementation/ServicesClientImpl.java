@@ -63,7 +63,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface ServicesService {
+    public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
@@ -499,7 +499,9 @@ public final class ServicesClientImpl implements ServicesClient {
         String accountName,
         String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters) {
-        return beginCreateAsync(resourceGroupName, accountName, serviceName, createUpdateParameters).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, serviceName, createUpdateParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -522,7 +524,8 @@ public final class ServicesClientImpl implements ServicesClient {
         String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, serviceName, createUpdateParameters, context)
+        return this
+            .beginCreateAsync(resourceGroupName, accountName, serviceName, createUpdateParameters, context)
             .getSyncPoller();
     }
 
@@ -745,22 +748,6 @@ public final class ServicesClientImpl implements ServicesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceResourceInner get(String resourceGroupName, String accountName, String serviceName) {
-        return getAsync(resourceGroupName, accountName, serviceName).block();
-    }
-
-    /**
-     * Gets the status of service.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -771,6 +758,22 @@ public final class ServicesClientImpl implements ServicesClient {
     public Response<ServiceResourceInner> getWithResponse(
         String resourceGroupName, String accountName, String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, serviceName, context).block();
+    }
+
+    /**
+     * Gets the status of service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param serviceName Cosmos DB service name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceResourceInner get(String resourceGroupName, String accountName, String serviceName) {
+        return getWithResponse(resourceGroupName, accountName, serviceName, Context.NONE).getValue();
     }
 
     /**
@@ -935,7 +938,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, accountName, serviceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, serviceName).getSyncPoller();
     }
 
     /**
@@ -953,7 +956,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, serviceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, serviceName, context).getSyncPoller();
     }
 
     /**

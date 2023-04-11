@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DimensionProperties model. */
+/** Dimension properties. */
 @Fluent
 public final class DimensionProperties {
     /*
@@ -31,7 +31,7 @@ public final class DimensionProperties {
     private Boolean groupingEnabled;
 
     /*
-     * The data property.
+     * Dimension data.
      */
     @JsonProperty(value = "data")
     private List<String> data;
@@ -98,7 +98,7 @@ public final class DimensionProperties {
     }
 
     /**
-     * Get the data property: The data property.
+     * Get the data property: Dimension data.
      *
      * @return the data value.
      */
@@ -107,7 +107,7 @@ public final class DimensionProperties {
     }
 
     /**
-     * Set the data property: The data property.
+     * Set the data property: Dimension data.
      *
      * @param data the data value to set.
      * @return the DimensionProperties object itself.

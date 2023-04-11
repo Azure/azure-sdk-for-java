@@ -26,6 +26,15 @@ public final class RouteNextHopType extends ExpandableStringEnum<RouteNextHopTyp
     public static final RouteNextHopType NONE = fromString("None");
 
     /**
+     * Creates a new instance of RouteNextHopType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteNextHopType() {
+    }
+
+    /**
      * Creates or finds a RouteNextHopType from its string representation.
      *
      * @param name a name to look for.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The quota usage for a container registry. */
 @Fluent
 public final class RegistryUsage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUsage.class);
-
     /*
      * The name of the usage.
      */
@@ -37,6 +33,10 @@ public final class RegistryUsage {
      */
     @JsonProperty(value = "unit")
     private RegistryUsageUnit unit;
+
+    /** Creates an instance of RegistryUsage class. */
+    public RegistryUsage() {
+    }
 
     /**
      * Get the name property: The name of the usage.

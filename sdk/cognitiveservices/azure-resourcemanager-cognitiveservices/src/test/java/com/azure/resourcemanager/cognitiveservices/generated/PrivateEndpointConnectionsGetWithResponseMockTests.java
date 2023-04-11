@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointServiceConnectionStatus;
@@ -33,7 +32,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"goupmfiibfg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"olvrw\",\"actionsRequired\":\"v\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"lqwjygvjayvblm\",\"vkzuhbxvvyhgso\",\"byrqufeg\",\"uvwzfbnh\"]},\"location\":\"tlpdn\",\"etag\":\"tvgbmhrixkwmy\",\"id\":\"jejveg\",\"name\":\"hbpnaixexccbd\",\"type\":\"eaxhcexdrrvqahqk\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"lgzi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"stgktst\",\"actionsRequired\":\"xeclzedqbcvhzlhp\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"dlwwqfbumlkxt\"]},\"location\":\"fsmlmbtxhwgfw\",\"etag\":\"tawc\",\"id\":\"ezbrhubskh\",\"name\":\"dyg\",\"type\":\"ookk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +63,18 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("tmdvypgikdgs", "ywkbirryuzhlhkjo", "rvqqaatj", Context.NONE)
+                .getWithResponse("kgxywr", "kpyklyhp", "uodpv", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions
             .assertEquals(
                 PrivateEndpointServiceConnectionStatus.APPROVED,
                 response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("olvrw", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("v", response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("lqwjygvjayvblm", response.properties().groupIds().get(0));
-        Assertions.assertEquals("tlpdn", response.location());
+        Assertions.assertEquals("stgktst", response.properties().privateLinkServiceConnectionState().description());
+        Assertions
+            .assertEquals(
+                "xeclzedqbcvhzlhp", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("dlwwqfbumlkxt", response.properties().groupIds().get(0));
+        Assertions.assertEquals("fsmlmbtxhwgfw", response.location());
     }
 }

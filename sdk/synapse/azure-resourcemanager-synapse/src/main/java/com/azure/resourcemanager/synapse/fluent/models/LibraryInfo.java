@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
- * Information about a library/package created at the workspace level. Library/package information of a Big Data pool
- * powered by Apache Spark.
+ * Information about a library/package created at the workspace level.
+ *
+ * <p>Library/package information of a Big Data pool powered by Apache Spark.
  */
 @Fluent
 public final class LibraryInfo {
@@ -35,7 +36,7 @@ public final class LibraryInfo {
     /*
      * The last update time of the library.
      */
-    @JsonProperty(value = "uploadedTimestamp")
+    @JsonProperty(value = "uploadedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime uploadedTimestamp;
 
     /*
@@ -55,6 +56,10 @@ public final class LibraryInfo {
      */
     @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
+
+    /** Creates an instance of LibraryInfo class. */
+    public LibraryInfo() {
+    }
 
     /**
      * Get the name property: Name of the library.
@@ -123,17 +128,6 @@ public final class LibraryInfo {
      */
     public OffsetDateTime uploadedTimestamp() {
         return this.uploadedTimestamp;
-    }
-
-    /**
-     * Set the uploadedTimestamp property: The last update time of the library.
-     *
-     * @param uploadedTimestamp the uploadedTimestamp value to set.
-     * @return the LibraryInfo object itself.
-     */
-    public LibraryInfo withUploadedTimestamp(OffsetDateTime uploadedTimestamp) {
-        this.uploadedTimestamp = uploadedTimestamp;
-        return this;
     }
 
     /**

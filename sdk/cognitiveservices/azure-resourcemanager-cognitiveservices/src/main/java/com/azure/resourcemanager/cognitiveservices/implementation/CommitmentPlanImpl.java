@@ -4,11 +4,16 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanInner;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlan;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanProperties;
+import com.azure.resourcemanager.cognitiveservices.models.PatchResourceTagsAndSku;
+import com.azure.resourcemanager.cognitiveservices.models.Sku;
+import java.util.Collections;
+import java.util.Map;
 
 public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.Definition, CommitmentPlan.Update {
     private CommitmentPlanInner innerObject;
@@ -35,8 +40,37 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         return this.innerModel().etag();
     }
 
+    public String kind() {
+        return this.innerModel().kind();
+    }
+
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public CommitmentPlanProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
     }
 
     public String resourceGroupName() {
@@ -53,13 +87,12 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
 
     private String resourceGroupName;
 
-    private String accountName;
-
     private String commitmentPlanName;
 
-    public CommitmentPlanImpl withExistingAccount(String resourceGroupName, String accountName) {
+    private PatchResourceTagsAndSku updateCommitmentPlan;
+
+    public CommitmentPlanImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
-        this.accountName = accountName;
         return this;
     }
 
@@ -68,9 +101,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
             serviceManager
                 .serviceClient()
                 .getCommitmentPlans()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, commitmentPlanName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -79,9 +110,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
             serviceManager
                 .serviceClient()
                 .getCommitmentPlans()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, commitmentPlanName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), context);
         return this;
     }
 
@@ -93,6 +122,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlanImpl update() {
+        this.updateCommitmentPlan = new PatchResourceTagsAndSku();
         return this;
     }
 
@@ -101,9 +131,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
             serviceManager
                 .serviceClient()
                 .getCommitmentPlans()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, commitmentPlanName, this.innerModel(), Context.NONE)
-                .getValue();
+                .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, Context.NONE);
         return this;
     }
 
@@ -112,9 +140,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
             serviceManager
                 .serviceClient()
                 .getCommitmentPlans()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, commitmentPlanName, this.innerModel(), context)
-                .getValue();
+                .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, context);
         return this;
     }
 
@@ -124,7 +150,6 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
         this.commitmentPlanName = Utils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
     }
 
@@ -133,7 +158,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
             serviceManager
                 .serviceClient()
                 .getCommitmentPlans()
-                .getWithResponse(resourceGroupName, accountName, commitmentPlanName, Context.NONE)
+                .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -143,13 +168,52 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
             serviceManager
                 .serviceClient()
                 .getCommitmentPlans()
-                .getWithResponse(resourceGroupName, accountName, commitmentPlanName, context)
+                .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, context)
                 .getValue();
         return this;
+    }
+
+    public CommitmentPlanImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
+        return this;
+    }
+
+    public CommitmentPlanImpl withRegion(String location) {
+        this.innerModel().withLocation(location);
+        return this;
+    }
+
+    public CommitmentPlanImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateCommitmentPlan.withTags(tags);
+            return this;
+        }
+    }
+
+    public CommitmentPlanImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
+        return this;
+    }
+
+    public CommitmentPlanImpl withSku(Sku sku) {
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateCommitmentPlan.withSku(sku);
+            return this;
+        }
     }
 
     public CommitmentPlanImpl withProperties(CommitmentPlanProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

@@ -40,6 +40,10 @@ public final class SqlRoleDefinitionResource {
     @JsonProperty(value = "permissions")
     private List<Permission> permissions;
 
+    /** Creates an instance of SqlRoleDefinitionResource class. */
+    public SqlRoleDefinitionResource() {
+    }
+
     /**
      * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      *

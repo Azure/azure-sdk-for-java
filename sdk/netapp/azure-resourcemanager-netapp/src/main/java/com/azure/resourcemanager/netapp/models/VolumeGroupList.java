@@ -18,6 +18,10 @@ public final class VolumeGroupList {
     @JsonProperty(value = "value")
     private List<VolumeGroupInner> value;
 
+    /** Creates an instance of VolumeGroupList class. */
+    public VolumeGroupList() {
+    }
+
     /**
      * Get the value property: List of volume Groups.
      *

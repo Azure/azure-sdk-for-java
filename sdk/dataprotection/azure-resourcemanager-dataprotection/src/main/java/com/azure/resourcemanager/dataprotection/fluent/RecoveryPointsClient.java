@@ -16,7 +16,7 @@ public interface RecoveryPointsClient {
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +31,7 @@ public interface RecoveryPointsClient {
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
@@ -54,7 +54,7 @@ public interface RecoveryPointsClient {
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.
@@ -71,7 +71,7 @@ public interface RecoveryPointsClient {
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
      *
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.

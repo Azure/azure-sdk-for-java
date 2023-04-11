@@ -612,11 +612,13 @@ public class RegistryTaskTests extends RegistryTest {
         PagedIterable<RegistryTaskRun> registryTaskRuns =
             registryManager.registryTaskRuns().listByRegistry(rgName, acrName);
         RegistryTaskRun registryTaskRunFromList = registryTaskRuns.stream().findFirst().get();
-        Assertions.assertTrue(registryTaskRunFromList.status() != null);
+        Assertions.assertNotNull(registryTaskRunFromList.status());
         Assertions.assertEquals("QuickRun", registryTaskRunFromList.runType().toString());
         Assertions.assertTrue(registryTaskRunFromList.isArchiveEnabled());
         Assertions.assertEquals(OS.WINDOWS, registryTaskRunFromList.platform().os());
         Assertions.assertEquals("Succeeded", registryTaskRunFromList.provisioningState().toString());
+
+        registryTaskRunFromList.refresh();
     }
 
     @Test

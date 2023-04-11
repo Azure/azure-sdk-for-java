@@ -22,8 +22,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ServerProperties {
     /*
-     * The administrator's login name of a server. Can only be specified when
-     * the server is being created (and is required for creation).
+     * The administrator's login name of a server. Can only be specified when the server is being created (and is
+     * required for creation).
      */
     @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
@@ -59,8 +59,7 @@ public final class ServerProperties {
     private String sourceServerResourceId;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to
-     * restore from.
+     * Restore point creation time (ISO8601 format), specifying the time to restore from.
      */
     @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
@@ -124,6 +123,10 @@ public final class ServerProperties {
      */
     @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
+
+    /** Creates an instance of ServerProperties class. */
+    public ServerProperties() {
+    }
 
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the

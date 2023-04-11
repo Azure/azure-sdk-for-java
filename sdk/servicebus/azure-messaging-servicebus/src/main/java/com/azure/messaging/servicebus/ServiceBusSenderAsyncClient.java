@@ -508,7 +508,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 return messageBatch;
             })
             .flatMapMany(messageBatch ->
-                tracer.traceFluxWithLinks("ServiceBus.scheduleMessages",
+                tracer.traceScheduleFlux("ServiceBus.scheduleMessages",
                     connectionProcessor
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
@@ -703,7 +703,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-        return tracer.traceMonoWithLink("ServiceBus.scheduleMessage",
+        return tracer.traceScheduleMono("ServiceBus.scheduleMessage",
                 getSendLink().flatMap(link -> link.getLinkSize().flatMap(size -> {
                     int maxSize =  size > 0
                         ? size

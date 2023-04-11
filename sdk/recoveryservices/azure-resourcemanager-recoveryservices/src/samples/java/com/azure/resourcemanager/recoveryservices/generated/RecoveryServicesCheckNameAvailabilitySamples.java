@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
 
 /** Samples for RecoveryServices CheckNameAvailability. */
 public final class RecoveryServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: Availability status of Resource Name when no resource with same name, type and subscription exists,
@@ -29,11 +28,11 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityParameters()
                     .withType("Microsoft.RecoveryServices/Vaults")
                     .withName("swaggerExample"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/CheckNameAvailability_NotAvailable.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/CheckNameAvailability_NotAvailable.json
      */
     /**
      * Sample code: Availability status of Resource Name when resource with same name, type and subscription exists.
@@ -50,6 +49,6 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityParameters()
                     .withType("Microsoft.RecoveryServices/Vaults")
                     .withName("swaggerExample2"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

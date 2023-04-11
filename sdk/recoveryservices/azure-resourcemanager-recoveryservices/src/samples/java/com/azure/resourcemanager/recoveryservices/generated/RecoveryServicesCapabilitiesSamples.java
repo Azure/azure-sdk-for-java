@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.models.CapabilitiesProperties;
 import com.azure.resourcemanager.recoveryservices.models.DnsZone;
 import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 /** Samples for RecoveryServices Capabilities. */
 public final class RecoveryServicesCapabilitiesSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/Capabilities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Capabilities.json
      */
     /**
      * Sample code: Capabilities for Microsoft.RecoveryServices/Vaults.
@@ -36,6 +35,6 @@ public final class RecoveryServicesCapabilitiesSamples {
                                     .asList(
                                         new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
                                         new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

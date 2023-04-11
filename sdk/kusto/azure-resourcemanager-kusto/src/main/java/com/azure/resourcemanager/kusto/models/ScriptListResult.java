@@ -18,6 +18,10 @@ public final class ScriptListResult {
     @JsonProperty(value = "value")
     private List<ScriptInner> value;
 
+    /** Creates an instance of ScriptListResult class. */
+    public ScriptListResult() {
+    }
+
     /**
      * Get the value property: The list of Kusto scripts.
      *

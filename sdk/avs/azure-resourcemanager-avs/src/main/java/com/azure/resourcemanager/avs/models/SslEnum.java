@@ -17,6 +17,15 @@ public final class SslEnum extends ExpandableStringEnum<SslEnum> {
     public static final SslEnum DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SslEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SslEnum() {
+    }
+
+    /**
      * Creates or finds a SslEnum from its string representation.
      *
      * @param name a name to look for.

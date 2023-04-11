@@ -28,15 +28,6 @@ public final class ScalingPlansImpl implements ScalingPlans {
         this.serviceManager = serviceManager;
     }
 
-    public ScalingPlan getByResourceGroup(String resourceGroupName, String scalingPlanName) {
-        ScalingPlanInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, scalingPlanName);
-        if (inner != null) {
-            return new ScalingPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ScalingPlan> getByResourceGroupWithResponse(
         String resourceGroupName, String scalingPlanName, Context context) {
         Response<ScalingPlanInner> inner =
@@ -52,12 +43,22 @@ public final class ScalingPlansImpl implements ScalingPlans {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String scalingPlanName) {
-        this.serviceClient().delete(resourceGroupName, scalingPlanName);
+    public ScalingPlan getByResourceGroup(String resourceGroupName, String scalingPlanName) {
+        ScalingPlanInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, scalingPlanName);
+        if (inner != null) {
+            return new ScalingPlanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String scalingPlanName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, scalingPlanName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String scalingPlanName) {
+        this.serviceClient().delete(resourceGroupName, scalingPlanName);
     }
 
     public PagedIterable<ScalingPlan> listByResourceGroup(String resourceGroupName) {
@@ -65,8 +66,10 @@ public final class ScalingPlansImpl implements ScalingPlans {
         return Utils.mapPage(inner, inner1 -> new ScalingPlanImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ScalingPlan> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ScalingPlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<ScalingPlan> listByResourceGroup(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<ScalingPlanInner> inner =
+            this.serviceClient().listByResourceGroup(resourceGroupName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new ScalingPlanImpl(inner1, this.manager()));
     }
 
@@ -75,8 +78,9 @@ public final class ScalingPlansImpl implements ScalingPlans {
         return Utils.mapPage(inner, inner1 -> new ScalingPlanImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ScalingPlan> list(Context context) {
-        PagedIterable<ScalingPlanInner> inner = this.serviceClient().list(context);
+    public PagedIterable<ScalingPlan> list(
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<ScalingPlanInner> inner = this.serviceClient().list(pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new ScalingPlanImpl(inner1, this.manager()));
     }
 
@@ -85,9 +89,17 @@ public final class ScalingPlansImpl implements ScalingPlans {
         return Utils.mapPage(inner, inner1 -> new ScalingPlanImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ScalingPlan> listByHostPool(String resourceGroupName, String hostPoolName, Context context) {
+    public PagedIterable<ScalingPlan> listByHostPool(
+        String resourceGroupName,
+        String hostPoolName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         PagedIterable<ScalingPlanInner> inner =
-            this.serviceClient().listByHostPool(resourceGroupName, hostPoolName, context);
+            this
+                .serviceClient()
+                .listByHostPool(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new ScalingPlanImpl(inner1, this.manager()));
     }
 
@@ -145,7 +157,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scalingPlans'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, scalingPlanName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, scalingPlanName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -164,7 +176,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scalingPlans'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, scalingPlanName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, scalingPlanName, context);
     }
 
     private ScalingPlansClient serviceClient() {

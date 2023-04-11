@@ -7,20 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"kvceoveilovnotyf\"}").toObject(ClusterCheckNameRequest.class);
-        Assertions.assertEquals("kvceoveilovnotyf", model.name());
+            BinaryData.fromString("{\"name\":\"cocmnyyaztt\"}").toObject(ClusterCheckNameRequest.class);
+        Assertions.assertEquals("cocmnyyaztt", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterCheckNameRequest model = new ClusterCheckNameRequest().withName("kvceoveilovnotyf");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterCheckNameRequest model = new ClusterCheckNameRequest().withName("cocmnyyaztt");
         model = BinaryData.fromObject(model).toObject(ClusterCheckNameRequest.class);
-        Assertions.assertEquals("kvceoveilovnotyf", model.name());
+        Assertions.assertEquals("cocmnyyaztt", model.name());
     }
 }

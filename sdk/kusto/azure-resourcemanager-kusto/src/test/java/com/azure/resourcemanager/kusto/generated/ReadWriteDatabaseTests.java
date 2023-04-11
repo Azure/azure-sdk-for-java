@@ -8,31 +8,30 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.ReadWriteDatabase;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReadWriteDatabaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ReadWriteDatabase model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"ReadWrite\",\"properties\":{\"provisioningState\":\"Deleting\",\"softDeletePeriod\":\"PT221H17M27S\",\"hotCachePeriod\":\"PT115H47M50S\",\"statistics\":{\"size\":20.182014},\"isFollowed\":true},\"location\":\"fzxiavrmb\",\"id\":\"onok\",\"name\":\"xrjqcirgzpfrlazs\",\"type\":\"rnwoiindfp\"}")
+                    "{\"kind\":\"ReadWrite\",\"properties\":{\"provisioningState\":\"Moving\",\"softDeletePeriod\":\"PT110H39M28S\",\"hotCachePeriod\":\"PT128H10M14S\",\"statistics\":{\"size\":26.363892},\"isFollowed\":false},\"location\":\"jk\",\"id\":\"ffhmouwqlgzr\",\"name\":\"zeeyebi\",\"type\":\"ikayuhqlbjbsybb\"}")
                 .toObject(ReadWriteDatabase.class);
-        Assertions.assertEquals("fzxiavrmb", model.location());
-        Assertions.assertEquals(Duration.parse("PT221H17M27S"), model.softDeletePeriod());
-        Assertions.assertEquals(Duration.parse("PT115H47M50S"), model.hotCachePeriod());
+        Assertions.assertEquals("jk", model.location());
+        Assertions.assertEquals(Duration.parse("PT110H39M28S"), model.softDeletePeriod());
+        Assertions.assertEquals(Duration.parse("PT128H10M14S"), model.hotCachePeriod());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ReadWriteDatabase model =
             new ReadWriteDatabase()
-                .withLocation("fzxiavrmb")
-                .withSoftDeletePeriod(Duration.parse("PT221H17M27S"))
-                .withHotCachePeriod(Duration.parse("PT115H47M50S"));
+                .withLocation("jk")
+                .withSoftDeletePeriod(Duration.parse("PT110H39M28S"))
+                .withHotCachePeriod(Duration.parse("PT128H10M14S"));
         model = BinaryData.fromObject(model).toObject(ReadWriteDatabase.class);
-        Assertions.assertEquals("fzxiavrmb", model.location());
-        Assertions.assertEquals(Duration.parse("PT221H17M27S"), model.softDeletePeriod());
-        Assertions.assertEquals(Duration.parse("PT115H47M50S"), model.hotCachePeriod());
+        Assertions.assertEquals("jk", model.location());
+        Assertions.assertEquals(Duration.parse("PT110H39M28S"), model.softDeletePeriod());
+        Assertions.assertEquals(Duration.parse("PT128H10M14S"), model.hotCachePeriod());
     }
 }

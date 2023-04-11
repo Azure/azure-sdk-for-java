@@ -7,7 +7,11 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spark pool auto-scaling properties Auto-scaling properties of a Big Data pool powered by Apache Spark. */
+/**
+ * Spark pool auto-scaling properties
+ *
+ * <p>Auto-scaling properties of a Big Data pool powered by Apache Spark.
+ */
 @Fluent
 public final class AutoScaleProperties {
     /*
@@ -27,6 +31,10 @@ public final class AutoScaleProperties {
      */
     @JsonProperty(value = "maxNodeCount")
     private Integer maxNodeCount;
+
+    /** Creates an instance of AutoScaleProperties class. */
+    public AutoScaleProperties() {
+    }
 
     /**
      * Get the minNodeCount property: The minimum number of nodes the Big Data pool can support.

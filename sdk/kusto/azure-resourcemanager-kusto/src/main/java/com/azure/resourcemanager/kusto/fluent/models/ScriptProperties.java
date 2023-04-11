@@ -49,6 +49,10 @@ public final class ScriptProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ScriptProperties class. */
+    public ScriptProperties() {
+    }
+
     /**
      * Get the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
      * property.

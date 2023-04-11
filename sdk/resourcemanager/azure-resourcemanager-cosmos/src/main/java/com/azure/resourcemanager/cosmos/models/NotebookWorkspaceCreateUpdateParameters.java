@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** Parameters to create a notebook workspace resource. */
 @Immutable
 public final class NotebookWorkspaceCreateUpdateParameters extends ArmProxyResource {
+    /** Creates an instance of NotebookWorkspaceCreateUpdateParameters class. */
+    public NotebookWorkspaceCreateUpdateParameters() {
+    }
+
     /**
      * Validates the instance.
      *

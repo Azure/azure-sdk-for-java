@@ -13,6 +13,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStatusInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventStreamEventInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventTrackEventInner;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
 
 /** An instance of this class provides access to all the operations defined in LiveEventsClient. */
@@ -581,6 +584,111 @@ public interface LiveEventsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void reset(String resourceGroupName, String accountName, String liveEventName, Context context);
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LiveEventStatusInner> listGetStatus(
+        String resourceGroupName, String accountName, String liveEventName);
+
+    /**
+     * Get status of one live event
+     *
+     * <p>Gets status telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LiveEventStatusInner> listGetStatus(
+        String resourceGroupName, String accountName, String liveEventName, Context context);
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(
+        String resourceGroupName, String accountName, String liveEventName);
+
+    /**
+     * Get stream events of one live event
+     *
+     * <p>Get stream events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stream events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LiveEventStreamEventInner> listGetStreamEvents(
+        String resourceGroupName, String accountName, String liveEventName, Context context);
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(
+        String resourceGroupName, String accountName, String liveEventName);
+
+    /**
+     * Get track events of one live event
+     *
+     * <p>Get track ingest heartbeat events telemetry of a live event.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return track ingest heartbeat events telemetry of a live event as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<LiveEventTrackEventInner> listGetTrackIngestHeartbeats(
+        String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
      * Get operation status.

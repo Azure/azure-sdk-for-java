@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DismissAlertPayload {
     /*
-     * The properties property.
+     * Alert properties.
      */
     @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
@@ -22,7 +22,7 @@ public final class DismissAlertPayload {
     }
 
     /**
-     * Get the innerProperties property: The properties property.
+     * Get the innerProperties property: Alert properties.
      *
      * @return the innerProperties value.
      */
@@ -238,7 +238,7 @@ public final class DismissAlertPayload {
     }
 
     /**
-     * Get the statusModificationUsername property: The statusModificationUserName property.
+     * Get the statusModificationUsername property: User who last modified the alert.
      *
      * @return the statusModificationUsername value.
      */
@@ -247,7 +247,7 @@ public final class DismissAlertPayload {
     }
 
     /**
-     * Set the statusModificationUsername property: The statusModificationUserName property.
+     * Set the statusModificationUsername property: User who last modified the alert.
      *
      * @param statusModificationUsername the statusModificationUsername value to set.
      * @return the DismissAlertPayload object itself.

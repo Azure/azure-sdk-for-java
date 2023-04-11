@@ -24,6 +24,10 @@ public final class PremierAddOnInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of PremierAddOnInner class. */
+    public PremierAddOnInner() {
+    }
+
     /**
      * Get the innerProperties property: PremierAddOn resource specific properties.
      *

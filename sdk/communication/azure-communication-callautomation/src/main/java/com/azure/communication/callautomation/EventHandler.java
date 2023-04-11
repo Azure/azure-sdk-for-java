@@ -3,8 +3,8 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.AddParticipantsFailed;
-import com.azure.communication.callautomation.models.events.AddParticipantsSucceeded;
+import com.azure.communication.callautomation.models.events.AddParticipantFailed;
+import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
@@ -18,6 +18,8 @@ import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -97,10 +99,10 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, CallConnected.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
                 ret = mapper.convertValue(eventData, CallDisconnected.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsFailed")) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsSucceeded")) {
-                ret = mapper.convertValue(eventData, AddParticipantsSucceeded.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantFailed")) {
+                ret = mapper.convertValue(eventData, AddParticipantFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantSucceeded")) {
+                ret = mapper.convertValue(eventData, AddParticipantSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferAccepted")) {
                 ret = mapper.convertValue(eventData, CallTransferAccepted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferFailed")) {
@@ -121,8 +123,11 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, RecognizeFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCanceled")) {
                 ret = mapper.convertValue(eventData, RecognizeCanceled.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RemoveParticipantFailed")) {
+                ret = mapper.convertValue(eventData, RemoveParticipantFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RemoveParticipantSucceeded")) {
+                ret = mapper.convertValue(eventData, RemoveParticipantSucceeded.class);
             }
-
             return ret;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);

@@ -10,14 +10,34 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.ingestion.implementation.Batcher;
+import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
+import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
+import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
+import com.azure.monitor.ingestion.models.LogsUploadError;
+import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
+import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
+import static com.azure.monitor.ingestion.implementation.Utils.createThreadPool;
+import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
+import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
+import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -33,12 +53,18 @@ import java.util.List;
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
-public final class LogsIngestionClient {
+public final class LogsIngestionClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
+    private final IngestionUsingDataCollectionRulesClient client;
 
-    private final LogsIngestionAsyncClient asyncClient;
+    // dynamic thread pool that scales up and down on demand.
+    private final ExecutorService threadPool;
+    private final Thread shutdownHook;
 
-    LogsIngestionClient(LogsIngestionAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
+        this.client = client;
+        this.threadPool = createThreadPool();
+        this.shutdownHook = registerShutdownHook(this.threadPool, 5);
     }
 
     /**
@@ -50,8 +76,8 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.upload -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsResult result = logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
-     * System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;;
+     * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
+     * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.upload -->
      *
@@ -59,13 +85,12 @@ public final class LogsIngestionClient {
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
-     * @return the result of the logs upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String ruleId, String streamName, List<Object> logs) {
-        return asyncClient.upload(ruleId, streamName, logs).block();
+    public void upload(String ruleId, String streamName, Iterable<Object> logs) {
+        upload(ruleId, streamName, logs, null);
     }
 
     /**
@@ -77,10 +102,10 @@ public final class LogsIngestionClient {
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
-     * UploadLogsResult result = logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
-     *         uploadLogsOptions, Context.NONE&#41;;
-     * System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;;
+     * LogsUploadOptions logsUploadOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs,
+     *         logsUploadOptions, Context.NONE&#41;;
+     * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
      * @param ruleId the data collection rule id that is configured to collect and transform the logs.
@@ -88,14 +113,13 @@ public final class LogsIngestionClient {
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
-     * @return the result of the logs upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String ruleId, String streamName,
-                                   List<Object> logs, UploadLogsOptions options) {
-        return asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
+    public void upload(String ruleId, String streamName,
+                                   Iterable<Object> logs, LogsUploadOptions options) {
+        upload(ruleId, streamName, logs, options, Context.NONE);
     }
 
     /**
@@ -110,14 +134,68 @@ public final class LogsIngestionClient {
      * @param options the options to configure the upload request.
      * @param context additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
-     * @return the result of the logs upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadLogsResult upload(String ruleId, String streamName,
-                                                         List<Object> logs, UploadLogsOptions options, Context context) {
-        return asyncClient.upload(ruleId, streamName, logs, options, context).block();
+    public void upload(String ruleId, String streamName,
+                       Iterable<Object> logs, LogsUploadOptions options, Context context) {
+        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
+        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+        Objects.requireNonNull(logs, "'logs' cannot be null.");
+
+        Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null ? null : options.getLogsUploadErrorConsumer();
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addHeader(CONTENT_ENCODING, GZIP);
+        requestOptions.setContext(context);
+
+        Stream<UploadLogsResponseHolder> responses = new Batcher(options, logs)
+            .toStream()
+            .map(r -> uploadToService(ruleId, streamName, requestOptions, r));
+
+        responses = submit(responses, getConcurrency(options))
+            .filter(response -> response.getException() != null);
+
+        if (uploadLogsErrorConsumer != null) {
+            responses.forEach(response -> uploadLogsErrorConsumer.accept(new LogsUploadError(response.getException(), response.getRequest().getLogs())));
+            return;
+        }
+
+        final int[] failedLogCount = new int[1];
+        List<HttpResponseException> exceptions = responses
+            .map(response -> {
+                failedLogCount[0] += response.getRequest().getLogs().size();
+                return response.getException();
+            })
+            .collect(Collectors.toList());
+
+        if (exceptions.size() > 0) {
+            throw LOGGER.logExceptionAsError(new LogsUploadException(exceptions, failedLogCount[0]));
+        }
+    }
+
+    private Stream<UploadLogsResponseHolder> submit(Stream<UploadLogsResponseHolder> responseStream, int concurrency) {
+        if (concurrency == 1) {
+            return responseStream;
+        }
+
+        try {
+            return threadPool.submit(() -> responseStream).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    private UploadLogsResponseHolder uploadToService(String ruleId, String streamName, RequestOptions requestOptions, LogsIngestionRequest request) {
+        HttpResponseException exception = null;
+        try {
+            client.uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions);
+        } catch (HttpResponseException ex) {
+            exception = ex;
+        }
+
+        return new UploadLogsResponseHolder(request, exception);
     }
 
     /**
@@ -153,6 +231,28 @@ public final class LogsIngestionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
             String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
-        return asyncClient.uploadWithResponse(ruleId, streamName, logs, requestOptions).block();
+        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
+        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+        Objects.requireNonNull(logs, "'logs' cannot be null.");
+
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+
+        requestOptions.addRequestCallback(request -> {
+            HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
+            if (httpHeader == null) {
+                BinaryData gzippedRequest = BinaryData.fromBytes(gzipRequest(logs.toBytes()));
+                request.setBody(gzippedRequest);
+                request.setHeader(CONTENT_ENCODING, GZIP);
+            }
+        });
+        return client.uploadWithResponse(ruleId, streamName, logs, requestOptions);
+    }
+
+    @Override
+    public void close() {
+        threadPool.shutdown();
+        Runtime.getRuntime().removeShutdownHook(shutdownHook);
     }
 }

@@ -26,6 +26,10 @@ public final class TableCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of TableCreateUpdateProperties class. */
+    public TableCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a Table.
      *

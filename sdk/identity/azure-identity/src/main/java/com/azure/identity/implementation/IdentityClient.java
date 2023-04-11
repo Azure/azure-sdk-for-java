@@ -492,6 +492,10 @@ public class IdentityClient extends IdentityClientBase {
                     builder.clientCredential(ClientCredentialFactory
                         .createFromClientAssertion(clientAssertionSupplier.get()));
                 }
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+                    builder.claims(customClaimRequest);
+                }
                 return confidentialClient.acquireToken(builder.build());
             }
         )).map(MsalToken::new);
@@ -598,6 +602,11 @@ public class IdentityClient extends IdentityClientBase {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest
+                        .formatAsClaimsRequest(request.getClaims());
+                    parametersBuilder.claims(customClaimRequest);
+                }
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -890,7 +899,7 @@ public class IdentityClient extends IdentityClientBase {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    private Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
+    public Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
 
         return clientAssertionAccessor.getValue()
             .flatMap(assertionToken -> Mono.fromCallable(() -> {
@@ -1031,7 +1040,7 @@ public class IdentityClient extends IdentityClientBase {
             payload.append("?resource=");
             payload.append(urlEncode(resource));
             payload.append("&api-version=");
-            payload.append(MSI_ENDPOINT_VERSION);
+            payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
                 if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
                     payload.append("&client_id=");
@@ -1249,24 +1258,6 @@ public class IdentityClient extends IdentityClientBase {
         CompletableFuture<IAuthenticationResult> completableFuture = new CompletableFuture<>();
         completableFuture.completeExceptionally(e);
         return completableFuture;
-    }
-
-    /**
-     * Get the configured tenant id.
-     *
-     * @return the tenant id.
-     */
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    /**
-     * Get the configured client id.
-     *
-     * @return the client id.
-     */
-    public String getClientId() {
-        return clientId;
     }
 
     /**

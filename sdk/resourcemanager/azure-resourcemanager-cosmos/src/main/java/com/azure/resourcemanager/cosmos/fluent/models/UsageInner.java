@@ -42,6 +42,10 @@ public class UsageInner {
     @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long currentValue;
 
+    /** Creates an instance of UsageInner class. */
+    public UsageInner() {
+    }
+
     /**
      * Get the unit property: The unit of the metric.
      *

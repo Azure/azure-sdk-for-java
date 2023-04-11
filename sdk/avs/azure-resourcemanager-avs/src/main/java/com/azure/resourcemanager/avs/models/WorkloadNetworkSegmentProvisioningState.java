@@ -30,6 +30,15 @@ public final class WorkloadNetworkSegmentProvisioningState
     public static final WorkloadNetworkSegmentProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of WorkloadNetworkSegmentProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkSegmentProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkloadNetworkSegmentProvisioningState from its string representation.
      *
      * @param name a name to look for.

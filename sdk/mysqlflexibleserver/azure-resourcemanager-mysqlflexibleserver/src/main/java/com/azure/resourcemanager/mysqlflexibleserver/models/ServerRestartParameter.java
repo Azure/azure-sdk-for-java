@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ServerRestartParameter {
     /*
-     * Whether or not failover to standby server when restarting a server with
-     * high availability enabled.
+     * Whether or not failover to standby server when restarting a server with high availability enabled.
      */
     @JsonProperty(value = "restartWithFailover")
     private EnableStatusEnum restartWithFailover;
@@ -22,6 +21,10 @@ public final class ServerRestartParameter {
      */
     @JsonProperty(value = "maxFailoverSeconds")
     private Integer maxFailoverSeconds;
+
+    /** Creates an instance of ServerRestartParameter class. */
+    public ServerRestartParameter() {
+    }
 
     /**
      * Get the restartWithFailover property: Whether or not failover to standby server when restarting a server with

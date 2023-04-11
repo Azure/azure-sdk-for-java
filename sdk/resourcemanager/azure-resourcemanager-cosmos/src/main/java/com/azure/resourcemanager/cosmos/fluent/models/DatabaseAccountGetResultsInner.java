@@ -23,6 +23,7 @@ import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
@@ -57,6 +58,10 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of DatabaseAccountGetResultsInner class. */
+    public DatabaseAccountGetResultsInner() {
+    }
 
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
@@ -845,6 +850,31 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
             this.innerProperties = new DatabaseAccountGetProperties();
         }
         this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
+        return this;
+    }
+
+    /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 

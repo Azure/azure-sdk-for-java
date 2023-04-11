@@ -40,6 +40,10 @@ public final class WeeklySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
+    /** Creates an instance of WeeklySchedule class. */
+    public WeeklySchedule() {
+    }
+
     /**
      * Get the snapshotsToKeep property: Weekly snapshot count to keep.
      *

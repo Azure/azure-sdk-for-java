@@ -23,6 +23,10 @@ public final class Privilege {
     @JsonProperty(value = "actions")
     private List<String> actions;
 
+    /** Creates an instance of Privilege class. */
+    public Privilege() {
+    }
+
     /**
      * Get the resource property: An Azure Cosmos DB Mongo DB Resource.
      *

@@ -14,7 +14,7 @@ public final class AbstractSummaryAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
-    private Integer maxSentenceCount;
+    private Integer sentenceCount;
 
     /**
      * Get the name of action.
@@ -85,22 +85,22 @@ public final class AbstractSummaryAction {
     }
 
     /**
-     * Get the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
+     * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
-     * @return the maxSentenceCount value.
+     * @return the sentenceCount value.
      */
-    public Integer getMaxSentenceCount() {
-        return this.maxSentenceCount;
+    public Integer getSentenceCount() {
+        return this.sentenceCount;
     }
 
     /**
-     * Set the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
+     * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
-     * @param maxSentenceCount the maxSentenceCount value to set.
+     * @param sentenceCount the sentenceCount value to set.
      * @return the AbstractSummaryAction object itself.
      */
-    public AbstractSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
-        this.maxSentenceCount = maxSentenceCount;
+    public AbstractSummaryAction setSentenceCount(Integer sentenceCount) {
+        this.sentenceCount = sentenceCount;
         return this;
     }
 }

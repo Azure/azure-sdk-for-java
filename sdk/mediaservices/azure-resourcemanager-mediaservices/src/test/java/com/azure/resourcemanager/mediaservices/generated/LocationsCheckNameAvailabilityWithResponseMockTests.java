@@ -31,7 +31,7 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"cvhrfsp\",\"message\":\"agr\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"zfjltfvnzcyjto\",\"message\":\"vopvp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .locations()
                 .checkNameAvailabilityWithResponse(
-                    "wotey",
-                    new CheckNameAvailabilityInput().withName("cluqovekqvgqo").withType("ifzmpjwyivqi"),
+                    "otwypundmb",
+                    new CheckNameAvailabilityInput().withName("ugcmjkavlgorb").withType("tp"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("cvhrfsp", response.reason());
-        Assertions.assertEquals("agr", response.message());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("zfjltfvnzcyjto", response.reason());
+        Assertions.assertEquals("vopvp", response.message());
     }
 }

@@ -16,6 +16,10 @@ public final class GetSsisObjectMetadataRequest {
     @JsonProperty(value = "metadataPath")
     private String metadataPath;
 
+    /** Creates an instance of GetSsisObjectMetadataRequest class. */
+    public GetSsisObjectMetadataRequest() {
+    }
+
     /**
      * Get the metadataPath property: Metadata path.
      *

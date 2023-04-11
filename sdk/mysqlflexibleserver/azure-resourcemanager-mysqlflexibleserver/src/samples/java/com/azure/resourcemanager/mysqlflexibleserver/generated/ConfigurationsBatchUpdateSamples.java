@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationForBatchUpdate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.util.Arrays;
 
 /** Samples for Configurations BatchUpdate. */
 public final class ConfigurationsBatchUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationsBatchUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationsBatchUpdate.json
      */
     /**
      * Sample code: ConfigurationList.
@@ -30,7 +30,8 @@ public final class ConfigurationsBatchUpdateSamples {
                         Arrays
                             .asList(
                                 new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
-                                new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8"))),
-                Context.NONE);
+                                new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8")))
+                    .withResetAllToDefault(ResetAllToDefault.FALSE),
+                com.azure.core.util.Context.NONE);
     }
 }

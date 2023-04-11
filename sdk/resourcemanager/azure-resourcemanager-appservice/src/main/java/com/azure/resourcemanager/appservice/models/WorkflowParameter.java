@@ -34,6 +34,10 @@ public class WorkflowParameter {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of WorkflowParameter class. */
+    public WorkflowParameter() {
+    }
+
     /**
      * Get the type property: The type.
      *

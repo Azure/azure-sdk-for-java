@@ -63,12 +63,10 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface WorkflowRunActionRepetitionsRequestHistoriesService {
+    public interface WorkflowRunActionRepetitionsRequestHistoriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}"
-                + "/actions/{actionName}/repetitions/{repetitionName}/requestHistories")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RequestHistoryListResult>> list(
@@ -86,9 +84,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}"
-                + "/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RequestHistoryInner>> get(
@@ -580,42 +576,7 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         String requestHistoryName) {
         return getWithResponseAsync(
                 resourceGroupName, name, workflowName, runName, actionName, repetitionName, requestHistoryName)
-            .flatMap(
-                (Response<RequestHistoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a workflow run repetition request history.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The request history name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RequestHistoryInner get(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName) {
-        return getAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName, requestHistoryName)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -650,9 +611,46 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     }
 
     /**
+     * Gets a workflow run repetition request history.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
+     * @param requestHistoryName The request history name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run repetition request history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RequestHistoryInner get(
+        String resourceGroupName,
+        String name,
+        String workflowName,
+        String runName,
+        String actionName,
+        String repetitionName,
+        String requestHistoryName) {
+        return getWithResponse(
+                resourceGroupName,
+                name,
+                workflowName,
+                runName,
+                actionName,
+                repetitionName,
+                requestHistoryName,
+                Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -688,7 +686,8 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

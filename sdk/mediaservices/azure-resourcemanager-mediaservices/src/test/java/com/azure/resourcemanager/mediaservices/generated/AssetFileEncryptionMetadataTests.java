@@ -15,23 +15,23 @@ public final class AssetFileEncryptionMetadataTests {
         AssetFileEncryptionMetadata model =
             BinaryData
                 .fromString(
-                    "{\"initializationVector\":\"hmgkbrpyy\",\"assetFileName\":\"ibnuqqkpik\",\"assetFileId\":\"3c4ccbd1-1b62-414a-af01-184e1c622094\"}")
+                    "{\"initializationVector\":\"sucocmnyyazttbtw\",\"assetFileName\":\"qpuedckzywbiex\",\"assetFileId\":\"028a7ece-09bc-4d14-83ec-dceeb5a9710f\"}")
                 .toObject(AssetFileEncryptionMetadata.class);
-        Assertions.assertEquals("hmgkbrpyy", model.initializationVector());
-        Assertions.assertEquals("ibnuqqkpik", model.assetFileName());
-        Assertions.assertEquals(UUID.fromString("3c4ccbd1-1b62-414a-af01-184e1c622094"), model.assetFileId());
+        Assertions.assertEquals("sucocmnyyazttbtw", model.initializationVector());
+        Assertions.assertEquals("qpuedckzywbiex", model.assetFileName());
+        Assertions.assertEquals(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"), model.assetFileId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssetFileEncryptionMetadata model =
             new AssetFileEncryptionMetadata()
-                .withInitializationVector("hmgkbrpyy")
-                .withAssetFileName("ibnuqqkpik")
-                .withAssetFileId(UUID.fromString("3c4ccbd1-1b62-414a-af01-184e1c622094"));
+                .withInitializationVector("sucocmnyyazttbtw")
+                .withAssetFileName("qpuedckzywbiex")
+                .withAssetFileId(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"));
         model = BinaryData.fromObject(model).toObject(AssetFileEncryptionMetadata.class);
-        Assertions.assertEquals("hmgkbrpyy", model.initializationVector());
-        Assertions.assertEquals("ibnuqqkpik", model.assetFileName());
-        Assertions.assertEquals(UUID.fromString("3c4ccbd1-1b62-414a-af01-184e1c622094"), model.assetFileId());
+        Assertions.assertEquals("sucocmnyyazttbtw", model.initializationVector());
+        Assertions.assertEquals("qpuedckzywbiex", model.assetFileName());
+        Assertions.assertEquals(UUID.fromString("028a7ece-09bc-4d14-83ec-dceeb5a9710f"), model.assetFileId());
     }
 }

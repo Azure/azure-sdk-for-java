@@ -17,6 +17,10 @@ public final class DiagnoseVirtualNetworkResultInner {
     @JsonProperty(value = "findings")
     private List<String> findings;
 
+    /** Creates an instance of DiagnoseVirtualNetworkResultInner class. */
+    public DiagnoseVirtualNetworkResultInner() {
+    }
+
     /**
      * Get the findings property: The list of network connectivity diagnostic finding.
      *
