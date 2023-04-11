@@ -4,12 +4,16 @@
 package com.azure.monitor.ingestion;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -107,6 +111,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+//    @Disabled
     public void testUploadLogsProtocolMethod() {
         List<Object> logs = getObjects(10);
         LogsIngestionClient client = clientBuilder.buildClient();

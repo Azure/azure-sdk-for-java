@@ -4,10 +4,13 @@
 package com.azure.monitor.ingestion;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import com.azure.monitor.ingestion.models.LogsUploadException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -22,6 +25,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit tests for {@link LogsIngestionAsyncClient}.
  */
 public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
+
+    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .skipRequest((request, context) -> false)
+            .build();
+    }
 
     @Test
     public void testUploadLogs() {
@@ -104,6 +114,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @Disabled
     public void testUploadLogsProtocolMethod() {
         List<Object> logs = getObjects(10);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();

@@ -17,6 +17,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,14 +33,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Base test class for logs ingestion client tests.
  */
-public abstract class LogsIngestionTestBase extends TestBase {
+public abstract class LogsIngestionTestBase extends TestProxyTestBase {
     protected LogsIngestionClientBuilder clientBuilder;
     protected String dataCollectionEndpoint;
     protected String dataCollectionRuleId;
     protected String streamName;
 
     @BeforeEach
-    public void setup() {
+    public void setupTest() {
         dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
         dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-a64851bc17714f0483d1e96b5d84953b");
         streamName = "Custom-MyTableRawData";
