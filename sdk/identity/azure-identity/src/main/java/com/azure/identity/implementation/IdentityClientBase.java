@@ -559,7 +559,7 @@ public abstract class IdentityClientBase {
                                                 +
                                                 "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                                                 +
-                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                                                "https://aka.ms/azsdk/java/identity/azdevclicredential/troubleshoot"));
                     }
                     output.append(line);
                 }
