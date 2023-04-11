@@ -247,16 +247,14 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 20;
-        //BinaryData data = BinaryData.fromStream(new TestInputStream(size), size);
-        //UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
+        BinaryData data = BinaryData.fromStream(new TestInputStream(size), size);
+        UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
 
         TestOutputStream output = new TestOutputStream();
-        client.downloadStream("sha256:2919f5c26b8c9112f9b68203bf60b8b88c5f9cd90064e1469e54fb50e78a1f29", Channels.newChannel(output));
+        client.downloadStream(result.getDigest(), Channels.newChannel(output));
         output.flush();
         assertEquals(size, output.getPosition());
-        //assertEquals(size, result.getSizeInBytes());
-
-        Thread.sleep(30000);
+        assertEquals(size, result.getSizeInBytes());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
