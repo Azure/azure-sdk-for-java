@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -18,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
+    private static final HttpHeaderName X_MS_FOO = HttpHeaderName.fromString("x-ms-foo");
+
     @Test
     public void addQueryParam() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
@@ -35,13 +38,13 @@ public class RequestOptionsTests {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
         RequestOptions options = new RequestOptions()
-            .addHeader("x-ms-foo", "bar")
-            .addHeader("Content-Type", "application/json");
+            .addHeader(X_MS_FOO, "bar")
+            .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
-        assertEquals("bar", headers.getValue("x-ms-foo"));
-        assertEquals("application/json", headers.getValue("Content-Type"));
+        assertEquals("bar", headers.getValue(X_MS_FOO));
+        assertEquals("application/json", headers.getValue(HttpHeaderName.CONTENT_TYPE));
     }
 
     @Test
@@ -66,16 +69,16 @@ public class RequestOptionsTests {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
         RequestOptions options = new RequestOptions()
-            .addHeader("x-ms-foo", "bar")
+            .addHeader(X_MS_FOO, "bar")
             .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUrl("https://request.url"))
             .addQueryParam("$skipToken", "1")
-            .addRequestCallback(r -> r.setHeader("x-ms-foo", "baz"));
+            .addRequestCallback(r -> r.setHeader(X_MS_FOO, "baz"));
 
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
-        assertEquals("baz", headers.getValue("x-ms-foo"));
+        assertEquals("baz", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://request.url?%24skipToken=1", request.getUrl().toString());
     }

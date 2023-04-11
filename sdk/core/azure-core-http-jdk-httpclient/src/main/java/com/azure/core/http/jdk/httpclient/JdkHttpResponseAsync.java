@@ -29,7 +29,6 @@ final class JdkHttpResponseAsync extends JdkHttpResponseBase {
         return this.contentFlux.doFinally(signalType -> disposed = true);
     }
 
-
     @Override
     public void close() {
         if (!this.disposed) {

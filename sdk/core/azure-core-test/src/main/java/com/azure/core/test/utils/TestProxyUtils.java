@@ -4,6 +4,7 @@
 package com.azure.core.test.utils;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -32,6 +33,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 
 /**
@@ -62,12 +64,17 @@ public class TestProxyUtils {
 
     private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";
     private static final String DELEGATION_KEY_TENANTID_REGEX = "(?:<SignedTid>)(?<secret>.*)(?:</SignedTid>)";
-
-    /**
-     * Get the proxy URL.
-     *
-     * @return A string containing the proxy URL.
-     */
+    private static final HttpHeaderName X_RECORDING_UPSTREAM_BASE_URI =
+        HttpHeaderName.fromString("x-recording-upstream-base-uri");
+    private static final HttpHeaderName X_RECORDING_MODE = HttpHeaderName.fromString("x-recording-mode");
+    private static final HttpHeaderName X_REQUEST_MISMATCH_ERROR =
+        HttpHeaderName.fromString("x-request-mismatch-error");
+    private static final HttpHeaderName X_REQUEST_KNOWN_EXCEPTION_ERROR =
+        HttpHeaderName.fromString("x-request-known-exception-error");
+    private static final HttpHeaderName X_REQUEST_EXCEPTION_EXCEPTION_ERROR =
+        HttpHeaderName.fromString("x-request-exception-exception-error");
+    private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER =
+        HttpHeaderName.fromString("x-abstraction-identifier");
 
     /**
      * Adds headers required for communication with the test proxy.
@@ -79,7 +86,7 @@ public class TestProxyUtils {
      * @throws RuntimeException Construction of one of the URLs failed.
      */
     public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode) {
-        HttpHeader upstreamUri = request.getHeaders().get("x-recording-upstream-base-uri");
+        HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
         proxyUrlBuilder.setScheme(proxyUrl.getProtocol());
@@ -97,9 +104,9 @@ public class TestProxyUtils {
 
             HttpHeaders headers = request.getHeaders();
             if (upstreamUri == null) {
-                headers.set("x-recording-upstream-base-uri", originalUrl.toString());
-                headers.set("x-recording-mode", mode);
-                headers.set("x-recording-id", xRecordingId);
+                headers.set(X_RECORDING_UPSTREAM_BASE_URI, originalUrl.toString());
+                headers.set(X_RECORDING_MODE, mode);
+                headers.set(X_RECORDING_ID, xRecordingId);
             }
 
             request.setUrl(proxyUrlBuilder.toUrl());
@@ -116,7 +123,9 @@ public class TestProxyUtils {
      */
     public static HttpResponse revertUrl(HttpResponse response) {
         try {
-            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders().getValue("x-recording-upstream-base-uri")).toUrl();
+            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders()
+                .getValue(X_RECORDING_UPSTREAM_BASE_URI))
+                .toUrl();
             UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
@@ -156,15 +165,16 @@ public class TestProxyUtils {
      * @param httpResponse The {@link HttpResponse} from the test proxy.
      */
     public static void checkForTestProxyErrors(HttpResponse httpResponse) {
-        String error = httpResponse.getHeaderValue("x-request-mismatch-error");
+        String error = httpResponse.getHeaderValue(X_REQUEST_MISMATCH_ERROR);
         if (error == null) {
-            error = httpResponse.getHeaderValue("x-request-known-exception-error");
+            error = httpResponse.getHeaderValue(X_REQUEST_KNOWN_EXCEPTION_ERROR);
         }
         if (error == null) {
-            error = httpResponse.getHeaderValue("x-request-exception-exception-error");
+            error = httpResponse.getHeaderValue(X_REQUEST_EXCEPTION_EXCEPTION_ERROR);
         }
         if (error != null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Test proxy exception: "
+                + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
         }
     }
 
@@ -308,7 +318,7 @@ public class TestProxyUtils {
         HttpRequest request
             = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", proxyUrl.toString()))
             .setBody(requestBody);
-        request.setHeader("x-abstraction-identifier", sanitizerType);
+        request.setHeader(X_ABSTRACTION_IDENTIFIER, sanitizerType);
         return request;
     }
 
@@ -345,7 +355,7 @@ public class TestProxyUtils {
                     throw new RuntimeException(String.format("Matcher type {%s} not supported", testProxyMatcher.getType()));
             }
 
-            request.setHeader("x-abstraction-identifier", matcherType);
+            request.setHeader(X_ABSTRACTION_IDENTIFIER, matcherType);
             return request;
         }).collect(Collectors.toList());
     }
