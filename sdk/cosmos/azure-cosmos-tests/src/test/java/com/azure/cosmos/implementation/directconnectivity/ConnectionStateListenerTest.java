@@ -107,7 +107,8 @@ public class ConnectionStateListenerTest {
             addressResolver,
             null,
             null,
-                null);
+            null
+        );
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
