@@ -19,14 +19,15 @@
 - Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
 - Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 #### Known Bug
 - `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClasifyDocument` 
 method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 ## 4.0.5 (2023-03-16)
 
