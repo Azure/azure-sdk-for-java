@@ -74,7 +74,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         completeSink(openConnectionsTaskSinkBackUp);
     }
 
-    public ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisher() {
+    public synchronized ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
@@ -152,12 +152,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // this method provides for a way to resume emitting pushed tasks to
     // the sink
     private synchronized void instantiateOpenConnectionsPublisher() {
-        logger.debug("Reinitialize open connections task sink");
+        logger.debug("Reinstantiate open connections task sink");
         openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
         openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
 
-    private synchronized void toggleOpenConnectionsAggressiveness() {
+    private void toggleOpenConnectionsAggressiveness() {
         if (aggressivenessHint.get() == AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE) {
             aggressivenessHint.set(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE);
         } else {
@@ -169,11 +169,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         Sinks.EmitResult completeEmitResult = sink.tryEmitComplete();
 
         if (completeEmitResult == Sinks.EmitResult.OK) {
-            logger.debug("");
-        } else if (completeEmitResult == Sinks.EmitResult.FAIL_CANCELLED || completeEmitResult == Sinks.EmitResult.FAIL_TERMINATED) {
-            logger.debug("");
+            logger.debug("Sink completed.");
+        } else if (completeEmitResult == Sinks.EmitResult.FAIL_CANCELLED ||
+                completeEmitResult == Sinks.EmitResult.FAIL_TERMINATED) {
+            logger.debug("Sink already completed, EmitResult: {}", completeEmitResult);
         } else {
-            logger.warn("");
+            logger.warn("Sink completion failed, EmitResult: {}", completeEmitResult);
         }
     }
 
