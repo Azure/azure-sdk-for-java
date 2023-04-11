@@ -3,25 +3,32 @@
 
 package com.azure.core.credential;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenCacheTests {
     private static final Random RANDOM = new Random();
 
+    @BeforeEach
+    void beforeEach() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
     @Test
     public void testOnlyOneThreadRefreshesToken() throws Exception {
         AtomicLong refreshes = new AtomicLong(0);
@@ -32,17 +39,13 @@ public class TokenCacheTests {
             return incrementalRemoteGetTokenAsync(new AtomicInteger(1));
         });
 
-        CountDownLatch latch = new CountDownLatch(1);
-
-        Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+        StepVerifier.create(Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
             .parallel(10)
-            // Runs cache.getToken() on 10 different threads
-            .runOn(Schedulers.boundedElastic())
-            .flatMap(start -> cache.getToken())
-            .doOnComplete(latch::countDown)
-            .subscribe();
-
-        latch.await();
+                // Runs cache.getToken() on 10 different threads
+                .runOn(Schedulers.boundedElastic())
+                .flatMap(start -> cache.getToken())
+                .then())
+            .verifyComplete();
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
@@ -59,8 +62,8 @@ public class TokenCacheTests {
         });
 
         VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
-        CountDownLatch latch = new CountDownLatch(1);
 
+        CountDownLatch latch = new CountDownLatch(1);
         Flux.interval(Duration.ofMillis(100), virtualTimeScheduler)
             .take(100)
             .flatMap(i -> cache.getToken())
@@ -69,9 +72,10 @@ public class TokenCacheTests {
 
         virtualTimeScheduler.advanceTimeBy(Duration.ofSeconds(40));
 
-        latch.await();
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
+
         // At most 10 requests should do actual token acquisition, use 11 for safe
-        Assertions.assertTrue(refreshes.get() <= 11);
+        assertTrue(refreshes.get() <= 11);
     }
 
     private Mono<AccessToken> remoteGetTokenThatExpiresSoonAsync() {
