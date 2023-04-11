@@ -1153,7 +1153,7 @@ public class BinaryDataTest {
         BinaryDataAsProperty deserializedModel = adapter.deserialize(json, BinaryDataAsProperty.class, SerializerEncoding.JSON);
 
         BinaryData propertyAfterDeserialize = deserializedModel.getProperty();
-        Map<String, String> deserializedObject = propertyAfterDeserialize.toObject(new TypeReference<>() {});
+        Map<String, String> deserializedObject = propertyAfterDeserialize.toObject(new TypeReference<Map<String, String>>() {});
 
         // succeed, OBJECT is good
         Assertions.assertEquals("john", deserializedObject.get("name"));
