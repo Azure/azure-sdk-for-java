@@ -32,10 +32,10 @@ public final class SendEventOptions {
     /**
      * Sets the ackId option.
      *
-     * @param ackId the ackId option.
+     * @param ackId the ackId option. Client will provide auto increment ID, if set to {@code null}.
      * @return itself.
      */
-    public SendEventOptions setAckId(long ackId) {
+    public SendEventOptions setAckId(Long ackId) {
         this.ackId = ackId;
         return this;
     }

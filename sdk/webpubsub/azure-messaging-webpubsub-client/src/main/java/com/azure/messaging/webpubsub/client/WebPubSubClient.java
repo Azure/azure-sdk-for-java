@@ -11,7 +11,6 @@ import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSe
 import com.azure.messaging.webpubsub.client.models.ConnectFailedException;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
-import com.azure.messaging.webpubsub.client.models.EventHandler;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
@@ -22,6 +21,8 @@ import com.azure.messaging.webpubsub.client.models.StoppedEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.scheduler.Schedulers;
+
+import java.util.function.Consumer;
 
 /**
  * The WebPubSubAsync client.
@@ -58,7 +59,7 @@ public class WebPubSubClient {
      * @exception IllegalStateException thrown if client is not currently stopped.
      * @exception ConnectFailedException thrown if failed to connect to server.
      */
-    public void start() {
+    public synchronized void start() {
         asyncClient.start(() -> {
             this.asyncClient.receiveGroupMessageEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(GROUP_MESSAGE_EVENT, event));
@@ -80,7 +81,7 @@ public class WebPubSubClient {
      *
      * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
      */
-    public void stop() {
+    public synchronized void stop() {
         asyncClient.stop().block();
     }
 
@@ -89,7 +90,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for GroupMessageEvent.
      */
-    public void addOnGroupMessageEventHandler(EventHandler<GroupMessageEvent> eventEventHandler) {
+    public void addOnGroupMessageEventHandler(Consumer<GroupMessageEvent> eventEventHandler) {
         eventHandlerCollection.addEventHandler(GROUP_MESSAGE_EVENT, eventEventHandler);
     }
 
@@ -98,7 +99,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for GroupMessageEvent.
      */
-    public void removeOnGroupMessageEventHandler(EventHandler<GroupMessageEvent> eventEventHandler) {
+    public void removeOnGroupMessageEventHandler(Consumer<GroupMessageEvent> eventEventHandler) {
         eventHandlerCollection.removeEventHandler(GROUP_MESSAGE_EVENT, eventEventHandler);
     }
 
@@ -107,7 +108,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for ServerMessageEvent.
      */
-    public void addOnServerMessageEventHandler(EventHandler<ServerMessageEvent> eventEventHandler) {
+    public void addOnServerMessageEventHandler(Consumer<ServerMessageEvent> eventEventHandler) {
         eventHandlerCollection.addEventHandler(SERVER_MESSAGE_EVENT, eventEventHandler);
     }
 
@@ -116,7 +117,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for ServerMessageEvent.
      */
-    public void removeOnServerMessageEventHandler(EventHandler<ServerMessageEvent> eventEventHandler) {
+    public void removeOnServerMessageEventHandler(Consumer<ServerMessageEvent> eventEventHandler) {
         eventHandlerCollection.removeEventHandler(SERVER_MESSAGE_EVENT, eventEventHandler);
     }
 
@@ -125,7 +126,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for ConnectedEvent.
      */
-    public void addOnConnectedEventHandler(EventHandler<ConnectedEvent> eventEventHandler) {
+    public void addOnConnectedEventHandler(Consumer<ConnectedEvent> eventEventHandler) {
         eventHandlerCollection.addEventHandler(CONNECT_EVENT, eventEventHandler);
     }
 
@@ -134,7 +135,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for ConnectedEvent.
      */
-    public void removeOnConnectedEventHandler(EventHandler<ConnectedEvent> eventEventHandler) {
+    public void removeOnConnectedEventHandler(Consumer<ConnectedEvent> eventEventHandler) {
         eventHandlerCollection.removeEventHandler(CONNECT_EVENT, eventEventHandler);
     }
 
@@ -143,7 +144,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for DisconnectedEvent.
      */
-    public void addOnDisconnectedEventHandler(EventHandler<DisconnectedEvent> eventEventHandler) {
+    public void addOnDisconnectedEventHandler(Consumer<DisconnectedEvent> eventEventHandler) {
         eventHandlerCollection.addEventHandler(DISCONNECT_EVENT, eventEventHandler);
     }
 
@@ -152,7 +153,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for DisconnectedEvent.
      */
-    public void removeOnDisconnectedEventHandler(EventHandler<DisconnectedEvent> eventEventHandler) {
+    public void removeOnDisconnectedEventHandler(Consumer<DisconnectedEvent> eventEventHandler) {
         eventHandlerCollection.removeEventHandler(DISCONNECT_EVENT, eventEventHandler);
     }
 
@@ -161,7 +162,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for StoppedEvent.
      */
-    public void addOnStoppedEventHandler(EventHandler<StoppedEvent> eventEventHandler) {
+    public void addOnStoppedEventHandler(Consumer<StoppedEvent> eventEventHandler) {
         eventHandlerCollection.addEventHandler(STOPPED_EVENT, eventEventHandler);
     }
 
@@ -170,7 +171,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for StoppedEvent.
      */
-    public void removeOnStoppedEventHandler(EventHandler<StoppedEvent> eventEventHandler) {
+    public void removeOnStoppedEventHandler(Consumer<StoppedEvent> eventEventHandler) {
         eventHandlerCollection.removeEventHandler(STOPPED_EVENT, eventEventHandler);
     }
 
@@ -179,7 +180,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void addOnRejoinGroupFailedEventHandler(EventHandler<RejoinGroupFailedEvent> eventEventHandler) {
+    public void addOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> eventEventHandler) {
         eventHandlerCollection.addEventHandler(REJOIN_GROUP_FAILED_EVENT, eventEventHandler);
     }
 
@@ -188,7 +189,7 @@ public class WebPubSubClient {
      *
      * @param eventEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void removeOnRejoinGroupFailedEventHandler(EventHandler<RejoinGroupFailedEvent> eventEventHandler) {
+    public void removeOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> eventEventHandler) {
         eventHandlerCollection.removeEventHandler(REJOIN_GROUP_FAILED_EVENT, eventEventHandler);
     }
 
@@ -207,11 +208,11 @@ public class WebPubSubClient {
      * Joins a group.
      *
      * @param group the group name.
-     * @param ackId the ackId.
+     * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
      * @exception SendMessageFailedException thrown if client not connected, or join group message failed.
      * @return the result.
      */
-    public WebPubSubResult joinGroup(String group, long ackId) {
+    public WebPubSubResult joinGroup(String group, Long ackId) {
         return asyncClient.joinGroup(group, ackId).block();
     }
 
@@ -230,11 +231,11 @@ public class WebPubSubClient {
      * Leaves a group.
      *
      * @param group the group name.
-     * @param ackId the ackId.
+     * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
      * @exception SendMessageFailedException thrown if client not connected, or leave group message failed.
      * @return the result.
      */
-    public WebPubSubResult leaveGroup(String group, long ackId) {
+    public WebPubSubResult leaveGroup(String group, Long ackId) {
         return asyncClient.leaveGroup(group, ackId).block();
     }
 

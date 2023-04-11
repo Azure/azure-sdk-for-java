@@ -13,7 +13,6 @@ import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.models.ConnectFailedException;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
-import com.azure.messaging.webpubsub.client.models.EventHandler;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
@@ -32,6 +31,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class ClientTests extends TestBase {
 
@@ -299,8 +299,8 @@ public class ClientTests extends TestBase {
 
         List<String> messageReceived = new ArrayList<>();
 
-        EventHandler<GroupMessageEvent> eventHandler = event -> {
-            messageReceived.add(event.getMessage().getData().toString());
+        Consumer<GroupMessageEvent> eventHandler = event -> {
+            messageReceived.add(event.getData().toString());
             latch.countDown();
         };
 

@@ -7,10 +7,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
-import com.azure.messaging.webpubsub.client.models.AckMessageError;
-import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
-import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
-import com.azure.messaging.webpubsub.client.models.ServerDataMessage;
+import com.azure.messaging.webpubsub.client.models.AckResponseError;
+import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Locale;
 
 public final class MessageDecoder {
 
@@ -52,7 +51,7 @@ public final class MessageDecoder {
 
     private static Object parseMessage(JsonNode jsonNode) throws IOException {
         Object msg = null;
-        WebPubSubDataType type = WebPubSubDataType.valueOf(jsonNode.get("dataType").asText().toUpperCase(Locale.ROOT));
+        WebPubSubDataType type = WebPubSubDataType.fromString(jsonNode.get("dataType").asText());
         BinaryData data = parseData(jsonNode, type);
         switch (jsonNode.get("from").asText()) {
             case "group":
@@ -110,7 +109,7 @@ public final class MessageDecoder {
             .setSuccess(jsonNode.get("success").asBoolean());
         if (jsonNode.has("error")) {
             JsonNode errorNode = jsonNode.get("error");
-            ackMessage.setError(new AckMessageError(
+            ackMessage.setError(new AckResponseError(
                 errorNode.get("name").asText(),
                 errorNode.get("message").asText()));
         }
@@ -119,20 +118,13 @@ public final class MessageDecoder {
 
     private static BinaryData parseData(JsonNode jsonNode, WebPubSubDataType type) throws IOException {
         BinaryData data = null;
-        switch (type) {
-            case TEXT:
-                data = BinaryData.fromString(jsonNode.get("data").asText());
-                break;
-
-            case BINARY:
-            case PROTOBUF:
-                data = BinaryData.fromBytes(jsonNode.get("data").binaryValue());
-                break;
-
-            case JSON:
-            default:
-                data = BinaryData.fromObject(jsonNode.get("data"));
-                break;
+        if (type == WebPubSubDataType.TEXT) {
+            data = BinaryData.fromString(jsonNode.get("data").asText());
+        } else if (type == WebPubSubDataType.BINARY || type == WebPubSubDataType.PROTOBUF) {
+            data = BinaryData.fromBytes(jsonNode.get("data").binaryValue());
+        } else {
+            // WebPubSubDataType.JSON
+            data = BinaryData.fromObject(jsonNode.get("data"));
         }
         return data;
     }

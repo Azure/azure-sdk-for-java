@@ -11,7 +11,7 @@ import java.io.Serializable;
  * The error from AckMessage.
  */
 @Immutable
-public final class AckMessageError implements Serializable {
+public final class AckResponseError implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -30,7 +30,7 @@ public final class AckMessageError implements Serializable {
      * @param name the name of the error.
      * @param message the error message.
      */
-    public AckMessageError(String name, String message) {
+    public AckResponseError(String name, String message) {
         this.name = name;
         this.message = message;
     }

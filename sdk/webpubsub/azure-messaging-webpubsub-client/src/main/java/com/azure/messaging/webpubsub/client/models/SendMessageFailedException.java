@@ -23,7 +23,7 @@ public final class SendMessageFailedException extends AzureException {
     /**
      * the "error" of response message.
      */
-    private final AckMessageError error;
+    private final AckResponseError error;
 
     /**
      * Creates a new instance of SendMessageFailedException.
@@ -35,7 +35,7 @@ public final class SendMessageFailedException extends AzureException {
      * @param error the "error" of response message.
      */
     public SendMessageFailedException(String message, Throwable cause,
-                                      boolean isTransient, Long ackId, AckMessageError error) {
+                                      boolean isTransient, Long ackId, AckResponseError error) {
         super(message, cause);
         this.isTransient = isTransient;
         this.ackId = ackId;
@@ -65,7 +65,7 @@ public final class SendMessageFailedException extends AzureException {
      *
      * @return the "error" of response message.
      */
-    public AckMessageError getError() {
+    public AckResponseError getError() {
         return error;
     }
 }

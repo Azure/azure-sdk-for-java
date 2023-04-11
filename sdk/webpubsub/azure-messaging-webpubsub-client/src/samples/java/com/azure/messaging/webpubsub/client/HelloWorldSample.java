@@ -41,12 +41,12 @@ public final class HelloWorldSample {
 
         // event handler
         client.addOnGroupMessageEventHandler(event -> {
-            System.out.println("Received group message from " + event.getMessage().getFromUserId() + ": "
-                + event.getMessage().getData().toString());
+            System.out.println("Received group message from " + event.getFromUserId() + ": "
+                + event.getData().toString());
         });
         client.addOnServerMessageEventHandler(event -> {
             System.out.println("Received server message: "
-                + event.getMessage().getData().toString());
+                + event.getData().toString());
         });
 
         // start client

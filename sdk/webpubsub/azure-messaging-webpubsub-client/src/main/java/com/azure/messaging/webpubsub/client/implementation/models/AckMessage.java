@@ -3,14 +3,14 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.azure.messaging.webpubsub.client.models.AckMessageError;
+import com.azure.messaging.webpubsub.client.models.AckResponseError;
 
 public final class AckMessage extends WebPubSubMessage {
 
     private long ackId;
     private boolean success;
 
-    private AckMessageError error;
+    private AckResponseError error;
 
 
     public long getAckId() {
@@ -31,11 +31,11 @@ public final class AckMessage extends WebPubSubMessage {
         return this;
     }
 
-    public AckMessageError getError() {
+    public AckResponseError getError() {
         return error;
     }
 
-    public AckMessage setError(AckMessageError error) {
+    public AckMessage setError(AckResponseError error) {
         this.error = error;
         return this;
     }

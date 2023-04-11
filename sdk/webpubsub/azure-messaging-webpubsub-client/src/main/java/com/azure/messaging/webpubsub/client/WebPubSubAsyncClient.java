@@ -26,18 +26,18 @@ import com.azure.messaging.webpubsub.client.implementation.models.SequenceAckMes
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubGroup;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessageAck;
-import com.azure.messaging.webpubsub.client.models.AckMessageError;
-import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
+import com.azure.messaging.webpubsub.client.models.AckResponseError;
+import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendToGroupMessage;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
-import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
-import com.azure.messaging.webpubsub.client.models.ServerDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
@@ -57,7 +57,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -322,10 +321,10 @@ class WebPubSubAsyncClient implements Closeable {
      * Joins a group.
      *
      * @param group the group name.
-     * @param ackId the ackId.
+     * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
      * @return the result.
      */
-    public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
+    public Mono<WebPubSubResult> joinGroup(String group, Long ackId) {
         return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
             .map(result -> {
@@ -354,10 +353,10 @@ class WebPubSubAsyncClient implements Closeable {
      * Leaves a group.
      *
      * @param group the group name.
-     * @param ackId the ackId.
+     * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
      * @return the result.
      */
-    public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
+    public Mono<WebPubSubResult> leaveGroup(String group, Long ackId) {
         return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
             .map(result -> {
@@ -433,7 +432,7 @@ class WebPubSubAsyncClient implements Closeable {
         SendToGroupMessage message = new SendToGroupMessage()
             .setGroup(group)
             .setData(data)
-            .setDataType(dataType.name().toLowerCase(Locale.ROOT))
+            .setDataType(dataType.toString())
             .setAckId(ackId)
             .setNoEcho(options.isNoEcho());
 
@@ -482,7 +481,7 @@ class WebPubSubAsyncClient implements Closeable {
         SendEventMessage message = new SendEventMessage()
             .setEvent(eventName)
             .setData(data)
-            .setDataType(dataType.name().toLowerCase(Locale.ROOT))
+            .setDataType(dataType.toString())
             .setAckId(ackId);
 
         Mono<Void> sendMessageMono = sendMessage(message);
@@ -787,14 +786,22 @@ class WebPubSubAsyncClient implements Closeable {
 
         if (webPubSubMessage instanceof GroupDataMessage) {
             GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
-            tryEmitNext(groupMessageEventSink, new GroupMessageEvent(groupDataMessage));
+            tryEmitNext(groupMessageEventSink, new GroupMessageEvent(
+                groupDataMessage.getGroup(),
+                groupDataMessage.getData(),
+                groupDataMessage.getDataType(),
+                groupDataMessage.getFromUserId(),
+                groupDataMessage.getSequenceId()));
 
             if (groupDataMessage.getSequenceId() != null) {
                 sequenceAckId.update(groupDataMessage.getSequenceId());
             }
         } else if (webPubSubMessage instanceof ServerDataMessage) {
             ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
-            tryEmitNext(serverMessageEventSink, new ServerMessageEvent(serverDataMessage));
+            tryEmitNext(serverMessageEventSink, new ServerMessageEvent(
+                serverDataMessage.getData(),
+                serverDataMessage.getDataType(),
+                serverDataMessage.getSequenceId()));
 
             if (serverDataMessage.getSequenceId() != null) {
                 sequenceAckId.update(serverDataMessage.getSequenceId());
@@ -813,9 +820,10 @@ class WebPubSubAsyncClient implements Closeable {
                 connectionId,
                 connectedMessage.getUserId()));
         } else if (webPubSubMessage instanceof DisconnectedMessage) {
+            DisconnectedMessage disconnectedMessage = (DisconnectedMessage) webPubSubMessage;
             tryEmitNext(disconnectedEventSink, new DisconnectedEvent(
                 connectionId,
-                (DisconnectedMessage) webPubSubMessage));
+                disconnectedMessage.getReason()));
         }
     }
 
@@ -1051,7 +1059,7 @@ class WebPubSubAsyncClient implements Closeable {
     }
 
     private RuntimeException logSendMessageFailedException(
-        String errorMessage, Throwable cause, boolean isTransient, Long ackId, AckMessageError error) {
+        String errorMessage, Throwable cause, boolean isTransient, Long ackId, AckResponseError error) {
 
         return logger.logExceptionAsWarning(
             new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));

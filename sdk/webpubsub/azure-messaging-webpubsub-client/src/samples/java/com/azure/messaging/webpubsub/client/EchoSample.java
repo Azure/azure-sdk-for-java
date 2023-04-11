@@ -6,7 +6,7 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
-import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
@@ -46,12 +46,12 @@ public final class EchoSample {
 
         // event handler
         client.addOnGroupMessageEventHandler(event -> {
-            String group = event.getMessage().getGroup();
-            if (groupName.equals(event.getMessage().getGroup())
-                && !userName.equals(event.getMessage().getFromUserId())
-                && (event.getMessage().getDataType() == WebPubSubDataType.TEXT || event.getMessage().getDataType() == WebPubSubDataType.JSON)) {
+            String group = event.getGroup();
+            if (groupName.equals(event.getGroup())
+                && !userName.equals(event.getFromUserId())
+                && (event.getDataType() == WebPubSubDataType.TEXT || event.getDataType() == WebPubSubDataType.JSON)) {
 
-                String text = parseMessage(event.getMessage());
+                String text = parseMessageEvent(event);
                 if ("exit".equals(text)) {
                     // asked to exit
                     client.sendToGroup(group, "Goodbye.");
@@ -73,9 +73,9 @@ public final class EchoSample {
         clientStopped.get();
     }
 
-    private static String parseMessage(GroupDataMessage message) {
-        return message.getDataType() == WebPubSubDataType.TEXT
-            ? message.getData().toString()
-            : message.getData().toObject(String.class);
+    private static String parseMessageEvent(GroupMessageEvent event) {
+        return event.getDataType() == WebPubSubDataType.TEXT
+            ? event.getData().toString()
+            : event.getData().toObject(String.class);
     }
 }

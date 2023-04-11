@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 
 /**
  * The event for ServerDataMessage.
@@ -11,23 +12,48 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class ServerMessageEvent {
 
-    private final ServerDataMessage message;
+    private final WebPubSubDataType dataType;
+    private final BinaryData data;
+    private final Long sequenceId;
 
     /**
      * Creates a new instance of ServerMessageEvent.
      *
-     * @param message the ServerDataMessage.
+     * @param data the data.
+     * @param dataType the data type.
+     * @param sequenceId the sequenceId.
      */
-    public ServerMessageEvent(ServerDataMessage message) {
-        this.message = message;
+    public ServerMessageEvent(BinaryData data, WebPubSubDataType dataType, Long sequenceId) {
+        this.data = data;
+        this.dataType = dataType;
+        this.sequenceId = sequenceId;
+    }
+
+
+    /**
+     * Gets the data.
+     *
+     * @return the data.
+     */
+    public BinaryData getData() {
+        return data;
     }
 
     /**
-     * Gets the ServerDataMessage.
+     * Gets the data type.
      *
-     * @return the ServerDataMessage.
+     * @return the data type.
      */
-    public ServerDataMessage getMessage() {
-        return message;
+    public WebPubSubDataType getDataType() {
+        return dataType;
+    }
+
+    /**
+     * Gets the sequenceId.
+     *
+     * @return the sequenceId.
+     */
+    public Long getSequenceId() {
+        return sequenceId;
     }
 }

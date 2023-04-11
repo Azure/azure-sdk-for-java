@@ -12,17 +12,17 @@ import com.azure.core.annotation.Immutable;
 public final class DisconnectedEvent {
 
     private final String connectionId;
-    private final DisconnectedMessage disconnectedMessage;
+    private final String reason;
 
     /**
      * Creates a new instance of DisconnectedEvent.
      *
      * @param connectionId the connection ID.
-     * @param disconnectedMessage the disconnected message.
+     * @param reason the reason of disconnect.
      */
-    public DisconnectedEvent(String connectionId, DisconnectedMessage disconnectedMessage) {
+    public DisconnectedEvent(String connectionId, String reason) {
         this.connectionId = connectionId;
-        this.disconnectedMessage = disconnectedMessage;
+        this.reason = reason;
     }
 
     /**
@@ -35,11 +35,11 @@ public final class DisconnectedEvent {
     }
 
     /**
-     * Gets the disconnected message.
+     * Gets the reason of disconnect.
      *
-     * @return the disconnected message.
+     * @return the reason of disconnect.
      */
-    public DisconnectedMessage getDisconnectedMessage() {
-        return disconnectedMessage;
+    public String getReason() {
+        return reason;
     }
 }

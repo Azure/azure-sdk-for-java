@@ -51,11 +51,11 @@ public class GroupMessageTests extends TestBase {
         try {
             client.start();
 
-            WebPubSubResult result = client.sendToGroup(groupName, HELLO, new SendToGroupOptions().setAckId(10));
+            WebPubSubResult result = client.sendToGroup(groupName, HELLO, new SendToGroupOptions().setAckId(10L));
             Assertions.assertEquals(10L, result.getAckId());
             Assertions.assertFalse(result.isDuplicated());
 
-            result = client.sendToGroup(groupName, HELLO, new SendToGroupOptions().setAckId(10));
+            result = client.sendToGroup(groupName, HELLO, new SendToGroupOptions().setAckId(10L));
             Assertions.assertEquals(10L, result.getAckId());
             Assertions.assertTrue(result.isDuplicated());
         } finally {

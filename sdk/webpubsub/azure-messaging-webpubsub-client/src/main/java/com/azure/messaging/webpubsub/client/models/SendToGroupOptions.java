@@ -33,10 +33,10 @@ public final class SendToGroupOptions {
     /**
      * Sets the ackId option.
      *
-     * @param ackId the ackId option.
+     * @param ackId the ackId option. Client will provide auto increment ID, if set to {@code null}.
      * @return itself.
      */
-    public SendToGroupOptions setAckId(long ackId) {
+    public SendToGroupOptions setAckId(Long ackId) {
         this.ackId = ackId;
         return this;
     }
