@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentClassifiersImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifyDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
@@ -61,6 +63,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class DocumentAnalysisAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisAsyncClient.class);
     private final DocumentModelsImpl documentModelsImpl;
+    private final DocumentClassifiersImpl documentClassifiersImpl;
     private final DocumentAnalysisServiceVersion serviceVersion;
 
     /**
@@ -72,6 +75,7 @@ public final class DocumentAnalysisAsyncClient {
      */
     DocumentAnalysisAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl, DocumentAnalysisServiceVersion serviceVersion) {
         this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
+        this.documentClassifiersImpl = formRecognizerClientImpl.getDocumentClassifiers();
         this.serviceVersion = serviceVersion;
     }
 
@@ -171,7 +175,7 @@ public final class DocumentAnalysisAsyncClient {
         return beginAnalyzeDocumentFromUrl(documentUrl, modelId, analyzeDocumentOptions, Context.NONE);
     }
 
-    PollerFlux<OperationResult, AnalyzeResult>
+    private PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String documentUrl, String modelId,
                                    AnalyzeDocumentOptions analyzeDocumentOptions,
                                    Context context) {
@@ -329,7 +333,7 @@ public final class DocumentAnalysisAsyncClient {
         return beginAnalyzeDocument(modelId, document, analyzeDocumentOptions, Context.NONE);
     }
 
-    PollerFlux<OperationResult, AnalyzeResult>
+    private PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocument(String modelId, BinaryData document,
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         try {
@@ -372,6 +376,183 @@ public final class DocumentAnalysisAsyncClient {
                     Mono.error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(
                     modelId, resultId, context))
+                    .andThen(after -> after.map(modelSimpleResponse ->
+                            Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
+                        .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Classify a given document using a document classifier.
+     * For more information on how to build a custom classifier model,
+     * see <a href="https://aka.ms/azsdk/formrecognizer/buildclassifiermodel"></a>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p> Analyze a document using the URL of the document. </p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string -->
+     * <pre>
+     * String documentUrl = &quot;&#123;document_url&#125;&quot;;
+     * &#47;&#47; analyze a receipt using prebuilt model
+     * String classifierId = &quot;custom-trained-classifier-id&quot;;
+     *
+     * documentAnalysisAsyncClient.beginClassifyDocumentFromUrl&#40;classifierId, documentUrl&#41;
+     *     &#47;&#47; if polling operation completed, retrieve the final result.
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;analyzeResult -&gt; &#123;
+     *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
+     *         analyzeResult.getDocuments&#40;&#41;
+     *             .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string -->
+     *
+     * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
+     * @param documentUrl The URL of the document to analyze.
+     *
+     * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * with an {@link OperationStatus#FAILED}..
+     * @throws IllegalArgumentException If {@code documentUrl} or {@code classifierId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocumentFromUrl(String classifierId, String documentUrl) {
+        return beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE);
+    }
+
+    private PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocumentFromUrl(String documentUrl, String classifierId,
+                                Context context) {
+        try {
+            if (CoreUtils.isNullOrEmpty(documentUrl)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
+                    + " be null or empty"));
+            }
+            if (CoreUtils.isNullOrEmpty(classifierId)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                    + " be null or empty"));
+            }
+
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                activationOperation(() ->
+                        documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId,
+                                StringIndexType.UTF16CODE_UNIT,
+                                new ClassifyDocumentRequest().setUrlSource(documentUrl),
+                                context)
+                            .map(analyzeDocumentResponse ->
+                                Transforms.toDocumentOperationResult(
+                                    analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(resultId ->
+                    documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId, resultId, context)),
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId ->
+                    documentClassifiersImpl.getClassifyResultWithResponseAsync(
+                        classifierId,
+                        resultId,
+                        context))
+                    .andThen(after -> after
+                        .map(modelSimpleResponse ->
+                            Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
+                        .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    /**
+     * Classify a given document using a document classifier.
+     * For more information on how to build a custom classifier model,
+     * see <a href="https://aka.ms/azsdk/formrecognizer/buildclassifiermodel"></a>
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     * <p>
+     * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p> Analyze a document with configurable options.</p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData -->
+     * <pre>
+     * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * &#47;&#47; Utility method to convert input stream to Binary Data
+     * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
+     *
+     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer&#41;
+     *     &#47;&#47; if polling operation completed, retrieve the final result.
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;analyzeResult -&gt;
+     *         analyzeResult.getDocuments&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .forEach&#40;analyzedDocument -&gt;
+     *                 analyzedDocument.getFields&#40;&#41;
+     *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
+     *                         System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
+     *                         System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
+     *                         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
+     *                     &#125;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData -->
+     *
+     * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
+     * @param document The data of the document to analyze information from. For service supported file types, see:
+     * <a href="https://aka.ms/azsdk/formrecognizer/supportedfiles"></a>
+     * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
+     * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
+     * @throws IllegalArgumentException If {@code document} or {@code classifierId} is null.
+     * @throws IllegalArgumentException If {@code document} length is null or unspecified.
+     * Use {@link BinaryData#fromStream(InputStream, Long)} to create an instance of the {@code document}
+     * from given {@link InputStream} with length.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocument(String classifierId, BinaryData document) {
+        return beginClassifyDocument(classifierId, document, Context.NONE);
+    }
+
+    private PollerFlux<OperationResult, AnalyzeResult>
+        beginClassifyDocument(String classifierId, BinaryData document, Context context) {
+        try {
+            Objects.requireNonNull(document, "'document' is required and cannot be null.");
+            if (CoreUtils.isNullOrEmpty(classifierId)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
+                    + " be null or empty"));
+            }
+
+            if (document.getLength() == null) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
+                    + " be null"));
+            }
+
+            return new PollerFlux<>(
+                DEFAULT_POLL_INTERVAL,
+                activationOperation(() ->
+                        documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId,
+                                null,
+                                StringIndexType.UTF16CODE_UNIT,
+                                document,
+                                document.getLength(),
+                                context)
+                            .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
+                                analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(
+                    resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(
+                        classifierId, resultId, context)),
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(
+                    classifierId, resultId, context))
                     .andThen(after -> after.map(modelSimpleResponse ->
                             Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
                         .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));

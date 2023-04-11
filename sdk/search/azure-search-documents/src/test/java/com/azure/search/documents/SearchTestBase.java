@@ -83,16 +83,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
         new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(60)));
 
-//    @Override
-//    public void beforeEach(ExtensionContext extensionContext) {
-//        super.beforeEach(extensionContext);
-//        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-//            .setExcludedHeaders(Arrays.asList("Connection", "Content-Length"))));
-//        interceptorManager.addSanitizers(Arrays.asList(
-//            new TestProxySanitizer("api-key", "REDACTED", TestProxySanitizerType.HEADER)
-//        ));
-//    }
-
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
     }

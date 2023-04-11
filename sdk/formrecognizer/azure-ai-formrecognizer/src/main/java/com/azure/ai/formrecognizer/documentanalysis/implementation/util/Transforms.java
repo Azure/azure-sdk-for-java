@@ -38,13 +38,21 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotation;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnnotationKind;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentImage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
@@ -153,6 +161,12 @@ public class Transforms {
                         })
                         .collect(Collectors.toList()));
                 DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
+                DocumentPageHelper.setKind(documentPage,
+                    innerDocumentPage.getKind() == null ? null : DocumentPageKind.fromString(innerDocumentPage.getKind().toString()));
+                DocumentPageHelper.setAnnotations(documentPage, fromInnerAnnotations(innerDocumentPage.getAnnotations()));
+                DocumentPageHelper.setFormulas(documentPage, fromInnerFormulas(innerDocumentPage.getFormulas()));
+                DocumentPageHelper.setBarcodes(documentPage, fromInnerBarcodes(innerDocumentPage.getBarcodes()));
+                DocumentPageHelper.setImages(documentPage, fromInnerImages(innerDocumentPage.getImages()));
                 return documentPage;
             })
             .collect(Collectors.toList()));
@@ -242,6 +256,75 @@ public class Transforms {
         }
 
         return analyzeResult;
+    }
+
+    private static List<DocumentImage> fromInnerImages(List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentImage> innerImages) {
+        if (innerImages != null) {
+            return innerImages
+                .stream()
+                .map(innerImage -> {
+                    DocumentImage documentImage = new DocumentImage();
+                    DocumentImageHelper.setSpan(documentImage, getDocumentSpan(innerImage.getSpan()));
+                    DocumentImageHelper.setBoundingPolygon(documentImage, toPolygonPoints(innerImage.getPolygon()));
+                    DocumentImageHelper.setPageNumber(documentImage, documentImage.getPageNumber());
+                    DocumentImageHelper.setConfidence(documentImage, documentImage.getConfidence());
+                    return documentImage;
+                })
+                .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    private static List<DocumentBarcode> fromInnerBarcodes(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBarcode> barcodes) {
+        if (barcodes != null) {
+            return barcodes.stream().map(innerBarcode -> {
+                DocumentBarcode documentBarcode = new DocumentBarcode();
+                DocumentBarcodeHelper.setKind(documentBarcode,
+                    innerBarcode.getKind() == null ? null : DocumentBarcodeKind.fromString(
+                        innerBarcode.getKind().toString()));
+                DocumentBarcodeHelper.setValue(documentBarcode, innerBarcode.getValue());
+                DocumentBarcodeHelper.setConfidence(documentBarcode, innerBarcode.getConfidence());
+                DocumentBarcodeHelper.setSpan(documentBarcode, getDocumentSpan(innerBarcode.getSpan()));
+                return documentBarcode;
+            })
+                .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    private static List<DocumentFormula> fromInnerFormulas(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFormula> formulas) {
+        if (formulas != null) {
+            return formulas.stream().map(innerFormula -> {
+                DocumentFormula documentFormula = new DocumentFormula();
+                DocumentFormulaHelper.setKind(documentFormula,
+                    innerFormula.getKind() == null ? null : DocumentFormulaKind.fromString(
+                        innerFormula.getKind().toString()));
+                DocumentFormulaHelper.setValue(documentFormula, innerFormula.getValue());
+                DocumentFormulaHelper.setConfidence(documentFormula, innerFormula.getConfidence());
+                DocumentFormulaHelper.setSpan(documentFormula, getDocumentSpan(innerFormula.getSpan()));
+                return documentFormula;
+            }).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    private static List<DocumentAnnotation> fromInnerAnnotations(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnnotation> annotations) {
+        if (annotations != null) {
+            return annotations.stream().map(innerAnnotation -> {
+                DocumentAnnotation documentAnnotation = new DocumentAnnotation();
+                DocumentAnnotationHelper.setKind(documentAnnotation,
+                    innerAnnotation.getKind() == null ? null : DocumentAnnotationKind.fromString(
+                        innerAnnotation.getKind().toString()));
+                DocumentAnnotationHelper.setConfidence(documentAnnotation, innerAnnotation.getConfidence());
+                DocumentAnnotationHelper.setPolygon(documentAnnotation, toPolygonPoints(innerAnnotation.getPolygon()));
+                return documentAnnotation;
+            })
+                .collect(Collectors.toList());
+        }
+        return null;
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(String blobContainerUrl,

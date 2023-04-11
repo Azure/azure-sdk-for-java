@@ -1040,7 +1040,7 @@ public class IdentityClient extends IdentityClientBase {
             payload.append("?resource=");
             payload.append(urlEncode(resource));
             payload.append("&api-version=");
-            payload.append(MSI_ENDPOINT_VERSION);
+            payload.append(URLEncoder.encode(endpointVersion, StandardCharsets.UTF_8.name()));
             if (clientId != null) {
                 if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
                     payload.append("&client_id=");

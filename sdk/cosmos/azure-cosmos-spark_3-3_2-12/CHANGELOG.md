@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.19.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.18.1 (2023-04-10)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed an issue where throughput control is not triggered properly when `spark.cosmos.throughputControl.targetThroughput` is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
 
 ### 4.18.0 (2023-04-06)
 

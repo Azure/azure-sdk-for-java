@@ -16,12 +16,18 @@
 - Added properties `unit`, `cityDistrict`, `stateDistrict`, `suburb`, `house`, and `level` to `AddressValue`
 - Added method `isValueBoolean` to model `DocumentField`
 - Added support for `DocumentFieldType.BOOLEAN`
+- Added DocumentAnalysisFeature enum with optional document analysis feature to enable
+- Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
+- Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+#### Known Bug
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClasifyDocument` 
+method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
 
 ## 4.0.5 (2023-03-16)
 
