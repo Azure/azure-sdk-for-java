@@ -6,25 +6,6 @@
 
   <name>Microsoft Azure Communication Services Job Router client for Java</name>
   <description>This package contains client functionality for Microsoft Azure Communication Services Job Router</description>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <parent>
-    <artifactId>azure-autorest-parent</artifactId>
-    <groupId>com.azure.tools</groupId>
-    <version>1.0.0-beta.1</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
 
   <groupId>com.azure.tools</groupId>
   <artifactId>azure-communication-jobrouter-autorest-customization</artifactId>
@@ -42,7 +23,7 @@
     <dependency>
       <groupId>com.azure.tools</groupId>
       <artifactId>azure-autorest-customization</artifactId>
-      <version>1.0.0-beta.4</version>
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:azure-autorest-customization;current} -->
     </dependency>
   </dependencies>
 </project>

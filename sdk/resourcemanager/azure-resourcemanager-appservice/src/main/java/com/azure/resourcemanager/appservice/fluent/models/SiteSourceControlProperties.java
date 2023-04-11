@@ -24,9 +24,8 @@ public final class SiteSourceControlProperties {
     private String branch;
 
     /*
-     * <code>true</code> to limit to manual integration; <code>false</code> to
-     * enable continuous integration (which configures webhooks into online
-     * repos like GitHub).
+     * <code>true</code> to limit to manual integration; <code>false</code> to enable continuous integration (which
+     * configures webhooks into online repos like GitHub).
      */
     @JsonProperty(value = "isManualIntegration")
     private Boolean isManualIntegration;
@@ -38,15 +37,13 @@ public final class SiteSourceControlProperties {
     private Boolean isGitHubAction;
 
     /*
-     * <code>true</code> to enable deployment rollback; otherwise,
-     * <code>false</code>.
+     * <code>true</code> to enable deployment rollback; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "deploymentRollbackEnabled")
     private Boolean deploymentRollbackEnabled;
 
     /*
-     * <code>true</code> for a Mercurial repository; <code>false</code> for a
-     * Git repository.
+     * <code>true</code> for a Mercurial repository; <code>false</code> for a Git repository.
      */
     @JsonProperty(value = "isMercurial")
     private Boolean isMercurial;
@@ -56,6 +53,10 @@ public final class SiteSourceControlProperties {
      */
     @JsonProperty(value = "gitHubActionConfiguration")
     private GitHubActionConfiguration gitHubActionConfiguration;
+
+    /** Creates an instance of SiteSourceControlProperties class. */
+    public SiteSourceControlProperties() {
+    }
 
     /**
      * Get the repoUrl property: Repository or source control URL.

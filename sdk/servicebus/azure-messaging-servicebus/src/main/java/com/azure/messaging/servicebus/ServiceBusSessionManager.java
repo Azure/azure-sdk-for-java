@@ -279,9 +279,16 @@ class ServiceBusSessionManager implements AutoCloseable {
             .flatMap(link -> link.getEndpointStates()
                 .filter(e -> e == AmqpEndpointState.ACTIVE)
                 .next()
-                // While waiting for the link to ACTIVE, if the broker detaches the link without an error condition,
+                // The reason for using 'switchIfEmpty' operator -
+                //
+                // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
                 // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
-                // such publisher completion to transient (i.e., retriable) AmqpException to enable processor recovery.
+                // such publisher completion to transient (i.e., retriable) AmqpException to enable retry.
+                //
+                // A detach without an error-condition can happen when Service upgrades. Also, while the service often
+                // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
+                // when a free or new session is unavailable, detach can happen without the error-condition.
+                //
                 .switchIfEmpty(Mono.error(() ->
                     new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
@@ -297,10 +304,16 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
                         getErrorContext()));
                 } else if (failure instanceof TimeoutException) {
-                    return Mono.empty(); // Retry always
+                    return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    return Mono.empty(); // Retry always
+                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
+                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
+                    //
+                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
+                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
+                    //
+                    return Mono.delay(Duration.ZERO);
                 } else {
                     final long id = System.nanoTime();
                     LOGGER.atInfo()

@@ -41,6 +41,10 @@ public final class VolumeGroupInner {
     @JsonProperty(value = "properties")
     private VolumeGroupListProperties innerProperties;
 
+    /** Creates an instance of VolumeGroupInner class. */
+    public VolumeGroupInner() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

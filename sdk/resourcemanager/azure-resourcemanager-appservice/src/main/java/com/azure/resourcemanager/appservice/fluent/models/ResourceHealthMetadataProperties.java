@@ -22,6 +22,10 @@ public final class ResourceHealthMetadataProperties {
     @JsonProperty(value = "signalAvailability")
     private Boolean signalAvailability;
 
+    /** Creates an instance of ResourceHealthMetadataProperties class. */
+    public ResourceHealthMetadataProperties() {
+    }
+
     /**
      * Get the category property: The category that the resource matches in the RHC Policy File.
      *

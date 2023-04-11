@@ -90,25 +90,23 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
     public static DocumentKeysOrIds fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<String> documentKeys = null;
-                    List<String> datasourceDocumentIds = null;
+                    DocumentKeysOrIds deserializedDocumentKeysOrIds = new DocumentKeysOrIds();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("documentKeys".equals(fieldName)) {
-                            documentKeys = reader.readArray(reader1 -> reader1.getString());
+                            List<String> documentKeys = reader.readArray(reader1 -> reader1.getString());
+                            deserializedDocumentKeysOrIds.documentKeys = documentKeys;
                         } else if ("datasourceDocumentIds".equals(fieldName)) {
-                            datasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
+                            List<String> datasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
+                            deserializedDocumentKeysOrIds.datasourceDocumentIds = datasourceDocumentIds;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    DocumentKeysOrIds deserializedValue = new DocumentKeysOrIds();
-                    deserializedValue.documentKeys = documentKeys;
-                    deserializedValue.datasourceDocumentIds = datasourceDocumentIds;
 
-                    return deserializedValue;
+                    return deserializedDocumentKeysOrIds;
                 });
     }
 }

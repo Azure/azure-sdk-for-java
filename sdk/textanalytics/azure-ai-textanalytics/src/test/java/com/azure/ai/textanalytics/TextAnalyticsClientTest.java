@@ -74,7 +74,6 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_SPANISH;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.textanalytics.TestUtils.DYNAMIC_CLASSIFICATION_CATEGORIES;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
@@ -102,7 +101,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesForDomainFilter;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedDynamicClassifyDocumentResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultSortByOffset;
@@ -2166,13 +2164,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2198,13 +2196,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
                     IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizePiiEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2433,13 +2431,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
                             TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList())
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null)
                     )),
                     result.stream().collect(Collectors.toList()));
             }
@@ -2483,15 +2481,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList())
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null)
                     )),
                     result.stream().collect(Collectors.toList()));
             }
@@ -2514,15 +2512,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
                         IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(Collections.emptyList())
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null),
+                        IterableStream.of(null)
                     )),
                     result.stream().collect(Collectors.toList()));
             }
@@ -2543,15 +2541,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2571,15 +2569,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2599,15 +2597,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getExpectedBatchTextSentiment(), null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2626,19 +2624,19 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExpectedAnalyzeHealthcareEntitiesActionResult(false, null, TIME_NOW,
                         getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
                             asList(
                                 getRecognizeHealthcareEntitiesResultWithFhir1("0"),
                                 getRecognizeHealthcareEntitiesResultWithFhir2())),
                         null))),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         });
@@ -2830,17 +2828,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             // We are expecting the top 3 highest rank score ann these score are sorted by offset by default
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getExtractSummaryActionResult(false, null,
                         TIME_NOW,
                         getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
                         null))),
-                    IterableStream.of(Collections.emptyList())
+                    IterableStream.of(null)
                 )),
                 result.stream().collect(Collectors.toList()));
         }, null, null);
@@ -2968,13 +2966,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             // We are expecting the top 3 highest rank score ann these score are sorted by offset by default
             validateAnalyzeBatchActionsResultList(false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
+                    IterableStream.of(null),
                     IterableStream.of(asList(getAbstractSummaryActionResult(false, null,
                         TIME_NOW,
                         new AbstractSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
@@ -2983,90 +2981,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 )),
                 result.stream().collect(Collectors.toList()));
         }, null);
-    }
-
-    @Disabled("Disable tests by service request")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationDuplicateIdInput(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs -> {
-            final HttpResponseException response = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
-                    Context.NONE));
-            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
-        });
-    }
-
-    @Disabled("Disable tests by service request. https://github.com/Azure/azure-sdk-for-java/issues/33555")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs -> {
-            final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null,
-                    Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
-        });
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        dynamicClassificationRunner((inputs, options) ->
-            validateDynamicClassifyDocumentResultCollectionWithResponse(true,
-                getExpectedDynamicClassifyDocumentResultCollection(), 200,
-                client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, options,
-                    Context.NONE)));
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        dynamicClassificationStringInputRunner((inputs, options) ->
-            validateDynamicClassifyDocumentResultCollection(true,
-                getExpectedDynamicClassifyDocumentResultCollection(),
-                client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null, options)));
-    }
-
-    @Disabled("Disable tests by service request.")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        dynamicClassificationBatchWarningRunner((inputs, options) ->
-            client.dynamicClassifyBatchWithResponse(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, options, Context.NONE)
-                .getValue()
-                .forEach(classifyDocumentResult ->
-                    classifyDocumentResult.getWarnings().forEach(warning -> {
-                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-                    })
-                ));
-    }
-
-    @Disabled("Disable tests by service request. https://github.com/Azure/azure-sdk-for-java/issues/33555")
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void dynamicClassificationBatchTooManyDocuments(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs -> {
-            final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.dynamicClassifyBatch(inputs, DYNAMIC_CLASSIFICATION_CATEGORIES, null, null)
-                    .stream().findFirst().get());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
-        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.cloud.config.web.AppConfigurationWebAutoConfiguration
+com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebAutoConfiguration

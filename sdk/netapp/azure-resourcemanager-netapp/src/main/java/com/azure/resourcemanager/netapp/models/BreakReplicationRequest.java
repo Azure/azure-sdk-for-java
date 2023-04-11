@@ -16,6 +16,10 @@ public final class BreakReplicationRequest {
     @JsonProperty(value = "forceBreakReplication")
     private Boolean forceBreakReplication;
 
+    /** Creates an instance of BreakReplicationRequest class. */
+    public BreakReplicationRequest() {
+    }
+
     /**
      * Get the forceBreakReplication property: If replication is in status transferring and you want to force break the
      * replication, set to true.

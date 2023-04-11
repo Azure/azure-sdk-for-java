@@ -1,0 +1,80 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.4.1; Linux; 5.4.0-1094-azure)",
+      "x-ms-client-request-id" : "0efcb977-f7a8-4b1f-a52f-0980a5c754d6",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 02 Nov 2022 16:16:27 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://jairmyreestoragetest.table.core.windows.net/Tables('tablename18351f0b')",
+      "x-ms-request-id" : "ee44266f-2002-0052-72d6-ee39ef000000",
+      "x-ms-client-request-id" : "0efcb977-f7a8-4b1f-a52f-0980a5c754d6",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://jairmyreestoragetest.table.core.windows.net/Tables('tablename18351f0b')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename18351f0b",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.4.1; Linux; 5.4.0-1094-azure)",
+      "x-ms-client-request-id" : "b0ab51a9-888e-4eb0-b85d-aad2f8bc7256",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 02 Nov 2022 16:16:27 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://jairmyreestoragetest.table.core.windows.net/tablename18351f0b(PartitionKey='',RowKey='')",
+      "eTag" : "W/datetime'2022-11-02T16%3A16%3A27.9373323Z'",
+      "x-ms-request-id" : "ee442679-2002-0052-79d6-ee39ef000000",
+      "x-ms-client-request-id" : "b0ab51a9-888e-4eb0-b85d-aad2f8bc7256",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://jairmyreestoragetest.table.core.windows.net/tablename18351f0b(PartitionKey='',RowKey='')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename18351f0b()?$format=application/json%3Bodata%3Dfullmetadata&$filter=PartitionKey%20eq%20%27%27%20and%20RowKey%20eq%20%27%27",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.4.1; Linux; 5.4.0-1094-azure)",
+      "x-ms-client-request-id" : "515575f7-630c-4490-a65c-0b21312886b3"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 02 Nov 2022 16:16:27 GMT",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "ee44267a-2002-0052-7ad6-ee39ef000000",
+      "Body" : "{\"odata.metadata\":\"https://jairmyreestoragetest.table.core.windows.net/$metadata#tablename18351f0b\",\"value\":[{\"odata.type\":\"jairmyreestoragetest.tablename18351f0b\",\"odata.id\":\"https://jairmyreestoragetest.table.core.windows.net/tablename18351f0b(PartitionKey='',RowKey='')\",\"odata.etag\":\"W/\\\"datetime'2022-11-02T16%3A16%3A27.9373323Z'\\\"\",\"odata.editLink\":\"tablename18351f0b(PartitionKey='',RowKey='')\",\"PartitionKey\":\"\",\"RowKey\":\"\",\"Timestamp@odata.type\":\"Edm.DateTime\",\"Timestamp\":\"2022-11-02T16:16:27.9373323Z\",\"Name\":\"name64358\"}]}",
+      "x-ms-client-request-id" : "515575f7-630c-4490-a65c-0b21312886b3",
+      "Content-Type" : "application/json;odata=fullmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename18351f0b", "name64358" ]
+}

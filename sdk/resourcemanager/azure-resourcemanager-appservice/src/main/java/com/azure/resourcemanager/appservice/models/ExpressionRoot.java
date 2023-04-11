@@ -17,6 +17,10 @@ public final class ExpressionRoot extends Expression {
     @JsonProperty(value = "path")
     private String path;
 
+    /** Creates an instance of ExpressionRoot class. */
+    public ExpressionRoot() {
+    }
+
     /**
      * Get the path property: The path.
      *

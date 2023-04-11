@@ -26,31 +26,31 @@ public final class CalculateExchangeRequestPropertiesTests {
         CalculateExchangeRequestProperties model =
             BinaryData
                 .fromString(
-                    "{\"reservationsToPurchase\":[{\"sku\":{\"name\":\"ofmxagkvtmelmqkr\"},\"location\":\"hvljuahaquh\",\"properties\":{\"reservedResourceType\":\"RedHatOsa\",\"billingScopeId\":\"ualaexqpvfadmw\",\"term\":\"P3Y\",\"billingPlan\":\"Upfront\",\"quantity\":1259983494,\"displayName\":\"vgomz\",\"appliedScopeType\":\"Single\",\"appliedScopes\":[],\"renew\":false,\"reviewDateTime\":\"2021-11-20T05:31:55Z\"}},{\"sku\":{\"name\":\"ldawkzbaliourqha\"},\"location\":\"uhashsfwx\",\"properties\":{\"reservedResourceType\":\"MySql\",\"billingScopeId\":\"xcug\",\"term\":\"P3Y\",\"billingPlan\":\"Monthly\",\"quantity\":834529223,\"displayName\":\"ebwpucwwfvo\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[],\"renew\":false,\"reviewDateTime\":\"2021-12-04T00:10:18Z\"}},{\"sku\":{\"name\":\"zceuojgjrw\"},\"location\":\"eiotwmcdytdx\",\"properties\":{\"reservedResourceType\":\"SqlAzureHybridBenefit\",\"billingScopeId\":\"rjaw\",\"term\":\"P3Y\",\"billingPlan\":\"Monthly\",\"quantity\":369820426,\"displayName\":\"skxfbk\",\"appliedScopeType\":\"Single\",\"appliedScopes\":[],\"renew\":false,\"reviewDateTime\":\"2021-09-10T20:03:07Z\"}}],\"savingsPlansToPurchase\":[{\"sku\":{\"name\":\"uwhvylwzbtdhxujz\"},\"properties\":{\"displayName\":\"pow\",\"billingScopeId\":\"przqlveu\",\"term\":\"P1Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Single\"}},{\"sku\":{\"name\":\"bbcswsrtjri\"},\"properties\":{\"displayName\":\"bpbewtghfgb\",\"billingScopeId\":\"gw\",\"term\":\"P3Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Shared\"}}],\"reservationsToExchange\":[{\"reservationId\":\"ibtnmxiebwwaloay\",\"quantity\":1665079577},{\"reservationId\":\"rtzju\",\"quantity\":47396428},{\"reservationId\":\"zmh\",\"quantity\":1672254683},{\"reservationId\":\"gmtsavjcbpwxqpsr\",\"quantity\":1220568259}]}")
+                    "{\"reservationsToPurchase\":[{\"sku\":{\"name\":\"jdauwhvy\"},\"location\":\"zbtd\",\"properties\":{\"reservedResourceType\":\"AVS\",\"billingScopeId\":\"nbmpowuwprzq\",\"term\":\"P5Y\",\"billingPlan\":\"Upfront\",\"quantity\":1056372950,\"displayName\":\"j\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[],\"renew\":true,\"reviewDateTime\":\"2021-07-16T11:10Z\"}},{\"sku\":{\"name\":\"rtjriplrbpbew\"},\"location\":\"hfgblc\",\"properties\":{\"reservedResourceType\":\"AzureFiles\",\"billingScopeId\":\"lvqhjkbegibtnmx\",\"term\":\"P3Y\",\"billingPlan\":\"Monthly\",\"quantity\":2134442960,\"displayName\":\"ayqcgw\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[],\"renew\":false,\"reviewDateTime\":\"2021-09-03T04:43:16Z\"}},{\"sku\":{\"name\":\"txon\"},\"location\":\"ts\",\"properties\":{\"reservedResourceType\":\"AppService\",\"billingScopeId\":\"pwxqp\",\"term\":\"P1Y\",\"billingPlan\":\"Upfront\",\"quantity\":810124654,\"displayName\":\"vriuhprwmdyvx\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[],\"renew\":false,\"reviewDateTime\":\"2021-09-24T13:27:45Z\"}},{\"sku\":{\"name\":\"bexrmcq\"},\"location\":\"ycnojvknmefqsg\",\"properties\":{\"reservedResourceType\":\"VirtualMachines\",\"billingScopeId\":\"pjyzhpv\",\"term\":\"P3Y\",\"billingPlan\":\"Upfront\",\"quantity\":1630309887,\"displayName\":\"djzlmwlx\",\"appliedScopeType\":\"Shared\",\"appliedScopes\":[],\"renew\":false,\"reviewDateTime\":\"2021-10-22T04:54:45Z\"}}],\"savingsPlansToPurchase\":[{\"sku\":{\"name\":\"u\"},\"properties\":{\"displayName\":\"thnnpr\",\"billingScopeId\":\"i\",\"term\":\"P3Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"ManagementGroup\"}},{\"sku\":{\"name\":\"xdult\"},\"properties\":{\"displayName\":\"bbtdzumvee\",\"billingScopeId\":\"pwo\",\"term\":\"P1Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"Single\"}},{\"sku\":{\"name\":\"f\"},\"properties\":{\"displayName\":\"uusdttouwa\",\"billingScopeId\":\"ekqvkeln\",\"term\":\"P3Y\",\"billingPlan\":\"P1M\",\"appliedScopeType\":\"ManagementGroup\"}}],\"reservationsToExchange\":[{\"reservationId\":\"hcaalnjix\",\"quantity\":1143509001}]}")
                 .toObject(CalculateExchangeRequestProperties.class);
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.reservationsToPurchase().get(0).sku().name());
-        Assertions.assertEquals("hvljuahaquh", model.reservationsToPurchase().get(0).location());
-        Assertions
-            .assertEquals(
-                ReservedResourceType.RED_HAT_OSA, model.reservationsToPurchase().get(0).reservedResourceType());
-        Assertions.assertEquals("ualaexqpvfadmw", model.reservationsToPurchase().get(0).billingScopeId());
-        Assertions.assertEquals(ReservationTerm.P3Y, model.reservationsToPurchase().get(0).term());
+        Assertions.assertEquals("jdauwhvy", model.reservationsToPurchase().get(0).sku().name());
+        Assertions.assertEquals("zbtd", model.reservationsToPurchase().get(0).location());
+        Assertions.assertEquals(ReservedResourceType.AVS, model.reservationsToPurchase().get(0).reservedResourceType());
+        Assertions.assertEquals("nbmpowuwprzq", model.reservationsToPurchase().get(0).billingScopeId());
+        Assertions.assertEquals(ReservationTerm.P5Y, model.reservationsToPurchase().get(0).term());
         Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.reservationsToPurchase().get(0).billingPlan());
-        Assertions.assertEquals(1259983494, model.reservationsToPurchase().get(0).quantity());
-        Assertions.assertEquals("vgomz", model.reservationsToPurchase().get(0).displayName());
-        Assertions.assertEquals(AppliedScopeType.SINGLE, model.reservationsToPurchase().get(0).appliedScopeType());
-        Assertions.assertEquals(false, model.reservationsToPurchase().get(0).renew());
+        Assertions.assertEquals(1056372950, model.reservationsToPurchase().get(0).quantity());
+        Assertions.assertEquals("j", model.reservationsToPurchase().get(0).displayName());
+        Assertions
+            .assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.reservationsToPurchase().get(0).appliedScopeType());
+        Assertions.assertEquals(true, model.reservationsToPurchase().get(0).renew());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-11-20T05:31:55Z"), model.reservationsToPurchase().get(0).reviewDateTime());
-        Assertions.assertEquals("uwhvylwzbtdhxujz", model.savingsPlansToPurchase().get(0).sku().name());
-        Assertions.assertEquals("pow", model.savingsPlansToPurchase().get(0).displayName());
-        Assertions.assertEquals("przqlveu", model.savingsPlansToPurchase().get(0).billingScopeId());
-        Assertions.assertEquals(SavingsPlanTerm.P1Y, model.savingsPlansToPurchase().get(0).term());
+                OffsetDateTime.parse("2021-07-16T11:10Z"), model.reservationsToPurchase().get(0).reviewDateTime());
+        Assertions.assertEquals("u", model.savingsPlansToPurchase().get(0).sku().name());
+        Assertions.assertEquals("thnnpr", model.savingsPlansToPurchase().get(0).displayName());
+        Assertions.assertEquals("i", model.savingsPlansToPurchase().get(0).billingScopeId());
+        Assertions.assertEquals(SavingsPlanTerm.P3Y, model.savingsPlansToPurchase().get(0).term());
         Assertions.assertEquals(BillingPlan.P1M, model.savingsPlansToPurchase().get(0).billingPlan());
-        Assertions.assertEquals(AppliedScopeType.SINGLE, model.savingsPlansToPurchase().get(0).appliedScopeType());
-        Assertions.assertEquals("ibtnmxiebwwaloay", model.reservationsToExchange().get(0).reservationId());
-        Assertions.assertEquals(1665079577, model.reservationsToExchange().get(0).quantity());
+        Assertions
+            .assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.savingsPlansToPurchase().get(0).appliedScopeType());
+        Assertions.assertEquals("hcaalnjix", model.reservationsToExchange().get(0).reservationId());
+        Assertions.assertEquals(1143509001, model.reservationsToExchange().get(0).quantity());
     }
 
     @org.junit.jupiter.api.Test
@@ -61,91 +61,106 @@ public final class CalculateExchangeRequestPropertiesTests {
                     Arrays
                         .asList(
                             new PurchaseRequest()
-                                .withSku(new SkuName().withName("ofmxagkvtmelmqkr"))
-                                .withLocation("hvljuahaquh")
-                                .withReservedResourceType(ReservedResourceType.RED_HAT_OSA)
-                                .withBillingScopeId("ualaexqpvfadmw")
-                                .withTerm(ReservationTerm.P3Y)
+                                .withSku(new SkuName().withName("jdauwhvy"))
+                                .withLocation("zbtd")
+                                .withReservedResourceType(ReservedResourceType.AVS)
+                                .withBillingScopeId("nbmpowuwprzq")
+                                .withTerm(ReservationTerm.P5Y)
                                 .withBillingPlan(ReservationBillingPlan.UPFRONT)
-                                .withQuantity(1259983494)
-                                .withDisplayName("vgomz")
-                                .withAppliedScopeType(AppliedScopeType.SINGLE)
+                                .withQuantity(1056372950)
+                                .withDisplayName("j")
+                                .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
                                 .withAppliedScopes(Arrays.asList())
-                                .withRenew(false)
-                                .withReviewDateTime(OffsetDateTime.parse("2021-11-20T05:31:55Z")),
+                                .withRenew(true)
+                                .withReviewDateTime(OffsetDateTime.parse("2021-07-16T11:10Z")),
                             new PurchaseRequest()
-                                .withSku(new SkuName().withName("ldawkzbaliourqha"))
-                                .withLocation("uhashsfwx")
-                                .withReservedResourceType(ReservedResourceType.MY_SQL)
-                                .withBillingScopeId("xcug")
+                                .withSku(new SkuName().withName("rtjriplrbpbew"))
+                                .withLocation("hfgblc")
+                                .withReservedResourceType(ReservedResourceType.AZURE_FILES)
+                                .withBillingScopeId("lvqhjkbegibtnmx")
                                 .withTerm(ReservationTerm.P3Y)
                                 .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                                .withQuantity(834529223)
-                                .withDisplayName("ebwpucwwfvo")
+                                .withQuantity(2134442960)
+                                .withDisplayName("ayqcgw")
                                 .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
                                 .withAppliedScopes(Arrays.asList())
                                 .withRenew(false)
-                                .withReviewDateTime(OffsetDateTime.parse("2021-12-04T00:10:18Z")),
+                                .withReviewDateTime(OffsetDateTime.parse("2021-09-03T04:43:16Z")),
                             new PurchaseRequest()
-                                .withSku(new SkuName().withName("zceuojgjrw"))
-                                .withLocation("eiotwmcdytdx")
-                                .withReservedResourceType(ReservedResourceType.SQL_AZURE_HYBRID_BENEFIT)
-                                .withBillingScopeId("rjaw")
-                                .withTerm(ReservationTerm.P3Y)
-                                .withBillingPlan(ReservationBillingPlan.MONTHLY)
-                                .withQuantity(369820426)
-                                .withDisplayName("skxfbk")
-                                .withAppliedScopeType(AppliedScopeType.SINGLE)
+                                .withSku(new SkuName().withName("txon"))
+                                .withLocation("ts")
+                                .withReservedResourceType(ReservedResourceType.APP_SERVICE)
+                                .withBillingScopeId("pwxqp")
+                                .withTerm(ReservationTerm.P1Y)
+                                .withBillingPlan(ReservationBillingPlan.UPFRONT)
+                                .withQuantity(810124654)
+                                .withDisplayName("vriuhprwmdyvx")
+                                .withAppliedScopeType(AppliedScopeType.SHARED)
                                 .withAppliedScopes(Arrays.asList())
                                 .withRenew(false)
-                                .withReviewDateTime(OffsetDateTime.parse("2021-09-10T20:03:07Z"))))
+                                .withReviewDateTime(OffsetDateTime.parse("2021-09-24T13:27:45Z")),
+                            new PurchaseRequest()
+                                .withSku(new SkuName().withName("bexrmcq"))
+                                .withLocation("ycnojvknmefqsg")
+                                .withReservedResourceType(ReservedResourceType.VIRTUAL_MACHINES)
+                                .withBillingScopeId("pjyzhpv")
+                                .withTerm(ReservationTerm.P3Y)
+                                .withBillingPlan(ReservationBillingPlan.UPFRONT)
+                                .withQuantity(1630309887)
+                                .withDisplayName("djzlmwlx")
+                                .withAppliedScopeType(AppliedScopeType.SHARED)
+                                .withAppliedScopes(Arrays.asList())
+                                .withRenew(false)
+                                .withReviewDateTime(OffsetDateTime.parse("2021-10-22T04:54:45Z"))))
                 .withSavingsPlansToPurchase(
                     Arrays
                         .asList(
                             new SavingsPlanPurchaseRequest()
-                                .withSku(new SkuName().withName("uwhvylwzbtdhxujz"))
-                                .withDisplayName("pow")
-                                .withBillingScopeId("przqlveu")
+                                .withSku(new SkuName().withName("u"))
+                                .withDisplayName("thnnpr")
+                                .withBillingScopeId("i")
+                                .withTerm(SavingsPlanTerm.P3Y)
+                                .withBillingPlan(BillingPlan.P1M)
+                                .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP),
+                            new SavingsPlanPurchaseRequest()
+                                .withSku(new SkuName().withName("xdult"))
+                                .withDisplayName("bbtdzumvee")
+                                .withBillingScopeId("pwo")
                                 .withTerm(SavingsPlanTerm.P1Y)
                                 .withBillingPlan(BillingPlan.P1M)
                                 .withAppliedScopeType(AppliedScopeType.SINGLE),
                             new SavingsPlanPurchaseRequest()
-                                .withSku(new SkuName().withName("bbcswsrtjri"))
-                                .withDisplayName("bpbewtghfgb")
-                                .withBillingScopeId("gw")
+                                .withSku(new SkuName().withName("f"))
+                                .withDisplayName("uusdttouwa")
+                                .withBillingScopeId("ekqvkeln")
                                 .withTerm(SavingsPlanTerm.P3Y)
                                 .withBillingPlan(BillingPlan.P1M)
-                                .withAppliedScopeType(AppliedScopeType.SHARED)))
+                                .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)))
                 .withReservationsToExchange(
-                    Arrays
-                        .asList(
-                            new ReservationToReturn().withReservationId("ibtnmxiebwwaloay").withQuantity(1665079577),
-                            new ReservationToReturn().withReservationId("rtzju").withQuantity(47396428),
-                            new ReservationToReturn().withReservationId("zmh").withQuantity(1672254683),
-                            new ReservationToReturn().withReservationId("gmtsavjcbpwxqpsr").withQuantity(1220568259)));
+                    Arrays.asList(new ReservationToReturn().withReservationId("hcaalnjix").withQuantity(1143509001)));
         model = BinaryData.fromObject(model).toObject(CalculateExchangeRequestProperties.class);
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.reservationsToPurchase().get(0).sku().name());
-        Assertions.assertEquals("hvljuahaquh", model.reservationsToPurchase().get(0).location());
-        Assertions
-            .assertEquals(
-                ReservedResourceType.RED_HAT_OSA, model.reservationsToPurchase().get(0).reservedResourceType());
-        Assertions.assertEquals("ualaexqpvfadmw", model.reservationsToPurchase().get(0).billingScopeId());
-        Assertions.assertEquals(ReservationTerm.P3Y, model.reservationsToPurchase().get(0).term());
+        Assertions.assertEquals("jdauwhvy", model.reservationsToPurchase().get(0).sku().name());
+        Assertions.assertEquals("zbtd", model.reservationsToPurchase().get(0).location());
+        Assertions.assertEquals(ReservedResourceType.AVS, model.reservationsToPurchase().get(0).reservedResourceType());
+        Assertions.assertEquals("nbmpowuwprzq", model.reservationsToPurchase().get(0).billingScopeId());
+        Assertions.assertEquals(ReservationTerm.P5Y, model.reservationsToPurchase().get(0).term());
         Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.reservationsToPurchase().get(0).billingPlan());
-        Assertions.assertEquals(1259983494, model.reservationsToPurchase().get(0).quantity());
-        Assertions.assertEquals("vgomz", model.reservationsToPurchase().get(0).displayName());
-        Assertions.assertEquals(AppliedScopeType.SINGLE, model.reservationsToPurchase().get(0).appliedScopeType());
-        Assertions.assertEquals(false, model.reservationsToPurchase().get(0).renew());
+        Assertions.assertEquals(1056372950, model.reservationsToPurchase().get(0).quantity());
+        Assertions.assertEquals("j", model.reservationsToPurchase().get(0).displayName());
+        Assertions
+            .assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.reservationsToPurchase().get(0).appliedScopeType());
+        Assertions.assertEquals(true, model.reservationsToPurchase().get(0).renew());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-11-20T05:31:55Z"), model.reservationsToPurchase().get(0).reviewDateTime());
-        Assertions.assertEquals("uwhvylwzbtdhxujz", model.savingsPlansToPurchase().get(0).sku().name());
-        Assertions.assertEquals("pow", model.savingsPlansToPurchase().get(0).displayName());
-        Assertions.assertEquals("przqlveu", model.savingsPlansToPurchase().get(0).billingScopeId());
-        Assertions.assertEquals(SavingsPlanTerm.P1Y, model.savingsPlansToPurchase().get(0).term());
+                OffsetDateTime.parse("2021-07-16T11:10Z"), model.reservationsToPurchase().get(0).reviewDateTime());
+        Assertions.assertEquals("u", model.savingsPlansToPurchase().get(0).sku().name());
+        Assertions.assertEquals("thnnpr", model.savingsPlansToPurchase().get(0).displayName());
+        Assertions.assertEquals("i", model.savingsPlansToPurchase().get(0).billingScopeId());
+        Assertions.assertEquals(SavingsPlanTerm.P3Y, model.savingsPlansToPurchase().get(0).term());
         Assertions.assertEquals(BillingPlan.P1M, model.savingsPlansToPurchase().get(0).billingPlan());
-        Assertions.assertEquals(AppliedScopeType.SINGLE, model.savingsPlansToPurchase().get(0).appliedScopeType());
-        Assertions.assertEquals("ibtnmxiebwwaloay", model.reservationsToExchange().get(0).reservationId());
-        Assertions.assertEquals(1665079577, model.reservationsToExchange().get(0).quantity());
+        Assertions
+            .assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.savingsPlansToPurchase().get(0).appliedScopeType());
+        Assertions.assertEquals("hcaalnjix", model.reservationsToExchange().get(0).reservationId());
+        Assertions.assertEquals(1143509001, model.reservationsToExchange().get(0).quantity());
     }
 }

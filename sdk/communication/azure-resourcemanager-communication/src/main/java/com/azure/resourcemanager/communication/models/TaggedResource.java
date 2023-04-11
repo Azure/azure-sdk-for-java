@@ -19,6 +19,10 @@ public class TaggedResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of TaggedResource class. */
+    public TaggedResource() {
+    }
+
     /**
      * Get the tags property: Tags of the service which is a list of key value pairs that describe the resource.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Alerts UpdateResourceGroupLevelStateToDismiss. */
 public final class AlertsUpdateResourceGroupLevelStateToDismissSamples {
     /*
@@ -21,6 +19,9 @@ public final class AlertsUpdateResourceGroupLevelStateToDismissSamples {
         manager
             .alerts()
             .updateResourceGroupLevelStateToDismissWithResponse(
-                "myRg2", "westeurope", "2518765996949954086_2325cf9e-42a2-4f72-ae7f-9b863cba2d22", Context.NONE);
+                "myRg2",
+                "westeurope",
+                "2518765996949954086_2325cf9e-42a2-4f72-ae7f-9b863cba2d22",
+                com.azure.core.util.Context.NONE);
     }
 }

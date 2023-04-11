@@ -245,16 +245,17 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        EntityRecognitionSkillV3 deserializedValue = new EntityRecognitionSkillV3(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.categories = categories;
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.minimumPrecision = minimumPrecision;
-                        deserializedValue.modelVersion = modelVersion;
+                        EntityRecognitionSkillV3 deserializedEntityRecognitionSkillV3 =
+                                new EntityRecognitionSkillV3(inputs, outputs);
+                        deserializedEntityRecognitionSkillV3.setName(name);
+                        deserializedEntityRecognitionSkillV3.setDescription(description);
+                        deserializedEntityRecognitionSkillV3.setContext(context);
+                        deserializedEntityRecognitionSkillV3.categories = categories;
+                        deserializedEntityRecognitionSkillV3.defaultLanguageCode = defaultLanguageCode;
+                        deserializedEntityRecognitionSkillV3.minimumPrecision = minimumPrecision;
+                        deserializedEntityRecognitionSkillV3.modelVersion = modelVersion;
 
-                        return deserializedValue;
+                        return deserializedEntityRecognitionSkillV3;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

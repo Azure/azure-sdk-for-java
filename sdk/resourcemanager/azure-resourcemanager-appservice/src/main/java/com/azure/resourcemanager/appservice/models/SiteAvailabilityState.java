@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SiteAvailabilityState. */
+/** Management information availability state for the app. */
 public enum SiteAvailabilityState {
     /** Enum value Normal. */
     NORMAL("Normal"),
@@ -33,6 +33,9 @@ public enum SiteAvailabilityState {
      */
     @JsonCreator
     public static SiteAvailabilityState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SiteAvailabilityState[] items = SiteAvailabilityState.values();
         for (SiteAvailabilityState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum SiteAvailabilityState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

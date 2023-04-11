@@ -22,6 +22,10 @@ public final class DesktopPatchProperties {
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
+    /** Creates an instance of DesktopPatchProperties class. */
+    public DesktopPatchProperties() {
+    }
+
     /**
      * Get the description property: Description of Desktop.
      *

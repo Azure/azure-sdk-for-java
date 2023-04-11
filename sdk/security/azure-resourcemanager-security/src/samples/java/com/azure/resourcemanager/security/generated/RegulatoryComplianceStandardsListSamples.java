@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RegulatoryComplianceStandards List. */
 public final class RegulatoryComplianceStandardsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class RegulatoryComplianceStandardsListSamples {
      */
     public static void getAllSupportedRegulatoryComplianceStandardsDetailsAndState(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.regulatoryComplianceStandards().list(null, Context.NONE);
+        manager.regulatoryComplianceStandards().list(null, com.azure.core.util.Context.NONE);
     }
 }

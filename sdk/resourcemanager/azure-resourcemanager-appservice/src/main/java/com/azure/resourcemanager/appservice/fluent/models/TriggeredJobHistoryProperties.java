@@ -18,6 +18,10 @@ public final class TriggeredJobHistoryProperties {
     @JsonProperty(value = "runs")
     private List<TriggeredJobRun> runs;
 
+    /** Creates an instance of TriggeredJobHistoryProperties class. */
+    public TriggeredJobHistoryProperties() {
+    }
+
     /**
      * Get the runs property: List of triggered web job runs.
      *

@@ -56,6 +56,10 @@ public final class WebJobProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
 
+    /** Creates an instance of WebJobProperties class. */
+    public WebJobProperties() {
+    }
+
     /**
      * Get the runCommand property: Run command.
      *

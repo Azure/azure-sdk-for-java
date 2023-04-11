@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** The EmailHookInfo model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "hookType")
@@ -19,6 +20,9 @@ public final class EmailHookInfo extends HookInfo {
      */
     @JsonProperty(value = "hookParameter", required = true)
     private EmailHookParameter hookParameter;
+
+    /** Creates an instance of EmailHookInfo class. */
+    public EmailHookInfo() {}
 
     /**
      * Get the hookParameter property: The hookParameter property.
@@ -37,6 +41,34 @@ public final class EmailHookInfo extends HookInfo {
      */
     public EmailHookInfo setHookParameter(EmailHookParameter hookParameter) {
         this.hookParameter = hookParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailHookInfo setHookName(String hookName) {
+        super.setHookName(hookName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailHookInfo setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailHookInfo setExternalLink(String externalLink) {
+        super.setExternalLink(externalLink);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailHookInfo setAdmins(List<String> admins) {
+        super.setAdmins(admins);
         return this;
     }
 }

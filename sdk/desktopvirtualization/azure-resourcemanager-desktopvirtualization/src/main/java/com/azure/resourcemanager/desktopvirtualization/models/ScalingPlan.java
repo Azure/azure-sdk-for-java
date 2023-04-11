@@ -147,7 +147,7 @@ public interface ScalingPlan {
     String exclusionTag();
 
     /**
-     * Gets the schedules property: List of ScalingSchedule definitions.
+     * Gets the schedules property: List of ScalingPlanPooledSchedule definitions.
      *
      * @return the schedules value.
      */
@@ -193,6 +193,7 @@ public interface ScalingPlan {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithTimeZone,
             DefinitionStages.WithCreate {
     }
     /** The ScalingPlan definition stages. */
@@ -226,7 +227,17 @@ public interface ScalingPlan {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithTimeZone withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the ScalingPlan definition allowing to specify timeZone. */
+        interface WithTimeZone {
+            /**
+             * Specifies the timeZone property: Timezone of the scaling plan..
+             *
+             * @param timeZone Timezone of the scaling plan.
+             * @return the next definition stage.
+             */
+            WithCreate withTimeZone(String timeZone);
         }
         /**
          * The stage of the ScalingPlan definition which contains all the minimum required properties for the resource
@@ -241,7 +252,6 @@ public interface ScalingPlan {
                 DefinitionStages.WithPlan,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithFriendlyName,
-                DefinitionStages.WithTimeZone,
                 DefinitionStages.WithHostPoolType,
                 DefinitionStages.WithExclusionTag,
                 DefinitionStages.WithSchedules,
@@ -350,16 +360,6 @@ public interface ScalingPlan {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
-        /** The stage of the ScalingPlan definition allowing to specify timeZone. */
-        interface WithTimeZone {
-            /**
-             * Specifies the timeZone property: Timezone of the scaling plan..
-             *
-             * @param timeZone Timezone of the scaling plan.
-             * @return the next definition stage.
-             */
-            WithCreate withTimeZone(String timeZone);
-        }
         /** The stage of the ScalingPlan definition allowing to specify hostPoolType. */
         interface WithHostPoolType {
             /**
@@ -383,9 +383,9 @@ public interface ScalingPlan {
         /** The stage of the ScalingPlan definition allowing to specify schedules. */
         interface WithSchedules {
             /**
-             * Specifies the schedules property: List of ScalingSchedule definitions..
+             * Specifies the schedules property: List of ScalingPlanPooledSchedule definitions..
              *
-             * @param schedules List of ScalingSchedule definitions.
+             * @param schedules List of ScalingPlanPooledSchedule definitions.
              * @return the next definition stage.
              */
             WithCreate withSchedules(List<ScalingSchedule> schedules);

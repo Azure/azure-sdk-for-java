@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -36,13 +37,30 @@ public final class BuildDocumentModelRequest {
     private AzureBlobContentSource azureBlobSource;
 
     /*
+     * Azure Blob Storage file list specifying the training data.
+     */
+    @JsonProperty(value = "azureBlobFileListSource")
+    private AzureBlobFileListSource azureBlobFileListSource;
+
+    /*
      * List of key-value tag attributes associated with the document model.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of BuildDocumentModelRequest class. */
-    public BuildDocumentModelRequest() {}
+    /**
+     * Creates an instance of BuildDocumentModelRequest class.
+     *
+     * @param modelId the modelId value to set.
+     * @param buildMode the buildMode value to set.
+     */
+    @JsonCreator
+    public BuildDocumentModelRequest(
+            @JsonProperty(value = "modelId", required = true) String modelId,
+            @JsonProperty(value = "buildMode", required = true) DocumentBuildMode buildMode) {
+        this.modelId = modelId;
+        this.buildMode = buildMode;
+    }
 
     /**
      * Get the modelId property: Unique document model name.
@@ -51,17 +69,6 @@ public final class BuildDocumentModelRequest {
      */
     public String getModelId() {
         return this.modelId;
-    }
-
-    /**
-     * Set the modelId property: Unique document model name.
-     *
-     * @param modelId the modelId value to set.
-     * @return the BuildDocumentModelRequest object itself.
-     */
-    public BuildDocumentModelRequest setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
     }
 
     /**
@@ -94,17 +101,6 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Set the buildMode property: Custom document model build mode.
-     *
-     * @param buildMode the buildMode value to set.
-     * @return the BuildDocumentModelRequest object itself.
-     */
-    public BuildDocumentModelRequest setBuildMode(DocumentBuildMode buildMode) {
-        this.buildMode = buildMode;
-        return this;
-    }
-
-    /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data.
      *
      * @return the azureBlobSource value.
@@ -121,6 +117,26 @@ public final class BuildDocumentModelRequest {
      */
     public BuildDocumentModelRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
+        return this;
+    }
+
+    /**
+     * Get the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.
+     *
+     * @return the azureBlobFileListSource value.
+     */
+    public AzureBlobFileListSource getAzureBlobFileListSource() {
+        return this.azureBlobFileListSource;
+    }
+
+    /**
+     * Set the azureBlobFileListSource property: Azure Blob Storage file list specifying the training data.
+     *
+     * @param azureBlobFileListSource the azureBlobFileListSource value to set.
+     * @return the BuildDocumentModelRequest object itself.
+     */
+    public BuildDocumentModelRequest setAzureBlobFileListSource(AzureBlobFileListSource azureBlobFileListSource) {
+        this.azureBlobFileListSource = azureBlobFileListSource;
         return this;
     }
 

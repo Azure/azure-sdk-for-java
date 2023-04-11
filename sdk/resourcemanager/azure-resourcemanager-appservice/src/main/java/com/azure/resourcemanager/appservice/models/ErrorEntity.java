@@ -59,6 +59,10 @@ public final class ErrorEntity {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of ErrorEntity class. */
+    public ErrorEntity() {
+    }
+
     /**
      * Get the extendedCode property: Type of error.
      *

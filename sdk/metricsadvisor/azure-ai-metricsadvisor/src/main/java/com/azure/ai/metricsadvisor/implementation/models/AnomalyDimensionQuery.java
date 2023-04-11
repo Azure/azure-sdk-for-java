@@ -35,6 +35,9 @@ public final class AnomalyDimensionQuery {
     @JsonProperty(value = "dimensionFilter")
     private DimensionGroupIdentity dimensionFilter;
 
+    /** Creates an instance of AnomalyDimensionQuery class. */
+    public AnomalyDimensionQuery() {}
+
     /**
      * Get the startTime property: start time.
      *

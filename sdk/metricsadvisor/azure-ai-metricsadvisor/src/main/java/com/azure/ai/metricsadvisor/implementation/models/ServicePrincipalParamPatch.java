@@ -28,6 +28,9 @@ public final class ServicePrincipalParamPatch {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
+    /** Creates an instance of ServicePrincipalParamPatch class. */
+    public ServicePrincipalParamPatch() {}
+
     /**
      * Get the clientId property: The client id of the service principal.
      *

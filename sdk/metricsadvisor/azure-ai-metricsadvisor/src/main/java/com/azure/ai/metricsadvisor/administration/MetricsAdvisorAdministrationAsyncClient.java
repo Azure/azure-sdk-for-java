@@ -25,7 +25,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
@@ -69,6 +69,8 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.CUSTOM;
 import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeedIngestionProgress;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeedIngestionStatus;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -90,7 +92,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = MetricsAdvisorAdministrationClientBuilder.class, isAsync = true)
 public final class MetricsAdvisorAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(MetricsAdvisorAdministrationAsyncClient.class);
-    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service;
+    private final MetricsAdvisorImpl service;
 
     /**
      * Create a {@link MetricsAdvisorAdministrationAsyncClient} that sends requests to the Metrics Advisor
@@ -100,7 +102,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAdministrationAsyncClient(AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl service,
+    MetricsAdvisorAdministrationAsyncClient(MetricsAdvisorImpl service,
         MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }
@@ -184,8 +186,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed -->
-     *
-     *
      * @param dataFeed The data feed to be created.
      * @return A {@link Response} of a {@link Mono} containing the created {@link DataFeed data feed}.
      * @throws NullPointerException If {@code dataFeed}, {@code dataFeedName}, {@code dataFeedSource}, {@code metrics},
@@ -603,13 +603,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<DataFeed> listDataFeeds(ListDataFeedOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listDataFeedsSinglePageAsync(options, context),
-            continuationToken ->
-                listDataFeedsNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<DataFeed>> listDataFeedsSinglePageAsync(ListDataFeedOptions options, Context context) {
 
         options = options != null ? options : new ListDataFeedOptions();
@@ -699,18 +692,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
-
-    PagedFlux<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId,
-        ListDataFeedIngestionOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listDataFeedIngestionStatusSinglePageAsync(dataFeedId, options, context),
-            continuationToken ->
-                listDataFeedIngestionStatusNextPageAsync(continuationToken,
-                    options,
-                    context));
-    }
-
     private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusSinglePageAsync(
         String dataFeedId,
         ListDataFeedIngestionOptions options, Context context) {
@@ -731,9 +712,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             context)
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
-            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error));
+            .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                toDataFeedIngestionStatus(res.getValue()),
+                res.getContinuationToken(),
+                null));
     }
-
     private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(
         String nextPageLink,
         ListDataFeedIngestionOptions options,
@@ -751,7 +738,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
                 nextPageLink, response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
+                error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                toDataFeedIngestionStatus(res.getValue()),
+                res.getContinuationToken(),
+                null));
     }
 
     /**
@@ -775,7 +769,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
-     * @param endTime The end point of of the period.
+     * @param endTime The end point of the period.
      *
      * @return A {@link Mono} indicating ingestion reset success or failure.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
@@ -815,7 +809,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
-     * @param endTime The end point of of the period.
+     * @param endTime The end point of the period.
      *
      * @return A {@link Response} of a {@link Mono} with result of reset request.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
@@ -918,7 +912,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         return service.getIngestionProgressWithResponseAsync(UUID.fromString(dataFeedId), context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ingestion progress for metric"))
             .doOnSuccess(response -> logger.info("Retrieved ingestion progress {}", response))
-            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error));
+            .doOnError(error -> logger.warning("Failed to retrieve ingestion progress for metric", error))
+            .map(response -> new SimpleResponse<>(response, toDataFeedIngestionProgress(response.getValue())));
     }
 
     /**
@@ -1271,8 +1266,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyDetectionConfiguration> getDetectionConfig(
         String detectionConfigurationId) {
-        return getDetectionConfigWithResponse(detectionConfigurationId)
-            .map(Response::getValue);
+        return getDetectionConfigWithResponse(detectionConfigurationId).map(Response::getValue);
     }
 
     /**
@@ -1752,16 +1746,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     }
 
-    PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
-        String metricId,
-        ListDetectionConfigsOptions options,
-        Context context) {
-        return new PagedFlux<>(() ->
-            listAnomalyDetectionConfigsSinglePageAsync(metricId, options, context),
-            continuationToken ->
-                listAnomalyDetectionConfigsNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsSinglePageAsync(
         String metricId,
         ListDetectionConfigsOptions options,
@@ -1774,7 +1758,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing MetricAnomalyDetectionConfigs"))
             .doOnSuccess(response -> logger.info("Listed MetricAnomalyDetectionConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the MetricAnomalyDetectionConfigs", error))
-            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsNextPageAsync(
@@ -1789,7 +1773,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
     }
 
     /**
@@ -2240,13 +2224,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<NotificationHook> listHooks(ListHookOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listHooksSinglePageAsync(options, context),
-            continuationToken ->
-                listHooksNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<NotificationHook>> listHooksSinglePageAsync(ListHookOptions options, Context context) {
         return service.listHooksSinglePageAsync(
             options != null ? options.getHookNameFilter() : null,
@@ -2378,7 +2355,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required.");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
-            Objects.requireNonNull("'alertConfiguration.metricAnomalyAlertConfigurations' is required");
+            throw logger.logExceptionAsError(
+                new NullPointerException("'alertConfiguration.metricAnomalyAlertConfigurations' is required"));
         }
         if (alertConfiguration.getCrossMetricsOperator() == null
             && alertConfiguration.getMetricAlertConfigurations().size() > 1) {
@@ -2727,16 +2705,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
-        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
-        return new PagedFlux<>(() ->
-            listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
-                options,
-                context),
-            continuationToken ->
-                listAnomalyAlertConfigsNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsSinglePageAsync(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
@@ -2748,7 +2716,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing AnomalyAlertConfigs"))
             .doOnSuccess(response -> logger.info("Listed AnomalyAlertConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the AnomalyAlertConfigs", error))
-            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(AlertConfigurationTransforms::fromInnerPagedResponse);
     }
 
     private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(
@@ -2763,7 +2731,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 response))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
+            .map(AlertConfigurationTransforms::fromInnerPagedResponse);
     }
 
     /**
@@ -3238,15 +3206,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
-
-    PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options,
-                                                                    Context context) {
-        return new PagedFlux<>(() ->
-            listCredentialEntitiesSinglePageAsync(options, context),
-            continuationToken ->
-                listCredentialEntitiesSNextPageAsync(continuationToken, context));
-    }
-
     private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
         ListCredentialEntityOptions options, Context context) {
         options = options != null ? options : new ListCredentialEntityOptions();

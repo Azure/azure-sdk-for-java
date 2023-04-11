@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostics ListHostingEnvironmentDetectorResponses. */
 public final class DiagnosticsListHostingEnvironmentDetectorResponsesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
      */
     /**
      * Sample code: Get App Service Environment Detector Responses.
@@ -23,6 +21,6 @@ public final class DiagnosticsListHostingEnvironmentDetectorResponsesSamples {
             .serviceClient()
             .getDiagnostics()
             .listHostingEnvironmentDetectorResponses(
-                "Sample-WestUSResourceGroup", "SampleAppServiceEnvironment", Context.NONE);
+                "Sample-WestUSResourceGroup", "SampleAppServiceEnvironment", com.azure.core.util.Context.NONE);
     }
 }

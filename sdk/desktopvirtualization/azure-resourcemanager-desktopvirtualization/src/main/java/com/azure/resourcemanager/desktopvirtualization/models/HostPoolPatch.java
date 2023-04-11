@@ -27,6 +27,10 @@ public final class HostPoolPatch extends ProxyResource {
     @JsonProperty(value = "properties")
     private HostPoolPatchProperties innerProperties;
 
+    /** Creates an instance of HostPoolPatch class. */
+    public HostPoolPatch() {
+    }
+
     /**
      * Get the tags property: tags to be updated.
      *
@@ -430,25 +434,27 @@ public final class HostPoolPatch extends ProxyResource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @return the publicNetworkAccess value.
+     * @return the agentUpdate value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    public AgentUpdatePatchProperties agentUpdate() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentUpdate();
     }
 
     /**
-     * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
+     * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @param agentUpdate the agentUpdate value to set.
      * @return the HostPoolPatch object itself.
      */
-    public HostPoolPatch withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+    public HostPoolPatch withAgentUpdate(AgentUpdatePatchProperties agentUpdate) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HostPoolPatchProperties();
         }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        this.innerProperties().withAgentUpdate(agentUpdate);
         return this;
     }
 

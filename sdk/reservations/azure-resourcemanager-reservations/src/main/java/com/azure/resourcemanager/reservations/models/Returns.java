@@ -18,9 +18,9 @@ public interface Returns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation.
+     * @return details of a reservation order being returned.
      */
-    RefundResponse post(String reservationOrderId, RefundRequest body);
+    ReservationOrderResponse post(String reservationOrderId, RefundRequest body);
 
     /**
      * Return a reservation.
@@ -33,7 +33,7 @@ public interface Returns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of refund request containing refund information of reservation.
+     * @return details of a reservation order being returned.
      */
-    RefundResponse post(String reservationOrderId, RefundRequest body, Context context);
+    ReservationOrderResponse post(String reservationOrderId, RefundRequest body, Context context);
 }

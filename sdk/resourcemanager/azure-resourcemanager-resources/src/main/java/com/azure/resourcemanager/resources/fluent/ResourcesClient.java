@@ -107,9 +107,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String resourceGroupName, String filter, String expand, Integer top, Context context);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -123,9 +125,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -139,9 +143,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -154,9 +160,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     SyncPoller<PollResult<Void>, Void> beginMoveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -171,9 +179,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -186,9 +196,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -200,9 +212,11 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     void moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different
-     * subscription. When moving resources, both the source group and the target group are locked for the duration of
-     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     * Moves resources from one resource group to another resource group.
+     *
+     * <p>The resources to move must be in the same source resource group. The target resource group may be in a
+     * different subscription. When moving resources, both the source group and the target group are locked for the
+     * duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
@@ -215,8 +229,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     void moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -233,8 +249,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -251,8 +269,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -269,8 +289,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -288,8 +310,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -305,8 +329,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -321,8 +347,10 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     void validateMoveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters);
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
-     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * Validates whether resources can be moved from one resource group to another resource group.
+     *
+     * <p>This operation checks whether the specified resources can be moved to the target. The resources to move must
+     * be in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
      * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
      * long-running operation.
@@ -470,30 +498,6 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistence(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion);
-
-    /**
-     * Checks whether a resource exists.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The resource provider of the resource to check.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource to check whether it exists.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -509,6 +513,30 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String resourceName,
         String apiVersion,
         Context context);
+
+    /**
+     * Checks whether a resource exists.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistence(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion);
 
     /**
      * Deletes a resource.
@@ -1096,30 +1124,6 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GenericResourceInner get(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String apiVersion);
-
-    /**
-     * Gets a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
-     *     insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1135,6 +1139,30 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String resourceName,
         String apiVersion,
         Context context);
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GenericResourceInner get(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion);
 
     /**
      * Checks by ID whether a resource exists.
@@ -1173,21 +1201,6 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkExistenceById(String resourceId, String apiVersion);
-
-    /**
-     * Checks by ID whether a resource exists.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1196,6 +1209,21 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Boolean> checkExistenceByIdWithResponse(String resourceId, String apiVersion, Context context);
+
+    /**
+     * Checks by ID whether a resource exists.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkExistenceById(String resourceId, String apiVersion);
 
     /**
      * Deletes a resource by ID.
@@ -1578,21 +1606,6 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GenericResourceInner getById(String resourceId, String apiVersion);
-
-    /**
-     * Gets a resource by ID.
-     *
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
-     *     format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
-     * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1601,4 +1614,19 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GenericResourceInner> getByIdWithResponse(String resourceId, String apiVersion, Context context);
+
+    /**
+     * Gets a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GenericResourceInner getById(String resourceId, String apiVersion);
 }

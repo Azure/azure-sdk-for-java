@@ -23,6 +23,9 @@ public final class AnomalyDimensionList {
     @JsonProperty(value = "value", required = true)
     private List<String> value;
 
+    /** Creates an instance of AnomalyDimensionList class. */
+    public AnomalyDimensionList() {}
+
     /**
      * Get the nextLink property: The @nextLink property.
      *

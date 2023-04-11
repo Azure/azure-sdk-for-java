@@ -165,37 +165,28 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
     public static OciDescriptor fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String mediaType = null;
-                    Long sizeInBytes = null;
-                    String digest = null;
-                    List<String> urls = null;
-                    OciAnnotations annotations = null;
+                    OciDescriptor deserializedOciDescriptor = new OciDescriptor();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("mediaType".equals(fieldName)) {
-                            mediaType = reader.getString();
+                            deserializedOciDescriptor.mediaType = reader.getString();
                         } else if ("size".equals(fieldName)) {
-                            sizeInBytes = reader.getNullable(JsonReader::getLong);
+                            deserializedOciDescriptor.sizeInBytes = reader.getNullable(JsonReader::getLong);
                         } else if ("digest".equals(fieldName)) {
-                            digest = reader.getString();
+                            deserializedOciDescriptor.digest = reader.getString();
                         } else if ("urls".equals(fieldName)) {
-                            urls = reader.readArray(reader1 -> reader1.getString());
+                            List<String> urls = reader.readArray(reader1 -> reader1.getString());
+                            deserializedOciDescriptor.urls = urls;
                         } else if ("annotations".equals(fieldName)) {
-                            annotations = OciAnnotations.fromJson(reader);
+                            deserializedOciDescriptor.annotations = OciAnnotations.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    OciDescriptor deserializedValue = new OciDescriptor();
-                    deserializedValue.mediaType = mediaType;
-                    deserializedValue.sizeInBytes = sizeInBytes;
-                    deserializedValue.digest = digest;
-                    deserializedValue.urls = urls;
-                    deserializedValue.annotations = annotations;
 
-                    return deserializedValue;
+                    return deserializedOciDescriptor;
                 });
     }
 }

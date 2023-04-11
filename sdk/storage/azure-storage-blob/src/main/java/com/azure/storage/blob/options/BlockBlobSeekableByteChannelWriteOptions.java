@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.options;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,15 +22,35 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     /**
      * Mode to open the channel for writing.
      */
-    public enum WriteMode {
+    public static final class WriteMode extends ExpandableStringEnum<WriteMode> {
         /**
          * Replaces the existing block blob, if any, with the newly written contents. Creates a new blob if none exists.
          */
-        OVERWRITE,
+        public static final WriteMode OVERWRITE = fromString("Overwrite");
+
+        /**
+         * Creates or finds a AccessTier from its string representation.
+         *
+         * @param name a name to look for.
+         * @return the corresponding AccessTier.
+         */
+        @JsonCreator
+        public static WriteMode fromString(String name) {
+            return fromString(name, WriteMode.class);
+        }
+
+        /**
+         * Gets known WriteMode values.
+         *
+         * @return known WriteMode values.
+         */
+        public static Collection<WriteMode> values() {
+            return values(WriteMode.class);
+        }
     }
 
     private final WriteMode writeMode;
-    private Long chunkSize;
+    private Long blockSizeInBytes;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
@@ -52,16 +75,16 @@ public final class BlockBlobSeekableByteChannelWriteOptions {
     /**
      * @return The size of individual writes to the service.
      */
-    public Long getChunkSize() {
-        return chunkSize;
+    public Long getBlockSizeInBytes() {
+        return blockSizeInBytes;
     }
 
     /**
-     * @param chunkSize The size of individual writes to the service.
+     * @param blockSizeInBytes The size of individual writes to the service.
      * @return The updated instance.
      */
-    public BlockBlobSeekableByteChannelWriteOptions setChunkSize(Long chunkSize) {
-        this.chunkSize = chunkSize;
+    public BlockBlobSeekableByteChannelWriteOptions setBlockSizeInBytes(Long blockSizeInBytes) {
+        this.blockSizeInBytes = blockSizeInBytes;
         return this;
     }
 

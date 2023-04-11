@@ -1,0 +1,57 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azconfig.io/kv?key=%2Akey4495315211b&label=7a3382be35603c&api-version=1.0&$Select=KEY%2CETAG%2CCONTENT_TYPE%2CTAGS",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a3933806-05df-442e-a82d-cc2fa2275db2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.21.4.1",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Date" : "Wed, 08 Mar 2023 22:02:21 GMT",
+      "x-ms-correlation-request-id" : "c4930056-c492-4f34-b796-32cd291faee9",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+      "Access-Control-Allow-Credentials" : "true",
+      "x-ms-request-id" : "c4930056-c492-4f34-b796-32cd291faee9",
+      "Body" : "{\"type\":\"https://azconfig.io/errors/invalid-argument\",\"title\":\"Invalid request parameter 'key'\",\"name\":\"key\",\"detail\":\"key(0): Suffix and Full Text search is not supported\",\"pos\":0,\"status\":400}",
+      "x-ms-client-request-id" : "a3933806-05df-442e-a82d-cc2fa2275db2",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azconfig.io/kv?key=key44953%2A&api-version=1.0&$Select=",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6895ce10-980c-4b9f-af2d-4050f7af4886",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.21.4.1",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 08 Mar 2023 22:02:21 GMT",
+      "x-ms-correlation-request-id" : "4303a719-254e-4730-a4d5-ae81aca4e4ff",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCM0MjIyNjQ2;sn=4222646",
+      "x-ms-request-id" : "4303a719-254e-4730-a4d5-ae81aca4e4ff",
+      "Body" : "{\"items\":[]}",
+      "x-ms-client-request-id" : "6895ce10-980c-4b9f-af2d-4050f7af4886",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "key44953", "7a3382be", "key4495315211b", "7a3382be35603c" ]
+}

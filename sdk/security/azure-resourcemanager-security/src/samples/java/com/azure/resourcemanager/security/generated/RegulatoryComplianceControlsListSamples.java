@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RegulatoryComplianceControls List. */
 public final class RegulatoryComplianceControlsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class RegulatoryComplianceControlsListSamples {
      */
     public static void getAllRegulatoryComplianceControlsDetailsAndStateForSelectedStandard(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.regulatoryComplianceControls().list("PCI-DSS-3.2", null, Context.NONE);
+        manager.regulatoryComplianceControls().list("PCI-DSS-3.2", null, com.azure.core.util.Context.NONE);
     }
 }

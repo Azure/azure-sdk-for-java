@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicySetDefinitions ListBuiltIn. */
 public final class PolicySetDefinitionsListBuiltInSamples {
     /*
@@ -22,6 +20,6 @@ public final class PolicySetDefinitionsListBuiltInSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .listBuiltIn(null, null, Context.NONE);
+            .listBuiltIn(null, null, com.azure.core.util.Context.NONE);
     }
 }

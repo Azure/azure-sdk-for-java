@@ -58,8 +58,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     public interface QuotaRequestStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations"
-                + "/{location}/serviceLimitsRequests/{id}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QuotaRequestDetailsInner>> get(
@@ -74,8 +73,7 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations"
-                + "/{location}/serviceLimitsRequests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/resourceProviders/{providerId}/locations/{location}/serviceLimitsRequests")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QuotaRequestDetailsList>> list(

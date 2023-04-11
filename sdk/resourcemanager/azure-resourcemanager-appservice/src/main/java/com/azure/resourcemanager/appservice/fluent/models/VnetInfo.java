@@ -24,8 +24,7 @@ public final class VnetInfo {
     private String certThumbprint;
 
     /*
-     * A certificate file (.cer) blob containing the public key of the private
-     * key used to authenticate a
+     * A certificate file (.cer) blob containing the public key of the private key used to authenticate a
      * Point-To-Site VPN connection.
      */
     @JsonProperty(value = "certBlob")
@@ -38,15 +37,13 @@ public final class VnetInfo {
     private List<VnetRouteInner> routes;
 
     /*
-     * <code>true</code> if a resync is required; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if a resync is required; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean resyncRequired;
 
     /*
-     * DNS servers to be used by this Virtual Network. This should be a
-     * comma-separated list of IP addresses.
+     * DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses.
      */
     @JsonProperty(value = "dnsServers")
     private String dnsServers;
@@ -56,6 +53,10 @@ public final class VnetInfo {
      */
     @JsonProperty(value = "isSwift")
     private Boolean isSwift;
+
+    /** Creates an instance of VnetInfo class. */
+    public VnetInfo() {
+    }
 
     /**
      * Get the vnetResourceId property: The Virtual Network's resource ID.

@@ -75,9 +75,9 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
                         }
                     }
                     if (skillsetsFound) {
-                        ListSkillsetsResult deserializedValue = new ListSkillsetsResult(skillsets);
+                        ListSkillsetsResult deserializedListSkillsetsResult = new ListSkillsetsResult(skillsets);
 
-                        return deserializedValue;
+                        return deserializedListSkillsetsResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!skillsetsFound) {

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.PrivateLinkServiceConnectionStatus;
@@ -63,7 +62,9 @@ public final class SignalRPrivateEndpointConnectionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnection> response =
-            manager.signalRPrivateEndpointConnections().list("syqtfi", "whbotzingamv", Context.NONE);
+            manager
+                .signalRPrivateEndpointConnections()
+                .list("syqtfi", "whbotzingamv", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("zudphqamvdkfw", response.iterator().next().privateEndpoint().id());
         Assertions

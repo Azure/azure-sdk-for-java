@@ -28,6 +28,10 @@ public final class DataTableResponseColumn {
     @JsonProperty(value = "columnType")
     private String columnType;
 
+    /** Creates an instance of DataTableResponseColumn class. */
+    public DataTableResponseColumn() {
+    }
+
     /**
      * Get the columnName property: Name of the column.
      *

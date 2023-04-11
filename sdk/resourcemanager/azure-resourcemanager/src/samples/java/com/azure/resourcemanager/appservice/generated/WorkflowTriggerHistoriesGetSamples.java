@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowTriggerHistories Get. */
 public final class WorkflowTriggerHistoriesGetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowTriggerHistories_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggerHistories_Get.json
      */
     /**
      * Sample code: Get a workflow trigger history.
@@ -28,6 +26,6 @@ public final class WorkflowTriggerHistoriesGetSamples {
                 "testWorkflowName",
                 "testTriggerName",
                 "08586676746934337772206998657CU22",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -41,7 +41,6 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.longToOffsetDateTime;
@@ -70,7 +69,6 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
 public final class KeyVaultBackupAsyncClient {
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
@@ -213,7 +211,7 @@ public final class KeyVaultBackupAsyncClient {
 
         try {
             return clientImpl.fullBackupWithResponseAsync(vaultUrl, sasTokenParameter,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                context)
                 .doOnRequest(ignored -> logger.verbose("Backing up at URL - {}", blobStorageUrl))
                 .doOnSuccess(response -> logger.verbose("Backed up at URL - {}",
                     response.getValue().getAzureStorageBlobContainerUri()))
@@ -262,7 +260,7 @@ public final class KeyVaultBackupAsyncClient {
                 final String jobId = keyVaultBackupOperation.getOperationId();
 
                 return withContext(context -> clientImpl.fullBackupStatusWithResponseAsync(vaultUrl, jobId,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                    context))
                     .map(response ->
                         new SimpleResponse<>(response,
                             (KeyVaultBackupOperation) transformToLongRunningOperation(response.getValue())))
@@ -389,7 +387,7 @@ public final class KeyVaultBackupAsyncClient {
 
         try {
             return clientImpl.fullRestoreOperationWithResponseAsync(vaultUrl, restoreOperationParameters,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                context)
                 .doOnRequest(ignored -> logger.verbose("Restoring from location - {}", folderUrl))
                 .doOnSuccess(response -> logger.verbose("Restored from location - {}", folderUrl))
                 .doOnError(error ->
@@ -439,7 +437,7 @@ public final class KeyVaultBackupAsyncClient {
                 final String jobId = keyVaultRestoreOperation.getOperationId();
 
                 return withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                    context))
                     .map(response ->
                         new SimpleResponse<>(response,
                             (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
@@ -563,8 +561,7 @@ public final class KeyVaultBackupAsyncClient {
 
         try {
             return clientImpl.selectiveKeyRestoreOperationWithResponseAsync(vaultUrl, keyName,
-                selectiveKeyRestoreOperationParameters, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                selectiveKeyRestoreOperationParameters, context)
                 .doOnRequest(ignored ->
                     logger.verbose("Restoring key \"{}\" from location - {}", keyName, folderUrl))
                 .doOnSuccess(response ->
@@ -616,7 +613,7 @@ public final class KeyVaultBackupAsyncClient {
                 final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
 
                 return withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                    context))
                     .map(response -> new SimpleResponse<>(response,
                         (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(response.getValue())))
                     .flatMap(KeyVaultBackupAsyncClient::processSelectiveKeyRestoreOperationResponse);

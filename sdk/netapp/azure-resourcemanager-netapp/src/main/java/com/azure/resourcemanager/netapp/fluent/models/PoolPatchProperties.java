@@ -32,6 +32,10 @@ public final class PoolPatchProperties {
     @JsonProperty(value = "coolAccess")
     private Boolean coolAccess;
 
+    /** Creates an instance of PoolPatchProperties class. */
+    public PoolPatchProperties() {
+    }
+
     /**
      * Get the size property: size
      *

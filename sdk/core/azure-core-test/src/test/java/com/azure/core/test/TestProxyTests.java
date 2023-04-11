@@ -15,6 +15,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -60,20 +62,21 @@ public class TestProxyTests extends TestProxyTestBase {
     private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
+
 
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizer.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizer.add(new TestProxySanitizer("TableName\\\"*:*\\\"(?<tablename>.*)\\\"", REDACTED, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("tablename"));
     }
 
     @BeforeAll
     public static void setupClass() {
         server = new TestProxyTestServer();
-        TestProxyTestBase.setup();
+
     }
     @AfterAll
     public static void teardownClass() {
-        TestProxyTestBase.teardown();
         server.close();
     }
     @Test
@@ -247,9 +250,9 @@ public class TestProxyTests extends TestProxyTestBase {
         // default sanitizers
         assertEquals("http://REDACTED/fr/path/1", record.getUri());
         assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        assertTrue(record.getResponseHeaders().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
         // custom sanitizers
         assertEquals(REDACTED, record.getResponse().get("modelId"));
-
     }
 
     @Test
@@ -321,6 +324,13 @@ public class TestProxyTests extends TestProxyTestBase {
 
         // custom body regex
         assertEquals(record.getResponse().get("TableName"), REDACTED);
+    }
+
+    @Test
+    @Tag("Live")
+    public void canGetTestProxyVersion() {
+        String version = TestProxyUtils.getTestProxyVersion();
+        assertNotNull(version);
     }
 
     private RecordedTestProxyData readDataFromFile() {

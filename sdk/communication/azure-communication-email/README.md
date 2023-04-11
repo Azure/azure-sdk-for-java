@@ -12,7 +12,7 @@ This package contains the Java SDK for Azure Communication Services for Email.
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above
 - [Apache Maven](https://maven.apache.org/download.cgi)
 
-To create these resource, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
+To create these resources, you can use the [Azure Portal][communication_resource_create_portal], the [Azure PowerShell][communication_resource_create_power_shell], or the [.NET management client library][communication_resource_create_net].
 
 ### Include the package
 #### Include the BOM file
@@ -54,9 +54,11 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0/version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
+
 ## Key concepts
 > More details coming soon.
 
@@ -114,7 +116,7 @@ EmailMessage message = new EmailMessage()
     .setSubject("test subject")
     .setBodyPlainText("test message");
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
@@ -133,7 +135,7 @@ EmailMessage message = new EmailMessage()
     .setCcRecipients("<cc-recipient-email-address>")
     .setBccRecipients("<bcc-recipient-email-address>");
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
@@ -154,7 +156,7 @@ EmailMessage message = new EmailMessage()
     .setBodyPlainText("test message")
     .setToRecipients(toAddress1, toAddress2);
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
@@ -179,7 +181,7 @@ EmailMessage message = new EmailMessage()
     .setBodyPlainText("test message")
     .setAttachments(attachment);
 
-SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());

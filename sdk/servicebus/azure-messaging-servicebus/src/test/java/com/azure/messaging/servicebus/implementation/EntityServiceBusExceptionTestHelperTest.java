@@ -4,6 +4,9 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
@@ -11,9 +14,6 @@ import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -32,7 +32,7 @@ class EntityServiceBusExceptionTestHelperTest {
             .setUserMetadata("Test-topic-Metadata");
 
         // Act
-        final TopicDescription actual = EntityHelper.getTopicDescription(expected);
+        final TopicDescriptionImpl actual = EntityHelper.getTopicDescription(expected);
 
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
@@ -41,6 +41,7 @@ class EntityServiceBusExceptionTestHelperTest {
             actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.isBatchedOperationsEnabled(), actual.isEnableBatchedOperations());
         assertEquals(expected.isPartitioningEnabled(), actual.isEnablePartitioning());
+
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.getStatus(), actual.getStatus());
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isRequiresDuplicateDetection());
@@ -69,7 +70,7 @@ class EntityServiceBusExceptionTestHelperTest {
             .setStatus(EntityStatus.DISABLED);
 
         // Act
-        final QueueDescription actual = EntityHelper.getQueueDescription(expected);
+        final QueueDescriptionImpl actual = EntityHelper.getQueueDescription(expected);
 
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
@@ -92,7 +93,7 @@ class EntityServiceBusExceptionTestHelperTest {
     void setTopicName() {
         // Arrange
         final String newName = "I'm a new name";
-        final TopicProperties properties = EntityHelper.toModel(new TopicDescription());
+        final TopicProperties properties = EntityHelper.toModel(new TopicDescriptionImpl());
 
         // Act
         EntityHelper.setTopicName(properties, newName);
@@ -133,7 +134,7 @@ class EntityServiceBusExceptionTestHelperTest {
             .setUserMetadata("Test-topic-Metadata");
 
         // Act
-        final SubscriptionDescription actual = EntityHelper.getSubscriptionDescription(expected);
+        final SubscriptionDescriptionImpl actual = EntityHelper.getSubscriptionDescription(expected);
 
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
@@ -156,7 +157,7 @@ class EntityServiceBusExceptionTestHelperTest {
         // Arrange
         final String topicName = "I'm a new topic name";
         final String subscriptionName = "I'm a new subscription name";
-        final SubscriptionProperties properties = EntityHelper.toModel(new SubscriptionDescription());
+        final SubscriptionProperties properties = EntityHelper.toModel(new SubscriptionDescriptionImpl());
 
         // Act
         EntityHelper.setTopicName(properties, topicName);

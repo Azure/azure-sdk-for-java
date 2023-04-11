@@ -28,6 +28,10 @@ public final class ContainerThrottlingData {
     @JsonProperty(value = "throttledTime")
     private Integer throttledTime;
 
+    /** Creates an instance of ContainerThrottlingData class. */
+    public ContainerThrottlingData() {
+    }
+
     /**
      * Get the periods property: The periods property.
      *

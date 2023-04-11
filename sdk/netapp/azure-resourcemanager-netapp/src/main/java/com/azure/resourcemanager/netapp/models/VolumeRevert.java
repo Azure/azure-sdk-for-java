@@ -16,6 +16,10 @@ public final class VolumeRevert {
     @JsonProperty(value = "snapshotId")
     private String snapshotId;
 
+    /** Creates an instance of VolumeRevert class. */
+    public VolumeRevert() {
+    }
+
     /**
      * Get the snapshotId property: Resource id of the snapshot.
      *

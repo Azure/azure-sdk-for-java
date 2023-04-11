@@ -15,20 +15,20 @@ public final class AppliedReservationListTests {
         AppliedReservationList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[\"smjqulngsntnbyb\",\"zgcwrw\",\"lxxwrljdouskc\",\"vkocrcjdkwtn\"],\"nextLink\":\"bnjbiksqrglssain\"}")
+                    "{\"value\":[\"xth\",\"o\",\"usivye\",\"cciqihnhungbwjz\"],\"nextLink\":\"fygxgispemvtzfk\"}")
                 .toObject(AppliedReservationList.class);
-        Assertions.assertEquals("smjqulngsntnbyb", model.value().get(0));
-        Assertions.assertEquals("bnjbiksqrglssain", model.nextLink());
+        Assertions.assertEquals("xth", model.value().get(0));
+        Assertions.assertEquals("fygxgispemvtzfk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppliedReservationList model =
             new AppliedReservationList()
-                .withValue(Arrays.asList("smjqulngsntnbyb", "zgcwrw", "lxxwrljdouskc", "vkocrcjdkwtn"))
-                .withNextLink("bnjbiksqrglssain");
+                .withValue(Arrays.asList("xth", "o", "usivye", "cciqihnhungbwjz"))
+                .withNextLink("fygxgispemvtzfk");
         model = BinaryData.fromObject(model).toObject(AppliedReservationList.class);
-        Assertions.assertEquals("smjqulngsntnbyb", model.value().get(0));
-        Assertions.assertEquals("bnjbiksqrglssain", model.nextLink());
+        Assertions.assertEquals("xth", model.value().get(0));
+        Assertions.assertEquals("fygxgispemvtzfk", model.nextLink());
     }
 }

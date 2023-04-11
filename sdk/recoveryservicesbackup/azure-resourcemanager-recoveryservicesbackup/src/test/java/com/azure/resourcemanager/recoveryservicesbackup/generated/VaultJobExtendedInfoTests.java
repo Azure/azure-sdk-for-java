@@ -15,17 +15,20 @@ public final class VaultJobExtendedInfoTests {
     public void testDeserialize() throws Exception {
         VaultJobExtendedInfo model =
             BinaryData
-                .fromString("{\"propertyBag\":{\"qyggagfl\":\"dnb\",\"byrplrohkpig\":\"lgmtrwahzjmucf\"}}")
+                .fromString(
+                    "{\"propertyBag\":{\"bnchrsziz\":\"sxypruuu\",\"etndnbfqyggagf\":\"yuel\",\"ftbyrplro\":\"nlgmtrwahzjmu\"}}")
                 .toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("dnb", model.propertyBag().get("qyggagfl"));
+        Assertions.assertEquals("sxypruuu", model.propertyBag().get("bnchrsziz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VaultJobExtendedInfo model =
-            new VaultJobExtendedInfo().withPropertyBag(mapOf("qyggagfl", "dnb", "byrplrohkpig", "lgmtrwahzjmucf"));
+            new VaultJobExtendedInfo()
+                .withPropertyBag(
+                    mapOf("bnchrsziz", "sxypruuu", "etndnbfqyggagf", "yuel", "ftbyrplro", "nlgmtrwahzjmu"));
         model = BinaryData.fromObject(model).toObject(VaultJobExtendedInfo.class);
-        Assertions.assertEquals("dnb", model.propertyBag().get("qyggagfl"));
+        Assertions.assertEquals("sxypruuu", model.propertyBag().get("bnchrsziz"));
     }
 
     @SuppressWarnings("unchecked")

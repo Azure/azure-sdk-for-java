@@ -4,7 +4,13 @@
 package com.azure.identity;
 
 /**
- * Defines fields exposing the well known authority hosts for the Azure Public Cloud and sovereign clouds.
+ * <p>Defines fields exposing the well known authority hosts for the Azure Public Cloud and sovereign clouds.</p>
+ *
+ * <p>Users looking to target a specific cloud instance of Azure, can pass an instance of Azure Authority Hosts
+ * as a parameter to the {@link AadCredentialBuilderBase#authorityHost(String)}. The authentication requests
+ * will be routed accordingly to the specified target authority host.</p>
+ *
+ * @see AadCredentialBuilderBase
  */
 public final class AzureAuthorityHosts {
 

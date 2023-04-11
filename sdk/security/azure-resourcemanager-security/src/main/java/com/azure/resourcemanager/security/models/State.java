@@ -23,6 +23,15 @@ public final class State extends ExpandableStringEnum<State> {
     public static final State UNSUPPORTED = fromString("Unsupported");
 
     /**
+     * Creates a new instance of State value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public State() {
+    }
+
+    /**
      * Creates or finds a State from its string representation.
      *
      * @param name a name to look for.

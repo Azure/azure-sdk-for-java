@@ -17,6 +17,15 @@ public final class Reason extends ExpandableStringEnum<Reason> {
     public static final Reason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
+     * Creates a new instance of Reason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Reason() {
+    }
+
+    /**
      * Creates or finds a Reason from its string representation.
      *
      * @param name a name to look for.

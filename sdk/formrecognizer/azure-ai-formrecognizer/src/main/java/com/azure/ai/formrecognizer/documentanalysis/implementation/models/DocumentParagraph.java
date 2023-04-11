@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -35,8 +36,19 @@ public final class DocumentParagraph {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
-    /** Creates an instance of DocumentParagraph class. */
-    public DocumentParagraph() {}
+    /**
+     * Creates an instance of DocumentParagraph class.
+     *
+     * @param content the content value to set.
+     * @param spans the spans value to set.
+     */
+    @JsonCreator
+    public DocumentParagraph(
+            @JsonProperty(value = "content", required = true) String content,
+            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
+        this.content = content;
+        this.spans = spans;
+    }
 
     /**
      * Get the role property: Semantic role of the paragraph.
@@ -68,17 +80,6 @@ public final class DocumentParagraph {
     }
 
     /**
-     * Set the content property: Concatenated content of the paragraph in reading order.
-     *
-     * @param content the content value to set.
-     * @return the DocumentParagraph object itself.
-     */
-    public DocumentParagraph setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the boundingRegions property: Bounding regions covering the paragraph.
      *
      * @return the boundingRegions value.
@@ -105,16 +106,5 @@ public final class DocumentParagraph {
      */
     public List<DocumentSpan> getSpans() {
         return this.spans;
-    }
-
-    /**
-     * Set the spans property: Location of the paragraph in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentParagraph object itself.
-     */
-    public DocumentParagraph setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
     }
 }

@@ -73,10 +73,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     @Override
     public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
         return tokenService.getToken(tokenRequestContext)
-            .flatMap((token) -> {
-                context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
-                return Mono.empty();
-            });
+            .doOnNext(token -> context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken())).then();
     }
 
     @Override
@@ -133,7 +130,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return Mono.just(false);
         } else {
-            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String scope = extractValue(authHeader, SCOPES_PARAMETER);
             String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
 
             if (scope != null && serviceName != null) {

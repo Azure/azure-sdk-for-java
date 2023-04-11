@@ -33,6 +33,9 @@ public enum SiteRuntimeState {
      */
     @JsonCreator
     public static SiteRuntimeState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SiteRuntimeState[] items = SiteRuntimeState.values();
         for (SiteRuntimeState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum SiteRuntimeState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

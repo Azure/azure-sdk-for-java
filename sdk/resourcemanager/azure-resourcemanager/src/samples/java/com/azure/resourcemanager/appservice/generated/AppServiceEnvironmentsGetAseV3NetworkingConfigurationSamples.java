@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetAseV3NetworkingConfiguration. */
 public final class AppServiceEnvironmentsGetAseV3NetworkingConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetAseV3NetworkingConfiguration.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_GetAseV3NetworkingConfiguration.json
      */
     /**
      * Sample code: Get networking configuration of an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsGetAseV3NetworkingConfigurationSamples 
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getAseV3NetworkingConfigurationWithResponse("test-rg", "test-ase", Context.NONE);
+            .getAseV3NetworkingConfigurationWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

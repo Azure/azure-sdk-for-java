@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedWebApps GetDeletedWebAppByLocation. */
 public final class DeletedWebAppsGetDeletedWebAppByLocationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetDeletedWebAppByLocation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetDeletedWebAppByLocation.json
      */
     /**
      * Sample code: Get Deleted Web App by Location.
@@ -22,6 +20,6 @@ public final class DeletedWebAppsGetDeletedWebAppByLocationSamples {
             .manager()
             .serviceClient()
             .getDeletedWebApps()
-            .getDeletedWebAppByLocationWithResponse("West US 2", "9", Context.NONE);
+            .getDeletedWebAppByLocationWithResponse("West US 2", "9", com.azure.core.util.Context.NONE);
     }
 }

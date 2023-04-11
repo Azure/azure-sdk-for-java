@@ -25,6 +25,10 @@ public final class ProcessThreadInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ProcessThreadInfoCollection class. */
+    public ProcessThreadInfoCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

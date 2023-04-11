@@ -198,45 +198,35 @@ public final class V1Manifest extends Manifest {
     public static V1Manifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Integer schemaVersion = null;
-                    String architecture = null;
-                    String name = null;
-                    String tag = null;
-                    List<FsLayer> fsLayers = null;
-                    List<History> history = null;
-                    List<ImageSignature> signatures = null;
+                    V1Manifest deserializedV1Manifest = new V1Manifest();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            schemaVersion = reader.getNullable(JsonReader::getInt);
+                            deserializedV1Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
                         } else if ("architecture".equals(fieldName)) {
-                            architecture = reader.getString();
+                            deserializedV1Manifest.architecture = reader.getString();
                         } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedV1Manifest.name = reader.getString();
                         } else if ("tag".equals(fieldName)) {
-                            tag = reader.getString();
+                            deserializedV1Manifest.tag = reader.getString();
                         } else if ("fsLayers".equals(fieldName)) {
-                            fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
+                            List<FsLayer> fsLayers = reader.readArray(reader1 -> FsLayer.fromJson(reader1));
+                            deserializedV1Manifest.fsLayers = fsLayers;
                         } else if ("history".equals(fieldName)) {
-                            history = reader.readArray(reader1 -> History.fromJson(reader1));
+                            List<History> history = reader.readArray(reader1 -> History.fromJson(reader1));
+                            deserializedV1Manifest.history = history;
                         } else if ("signatures".equals(fieldName)) {
-                            signatures = reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
+                            List<ImageSignature> signatures =
+                                    reader.readArray(reader1 -> ImageSignature.fromJson(reader1));
+                            deserializedV1Manifest.signatures = signatures;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    V1Manifest deserializedValue = new V1Manifest();
-                    deserializedValue.setSchemaVersion(schemaVersion);
-                    deserializedValue.architecture = architecture;
-                    deserializedValue.name = name;
-                    deserializedValue.tag = tag;
-                    deserializedValue.fsLayers = fsLayers;
-                    deserializedValue.history = history;
-                    deserializedValue.signatures = signatures;
 
-                    return deserializedValue;
+                    return deserializedV1Manifest;
                 });
     }
 }

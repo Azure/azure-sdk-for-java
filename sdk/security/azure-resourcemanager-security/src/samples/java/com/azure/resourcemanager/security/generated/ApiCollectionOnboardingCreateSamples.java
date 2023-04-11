@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiCollectionOnboarding Create. */
 public final class ApiCollectionOnboardingCreateSamples {
     /*
@@ -18,6 +16,8 @@ public final class ApiCollectionOnboardingCreateSamples {
      */
     public static void onboardAnAzureAPIManagementAPIToDefenderForAPIs(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.apiCollectionOnboardings().createWithResponse("rg1", "apimService1", "echo-api", Context.NONE);
+        manager
+            .apiCollectionOnboardings()
+            .createWithResponse("rg1", "apimService1", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

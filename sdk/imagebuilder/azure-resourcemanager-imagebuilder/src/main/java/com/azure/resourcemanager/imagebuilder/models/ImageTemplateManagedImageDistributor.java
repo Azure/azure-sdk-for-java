@@ -28,6 +28,10 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
     @JsonProperty(value = "location", required = true)
     private String location;
 
+    /** Creates an instance of ImageTemplateManagedImageDistributor class. */
+    public ImageTemplateManagedImageDistributor() {
+    }
+
     /**
      * Get the imageId property: Resource Id of the Managed Disk Image.
      *

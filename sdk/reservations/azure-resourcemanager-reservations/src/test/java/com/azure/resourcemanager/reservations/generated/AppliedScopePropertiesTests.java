@@ -14,29 +14,29 @@ public final class AppliedScopePropertiesTests {
         AppliedScopeProperties model =
             BinaryData
                 .fromString(
-                    "{\"tenantId\":\"ktapspwgcuertu\",\"managementGroupId\":\"dosvqwhbmdgbbjf\",\"subscriptionId\":\"gmbmbexppbh\",\"resourceGroupId\":\"qrolfpf\",\"displayName\":\"algbquxigjyjg\"}")
+                    "{\"tenantId\":\"qsrxybzqqed\",\"managementGroupId\":\"tbciqfouflmm\",\"subscriptionId\":\"zsm\",\"resourceGroupId\":\"mglougpbkw\",\"displayName\":\"utduqktapspwgcu\"}")
                 .toObject(AppliedScopeProperties.class);
-        Assertions.assertEquals("ktapspwgcuertu", model.tenantId());
-        Assertions.assertEquals("dosvqwhbmdgbbjf", model.managementGroupId());
-        Assertions.assertEquals("gmbmbexppbh", model.subscriptionId());
-        Assertions.assertEquals("qrolfpf", model.resourceGroupId());
-        Assertions.assertEquals("algbquxigjyjg", model.displayName());
+        Assertions.assertEquals("qsrxybzqqed", model.tenantId());
+        Assertions.assertEquals("tbciqfouflmm", model.managementGroupId());
+        Assertions.assertEquals("zsm", model.subscriptionId());
+        Assertions.assertEquals("mglougpbkw", model.resourceGroupId());
+        Assertions.assertEquals("utduqktapspwgcu", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppliedScopeProperties model =
             new AppliedScopeProperties()
-                .withTenantId("ktapspwgcuertu")
-                .withManagementGroupId("dosvqwhbmdgbbjf")
-                .withSubscriptionId("gmbmbexppbh")
-                .withResourceGroupId("qrolfpf")
-                .withDisplayName("algbquxigjyjg");
+                .withTenantId("qsrxybzqqed")
+                .withManagementGroupId("tbciqfouflmm")
+                .withSubscriptionId("zsm")
+                .withResourceGroupId("mglougpbkw")
+                .withDisplayName("utduqktapspwgcu");
         model = BinaryData.fromObject(model).toObject(AppliedScopeProperties.class);
-        Assertions.assertEquals("ktapspwgcuertu", model.tenantId());
-        Assertions.assertEquals("dosvqwhbmdgbbjf", model.managementGroupId());
-        Assertions.assertEquals("gmbmbexppbh", model.subscriptionId());
-        Assertions.assertEquals("qrolfpf", model.resourceGroupId());
-        Assertions.assertEquals("algbquxigjyjg", model.displayName());
+        Assertions.assertEquals("qsrxybzqqed", model.tenantId());
+        Assertions.assertEquals("tbciqfouflmm", model.managementGroupId());
+        Assertions.assertEquals("zsm", model.subscriptionId());
+        Assertions.assertEquals("mglougpbkw", model.resourceGroupId());
+        Assertions.assertEquals("utduqktapspwgcu", model.displayName());
     }
 }

@@ -17,6 +17,15 @@ public final class OrganizationMembershipType extends ExpandableStringEnum<Organ
     public static final OrganizationMembershipType ORGANIZATION = fromString("Organization");
 
     /**
+     * Creates a new instance of OrganizationMembershipType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrganizationMembershipType() {
+    }
+
+    /**
      * Creates or finds a OrganizationMembershipType from its string representation.
      *
      * @param name a name to look for.

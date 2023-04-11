@@ -70,6 +70,8 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
 
+    private Duration developerCredentialTimeout = Duration.ofSeconds(10);
+
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
@@ -191,7 +193,7 @@ public final class IdentityClientOptions implements Cloneable {
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
+     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
      * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
      * requests might starve and setting up this executor service should be considered.
      * </p>
@@ -687,6 +689,22 @@ public final class IdentityClientOptions implements Cloneable {
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
+    }
+
+    /**
+     * Gets the timeout to apply to developer credential operations.
+     * @return The timeout value for developer credential operations.
+     */
+    public Duration getDeveloperCredentialTimeout() {
+        return developerCredentialTimeout;
+    }
+
+    /**
+     * Sets the timeout for developer credential operations.
+     * @param developerCredentialTimeout The timeout value for developer credential operations.
+     */
+    public void setDeveloperCredentialTimeout(Duration developerCredentialTimeout) {
+        this.developerCredentialTimeout = developerCredentialTimeout;
     }
 
     public IdentityClientOptions clone() {

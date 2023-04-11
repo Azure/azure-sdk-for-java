@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites GetPrivateEndpointConnection. */
 public final class StaticSitesGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Get a private endpoint connection for a site.
@@ -22,6 +20,6 @@ public final class StaticSitesGetPrivateEndpointConnectionSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .getPrivateEndpointConnectionWithResponse("rg", "testSite", "connection", Context.NONE);
+            .getPrivateEndpointConnectionWithResponse("rg", "testSite", "connection", com.azure.core.util.Context.NONE);
     }
 }

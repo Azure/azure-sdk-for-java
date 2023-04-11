@@ -24,11 +24,14 @@ public final class StaticSiteUserProvidedFunctionAppArmResourceProperties {
     private String functionAppRegion;
 
     /*
-     * The date and time on which the function app was registered with the
-     * static site.
+     * The date and time on which the function app was registered with the static site.
      */
     @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
+
+    /** Creates an instance of StaticSiteUserProvidedFunctionAppArmResourceProperties class. */
+    public StaticSiteUserProvidedFunctionAppArmResourceProperties() {
+    }
 
     /**
      * Get the functionAppResourceId property: The resource id of the function app registered with the static site.

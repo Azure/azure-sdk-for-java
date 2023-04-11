@@ -97,8 +97,8 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     public static SoftDeleteColumnDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String softDeleteColumnName = null;
-                    String softDeleteMarkerValue = null;
+                    SoftDeleteColumnDeletionDetectionPolicy deserializedSoftDeleteColumnDeletionDetectionPolicy =
+                            new SoftDeleteColumnDeletionDetectionPolicy();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -114,19 +114,17 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
                                                 + "'.");
                             }
                         } else if ("softDeleteColumnName".equals(fieldName)) {
-                            softDeleteColumnName = reader.getString();
+                            deserializedSoftDeleteColumnDeletionDetectionPolicy.softDeleteColumnName =
+                                    reader.getString();
                         } else if ("softDeleteMarkerValue".equals(fieldName)) {
-                            softDeleteMarkerValue = reader.getString();
+                            deserializedSoftDeleteColumnDeletionDetectionPolicy.softDeleteMarkerValue =
+                                    reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SoftDeleteColumnDeletionDetectionPolicy deserializedValue =
-                            new SoftDeleteColumnDeletionDetectionPolicy();
-                    deserializedValue.softDeleteColumnName = softDeleteColumnName;
-                    deserializedValue.softDeleteMarkerValue = softDeleteMarkerValue;
 
-                    return deserializedValue;
+                    return deserializedSoftDeleteColumnDeletionDetectionPolicy;
                 });
     }
 }

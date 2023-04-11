@@ -59,6 +59,10 @@ public final class ContainerInfo {
     @JsonProperty(value = "eth0")
     private ContainerNetworkInterfaceStatistics eth0;
 
+    /** Creates an instance of ContainerInfo class. */
+    public ContainerInfo() {
+    }
+
     /**
      * Get the currentTimestamp property: The currentTimeStamp property.
      *

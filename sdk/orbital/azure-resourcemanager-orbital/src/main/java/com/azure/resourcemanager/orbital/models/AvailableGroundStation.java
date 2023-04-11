@@ -37,6 +37,48 @@ public interface AvailableGroundStation {
     String type();
 
     /**
+     * Gets the city property: City of ground station.
+     *
+     * @return the city value.
+     */
+    String city();
+
+    /**
+     * Gets the providerName property: Ground station provider name.
+     *
+     * @return the providerName value.
+     */
+    String providerName();
+
+    /**
+     * Gets the longitudeDegrees property: Longitude of the ground station in decimal degrees.
+     *
+     * @return the longitudeDegrees value.
+     */
+    Float longitudeDegrees();
+
+    /**
+     * Gets the latitudeDegrees property: Latitude of the ground station in decimal degrees.
+     *
+     * @return the latitudeDegrees value.
+     */
+    Float latitudeDegrees();
+
+    /**
+     * Gets the altitudeMeters property: Altitude of the ground station.
+     *
+     * @return the altitudeMeters value.
+     */
+    Float altitudeMeters();
+
+    /**
+     * Gets the releaseMode property: Release Status of a ground station.
+     *
+     * @return the releaseMode value.
+     */
+    ReleaseMode releaseMode();
+
+    /**
      * Gets the inner com.azure.resourcemanager.orbital.fluent.models.AvailableGroundStationInner object.
      *
      * @return the inner object.

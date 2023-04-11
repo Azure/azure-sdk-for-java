@@ -25,6 +25,10 @@ public final class RecommendationCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RecommendationCollection class. */
+    public RecommendationCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

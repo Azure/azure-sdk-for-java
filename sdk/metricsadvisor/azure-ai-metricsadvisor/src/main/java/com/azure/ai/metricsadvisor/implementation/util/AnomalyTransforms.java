@@ -3,11 +3,12 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyResult;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.Severity;
 import com.azure.ai.metricsadvisor.implementation.models.SeverityFilterCondition;
-import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
+
 public class AnomalyTransforms {
     public static DetectionAnomalyFilterCondition toInnerFilter(ListAnomaliesDetectedFilter filter,
                                                                 ClientLogger logger) {
@@ -33,8 +36,8 @@ public class AnomalyTransforms {
         }
         if (minSeverity != null) {
             innerFilter.setSeverityFilter(new SeverityFilterCondition()
-                .setMin(minSeverity).
-                    setMax(maxSeverity));
+                .setMin(Severity.fromString(minSeverity.toString())).
+                    setMax(Severity.fromString(maxSeverity.toString())));
         }
         List<DimensionKey> seriesKeys = filter.getSeriesGroupKeys();
         if (seriesKeys != null && !seriesKeys.isEmpty()) {
@@ -90,7 +93,7 @@ public class AnomalyTransforms {
             AnomalyHelper.setSeriesKey(dataPointAnomaly, new DimensionKey(innerAnomaly.getDimension()));
         }
         if (innerAnomaly.getProperty() != null) {
-            AnomalyHelper.setSeverity(dataPointAnomaly, innerAnomaly.getProperty().getAnomalySeverity());
+            AnomalyHelper.setSeverity(dataPointAnomaly, AnomalySeverity.fromString(toStringOrNull(innerAnomaly.getProperty().getAnomalySeverity())));
             AnomalyHelper.setStatus(dataPointAnomaly, innerAnomaly.getProperty().getAnomalyStatus());
             AnomalyHelper.setValue(dataPointAnomaly, innerAnomaly.getProperty().getValue());
             AnomalyHelper.setExpectedValue(dataPointAnomaly, innerAnomaly.getProperty().getExpectedValue());

@@ -15,26 +15,26 @@ public final class TargetRestoreInfoTests {
         TargetRestoreInfo model =
             BinaryData
                 .fromString(
-                    "{\"overwriteOption\":\"Overwrite\",\"containerId\":\"xasicddyvvjskg\",\"databaseName\":\"ocwah\",\"targetDirectoryForFileRestore\":\"gat\"}")
+                    "{\"overwriteOption\":\"FailOnConflict\",\"containerId\":\"qqs\",\"databaseName\":\"waoqvmmb\",\"targetDirectoryForFileRestore\":\"qfr\"}")
                 .toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
-        Assertions.assertEquals("xasicddyvvjskg", model.containerId());
-        Assertions.assertEquals("ocwah", model.databaseName());
-        Assertions.assertEquals("gat", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.overwriteOption());
+        Assertions.assertEquals("qqs", model.containerId());
+        Assertions.assertEquals("waoqvmmb", model.databaseName());
+        Assertions.assertEquals("qfr", model.targetDirectoryForFileRestore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetRestoreInfo model =
             new TargetRestoreInfo()
-                .withOverwriteOption(OverwriteOptions.OVERWRITE)
-                .withContainerId("xasicddyvvjskg")
-                .withDatabaseName("ocwah")
-                .withTargetDirectoryForFileRestore("gat");
+                .withOverwriteOption(OverwriteOptions.FAIL_ON_CONFLICT)
+                .withContainerId("qqs")
+                .withDatabaseName("waoqvmmb")
+                .withTargetDirectoryForFileRestore("qfr");
         model = BinaryData.fromObject(model).toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
-        Assertions.assertEquals("xasicddyvvjskg", model.containerId());
-        Assertions.assertEquals("ocwah", model.databaseName());
-        Assertions.assertEquals("gat", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.FAIL_ON_CONFLICT, model.overwriteOption());
+        Assertions.assertEquals("qqs", model.containerId());
+        Assertions.assertEquals("waoqvmmb", model.databaseName());
+        Assertions.assertEquals("qfr", model.targetDirectoryForFileRestore());
     }
 }

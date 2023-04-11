@@ -16,6 +16,10 @@ public final class DeploymentWhatIfSettings {
     @JsonProperty(value = "resultFormat")
     private WhatIfResultFormat resultFormat;
 
+    /** Creates an instance of DeploymentWhatIfSettings class. */
+    public DeploymentWhatIfSettings() {
+    }
+
     /**
      * Get the resultFormat property: The format of the What-If results.
      *

@@ -18,6 +18,10 @@ public final class StringListInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private List<String> properties;
 
+    /** Creates an instance of StringListInner class. */
+    public StringListInner() {
+    }
+
     /**
      * Get the properties property: List of string resources.
      *

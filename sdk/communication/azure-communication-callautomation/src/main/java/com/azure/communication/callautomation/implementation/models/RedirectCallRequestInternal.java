@@ -22,6 +22,12 @@ public final class RedirectCallRequestInternal {
     @JsonProperty(value = "target", required = true)
     private CommunicationIdentifierModel target;
 
+    /*
+     * Used by customer to send custom context to targets
+     */
+    @JsonProperty(value = "customContext")
+    private CustomContext customContext;
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *
@@ -59,6 +65,26 @@ public final class RedirectCallRequestInternal {
      */
     public RedirectCallRequestInternal setTarget(CommunicationIdentifierModel target) {
         this.target = target;
+        return this;
+    }
+
+    /**
+     * Get the customContext property: Used by customer to send custom context to targets.
+     *
+     * @return the customContext value.
+     */
+    public CustomContext getCustomContext() {
+        return this.customContext;
+    }
+
+    /**
+     * Set the customContext property: Used by customer to send custom context to targets.
+     *
+     * @param customContext the customContext value to set.
+     * @return the RedirectCallRequestInternal object itself.
+     */
+    public RedirectCallRequestInternal setCustomContext(CustomContext customContext) {
+        this.customContext = customContext;
         return this;
     }
 }

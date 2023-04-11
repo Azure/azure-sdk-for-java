@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceId;
@@ -55,13 +56,21 @@ import java.util.regex.Pattern;
  */
 public class OrderByDocumentQueryExecutionContext
         extends ParallelDocumentQueryExecutionContextBase<Document> {
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
     private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private final OrderbyRowComparer<Document> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
-    private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+    private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
     private Flux<OrderByRowResult<Document>> orderByObservable;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -81,7 +90,7 @@ public class OrderByDocumentQueryExecutionContext
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
-        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        this.clientSideRequestStatistics = ConcurrentHashMap.newKeySet();
         targetRangeToOrderByContinuationTokenMap = new ConcurrentHashMap<>();
     }
 
@@ -195,7 +204,7 @@ public class OrderByDocumentQueryExecutionContext
                 documentProducers,
                 queryMetricMap,
                 targetRangeToOrderByContinuationTokenMap,
-                clientSideRequestStatisticsList);
+            clientSideRequestStatistics);
     }
 
     private void initializeWithTokenAndFilter(Map<FeedRangeEpkImpl, OrderByContinuationToken> rangeToTokenMapping,
@@ -567,7 +576,7 @@ public class OrderByDocumentQueryExecutionContext
         private final int maxPageSize;
         private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
         private final Function<OrderByRowResult<Document>, String> orderByContinuationTokenCallback;
-        private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+        private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
         private volatile FeedResponse<OrderByRowResult<Document>> previousPage;
 
         public ItemToPageTransformer(
@@ -575,13 +584,13 @@ public class OrderByDocumentQueryExecutionContext
             int maxPageSize,
             ConcurrentMap<String, QueryMetrics> queryMetricsMap,
             Function<OrderByRowResult<Document>, String> orderByContinuationTokenCallback,
-            List<ClientSideRequestStatistics> clientSideRequestStatisticsList) {
+            Collection<ClientSideRequestStatistics> clientSideRequestStatistics) {
             this.tracker = tracker;
             this.maxPageSize = maxPageSize > 0 ? maxPageSize : DEFAULT_PAGE_SIZE;
             this.queryMetricMap = queryMetricsMap;
             this.orderByContinuationTokenCallback = orderByContinuationTokenCallback;
             this.previousPage = null;
-            this.clientSideRequestStatisticsList = clientSideRequestStatisticsList;
+            this.clientSideRequestStatistics = clientSideRequestStatistics;
         }
 
         private static Map<String, String> headerResponse(
@@ -619,9 +628,10 @@ public class OrderByDocumentQueryExecutionContext
                     // Observable<FeedResponsePage<OrderByRowResult<T>>>>
                     .map(orderByRowResults -> {
                         // construct a page from result with request charge
-                        FeedResponse<OrderByRowResult<Document>> feedResponse = BridgeInternal.createFeedResponse(
+                        FeedResponse<OrderByRowResult<Document>> feedResponse = feedResponseAccessor.createFeedResponse(
                                 orderByRowResults,
-                                headerResponse(tracker.getAndResetCharge()));
+                                headerResponse(tracker.getAndResetCharge()),
+                                null);
                         if (!queryMetricMap.isEmpty()) {
                             for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
                                 BridgeInternal.putQueryMetricsIntoMap(feedResponse,
@@ -634,8 +644,8 @@ public class OrderByDocumentQueryExecutionContext
                     // Emit an empty page so the downstream observables know when there are no more
                     // results.
                     .concatWith(Flux.defer(() -> {
-                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                                null));
+                        return Flux.just(feedResponseAccessor.createFeedResponse(Utils.immutableListOf(),
+                                null, null));
                     }))
                     // CREATE pairs from the stream to allow the observables downstream to "peek"
                     // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)
@@ -686,8 +696,8 @@ public class OrderByDocumentQueryExecutionContext
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
                         false, feedOfOrderByRowResults.getCosmosDiagnostics());
-                    BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
-                                                                  clientSideRequestStatisticsList);
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
@@ -699,8 +709,8 @@ public class OrderByDocumentQueryExecutionContext
                             false,
                             false,
                             null);
-                    BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
-                                                                  clientSideRequestStatisticsList);
+                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        frp.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return Flux.just(frp);
                     }));
         }
@@ -743,7 +753,7 @@ public class OrderByDocumentQueryExecutionContext
                 maxPageSize,
                 this.queryMetricMap,
                 this::getContinuationToken,
-                this.clientSideRequestStatisticsList));
+                this.clientSideRequestStatistics));
     }
 
     @Override

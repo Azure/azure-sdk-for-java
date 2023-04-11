@@ -9,11 +9,10 @@ import com.azure.resourcemanager.hybridcontainerservice.models.AddonProfiles;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AddonProfilesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AddonProfiles model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class AddonProfilesTests {
         Assertions.assertEquals(true, model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AddonProfiles model =
             new AddonProfiles()
                 .withConfig(mapOf("fgibmadgakeq", "ulzndlikwyqk", "qedqytbciqfoufl", "rxybz", "glougpbk", "mnkzsmod"))

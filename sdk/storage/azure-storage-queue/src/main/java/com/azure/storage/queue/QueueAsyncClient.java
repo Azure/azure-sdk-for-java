@@ -58,8 +58,6 @@ import java.util.stream.StreamSupport;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 
 /**
@@ -216,8 +214,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().createWithResponseAsync(queueName, null, metadata, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getQueues().createWithResponseAsync(queueName, null, metadata, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -361,8 +358,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().deleteWithResponseAsync(queueName, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getQueues().deleteWithResponseAsync(queueName, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -507,8 +503,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null, context)
             .map(this::getQueuePropertiesResponse);
     }
 
@@ -595,8 +590,7 @@ public final class QueueAsyncClient {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
         return client.getQueues()
-            .setMetadataWithResponseAsync(queueName, null, metadata, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .setMetadataWithResponseAsync(queueName, null, metadata, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -734,8 +728,7 @@ public final class QueueAsyncClient {
             .collect(Collectors.toList());
 
         return client.getQueues()
-            .setAccessPolicyWithResponseAsync(queueName, null, null, permissionsList,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .setAccessPolicyWithResponseAsync(queueName, null, null, permissionsList, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -796,8 +789,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getMessages().clearWithResponseAsync(queueName, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getMessages().clearWithResponseAsync(queueName, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -983,8 +975,7 @@ public final class QueueAsyncClient {
                                                               Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
-        context = context == null ? Context.NONE : context;
-        Context finalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
+        Context finalContext  = context == null ? Context.NONE : context;
         return encodeMessage(message)
             .flatMap(messageText -> {
                 QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
@@ -1458,8 +1449,7 @@ public final class QueueAsyncClient {
         context = context == null ? Context.NONE : context;
         visibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         return client.getMessageIds().updateWithResponseAsync(queueName, messageId, popReceipt,
-                (int) visibilityTimeout.getSeconds(), null, null, message,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                (int) visibilityTimeout.getSeconds(), null, null, message, context)
             .map(this::getUpdatedMessageResponse);
     }
 
@@ -1546,8 +1536,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getMessageIds().deleteWithResponseAsync(queueName, messageId, popReceipt, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return client.getMessageIds().deleteWithResponseAsync(queueName, messageId, popReceipt, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

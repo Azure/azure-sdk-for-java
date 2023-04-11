@@ -15,12 +15,10 @@ import java.util.List;
 /** Returns the requested OCI Manifest file. */
 @Fluent
 public final class OciImageManifest implements JsonSerializable<OciImageManifest> {
-    // TODO (limolkova) should default value be auto-generated?
-    private static final int DEFAULT_VERSION = 2;
     /*
      * V2 image config descriptor
      */
-    private OciDescriptor config;
+    private OciDescriptor configuration;
 
     /*
      * List of V2 image layer information
@@ -35,28 +33,28 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
     /*
      * Schema version
      */
-    private int schemaVersion = DEFAULT_VERSION;
+    private int schemaVersion;
 
     /** Creates an instance of OciImageManifest class. */
     public OciImageManifest() {}
 
     /**
-     * Get the config property: V2 image config descriptor.
+     * Get the configuration property: V2 image config descriptor.
      *
-     * @return the config value.
+     * @return the configuration value.
      */
-    public OciDescriptor getConfig() {
-        return this.config;
+    public OciDescriptor getConfiguration() {
+        return this.configuration;
     }
 
     /**
-     * Set the config property: V2 image config descriptor.
+     * Set the configuration property: V2 image config descriptor.
      *
-     * @param config the config value to set.
+     * @param configuration the configuration value to set.
      * @return the OciImageManifest object itself.
      */
-    public OciImageManifest setConfig(OciDescriptor config) {
-        this.config = config;
+    public OciImageManifest setConfiguration(OciDescriptor configuration) {
+        this.configuration = configuration;
         return this;
     }
 
@@ -124,7 +122,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("schemaVersion", this.schemaVersion);
-        jsonWriter.writeJsonField("config", this.config);
+        jsonWriter.writeJsonField("config", this.configuration);
         jsonWriter.writeArrayField("layers", this.layers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("annotations", this.annotations);
         return jsonWriter.writeEndObject();
@@ -142,33 +140,26 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
     public static OciImageManifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    int schemaVersion = DEFAULT_VERSION;
-                    OciDescriptor config = null;
-                    List<OciDescriptor> layers = null;
-                    OciAnnotations annotations = null;
+                    OciImageManifest deserializedOciImageManifest = new OciImageManifest();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            schemaVersion = reader.getInt();
+                            deserializedOciImageManifest.schemaVersion = reader.getInt();
                         } else if ("config".equals(fieldName)) {
-                            config = OciDescriptor.fromJson(reader);
+                            deserializedOciImageManifest.configuration = OciDescriptor.fromJson(reader);
                         } else if ("layers".equals(fieldName)) {
-                            layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                            deserializedOciImageManifest.layers = layers;
                         } else if ("annotations".equals(fieldName)) {
-                            annotations = OciAnnotations.fromJson(reader);
+                            deserializedOciImageManifest.annotations = OciAnnotations.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    OciImageManifest deserializedValue = new OciImageManifest();
-                    deserializedValue.schemaVersion = schemaVersion;
-                    deserializedValue.config = config;
-                    deserializedValue.layers = layers;
-                    deserializedValue.annotations = annotations;
 
-                    return deserializedValue;
+                    return deserializedOciImageManifest;
                 });
     }
 }

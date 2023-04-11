@@ -1,17 +1,39 @@
 ## Release History
 
-### 4.42.0-beta.1 (Unreleased)
+### 4.44.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
-* GA of subpartitioning functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
-* Added ability for SDK to use partial partition keys for queries in subpartitioned containers - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where throughput control is not triggered properly when target throughput is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
+
+#### Other Changes
+
+### 4.43.0 (2023-04-06)
+
+#### Features Added
+* Added option to enable automatic retries for write operations - See [34227](https://github.com/Azure/azure-sdk-for-java/pull/34227)
+* Added option to enable automatic logging of Cosmos diagnostics for errors or requests exceeding latency threshold - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+* Added support for OpenTelemetry traces following the Semantic profile for Cosmos DB - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+
+#### Breaking Changes
+* Changed the default structure of Open Telemetry events being emitted by the SDK to follow the semantic profile for Cosmos DB. Use the `COSMOS.USE_LEGACY_TRACING` system property to retrun to the previous event structure: `-DCOSMOS.USE_LEGACY_TRACING=true` - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+
+### 4.42.0 (2023-03-17)
+
+#### Features Added
+* Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
+* GA of `subpartition` functionality in SDK - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* Added ability for SDK to use partial partition keys for queries in subpartitioned containers - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
+* Enable `handleLatestVersionChanges` in ChangeFeedProcessor - See [33972](https://github.com/Azure/azure-sdk-for-java/pull/33972)
+* Added Merge support. NOTE: to use Change Feed Processor with merge support, onboard to the new API `handleLatestVersionChanges()` in `ChangeFeedProcessorBuilder`.
+
+#### Bugs Fixed
 * Fixed `readMany` API to take in hierarchical partition keys - See [32501](https://github.com/Azure/azure-sdk-for-java/pull/32501)
 * Fixed an issue in the Direct Transport metrics for acquired/closed channels which would be triggered when endpoint get closed/evicted due to exceeding idle timeouts. This would surface as stale metrics for these endpoints. - See [33969](https://github.com/Azure/azure-sdk-for-java/pull/33969) 
+
 #### Other Changes
 * Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329).
 

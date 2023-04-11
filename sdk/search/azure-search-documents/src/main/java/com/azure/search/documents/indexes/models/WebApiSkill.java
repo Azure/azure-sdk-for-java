@@ -286,17 +286,17 @@ public final class WebApiSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound && uriFound) {
-                        WebApiSkill deserializedValue = new WebApiSkill(inputs, outputs, uri);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.httpHeaders = httpHeaders;
-                        deserializedValue.httpMethod = httpMethod;
-                        deserializedValue.timeout = timeout;
-                        deserializedValue.batchSize = batchSize;
-                        deserializedValue.degreeOfParallelism = degreeOfParallelism;
+                        WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);
+                        deserializedWebApiSkill.setName(name);
+                        deserializedWebApiSkill.setDescription(description);
+                        deserializedWebApiSkill.setContext(context);
+                        deserializedWebApiSkill.httpHeaders = httpHeaders;
+                        deserializedWebApiSkill.httpMethod = httpMethod;
+                        deserializedWebApiSkill.timeout = timeout;
+                        deserializedWebApiSkill.batchSize = batchSize;
+                        deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
 
-                        return deserializedValue;
+                        return deserializedWebApiSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

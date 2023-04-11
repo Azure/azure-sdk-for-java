@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityInner;
 
 /** Samples for WebApps UpdateScmAllowed. */
 public final class WebAppsUpdateScmAllowedSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/UpdatePublishingCredentialsPolicy.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/UpdatePublishingCredentialsPolicy.json
      */
     /**
      * Sample code: Update SCM Allowed.
@@ -24,6 +23,9 @@ public final class WebAppsUpdateScmAllowedSamples {
             .serviceClient()
             .getWebApps()
             .updateScmAllowedWithResponse(
-                "rg", "testSite", new CsmPublishingCredentialsPoliciesEntityInner().withAllow(true), Context.NONE);
+                "rg",
+                "testSite",
+                new CsmPublishingCredentialsPoliciesEntityInner().withAllow(true),
+                com.azure.core.util.Context.NONE);
     }
 }

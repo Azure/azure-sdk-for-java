@@ -25,6 +25,10 @@ public final class DiagnosticCategoryCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DiagnosticCategoryCollection class. */
+    public DiagnosticCategoryCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

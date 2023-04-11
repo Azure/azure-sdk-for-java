@@ -26,6 +26,10 @@ public final class DesktopPatch {
     @JsonProperty(value = "properties")
     private DesktopPatchProperties innerProperties;
 
+    /** Creates an instance of DesktopPatch class. */
+    public DesktopPatch() {
+    }
+
     /**
      * Get the tags property: tags to be updated.
      *

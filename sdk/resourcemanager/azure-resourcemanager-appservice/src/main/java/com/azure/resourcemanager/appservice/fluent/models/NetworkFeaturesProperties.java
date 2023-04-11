@@ -35,6 +35,10 @@ public final class NetworkFeaturesProperties {
     @JsonProperty(value = "hybridConnectionsV2", access = JsonProperty.Access.WRITE_ONLY)
     private List<HybridConnectionInner> hybridConnectionsV2;
 
+    /** Creates an instance of NetworkFeaturesProperties class. */
+    public NetworkFeaturesProperties() {
+    }
+
     /**
      * Get the virtualNetworkName property: The Virtual Network name.
      *

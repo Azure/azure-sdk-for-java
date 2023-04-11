@@ -18,6 +18,10 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private PublicCertificateProperties innerProperties;
 
+    /** Creates an instance of PublicCertificateInner class. */
+    public PublicCertificateInner() {
+    }
+
     /**
      * Get the innerProperties property: PublicCertificate resource specific properties.
      *

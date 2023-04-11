@@ -23,6 +23,10 @@ public final class PlacementKeyValuePairs {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of PlacementKeyValuePairs class. */
+    public PlacementKeyValuePairs() {
+    }
+
     /**
      * Get the key property: Key for an application specific parameter for the placement of volumes in the volume group.
      *

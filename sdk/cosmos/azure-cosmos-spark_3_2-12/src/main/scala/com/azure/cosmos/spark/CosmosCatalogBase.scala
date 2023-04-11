@@ -52,7 +52,7 @@ class CosmosCatalogBase
 
     /**
      * Called to initialize configuration.
-     * <p>
+     * <br/>
      * This method is called once, just after the provider is instantiated.
      *
      * @param name    the name used to identify and load this catalog
@@ -91,7 +91,7 @@ class CosmosCatalogBase
 
     /**
      * List top-level namespaces from the catalog.
-     * <p>
+     * <br/>
      * If an object such as a table, view, or function exists, its parent namespaces must also exist
      * and must be returned by this discovery method. For example, if table a.t exists, this method
      * must return ["a"] in the result array.
@@ -128,7 +128,7 @@ class CosmosCatalogBase
 
     /**
      * List namespaces in a namespace.
-     * <p>
+     * <br/>
      * Cosmos supports only single depth database. Hence we always return an empty list of namespaces.
      * or throw if the root namespace doesn't exist
      */

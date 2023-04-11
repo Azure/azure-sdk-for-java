@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The AzureLogAnalyticsDataFeed model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -19,6 +21,9 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
      */
     @JsonProperty(value = "dataSourceParameter", required = true)
     private AzureLogAnalyticsParameter dataSourceParameter;
+
+    /** Creates an instance of AzureLogAnalyticsDataFeed class. */
+    public AzureLogAnalyticsDataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -37,6 +42,174 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
      */
     public AzureLogAnalyticsDataFeed setDataSourceParameter(AzureLogAnalyticsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setGranularityName(Granularity granularityName) {
+        super.setGranularityName(granularityName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setGranularityAmount(Integer granularityAmount) {
+        super.setGranularityAmount(granularityAmount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setMetrics(List<DataFeedMetric> metrics) {
+        super.setMetrics(metrics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setDimension(List<DataFeedDimension> dimension) {
+        super.setDimension(dimension);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureLogAnalyticsDataFeed setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
         return this;
     }
 }

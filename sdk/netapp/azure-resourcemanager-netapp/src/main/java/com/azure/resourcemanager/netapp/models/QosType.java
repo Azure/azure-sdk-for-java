@@ -17,6 +17,15 @@ public final class QosType extends ExpandableStringEnum<QosType> {
     public static final QosType MANUAL = fromString("Manual");
 
     /**
+     * Creates a new instance of QosType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QosType() {
+    }
+
+    /**
      * Creates or finds a QosType from its string representation.
      *
      * @param name a name to look for.

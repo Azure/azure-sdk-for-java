@@ -23,6 +23,10 @@ public final class ValidateResponseInner {
     @JsonProperty(value = "error")
     private ValidateResponseError error;
 
+    /** Creates an instance of ValidateResponseInner class. */
+    public ValidateResponseInner() {
+    }
+
     /**
      * Get the status property: Result of validation.
      *

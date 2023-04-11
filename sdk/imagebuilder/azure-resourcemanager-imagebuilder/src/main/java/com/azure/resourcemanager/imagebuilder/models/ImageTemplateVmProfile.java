@@ -12,35 +12,35 @@ import java.util.List;
 @Fluent
 public final class ImageTemplateVmProfile {
     /*
-     * Size of the virtual machine used to build, customize and capture images.
-     * Omit or specify empty string to use the default (Standard_D1_v2 for Gen1
-     * images and Standard_D2ds_v4 for Gen2 images).
+     * Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the
+     * default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
-     * Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS
-     * disk size.
+     * Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size.
      */
     @JsonProperty(value = "osDiskSizeGB")
     private Integer osDiskSizeGB;
 
     /*
-     * Optional array of resource IDs of user assigned managed identities to be
-     * configured on the build VM and validation VM. This may include the
-     * identity of the image template.
+     * Optional array of resource IDs of user assigned managed identities to be configured on the build VM and
+     * validation VM. This may include the identity of the image template.
      */
     @JsonProperty(value = "userAssignedIdentities")
     private List<String> userAssignedIdentities;
 
     /*
-     * Optional configuration of the virtual network to use to deploy the build
-     * VM and validation VM in. Omit if no specific virtual network needs to be
-     * used.
+     * Optional configuration of the virtual network to use to deploy the build VM and validation VM in. Omit if no
+     * specific virtual network needs to be used.
      */
     @JsonProperty(value = "vnetConfig")
     private VirtualNetworkConfig vnetConfig;
+
+    /** Creates an instance of ImageTemplateVmProfile class. */
+    public ImageTemplateVmProfile() {
+    }
 
     /**
      * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify

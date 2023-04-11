@@ -30,9 +30,9 @@ public final class AgentPoolsImpl implements AgentPools {
     }
 
     public Response<AgentPool> getWithResponse(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, Context context) {
+        String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         Response<AgentPoolInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, context);
+            this.serviceClient().getWithResponse(resourceGroupName, resourceName, agentPoolName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -44,8 +44,8 @@ public final class AgentPoolsImpl implements AgentPools {
         }
     }
 
-    public AgentPool get(String resourceGroupName, String provisionedClustersName, String agentPoolName) {
-        AgentPoolInner inner = this.serviceClient().get(resourceGroupName, provisionedClustersName, agentPoolName);
+    public AgentPool get(String resourceGroupName, String resourceName, String agentPoolName) {
+        AgentPoolInner inner = this.serviceClient().get(resourceGroupName, resourceName, agentPoolName);
         if (inner != null) {
             return new AgentPoolImpl(inner, this.manager());
         } else {
@@ -54,22 +54,18 @@ public final class AgentPoolsImpl implements AgentPools {
     }
 
     public Response<Void> deleteWithResponse(
-        String resourceGroupName, String provisionedClustersName, String agentPoolName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, context);
+        String resourceGroupName, String resourceName, String agentPoolName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, agentPoolName, context);
     }
 
-    public void delete(String resourceGroupName, String provisionedClustersName, String agentPoolName) {
-        this.serviceClient().delete(resourceGroupName, provisionedClustersName, agentPoolName);
+    public void delete(String resourceGroupName, String resourceName, String agentPoolName) {
+        this.serviceClient().delete(resourceGroupName, resourceName, agentPoolName);
     }
 
     public Response<AgentPoolListResult> listByProvisionedClusterWithResponse(
-        String resourceGroupName, String provisionedClustersName, Context context) {
+        String resourceGroupName, String resourceName, Context context) {
         Response<AgentPoolListResultInner> inner =
-            this
-                .serviceClient()
-                .listByProvisionedClusterWithResponse(resourceGroupName, provisionedClustersName, context);
+            this.serviceClient().listByProvisionedClusterWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -81,9 +77,8 @@ public final class AgentPoolsImpl implements AgentPools {
         }
     }
 
-    public AgentPoolListResult listByProvisionedCluster(String resourceGroupName, String provisionedClustersName) {
-        AgentPoolListResultInner inner =
-            this.serviceClient().listByProvisionedCluster(resourceGroupName, provisionedClustersName);
+    public AgentPoolListResult listByProvisionedCluster(String resourceGroupName, String resourceName) {
+        AgentPoolListResultInner inner = this.serviceClient().listByProvisionedCluster(resourceGroupName, resourceName);
         if (inner != null) {
             return new AgentPoolListResultImpl(inner, this.manager());
         } else {
@@ -100,8 +95,8 @@ public final class AgentPoolsImpl implements AgentPools {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -116,7 +111,7 @@ public final class AgentPoolsImpl implements AgentPools {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE).getValue();
     }
 
     public Response<AgentPool> getByIdWithResponse(String id, Context context) {
@@ -128,8 +123,8 @@ public final class AgentPoolsImpl implements AgentPools {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -144,7 +139,7 @@ public final class AgentPoolsImpl implements AgentPools {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, context);
+        return this.getWithResponse(resourceGroupName, resourceName, agentPoolName, context);
     }
 
     public void deleteById(String id) {
@@ -156,8 +151,8 @@ public final class AgentPoolsImpl implements AgentPools {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -172,7 +167,7 @@ public final class AgentPoolsImpl implements AgentPools {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, Context.NONE);
+        this.deleteWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -184,8 +179,8 @@ public final class AgentPoolsImpl implements AgentPools {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String provisionedClustersName = Utils.getValueFromIdByName(id, "provisionedClusters");
-        if (provisionedClustersName == null) {
+        String resourceName = Utils.getValueFromIdByName(id, "provisionedClusters");
+        if (resourceName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -200,7 +195,7 @@ public final class AgentPoolsImpl implements AgentPools {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'agentPools'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, context);
+        return this.deleteWithResponse(resourceGroupName, resourceName, agentPoolName, context);
     }
 
     private AgentPoolsClient serviceClient() {

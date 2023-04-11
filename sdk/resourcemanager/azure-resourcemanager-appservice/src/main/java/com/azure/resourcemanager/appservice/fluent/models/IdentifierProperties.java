@@ -16,6 +16,10 @@ public final class IdentifierProperties {
     @JsonProperty(value = "id")
     private String value;
 
+    /** Creates an instance of IdentifierProperties class. */
+    public IdentifierProperties() {
+    }
+
     /**
      * Get the value property: String representation of the identity.
      *

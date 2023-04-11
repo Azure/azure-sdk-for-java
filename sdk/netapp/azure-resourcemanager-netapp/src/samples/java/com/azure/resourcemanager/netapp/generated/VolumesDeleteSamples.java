@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Volumes Delete. */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Volumes_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Delete.json
      */
     /**
      * Sample code: Volumes_Delete.
@@ -17,6 +15,6 @@ public final class VolumesDeleteSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().delete("myRG", "account1", "pool1", "volume1", null, Context.NONE);
+        manager.volumes().delete("myRG", "account1", "pool1", "volume1", null, com.azure.core.util.Context.NONE);
     }
 }

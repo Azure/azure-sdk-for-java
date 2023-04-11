@@ -22,7 +22,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -1456,6 +1456,7 @@ class ServiceBusReceiverAsyncClientTest {
         final List<Message> messages = getMessages();
         TestMeter meter = new TestMeter();
         Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, meter, NAMESPACE, ENTITY_PATH,
             SUBSCRIPTION_NAME, false);
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
@@ -1466,9 +1467,8 @@ class ServiceBusReceiverAsyncClientTest {
         Context spanReceive1 = new Context("marker1", true);
         Context spanReceive2 = new Context("marker2", true);
         Context spanSettle = new Context("marker3", true);
-        when(tracer.start(eq("ServiceBus.process"), any(Context.class), eq(ProcessKind.PROCESS))).thenReturn(spanReceive1, spanReceive2);
-        when(tracer.getSharedSpanBuilder(any(), any(Context.class))).thenReturn(Context.NONE);
-        when(tracer.start(any(), any(Context.class), eq(ProcessKind.SEND))).thenReturn(spanSettle);
+        when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class))).thenReturn(spanReceive1, spanReceive2);
+        when(tracer.start(eq("ServiceBus.complete"), any(StartSpanOptions.class), any(Context.class))).thenReturn(spanSettle);
 
         when(receivedMessage.getLockToken()).thenReturn("mylockToken");
         when(receivedMessage.getSequenceNumber()).thenReturn(42L);

@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.38.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.39.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -68,6 +68,7 @@
       --add-opens com.azure.core/com.azure.core.implementation.logging=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.tracing=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
@@ -92,6 +93,11 @@
   </developers>
 
   <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>

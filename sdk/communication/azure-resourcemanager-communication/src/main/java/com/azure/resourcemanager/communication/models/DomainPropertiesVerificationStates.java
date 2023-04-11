@@ -40,6 +40,10 @@ public final class DomainPropertiesVerificationStates {
     @JsonProperty(value = "DMARC")
     private VerificationStatusRecord dmarc;
 
+    /** Creates an instance of DomainPropertiesVerificationStates class. */
+    public DomainPropertiesVerificationStates() {
+    }
+
     /**
      * Get the domain property: A class that represents a VerificationStatus record.
      *

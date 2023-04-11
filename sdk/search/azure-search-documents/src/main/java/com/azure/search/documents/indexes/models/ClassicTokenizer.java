@@ -111,10 +111,10 @@ public final class ClassicTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        ClassicTokenizer deserializedValue = new ClassicTokenizer(name);
-                        deserializedValue.maxTokenLength = maxTokenLength;
+                        ClassicTokenizer deserializedClassicTokenizer = new ClassicTokenizer(name);
+                        deserializedClassicTokenizer.maxTokenLength = maxTokenLength;
 
-                        return deserializedValue;
+                        return deserializedClassicTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

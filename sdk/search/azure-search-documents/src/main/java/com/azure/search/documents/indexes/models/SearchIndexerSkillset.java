@@ -279,15 +279,15 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
                         }
                     }
                     if (nameFound) {
-                        SearchIndexerSkillset deserializedValue = new SearchIndexerSkillset(name);
-                        deserializedValue.description = description;
-                        deserializedValue.skills = skills;
-                        deserializedValue.cognitiveServicesAccount = cognitiveServicesAccount;
-                        deserializedValue.knowledgeStore = knowledgeStore;
-                        deserializedValue.eTag = eTag;
-                        deserializedValue.encryptionKey = encryptionKey;
+                        SearchIndexerSkillset deserializedSearchIndexerSkillset = new SearchIndexerSkillset(name);
+                        deserializedSearchIndexerSkillset.description = description;
+                        deserializedSearchIndexerSkillset.skills = skills;
+                        deserializedSearchIndexerSkillset.cognitiveServicesAccount = cognitiveServicesAccount;
+                        deserializedSearchIndexerSkillset.knowledgeStore = knowledgeStore;
+                        deserializedSearchIndexerSkillset.eTag = eTag;
+                        deserializedSearchIndexerSkillset.encryptionKey = encryptionKey;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerSkillset;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {
