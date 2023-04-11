@@ -15,6 +15,7 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -287,7 +288,7 @@ public class ProxyOptions {
         }
 
         try {
-            URL proxyUrl = URI.create(proxyConfiguration).toURL();
+            URL proxyUrl = new URI(proxyConfiguration).toURL();
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
             InetSocketAddress socketAddress = (createUnresolved)
@@ -319,7 +320,7 @@ public class ProxyOptions {
             }
 
             return proxyOptions;
-        } catch (MalformedURLException ex) {
+        } catch (URISyntaxException | MalformedURLException ex) {
             LOGGER.warning(INVALID_AZURE_PROXY_URL, proxyProperty);
             return null;
         }

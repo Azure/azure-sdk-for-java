@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -34,9 +34,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -46,9 +45,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithTokenCredentialAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
@@ -68,9 +66,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -86,9 +83,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadVideoAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -111,9 +107,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadToFileAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -151,9 +146,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -187,9 +181,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
         disabledReason = "Requires human intervention")
     public void downloadContent404Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);

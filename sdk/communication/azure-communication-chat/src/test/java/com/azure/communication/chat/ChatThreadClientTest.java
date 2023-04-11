@@ -3,25 +3,26 @@
 
 package com.azure.communication.chat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import com.azure.core.exception.HttpResponseException;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import reactor.core.publisher.Mono;
-
+import com.azure.communication.chat.implementation.ChatOptionsProvider;
+import com.azure.communication.chat.models.ChatMessage;
+import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.ChatMessageType;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.chat.models.ChatThreadProperties;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
+import com.azure.communication.chat.models.ListChatMessagesOptions;
+import com.azure.communication.chat.models.ListParticipantsOptions;
+import com.azure.communication.chat.models.ListReadReceiptOptions;
+import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.TypingNotificationOptions;
+import com.azure.communication.chat.models.UpdateChatMessageOptions;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.chat.implementation.ChatOptionsProvider;
-import com.azure.communication.chat.models.*;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -30,11 +31,21 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -469,9 +480,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)")
+    @DisabledIf(value = "com.azure.communication.chat.ChatClientTestBase#skipLiveTest")
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceipts");
@@ -497,9 +506,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)")
+    @DisabledIf(value = "com.azure.communication.chat.ChatClientTestBase#skipLiveTest")
     public void canSendThenListReadReceiptsWithOptions(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceiptsWithOptions");
@@ -526,9 +533,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)")
+    @DisabledIf(value = "com.azure.communication.chat.ChatClientTestBase#skipLiveTest")
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canSendThenListReadReceiptsWithResponse");

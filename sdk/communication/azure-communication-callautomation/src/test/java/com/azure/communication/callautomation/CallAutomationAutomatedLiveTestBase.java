@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -18,7 +19,6 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusFailureReason;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.core.http.HttpClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -97,6 +97,18 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
+     * environment variable is true.
+     *
+     * @return Whether the live test should be skipped.
+     */
+    public static boolean skipLiveTest() {
+        String testMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST"))
+            || (!"LIVE".equalsIgnoreCase(testMode) && !"RECORD".equalsIgnoreCase(testMode));
     }
 
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {

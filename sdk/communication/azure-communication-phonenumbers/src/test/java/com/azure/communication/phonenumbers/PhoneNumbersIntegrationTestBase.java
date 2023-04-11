@@ -2,14 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
@@ -27,8 +19,15 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -47,6 +46,18 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
             String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     private static final String URI_PHONE_NUMBERS_REPLACER_REGEX = "/phoneNumbers/([\\+]?[0-9]{11,15})";
+
+    /**
+     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
+     * environment variable is true.
+     *
+     * @return Whether the live test should be skipped.
+     */
+    public static boolean skipLiveTest() {
+        String testMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST"))
+            || (!"LIVE".equalsIgnoreCase(testMode) && !"RECORD".equalsIgnoreCase(testMode));
+    }
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(

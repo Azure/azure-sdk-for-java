@@ -3,10 +3,11 @@
 
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.chat.models.*;
-import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -15,10 +16,13 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.PlainJWT;
 
-import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -27,11 +31,9 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.nimbusds.jwt.PlainJWT;
-import com.nimbusds.jwt.JWT;
-import com.nimbusds.jwt.JWTClaimsSet;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Abstract base class for all Chat tests
@@ -99,6 +101,16 @@ public class ChatClientTestBase extends TestBase {
         }
 
         return builder;
+    }
+
+    /**
+     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
+     * environment variable is true.
+     *
+     * @return Whether the live test should be skipped.
+     */
+    public static boolean skipLiveTest() {
+        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST")) || TEST_MODE == TestMode.PLAYBACK;
     }
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {

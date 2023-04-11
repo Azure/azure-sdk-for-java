@@ -5,8 +5,8 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
@@ -16,7 +16,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,9 +32,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
+    @DisabledIf(
+        value = "com.azure.communication.callautomation.CallAutomationAutomatedLiveTestBase#skipLiveTest",
         disabledReason = "Requires environment to be set up")
     public void playMediaInACallAutomatedTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
@@ -55,7 +54,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create caller and receiver
             CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
-            
+
             CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
                     .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
                     .sourceIdentity(caller)

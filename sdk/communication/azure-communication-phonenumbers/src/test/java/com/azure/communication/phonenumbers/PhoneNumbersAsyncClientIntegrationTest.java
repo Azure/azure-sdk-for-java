@@ -23,6 +23,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -125,7 +126,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    @DisabledIf(value = "com.azure.communication.phonenumbers.PhoneNumbersIntegrationTestBase#skipLiveTest")
     public void beginPurchaseandReleasePhoneNumbers(HttpClient httpClient) {
         StepVerifier.create(
                 beginSearchAvailablePhoneNumbersHelper(httpClient, "beginSearchAvailablePhoneNumbers", true).last()

@@ -7,11 +7,14 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -20,9 +23,6 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import reactor.core.publisher.Mono;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 
 public class CallAutomationLiveTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -57,6 +57,18 @@ public class CallAutomationLiveTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
+     * environment variable is true.
+     *
+     * @return Whether the live test should be skipped.
+     */
+    public static boolean skipLiveTest() {
+        String testMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST"))
+            || (!"LIVE".equalsIgnoreCase(testMode) && !"RECORD".equalsIgnoreCase(testMode));
+    }
 
     protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder()

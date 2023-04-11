@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
@@ -142,8 +143,8 @@ public class HttpRequest {
      */
     public HttpRequest setUrl(String url) {
         try {
-            this.url = URI.create(url).toURL();
-        } catch (MalformedURLException ex) {
+            this.url = new URI(url).toURL();
+        } catch (URISyntaxException | MalformedURLException ex) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
         return this;
