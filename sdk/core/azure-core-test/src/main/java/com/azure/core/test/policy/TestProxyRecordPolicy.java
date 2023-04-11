@@ -4,6 +4,7 @@
 package com.azure.core.test.policy;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -29,6 +30,7 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
@@ -67,7 +69,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
         HttpResponse response = client.sendSync(request, Context.NONE);
 
-        this.xRecordingId = response.getHeaderValue("x-recording-id");
+        this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
     }
@@ -78,8 +80,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void stopRecording(Queue<String> variables) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", proxyUrl.toString()))
-            .setHeader("content-type", "application/json")
-            .setHeader("x-recording-id", xRecordingId)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
         client.sendSync(request, Context.NONE);
     }
@@ -128,7 +130,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         if (isRecording()) {
             getSanitizerRequests(sanitizers, proxyUrl)
                 .forEach(request -> {
-                    request.setHeader("x-recording-id", xRecordingId);
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
         } else {
