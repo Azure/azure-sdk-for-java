@@ -25,7 +25,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-    private static final String INVALID_AZURE_PROXY_URL = "URL is invalid is being ignored.";
+    private static final String INVALID_AZURE_PROXY_URL = "URL is invalid and is being ignored.";
 
     /*
      * This indicates whether system proxy configurations (HTTPS_PROXY, HTTP_PROXY) are allowed to be used.
