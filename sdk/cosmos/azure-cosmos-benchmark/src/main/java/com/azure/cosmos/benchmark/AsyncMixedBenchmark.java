@@ -52,12 +52,9 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
         } else if (i % 100 == 0) {
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-
             String sqlQuery = "Select top 100 * from c order by c._ts";
-
-
-
             obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+
         } else {
 
             int index = r.nextInt(1000);
