@@ -455,7 +455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
-            this.proactiveOpenConnectionsProcessor = ProactiveOpenConnectionsProcessor.getInstance();
+            this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor();
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
