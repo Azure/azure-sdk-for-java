@@ -124,7 +124,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
-    public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredParam3, int ignoredParam4, Duration ignore) {
+    public void openConnectionsAndInitCachesWithContainer(List<String> preferredRegions, int numProactiveConnectionRegions, int ignoredNoOfContainers, int ignoredMinConnectionPoolSize, Duration ignoredAggressiveConnectionEstablishmentDuration) {
         CosmosAsyncClient asyncClient = null;
 
         try {
@@ -220,7 +220,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughSystemConfig(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignore) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignoredAggressiveConnectionEstablishmentDuration) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
@@ -327,7 +327,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignore) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration ignoredAggressiveConnectionEstablishmentDuration) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
@@ -446,7 +446,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "proactiveContainerInitConfigs")
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
-            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration aggressiveProactiveConnectionEstablishmentTimeWindow) {
+            List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, int minConnectionPoolSizePerEndpoint, Duration aggressiveProactiveConnectionEstablishmentDuration) {
 
         CosmosAsyncClient clientWithOpenConnections = null;
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
@@ -472,7 +472,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
-                    .setAggressiveProactiveConnectionEstablishmentTimeWindow(aggressiveProactiveConnectionEstablishmentTimeWindow)
+                    .setAggressiveProactiveConnectionEstablishmentDuration(aggressiveProactiveConnectionEstablishmentDuration)
                     .build();
 
             clientWithOpenConnections = new CosmosClientBuilder()
@@ -567,7 +567,6 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             safeClose(clientWithOpenConnections);
         }
     }
-
 
     @DataProvider(name = "proactiveContainerInitConfigs")
     private Object[][] proactiveContainerInitConfigs() {

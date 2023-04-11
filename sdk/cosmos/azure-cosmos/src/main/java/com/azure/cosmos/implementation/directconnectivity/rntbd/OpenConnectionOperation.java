@@ -71,10 +71,10 @@ public final class OpenConnectionOperation {
     private static class ProactiveOpenConnectionsRetryPolicy implements IRetryPolicy {
 
         private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
-        private static final int MaxRetryAttempts = 3;
-        private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(10);
+        private static final int MaxRetryAttempts = 2;
+        private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(1_000);
         private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(10_000);
-        private static final int BackoffMultiplier = 2;
+        private static final int BackoffMultiplier = 4;
         private Duration currentBackoff;
         private final TimeoutHelper waitTimeTimeoutHelper;
         private final AtomicInteger retryCount;
@@ -88,11 +88,7 @@ public final class OpenConnectionOperation {
         @Override
         public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("In retry policy: {}, retry attempt: {}", this.getClass().getName(), this.retryCount.get());
-            }
-
-            logger.info("In retry policy: {}, retry attempt: {}", this.getClass().getName(), this.retryCount.get());
+            logger.warn("In retry policy: ProactiveOpenConnectionsRetryPolicy, retry attempt: {}", this.retryCount.get());
 
             if (this.retryCount.get() >= MaxRetryAttempts || this.waitTimeTimeoutHelper.isElapsed() || e == null) {
                 return Mono.just(ShouldRetryResult.noRetry());

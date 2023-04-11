@@ -239,8 +239,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             null,
-                null
-                );
+                                 null
+                                                            );
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -300,8 +300,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             openConnectionsHandler,
-                proactiveOpenConnectionsProcessor
-                );
+                                                            proactiveOpenConnectionsProcessor
+                                                            );
 
         String collectionRid = createdCollection.getResourceId();
 
@@ -452,9 +452,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
-//        Mockito
-//            .verify(openConnectionsHandler, Mockito.times(allPartitionKeyRangeIds.size()))
-//            .openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.any());
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,

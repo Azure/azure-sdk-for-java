@@ -123,7 +123,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 });
     }
 
-    public void reinitializeOpenConnectionsPublisherAndSubscribe() {
+    public void reinstantiateOpenConnectionsPublisherAndSubscribe() {
         logger.debug("In open connections task sink and concurrency reduction flow");
         this.toggleOpenConnectionsAggressiveness();
         this.instantiateOpenConnectionsPublisher();

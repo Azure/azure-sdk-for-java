@@ -941,7 +941,7 @@ public class CosmosClientBuilder implements
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
             Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
-                    .getAggressiveProactiveConnectionEstablishmentTimeWindow();
+                    .getAggressiveProactiveConnectionEstablishmentDuration();
             if (aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO) {
                 cosmosAsyncClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
             } else {
@@ -965,7 +965,7 @@ public class CosmosClientBuilder implements
         CosmosClient cosmosClient = new CosmosClient(this);
         if (proactiveContainerInitConfig != null) {
             Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
-                    .getAggressiveProactiveConnectionEstablishmentTimeWindow();
+                    .getAggressiveProactiveConnectionEstablishmentDuration();
             if (aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO) {
                 cosmosClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
             } else {

@@ -22,7 +22,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private int numProactiveConnectionRegions;
-    private Duration aggressiveProactiveConnectionEstablishmentTimeWindow = Duration.ZERO;
+    private Duration aggressiveProactiveConnectionEstablishmentDuration = Duration.ZERO;
     /**
      * Instantiates {@link CosmosContainerProactiveInitConfigBuilder}
      *
@@ -65,14 +65,14 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      * aggressively and in a blocking manner and outside which connections will be opened defensively
      * and in a non-blocking manner
      *
-     * @param aggressiveProactiveConnectionEstablishmentTimeWindow this denotes the aggressive proactive connection
-     *                                                             establishment time window to be set
+     * @param aggressiveProactiveConnectionEstablishmentDuration this denotes the aggressive proactive connection
+     *                                                             establishment duration to be set
      * @return current {@link CosmosContainerProactiveInitConfigBuilder}
      */
-    public CosmosContainerProactiveInitConfigBuilder setAggressiveProactiveConnectionEstablishmentTimeWindow(Duration aggressiveProactiveConnectionEstablishmentTimeWindow) {
-        checkArgument(aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO,
-                "aggressiveProactiveConnectionEstablishmentTimeWindow cannot be set to Duration.ZERO");
-        this.aggressiveProactiveConnectionEstablishmentTimeWindow = aggressiveProactiveConnectionEstablishmentTimeWindow;
+    public CosmosContainerProactiveInitConfigBuilder setAggressiveProactiveConnectionEstablishmentDuration(Duration aggressiveProactiveConnectionEstablishmentDuration) {
+        checkArgument(aggressiveProactiveConnectionEstablishmentDuration != Duration.ZERO,
+                "aggressiveProactiveConnectionEstablishmentDuration cannot be set to Duration.ZERO");
+        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
         return this;
     }
 
@@ -110,7 +110,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
                 this.cosmosContainerIdentities,
                 this.numProactiveConnectionRegions,
                 this.containerLinkToMinConnectionsMap,
-                this.aggressiveProactiveConnectionEstablishmentTimeWindow
+                this.aggressiveProactiveConnectionEstablishmentDuration
         );
     }
 }

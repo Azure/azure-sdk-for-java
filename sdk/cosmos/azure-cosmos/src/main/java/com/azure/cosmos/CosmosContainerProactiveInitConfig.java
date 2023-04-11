@@ -23,18 +23,18 @@ public final class CosmosContainerProactiveInitConfig {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private final int numProactiveConnectionRegions;
-    private final Duration aggressiveProactiveConnectionEstablishmentTimeWindow;
+    private final Duration aggressiveProactiveConnectionEstablishmentDuration;
 
     CosmosContainerProactiveInitConfig(
         List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
         Map<String, Integer> containerLinkToMinConnectionsMap,
-        Duration aggressiveProactiveConnectionEstablishmentTimeWindow
+        Duration aggressiveProactiveConnectionEstablishmentDuration
     ) {
         this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
-        this.aggressiveProactiveConnectionEstablishmentTimeWindow = aggressiveProactiveConnectionEstablishmentTimeWindow;
+        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
     }
 
     /**
@@ -80,13 +80,13 @@ public final class CosmosContainerProactiveInitConfig {
     }
 
     /**
-     * Gets the time window within which connections will be opened aggressively and in a blocking manner and outside
+     * Gets the duration within which connections will be opened aggressively and in a blocking manner and outside
      * which connections will be opened defensively and in a non-blocking manner
      *
-     * @return the aggressive proactive connection establishment time window
+     * @return the aggressive proactive connection establishment duration
      * */
-    public Duration getAggressiveProactiveConnectionEstablishmentTimeWindow() {
-        return this.aggressiveProactiveConnectionEstablishmentTimeWindow;
+    public Duration getAggressiveProactiveConnectionEstablishmentDuration() {
+        return this.aggressiveProactiveConnectionEstablishmentDuration;
     }
 
     @Override
