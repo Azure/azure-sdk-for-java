@@ -33,8 +33,10 @@ public class AddDatePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setDate(context);
-        return next.process();
+        return Mono.defer(() -> {
+            setDate(context);
+            return next.process();
+        });
     }
 
     @Override
