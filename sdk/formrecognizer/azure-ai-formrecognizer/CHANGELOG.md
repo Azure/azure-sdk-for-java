@@ -1,7 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
-
+## 4.1.0-beta.1 (2023-04-12)
 ### Features Added
 - Added support for analyzing new document types
 - Added support for AzureBlobList source type when building document models
