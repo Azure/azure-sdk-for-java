@@ -14,6 +14,7 @@ import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -54,7 +55,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -1093,6 +1096,67 @@ public class BinaryDataTest {
             BinaryDataAsProperty.class, SerializerEncoding.JSON);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
+    }
+
+    @Test
+    public void binaryDataAsPropertyBytesRoundTrip() throws IOException {
+        SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
+
+        byte[] bytes = new byte[] { 0x69, 0x64, 0x71, 0x64 };
+        BinaryData propertyAsBytes = BinaryData.fromBytes(bytes);
+
+        BinaryDataAsProperty model = new BinaryDataAsProperty().setProperty(propertyAsBytes);
+
+        // model to JSON
+        String json = adapter.serialize(model, SerializerEncoding.JSON);
+        // JSON back to model
+        BinaryDataAsProperty deserializedModel = adapter.deserialize(json, BinaryDataAsProperty.class, SerializerEncoding.JSON);
+
+        BinaryData propertyAfterDeserialize = deserializedModel.getProperty();
+
+        // fail, right is "aWRxZA==" in bytes, BINARY get Base64 encoded in serialization, but not get decoded in de-serialization
+        Assertions.assertArrayEquals(bytes, propertyAfterDeserialize.toBytes());
+    }
+
+    @Test
+    public void binaryDataAsPropertyStringRoundTrip() throws IOException {
+        SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
+
+        byte[] bytes = new byte[] { 0x69, 0x64, 0x71, 0x64 };
+        String bytesAsString = new String(bytes, StandardCharsets.UTF_8);
+        BinaryData propertyAsBytes = BinaryData.fromString(bytesAsString);
+
+        BinaryDataAsProperty model = new BinaryDataAsProperty().setProperty(propertyAsBytes);
+
+        String json = adapter.serialize(model, SerializerEncoding.JSON);
+
+        BinaryDataAsProperty deserializedModel = adapter.deserialize(json, BinaryDataAsProperty.class, SerializerEncoding.JSON);
+
+        BinaryData propertyAfterDeserialize = deserializedModel.getProperty();
+
+        // succeed, TEXT is good
+        Assertions.assertArrayEquals(bytes, propertyAfterDeserialize.toBytes());
+    }
+
+    @Test
+    public void binaryDataAsPropertyObjectRoundTrip() throws IOException {
+        SerializerAdapter adapter = JacksonAdapter.createDefaultSerializerAdapter();
+
+        Map<String, String> object = new HashMap<>();
+        object.put("name", "john");
+        BinaryData propertyAsBytes = BinaryData.fromObject(object);
+
+        BinaryDataAsProperty model = new BinaryDataAsProperty().setProperty(propertyAsBytes);
+
+        String json = adapter.serialize(model, SerializerEncoding.JSON);
+
+        BinaryDataAsProperty deserializedModel = adapter.deserialize(json, BinaryDataAsProperty.class, SerializerEncoding.JSON);
+
+        BinaryData propertyAfterDeserialize = deserializedModel.getProperty();
+        Map<String, String> deserializedObject = propertyAfterDeserialize.toObject(new TypeReference<>() {});
+
+        // succeed, OBJECT is good
+        Assertions.assertEquals("john", deserializedObject.get("name"));
     }
 
     public static final class BinaryDataAsProperty {
