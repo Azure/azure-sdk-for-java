@@ -185,7 +185,7 @@ class BlockBlobAPITest extends APISpec {
                     return blockBlobAsyncClient.listBlocks(BlockListType.ALL)
                         .map(bl -> bl.getUncommittedBlocks().size() == 1)
                 }
-                return Mono.just(true)
+                return Mono.just(false)
             }))
 
         then:
@@ -223,7 +223,7 @@ class BlockBlobAPITest extends APISpec {
                     return blockBlobAsyncClient.listBlocks(BlockListType.ALL)
                         .map(bl -> bl.getUncommittedBlocks().size() == 1)
                 }
-                return Mono.just(true)
+                return Mono.just(false)
             }))
 
         expect:
