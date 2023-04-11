@@ -7,12 +7,27 @@
 - Added support for AzureBlobList source type when building document models
 - Added support for building, getting, listing and deleting classifiers
 - Added support for queryFields premium feature when performing analysis operations
+- Added model `QuotaDetails` and property `customNeuralDocumentModelBuilds` on `ResourceDetails`
+- Added property `expiresOn` to `DocumentModelDetails` and `DocumentModelSummary`
+- Added properties on `DocumentStyle` : `similarFontFamily`, `fontStyle`, `fontWeight`, `color`, `backgroundColor`
+- Added property `commonName` to `DocumentKeyValuePair`.
+- Added support for ParagraphRole `formulaBlock`
+- Added support for `code` property on `CurrencyValue`
+- Added properties `unit`, `cityDistrict`, `stateDistrict`, `suburb`, `house`, and `level` to `AddressValue`
+- Added method `isValueBoolean` to model `DocumentField`
+- Added support for `DocumentFieldType.BOOLEAN`
+- Added DocumentAnalysisFeature enum with optional document analysis feature to enable
+- Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
+- Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+#### Known Bug
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClasifyDocument` 
+method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
 
 ## 4.0.5 (2023-03-16)
 

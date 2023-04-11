@@ -1,108 +1,165 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym50204a06466c')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e863e500-5763-4012-bb98-5f839408e06b",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/synonymmaps(\u0027test-synonym31216f07b377\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "76",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:19:57 GMT",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9475f0af-02de-44fa-a078-48654229252c"
+      },
+      "RequestBody": {
+        "name": "test-synonym31216f07b377",
+        "format": "solr",
+        "synonyms": "word1,word2"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "9475f0af-02de-44fa-a078-48654229252c",
+        "Content-Length": "238",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:19:56 GMT",
+        "elapsed-time": "27",
+        "ETag": "W/\u00220x8DB20DBA64F896B\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/synonymmaps(\u0027test-synonym31216f07b377\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "9475f0af-02de-44fa-a078-48654229252c",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "9475f0af-02de-44fa-a078-48654229252c"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#synonymmaps/$entity",
+        "@odata.etag": "\u00220x8DB20DBA64F896B\u0022",
+        "name": "test-synonym31216f07b377",
+        "format": "solr",
+        "synonyms": "word1,word2",
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e863e500-5763-4012-bb98-5f839408e06b",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:47:18 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e863e500-5763-4012-bb98-5f839408e06b",
-      "ETag" : "W/\"0x8DAF8CC06215F12\"",
-      "elapsed-time" : "27",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "226",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CC06215F12\\\"\",\"name\":\"test-synonym50204a06466c\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e863e500-5763-4012-bb98-5f839408e06b",
-      "Location" : "https://alzimmer-basic.search.windows.net/synonymmaps('test-synonym50204a06466c')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/synonymmaps(\u0027test-synonym31216f07b377\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "114",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:19:57 GMT",
+        "If-Match": "\u00220x8DB20DBA64F896B\u0022",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "63004118-dd89-44e0-b5f3-415237ac6334"
+      },
+      "RequestBody": {
+        "name": "test-synonym31216f07b377",
+        "format": "solr",
+        "synonyms": "word1,word2",
+        "@odata.etag": "\u00220x8DB20DBA64F896B\u0022"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "63004118-dd89-44e0-b5f3-415237ac6334",
+        "Content-Length": "238",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:19:56 GMT",
+        "elapsed-time": "24",
+        "ETag": "W/\u00220x8DB20DBA65EF07D\u0022",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "63004118-dd89-44e0-b5f3-415237ac6334",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "63004118-dd89-44e0-b5f3-415237ac6334"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#synonymmaps/$entity",
+        "@odata.etag": "\u00220x8DB20DBA65EF07D\u0022",
+        "name": "test-synonym31216f07b377",
+        "format": "solr",
+        "synonyms": "word1,word2",
+        "encryptionKey": null
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym50204a06466c')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ee7b2c40-36ce-4e6e-a9c3-2cb2c4174632",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/synonymmaps(\u0027test-synonym31216f07b377\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:19:57 GMT",
+        "If-Match": "\u00220x8DB20DBA64F896B\u0022",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "00f209a5-714f-45dd-a87f-a62d3d2ddd11"
+      },
+      "RequestBody": null,
+      "StatusCode": 412,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "00f209a5-714f-45dd-a87f-a62d3d2ddd11",
+        "Content-Language": "en",
+        "Content-Length": "160",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:19:56 GMT",
+        "elapsed-time": "8",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "00f209a5-714f-45dd-a87f-a62d3d2ddd11",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "00f209a5-714f-45dd-a87f-a62d3d2ddd11"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request."
+        }
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "ee7b2c40-36ce-4e6e-a9c3-2cb2c4174632",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:47:18 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "ee7b2c40-36ce-4e6e-a9c3-2cb2c4174632",
-      "ETag" : "W/\"0x8DAF8CC062F66BC\"",
-      "elapsed-time" : "22",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "226",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CC062F66BC\\\"\",\"name\":\"test-synonym50204a06466c\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "ee7b2c40-36ce-4e6e-a9c3-2cb2c4174632",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym50204a06466c')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "bc59d33e-25df-4e3c-a178-7ab3c814481b"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "bc59d33e-25df-4e3c-a178-7ab3c814481b",
-      "StatusCode" : "412",
-      "Date" : "Tue, 17 Jan 2023 20:47:18 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "bc59d33e-25df-4e3c-a178-7ab3c814481b",
-      "elapsed-time" : "7",
-      "Expires" : "-1",
-      "Content-Length" : "160",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "bc59d33e-25df-4e3c-a178-7ab3c814481b",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym50204a06466c')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "108777ac-34ec-4725-8257-8e569e152c68"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "108777ac-34ec-4725-8257-8e569e152c68",
-      "elapsed-time" : "13",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "108777ac-34ec-4725-8257-8e569e152c68",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:47:18 GMT",
-      "x-ms-client-request-id" : "108777ac-34ec-4725-8257-8e569e152c68"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "test-synonym50204a06466c" ]
+    {
+      "RequestUri": "https://REDACTED/synonymmaps(\u0027test-synonym31216f07b377\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:19:57 GMT",
+        "If-Match": "\u00220x8DB20DBA65EF07D\u0022",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ae3ce01f-315e-4a2d-859b-3da1c091d0b6"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "ae3ce01f-315e-4a2d-859b-3da1c091d0b6",
+        "Date": "Thu, 09 Mar 2023 20:19:56 GMT",
+        "elapsed-time": "36",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "ae3ce01f-315e-4a2d-859b-3da1c091d0b6",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "ae3ce01f-315e-4a2d-859b-3da1c091d0b6"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "test-synonym31216f07b377"
+  }
 }

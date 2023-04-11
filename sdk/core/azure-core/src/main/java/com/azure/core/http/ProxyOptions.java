@@ -8,7 +8,6 @@ import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -26,7 +25,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-    private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
+    private static final String INVALID_AZURE_PROXY_URL = "URL is invalid and is being ignored.";
 
     /*
      * This indicates whether system proxy configurations (HTTPS_PROXY, HTTP_PROXY) are allowed to be used.
@@ -299,7 +298,9 @@ public class ProxyOptions {
             if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
 
-                LOGGER.log(LogLevel.VERBOSE, () -> "Using non-proxy host regex: " + proxyOptions.nonProxyHosts);
+                LOGGER.atVerbose()
+                    .addKeyValue("regex", proxyOptions.nonProxyHosts)
+                    .log("Using non-proxy hosts");
             }
 
             String userInfo = proxyUrl.getUserInfo();
@@ -319,7 +320,9 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (MalformedURLException ex) {
-            LOGGER.warning(INVALID_AZURE_PROXY_URL, proxyProperty);
+            LOGGER.atWarning()
+                .addKeyValue("url", proxyProperty)
+                .log(INVALID_AZURE_PROXY_URL);
             return null;
         }
     }
@@ -380,7 +383,9 @@ public class ProxyOptions {
         if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
             proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
 
-            LOGGER.log(LogLevel.VERBOSE, () -> "Using non-proxy host regex: " + proxyOptions.nonProxyHosts);
+            LOGGER.atVerbose()
+                .addKeyValue("regex", proxyOptions.nonProxyHosts)
+                .log("Using non-proxy host regex");
         }
 
         if (username != null && password != null) {

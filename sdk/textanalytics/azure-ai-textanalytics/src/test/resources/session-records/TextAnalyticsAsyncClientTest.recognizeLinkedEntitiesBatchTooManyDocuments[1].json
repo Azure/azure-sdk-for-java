@@ -1,25 +1,98 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a406fbe8-e62f-4079-af41-da662adfcdd7",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "7",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "01ff56c3-e501-4b6c-ab4a-7700f4b95316",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocumentBatch\",\"message\":\"Batch request contains too many records. Max 5 records are permitted.\"}}}",
-      "Date" : "Tue, 11 Oct 2022 19:01:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "909",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:52:37 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "22e1c53f-f69c-4580-94f8-0014bdcac8c2"
+      },
+      "RequestBody": {
+        "kind": "EntityLinking",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "1",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "2",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "3",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "4",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "5",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "6",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "7",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "8",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "9",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "10",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "11",
+              "text": "I had a wonderful trip to Seattle last week."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "ceb2db54-a3a1-48e0-a802-0c7cc6e00b1a",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:52:37 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "6",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid Document in request.",
+          "innererror": {
+            "code": "InvalidDocumentBatch",
+            "message": "Batch request contains too many records. Max 5 records are permitted."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
