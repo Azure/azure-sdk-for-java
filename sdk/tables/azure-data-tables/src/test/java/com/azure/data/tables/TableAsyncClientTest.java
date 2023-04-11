@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
+import com.azure.data.tables.TestUtils.MockCredential;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -111,14 +113,19 @@ public class TableAsyncClientTest extends TableClientTestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
 
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockCredential();
+        } else if (interceptorManager.isRecordMode()) {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
-        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
-            .tenantId(testResourceNamer.randomUuid())
-            .additionallyAllowedTenants("*")
-            .build();
+            credential = new ClientSecretCredentialBuilder()
+                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+                .tenantId(testResourceNamer.randomUuid())
+                .additionallyAllowedTenants("*")
+                .build();
+        }
 
         final TableAsyncClient tableClient2 =
             getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
