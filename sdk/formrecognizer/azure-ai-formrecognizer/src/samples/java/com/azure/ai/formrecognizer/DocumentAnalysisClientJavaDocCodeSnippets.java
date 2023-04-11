@@ -81,10 +81,10 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      */
     public void beginAnalyzeDocumentFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-Options-Context
-        String analyzeFilePath = "{file_source_url}";
+        String documentUrl = "{file_source_url}";
         String modelId = "{model_id}";
 
-        documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, analyzeFilePath,
+        documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl,
                 new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")), Context.NONE)
             .getFinalResult()
             .getDocuments().stream()
@@ -145,5 +145,42 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-Options-Context
+    }
+
+    /**
+     * Code snippet for
+     * {@link DocumentAnalysisClient#beginClassifyDocument(String, BinaryData, Context)}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginClassifyDocument() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData
+        File document = new File("{local/file_path/fileName.jpg}");
+        String classifierId = "{custom_trained_classifier_id}";
+        byte[] fileContent = Files.readAllBytes(document.toPath());
+
+        documentAnalysisClient.beginClassifyDocument(classifierId, BinaryData.fromBytes(fileContent), Context.NONE)
+            .getFinalResult()
+            .getDocuments()
+            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData
+    }
+
+    /**
+     * Code snippet for
+     * {@link DocumentAnalysisClient#beginClassifyDocument(String, BinaryData, Context)}
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginClassifyDocumentFromUrl() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context
+        String documentUrl = "{file_source_url}";
+        String classifierId = "{custom_trained_classifier_id}";
+
+        documentAnalysisClient.beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE)
+            .getFinalResult()
+            .getDocuments()
+            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context
     }
 }

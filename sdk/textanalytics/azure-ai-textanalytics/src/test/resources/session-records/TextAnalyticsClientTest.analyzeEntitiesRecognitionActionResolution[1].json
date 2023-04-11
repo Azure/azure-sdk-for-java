@@ -1,67 +1,263 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3cc485bc-a37e-44a4-8333-66bf3d091b46",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "243",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:47:26 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "50324dd5-2b6f-4d7c-bb0e-9f3f6ec9ed2a"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "The cat is 1 year old and weighs 10 pounds."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "EntityRecognition",
+            "parameters": {
+              "loggingOptOut": false,
+              "modelVersion": "2022-10-01-preview",
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "cfd10f06-cc54-468b-bd5a-cfb95f18d2c3",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:47:25 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/92afcf42-72d5-4eca-beba-5d8905cfffa1?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "156",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "145",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/a0ba0680-91a6-488b-ab71-fab749295e8a?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e5b2f393-8763-45d7-bfab-168c5e64b277",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Thu, 20 Oct 2022 18:46:20 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/92afcf42-72d5-4eca-beba-5d8905cfffa1?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:47:26 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8693dccc-57d5-45fe-9781-cdefa92d6ba8"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0a096c84-522e-4f17-ac68-b3e59b1bc646",
+        "Content-Length": "283",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:47:25 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "8",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "92afcf42-72d5-4eca-beba-5d8905cfffa1",
+        "lastUpdatedDateTime": "2023-04-05T18:47:26Z",
+        "createdDateTime": "2023-04-05T18:47:26Z",
+        "expirationDateTime": "2023-04-06T18:47:26Z",
+        "status": "notStarted",
+        "errors": [],
+        "tasks": {
+          "completed": 0,
+          "failed": 0,
+          "inProgress": 1,
+          "total": 1,
+          "items": []
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/a0ba0680-91a6-488b-ab71-fab749295e8a?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4dff2484-ff1c-4bfd-8fe7-20dda0185a66"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/92afcf42-72d5-4eca-beba-5d8905cfffa1?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:47:56 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "4679f5a4-988d-4755-9117-79441a2d72ac"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "00bac0a6-cb81-4f21-8747-19891a408e4e",
+        "Content-Length": "889",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:47:56 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "173",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "92afcf42-72d5-4eca-beba-5d8905cfffa1",
+        "lastUpdatedDateTime": "2023-04-05T18:47:27Z",
+        "createdDateTime": "2023-04-05T18:47:26Z",
+        "expirationDateTime": "2023-04-06T18:47:26Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "EntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:47:27.9271384Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "1 year old",
+                        "category": "Quantity",
+                        "subcategory": "Age",
+                        "offset": 11,
+                        "length": 10,
+                        "confidenceScore": 0.99,
+                        "resolutions": [
+                          {
+                            "resolutionKind": "AgeResolution",
+                            "unit": "Year",
+                            "value": 1.0
+                          }
+                        ]
+                      },
+                      {
+                        "text": "10 pounds",
+                        "category": "Quantity",
+                        "subcategory": "Dimension",
+                        "offset": 33,
+                        "length": 9,
+                        "confidenceScore": 0.8,
+                        "resolutions": [
+                          {
+                            "resolutionKind": "WeightResolution",
+                            "unit": "Pound",
+                            "value": 10.0
+                          }
+                        ]
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-10-01-preview"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "content-length" : "888",
-      "x-envoy-upstream-service-time" : "49",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "72ae8825-4045-4128-ab4c-18324ad24135",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"a0ba0680-91a6-488b-ab71-fab749295e8a\",\"lastUpdateDateTime\":\"2022-10-20T18:46:23Z\",\"createdDateTime\":\"2022-10-20T18:46:21Z\",\"expirationDateTime\":\"2022-10-21T18:46:21Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-20T18:46:23.4814042Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"1 year old\",\"category\":\"Quantity\",\"subcategory\":\"Age\",\"offset\":11,\"length\":10,\"confidenceScore\":0.97,\"resolutions\":[{\"resolutionKind\":\"AgeResolution\",\"unit\":\"Year\",\"value\":1.0}]},{\"text\":\"10 pounds\",\"category\":\"Quantity\",\"subcategory\":\"Dimension\",\"offset\":33,\"length\":9,\"confidenceScore\":0.8,\"resolutions\":[{\"resolutionKind\":\"WeightResolution\",\"unit\":\"Pound\",\"value\":10.0}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01-preview\"}}]}}",
-      "Date" : "Thu, 20 Oct 2022 18:46:51 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/a0ba0680-91a6-488b-ab71-fab749295e8a?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "803b1fdb-3d09-4b2f-bd0b-82ec0ea8eb97"
-    },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "content-length" : "888",
-      "x-envoy-upstream-service-time" : "32",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2dcb90f3-5355-487a-9859-55376991cd92",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"a0ba0680-91a6-488b-ab71-fab749295e8a\",\"lastUpdateDateTime\":\"2022-10-20T18:46:23Z\",\"createdDateTime\":\"2022-10-20T18:46:21Z\",\"expirationDateTime\":\"2022-10-21T18:46:21Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-20T18:46:23.4814042Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"1 year old\",\"category\":\"Quantity\",\"subcategory\":\"Age\",\"offset\":11,\"length\":10,\"confidenceScore\":0.97,\"resolutions\":[{\"resolutionKind\":\"AgeResolution\",\"unit\":\"Year\",\"value\":1.0}]},{\"text\":\"10 pounds\",\"category\":\"Quantity\",\"subcategory\":\"Dimension\",\"offset\":33,\"length\":9,\"confidenceScore\":0.8,\"resolutions\":[{\"resolutionKind\":\"WeightResolution\",\"unit\":\"Pound\",\"value\":10.0}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01-preview\"}}]}}",
-      "Date" : "Thu, 20 Oct 2022 18:46:51 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/92afcf42-72d5-4eca-beba-5d8905cfffa1?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:47:57 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "a6c96176-f0bf-47ce-962c-17faf0e7003b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "bd4b2ecb-bde7-490e-a22b-103ea3690668",
+        "Content-Length": "889",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:47:56 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "184",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "92afcf42-72d5-4eca-beba-5d8905cfffa1",
+        "lastUpdatedDateTime": "2023-04-05T18:47:27Z",
+        "createdDateTime": "2023-04-05T18:47:26Z",
+        "expirationDateTime": "2023-04-06T18:47:26Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "EntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:47:27.9271384Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "1 year old",
+                        "category": "Quantity",
+                        "subcategory": "Age",
+                        "offset": 11,
+                        "length": 10,
+                        "confidenceScore": 0.99,
+                        "resolutions": [
+                          {
+                            "resolutionKind": "AgeResolution",
+                            "unit": "Year",
+                            "value": 1.0
+                          }
+                        ]
+                      },
+                      {
+                        "text": "10 pounds",
+                        "category": "Quantity",
+                        "subcategory": "Dimension",
+                        "offset": 33,
+                        "length": 9,
+                        "confidenceScore": 0.8,
+                        "resolutions": [
+                          {
+                            "resolutionKind": "WeightResolution",
+                            "unit": "Pound",
+                            "value": 10.0
+                          }
+                        ]
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-10-01-preview"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

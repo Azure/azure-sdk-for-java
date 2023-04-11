@@ -89,7 +89,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
-    public void throughputLocalControl(OperationType operationType) {
+    public void throughputLocalControl_requestOptions(OperationType operationType) {
         this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
@@ -114,6 +114,46 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputLocalControl_default(OperationType operationType) {
+        this.ensureContainer();
+
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer testContainer = client.getDatabase(database.getId()).getContainer(container.getId());
+            // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+            ThroughputControlGroupConfig groupConfig =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName("group-" + UUID.randomUUID())
+                    .targetThroughput(6)
+                    .defaultControlGroup(true)
+                    .build();
+            testContainer.enableLocalThroughputControlGroup(groupConfig);
+
+            CosmosItemResponse<TestItem> createItemResponse = testContainer.createItem(getDocumentDefinition()).block();
+            TestItem createdItem = createItemResponse.getItem();
+            this.validateRequestNotThrottled(
+                createItemResponse.getDiagnostics().toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+            // second request to group-1. which will get throttled
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, operationType, createdItem, groupConfig.getGroupName());
+            this.validateRequestThrottled(
+                cosmosDiagnostics.toString(),
+                BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

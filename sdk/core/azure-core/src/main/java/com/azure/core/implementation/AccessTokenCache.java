@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -27,6 +28,8 @@ import java.util.function.Supplier;
 public final class AccessTokenCache {
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
+    private static final String REFRESH_DELAY_STRING = String.valueOf(REFRESH_DELAY.getSeconds());
+
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     // AccessTokenCache is a commonly used class, use a static logger.
@@ -172,13 +175,15 @@ public final class AccessTokenCache {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                LOGGER.log(LogLevel.INFORMATIONAL,  () -> refreshLog(cache, now, "Acquired a new access token"));
+                buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
+                    .log("Acquired a new access token.");
                 cache = accessToken;
                 sinksOne.tryEmitValue(accessToken);
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
-                LOGGER.log(LogLevel.ERROR, () -> refreshLog(cache, now, "Failed to acquire a new access token"));
+                buildTokenRefreshLog(LogLevel.ERROR, cache, now)
+                    .log("Failed to acquire a new access token.", error);
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
@@ -188,19 +193,17 @@ public final class AccessTokenCache {
         };
     }
 
-    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
-        StringBuilder info = new StringBuilder(log);
-        if (cache == null) {
-            info.append(".");
-        } else {
-            Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
-            if (!tte.isNegative()) {
-                info.append(" The token currently cached will be used.");
-            }
+    private static LoggingEventBuilder buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
+        LoggingEventBuilder logBuilder = LOGGER.atLevel(level);
+        if (cache == null || !LOGGER.canLogAtLevel(level)) {
+            return logBuilder;
         }
-        return info.toString();
+
+        Duration tte = Duration.between(now, cache.getExpiresAt());
+        return logBuilder
+            .addKeyValue("expiresAt", cache.getExpiresAt())
+            .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
+            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
+            .addKeyValue("expired", tte.isNegative());
     }
 }

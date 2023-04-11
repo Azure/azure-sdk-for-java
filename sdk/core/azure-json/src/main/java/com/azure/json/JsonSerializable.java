@@ -18,6 +18,10 @@ import java.io.IOException;
  * thrown.
  *
  * @param <T> The type of the object that is JSON serializable.
+ *
+ * @see com.azure.json
+ * @see JsonReader
+ * @see JsonWriter
  */
 public interface JsonSerializable<T extends JsonSerializable<T>> {
     /**

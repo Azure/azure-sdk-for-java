@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
@@ -37,6 +39,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 public class TestProxyPlaybackClient implements HttpClient {
 
     private final HttpClient client;
+    private final URL proxyUrl;
     private String xRecordingId;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
@@ -49,9 +52,11 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
+     * @param proxyUrl The {@link URL} for the test proxy instance.
      */
-    public TestProxyPlaybackClient(HttpClient httpClient) {
+    public TestProxyPlaybackClient(HttpClient httpClient, URL proxyUrl) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
+        this.proxyUrl = proxyUrl;
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 
@@ -62,11 +67,11 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws UncheckedIOException if an {@link IOException} is thrown.
      */
     public Queue<String> startPlayback(String recordFile) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", TestProxyUtils.getProxyUrl()))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
-            xRecordingId = response.getHeaderValue("x-recording-id");
+            xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -95,8 +100,8 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", TestProxyUtils.getProxyUrl()))
-            .setHeader("x-recording-id", xRecordingId);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl.toString()))
+            .setHeader(X_RECORDING_ID, xRecordingId);
         client.sendSync(request, Context.NONE);
     }
 
@@ -110,7 +115,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         if (xRecordingId == null) {
             throw new RuntimeException("Playback was not started before a request was sent.");
         }
-        TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
+        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "playback");
         return client.send(request).map(response -> {
             TestProxyUtils.checkForTestProxyErrors(response);
             return TestProxyUtils.revertUrl(response);
@@ -127,7 +132,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         if (xRecordingId == null) {
             throw new RuntimeException("Playback was not started before a request was sent.");
         }
-        TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
+        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "playback");
         HttpResponse response = client.sendSync(request, context);
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.revertUrl(response);
@@ -139,9 +144,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            getSanitizerRequests(sanitizers)
+            getSanitizerRequests(sanitizers, proxyUrl)
                 .forEach(request -> {
-                    request.setHeader("x-recording-id", xRecordingId);
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
         } else {
@@ -155,9 +160,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
-            getMatcherRequests(matchers)
+            getMatcherRequests(matchers, proxyUrl)
                 .forEach(request -> {
-                    request.setHeader("x-recording-id", xRecordingId);
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
         } else {
