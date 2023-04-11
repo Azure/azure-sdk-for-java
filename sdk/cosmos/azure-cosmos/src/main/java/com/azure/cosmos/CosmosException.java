@@ -147,6 +147,7 @@ public class CosmosException extends AzureException {
      * Fault injection ruleId
      */
     private String faultInjectionRuleId;
+    private List<String> faultInjectionEvaluationResults;
 
     /**
      * Creates a new instance of the CosmosException class.
@@ -567,8 +568,16 @@ public class CosmosException extends AzureException {
         this.faultInjectionRuleId = faultInjectionRUleId;
     }
 
+    void setFaultInjectionEvaluationResults(List<String> faultInjectionEvaluationResults) {
+        this.faultInjectionEvaluationResults = faultInjectionEvaluationResults;
+    }
+
     String getFaultInjectionRuleId() {
         return this.faultInjectionRuleId;
+    }
+
+    List<String> getFaultInjectionEvaluationResults() {
+        return this.faultInjectionEvaluationResults;
     }
 
     List<String> getReplicaStatusList() {
@@ -611,8 +620,18 @@ public class CosmosException extends AzureException {
                     }
 
                     @Override
+                    public void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults) {
+                        cosmosException.setFaultInjectionEvaluationResults(faultInjectionRuleEvaluationResults);
+                    }
+
+                    @Override
                     public String getFaultInjectionRuleId(CosmosException cosmosException) {
                         return cosmosException.getFaultInjectionRuleId();
+                    }
+
+                    @Override
+                    public List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionEvaluationResults();
                     }
 
                 });

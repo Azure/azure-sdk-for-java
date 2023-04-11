@@ -37,6 +37,7 @@ public class StoreResponse {
     private final List<String> replicaStatusList;
 
     private String faultInjectionRuleId;
+    private List<String> faultInjectionRuleEvaluationResults;
 
     public StoreResponse(
             int status,
@@ -207,8 +208,16 @@ public class StoreResponse {
         return this.faultInjectionRuleId;
     }
 
+    public List<String> getFaultInjectionRuleEvaluationResults() {
+        return this.faultInjectionRuleEvaluationResults;
+    }
+
     public void setFaultInjectionRuleId(String faultInjectionRuleId) {
         this.faultInjectionRuleId = faultInjectionRuleId;
+    }
+
+    public void setFaultInjectionRuleEvaluationResults(List<String> results) {
+        this.faultInjectionRuleEvaluationResults = results;
     }
 
     public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {

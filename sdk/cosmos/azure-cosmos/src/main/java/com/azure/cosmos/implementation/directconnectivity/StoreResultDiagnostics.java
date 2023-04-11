@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * StoreResultDiagnostics is a combination of diagnostics from StoreResult, StoreResponse and CosmosException.
@@ -197,6 +198,10 @@ public class StoreResultDiagnostics {
             this.writeNonNullStringField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
             this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
             this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", storeResponseDiagnostics.getFaultInjectionRuleId());
+            this.writeNonEmptyStringArrayField(
+                jsonGenerator,
+                "faultInjectionEvaluationResults",
+                storeResponseDiagnostics.getFaultInjectionEvaluationResults());
             this.writeNonNullObjectField(jsonGenerator, "replicaStatusList", storeResponseDiagnostics.getReplicaStatusList());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 
@@ -226,6 +231,14 @@ public class StoreResultDiagnostics {
             }
 
             jsonGenerator.writeStringField(fieldName, value);
+        }
+
+        private void writeNonEmptyStringArrayField(JsonGenerator jsonGenerator, String fieldName, List<String> values) throws IOException {
+            if (values == null || values.isEmpty()) {
+                return;
+            }
+
+            jsonGenerator.writeObjectField(fieldName, values);
         }
     }
 }

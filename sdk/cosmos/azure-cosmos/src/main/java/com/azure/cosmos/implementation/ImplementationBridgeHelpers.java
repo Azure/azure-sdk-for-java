@@ -1286,7 +1286,9 @@ public class ImplementationBridgeHelpers {
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
 
             void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId);
+            void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults);
             String getFaultInjectionRuleId(CosmosException cosmosException);
+            List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException);
         }
     }
 

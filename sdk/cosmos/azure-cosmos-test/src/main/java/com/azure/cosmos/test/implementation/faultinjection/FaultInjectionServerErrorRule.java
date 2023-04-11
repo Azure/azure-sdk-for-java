@@ -57,15 +57,38 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     }
 
     public boolean isApplicable(RntbdRequestArgs requestArgs) {
-        if (this.isValid()
-            && this.condition.isApplicable(requestArgs)
-            && this.result.isApplicable(this.id, requestArgs.serviceRequest())) {
+        if (!this.isValid()) {
+            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.transportRequestId(),
+                this.id + "[Disable or Duration reached]"
+            );
 
-            long hitCount = this.hitCount.incrementAndGet();
-            return this.hitLimit == null || hitCount <= this.hitLimit;
+            return false;
         }
 
-        return false;
+        if (!this.condition.isApplicable(this.id, requestArgs)) {
+            return false;
+        }
+
+        if (!this.result.isApplicable(this.id, requestArgs.serviceRequest())) {
+            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.transportRequestId(),
+                this.id + "[Per operation apply limit reached]"
+            );
+            return false;
+        }
+
+        long hitCount = this.hitCount.incrementAndGet();
+        boolean withinHitLimit = this.hitLimit == null || hitCount <= this.hitLimit;
+        if (!withinHitLimit) {
+            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.transportRequestId(),
+                this.id + "[Hit Limit reached]"
+            );
+            return false;
+        }
+
+        return true;
     }
 
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
