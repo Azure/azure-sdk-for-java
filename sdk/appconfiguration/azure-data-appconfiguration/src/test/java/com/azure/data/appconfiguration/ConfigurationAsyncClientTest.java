@@ -76,14 +76,16 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .httpClient(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
             if (interceptorManager.isRecordMode()) {
                 builder
+                    .httpClient(buildAsyncAssertingClient(httpClient))
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
+                builder
+                    .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
                 interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildAsyncClient();
