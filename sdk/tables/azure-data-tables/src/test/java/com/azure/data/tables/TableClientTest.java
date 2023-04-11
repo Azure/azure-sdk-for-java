@@ -35,7 +35,6 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -71,9 +70,13 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
         tableClient.createTable(); 
+    }
+
+    protected void afterTest() {
+        tableClient.deleteTable();
     }
 
     @Test
@@ -1018,7 +1021,6 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    @Disabled
     // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
     // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
@@ -1026,7 +1028,7 @@ public class TableClientTest extends TableClientTestBase {
         // TODO: Will re-enable once the above is fixed. -vicolina
         Assumptions.assumeFalse(IS_COSMOS_TEST, "Skipping Cosmos test.");
 
-        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2023, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
 

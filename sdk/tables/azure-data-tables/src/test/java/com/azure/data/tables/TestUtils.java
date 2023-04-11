@@ -201,13 +201,21 @@ public final class TestUtils {
             && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
     }
 
-    public static void addTestProxyTestMatchers(InterceptorManager interceptorManager) {
+    public static void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
+
+        if (interceptorManager.isLiveMode()) {
+            return;
+        }
+
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
+        customSanitizers.add(new TestProxySanitizer(null, ".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL).setGroupForReplace("query"));
         interceptorManager.addSanitizers(customSanitizers);
 
-        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
-        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
-        interceptorManager.addMatchers(customMatcher);
+        if (interceptorManager.isPlaybackMode()) {
+            List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+            customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(customMatcher);
+        }
     }
 }

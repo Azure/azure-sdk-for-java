@@ -46,8 +46,6 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .tableName(tableName);
 
-        // TestUtils.addTestProxyTestMatchers(interceptorManager);
-
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
 
@@ -60,7 +58,7 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
                 tableClientBuilder.addPolicy(recordPolicy);
             }
         }
-
+        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return tableClientBuilder;
     }
 

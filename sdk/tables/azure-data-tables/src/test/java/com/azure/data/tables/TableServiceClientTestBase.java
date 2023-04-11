@@ -59,7 +59,7 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
                 tableServiceClientBuilder.addPolicy(recordPolicy);
             }
         }
-
+        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return tableServiceClientBuilder;
     }
 
