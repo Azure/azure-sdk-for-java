@@ -195,7 +195,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -247,9 +247,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId,
-                                ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-                                ) {
+                                String clientCorrelationId
+    ) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -268,7 +267,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId
                 );
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
-        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -457,6 +455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
+            this.proactiveOpenConnectionsProcessor = ProactiveOpenConnectionsProcessor.getInstance();
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -4264,6 +4263,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             LifeCycleUtils.closeQuietly(this.storeClientFactory);
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
+            logger.info("Closing ProactiveOpenConnectionsProcessor ...");
+            LifeCycleUtils.closeQuietly(this.proactiveOpenConnectionsProcessor);
             logger.info("Shutting down CpuMonitor ...");
             CpuMemoryMonitor.unregister(this);
 
@@ -4311,6 +4312,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ConsistencyLevel getDefaultConsistencyLevelOfAccount() {
         return this.gatewayConfigurationReader.getDefaultConsistencyLevel();
+    }
+
+    @Override
+    public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+        return this.proactiveOpenConnectionsProcessor;
     }
 
     /***

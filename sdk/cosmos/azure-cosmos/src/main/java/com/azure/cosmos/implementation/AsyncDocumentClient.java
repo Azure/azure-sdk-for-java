@@ -99,7 +99,6 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -236,11 +235,6 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withProactiveOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
-            this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
-            return this;
-        }
-
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -273,8 +267,7 @@ public interface AsyncDocumentClient {
                     state,
                     apiType,
                     clientTelemetryConfig,
-                    clientCorrelationId,
-                    proactiveOpenConnectionsProcessor
+                    clientCorrelationId
             );
 
             client.init(state, null);
@@ -1573,6 +1566,7 @@ public interface AsyncDocumentClient {
     );
 
     ConsistencyLevel getDefaultConsistencyLevelOfAccount();
+    ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
     
     /***
      * Configure fault injector provider.

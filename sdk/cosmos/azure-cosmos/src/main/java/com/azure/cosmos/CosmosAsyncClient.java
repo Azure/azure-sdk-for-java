@@ -131,7 +131,6 @@ public final class CosmosAsyncClient implements Closeable {
         ApiType apiType = builder.apiType();
         String clientCorrelationId = telemetryConfigAccessor
             .getClientCorrelationId(effectiveTelemetryConfig);
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor();
 
         List<Permission> permissionList = new ArrayList<>();
         if (permissions != null) {
@@ -160,10 +159,10 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
-                                       .withProactiveOpenConnectionsProcessor(this.proactiveOpenConnectionsProcessor)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
+        this.proactiveOpenConnectionsProcessor = this.asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
         String machineId = this.asyncDocumentClient.getMachineId();
@@ -550,11 +549,6 @@ public final class CosmosAsyncClient implements Closeable {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
         asyncDocumentClient.close();
-        try {
-            proactiveOpenConnectionsProcessor.close();
-        } catch (IOException ex) {
-            // Swallow the IOException
-        }
     }
 
     DiagnosticsProvider getDiagnosticsProvider() {
