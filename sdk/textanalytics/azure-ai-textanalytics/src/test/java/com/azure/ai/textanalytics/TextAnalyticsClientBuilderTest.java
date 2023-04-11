@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -451,12 +450,6 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
             credential = new DefaultAzureCredentialBuilder().build();
         }
 
