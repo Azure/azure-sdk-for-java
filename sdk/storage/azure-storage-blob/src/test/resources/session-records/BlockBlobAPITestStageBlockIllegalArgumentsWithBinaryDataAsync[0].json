@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/43d0fbe6043d0fbe667991863263a36f73b6242ccb61?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "1e5eb17a-0461-4976-901a-a9d8fd110d5c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DAFE454B4D1187",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "24a0b30b-001e-0027-552e-30944a000000",
+      "Date" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "x-ms-client-request-id" : "1e5eb17a-0461-4976-901a-a9d8fd110d5c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/43d0fbe6043d0fbe667991863263a36f73b6242ccb61/43d0fbe6143d0fbe6679357481225a86918fd414abf7",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "e29d587f-abda-4043-bf22-b4c6a437ec9b",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:58 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454B5215AA",
+      "x-ms-request-id" : "841acc4c-201e-007d-412e-30f2ad000000",
+      "x-ms-client-request-id" : "e29d587f-abda-4043-bf22-b4c6a437ec9b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/43d0fbe6043d0fbe667991863263a36f73b6242ccb61/43d0fbe6243d0fbe66793050654a89a0008754d559f4",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "19fbbb2b-0f4b-4c6b-bf9d-0ea61c0d12fa",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Jan 2023 19:57:59 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "ETag" : "0x8DAFE454B5766DD",
+      "x-ms-request-id" : "7a899845-901e-0068-222e-30e51e000000",
+      "x-ms-client-request-id" : "19fbbb2b-0f4b-4c6b-bf9d-0ea61c0d12fa"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/43d0fbe6043d0fbe667991863263a36f73b6242ccb61/43d0fbe6243d0fbe66793050654a89a0008754d559f4?comp=block&blockid=YTlkYTUxYzEtOGQwZC00YTljLWE5ODYtNDFkZWE2MDk1NTYx",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.21.0-beta.1 (17.0.1; Mac OS X; 11.7.2)",
+      "x-ms-client-request-id" : "dc70d779-bc89-4598-ad49-09ec149954b4",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 7 bytes, less than the expected 8 bytes."
+    }
+  } ],
+  "variables" : [ "43d0fbe6043d0fbe667991863263a36f73b6242ccb61", "43d0fbe6143d0fbe6679357481225a86918fd414abf7", "43d0fbe6243d0fbe66793050654a89a0008754d559f4", "a9da51c1-8d0d-4a9c-a986-41dea6095561" ]
+}
