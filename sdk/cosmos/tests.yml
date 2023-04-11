@@ -50,7 +50,7 @@ stages:
           Path: sdk/cosmos/integration-matrix.json
           Selection: all
           GenerateVMJobs: true
-      ServiceDirectory: cosmos
+      ServiceDirectory: spring
       Artifacts:
         - name: azure-spring-data-cosmos-test
           groupId: com.azure
