@@ -2,8 +2,8 @@
 
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
-- [Logs](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://docs.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language].
-- [Metrics](https://docs.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics) - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
+- [Logs](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs) - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace](https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces). The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language].
+- [Metrics](https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics) - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
 
 **Resources:**
 
@@ -20,7 +20,7 @@ The Azure Monitor Query client library is used to execute read-only queries agai
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later
 - An [Azure subscription][azure_subscription]
-- A [TokenCredential](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementation, such as an [Azure Identity library credential type](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#credential-classes).
+- A [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementation, such as an [Azure Identity library credential type](https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#credential-classes).
 - To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal] or an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 - To query Metrics, you need an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 
@@ -130,7 +130,7 @@ For examples of Logs and Metrics queries, see the [Examples](#examples) section.
 
 ### Logs query rate limits and throttling
 
-The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](https://docs.microsoft.com/azure/azure-monitor/service-limits#la-query-api).
+The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Query API](https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api).
 
 ### Metrics data structure
 
@@ -148,7 +148,7 @@ Each set of metric values is a time series with the following characteristics:
 - [Logs query](#logs-query)
   - [Map logs query results to a model](#map-logs-query-results-to-a-model)
   - [Handle logs query response](#handle-logs-query-response)
-  - [Logs query by resource id](#logs-query-by-resource-id)
+  - [Query logs by resource id](#query-logs-by-resource-id)
 - [Batch logs query](#batch-logs-query)
 - [Advanced logs query scenarios](#advanced-logs-query-scenarios)
   - [Set logs query timeout](#set-logs-query-timeout)
@@ -225,9 +225,9 @@ LogsQueryResult / LogsBatchQueryResult
         |---type
 ```
 
-#### Logs query by resource id
-The `LogsQueryClient` supports querying logs using a workspace id (queryWorkspace methods) or a resource id (queryResource methods).
-An example of querying logs using a resource id is shown below but similar changes can be applied to all other samples.
+#### Query logs by resource ID
+The `LogsQueryClient` supports querying logs using a workspace id (`queryWorkspace` methods) or a resource ID (`queryResource` methods).
+An example of querying logs using a resource ID is shown below. Similar changes can be applied to all other samples.
 
 ```java readme-sample-logsquerybyresourceid
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
@@ -352,7 +352,7 @@ raw JSON response. The statistics are found within the `query` property of the J
 ```
 
 #### Include visualization
-To get visualization data for logs queries using the [render operator](https://docs.microsoft.com/azure/data-explorer/kusto/query/renderoperator?pivots=azuremonitor):
+To get visualization data for logs queries using the [render operator](https://learn.microsoft.com/azure/data-explorer/kusto/query/renderoperator?pivots=azuremonitor):
 
 1. Use `LogsQueryOptions` to request for visualization data in the response by setting `setIncludeVisualization()` to `true`.
 2. Invoke the `getVisualization` method on the `LogsQueryResult` object.
@@ -510,16 +510,16 @@ comments.
 <!-- LINKS -->
 
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
-[azure_monitor_create_using_portal]: https://docs.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
-[azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[azure_monitor_create_using_portal]: https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace
+[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/java
 [changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/CHANGELOG.md
 [custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication?tabs=powershell#create-a-resource-with-a-custom-subdomain
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[kusto_query_language]: https://docs.microsoft.com/azure/data-explorer/kusto/query/
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[msdocs_apiref]: https://docs.microsoft.com/java/api/com.azure.monitor.query?view=azure-java-stable
+[msdocs_apiref]: https://learn.microsoft.com/java/api/com.azure.monitor.query?view=azure-java-stable
 [package]: https://search.maven.org/artifact/com.azure/azure-monitor-query
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query/src

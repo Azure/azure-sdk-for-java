@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added `queryResource` methods to `LogsQueryClient` to support querying logs using Azure resource id.
+- Added `queryResource` methods to `LogsQueryClient` to support querying logs using Azure resource ID.
 
 ### Other Changes
 
