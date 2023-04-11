@@ -10,6 +10,11 @@ module com.azure.core.experimental {
     exports com.azure.core.experimental.serializer;
     exports com.azure.core.experimental.implementation;
     exports com.azure.core.experimental.http;
+    exports com.azure.core.experimental.util.polling;
+
+    opens com.azure.core.experimental.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.core.experimental.util.polling to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.core.experimental.util.polling.implementation to com.azure.core, com.fasterxml.jackson.databind;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
 }
