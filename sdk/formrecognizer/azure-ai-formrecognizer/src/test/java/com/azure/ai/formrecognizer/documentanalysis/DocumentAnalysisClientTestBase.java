@@ -23,6 +23,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -53,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentAnalysisClientTestBase extends TestBase {
+public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     static final String ENCODED_EMPTY_SPACE =
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
 
@@ -75,20 +76,20 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
+        } else if (interceptorManager.isRecordMode()) {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
                 builder.credential(getCredentialByAuthority(endpoint));
             }
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
     }

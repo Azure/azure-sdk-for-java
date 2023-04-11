@@ -58,19 +58,22 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            if (useKeyCredential) {
+        if (useKeyCredential) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new AzureKeyCredential(INVALID_KEY));
+            } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-            } else {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+        } else {
+            if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
+                builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
         return builder;
