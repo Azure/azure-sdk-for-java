@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -121,8 +122,16 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
             queryBuilder.whereClause(new ReadMyWriteWorkflow.QueryBuilder.WhereClause.InWhereClause(partitionKey,
                                                                                                     parameters));
 
+            CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
+
+            if (configuration.isProactiveConnectionManagementEnabled()) {
+                containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
+            } else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+                containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+            }
+
             SqlQuerySpec query = queryBuilder.toSqlQuerySpec();
-            obs = cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class).byPage();
+            obs = containerToUse.queryItems(query, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
 
             int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());

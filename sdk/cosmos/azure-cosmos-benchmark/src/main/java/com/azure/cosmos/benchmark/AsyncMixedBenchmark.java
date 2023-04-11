@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -30,20 +31,33 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
     @Override
     protected void performWorkload(BaseSubscriber<Object> documentBaseSubscriber, long i) throws InterruptedException {
         Flux<? extends Object> obs;
+
+        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
+
+        if (configuration.isProactiveConnectionManagementEnabled()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
+        } else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+        }
+
+
         if (i % 10 == 0 && i % 100 != 0) {
 
             PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount());
-            obs = cosmosAsyncContainer.createItem(data).flux();
+            obs = containerToUse.createItem(data).flux();
 
         } else if (i % 100 == 0) {
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
             String sqlQuery = "Select top 100 * from c order by c._ts";
-            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+
+
+
+            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else {
 
             int index = r.nextInt(1000);
@@ -53,7 +67,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
 
             options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
-            obs = cosmosAsyncContainer.readItem(docsToRead.get(index).getId(),
+            obs = containerToUse.readItem(docsToRead.get(index).getId(),
                                               new PartitionKey(partitionKeyValue),
                                               PojoizedJson.class)
                     .flux();

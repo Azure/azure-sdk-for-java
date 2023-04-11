@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -67,7 +68,15 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
             cosmosItemIdentities.add(new CosmosItemIdentity(partitionKey, doc.getId()));
         }
 
-        Mono<FeedResponse<PojoizedJson>> obs = cosmosAsyncContainer.readMany(cosmosItemIdentities, PojoizedJson.class);
+        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
+
+        if (configuration.isProactiveConnectionManagementEnabled()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
+        } else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
+            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
+        }
+
+        Mono<FeedResponse<PojoizedJson>> obs = containerToUse.readMany(cosmosItemIdentities, PojoizedJson.class);
 
         concurrencyControlSemaphore.acquire();
 
