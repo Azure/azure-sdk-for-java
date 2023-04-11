@@ -4,4 +4,4 @@
 /**
  * Package containing implementation-specific APIs for WebSocket.
  */
-package com.azure.messaging.webpubsub.client.implementation.ws;
+package com.azure.messaging.webpubsub.client.implementation.websocket;

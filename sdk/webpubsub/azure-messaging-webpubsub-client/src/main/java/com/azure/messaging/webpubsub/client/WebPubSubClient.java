@@ -7,7 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.EventHandlerCollection;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
-import com.azure.messaging.webpubsub.client.implementation.ws.Session;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSession;
 import com.azure.messaging.webpubsub.client.models.ConnectFailedException;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
@@ -29,7 +29,7 @@ import reactor.core.scheduler.Schedulers;
 @ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubClient {
 
-    private final WebPubSubAsyncClient client;
+    private final WebPubSubAsyncClient asyncClient;
 
     private final EventHandlerCollection eventHandlerCollection = new EventHandlerCollection();
     private static final String GROUP_MESSAGE_EVENT = "GroupMessageEvent";
@@ -39,8 +39,8 @@ public class WebPubSubClient {
     private static final String STOPPED_EVENT = "StoppedEvent";
     private static final String REJOIN_GROUP_FAILED_EVENT = "RejoinGroupFailedEvent";
 
-    WebPubSubClient(WebPubSubAsyncClient client) {
-        this.client = client;
+    WebPubSubClient(WebPubSubAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -49,7 +49,7 @@ public class WebPubSubClient {
      * @return the connection ID.
      */
     public String getConnectionId() {
-        return this.client.getConnectionId();
+        return this.asyncClient.getConnectionId();
     }
 
     /**
@@ -59,18 +59,18 @@ public class WebPubSubClient {
      * @exception ConnectFailedException thrown if failed to connect to server.
      */
     public void start() {
-        client.start(() -> {
-            this.client.receiveGroupMessageEvents().publishOn(Schedulers.boundedElastic())
+        asyncClient.start(() -> {
+            this.asyncClient.receiveGroupMessageEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(GROUP_MESSAGE_EVENT, event));
-            this.client.receiveServerMessageEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveServerMessageEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(SERVER_MESSAGE_EVENT, event));
-            this.client.receiveConnectedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveConnectedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(CONNECT_EVENT, event));
-            this.client.receiveDisconnectedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveDisconnectedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(DISCONNECT_EVENT, event));
-            this.client.receiveStoppedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveStoppedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(STOPPED_EVENT, event));
-            this.client.receiveRejoinGroupFailedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveRejoinGroupFailedEvents().publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(REJOIN_GROUP_FAILED_EVENT, event));
         }).block();
     }
@@ -81,7 +81,7 @@ public class WebPubSubClient {
      * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
      */
     public void stop() {
-        client.stop().block();
+        asyncClient.stop().block();
     }
 
     /**
@@ -200,7 +200,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult joinGroup(String group) {
-        return client.joinGroup(group).block();
+        return asyncClient.joinGroup(group).block();
     }
 
     /**
@@ -212,7 +212,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult joinGroup(String group, long ackId) {
-        return client.joinGroup(group, ackId).block();
+        return asyncClient.joinGroup(group, ackId).block();
     }
 
     /**
@@ -223,7 +223,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult leaveGroup(String group) {
-        return client.leaveGroup(group).block();
+        return asyncClient.leaveGroup(group).block();
     }
 
     /**
@@ -235,7 +235,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult leaveGroup(String group, long ackId) {
-        return client.leaveGroup(group, ackId).block();
+        return asyncClient.leaveGroup(group, ackId).block();
     }
 
     /**
@@ -273,7 +273,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return client.sendToGroup(group, content, dataType).block();
+        return asyncClient.sendToGroup(group, content, dataType).block();
     }
 
     /**
@@ -288,7 +288,7 @@ public class WebPubSubClient {
      */
     public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
                                        SendToGroupOptions options) {
-        return client.sendToGroup(group, content, dataType, options).block();
+        return asyncClient.sendToGroup(group, content, dataType, options).block();
     }
 
     /**
@@ -301,7 +301,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
-        return client.sendEvent(eventName, content, dataType).block();
+        return asyncClient.sendEvent(eventName, content, dataType).block();
     }
 
     /**
@@ -316,14 +316,14 @@ public class WebPubSubClient {
      */
     public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
                                            SendEventOptions options) {
-        return client.sendEvent(eventName, content, dataType, options).block();
+        return asyncClient.sendEvent(eventName, content, dataType, options).block();
     }
 
     // following API is for testing
     WebPubSubClientState getClientState() {
-        return this.client.getClientState();
+        return this.asyncClient.getClientState();
     }
-    Session getWebsocketSession() {
-        return this.client.getWebsocketSession();
+    WebSocketSession getWebsocketSession() {
+        return this.asyncClient.getWebsocketSession();
     }
 }

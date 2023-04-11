@@ -15,8 +15,8 @@
   <artifactId>azure-messaging-webpubsub-client</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub-client;current} -->
 
-  <name>Microsoft Azure client library for Azure Web Pub Sub Service</name>
-  <description>This package contains the Microsoft Azure Web Pub Sub library.</description>
+  <name>Microsoft Azure client library for Azure Web Pub Sub Client</name>
+  <description>This package contains the Microsoft Azure Web Pub Sub Client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

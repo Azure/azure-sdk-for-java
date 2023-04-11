@@ -17,7 +17,7 @@ public final class ReadmeSamples {
     public void createClientFromUrl() {
         // BEGIN: readme-sample-createClientFromUrl
         WebPubSubClient client = new WebPubSubClientBuilder()
-            .clientAccessUrl("<client-access-uri>")
+            .clientAccessUrl("<client-access-url>")
             .buildClient();
         // END: readme-sample-createClientFromUrl
     }
@@ -48,7 +48,7 @@ public final class ReadmeSamples {
     public void createClientWithProtocol() {
         // BEGIN: readme-sample-createClientWithProtocol
         WebPubSubClient client = new WebPubSubClientBuilder()
-            .clientAccessUrl("<client-access-uri>")
+            .clientAccessUrl("<client-access-url>")
             .protocol(new WebPubSubJsonProtocol())
             .buildClient();
         // END: readme-sample-createClientWithProtocol

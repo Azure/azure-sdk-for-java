@@ -43,7 +43,7 @@ Various documentation is available to help you get started
 
 ### Authenticate the client
 
-A Client uses a Client Access URL to connect and authenticate with the service. The Uri follow the patten as `wss://<service_name>.webpubsub.azure.com/client/hubs/<hub_name>?access_token=<token>`. There're multiple ways to get a Client Access URL. As a quick start, you can copy and paste from Azure Portal, and for production, you usually need a negotiation server to generate the Uri.
+A Client uses a Client Access URL to connect and authenticate with the service. The URL pattern is `wss://<service_name>.webpubsub.azure.com/client/hubs/<hub_name>?access_token=<token>`. There're multiple ways to get a Client Access URL. As a quick start, you can copy and paste from Azure Portal, and for production, you usually need a negotiation server to generate the URL.
 
 #### Use Client Access URL from Azure Portal
 
@@ -55,7 +55,7 @@ As shown in the diagram, the client will be granted permission of sending messag
 
 ```java readme-sample-createClientFromUrl
 WebPubSubClient client = new WebPubSubClientBuilder()
-    .clientAccessUrl("<client-access-uri>")
+    .clientAccessUrl("<client-access-url>")
     .buildClient();
 ```
 
@@ -131,7 +131,7 @@ You can specify the subprotocol to be used by the client. By default, the client
 
 ```java readme-sample-createClientWithProtocol
 WebPubSubClient client = new WebPubSubClientBuilder()
-    .clientAccessUrl("<client-access-uri>")
+    .clientAccessUrl("<client-access-url>")
     .protocol(new WebPubSubJsonProtocol())
     .buildClient();
 ```

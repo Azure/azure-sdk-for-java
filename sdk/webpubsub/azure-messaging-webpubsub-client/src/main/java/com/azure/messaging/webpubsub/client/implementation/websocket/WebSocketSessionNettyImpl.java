@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.webpubsub.client.implementation.ws;
+package com.azure.messaging.webpubsub.client.implementation.websocket;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.logging.ClientLogger;
@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-final class SessionNettyImpl implements Session {
+final class WebSocketSessionNettyImpl implements WebSocketSession {
 
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageEncoder messageEncoder;
@@ -48,7 +48,7 @@ final class SessionNettyImpl implements Session {
     private final String protocol;
     private final String userAgent;
     private final Consumer<Object> messageHandler;
-    private final Consumer<Session> openHandler;
+    private final Consumer<WebSocketSession> openHandler;
     private final Consumer<CloseReason> closeHandler;
 
     private EventLoopGroup group;
@@ -84,11 +84,11 @@ final class SessionNettyImpl implements Session {
         }
     }
 
-    SessionNettyImpl(ClientEndpointConfiguration cec, String path,
-                            AtomicReference<ClientLogger> loggerReference,
-                            Consumer<Object> messageHandler,
-                            Consumer<Session> openHandler,
-                            Consumer<CloseReason> closeHandler) {
+    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec, String path,
+                              AtomicReference<ClientLogger> loggerReference,
+                              Consumer<Object> messageHandler,
+                              Consumer<WebSocketSession> openHandler,
+                              Consumer<CloseReason> closeHandler) {
         this.path = path;
         this.loggerReference = loggerReference;
         this.messageEncoder = cec.getMessageEncoder();

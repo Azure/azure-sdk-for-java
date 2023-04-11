@@ -5,9 +5,9 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
-import com.azure.messaging.webpubsub.client.implementation.ws.Client;
-import com.azure.messaging.webpubsub.client.implementation.ws.CloseReason;
-import com.azure.messaging.webpubsub.client.implementation.ws.Session;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
+import com.azure.messaging.webpubsub.client.implementation.websocket.CloseReason;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSession;
 import com.azure.messaging.webpubsub.client.models.ConnectFailedException;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import org.junit.jupiter.api.Assertions;
@@ -32,16 +32,16 @@ public class MockClientTests {
     @Test
     public void testConnectFailure() {
         ArgumentCaptor<Consumer<Object>> messageCaptor = ArgumentCaptor.forClass(Consumer.class);
-        ArgumentCaptor<Consumer<Session>> openCaptor = ArgumentCaptor.forClass(Consumer.class);
+        ArgumentCaptor<Consumer<WebSocketSession>> openCaptor = ArgumentCaptor.forClass(Consumer.class);
         ArgumentCaptor<Consumer<CloseReason>> closeCaptor = ArgumentCaptor.forClass(Consumer.class);
 
-        Client mockWsClient = Mockito.mock(Client.class);
+        WebSocketClient mockWsClient = Mockito.mock(WebSocketClient.class);
         Mockito.when(mockWsClient.connectToServer(Mockito.any(), Mockito.any(), Mockito.any(),
                 messageCaptor.capture(), openCaptor.capture(), closeCaptor.capture()))
             .thenThrow(new ConnectFailedException("mock error", new IllegalArgumentException()));
 
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
-        builder.client = mockWsClient;
+        builder.webSocketClient = mockWsClient;
         WebPubSubClient client = builder
             .clientAccessUrl("mock")
             .buildClient();
@@ -52,11 +52,11 @@ public class MockClientTests {
     @Test
     public void testConnect() throws InterruptedException {
         ArgumentCaptor<Consumer<Object>> messageCaptor = ArgumentCaptor.forClass(Consumer.class);
-        ArgumentCaptor<Consumer<Session>> openCaptor = ArgumentCaptor.forClass(Consumer.class);
+        ArgumentCaptor<Consumer<WebSocketSession>> openCaptor = ArgumentCaptor.forClass(Consumer.class);
         ArgumentCaptor<Consumer<CloseReason>> closeCaptor = ArgumentCaptor.forClass(Consumer.class);
 
-        Session mockWsSession = Mockito.mock(Session.class);
-        Client mockWsClient = Mockito.mock(Client.class);
+        WebSocketSession mockWsSession = Mockito.mock(WebSocketSession.class);
+        WebSocketClient mockWsClient = Mockito.mock(WebSocketClient.class);
         Mockito.when(mockWsClient.connectToServer(Mockito.any(), Mockito.any(), Mockito.any(),
                 messageCaptor.capture(), openCaptor.capture(), closeCaptor.capture()))
             .thenAnswer(invocation -> {
@@ -69,7 +69,7 @@ public class MockClientTests {
         List<ConnectedEvent> events = new ArrayList<>();
 
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
-        builder.client = mockWsClient;
+        builder.webSocketClient = mockWsClient;
         WebPubSubClient client = builder
             .clientAccessUrl("mock")
             .buildClient();

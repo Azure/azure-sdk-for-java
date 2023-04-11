@@ -11,11 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.messaging.webpubsub.client.implementation.ws.Client;
-import com.azure.messaging.webpubsub.client.implementation.ws.ClientEndpointConfiguration;
-import com.azure.messaging.webpubsub.client.implementation.ws.ClientNettyImpl;
-import com.azure.messaging.webpubsub.client.implementation.ws.CloseReason;
-import com.azure.messaging.webpubsub.client.implementation.ws.Session;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
+import com.azure.messaging.webpubsub.client.implementation.websocket.ClientEndpointConfiguration;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClientNettyImpl;
+import com.azure.messaging.webpubsub.client.implementation.websocket.CloseReason;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSession;
 import com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
@@ -88,8 +88,8 @@ class WebPubSubAsyncClient implements Closeable {
     private final ClientEndpointConfiguration clientEndpointConfiguration;
 
     // websocket client
-    private final Client client;
-    private Session session;
+    private final WebSocketClient webSocketClient;
+    private WebSocketSession webSocketSession;
 
     private String connectionId;
     private String reconnectionToken;
@@ -147,7 +147,7 @@ class WebPubSubAsyncClient implements Closeable {
     private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofSeconds(1);
     private static final Duration SEQUENCE_ACK_DELAY = Duration.ofSeconds(5);
 
-    WebPubSubAsyncClient(Client client,
+    WebPubSubAsyncClient(WebSocketClient webSocketClient,
                          Mono<String> clientAccessUrlProvider,
                          WebPubSubProtocol webPubSubProtocol,
                          String applicationId, String userAgent,
@@ -166,7 +166,7 @@ class WebPubSubAsyncClient implements Closeable {
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
 
-        this.client = client == null ? new ClientNettyImpl() : client;
+        this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
 
         Objects.requireNonNull(retryStrategy);
         this.sendMessageRetrySpec = Retry.from(signals -> {
@@ -232,7 +232,7 @@ class WebPubSubAsyncClient implements Closeable {
                 return Mono.empty();
             }
         }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() -> {
-            this.session = client.connectToServer(
+            this.webSocketSession = webSocketClient.connectToServer(
                 clientEndpointConfiguration, url, loggerReference,
                 this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
         }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
@@ -268,7 +268,7 @@ class WebPubSubAsyncClient implements Closeable {
             isStoppedByUser.compareAndSet(false, true);
             groups.clear();
 
-            Session localSession = session;
+            WebSocketSession localSession = webSocketSession;
             if (localSession != null && localSession.isOpen()) {
                 // should be CONNECTED
                 clientState.changeState(WebPubSubClientState.STOPPING);
@@ -572,7 +572,7 @@ class WebPubSubAsyncClient implements Closeable {
                 }
             }
 
-            session.sendObjectAsync(message, sendResult -> {
+            webSocketSession.sendObjectAsync(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
                 } else {
@@ -599,7 +599,7 @@ class WebPubSubAsyncClient implements Closeable {
                         || state == WebPubSubClientState.RECONNECTING,
                     (Long) null));
             }
-            if (session == null || !session.isOpen()) {
+            if (webSocketSession == null || !webSocketSession.isOpen()) {
                 // something unexpected
                 return Mono.error(logSendMessageFailedException(
                     "Failed to send message. Websocket session is not opened.", null, false, (Long) null));
@@ -659,7 +659,7 @@ class WebPubSubAsyncClient implements Closeable {
                 "Acknowledge from the service not received.", null, true, ackId))));
     }
 
-    private void handleSessionOpen(Session session) {
+    private void handleSessionOpen(WebSocketSession session) {
         logger.atVerbose().log("Session opened");
 
         clientState.changeState(WebPubSubClientState.CONNECTED);
@@ -843,7 +843,7 @@ class WebPubSubAsyncClient implements Closeable {
                         return Mono.empty();
                     }
                 }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() -> {
-                    this.session = client.connectToServer(
+                    this.webSocketSession = webSocketClient.connectToServer(
                         clientEndpointConfiguration, url, loggerReference,
                         this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
                 }).subscribeOn(Schedulers.boundedElastic()))).retryWhen(RECONNECT_RETRY_SPEC).doOnError(error -> {
@@ -886,7 +886,7 @@ class WebPubSubAsyncClient implements Closeable {
                         .addQueryParameter("awps_reconnection_token", reconnectionToken)
                         .toString();
 
-                    this.session = client.connectToServer(
+                    this.webSocketSession = webSocketClient.connectToServer(
                         clientEndpointConfiguration, recoveryUrl, loggerReference,
                         this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
                 }).subscribeOn(Schedulers.boundedElastic()))).retryWhen(RECONNECT_RETRY_SPEC).doOnError(error -> {
@@ -904,7 +904,7 @@ class WebPubSubAsyncClient implements Closeable {
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(WebPubSubClientState.STOPPED);
 
-        session = null;
+        webSocketSession = null;
 
         connectionId = null;
         reconnectionToken = null;
@@ -1025,8 +1025,8 @@ class WebPubSubAsyncClient implements Closeable {
         return clientState.get();
     }
 
-    Session getWebsocketSession() {
-        return session;
+    WebSocketSession getWebsocketSession() {
+        return webSocketSession;
     }
 
     private Sinks.EmitFailureHandler emitFailureHandler(String message) {

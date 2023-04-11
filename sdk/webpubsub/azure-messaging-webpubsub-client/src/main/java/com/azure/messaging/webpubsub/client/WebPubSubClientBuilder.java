@@ -15,7 +15,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.client.implementation.ws.Client;
+import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubJsonReliableProtocol;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
@@ -30,7 +30,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
 public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
 
-    private final ClientLogger logger = new ClientLogger(WebPubSubClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebPubSubClientBuilder.class);
 
     private static final String PROPERTIES = "azure-messaging-webpubsub-client.properties";
     private static final String SDK_NAME = "name";
@@ -49,7 +49,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
     private boolean autoReconnect = true;
     private boolean autoRestoreGroup = true;
 
-    Client client;
+    WebSocketClient webSocketClient;
 
     /**
      * Creates a new instance of WebPubSubClientBuilder.
@@ -168,7 +168,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
             } else if (retryOptions.getFixedDelayOptions() != null) {
                 retryStrategy = new FixedDelay(retryOptions.getFixedDelayOptions());
             } else {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'retryOptions' didn't define any retry strategy options"));
             }
         } else {
@@ -182,7 +182,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
         } else if (clientAccessUrl != null) {
             clientAccessUrlProvider = Mono.just(clientAccessUrl);
         } else {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Credentials have not been set. "
                     + "They can be set using: clientAccessUrl(String), credential(WebPubSubClientCredential)"));
         }
@@ -195,7 +195,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
             configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
         return new WebPubSubAsyncClient(
-            client, clientAccessUrlProvider, webPubSubProtocol,
+            webSocketClient, clientAccessUrlProvider, webPubSubProtocol,
             applicationId, userAgent,
             retryStrategy, autoReconnect, autoRestoreGroup);
     }
