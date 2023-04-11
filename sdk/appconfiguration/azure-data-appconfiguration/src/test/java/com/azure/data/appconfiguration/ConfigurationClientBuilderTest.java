@@ -188,11 +188,15 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+            .serviceVersion(null);
 
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        }
         if (interceptorManager.isRecordMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder
+                .httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -215,20 +219,19 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (interceptorManager.isRecordMode()) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(HttpClient.createDefault());
         }
 
-        HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
-            : HttpClient.createDefault();
+        if (interceptorManager.isPlaybackMode()) {
+            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        }
 
         ConfigurationSetting addedSetting = clientBuilder
-            .httpClient(defaultHttpClient)
             .buildClient()
             .setConfigurationSetting(key, null, value);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(defaultHttpClient);
-        }
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
     }

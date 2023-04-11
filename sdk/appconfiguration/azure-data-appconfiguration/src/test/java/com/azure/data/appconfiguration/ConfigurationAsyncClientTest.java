@@ -78,18 +78,29 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .connectionString(connectionString)
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+            setHttpClient(httpClient, builder);
+
             if (interceptorManager.isRecordMode()) {
                 builder
-                    .httpClient(buildAsyncAssertingClient(httpClient))
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
-                builder
-                    .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
                 interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildAsyncClient();
         });
+    }
+
+    private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
+        if (interceptorManager.isRecordMode()) {
+            return builder
+                .httpClient(buildAsyncAssertingClient(httpClient));
+        } else if (interceptorManager.isPlaybackMode()) {
+            return builder
+                .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
+        }
+        return builder;
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
@@ -1223,7 +1234,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        final int numberExpected = 13;
+        final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
             settings.add(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix));

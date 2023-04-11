@@ -74,18 +74,28 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
+            setHttpClient(httpClient, builder);
+
             if (interceptorManager.isRecordMode()) {
                 builder
-                    .httpClient(buildSyncAssertingClient(httpClient))
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
-                builder
-                    .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
                 interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildClient();
         });
+    }
+
+    private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
+        if (interceptorManager.isRecordMode()) {
+            return builder
+                .httpClient(buildSyncAssertingClient(httpClient));
+        } else if (interceptorManager.isPlaybackMode()) {
+            return builder
+                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        }
+        return builder;
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -625,7 +635,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    @Disabled("This was failing even before re-record with Test Proxy")
     public void listConfigurationSettingsWithNullSelector(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
@@ -943,7 +952,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
-        final int numberExpected = 33;
+        final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix), false, Context.NONE).getValue();
         }
