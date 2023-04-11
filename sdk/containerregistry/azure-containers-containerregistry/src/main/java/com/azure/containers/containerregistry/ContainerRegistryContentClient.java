@@ -388,8 +388,8 @@ public final class ContainerRegistryContentClient {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         try {
-            Response<BinaryData> streamResponse = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
-            return deleteResponseToSuccess(streamResponse);
+            Response<Void> response = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
+            return deleteResponseToSuccess(response);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
                 HttpResponse response = ex.getResponse();
