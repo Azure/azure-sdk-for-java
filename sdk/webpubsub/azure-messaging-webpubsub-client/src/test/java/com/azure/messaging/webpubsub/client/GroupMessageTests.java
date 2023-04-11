@@ -4,13 +4,17 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class GroupMessageTests extends TestBase {
 
@@ -45,6 +49,69 @@ public class GroupMessageTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    public void testSendJsonMessage() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        BinaryData[] data = new BinaryData[1];
+
+        String groupName = "testSendJsonMessage";
+        WebPubSubClient client = getClient();
+
+        client.addOnGroupMessageEventHandler(event -> {
+            data[0] = event.getData();
+            latch.countDown();
+        });
+
+        try {
+            client.start();
+            client.joinGroup(groupName);
+
+            JsonModel model = new JsonModel();
+            model.name = "john";
+            model.description = "unknown";
+            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromObject(model), WebPubSubDataType.JSON);
+            Assertions.assertNotNull(result.getAckId());
+
+            latch.await(1, TimeUnit.SECONDS);
+            Assertions.assertNotNull(data[0]);
+            model = data[0].toObject(JsonModel.class);
+            Assertions.assertEquals("john", model.name);
+        } finally {
+            client.stop();
+        }
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testSendBinaryMessage() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        BinaryData[] data = new BinaryData[1];
+
+        String groupName = "testSendBinaryMessage";
+        WebPubSubClient client = getClient();
+
+        client.addOnGroupMessageEventHandler(event -> {
+            data[0] = event.getData();
+            latch.countDown();
+        });
+
+        try {
+            client.start();
+            client.joinGroup(groupName);
+
+            byte[] bytes = new byte[] { 0x64, 0x61, 0x74, 0x61 };
+            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromBytes(bytes), WebPubSubDataType.BINARY);
+            Assertions.assertNotNull(result.getAckId());
+
+            latch.await(1, TimeUnit.SECONDS);
+            Assertions.assertNotNull(data[0]);
+            Assertions.assertArrayEquals(bytes, data[0].toBytes());
+        } finally {
+            client.stop();
+        }
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testSendDuplicateMessage() {
         String groupName = "testSendDuplicateMessage";
         WebPubSubClient client = getClient();
@@ -61,5 +128,10 @@ public class GroupMessageTests extends TestBase {
         } finally {
             client.stop();
         }
+    }
+
+    private static class JsonModel {
+        private String name;
+        private String description;
     }
 }

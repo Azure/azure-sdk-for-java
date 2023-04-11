@@ -424,9 +424,11 @@ class WebPubSubAsyncClient implements Closeable {
 
         long ackId = options.getAckId() != null ? options.getAckId() : nextAckId();
 
-        BinaryData data = content;
+        Object data = content;
         if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
-            data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
+            data = Base64.getEncoder().encodeToString(content.toBytes());
+        } else if (dataType == WebPubSubDataType.TEXT) {
+            data = content.toString();
         }
 
         SendToGroupMessage message = new SendToGroupMessage()

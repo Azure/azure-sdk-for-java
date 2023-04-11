@@ -25,6 +25,10 @@ import java.util.Map;
 
 /**
  * The builder of WebPubSub client.
+ * <p>
+ * The following information must be provided on this builder:
+ * Either the credential through {@link #credential(WebPubSubClientCredential)},
+ * or the client access URL through {@link #clientAccessUrl(String)}.
  */
 @ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
 public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
@@ -60,6 +64,31 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
     /**
      * Sets the credential as the provider for client access URL.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed readme-sample-createClientFromCredential -->
+     * <pre>
+     * &#47;&#47; create WebPubSub service client
+     * WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder&#40;&#41;
+     *     .connectionString&#40;&quot;&lt;connection-string&gt;&quot;&#41;
+     *     .hub&#40;&quot;&lt;hub&gt;&gt;&quot;&#41;
+     *     .buildAsyncClient&#40;&#41;;
+     *
+     * &#47;&#47; wrap WebPubSubServiceAsyncClient.getClientAccessToken as WebPubSubClientCredential
+     * WebPubSubClientCredential clientCredential = new WebPubSubClientCredential&#40;Mono.defer&#40;&#40;&#41; -&gt;
+     *     serverClient.getClientAccessToken&#40;new GetClientAccessTokenOptions&#40;&#41;
+     *             .setUserId&#40;&quot;&lt;user-name&gt;&quot;&#41;
+     *             .addRole&#40;&quot;webpubsub.joinLeaveGroup&quot;&#41;
+     *             .addRole&#40;&quot;webpubsub.sendToGroup&quot;&#41;&#41;
+     *         .map&#40;WebPubSubClientAccessToken::getUrl&#41;&#41;&#41;;
+     *
+     * &#47;&#47; create WebPubSub client
+     * WebPubSubClient client = new WebPubSubClientBuilder&#40;&#41;
+     *     .credential&#40;clientCredential&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createClientFromCredential -->
+     *
      * @param credential the credential as the provider for client access URL.
      * @return itself.
      */
@@ -70,6 +99,16 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
 
     /**
      * Sets the credential as the provider for client access URL.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed readme-sample-createClientFromUrl -->
+     * <pre>
+     * WebPubSubClient client = new WebPubSubClientBuilder&#40;&#41;
+     *     .clientAccessUrl&#40;&quot;&lt;client-access-url&gt;&quot;&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createClientFromUrl -->
      *
      * @param clientAccessUrl the client access URL.
      * @return itself.

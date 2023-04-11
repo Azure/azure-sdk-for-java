@@ -88,6 +88,21 @@ public class WebPubSubClient {
     /**
      * Adds event handler for GroupMessageEvent.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed readme-sample-listenMessages -->
+     * <pre>
+     * client.addOnGroupMessageEventHandler&#40;event -&gt; &#123;
+     *     System.out.println&#40;&quot;Received group message from &quot; + event.getFromUserId&#40;&#41; + &quot;: &quot;
+     *         + event.getData&#40;&#41;.toString&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * client.addOnServerMessageEventHandler&#40;event -&gt; &#123;
+     *     System.out.println&#40;&quot;Received server message: &quot;
+     *         + event.getData&#40;&#41;.toString&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end readme-sample-listenMessages -->
+     *
      * @param eventEventHandler the event handler for GroupMessageEvent.
      */
     public void addOnGroupMessageEventHandler(Consumer<GroupMessageEvent> eventEventHandler) {
@@ -160,6 +175,16 @@ public class WebPubSubClient {
     /**
      * Adds event handler for StoppedEvent.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.messaging.webpubsub.client.WebPubSubClient.addOnStoppedEventHandler -->
+     * <pre>
+     * client.addOnStoppedEventHandler&#40;event -&gt; &#123;
+     *     System.out.println&#40;&quot;Client is stopped&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.addOnStoppedEventHandler -->
+     *
      * @param eventEventHandler the event handler for StoppedEvent.
      */
     public void addOnStoppedEventHandler(Consumer<StoppedEvent> eventEventHandler) {
@@ -195,6 +220,8 @@ public class WebPubSubClient {
 
     /**
      * Joins a group.
+     * <p>
+     * {@link #start()} the client, before join group.
      *
      * @param group the group name.
      * @exception SendMessageFailedException thrown if client not connected, or join group message failed.
@@ -206,6 +233,8 @@ public class WebPubSubClient {
 
     /**
      * Joins a group.
+     * <p>
+     * {@link #start()} the client, before join group.
      *
      * @param group the group name.
      * @param ackId the ackId. Client will provide auto increment ID, if set to {@code null}.
@@ -241,6 +270,17 @@ public class WebPubSubClient {
 
     /**
      * Sends message to group.
+     * <p>
+     * {@link #start()} the client, before send message.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.text -->
+     * <pre>
+     * client.start&#40;&#41;;
+     * client.sendToGroup&#40;&quot;message-group&quot;, &quot;hello world&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.text -->
      *
      * @param group the group name.
      * @param content the data as WebPubSubDataType.TEXT.
@@ -253,6 +293,8 @@ public class WebPubSubClient {
 
     /**
      * Sends message to group.
+     * <p>
+     * {@link #start()} the client, before send message.
      *
      * @param group the group name.
      * @param content the data as WebPubSubDataType.TEXT.
@@ -266,6 +308,20 @@ public class WebPubSubClient {
 
     /**
      * Sends message to group.
+     * <p>
+     * {@link #start()} the client, before send message.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.json -->
+     * <pre>
+     * client.start&#40;&#41;;
+     * &#47;&#47; it can be any class instance that can be serialized to JSON
+     * Map&lt;String, String&gt; jsonObject = new HashMap&lt;&gt;&#40;&#41;;
+     * jsonObject.put&#40;&quot;name&quot;, &quot;john&quot;&#41;;
+     * client.sendToGroup&#40;&quot;message-group&quot;, BinaryData.fromObject&#40;jsonObject&#41;, WebPubSubDataType.BINARY&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.json -->
      *
      * @param group the group name.
      * @param content the data.
@@ -279,6 +335,8 @@ public class WebPubSubClient {
 
     /**
      * Sends message to group.
+     * <p>
+     * {@link #start()} the client, before send message.
      *
      * @param group the group name.
      * @param content the data.
@@ -294,6 +352,8 @@ public class WebPubSubClient {
 
     /**
      * Sends event.
+     * <p>
+     * {@link #start()} the client, before send event.
      *
      * @param eventName the event name.
      * @param content the data.
@@ -307,6 +367,8 @@ public class WebPubSubClient {
 
     /**
      * Sends event.
+     * <p>
+     * {@link #start()} the client, before send event.
      *
      * @param eventName the event name.
      * @param content the data.

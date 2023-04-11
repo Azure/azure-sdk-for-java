@@ -3,7 +3,6 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonGetter;
 
 public final class SendToGroupMessage extends WebPubSubMessageAck {
@@ -16,7 +15,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
 
     private String dataType;
 
-    private BinaryData data;
+    private Object data;
 
     @JsonGetter
     public String getType() {
@@ -60,11 +59,11 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
     }
 
     @JsonGetter
-    public BinaryData getData() {
+    public Object getData() {
         return data;
     }
 
-    public SendToGroupMessage setData(BinaryData data) {
+    public SendToGroupMessage setData(Object data) {
         this.data = data;
         return this;
     }
