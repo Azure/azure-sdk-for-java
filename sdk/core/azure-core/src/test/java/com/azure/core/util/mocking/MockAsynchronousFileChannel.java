@@ -9,6 +9,7 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileLock;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
 /**
@@ -18,20 +19,31 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     private final byte[] mockData;
     private final int dataLength;
     private final long fileLength;
-    private final boolean isOpen;
+    private final Mode mode;
 
     public MockAsynchronousFileChannel() {
         this.mockData = null;
         this.dataLength = -1;
         this.fileLength = -1;
-        this.isOpen = false;
+        this.mode = Mode.NOOP;
     }
 
     public MockAsynchronousFileChannel(MockFile mockFile) {
-        this.mockData = mockFile.getData();
+        this(mockFile.getData(), mockFile.length());
+    }
+
+    public MockAsynchronousFileChannel(byte[] buffer, long fileLength) {
+        this.mockData = buffer;
         this.dataLength = mockData.length;
-        this.fileLength = mockFile.length();
-        this.isOpen = true;
+        this.fileLength = fileLength;
+        this.mode = Mode.READ;
+    }
+
+    public MockAsynchronousFileChannel(byte[] buffer) {
+        this.mockData = buffer;
+        this.dataLength = 0;
+        this.fileLength = 0;
+        this.mode = Mode.WRITE;
     }
 
     @Override
@@ -68,7 +80,7 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     @Override
     public <A> void read(ByteBuffer dst, long position, A attachment,
         CompletionHandler<Integer, ? super A> handler) {
-        if (!isOpen) {
+        if (mode != Mode.READ) {
             return;
         }
 
@@ -119,21 +131,37 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     @Override
     public <A> void write(ByteBuffer src, long position, A attachment,
         CompletionHandler<Integer, ? super A> handler) {
-        // no-op
+        if (mode == Mode.WRITE) {
+            ForkJoinPool.commonPool().execute(() -> handler.completed(writeInternal(src, position), attachment));
+        }
     }
 
     @Override
     public Future<Integer> write(ByteBuffer src, long position) {
-        return null; // no-op
+        return CompletableFuture.completedFuture(writeInternal(src, position));
+    }
+
+    private int writeInternal(ByteBuffer dst, long position) {
+        int remaining = dst.remaining();
+
+        dst.get(mockData, (int) position, remaining);
+
+        return remaining;
     }
 
     @Override
     public boolean isOpen() {
-        return isOpen;
+        return mode != Mode.NOOP;
     }
 
     @Override
     public void close() throws IOException {
         // no-op
+    }
+
+    private enum Mode {
+        NOOP,
+        READ,
+        WRITE
     }
 }

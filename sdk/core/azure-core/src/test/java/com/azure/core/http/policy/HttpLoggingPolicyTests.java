@@ -59,8 +59,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -181,7 +181,7 @@ public class HttpLoggingPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
             .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .doOnSuccess(bytes -> assertArraysEqual(data, bytes))
                 .then(Mono.empty()))
             .build();
 
@@ -213,7 +213,7 @@ public class HttpLoggingPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
             .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .doOnSuccess(bytes -> assertArraysEqual(data, bytes))
                 .then(Mono.empty()))
             .build();
 
@@ -245,7 +245,7 @@ public class HttpLoggingPolicyTests {
 
         StepVerifier.create(pipeline.send(request, CONTEXT))
             .assertNext(response -> StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
-                .assertNext(bytes -> assertArrayEquals(data, bytes))
+                .assertNext(bytes -> assertArraysEqual(data, bytes))
                 .verifyComplete())
             .verifyComplete();
 
@@ -270,7 +270,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         HttpResponse response = pipeline.sendSync(request, CONTEXT);
-        assertArrayEquals(data, response.getBodyAsByteArray().block());
+        assertArraysEqual(data, response.getBodyAsByteArray().block());
 
         String logString = convertOutputStreamToString(logCaptureStream);
         assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
@@ -433,7 +433,7 @@ public class HttpLoggingPolicyTests {
                     expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
                     expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
                 }))
-            .assertNext(body -> assertArrayEquals(responseBody, body))
+            .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
     }
 
@@ -473,7 +473,7 @@ public class HttpLoggingPolicyTests {
                     expectedRequest.assertEqual(messages.get(0), logLevel, LogLevel.VERBOSE);
                     expectedResponse.assertEqual(messages.get(1), logLevel, LogLevel.VERBOSE);
                 }))
-            .assertNext(body -> assertArrayEquals(responseBody, body))
+            .assertNext(body -> assertArraysEqual(responseBody, body))
             .verifyComplete();
     }
 
@@ -522,7 +522,7 @@ public class HttpLoggingPolicyTests {
             expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
             expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
 
-            assertArrayEquals(responseBody, content.toBytes());
+            assertArraysEqual(responseBody, content.toBytes());
         }
     }
 
@@ -552,7 +552,7 @@ public class HttpLoggingPolicyTests {
             .setHeaders(responseHeaders);
 
         HttpResponse response = pipeline.sendSync(request, CONTEXT);
-        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
+        assertArraysEqual(responseBody, response.getBodyAsByteArray().block());
     }
 
     private void setupLogLevel(int logLevelToSet) {

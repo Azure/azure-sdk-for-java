@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -305,7 +305,7 @@ public class JacksonAdapterTests {
             SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
-            assertArrayEquals((byte[]) expected, (byte[]) actual);
+            assertArraysEqual((byte[]) expected, (byte[]) actual);
         } else {
             assertEquals(expected, actual);
         }
@@ -317,7 +317,7 @@ public class JacksonAdapterTests {
         Object actual = ADAPTER.deserialize(bytes, type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
-            assertArrayEquals((byte[]) expected, (byte[]) actual);
+            assertArraysEqual((byte[]) expected, (byte[]) actual);
         } else {
             assertEquals(expected, actual);
         }
@@ -330,7 +330,7 @@ public class JacksonAdapterTests {
         Object actual = ADAPTER.deserialize(new ByteArrayInputStream(inputStreamBytes), type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
-            assertArrayEquals((byte[]) expected, (byte[]) actual);
+            assertArraysEqual((byte[]) expected, (byte[]) actual);
         } else {
             assertEquals(expected, actual);
         }
