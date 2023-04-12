@@ -105,7 +105,7 @@ public class HttpPipelineTests {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
-                assertEquals(expectedUserAgent, request.getHeaders().getValue("User-Agent"));
+                assertEquals(expectedUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
                 assertEquals(expectedUrl, request.getUrl());
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -131,7 +131,7 @@ public class HttpPipelineTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     assertEquals(1, request.getHeaders().getSize());
-                    final String requestId = request.getHeaders().getValue("x-ms-client-request-id");
+                    final String requestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                     assertNotNull(requestId);
                     assertFalse(requestId.isEmpty());
 
@@ -157,7 +157,7 @@ public class HttpPipelineTests {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
-                assertEquals(expectedUserAgent, request.getHeaders().getValue("User-Agent"));
+                assertEquals(expectedUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
                 assertEquals(expectedUrl, request.getUrl());
                 return Mono.just(new MockHttpResponse(request, 200));

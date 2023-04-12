@@ -4,12 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Bounding polygon on a specific page of the input. */
-@Fluent
+@Immutable
 public final class BoundingRegion {
     /*
      * 1-based page number of page containing the bounding region.
@@ -23,8 +24,19 @@ public final class BoundingRegion {
     @JsonProperty(value = "polygon", required = true)
     private List<Float> polygon;
 
-    /** Creates an instance of BoundingRegion class. */
-    public BoundingRegion() {}
+    /**
+     * Creates an instance of BoundingRegion class.
+     *
+     * @param pageNumber the pageNumber value to set.
+     * @param polygon the polygon value to set.
+     */
+    @JsonCreator
+    public BoundingRegion(
+            @JsonProperty(value = "pageNumber", required = true) int pageNumber,
+            @JsonProperty(value = "polygon", required = true) List<Float> polygon) {
+        this.pageNumber = pageNumber;
+        this.polygon = polygon;
+    }
 
     /**
      * Get the pageNumber property: 1-based page number of page containing the bounding region.
@@ -36,33 +48,11 @@ public final class BoundingRegion {
     }
 
     /**
-     * Set the pageNumber property: 1-based page number of page containing the bounding region.
-     *
-     * @param pageNumber the pageNumber value to set.
-     * @return the BoundingRegion object itself.
-     */
-    public BoundingRegion setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-        return this;
-    }
-
-    /**
      * Get the polygon property: Bounding polygon on the page, or the entire page if not specified.
      *
      * @return the polygon value.
      */
     public List<Float> getPolygon() {
         return this.polygon;
-    }
-
-    /**
-     * Set the polygon property: Bounding polygon on the page, or the entire page if not specified.
-     *
-     * @param polygon the polygon value to set.
-     * @return the BoundingRegion object itself.
-     */
-    public BoundingRegion setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
     }
 }

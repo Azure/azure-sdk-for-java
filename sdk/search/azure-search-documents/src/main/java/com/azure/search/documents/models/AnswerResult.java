@@ -140,23 +140,20 @@ public final class AnswerResult implements JsonSerializable<AnswerResult> {
     public static AnswerResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Double score = null;
-                    String key = null;
-                    String text = null;
-                    String highlights = null;
+                    AnswerResult deserializedAnswerResult = new AnswerResult();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("score".equals(fieldName)) {
-                            score = reader.getNullable(JsonReader::getDouble);
+                            deserializedAnswerResult.score = reader.getNullable(JsonReader::getDouble);
                         } else if ("key".equals(fieldName)) {
-                            key = reader.getString();
+                            deserializedAnswerResult.key = reader.getString();
                         } else if ("text".equals(fieldName)) {
-                            text = reader.getString();
+                            deserializedAnswerResult.text = reader.getString();
                         } else if ("highlights".equals(fieldName)) {
-                            highlights = reader.getString();
+                            deserializedAnswerResult.highlights = reader.getString();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -165,14 +162,9 @@ public final class AnswerResult implements JsonSerializable<AnswerResult> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    AnswerResult deserializedValue = new AnswerResult();
-                    deserializedValue.score = score;
-                    deserializedValue.key = key;
-                    deserializedValue.text = text;
-                    deserializedValue.highlights = highlights;
-                    deserializedValue.additionalProperties = additionalProperties;
+                    deserializedAnswerResult.additionalProperties = additionalProperties;
 
-                    return deserializedValue;
+                    return deserializedAnswerResult;
                 });
     }
 }

@@ -8,6 +8,8 @@ package com.azure.json;
  * <p>
  * Writing context is immutable, any calls to {@link #updateContext(JsonToken)} will result in either a previous context
  * being returned or the creation of a new context.
+ *
+ * @see JsonWriter
  */
 public final class JsonWriteContext {
     /**

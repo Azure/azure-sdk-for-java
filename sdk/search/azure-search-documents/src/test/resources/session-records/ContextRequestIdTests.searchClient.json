@@ -1,30 +1,43 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/$count?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e3a816cd-d086-4ce3-b796-6fd4386176de"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e3a816cd-d086-4ce3-b796-6fd4386176de",
-      "StatusCode" : "404",
-      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e3a816cd-d086-4ce3-b796-6fd4386176de",
-      "elapsed-time" : "8",
-      "Expires" : "-1",
-      "Content-Length" : "95",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The index 'index' for service 'alzimmer-basic' was not found.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e3a816cd-d086-4ce3-b796-6fd4386176de",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "e3a816cd-d086-4ce3-b796-6fd4386176de" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027index\u0027)/docs/$count?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:26 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6929a856-156e-48fe-b2cf-ee1f681f53e1"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "6929a856-156e-48fe-b2cf-ee1f681f53e1",
+        "Content-Language": "en",
+        "Content-Length": "107",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:53:24 GMT",
+        "elapsed-time": "2",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "6929a856-156e-48fe-b2cf-ee1f681f53e1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "6929a856-156e-48fe-b2cf-ee1f681f53e1"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "The index \u0027index\u0027 for service \u0027azs-java-alzimmertestproxy\u0027 was not found."
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "6929a856-156e-48fe-b2cf-ee1f681f53e1"
+  }
 }

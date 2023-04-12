@@ -1,17 +1,27 @@
 # Release History
 
-## 1.38.0-beta.1 (Unreleased)
+## 1.39.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added new constructor overload to `DefaultPollingStrategy`, `OperationResourcePollingStrategy`, `LocationPollingStrategy`
-and their sync counterparts that allows setting a service version as query parameter of request URLs for polling and getting the final
-result of a long-running operation.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.38.0 (2023-04-07)
+
+### Features Added
+
+- Added new constructor overload to `DefaultPollingStrategy`, `OperationResourcePollingStrategy`, `LocationPollingStrategy`
+  and their sync counterparts that allows setting a service version as query parameter of request URLs for polling and 
+  getting the final result of a long-running operation.
+
+### Other Changes
+
+- Added dependency on `azure-json` to provide stream-style JSON serialization support for `JsonSerializable`
+  implementing classes.
 
 ## 1.37.0 (2023-03-02)
 

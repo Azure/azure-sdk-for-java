@@ -11,7 +11,10 @@ import java.util.Collection;
 
 /** Defines the names of all character filters supported by Azure Cognitive Search. */
 public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
-    /** Static value html_strip for CharFilterName. */
+    /**
+     * A character filter that attempts to strip out HTML constructs. See
+     * https://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/charfilter/HTMLStripCharFilter.html.
+     */
     public static final CharFilterName HTML_STRIP = fromString("html_strip");
 
     /**

@@ -8,19 +8,19 @@ package com.azure.search.documents.indexes.models;
 
 /** Represents classes of characters on which a token filter can operate. */
 public enum TokenCharacterKind {
-    /** Enum value letter. */
+    /** Keeps letters in tokens. */
     LETTER("letter"),
 
-    /** Enum value digit. */
+    /** Keeps digits in tokens. */
     DIGIT("digit"),
 
-    /** Enum value whitespace. */
+    /** Keeps whitespace in tokens. */
     WHITESPACE("whitespace"),
 
-    /** Enum value punctuation. */
+    /** Keeps punctuation in tokens. */
     PUNCTUATION("punctuation"),
 
-    /** Enum value symbol. */
+    /** Keeps symbols in tokens. */
     SYMBOL("symbol");
 
     /** The actual serialized value for a TokenCharacterKind instance. */

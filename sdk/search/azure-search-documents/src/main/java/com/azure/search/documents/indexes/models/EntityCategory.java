@@ -11,25 +11,25 @@ import java.util.Collection;
 
 /** A string indicating what entity categories to return. */
 public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
-    /** Static value location for EntityCategory. */
+    /** Entities describing a physical location. */
     public static final EntityCategory LOCATION = fromString("location");
 
-    /** Static value organization for EntityCategory. */
+    /** Entities describing an organization. */
     public static final EntityCategory ORGANIZATION = fromString("organization");
 
-    /** Static value person for EntityCategory. */
+    /** Entities describing a person. */
     public static final EntityCategory PERSON = fromString("person");
 
-    /** Static value quantity for EntityCategory. */
+    /** Entities describing a quantity. */
     public static final EntityCategory QUANTITY = fromString("quantity");
 
-    /** Static value datetime for EntityCategory. */
+    /** Entities describing a date and time. */
     public static final EntityCategory DATETIME = fromString("datetime");
 
-    /** Static value url for EntityCategory. */
+    /** Entities describing a URL. */
     public static final EntityCategory URL = fromString("url");
 
-    /** Static value email for EntityCategory. */
+    /** Entities describing an email address. */
     public static final EntityCategory EMAIL = fromString("email");
 
     /**
