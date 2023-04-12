@@ -185,10 +185,10 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
         final MetricsAdvisorClientBuilder clientBuilder = new MetricsAdvisorClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
