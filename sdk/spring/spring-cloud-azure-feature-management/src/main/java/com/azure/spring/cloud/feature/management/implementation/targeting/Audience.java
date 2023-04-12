@@ -15,6 +15,8 @@ public class Audience {
 
     private double defaultRolloutPercentage;
 
+    private Exclusion exclusion;
+
     /**
      * @return the users
      */
@@ -55,6 +57,20 @@ public class Audience {
      */
     public void setDefaultRolloutPercentage(double defaultRolloutPercentage) {
         this.defaultRolloutPercentage = defaultRolloutPercentage;
+    }
+
+    /**
+     * @return the exclusion
+     */
+    public Exclusion getExclusion() {
+        return exclusion;
+    }
+
+    /**
+     * @param exclusion the exclusion to set
+     */
+    public void setExclusion(Exclusion exclusion) {
+        this.exclusion = exclusion;
     }
 
 }

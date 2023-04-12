@@ -59,8 +59,8 @@ public class TargetingFilter implements FeatureFilter {
     /**
      * Object Mapper for converting configurations to features
      */
-    protected static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    protected static final ObjectMapper OBJECT_MAPPER =
+        JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     /**
      * Accessor for identifying the current user/group when evaluating
@@ -74,6 +74,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Filter for targeting a user/group/percentage of users.
+     * 
      * @param contextAccessor Accessor for identifying the current user/group when evaluating
      */
     public TargetingFilter(TargetingContextAccessor contextAccessor) {
@@ -83,6 +84,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
+     * 
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
      */
@@ -126,18 +128,30 @@ public class TargetingFilter implements FeatureFilter {
         validateSettings(settings);
 
         Audience audience = settings.getAudience();
-
-        if (targetingContext.getUserId() != null
-            && audience.getUsers() != null
-            && audience.getUsers().stream()
-                .anyMatch(user -> equals(targetingContext.getUserId(), user))) {
+        
+        // Need to Check Denyed first
+        if (targetUser(targetingContext.getUserId(), audience.getExclusion().getUsers())) {
+            return false;
+        }
+        
+        if (targetingContext.getGroups() != null && audience.getExclusion().getGroups() != null) {
+            for (String group : targetingContext.getGroups()) {
+                Optional<String> groupRollout = audience.getExclusion().getGroups().stream().filter(g -> equals(g, group)).findFirst();
+                if (groupRollout.isPresent()) {
+                    return false;
+                }
+            }
+        }
+        
+        // Check if Allowed
+        if (targetUser(targetingContext.getUserId(), audience.getUsers())) {
             return true;
         }
 
         if (targetingContext.getGroups() != null && audience.getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
-                Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-                    .filter(g -> equals(g.getName(), group)).findFirst();
+                Optional<GroupRollout> groupRollout =
+                    audience.getGroups().stream().filter(g -> equals(g.getName(), group)).findFirst();
 
                 if (groupRollout.isPresent()) {
                     String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
@@ -154,6 +168,10 @@ public class TargetingFilter implements FeatureFilter {
         return isTargeted(defaultContextId, settings.getAudience().getDefaultRolloutPercentage());
     }
 
+    private boolean targetUser(String userId, List<String> users) {
+        return userId != null && users != null && users.stream().anyMatch(user -> equals(userId, user));
+    }
+
     private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
         boolean hasUserDefined = StringUtils.hasText(targetingContext.getUserId());
         boolean hasGroupsDefined = targetingContext.getGroups() != null;
@@ -168,6 +186,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Computes the percentage that the contextId falls into.
+     * 
      * @param contextId Id of the context being targeted
      * @return the bucket value of the context id
      * @throws TargetingException Unable to create hash of target context
@@ -198,8 +217,10 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Validates the settings of a targeting filter.
+     * 
      * @param settings targeting filter settings
-     * @throws TargetingException when a required parameter is missing or percentage value is greater than 100.
+     * @throws TargetingException when a required parameter is missing or percentage value is greater
+     *         than 100.
      */
     void validateSettings(TargetingFilterSettings settings) {
         String paramName = "";
@@ -213,8 +234,7 @@ public class TargetingFilter implements FeatureFilter {
         }
 
         Audience audience = settings.getAudience();
-        if (audience.getDefaultRolloutPercentage() < 0
-            || audience.getDefaultRolloutPercentage() > 100) {
+        if (audience.getDefaultRolloutPercentage() < 0 || audience.getDefaultRolloutPercentage() > 100) {
             paramName = AUDIENCE + "." + audience.getDefaultRolloutPercentage();
             reason = OUT_OF_RANGE;
 
@@ -237,6 +257,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Checks if two strings are equal, ignores case if configured to.
+     * 
      * @param s1 string to compare
      * @param s2 string to compare
      * @return true if the strings are equal
@@ -249,8 +270,9 @@ public class TargetingFilter implements FeatureFilter {
     }
 
     /**
-     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating
-     * fields in the targeting filter.
+     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used
+     * for updating fields in the targeting filter.
+     * 
      * @param <T> Type of object inside of parameters for the given key
      * @param parameters map of generic objects
      * @param key key of object int the parameters map
