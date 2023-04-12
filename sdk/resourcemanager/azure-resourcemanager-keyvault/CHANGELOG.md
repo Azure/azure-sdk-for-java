@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `ManagedHsm` for Azure Key Vault Managed HSM.
 
 ## 2.25.0 (2023-03-24)
 

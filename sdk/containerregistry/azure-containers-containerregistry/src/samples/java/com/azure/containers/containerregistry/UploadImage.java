@@ -10,7 +10,6 @@ import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;

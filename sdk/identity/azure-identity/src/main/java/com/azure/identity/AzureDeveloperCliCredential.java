@@ -16,8 +16,46 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * A credential provider that provides token credentials based on Azure Developer CLI
- * command.
+ * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy
+ * resources in Azure. It's built on top of the Azure CLI and provides additional functionality specific
+ * to Azure developers. It allows users to authenticate as a user and/or a service principal against
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a>. The AzureDeveloperCliCredential authenticates in a development environment and acquires a token on behalf of
+ * the logged-in user or service principal in Azure Developer CLI. It acts as the Azure Developer CLI logged in user or
+ * service principal and executes an Azure CLI command underneath to authenticate the application against
+ * Azure Active Directory.</p>
+ *
+ * <h2>Configure AzureDeveloperCliCredential</h2>
+ *
+ * <p> To use this credential, the developer needs to authenticate locally in Azure Developer CLI using one of the
+ * commands below:</p>
+ *
+ * <ol>
+ *     <li>Run "azd login" in Azure Developer CLI to authenticate interactively as a user.</li>
+ *     <li>Run "azd login --client-id {@code clientID} --client-secret {@code clientSecret}
+ *     --tenant-id {@code tenantID}" to authenticate as a service principal.</li>
+ * </ol>
+ *
+ * <p>You may need to repeat this process after a certain time period, depending on the refresh token validity in your
+ * organization. Generally, the refresh token validity period is a few weeks to a few months.
+ * AzureDeveloperCliCredential will prompt you to sign in again.</p>
+ *
+ * <p><strong>Sample: Construct AzureDeveloperCliCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureDeveloperCliCredential},
+ * using the {@link com.azure.identity.AzureDeveloperCliCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.azuredeveloperclicredential.construct -->
+ * <pre>
+ * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.azuredeveloperclicredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see AzureDeveloperCliCredentialBuilder
  */
 @Immutable
 public class AzureDeveloperCliCredential implements TokenCredential {
