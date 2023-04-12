@@ -23,8 +23,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
@@ -117,7 +115,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);

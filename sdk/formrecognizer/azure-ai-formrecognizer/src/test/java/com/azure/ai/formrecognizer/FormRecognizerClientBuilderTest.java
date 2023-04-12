@@ -247,10 +247,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

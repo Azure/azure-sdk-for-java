@@ -19,8 +19,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;

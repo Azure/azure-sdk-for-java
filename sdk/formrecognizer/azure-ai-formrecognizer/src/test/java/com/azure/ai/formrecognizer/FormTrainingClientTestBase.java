@@ -10,16 +10,18 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -28,12 +30,12 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
@@ -42,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class FormTrainingClientTestBase extends TestBase {
+public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
     private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -90,15 +92,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion) {
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .serviceVersion(serviceVersion);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new TokenCredential() {
+                @Override
+                public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+                    return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+                }
+            });
+        } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
     }

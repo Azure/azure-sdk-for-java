@@ -1,25 +1,35 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/copyAuthorization",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "10df1f7f-2a5b-412f-a076-e9fca82286e8"
-    },
-    "Response" : {
-      "content-length" : "140",
-      "x-envoy-upstream-service-time" : "398",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "71a44a4d-70fb-4329-bbe1-db6f622ea050",
-      "retry-after" : "0",
-      "StatusCode" : "201",
-      "Body" : "{\"modelId\":\"b803b334-74a0-4b3e-9682-9202319757a4\",\"accessToken\":\"REDACTED\",\"expirationDateTimeTicks\":1661538136}",
-      "Date" : "Thu, 25 Aug 2022 18:22:15 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/b803b334-74a0-4b3e-9682-9202319757a4"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/copyAuthorization",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 12 Apr 2023 22:41:43 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "39717059-a3b6-4d8c-9853-7359c4614dc7"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "apim-request-id": "e45d1a8c-8080-4b08-9154-fe3e1c77fef9",
+        "Content-Length": "112",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 22:41:43 GMT",
+        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/5a53895e-e33f-431f-ae96-b5270c67e181",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "499",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelId": "5a53895e-e33f-431f-ae96-b5270c67e181",
+        "accessToken": "REDACTED",
+        "expirationDateTimeTicks": 1681425703
+      }
+    }
+  ],
+  "Variables": {}
 }
