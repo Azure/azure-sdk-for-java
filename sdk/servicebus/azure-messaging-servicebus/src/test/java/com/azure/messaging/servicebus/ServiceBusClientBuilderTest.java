@@ -236,7 +236,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration) {
-        Configuration configuration = TestUtils.getGlobalConfiguration()
+        Configuration configuration = TestUtils.getGlobalConfiguration().clone()
             .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
             .put(JAVA_NET_USER_SYSTEM_PROXIES, "true");
 
