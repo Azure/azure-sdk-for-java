@@ -4,6 +4,7 @@
 package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -32,6 +33,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String SCOPES_PARAMETER = "scope";
     public static final String SERVICE_PARAMETER = "service";
+    private final ContainerRegistryTokenService acrCredential;
 
     /**
      * Creates an instance of ContainerRegistryCredentialsPolicy.
@@ -40,6 +42,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     public ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService, String scope) {
         super(tokenService, scope);
+        this.acrCredential = tokenService;
     }
 
     /**
@@ -50,6 +53,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+        authorizeRequestSync(context);
         return Mono.empty();
     }
 
@@ -87,6 +91,10 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
+        String lastToken = acrCredential.getLastToken();
+        if (lastToken != null) {
+            context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + lastToken);
+        }
     }
 
     /**

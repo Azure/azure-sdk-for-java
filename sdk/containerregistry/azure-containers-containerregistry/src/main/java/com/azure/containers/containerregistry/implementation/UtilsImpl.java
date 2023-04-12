@@ -140,9 +140,6 @@ public final class UtilsImpl {
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new ContainerRegistryRedirectPolicy());
-
-        policies.addAll(perRetryPolicies);
 
         // We generally put credential policy between BeforeRetry and AfterRetry policies and put Logging policy in the end.
         // However since ACR uses the rest endpoints of the service in the credential policy,
@@ -155,8 +152,8 @@ public final class UtilsImpl {
         HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
         ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
         HttpPolicyProviders.addAfterRetryPolicies(credentialPolicies);
+        credentialPolicies.addAll(perRetryPolicies);
         credentialPolicies.add(loggingPolicy);
-
         if (audience == null)  {
             LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
             audience = ACR_ACCESS_TOKEN_AUDIENCE;
@@ -181,7 +178,9 @@ public final class UtilsImpl {
         ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService, audience + "/.default");
 
         policies.add(credentialsPolicy);
+        policies.add(new ContainerRegistryRedirectPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.addAll(perRetryPolicies);
         policies.add(loggingPolicy);
 
         return new HttpPipelineBuilder()

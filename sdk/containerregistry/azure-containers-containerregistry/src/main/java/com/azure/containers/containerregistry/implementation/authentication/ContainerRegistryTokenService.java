@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -30,7 +31,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
     private final boolean isAnonymousAccess;
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryTokenService.class);
     private static final Mono<AccessToken> ANONYMOUS_REFRESH_TOKEN = Mono.just(new AccessToken(null, OffsetDateTime.MAX));
-
+    private final AtomicReference<String> lastAccessToken = new AtomicReference<>();
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
      *
@@ -100,10 +101,20 @@ public class ContainerRegistryTokenService implements TokenCredential {
     private AccessToken toAccessToken(Response<AcrAccessToken> response) {
         AcrAccessToken token = response.getValue();
         if (token != null) {
-            String accessToken = token.getAccessToken();
-            return new AccessToken(accessToken, JsonWebToken.retrieveExpiration(accessToken));
+            String accessTokenStr = token.getAccessToken();
+            lastAccessToken.set(accessTokenStr);
+            return new AccessToken(accessTokenStr, JsonWebToken.retrieveExpiration(accessTokenStr));
         }
 
         throw LOGGER.logExceptionAsError(new ServiceResponseException("AcrAccessToken is missing in response."));
+    }
+
+    /**
+     * Returns last token. Can be used for optimistic auth header setting before challenge is received.
+     * It might have wrong scope or be expired - then usual challenge flow will happen.
+     * In case of repetitive operations such as uploads/downloads, minimizes number of auth calls.
+     */
+    public String getLastToken() {
+        return lastAccessToken.get();
     }
 }
