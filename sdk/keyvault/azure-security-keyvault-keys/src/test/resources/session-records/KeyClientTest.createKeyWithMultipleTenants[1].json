@@ -1,7 +1,41 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/keys/javakeytemp6837213/create?api-version=7.4",
+      "RequestUri": "https://REDACTED/keys/javakeytemp657262d/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "320d55dd-88f3-4e9f-88ca-ff650383a08d"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/javakeytemp657262d/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -27,7 +61,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "771",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 04 Apr 2023 04:02:58 GMT",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -35,11 +69,11 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
         "x-ms-keyvault-service-version": "1.9.749.1",
-        "x-ms-request-id": "62e4e133-8e33-47b0-bf94-67bbe6a4de48"
+        "x-ms-request-id": "cc704e9e-f9ad-437f-aefc-f13f9967ca96"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://azkvrecordtests.vault.azure.net/keys/javakeytemp6837213/942d54e34cc0445f86b0b1c059424bc7",
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/javakeytemp657262d/d6e06708a27940418ed1aa8f6aea719c",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -49,15 +83,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "mclnpPDARXw92QHPSD4oZNOf4pLEB-6c9IAOJW-STgmGrR0wscZLEO_hBP51580lForzubmdUofN4J5lC34kjRUyT25Dp6c94aeX_vafTVu2QQ3jh2NqcpLIg2Q_KAVj49OyZjWy25up5N-j6__tnnxeneXHObpDmOiAGGVzrXNvj-U1UljWs1QqEPzSSVBNFZxWnRJrvTv7O7afMSb9LE_v42cjdwluXAmU2PVkH5XGAzcR5iNlvaL1bPSOeP1Gz6hOsqC1os9DBoV_1BRcnc7GsWmsp6XI9iavRXdyWP6z5_RN1_uN-Z0Z1BYOEBZ9U4ncNTXMJuqSdOv289VFIQ",
+          "n": "xkgj76G2LvihYimv68e_b6jx0VLYrVZ70AiLj3R90FuIUvK655awRZYGpAAj7wmRMI7q1MyuXvoYSkf5CgyADqG5Dzzg40oMTslLrGX1vijOfNoZ0Y9r8ihNUMoDFnrN-RUYtHBnROScClcfUeF_aZcmNkx-jeP0zMUAmfDOlJ_WFWturNZBGjiNr94S5Acziz7OJJtvVT3z_Co4wcc1ojYeWBt8YnxeR0cwclZVlSfUPuuBxMCn0BQQaSgZZJrsRmHCM9qmnOiNvXTcWVyGWr5_Lg9ZYgIvlBxTMX4UuEs6m_PhvObkI5tZ-WOJovWR00tm97_9Id03kowwcj8ZwQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
           "nbf": 949237199,
           "exp": 2527113600,
-          "created": 1680580979,
-          "updated": 1680580979,
+          "created": 1681269678,
+          "updated": 1681269678,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7,
           "exportable": false
@@ -68,7 +102,7 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/keys/javakeytemp837582e/create?api-version=7.4",
+      "RequestUri": "https://REDACTED/keys/javakeytemp19980ab/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -94,7 +128,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "771",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 04 Apr 2023 04:02:58 GMT",
+        "Date": "Wed, 12 Apr 2023 03:21:18 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -102,11 +136,11 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
         "x-ms-keyvault-service-version": "1.9.749.1",
-        "x-ms-request-id": "fd69c9e7-9899-447b-9276-8465b2041848"
+        "x-ms-request-id": "17636a6a-3cbc-4a93-b33e-367eb09dcd2c"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://azkvrecordtests.vault.azure.net/keys/javakeytemp837582e/cee6f7d9883f4505bf89fd6faf365d30",
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/javakeytemp19980ab/735f33fe6918486fa788936cc427720e",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -116,15 +150,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "uSEiuwGrkk7K8ploKxLp4mJTr5O5aSu-ujtDBG8bXWzox_PrRZi674Fi_h4tB_nUhqvQ-HxfAWcaEgdL8B56Rd-t5uQCI1_3MqkKcK2w3nWKIYIuIvyLM4m2TfjRoWeUiF0ef-ChZFugydeymJnQxd5g2twwion3Gt8Kaf9ya0XbVKky3vtf4bWcS4-CgT04m6ea-y7hhYGfmcfVsHcaDQDOhCJo6DG8flccIBRyPVJnf4GYDWrsF0Hb53wXsaaUYBxR4DyDBDjngr9btZJ8NCaLqhSNdhj42xrW2wVwXM3uW9vFDQ_zfUpBkh1D19Q0WVJzbWuTj07M1AUNRjUN4Q",
+          "n": "xo61fs69b5F-LLxVt7oGmqzpPPoK9U42_uAeg8cmUG1juJHDLuql8wo3KMqNZIm_YzA2hYSCrkQ8ppak9DYJPTHUDEZisCFCHzS3egeSV-bnZuMlY0Uxregazz8SrCjLrBrdvSTPX-wXCCQdWmumExE3H6_Y_lEz8Vrlk0yU9WjKDlYD0kaHmVWxN_gvv9hlO0zmKoacM0f9aiV11ZbqLTUVVRLZlNgV5jjweNIHvfZhcLP_cR36Tq-MjSYjKefG4w7bM8dPHhUhsR2xFDSjwze1diywVUNaEBmeXWgOb9UwVaFJ-BgP3HDh25XI4zCVHnUwvCBi23d8uy8wU7VttQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
           "nbf": 949237199,
           "exp": 2527113600,
-          "created": 1680580979,
-          "updated": 1680580979,
+          "created": 1681269678,
+          "updated": 1681269678,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7,
           "exportable": false
@@ -136,8 +170,8 @@
     }
   ],
   "Variables": {
-    "0": "391ec6b2-018b-425b-9c9d-3971b973862a",
-    "1": "javakeytemp6837213",
-    "2": "javakeytemp837582e"
+    "0": "bf530acb-3a13-4c8d-b830-866e49d46908",
+    "1": "javakeytemp657262d",
+    "2": "javakeytemp19980ab"
   }
 }

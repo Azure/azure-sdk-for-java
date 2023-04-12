@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/keys/rotatekey05049b0a/create?api-version=7.4",
+      "RequestUri": "https://REDACTED/keys/rotatekey27056f79/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "*/*",
@@ -16,7 +16,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 04 Apr 2023 04:02:57 GMT",
+        "Date": "Wed, 12 Apr 2023 03:21:15 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -25,7 +25,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
         "x-ms-keyvault-service-version": "1.9.749.1",
-        "x-ms-request-id": "846dd276-90ca-43a6-b50a-783a66ab7b3e"
+        "x-ms-request-id": "458665c5-9eb3-4fc0-89d4-48c82062d92c"
       },
       "ResponseBody": {
         "error": {
@@ -35,7 +35,63 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/keys/rotatekey05049b0a/rotate?api-version=7.4",
+      "RequestUri": "https://REDACTED/keys/rotatekey27056f79/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "49",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "RSA",
+        "attributes": {},
+        "public_exponent": 0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "716",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "f8b02e2e-82a1-4386-b805-35a4bb483383"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/rotatekey27056f79/6cc2e01e127546d6909944a47e14d30b",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "pxWS0bwVta8HhD6NkP8AtbLIwcjr4Xnplf6GiH-QdxFSAeFVL8vlP28U7s78OfW6BlukxDMFO8IFo1xk9Q_CKL2oMMyPuuUPLSDOZRuQ3ijlEz0HPEkW5dK_c7s-UlkQFUzJzgk6Znd4d6C5sUbGt8Zj8lo_qpTdkGSdEpjvjzbQxVNDPR854oYV-8ozEuNfyRUy68X2hfA_ZT5CU4AS0V1RxkjJ8sMfBFuY40M0_MSSh0cQzQTAZCgVI6SXqIED56sJA8w7oB6zJtgQeGSnXTXCIu4MRDXjnhgnfrbnLRxVJGs_b1z8FUdR-t7LjkOmAu0yNpYrSDtv4T9mD_UYBQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1681269677,
+          "updated": 1681269677,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": false
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/rotatekey27056f79/rotate?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -49,7 +105,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "716",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 04 Apr 2023 04:02:58 GMT",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -57,11 +113,11 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus",
         "x-ms-keyvault-service-version": "1.9.749.1",
-        "x-ms-request-id": "15576e00-b998-4228-b930-f4b830ca747f"
+        "x-ms-request-id": "54ea2dba-2d5d-4e70-81e7-e76695cd01d3"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://azkvrecordtests.vault.azure.net/keys/rotatekey05049b0a/c3c664ca974f43e496445932b63562de",
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/rotatekey27056f79/eb7cf363fb654cfbb04a95c0c5846a55",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -71,13 +127,13 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "tHtHC1UGDDnHJ9ol3kZROwrxakqDFR79klux4tRWuL5mnIIPwLDLH0kZ2JCoIOgt1OrXxkDEtAkD6VOtHPZgfTD3UAJTEq003IP5NxmBLsOZ3q4h99Ub-o718zHDa2by5MM1rAA_uS_Z9_bMAhhRTeVeLrva_eOubybwFWFjuxIpGbYm3PiRgavw2KtuxR1pHrAzRiE1diuRpbDT1L1zRpbOtwwOo68WfCgU4KUU65m0a8FE6PG668S5LCtbJbTkr2r-RDokaI8NAp4MhmKUJ46YqGR2L1dxYJrQuJ_3LahddqYsLLxDMOWfxrsCJZeNG3dQ75fWdT3maa9j7wwNXQ",
+          "n": "xDbatqCew8eCpgDl2DkrhrFMnZkUCLc_v7CF1obCtsOMWzfy41QNfgOnRX70HBu2ud1Fqis4wxBVBKe4f44yJSQ32ttWie9OqAz7xsffDupTxgxN6E_l4rAIe6vGrIGcJNfYP39vjJMtSjnMTrKvxAmw6-XL_AaXb_Gd602DKHdV_voN1tPQy5w3Bl7BVbW-wHgzj6bkG57DWuom1tZHJBuKSVVk3xJt47GPAgf7GS4ie_gzXL0lAx_ShmHnIbwy-GL4v0k_zDkbSbieZyYX_aXQ5qLLYCFPVdZW0OvgaLfLhRe2reb1Zkw2Wj3OJABvClccPdlKLghP6UEVX4KHNQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1680580979,
-          "updated": 1680580979,
+          "created": 1681269677,
+          "updated": 1681269677,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7,
           "exportable": false
@@ -86,6 +142,6 @@
     }
   ],
   "Variables": {
-    "0": "rotatekey05049b0a"
+    "0": "rotatekey27056f79"
   }
 }

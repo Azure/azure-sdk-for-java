@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleDefinitions/3a17408a-a2ad-464a-8f9b-04a7c84dc95e?api-version=7.4",
+      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleDefinitions/8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -20,13 +20,57 @@
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "11ff6972-d2a1-11ed-962d-0022488d0014",
-        "x-ms-server-latency": "1"
+        "x-ms-request-id": "4931a902-d8df-11ed-bed5-000d3a602e9a",
+        "x-ms-server-latency": "0"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleAssignments/cb52b345-60bf-48c2-9a9c-6d6ce325d484?api-version=7.4",
+      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleDefinitions/8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02?api-version=7.4",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "66",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "properties": {
+          "roleName": "8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "353",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "northcentralus",
+        "x-ms-request-id": "494cec58-d8df-11ed-bed5-000d3a602e9a",
+        "x-ms-server-latency": "36"
+      },
+      "ResponseBody": {
+        "id": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
+        "name": "8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
+        "properties": {
+          "assignableScopes": [
+            "/"
+          ],
+          "description": "",
+          "permissions": [],
+          "roleName": "8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
+          "type": "CustomRole"
+        },
+        "type": "Microsoft.Authorization/roleDefinitions"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleAssignments/1d8822ec-28c6-4e0c-881d-14e4ea4730e5?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -37,7 +81,7 @@
       },
       "RequestBody": {
         "properties": {
-          "roleDefinitionId": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/3a17408a-a2ad-464a-8f9b-04a7c84dc95e",
+          "roleDefinitionId": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
           "principalId": "aed295e0-2ae7-4c2a-9abc-813f0ca233d3"
         }
       },
@@ -52,22 +96,22 @@
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
         "x-ms-keyvault-region": "northcentralus",
-        "x-ms-request-id": "12d674bc-d2a1-11ed-962d-0022488d0014",
-        "x-ms-server-latency": "40"
+        "x-ms-request-id": "495c5a94-d8df-11ed-bed5-000d3a602e9a",
+        "x-ms-server-latency": "41"
       },
       "ResponseBody": {
-        "id": "/providers/Microsoft.Authorization/roleAssignments/cb52b345-60bf-48c2-9a9c-6d6ce325d484",
-        "name": "cb52b345-60bf-48c2-9a9c-6d6ce325d484",
+        "id": "/providers/Microsoft.Authorization/roleAssignments/1d8822ec-28c6-4e0c-881d-14e4ea4730e5",
+        "name": "1d8822ec-28c6-4e0c-881d-14e4ea4730e5",
         "properties": {
           "principalId": "aed295e0-2ae7-4c2a-9abc-813f0ca233d3",
-          "roleDefinitionId": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/3a17408a-a2ad-464a-8f9b-04a7c84dc95e",
+          "roleDefinitionId": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
           "scope": "/"
         },
         "type": "Microsoft.Authorization/roleAssignments"
       }
     },
     {
-      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleAssignments/cb52b345-60bf-48c2-9a9c-6d6ce325d484?api-version=7.4",
+      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleAssignments/1d8822ec-28c6-4e0c-881d-14e4ea4730e5?api-version=7.4",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -78,7 +122,7 @@
       },
       "RequestBody": {
         "properties": {
-          "roleDefinitionId": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/3a17408a-a2ad-464a-8f9b-04a7c84dc95e",
+          "roleDefinitionId": "Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
           "principalId": "aed295e0-2ae7-4c2a-9abc-813f0ca233d3"
         }
       },
@@ -91,19 +135,19 @@
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
-        "x-ms-request-id": "3a66c4d4-d29f-11ed-a359-0022488dd761",
+        "x-ms-request-id": "496cc744-d8df-11ed-bed5-000d3a602e9a",
         "x-ms-server-latency": "1"
       },
       "ResponseBody": {
         "error": {
           "code": "RoleAssignmentExists",
-          "message": "The role assignment already exists. (Activity ID: 3a66c4d4-d29f-11ed-a359-0022488dd761)"
+          "message": "The role assignment already exists. (Activity ID: 496cc744-d8df-11ed-bed5-000d3a602e9a)"
         }
       }
     }
   ],
   "Variables": {
-    "0": "3a17408a-a2ad-464a-8f9b-04a7c84dc95e",
-    "1": "cb52b345-60bf-48c2-9a9c-6d6ce325d484"
+    "0": "8bcb4a14-6bd5-4e0f-8ea4-f7f4e49eea02",
+    "1": "1d8822ec-28c6-4e0c-881d-14e4ea4730e5"
   }
 }
