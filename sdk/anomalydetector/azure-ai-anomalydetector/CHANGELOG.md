@@ -1,14 +1,9 @@
 # Release History
 
-## 3.0.0-beta.6 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 3.0.0 (2023-04-12)
 ### Other Changes
+
+- GA release
 
 ## 3.0.0-beta.5 (2022-12-08)
 
