@@ -76,7 +76,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
                 error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
                 () -> logger.info("sessionId[{}] Finished sending.", sessionId));
-
+        toClose(() -> subscription.dispose());
         setReceiver(entityType, entityIndex, Function.identity());
 
         // Act & Assert
@@ -102,15 +102,15 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
      */
     private void setSender(MessagingEntityType entityType, int entityIndex) {
 
-        this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
-            .buildAsyncClient();
+        this.sender = toClose(getSenderBuilder(false, entityType, entityIndex, true, false)
+            .buildAsyncClient());
     }
     private void setReceiver(MessagingEntityType entityType, int entityIndex,
                              Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
             entityType, entityIndex, false).disableAutoComplete();
 
-        this.sessionReceiver = onBuild.apply(sessionBuilder).buildAsyncClient();
+        this.sessionReceiver = toClose(onBuild.apply(sessionBuilder).buildAsyncClient());
         this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
     }
 

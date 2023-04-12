@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link ServiceBusProcessorClient}.
@@ -36,9 +37,6 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final Scheduler scheduler = Schedulers.parallel();
 
-    private ServiceBusProcessorClient processor;
-    private ServiceBusSenderAsyncClient sender;
-
     @Override
     protected void beforeTest() {
         sessionId = UUID.randomUUID().toString();
@@ -47,11 +45,6 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     @Override
     protected void afterTest() {
         sharedBuilder = null;
-        try {
-            dispose(processor, sender);
-        } catch (Exception e) {
-            LOGGER.warning("Error occurred when draining queue.", e);
-        }
     }
 
     ServiceBusProcessorClientIntegrationTest() {
@@ -80,39 +73,37 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         CountDownLatch countDownLatch = new CountDownLatch(2);
 
         // send the message
-        setSender(entityType, entityIndex, isSessionEnabled);
-        sendMessage(message).block(TIMEOUT);
+        ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, isSessionEnabled);
+        sendMessage(sender, message).block(TIMEOUT);
 
+        ServiceBusProcessorClient processor;
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
                 .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
-            processor = getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
+            processor = toClose(getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
                 .processError(context -> processError(context, countDownLatch))
-                .buildProcessorClient();
+                .buildProcessorClient());
 
         } else {
-            this.processor = getProcessorBuilder(false, entityType, entityIndex, false)
+            processor = toClose(getProcessorBuilder(false, entityType, entityIndex, false)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
                 .processError(context -> processError(context, countDownLatch))
-                .buildProcessorClient();
+                .buildProcessorClient());
         }
 
         // Assert & Act
         processor.start();
+        toClose(processor);
+        toClose(() -> processor.stop());
 
-        if (countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS)) {
-            LOGGER.info("Message lock has been renewed. Now closing processor");
-        } else {
-            Assertions.fail("Message not arrived, closing processor.");
-        }
-
-        processor.close();
+        assertTrue(countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS), "Message not arrived, closing processor.");
+        LOGGER.info("Message lock has been renewed. Now closing processor");
     }
 
     private void processMessage(ServiceBusReceivedMessageContext context, CountDownLatch countDownLatch,
@@ -192,11 +183,11 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         }
     }
 
-    private void setSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
+    private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
         final boolean shareConnection = false;
         final boolean useCredentials = false;
-        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
-            .buildAsyncClient();
+        return toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient());
     }
 
     private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
@@ -208,7 +199,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             .scheduler(scheduler);
     }
 
-    private Mono<Void> sendMessage(ServiceBusMessage message) {
+    private Mono<Void> sendMessage(ServiceBusSenderAsyncClient sender, ServiceBusMessage message) {
         return sender.sendMessage(message).doOnSuccess(aVoid -> {
             int number = messagesPending.incrementAndGet();
             LOGGER.info("Message Id {}. Number sent: {}", message.getMessageId(), number);

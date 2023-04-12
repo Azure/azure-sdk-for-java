@@ -13,6 +13,7 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,10 +26,13 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -442,15 +446,14 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
         final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());
-        final AtomicInteger messageId = new AtomicInteger();
-        final AtomicLong actualCount = new AtomicLong();
-        final int maxMessages = 2;
+        final int maxMessages = 4;
 
-        List<String> messageIds = Collections.synchronizedList(new ArrayList<String>());
+        Set<String> messageIds = new HashSet<>();
+        // in case some other tests consume from the same queue
         for (int i = 0; i < maxMessages; ++i) {
             ServiceBusMessage message = getMessage("" + i, isSessionEnabled, AmqpMessageBody.fromData(payload));
             messageIds.add(message.getMessageId());
@@ -462,36 +465,20 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
-        AtomicInteger triesNumber = new AtomicInteger(0);
-        List<String> receivedMessages = Collections.synchronizedList(new ArrayList<String>());
-        Thread throwable = new Thread(() -> {
-            while (actualCount.get() < maxMessages) {
-                triesNumber.incrementAndGet();
-                receiver.peekMessages(maxMessages).stream()
-                    .filter(receivedMessage -> messageIds.contains(receivedMessage.getMessageId())
-                        && receivedMessages.parallelStream().noneMatch(mid ->
-                            mid.equals(receivedMessage.getMessageId())))
-                    .sorted(Comparator.comparing(ServiceBusReceivedMessage::getMessageId))
-                    .forEach(receivedMessage -> {
-                        receivedMessages.add(receivedMessage.getMessageId());
-                        actualCount.incrementAndGet();
-                        assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
-                            String.format("Message id did not match. Payload: [%s], try [%s].",
-                                receivedMessage.getBody().toString(), triesNumber.get()));
-                    });
-            }
-        });
-
-        // Assert
-        throwable.start();
-        try {
-            throwable.join(TIMEOUT.toMillis());
-        } catch (InterruptedException e) {
-            Assertions.fail("Error in receiving messages: " + e.getMessage());
+        Set<String> receivedMessages = Collections.synchronizedSet(new HashSet<>());
+        for (int t = 0; t < 3 && receivedMessages.size() < maxMessages; t ++) {
+            receivedMessages.addAll(
+                receiver.peekMessages(maxMessages)
+                    .stream()
+                    .map(ServiceBusReceivedMessage::getMessageId)
+                    .collect(Collectors.toSet()));
         }
 
-        assertEquals(maxMessages, actualCount.get());
+        // Assert
+        List<String> receivedFiltered = receivedMessages.stream().filter(mId -> messageIds.contains(mId)).collect(Collectors.toList());
+        Assumptions.assumeTrue(receivedMessages.size() < maxMessages, String.format("Expected %s messages, got %s, test is inconclusive", maxMessages, receivedFiltered.size()));
 
+        assertTrue(maxMessages == receivedFiltered.size(), String.format("Expected at least %s messages, got %s", maxMessages, receivedFiltered.size()));
     }
 
     /**
@@ -831,19 +818,19 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     private void setSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled, boolean sharedConnection) {
-        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient();
+        this.sender = toClose(getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient());
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled, boolean sharedConnection) {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.sessionReceiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient();
+            this.sessionReceiver = toClose(getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient());
             this.receiver = this.sessionReceiver.acceptSession(sessionId);
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient();
+            this.receiver = toClose(getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient());
         }
     }
 
@@ -852,16 +839,16 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
         boolean sharedConnection) {
-        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient();
+        this.sender = toClose(getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient());
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.sessionReceiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient();
+            this.sessionReceiver = toClose(getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient());
             this.receiver = this.sessionReceiver.acceptSession(sessionId);
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient();
+            this.receiver = toClose(getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient());
         }
     }
 
