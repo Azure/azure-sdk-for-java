@@ -47,7 +47,8 @@ public final class ConnectionPolicy {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
-    private int minChannelPoolSizePerEndpoint;
+    private int minConnectionsPerEndpoint;
+    private int openConnectionsDefensiveConcurrency;
 
     /**
      * Constructor.
@@ -105,7 +106,8 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
-        this.minChannelPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.minConnectionsPerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.openConnectionsDefensiveConcurrency = Configs.getOpenConnectionsDefensiveConcurrency();
     }
 
     /**
@@ -566,8 +568,12 @@ public final class ConnectionPolicy {
         return this.tcpHealthCheckTimeoutDetectionEnabled;
     }
 
-    public int getMinChannelPoolSizePerEndpoint() {
-        return this.minChannelPoolSizePerEndpoint;
+    public int getMinConnectionsPerEndpoint() {
+        return this.minConnectionsPerEndpoint;
+    }
+
+    public int getOpenConnectionsDefensiveConcurrency() {
+        return this.openConnectionsDefensiveConcurrency;
     }
 
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
@@ -605,7 +611,8 @@ public final class ConnectionPolicy {
             ", ioThreadPriority=" + ioThreadPriority +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
-            ", minChannelPoolSizePerEndpoint=" + minChannelPoolSizePerEndpoint +
+            ", minConnectionsPerEndpoint=" + minConnectionsPerEndpoint +
+            ", openConnectionsDefensiveConcurrency=" + openConnectionsDefensiveConcurrency +
             '}';
     }
 }

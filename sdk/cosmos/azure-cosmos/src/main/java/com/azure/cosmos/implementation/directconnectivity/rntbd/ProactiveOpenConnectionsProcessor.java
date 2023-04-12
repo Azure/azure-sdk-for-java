@@ -39,7 +39,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private static final Map<AsyncDocumentClient.OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
 
     static {
-        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(1, 1));
+        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsDefensiveConcurrency(), Configs.getOpenConnectionsDefensiveConcurrency()));
         concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), Configs.getCPUCnt()));
     }
 

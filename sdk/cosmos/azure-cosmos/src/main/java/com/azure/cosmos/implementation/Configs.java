@@ -124,6 +124,9 @@ public class Configs {
     private static final String MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT";
     private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 1;
 
+    private static final String OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY";
+    private static final int DEFAULT_OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY = 1;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -352,5 +355,9 @@ public class Configs {
 
     public static int getMinConnectionPoolSizePerEndpoint() {
         return getIntValue(System.getProperty(MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT), DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
+    }
+
+    public static int getOpenConnectionsDefensiveConcurrency() {
+        return getIntValue(System.getProperty(OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY), DEFAULT_OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY);
     }
 }
