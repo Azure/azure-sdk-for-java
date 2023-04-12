@@ -7,13 +7,9 @@ package com.azure.ai.translation.text;
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -22,8 +18,6 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -38,8 +32,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,19 +42,10 @@ import java.util.Objects;
 public final class TextTranslationClientBuilder
         implements HttpTrait<TextTranslationClientBuilder>,
                 ConfigurationTrait<TextTranslationClientBuilder>,
-                EndpointTrait<TextTranslationClientBuilder>,
-                AzureKeyCredentialTrait<TextTranslationClientBuilder>,
-                TokenCredentialTrait<TextTranslationClientBuilder> {
+                EndpointTrait<TextTranslationClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
-
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-
-    private String region;
-    private AzureKeyCredential credential;
-    private TokenCredential tokenCredential;
 
     @Generated
     private static final Map<String, String> PROPERTIES =
@@ -168,14 +151,11 @@ public final class TextTranslationClientBuilder
      */
     @Generated private String endpoint;
 
-    private Boolean isCustomEndpoint = false;
-
     /** {@inheritDoc}. */
     @Generated
     @Override
     public TextTranslationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
-        this.isCustomEndpoint = CustomEndpointUtils.isPlatformHost(endpoint);
         return this;
     }
 
@@ -214,47 +194,6 @@ public final class TextTranslationClientBuilder
     }
 
     /**
-     * Sets the {@link AzureKeyCredential} used to authorize requests sent to the service.
-     *
-     * @param credential {@link AzureKeyCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code credential} is null.
-     */
-    public TextTranslationClientBuilder credential(AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.credential = credential;
-        return this;
-    }
-
-    /**
-     * Sets the region used to authorize requests sent to the service.
-     *
-     * @param region where the Translator resource is created.
-     * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
-     */
-    public TextTranslationClientBuilder region(String region) {
-        Objects.requireNonNull(region, "'region' cannot be null.");
-        this.region = region;
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
-     *
-     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
-     */
-    public TextTranslationClientBuilder credential(TokenCredential tokenCredential) {
-        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.tokenCredential = tokenCredential;
-        return this;
-    }
-
-    /**
      * Builds an instance of TextTranslationClientImpl with the provided parameters.
      *
      * @return an instance of TextTranslationClientImpl.
@@ -264,25 +203,9 @@ public final class TextTranslationClientBuilder
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         TextTranslationServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : TextTranslationServiceVersion.getLatest();
-
-        String serviceEndpoint;
-        if (this.endpoint == null) {
-            serviceEndpoint = "https://api.cognitive.microsofttranslator.com";
-        } else if (this.isCustomEndpoint) {
-            try {
-                URL hostUri = new URL(endpoint);
-                URL fullUri = new URL(hostUri, "/translator/text/v" + localServiceVersion.getVersion());
-                serviceEndpoint = fullUri.toString();
-            } catch (MalformedURLException ex) {
-                serviceEndpoint = endpoint;
-            }
-        } else {
-            serviceEndpoint = endpoint;
-        }
-
         TextTranslationClientImpl client =
                 new TextTranslationClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), serviceEndpoint, localServiceVersion);
+                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 
@@ -311,19 +234,6 @@ public final class TextTranslationClientBuilder
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
-
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-        }
-
-        if (this.credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-
-            if (this.region != null) {
-                policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
-            }
-        }
-
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .forEach(p -> policies.add(p));

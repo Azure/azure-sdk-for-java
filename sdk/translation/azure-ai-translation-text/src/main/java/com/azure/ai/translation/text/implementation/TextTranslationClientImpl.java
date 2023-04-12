@@ -191,7 +191,7 @@ public final class TextTranslationClientImpl {
                 @QueryParam(value = "to", multipleQueryParams = true) List<String> to,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData content,
+                @BodyParam("application/json") BinaryData requestBody,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -214,7 +214,7 @@ public final class TextTranslationClientImpl {
                 @QueryParam("toScript") String toScript,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData content,
+                @BodyParam("application/json") BinaryData requestBody,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -234,7 +234,7 @@ public final class TextTranslationClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData content,
+                @BodyParam("application/json") BinaryData requestBody,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -256,7 +256,7 @@ public final class TextTranslationClientImpl {
                 @QueryParam("to") String to,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData content,
+                @BodyParam("application/json") BinaryData requestBody,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -278,7 +278,7 @@ public final class TextTranslationClientImpl {
                 @QueryParam("to") String to,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData content,
+                @BodyParam("application/json") BinaryData requestBody,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -504,7 +504,7 @@ public final class TextTranslationClientImpl {
      * You must use the from parameter rather than autodetection when using the dynamic dictionary feature.
      * Note: the dynamic dictionary feature is case-sensitive.</td></tr>
      *     <tr><td>textType</td><td>String</td><td>No</td><td>Defines whether the text being translated is plain text or HTML text. Any HTML needs to be a well-formed,
-     * complete element. Possible values are: plain (default) or html. Allowed values: "plain", "html".</td></tr>
+     * complete element. Possible values are: plain (default) or html. Allowed values: "Plain", "Html".</td></tr>
      *     <tr><td>category</td><td>String</td><td>No</td><td>A string specifying the category (domain) of the translation. This parameter is used to get translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
@@ -594,7 +594,7 @@ public final class TextTranslationClientImpl {
      *     included in the translation scope. For example, use to=de to translate to German. It's possible to translate
      *     to multiple languages simultaneously by repeating the parameter in the query string. For example, use
      *     to=de&amp;to=it to translate to German and Italian.
-     * @param content Array of the text to be translated.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -604,7 +604,7 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> translateWithResponseAsync(
-            List<String> to, BinaryData content, RequestOptions requestOptions) {
+            List<String> to, BinaryData requestBody, RequestOptions requestOptions) {
         final String accept = "application/json";
         List<String> toConverted = to.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
@@ -614,7 +614,7 @@ public final class TextTranslationClientImpl {
                                 toConverted,
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                content,
+                                requestBody,
                                 requestOptions,
                                 context));
     }
@@ -634,7 +634,7 @@ public final class TextTranslationClientImpl {
      * You must use the from parameter rather than autodetection when using the dynamic dictionary feature.
      * Note: the dynamic dictionary feature is case-sensitive.</td></tr>
      *     <tr><td>textType</td><td>String</td><td>No</td><td>Defines whether the text being translated is plain text or HTML text. Any HTML needs to be a well-formed,
-     * complete element. Possible values are: plain (default) or html. Allowed values: "plain", "html".</td></tr>
+     * complete element. Possible values are: plain (default) or html. Allowed values: "Plain", "Html".</td></tr>
      *     <tr><td>category</td><td>String</td><td>No</td><td>A string specifying the category (domain) of the translation. This parameter is used to get translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
@@ -724,7 +724,7 @@ public final class TextTranslationClientImpl {
      *     included in the translation scope. For example, use to=de to translate to German. It's possible to translate
      *     to multiple languages simultaneously by repeating the parameter in the query string. For example, use
      *     to=de&amp;to=it to translate to German and Italian.
-     * @param content Array of the text to be translated.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -734,8 +734,8 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> translateWithResponse(
-            List<String> to, BinaryData content, RequestOptions requestOptions) {
-        return translateWithResponseAsync(to, content, requestOptions).block();
+            List<String> to, BinaryData requestBody, RequestOptions requestOptions) {
+        return translateWithResponseAsync(to, requestBody, requestOptions).block();
     }
 
     /**
@@ -778,7 +778,7 @@ public final class TextTranslationClientImpl {
      *     transliteration scope, to find input scripts available for the selected language.
      * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
      *     output scripts available for the selected combination of input language and input script.
-     * @param content Array of the text to be transliterated.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -788,7 +788,11 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> transliterateWithResponseAsync(
-            String language, String fromScript, String toScript, BinaryData content, RequestOptions requestOptions) {
+            String language,
+            String fromScript,
+            String toScript,
+            BinaryData requestBody,
+            RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -799,7 +803,7 @@ public final class TextTranslationClientImpl {
                                 toScript,
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                content,
+                                requestBody,
                                 requestOptions,
                                 context));
     }
@@ -844,7 +848,7 @@ public final class TextTranslationClientImpl {
      *     transliteration scope, to find input scripts available for the selected language.
      * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
      *     output scripts available for the selected combination of input language and input script.
-     * @param content Array of the text to be transliterated.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -854,8 +858,12 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> transliterateWithResponse(
-            String language, String fromScript, String toScript, BinaryData content, RequestOptions requestOptions) {
-        return transliterateWithResponseAsync(language, fromScript, toScript, content, requestOptions).block();
+            String language,
+            String fromScript,
+            String toScript,
+            BinaryData requestBody,
+            RequestOptions requestOptions) {
+        return transliterateWithResponseAsync(language, fromScript, toScript, requestBody, requestOptions).block();
     }
 
     /**
@@ -910,7 +918,7 @@ public final class TextTranslationClientImpl {
      * ]
      * }</pre>
      *
-     * @param content Array of the text for which values the sentence boundaries will be calculated.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -920,7 +928,7 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> findSentenceBoundariesWithResponseAsync(
-            BinaryData content, RequestOptions requestOptions) {
+            BinaryData requestBody, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -928,7 +936,7 @@ public final class TextTranslationClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                content,
+                                requestBody,
                                 requestOptions,
                                 context));
     }
@@ -985,7 +993,7 @@ public final class TextTranslationClientImpl {
      * ]
      * }</pre>
      *
-     * @param content Array of the text for which values the sentence boundaries will be calculated.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -994,8 +1002,9 @@ public final class TextTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> findSentenceBoundariesWithResponse(BinaryData content, RequestOptions requestOptions) {
-        return findSentenceBoundariesWithResponseAsync(content, requestOptions).block();
+    public Response<BinaryData> findSentenceBoundariesWithResponse(
+            BinaryData requestBody, RequestOptions requestOptions) {
+        return findSentenceBoundariesWithResponseAsync(requestBody, requestOptions).block();
     }
 
     /**
@@ -1053,7 +1062,7 @@ public final class TextTranslationClientImpl {
      *     included in the dictionary scope.
      * @param to Specifies the language of the output text. The target language must be one of the supported languages
      *     included in the dictionary scope.
-     * @param content Array of the text to be sent to dictionary.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1063,7 +1072,7 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponseAsync(
-            String from, String to, BinaryData content, RequestOptions requestOptions) {
+            String from, String to, BinaryData requestBody, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1073,7 +1082,7 @@ public final class TextTranslationClientImpl {
                                 to,
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                content,
+                                requestBody,
                                 requestOptions,
                                 context));
     }
@@ -1133,7 +1142,7 @@ public final class TextTranslationClientImpl {
      *     included in the dictionary scope.
      * @param to Specifies the language of the output text. The target language must be one of the supported languages
      *     included in the dictionary scope.
-     * @param content Array of the text to be sent to dictionary.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1143,8 +1152,8 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> lookupDictionaryEntriesWithResponse(
-            String from, String to, BinaryData content, RequestOptions requestOptions) {
-        return lookupDictionaryEntriesWithResponseAsync(from, to, content, requestOptions).block();
+            String from, String to, BinaryData requestBody, RequestOptions requestOptions) {
+        return lookupDictionaryEntriesWithResponseAsync(from, to, requestBody, requestOptions).block();
     }
 
     /**
@@ -1196,7 +1205,7 @@ public final class TextTranslationClientImpl {
      *     included in the dictionary scope.
      * @param to Specifies the language of the output text. The target language must be one of the supported languages
      *     included in the dictionary scope.
-     * @param content Array of the text to be sent to dictionary.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1206,7 +1215,7 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponseAsync(
-            String from, String to, BinaryData content, RequestOptions requestOptions) {
+            String from, String to, BinaryData requestBody, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1216,7 +1225,7 @@ public final class TextTranslationClientImpl {
                                 to,
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                content,
+                                requestBody,
                                 requestOptions,
                                 context));
     }
@@ -1270,7 +1279,7 @@ public final class TextTranslationClientImpl {
      *     included in the dictionary scope.
      * @param to Specifies the language of the output text. The target language must be one of the supported languages
      *     included in the dictionary scope.
-     * @param content Array of the text to be sent to dictionary.
+     * @param requestBody Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1280,7 +1289,7 @@ public final class TextTranslationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> lookupDictionaryExamplesWithResponse(
-            String from, String to, BinaryData content, RequestOptions requestOptions) {
-        return lookupDictionaryExamplesWithResponseAsync(from, to, content, requestOptions).block();
+            String from, String to, BinaryData requestBody, RequestOptions requestOptions) {
+        return lookupDictionaryExamplesWithResponseAsync(from, to, requestBody, requestOptions).block();
     }
 }

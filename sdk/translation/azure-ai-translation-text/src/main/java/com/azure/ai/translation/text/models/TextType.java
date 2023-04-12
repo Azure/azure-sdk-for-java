@@ -10,11 +10,11 @@ import java.util.Collection;
 
 /** Defines values for TextType. */
 public final class TextType extends ExpandableStringEnum<TextType> {
-    /** Static value plain for TextType. */
-    public static final TextType PLAIN = fromString("plain");
+    /** Static value Plain for TextType. */
+    public static final TextType PLAIN = fromString("Plain");
 
-    /** Static value html for TextType. */
-    public static final TextType HTML = fromString("html");
+    /** Static value Html for TextType. */
+    public static final TextType HTML = fromString("Html");
 
     /**
      * Creates a new instance of TextType value.
