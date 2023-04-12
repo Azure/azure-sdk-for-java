@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkServices Delete. */
 public final class PrivateLinkServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PrivateLinkServiceDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/PrivateLinkServiceDelete.json
      */
     /**
      * Sample code: Delete private link service.
@@ -17,6 +15,11 @@ public final class PrivateLinkServicesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletePrivateLinkService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices().delete("rg1", "testPls", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
+            .delete("rg1", "testPls", com.azure.core.util.Context.NONE);
     }
 }

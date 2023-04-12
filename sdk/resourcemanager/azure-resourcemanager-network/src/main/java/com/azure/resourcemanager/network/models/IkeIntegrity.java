@@ -29,6 +29,15 @@ public final class IkeIntegrity extends ExpandableStringEnum<IkeIntegrity> {
     public static final IkeIntegrity GCMAES128 = fromString("GCMAES128");
 
     /**
+     * Creates a new instance of IkeIntegrity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IkeIntegrity() {
+    }
+
+    /**
      * Creates or finds a IkeIntegrity from its string representation.
      *
      * @param name a name to look for.

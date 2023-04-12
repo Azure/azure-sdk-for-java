@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentBuildStatus. */
+/** Deployment build status. */
 public final class DeploymentBuildStatus extends ExpandableStringEnum<DeploymentBuildStatus> {
     /** Static value TimedOut for DeploymentBuildStatus. */
     public static final DeploymentBuildStatus TIMED_OUT = fromString("TimedOut");
@@ -48,6 +48,15 @@ public final class DeploymentBuildStatus extends ExpandableStringEnum<Deployment
 
     /** Static value RuntimeSuccessful for DeploymentBuildStatus. */
     public static final DeploymentBuildStatus RUNTIME_SUCCESSFUL = fromString("RuntimeSuccessful");
+
+    /**
+     * Creates a new instance of DeploymentBuildStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentBuildStatus() {
+    }
 
     /**
      * Creates or finds a DeploymentBuildStatus from its string representation.

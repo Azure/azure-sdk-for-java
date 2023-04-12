@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublishingProfileFormat. */
+/** Name of the format. Valid values are: FileZilla3 WebDeploy -- default Ftp. */
 public final class PublishingProfileFormat extends ExpandableStringEnum<PublishingProfileFormat> {
     /** Static value FileZilla3 for PublishingProfileFormat. */
     public static final PublishingProfileFormat FILE_ZILLA3 = fromString("FileZilla3");
@@ -18,6 +18,15 @@ public final class PublishingProfileFormat extends ExpandableStringEnum<Publishi
 
     /** Static value Ftp for PublishingProfileFormat. */
     public static final PublishingProfileFormat FTP = fromString("Ftp");
+
+    /**
+     * Creates a new instance of PublishingProfileFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublishingProfileFormat() {
+    }
 
     /**
      * Creates or finds a PublishingProfileFormat from its string representation.

@@ -246,7 +246,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-11-01-preview";
+        this.apiVersion = "2023-04-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.sapVirtualInstances = new SapVirtualInstancesClientImpl(this);
         this.sapCentralInstances = new SapCentralInstancesClientImpl(this);

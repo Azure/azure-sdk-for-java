@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.models.KeyType;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 
 /** Samples for SignalR RegenerateKey. */
 public final class SignalRRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_RegenerateKey.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_RegenerateKey.json
      */
     /**
      * Sample code: SignalR_RegenerateKey.
@@ -25,6 +24,6 @@ public final class SignalRRegenerateKeySamples {
                 "myResourceGroup",
                 "mySignalRService",
                 new RegenerateKeyParameters().withKeyType(KeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

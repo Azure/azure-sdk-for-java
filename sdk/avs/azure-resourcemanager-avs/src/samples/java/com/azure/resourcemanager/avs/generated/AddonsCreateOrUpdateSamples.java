@@ -41,7 +41,7 @@ public final class AddonsCreateOrUpdateSamples {
             .addons()
             .define("srm")
             .withExistingPrivateCloud("group1", "cloud1")
-            .withProperties(new AddonSrmProperties().withLicenseKey("41915178-A8FF-4A4D-B683-6D735AF5E3F5"))
+            .withProperties(new AddonSrmProperties().withLicenseKey("fakeTokenPlaceholder"))
             .create();
     }
 

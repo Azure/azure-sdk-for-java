@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendArmResourceInner;
 
 /** Samples for StaticSites LinkBackendToBuild. */
 public final class StaticSitesLinkBackendToBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/LinkBackendToStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/LinkBackendToStaticSiteBuild.json
      */
     /**
      * Sample code: Link a backend to a static site build.
@@ -32,6 +31,6 @@ public final class StaticSitesLinkBackendToBuildSamples {
                     .withBackendResourceId(
                         "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend")
                     .withRegion("West US 2"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

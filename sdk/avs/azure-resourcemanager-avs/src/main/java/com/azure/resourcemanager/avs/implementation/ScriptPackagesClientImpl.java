@@ -55,7 +55,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientScriptPacka")
-    private interface ScriptPackagesService {
+    public interface ScriptPackagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"

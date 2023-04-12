@@ -3420,6 +3420,7 @@ class BlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") != null
         response.getValue().getAccountKind() != null
         response.getValue().getSkuName() != null
+        response.getValue().isHierarchicalNamespaceEnabled() != null
     }
 
     def "Get account info min"() {

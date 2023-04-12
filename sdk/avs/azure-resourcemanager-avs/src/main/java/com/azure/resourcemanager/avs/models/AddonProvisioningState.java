@@ -32,6 +32,15 @@ public final class AddonProvisioningState extends ExpandableStringEnum<AddonProv
     public static final AddonProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of AddonProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AddonProvisioningState() {
+    }
+
+    /**
      * Creates or finds a AddonProvisioningState from its string representation.
      *
      * @param name a name to look for.

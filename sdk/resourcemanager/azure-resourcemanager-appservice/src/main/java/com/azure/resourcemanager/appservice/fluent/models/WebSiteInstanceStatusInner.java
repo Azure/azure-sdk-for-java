@@ -20,6 +20,10 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private WebSiteInstanceStatusProperties innerProperties;
 
+    /** Creates an instance of WebSiteInstanceStatusInner class. */
+    public WebSiteInstanceStatusInner() {
+    }
+
     /**
      * Get the innerProperties property: WebSiteInstanceStatus resource specific properties.
      *

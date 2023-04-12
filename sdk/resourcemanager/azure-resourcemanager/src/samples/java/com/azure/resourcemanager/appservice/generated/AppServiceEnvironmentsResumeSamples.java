@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments Resume. */
 public final class AppServiceEnvironmentsResumeSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_Resume.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_Resume.json
      */
     /**
      * Sample code: Resume an App Service Environment.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsResumeSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .resume("test-rg", "test-ase", Context.NONE);
+            .resume("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

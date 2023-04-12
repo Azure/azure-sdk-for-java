@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.AffinityStrength;
 import com.azure.resourcemanager.avs.models.AzureHybridBenefitType;
 import com.azure.resourcemanager.avs.models.PlacementPolicy;
@@ -25,7 +24,7 @@ public final class PlacementPoliciesUpdateSamples {
         PlacementPolicy resource =
             manager
                 .placementPolicies()
-                .getWithResponse("group1", "cloud1", "cluster1", "policy1", Context.NONE)
+                .getWithResponse("group1", "cloud1", "cluster1", "policy1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

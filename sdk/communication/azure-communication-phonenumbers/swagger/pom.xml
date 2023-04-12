@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.azure.tools</groupId>
       <artifactId>azure-autorest-customization</artifactId>
-      <version>1.0.0-beta.4</version>
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:azure-autorest-customization;current} -->
     </dependency>
   </dependencies>
 </project>

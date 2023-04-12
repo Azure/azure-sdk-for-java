@@ -16,6 +16,10 @@ public final class MsixImageUri {
     @JsonProperty(value = "uri")
     private String uri;
 
+    /** Creates an instance of MsixImageUri class. */
+    public MsixImageUri() {
+    }
+
     /**
      * Get the uri property: URI to Image.
      *

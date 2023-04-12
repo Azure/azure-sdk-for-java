@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetFtpAllowed. */
 public final class WebAppsGetFtpAllowedSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetPublishingCredentialsPolicy.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetPublishingCredentialsPolicy.json
      */
     /**
      * Sample code: Get FTP Allowed.
@@ -22,6 +20,6 @@ public final class WebAppsGetFtpAllowedSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getFtpAllowedWithResponse("rg", "testSite", Context.NONE);
+            .getFtpAllowedWithResponse("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

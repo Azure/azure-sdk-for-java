@@ -24,6 +24,15 @@ public final class VirtualNetworkGatewayConnectionStatus
     public static final VirtualNetworkGatewayConnectionStatus NOT_CONNECTED = fromString("NotConnected");
 
     /**
+     * Creates a new instance of VirtualNetworkGatewayConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkGatewayConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkGatewayConnectionStatus from its string representation.
      *
      * @param name a name to look for.

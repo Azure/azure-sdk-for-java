@@ -75,11 +75,11 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @Test
     public void testReceiverStartOfStreamFilters() {
-        final EventHubConsumerAsyncClient consumer = createBuilder()
+        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
         final String partitionId = "3";
         final IntegrationTestEventData integrationTestEventData = getTestData().get(partitionId);
         final PartitionProperties properties = integrationTestEventData.getPartitionProperties();

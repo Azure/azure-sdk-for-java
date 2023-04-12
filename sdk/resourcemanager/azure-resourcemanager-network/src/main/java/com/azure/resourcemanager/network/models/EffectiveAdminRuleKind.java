@@ -17,6 +17,15 @@ public final class EffectiveAdminRuleKind extends ExpandableStringEnum<Effective
     public static final EffectiveAdminRuleKind DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of EffectiveAdminRuleKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EffectiveAdminRuleKind() {
+    }
+
+    /**
      * Creates or finds a EffectiveAdminRuleKind from its string representation.
      *
      * @param name a name to look for.

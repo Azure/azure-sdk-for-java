@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmResource;
 
 /** Samples for StaticSites CreateZipDeploymentForStaticSite. */
 public final class StaticSitesCreateZipDeploymentForStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/StaticSiteZipDeploy.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/StaticSiteZipDeploy.json
      */
     /**
      * Sample code: Deploy a site from a zipped package.
@@ -34,6 +33,6 @@ public final class StaticSitesCreateZipDeploymentForStaticSiteSamples {
                     .withDeploymentTitle("Update index.html")
                     .withProvider("testProvider")
                     .withFunctionLanguage("testFunctionLanguage"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

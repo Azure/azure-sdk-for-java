@@ -17,6 +17,15 @@ public final class QuotaEnabled extends ExpandableStringEnum<QuotaEnabled> {
     public static final QuotaEnabled DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of QuotaEnabled value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QuotaEnabled() {
+    }
+
+    /**
      * Creates or finds a QuotaEnabled from its string representation.
      *
      * @param name a name to look for.

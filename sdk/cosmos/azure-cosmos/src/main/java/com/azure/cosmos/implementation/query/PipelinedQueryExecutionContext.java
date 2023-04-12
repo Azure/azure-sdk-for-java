@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -33,7 +34,8 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
     private static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponentFunction(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
-        PipelinedDocumentQueryParams<T> initParams) {
+        PipelinedDocumentQueryParams<T> initParams,
+        DocumentCollection collection) {
 
         CosmosQueryRequestOptions requestOptions = initParams.getCosmosQueryRequestOptions();
 
@@ -43,19 +45,20 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
 
             initParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
 
-            return ParallelDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
+            return ParallelDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
         };
     }
 
     private static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createPipelineComponentFunction(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
-        PipelinedDocumentQueryParams<T> initParams) {
+        PipelinedDocumentQueryParams<T> initParams,
+        DocumentCollection collection) {
 
         QueryInfo queryInfo = validateQueryInfo(initParams.getQueryInfo());
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponentFunction = createBaseComponentFunction(
-            diagnosticsClientContext, client, initParams);
+            diagnosticsClientContext, client, initParams, collection);
 
         return createCommonPipelineComponentFunction(
             createBaseComponentFunction,
@@ -68,11 +71,12 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
         int pageSize,
-        Function<JsonNode, T> factoryMethod) {
+        Function<JsonNode, T> factoryMethod,
+        DocumentCollection collection) {
 
         // Use nested callback pattern to unwrap the continuation token and query params at each level.
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createPipelineComponentFunction =
-            createPipelineComponentFunction(diagnosticsClientContext, client, initParams);
+            createPipelineComponentFunction(diagnosticsClientContext, client, initParams, collection);
 
         QueryInfo queryInfo = validateQueryInfo(initParams.getQueryInfo());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = initParams.getCosmosQueryRequestOptions();

@@ -25,7 +25,11 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -45,6 +49,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -55,9 +60,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
@@ -67,6 +74,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -89,6 +97,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private static final ClosedChannelException ON_DEREGISTER =
         ThrowableUtil.unknownStackTrace(new ClosedChannelException(), RntbdRequestManager.class, "deregister");
 
+    private static final String FAULT_INJECTION_RULE_ID_KEY_NAME = "faultInjectionRuleId";
+    private static final AttributeKey<String> FAULT_INJECTION_RULE_ID_KEY = AttributeKey.newInstance(
+        FAULT_INJECTION_RULE_ID_KEY_NAME);
+
     private static final EventExecutor requestExpirationExecutor = new DefaultEventExecutor(new RntbdThreadFactory(
         "request-expirator",
         true,
@@ -104,6 +116,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final Timestamps timestamps = new Timestamps();
     private final RntbdConnectionStateListener rntbdConnectionStateListener;
     private final long idleConnectionTimerResolutionInNanos;
+    private final long tcpNetworkRequestTimeoutInNanos;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
@@ -114,7 +128,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final ChannelHealthChecker healthChecker,
         final int pendingRequestLimit,
         final RntbdConnectionStateListener connectionStateListener,
-        final long idleConnectionTimerResolutionInNanos) {
+        final long idleConnectionTimerResolutionInNanos,
+        final RntbdServerErrorInjector serverErrorInjector,
+        final long tcpNetworkRequestTimeoutInNanos) {
 
         checkArgument(pendingRequestLimit > 0, "pendingRequestLimit: %s", pendingRequestLimit);
         checkNotNull(healthChecker, "healthChecker");
@@ -124,6 +140,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.healthChecker = healthChecker;
         this.rntbdConnectionStateListener = connectionStateListener;
         this.idleConnectionTimerResolutionInNanos = idleConnectionTimerResolutionInNanos;
+        this.tcpNetworkRequestTimeoutInNanos = tcpNetworkRequestTimeoutInNanos;
+        this.serverErrorInjector = serverErrorInjector;
     }
 
     // region ChannelHandler methods
@@ -416,6 +434,26 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 }
             }
 
+            if (event instanceof RntbdFaultInjectionConnectionResetEvent) {
+                logger.warn(
+                    "Inject Connection reset with ruleId {} ",
+                    ((RntbdFaultInjectionConnectionResetEvent) event).getFaultInjectionRuleId());
+
+                context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionResetEvent) event).getFaultInjectionRuleId());
+                this.exceptionCaught(context, new IOException("Fault Injection Connection Reset"));
+                return;
+            }
+
+            if (event instanceof RntbdFaultInjectionConnectionCloseEvent) {
+                logger.warn(
+                    "Inject Connection close with ruleId {} ",
+                    ((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
+
+                context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
+                context.close();
+                return;
+            }
+
             context.fireUserEventTriggered(event);
 
         } catch (Throwable error) {
@@ -587,6 +625,22 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 record.setSendingRequestHasStarted();
                 this.timestamps.channelWriteAttempted();
 
+                if (this.serverErrorInjector != null) {
+                    if (this.serverErrorInjector.injectRntbdServerResponseError(record)) {
+                        this.timestamps.channelWriteCompleted();
+                        this.timestamps.channelReadCompleted();
+                        return;
+                    }
+
+                    Consumer<Duration> writeRequestWithInjectedDelayConsumer =
+                        (delay) -> this.writeRequestWithInjectedDelay(context, record, promise, delay);
+                    if (this.serverErrorInjector.injectRntbdServerResponseDelayBeforeProcessing(
+                        record, writeRequestWithInjectedDelayConsumer)) {
+
+                        return;
+                    }
+                }
+
                 context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
                     record.stage(RntbdRequestRecord.Stage.SENT);
                     if (completed.isSuccess()) {
@@ -615,6 +669,77 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         reportIssue(context, "", error);
         this.exceptionCaught(context, error);
+    }
+
+    private void writeRequestWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final ChannelPromise promise,
+        Duration delay) {
+
+        // Start the timer but delay the write
+        // The ultimate effect will be similar to reduce the request timeout
+        // But if the configured delay > networkRequestTimeout, then do not bother to send the request
+        this.addPendingRequestRecord(context, rntbdRequestRecord);
+        rntbdRequestRecord.stage(RntbdRequestRecord.Stage.SENT);
+        this.timestamps.channelWriteCompleted();
+
+        // Since this is to simulate a response delay, mark write completed
+        this.timestamps.channelWriteCompleted();
+
+        long effectiveDelayInNanos = Math.min(this.tcpNetworkRequestTimeoutInNanos, delay.toNanos());
+        context.executor().schedule(
+            () -> {
+                if (this.tcpNetworkRequestTimeoutInNanos <= delay.toNanos()) {
+                    return;
+                }
+                context.write(rntbdRequestRecord, promise);
+            },
+            effectiveDelayInNanos,
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final StoreResponse storeResponse,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.complete(storeResponse);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
+    }
+
+    private void completeExceptionallyWithInjectedDelay(
+        final ChannelHandlerContext context,
+        final RntbdRequestRecord rntbdRequestRecord,
+        final CosmosException cause,
+        Duration delay) {
+
+        long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
+        if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            return;
+        }
+
+        context.executor().schedule(
+            () -> {
+
+                rntbdRequestRecord.completeExceptionally(cause);
+            },
+            delay.toNanos(),
+            TimeUnit.NANOSECONDS
+        );
     }
 
     public RntbdChannelStatistics getChannelStatistics(
@@ -792,6 +917,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 : new ChannelException(throwable);
         }
 
+        String faultInjectionRuleId = StringUtils.EMPTY;
+        if (context.channel().hasAttr(FAULT_INJECTION_RULE_ID_KEY)) {
+            faultInjectionRuleId = context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).getAndSet(StringUtils.EMPTY);
+        }
+
         for (RntbdRequestRecord record : this.pendingRequests.values()) {
 
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
@@ -799,6 +929,14 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final GoneException error = new GoneException(message, cause, null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
+
+            if (StringUtils.isNotEmpty(faultInjectionRuleId)) {
+                record
+                    .args()
+                    .serviceRequest()
+                    .faultInjectionRequestContext
+                    .applyFaultInjectionRule(record.transportRequestId(), faultInjectionRuleId);
+            }
 
             record.completeExceptionally(error);
         }
@@ -843,6 +981,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
+
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeWithInjectedDelay(context, requestRecord, storeResponse, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
+
             requestRecord.complete(storeResponse);
 
         } else {
@@ -963,6 +1112,16 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
             }
             BridgeInternal.setResourceAddress(cause, resourceAddress);
+
+            if (this.serverErrorInjector != null) {
+                Consumer<Duration> completeWithInjectedDelayConsumer =
+                    (delay) -> this.completeExceptionallyWithInjectedDelay(context, requestRecord, cause, delay);
+                if (this.serverErrorInjector.injectRntbdServerResponseDelayAfterProcessing(
+                    requestRecord, completeWithInjectedDelayConsumer)) {
+
+                    return;
+                }
+            }
 
             requestRecord.completeExceptionally(cause);
         }

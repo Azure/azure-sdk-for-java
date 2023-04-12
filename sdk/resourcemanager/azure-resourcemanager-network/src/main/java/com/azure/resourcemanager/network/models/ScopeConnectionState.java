@@ -26,6 +26,15 @@ public final class ScopeConnectionState extends ExpandableStringEnum<ScopeConnec
     public static final ScopeConnectionState REJECTED = fromString("Rejected");
 
     /**
+     * Creates a new instance of ScopeConnectionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScopeConnectionState() {
+    }
+
+    /**
      * Creates or finds a ScopeConnectionState from its string representation.
      *
      * @param name a name to look for.

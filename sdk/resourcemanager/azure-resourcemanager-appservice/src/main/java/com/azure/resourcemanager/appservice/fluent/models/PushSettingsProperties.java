@@ -17,15 +17,15 @@ public final class PushSettingsProperties {
     private boolean isPushEnabled;
 
     /*
-     * Gets or sets a JSON string containing a list of tags that are
-     * whitelisted for use by the push registration endpoint.
+     * Gets or sets a JSON string containing a list of tags that are whitelisted for use by the push registration
+     * endpoint.
      */
     @JsonProperty(value = "tagWhitelistJson")
     private String tagWhitelistJson;
 
     /*
-     * Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint.
+     * Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push
+     * registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
      * '_', '@', '#', '.', ':', '-'.
      * Validation should be performed at the PushRequestHandler.
@@ -34,11 +34,15 @@ public final class PushSettingsProperties {
     private String tagsRequiringAuth;
 
     /*
-     * Gets or sets a JSON string containing a list of dynamic tags that will
-     * be evaluated from user claims in the push registration endpoint.
+     * Gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push
+     * registration endpoint.
      */
     @JsonProperty(value = "dynamicTagsJson")
     private String dynamicTagsJson;
+
+    /** Creates an instance of PushSettingsProperties class. */
+    public PushSettingsProperties() {
+    }
 
     /**
      * Get the isPushEnabled property: Gets or sets a flag indicating whether the Push endpoint is enabled.

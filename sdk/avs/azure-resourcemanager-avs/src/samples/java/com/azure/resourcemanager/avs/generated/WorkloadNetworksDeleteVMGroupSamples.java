@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteVMGroup. */
 public final class WorkloadNetworksDeleteVMGroupSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkloadNetworksDeleteVMGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteVMGroup(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteVMGroup("group1", "vmGroup1", "cloud1", Context.NONE);
+        manager.workloadNetworks().deleteVMGroup("group1", "vmGroup1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

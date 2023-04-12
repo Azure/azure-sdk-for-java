@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraNetworkProfile;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CloudProviderProfileInfraNetworkProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CloudProviderProfileInfraNetworkProfile model =
             BinaryData
                 .fromString("{\"vnetSubnetIds\":[\"wndeicbtwnp\"]}")
@@ -20,8 +19,8 @@ public final class CloudProviderProfileInfraNetworkProfileTests {
         Assertions.assertEquals("wndeicbtwnp", model.vnetSubnetIds().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CloudProviderProfileInfraNetworkProfile model =
             new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList("wndeicbtwnp"));
         model = BinaryData.fromObject(model).toObject(CloudProviderProfileInfraNetworkProfile.class);

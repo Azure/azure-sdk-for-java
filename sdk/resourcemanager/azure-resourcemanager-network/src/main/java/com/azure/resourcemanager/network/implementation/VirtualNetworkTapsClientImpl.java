@@ -212,7 +212,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -262,7 +262,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -328,7 +328,7 @@ public final class VirtualNetworkTapsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String tapName) {
-        return beginDeleteAsync(resourceGroupName, tapName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, tapName).getSyncPoller();
     }
 
     /**
@@ -344,7 +344,7 @@ public final class VirtualNetworkTapsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String tapName, Context context) {
-        return beginDeleteAsync(resourceGroupName, tapName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, tapName, context).getSyncPoller();
     }
 
     /**
@@ -442,7 +442,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -493,7 +493,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -593,7 +593,7 @@ public final class VirtualNetworkTapsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -650,7 +650,7 @@ public final class VirtualNetworkTapsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -732,7 +732,7 @@ public final class VirtualNetworkTapsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkTapInner>, VirtualNetworkTapInner> beginCreateOrUpdate(
         String resourceGroupName, String tapName, VirtualNetworkTapInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, tapName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, tapName, parameters).getSyncPoller();
     }
 
     /**
@@ -750,7 +750,7 @@ public final class VirtualNetworkTapsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkTapInner>, VirtualNetworkTapInner> beginCreateOrUpdate(
         String resourceGroupName, String tapName, VirtualNetworkTapInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, tapName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, tapName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -865,7 +865,7 @@ public final class VirtualNetworkTapsClientImpl
         } else {
             tapParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -922,7 +922,7 @@ public final class VirtualNetworkTapsClientImpl
         } else {
             tapParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1011,7 +1011,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1054,7 +1054,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1151,7 +1151,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1206,7 +1206,7 @@ public final class VirtualNetworkTapsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

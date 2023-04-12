@@ -7,25 +7,24 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksExtendedLocation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksExtendedLocationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworksExtendedLocation model =
             BinaryData
-                .fromString("{\"type\":\"ztvbtqgsfr\",\"name\":\"yzkoowtlmngu\"}")
+                .fromString("{\"type\":\"xgfpelolppv\",\"name\":\"r\"}")
                 .toObject(VirtualNetworksExtendedLocation.class);
-        Assertions.assertEquals("ztvbtqgsfr", model.type());
-        Assertions.assertEquals("yzkoowtlmngu", model.name());
+        Assertions.assertEquals("xgfpelolppv", model.type());
+        Assertions.assertEquals("r", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworksExtendedLocation model =
-            new VirtualNetworksExtendedLocation().withType("ztvbtqgsfr").withName("yzkoowtlmngu");
+            new VirtualNetworksExtendedLocation().withType("xgfpelolppv").withName("r");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksExtendedLocation.class);
-        Assertions.assertEquals("ztvbtqgsfr", model.type());
-        Assertions.assertEquals("yzkoowtlmngu", model.name());
+        Assertions.assertEquals("xgfpelolppv", model.type());
+        Assertions.assertEquals("r", model.name());
     }
 }

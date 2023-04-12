@@ -29,6 +29,9 @@ public final class EnrichmentStatus {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of EnrichmentStatus class. */
+    public EnrichmentStatus() {}
+
     /**
      * Get the timestamp property: data slice timestamp.
      *

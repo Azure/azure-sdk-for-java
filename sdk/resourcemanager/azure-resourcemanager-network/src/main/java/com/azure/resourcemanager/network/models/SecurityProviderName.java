@@ -20,6 +20,15 @@ public final class SecurityProviderName extends ExpandableStringEnum<SecurityPro
     public static final SecurityProviderName CHECKPOINT = fromString("Checkpoint");
 
     /**
+     * Creates a new instance of SecurityProviderName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityProviderName() {
+    }
+
+    /**
      * Creates or finds a SecurityProviderName from its string representation.
      *
      * @param name a name to look for.

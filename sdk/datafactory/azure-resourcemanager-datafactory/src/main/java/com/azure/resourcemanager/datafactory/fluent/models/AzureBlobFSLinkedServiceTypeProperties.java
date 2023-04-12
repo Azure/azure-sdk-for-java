@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +15,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     /*
      * Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
+    @JsonProperty(value = "url")
     private Object url;
 
     /*
@@ -81,6 +80,18 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
+
+    /*
+     * SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "sasUri")
+    private Object sasUri;
+
+    /*
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "sasToken")
+    private SecretBase sasToken;
 
     /** Creates an instance of AzureBlobFSLinkedServiceTypeProperties class. */
     public AzureBlobFSLinkedServiceTypeProperties() {
@@ -315,17 +326,53 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.sasUri;
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobFSLinkedServiceTypeProperties withSasUri(Object sasUri) {
+        this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public SecretBase sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobFSLinkedServiceTypeProperties withSasToken(SecretBase sasToken) {
+        this.sasToken = sasToken;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model AzureBlobFSLinkedServiceTypeProperties"));
-        }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
@@ -335,7 +382,8 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
         if (servicePrincipalCredential() != null) {
             servicePrincipalCredential().validate();
         }
+        if (sasToken() != null) {
+            sasToken().validate();
+        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFSLinkedServiceTypeProperties.class);
 }

@@ -18,6 +18,10 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private FunctionEnvelopeProperties innerProperties;
 
+    /** Creates an instance of FunctionEnvelopeInner class. */
+    public FunctionEnvelopeInner() {
+    }
+
     /**
      * Get the innerProperties property: FunctionEnvelope resource specific properties.
      *

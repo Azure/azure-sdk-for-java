@@ -1,30 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert57186cea/pending/merge?api-version=7.3",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/testcert28718fed/pending/merge?api-version=7.4",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "107",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Thu, 31 Mar 2022 00:15:15 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:28 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "5d35b8da-5e8f-4105-b36e-80b35629f58f",
-      "x-ms-keyvault-service-version" : "1.9.331.5",
-      "Body" : "{\"error\":{\"code\":\"PendingCertificateNotFound\",\"message\":\"Pending Certificate not found: testcert57186cea\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
+      "Content-Length" : "107",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "a7d3b212-c62c-4e9a-84b1-18ce6d8a20ce",
+      "Body" : "{\"error\":{\"code\":\"PendingCertificateNotFound\",\"message\":\"Pending Certificate not found: testcert28718fed\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testcert57186cea" ]
+  "variables" : [ "testcert28718fed" ]
 }

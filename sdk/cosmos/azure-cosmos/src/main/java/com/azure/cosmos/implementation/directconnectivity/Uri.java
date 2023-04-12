@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Uri {
@@ -22,6 +23,7 @@ public class Uri {
     private volatile Instant lastUnknownTimestamp;
     private volatile Instant lastUnhealthyPendingTimestamp;
     private volatile Instant lastUnhealthyTimestamp;
+    private volatile boolean isPrimary;
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);
@@ -50,6 +52,20 @@ public class Uri {
     public String getURIAsString() {
         return this.uriAsString;
     }
+
+    /***
+     * Attention: This is only used for fault injection to easier decide whether the address is primary address.
+     * @param primary
+     */
+    public void setPrimary(boolean primary) {
+        isPrimary = primary;
+    }
+
+    /***
+     * Attention: This is only used for fault injection to easier detect whether the address is primary address.
+     * @return
+     */
+    public boolean isPrimary() { return this.isPrimary; }
 
     /***
      * This method will be called if a connection can be established successfully to the backend.

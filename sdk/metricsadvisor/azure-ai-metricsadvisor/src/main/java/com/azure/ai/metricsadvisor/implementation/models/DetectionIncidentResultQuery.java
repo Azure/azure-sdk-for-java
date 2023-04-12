@@ -29,6 +29,9 @@ public final class DetectionIncidentResultQuery {
     @JsonProperty(value = "filter")
     private DetectionIncidentFilterCondition filter;
 
+    /** Creates an instance of DetectionIncidentResultQuery class. */
+    public DetectionIncidentResultQuery() {}
+
     /**
      * Get the startTime property: start time.
      *

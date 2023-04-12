@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostics ListSiteDiagnosticCategories. */
 public final class DiagnosticsListSiteDiagnosticCategoriesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
      */
     /**
      * Sample code: List App Slot Diagnostic Categories.
@@ -22,11 +20,11 @@ public final class DiagnosticsListSiteDiagnosticCategoriesSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .listSiteDiagnosticCategories("Sample-WestUSResourceGroup", "SampleApp", Context.NONE);
+            .listSiteDiagnosticCategories("Sample-WestUSResourceGroup", "SampleApp", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
      */
     /**
      * Sample code: List App Diagnostic Categories.
@@ -39,6 +37,6 @@ public final class DiagnosticsListSiteDiagnosticCategoriesSamples {
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .listSiteDiagnosticCategories("Sample-WestUSResourceGroup", "SampleApp", Context.NONE);
+            .listSiteDiagnosticCategories("Sample-WestUSResourceGroup", "SampleApp", com.azure.core.util.Context.NONE);
     }
 }

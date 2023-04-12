@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The AzureEventHubsDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -19,6 +21,9 @@ public final class AzureEventHubsDataFeedPatch extends DataFeedDetailPatch {
      */
     @JsonProperty(value = "dataSourceParameter")
     private AzureEventHubsParameterPatch dataSourceParameter;
+
+    /** Creates an instance of AzureEventHubsDataFeedPatch class. */
+    public AzureEventHubsDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -37,6 +42,153 @@ public final class AzureEventHubsDataFeedPatch extends DataFeedDetailPatch {
      */
     public AzureEventHubsDataFeedPatch setDataSourceParameter(AzureEventHubsParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setStatus(EntityStatus status) {
+        super.setStatus(status);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureEventHubsDataFeedPatch setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
         return this;
     }
 }

@@ -20,6 +20,15 @@ public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVe
     public static final PreferredIpVersion IPV6 = fromString("IPv6");
 
     /**
+     * Creates a new instance of PreferredIpVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PreferredIpVersion() {
+    }
+
+    /**
      * Creates or finds a PreferredIpVersion from its string representation.
      *
      * @param name a name to look for.

@@ -71,7 +71,7 @@ class AzureRedisPasswordlessPropertiesTest {
         azureRedisPasswordlessProperties.setCredential(credential);
         azureRedisPasswordlessProperties.setProfile(profile);
 
-        Properties properties = azureRedisPasswordlessProperties.toProperties();
+        Properties properties = azureRedisPasswordlessProperties.toPasswordlessProperties();
 
 
         Assertions.assertEquals("fake-client-id", properties.getProperty(AuthProperty.CLIENT_ID.getPropertyKey()));

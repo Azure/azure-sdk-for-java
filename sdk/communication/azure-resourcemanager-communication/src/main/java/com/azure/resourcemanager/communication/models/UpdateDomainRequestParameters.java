@@ -18,6 +18,10 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
     @JsonProperty(value = "properties")
     private UpdateDomainProperties innerProperties;
 
+    /** Creates an instance of UpdateDomainRequestParameters class. */
+    public UpdateDomainRequestParameters() {
+    }
+
     /**
      * Get the innerProperties property: A class that describes the updatable properties of a Domains resource.
      *
@@ -31,31 +35,6 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
     @Override
     public UpdateDomainRequestParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
-        return this;
-    }
-
-    /**
-     * Get the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @return the validSenderUsernames value.
-     */
-    public Map<String, String> validSenderUsernames() {
-        return this.innerProperties() == null ? null : this.innerProperties().validSenderUsernames();
-    }
-
-    /**
-     * Set the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @param validSenderUsernames the validSenderUsernames value to set.
-     * @return the UpdateDomainRequestParameters object itself.
-     */
-    public UpdateDomainRequestParameters withValidSenderUsernames(Map<String, String> validSenderUsernames) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UpdateDomainProperties();
-        }
-        this.innerProperties().withValidSenderUsernames(validSenderUsernames);
         return this;
     }
 

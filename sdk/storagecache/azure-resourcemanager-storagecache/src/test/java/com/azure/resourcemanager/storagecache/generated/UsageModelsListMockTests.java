@@ -32,7 +32,7 @@ public final class UsageModelsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"display\":{\"description\":\"thuma\"},\"modelName\":\"lbg\",\"targetType\":\"duiertgcc\"}]}";
+            "{\"value\":[{\"display\":{\"description\":\"rpzbchckqqzqi\"},\"modelName\":\"iysui\",\"targetType\":\"ynkedyatrwyhqmib\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class UsageModelsListMockTests {
 
         PagedIterable<UsageModel> response = manager.usageModels().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("thuma", response.iterator().next().display().description());
-        Assertions.assertEquals("lbg", response.iterator().next().modelName());
-        Assertions.assertEquals("duiertgcc", response.iterator().next().targetType());
+        Assertions.assertEquals("rpzbchckqqzqi", response.iterator().next().display().description());
+        Assertions.assertEquals("iysui", response.iterator().next().modelName());
+        Assertions.assertEquals("ynkedyatrwyhqmib", response.iterator().next().targetType());
     }
 }

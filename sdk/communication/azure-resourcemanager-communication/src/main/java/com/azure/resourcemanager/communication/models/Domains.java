@@ -18,12 +18,14 @@ public interface Domains {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Domains resource and its properties.
+     * @return the Domains resource and its properties along with {@link Response}.
      */
-    DomainResource get(String resourceGroupName, String emailServiceName, String domainName);
+    Response<DomainResource> getWithResponse(
+        String resourceGroupName, String emailServiceName, String domainName, Context context);
 
     /**
      * Get
@@ -33,14 +35,12 @@ public interface Domains {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Domains resource and its properties along with {@link Response}.
+     * @return the Domains resource and its properties.
      */
-    Response<DomainResource> getWithResponse(
-        String resourceGroupName, String emailServiceName, String domainName, Context context);
+    DomainResource get(String resourceGroupName, String emailServiceName, String domainName);
 
     /**
      * Delete

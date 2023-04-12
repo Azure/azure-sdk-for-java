@@ -231,6 +231,10 @@ public final class ProcessInfoProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ProcessInfoProperties class. */
+    public ProcessInfoProperties() {
+    }
+
     /**
      * Get the identifier property: ARM Identifier for deployment.
      *

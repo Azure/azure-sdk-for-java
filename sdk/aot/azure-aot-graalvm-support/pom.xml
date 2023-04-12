@@ -11,7 +11,10 @@
 
     <packaging>jar</packaging>
     <name>Microsoft Azure GraalVM support</name>
-    <description>This package contains GraalVM Support configuration for Azure SDKs.</description>
+    <description>
+      This package is deprecated will have no further updates. Dependency on this library is no longer required to build native images with Azure SDK for Java.
+      For more details, please refer to https://devblogs.microsoft.com/azure-sdk/announcing-graalvm-support-in-azure-sdk-for-java-and-spring-cloud-azure-libraries
+    </description>
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-client-sdk-parent</artifactId>

@@ -31,7 +31,7 @@ public final class SapDatabaseInstancesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"subnet\":\"prhptillu\",\"databaseSid\":\"iqtgdqoh\",\"databaseType\":\"wsldrizetpwbr\",\"ipAddress\":\"llibphbqzmizak\",\"loadBalancerDetails\":{\"id\":\"nkjpdnjzha\"},\"vmDetails\":[],\"status\":\"Offline\",\"provisioningState\":\"Creating\",\"errors\":{}},\"location\":\"y\",\"tags\":{\"ls\":\"imrsopteecjmei\",\"weoohguufuzboyj\":\"vasylwxdzau\"},\"id\":\"thwtzol\",\"name\":\"a\",\"type\":\"mwmdxmebwjscjpa\"}";
+            "{\"properties\":{\"subnet\":\"vpdvjdhttzae\",\"databaseSid\":\"dxihc\",\"databaseType\":\"phkmcrjdqnsdfz\",\"ipAddress\":\"gtgkylkdghr\",\"loadBalancerDetails\":{\"id\":\"utlwxezwzhok\"},\"vmDetails\":[],\"status\":\"Unavailable\",\"provisioningState\":\"Deleting\",\"errors\":{}},\"location\":\"ehgpp\",\"tags\":{\"csheafidltugsr\":\"fhpfeoajvgcxtx\",\"h\":\"smkss\"},\"id\":\"iftxfkf\",\"name\":\"egprhptil\",\"type\":\"ucb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class SapDatabaseInstancesGetWithResponseMockTests {
         SapDatabaseInstance response =
             manager
                 .sapDatabaseInstances()
-                .getWithResponse("smkss", "h", "iftxfkf", com.azure.core.util.Context.NONE)
+                .getWithResponse("jbjsvgjrwh", "yvycytdclxgcckn", "nwm", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("y", response.location());
-        Assertions.assertEquals("imrsopteecjmei", response.tags().get("ls"));
+        Assertions.assertEquals("ehgpp", response.location());
+        Assertions.assertEquals("fhpfeoajvgcxtx", response.tags().get("csheafidltugsr"));
     }
 }

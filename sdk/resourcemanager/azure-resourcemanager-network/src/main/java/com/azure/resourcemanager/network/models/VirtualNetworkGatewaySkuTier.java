@@ -62,6 +62,15 @@ public final class VirtualNetworkGatewaySkuTier extends ExpandableStringEnum<Vir
     public static final VirtualNetworkGatewaySkuTier ER_GW3AZ = fromString("ErGw3AZ");
 
     /**
+     * Creates a new instance of VirtualNetworkGatewaySkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkGatewaySkuTier() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkGatewaySkuTier from its string representation.
      *
      * @param name a name to look for.

@@ -20,6 +20,15 @@ public final class VirtualNetworkGatewayType extends ExpandableStringEnum<Virtua
     public static final VirtualNetworkGatewayType LOCAL_GATEWAY = fromString("LocalGateway");
 
     /**
+     * Creates a new instance of VirtualNetworkGatewayType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkGatewayType() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkGatewayType from its string representation.
      *
      * @param name a name to look for.

@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,6 +37,9 @@ public final class HardThresholdCondition {
      */
     @JsonProperty(value = "suppressCondition", required = true)
     private SuppressCondition suppressCondition;
+
+    /** Creates an instance of HardThresholdCondition class. */
+    public HardThresholdCondition() {}
 
     /**
      * Get the lowerBound property: lower bound

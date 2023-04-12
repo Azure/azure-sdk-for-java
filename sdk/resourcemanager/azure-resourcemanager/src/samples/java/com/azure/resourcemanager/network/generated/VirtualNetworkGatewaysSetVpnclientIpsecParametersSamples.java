@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersInner;
 import com.azure.resourcemanager.network.models.DhGroup;
 import com.azure.resourcemanager.network.models.IkeEncryption;
@@ -16,7 +15,7 @@ import com.azure.resourcemanager.network.models.PfsGroup;
 /** Samples for VirtualNetworkGateways SetVpnclientIpsecParameters. */
 public final class VirtualNetworkGatewaysSetVpnclientIpsecParametersSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
      */
     /**
      * Sample code: Set VirtualNetworkGateway VpnClientIpsecParameters.
@@ -42,6 +41,6 @@ public final class VirtualNetworkGatewaysSetVpnclientIpsecParametersSamples {
                     .withIkeIntegrity(IkeIntegrity.SHA384)
                     .withDhGroup(DhGroup.DHGROUP2)
                     .withPfsGroup(PfsGroup.PFS2),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

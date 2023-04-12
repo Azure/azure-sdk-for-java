@@ -5,11 +5,8 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,28 +15,26 @@ import java.util.List;
  * principals in Azure Active Directory. These roles define the actions the principal can perform through the Time
  * Series Insights data plane APIs.
  */
-@JsonFlatten
 @Fluent
-public class AccessPolicyResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyResourceInner.class);
-
+public final class AccessPolicyResourceInner extends ProxyResource {
     /*
-     * The objectId of the principal in Azure Active Directory.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.principalObjectId")
-    private String principalObjectId;
+    @JsonProperty(value = "properties")
+    private AccessPolicyResourceProperties innerProperties;
 
-    /*
-     * An description of the access policy.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    /** Creates an instance of AccessPolicyResourceInner class. */
+    public AccessPolicyResourceInner() {
+    }
 
-    /*
-     * The list of roles the principal is assigned on the environment.
+    /**
+     * Get the innerProperties property: The properties property.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.roles")
-    private List<AccessPolicyRole> roles;
+    private AccessPolicyResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
@@ -47,7 +42,7 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @return the principalObjectId value.
      */
     public String principalObjectId() {
-        return this.principalObjectId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalObjectId();
     }
 
     /**
@@ -57,7 +52,10 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @return the AccessPolicyResourceInner object itself.
      */
     public AccessPolicyResourceInner withPrincipalObjectId(String principalObjectId) {
-        this.principalObjectId = principalObjectId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withPrincipalObjectId(principalObjectId);
         return this;
     }
 
@@ -67,7 +65,7 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -77,7 +75,10 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @return the AccessPolicyResourceInner object itself.
      */
     public AccessPolicyResourceInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -87,7 +88,7 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
-        return this.roles;
+        return this.innerProperties() == null ? null : this.innerProperties().roles();
     }
 
     /**
@@ -97,7 +98,10 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @return the AccessPolicyResourceInner object itself.
      */
     public AccessPolicyResourceInner withRoles(List<AccessPolicyRole> roles) {
-        this.roles = roles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withRoles(roles);
         return this;
     }
 
@@ -107,5 +111,8 @@ public class AccessPolicyResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

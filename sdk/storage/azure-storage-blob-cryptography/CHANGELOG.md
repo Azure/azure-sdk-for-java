@@ -1,6 +1,6 @@
 # Release History
 
-## 12.21.0-beta.1 (Unreleased)
+## 12.21.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.21.0-beta.1 (2023-03-28)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+
+## 12.20.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.21.0` to version `12.21.1`.
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 12.20.0 (2023-02-21)
 

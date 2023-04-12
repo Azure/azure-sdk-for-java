@@ -17,6 +17,15 @@ public final class DeleteExistingPeering extends ExpandableStringEnum<DeleteExis
     public static final DeleteExistingPeering TRUE = fromString("True");
 
     /**
+     * Creates a new instance of DeleteExistingPeering value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeleteExistingPeering() {
+    }
+
+    /**
      * Creates or finds a DeleteExistingPeering from its string representation.
      *
      * @param name a name to look for.

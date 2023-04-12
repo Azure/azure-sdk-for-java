@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowRunActions List. */
 public final class WorkflowRunActionsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRunActions_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActions_List.json
      */
     /**
      * Sample code: List a workflow run actions.
@@ -29,6 +27,6 @@ public final class WorkflowRunActionsListSamples {
                 "08586676746934337772206998657CU22",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

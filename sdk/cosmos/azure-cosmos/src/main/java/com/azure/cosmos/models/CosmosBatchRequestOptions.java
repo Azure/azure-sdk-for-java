@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 
@@ -17,6 +18,7 @@ public final class CosmosBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Map<String, String> customOptions;
+    private CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds();
 
     /**
      * Gets the consistency level required for the request.
@@ -58,10 +60,23 @@ public final class CosmosBatchRequestOptions {
         return this;
     }
 
+    /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the TransactionalBatchRequestOptions.
+     */
+    public CosmosBatchRequestOptions setDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setSessionToken(sessionToken);
+        requestOptions.setDiagnosticsThresholds(thresholds);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());

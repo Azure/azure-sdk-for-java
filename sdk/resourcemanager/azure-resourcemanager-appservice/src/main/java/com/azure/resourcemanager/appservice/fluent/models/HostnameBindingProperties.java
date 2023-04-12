@@ -68,6 +68,10 @@ public final class HostnameBindingProperties {
     @JsonProperty(value = "virtualIP", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualIp;
 
+    /** Creates an instance of HostnameBindingProperties class. */
+    public HostnameBindingProperties() {
+    }
+
     /**
      * Get the siteName property: App Service app name.
      *

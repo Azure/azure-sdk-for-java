@@ -29,6 +29,15 @@ public final class ScriptParameterTypes extends ExpandableStringEnum<ScriptParam
     public static final ScriptParameterTypes FLOAT = fromString("Float");
 
     /**
+     * Creates a new instance of ScriptParameterTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptParameterTypes() {
+    }
+
+    /**
      * Creates or finds a ScriptParameterTypes from its string representation.
      *
      * @param name a name to look for.

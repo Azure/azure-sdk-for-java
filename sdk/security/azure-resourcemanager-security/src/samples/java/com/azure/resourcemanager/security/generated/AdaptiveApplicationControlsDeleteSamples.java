@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdaptiveApplicationControls Delete. */
 public final class AdaptiveApplicationControlsDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class AdaptiveApplicationControlsDeleteSamples {
      */
     public static void deleteAnApplicationControlMachineGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls().deleteByResourceGroupWithResponse("centralus", "GROUP1", Context.NONE);
+        manager
+            .adaptiveApplicationControls()
+            .deleteByResourceGroupWithResponse("centralus", "GROUP1", com.azure.core.util.Context.NONE);
     }
 }

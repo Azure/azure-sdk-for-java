@@ -29,10 +29,12 @@ import com.azure.resourcemanager.communication.implementation.CommunicationServi
 import com.azure.resourcemanager.communication.implementation.DomainsImpl;
 import com.azure.resourcemanager.communication.implementation.EmailServicesImpl;
 import com.azure.resourcemanager.communication.implementation.OperationsImpl;
+import com.azure.resourcemanager.communication.implementation.SenderUsernamesImpl;
 import com.azure.resourcemanager.communication.models.CommunicationServices;
 import com.azure.resourcemanager.communication.models.Domains;
 import com.azure.resourcemanager.communication.models.EmailServices;
 import com.azure.resourcemanager.communication.models.Operations;
+import com.azure.resourcemanager.communication.models.SenderUsernames;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public final class CommunicationManager {
     private Domains domains;
 
     private EmailServices emailServices;
+
+    private SenderUsernames senderUsernames;
 
     private final CommunicationServiceManagementClient clientObject;
 
@@ -215,7 +219,7 @@ public final class CommunicationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.communication")
                 .append("/")
-                .append("1.1.0-beta.3");
+                .append("2.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -318,6 +322,18 @@ public final class CommunicationManager {
             this.emailServices = new EmailServicesImpl(clientObject.getEmailServices(), this);
         }
         return emailServices;
+    }
+
+    /**
+     * Gets the resource collection API of SenderUsernames. It manages SenderUsernameResource.
+     *
+     * @return Resource collection API of SenderUsernames.
+     */
+    public SenderUsernames senderUsernames() {
+        if (this.senderUsernames == null) {
+            this.senderUsernames = new SenderUsernamesImpl(clientObject.getSenderUsernames(), this);
+        }
+        return senderUsernames;
     }
 
     /**

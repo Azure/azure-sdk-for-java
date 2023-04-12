@@ -215,7 +215,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -266,7 +266,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -332,7 +332,7 @@ public final class CustomIpPrefixesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customIpPrefixName) {
-        return beginDeleteAsync(resourceGroupName, customIpPrefixName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, customIpPrefixName).getSyncPoller();
     }
 
     /**
@@ -349,7 +349,7 @@ public final class CustomIpPrefixesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String customIpPrefixName, Context context) {
-        return beginDeleteAsync(resourceGroupName, customIpPrefixName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, customIpPrefixName, context).getSyncPoller();
     }
 
     /**
@@ -451,7 +451,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -505,7 +505,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -610,7 +610,7 @@ public final class CustomIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -668,7 +668,7 @@ public final class CustomIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -747,7 +747,7 @@ public final class CustomIpPrefixesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, customIpPrefixName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, customIpPrefixName, parameters).getSyncPoller();
     }
 
     /**
@@ -765,7 +765,9 @@ public final class CustomIpPrefixesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, customIpPrefixName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, customIpPrefixName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -881,7 +883,7 @@ public final class CustomIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -939,7 +941,7 @@ public final class CustomIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1028,7 +1030,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1071,7 +1073,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1168,7 +1170,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1223,7 +1225,7 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

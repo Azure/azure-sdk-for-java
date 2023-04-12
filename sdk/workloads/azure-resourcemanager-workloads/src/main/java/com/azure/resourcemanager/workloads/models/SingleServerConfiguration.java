@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Gets or sets the single server configuration. */
+/**
+ * Gets or sets the single server configuration. For prerequisites for creating the infrastructure, please see
+ * [here](https://go.microsoft.com/fwlink/?linkid=2212611&amp;clcid=0x409).
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deploymentType")
 @JsonTypeName("SingleServer")
 @Fluent

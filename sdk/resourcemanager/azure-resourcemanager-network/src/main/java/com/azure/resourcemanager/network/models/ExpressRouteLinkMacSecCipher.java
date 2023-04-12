@@ -23,6 +23,15 @@ public final class ExpressRouteLinkMacSecCipher extends ExpandableStringEnum<Exp
     public static final ExpressRouteLinkMacSecCipher GCM_AES_XPN256 = fromString("GcmAesXpn256");
 
     /**
+     * Creates a new instance of ExpressRouteLinkMacSecCipher value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteLinkMacSecCipher() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteLinkMacSecCipher from its string representation.
      *
      * @param name a name to look for.

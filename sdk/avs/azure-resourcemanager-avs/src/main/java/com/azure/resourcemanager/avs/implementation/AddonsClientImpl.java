@@ -62,7 +62,7 @@ public final class AddonsClientImpl implements AddonsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientAddons")
-    private interface AddonsService {
+    public interface AddonsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -657,7 +657,7 @@ public final class AddonsClientImpl implements AddonsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String addonName, AddonInner addon) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, addonName, addon).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, addonName, addon).getSyncPoller();
     }
 
     /**
@@ -676,7 +676,9 @@ public final class AddonsClientImpl implements AddonsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String addonName, AddonInner addon, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, addonName, addon, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, addonName, addon, context)
+            .getSyncPoller();
     }
 
     /**
@@ -921,7 +923,7 @@ public final class AddonsClientImpl implements AddonsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String addonName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, addonName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, addonName).getSyncPoller();
     }
 
     /**
@@ -939,7 +941,7 @@ public final class AddonsClientImpl implements AddonsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String addonName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, addonName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, addonName, context).getSyncPoller();
     }
 
     /**

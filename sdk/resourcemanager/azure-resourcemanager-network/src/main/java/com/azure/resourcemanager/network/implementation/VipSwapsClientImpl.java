@@ -140,7 +140,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -193,7 +193,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -298,7 +298,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             parameters.validate();
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -357,7 +357,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             parameters.validate();
         }
         final String singletonResource = "swap";
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -433,7 +433,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String groupName, String resourceName, SwapResourceInner parameters) {
-        return beginCreateAsync(groupName, resourceName, parameters).getSyncPoller();
+        return this.beginCreateAsync(groupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -452,7 +452,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String groupName, String resourceName, SwapResourceInner parameters, Context context) {
-        return beginCreateAsync(groupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(groupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -560,7 +560,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -611,7 +611,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

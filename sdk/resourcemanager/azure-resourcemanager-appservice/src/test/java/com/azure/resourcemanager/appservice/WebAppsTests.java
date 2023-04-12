@@ -213,7 +213,6 @@ public class WebAppsTests extends AppServiceTest {
             .define(webappName2)
             .withRegion(Region.US_WEST)
             .withExistingResourceGroup(rgName1)
-            .withNewFreeAppServicePlan()
             .create();
 
         PagedIterable<WebAppBasic> webApps = appServiceManager.webApps().listByResourceGroup(rgName1);

@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworksOperation CreateOrUpdate. */
 public final class VirtualNetworksOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutVirtualNetwork.json
      */
     /**
      * Sample code: PutVirtualNetwork.

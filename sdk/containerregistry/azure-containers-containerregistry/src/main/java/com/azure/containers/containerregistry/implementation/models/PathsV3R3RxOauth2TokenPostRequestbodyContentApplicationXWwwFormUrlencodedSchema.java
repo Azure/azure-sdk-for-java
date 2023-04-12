@@ -35,7 +35,7 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
     /*
      * Grant type is expected to be refresh_token
      */
-    private TokenGrantType grantType;
+    private TokenGrantType grantType = TokenGrantType.REFRESH_TOKEN;
 
     /** Creates an instance of PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema class. */
     public PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {}
@@ -149,34 +149,35 @@ public final class PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFo
             JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String service = null;
-                    String scope = null;
-                    String acrRefreshToken = null;
-                    TokenGrantType grantType = null;
+                    PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema =
+                                    new PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("service".equals(fieldName)) {
-                            service = reader.getString();
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .service =
+                                    reader.getString();
                         } else if ("scope".equals(fieldName)) {
-                            scope = reader.getString();
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .scope =
+                                    reader.getString();
                         } else if ("refresh_token".equals(fieldName)) {
-                            acrRefreshToken = reader.getString();
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .acrRefreshToken =
+                                    reader.getString();
                         } else if ("grant_type".equals(fieldName)) {
-                            grantType = TokenGrantType.fromString(reader.getString());
+                            deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema
+                                            .grantType =
+                                    TokenGrantType.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema deserializedValue =
-                            new PathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema();
-                    deserializedValue.service = service;
-                    deserializedValue.scope = scope;
-                    deserializedValue.acrRefreshToken = acrRefreshToken;
-                    deserializedValue.grantType = grantType;
 
-                    return deserializedValue;
+                    return deserializedPathsV3R3RxOauth2TokenPostRequestbodyContentApplicationXWwwFormUrlencodedSchema;
                 });
     }
 }

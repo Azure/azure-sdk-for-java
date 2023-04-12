@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceCertificateOrders ResendEmail. */
 public final class AppServiceCertificateOrdersResendEmailSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/ResendAppServiceCertificateOrderEmail.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ResendAppServiceCertificateOrderEmail.json
      */
     /**
      * Sample code: Resend App Service Certificate Order email.
@@ -22,6 +20,6 @@ public final class AppServiceCertificateOrdersResendEmailSamples {
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .resendEmailWithResponse("testrg123", "SampleCertificateOrderName", Context.NONE);
+            .resendEmailWithResponse("testrg123", "SampleCertificateOrderName", com.azure.core.util.Context.NONE);
     }
 }

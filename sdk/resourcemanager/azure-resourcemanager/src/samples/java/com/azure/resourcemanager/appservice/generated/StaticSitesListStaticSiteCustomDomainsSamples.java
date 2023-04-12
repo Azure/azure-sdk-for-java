@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites ListStaticSiteCustomDomains. */
 public final class StaticSitesListStaticSiteCustomDomainsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetStaticSiteCustomDomains.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetStaticSiteCustomDomains.json
      */
     /**
      * Sample code: List custom domains for a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesListStaticSiteCustomDomainsSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .listStaticSiteCustomDomains("rg", "testStaticSite0", Context.NONE);
+            .listStaticSiteCustomDomains("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

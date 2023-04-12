@@ -5,6 +5,7 @@
 package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object representing the email address and its display name. */
@@ -13,8 +14,8 @@ public final class EmailAddress {
     /*
      * Email address.
      */
-    @JsonProperty(value = "email", required = true)
-    private String email;
+    @JsonProperty(value = "address", required = true)
+    private String address;
 
     /*
      * Email display name.
@@ -23,20 +24,22 @@ public final class EmailAddress {
     private String displayName;
 
     /**
-     * Constructor for EmailAddress
-     * @param email the email address.
+     * Creates an instance of EmailAddress class.
+     *
+     * @param address the address value to set.
      */
-    public EmailAddress(String email) {
-        this.email = email;
+    @JsonCreator
+    public EmailAddress(@JsonProperty(value = "address", required = true) String address) {
+        this.address = address;
     }
 
     /**
-     * Get the email property: Email address.
+     * Get the address property: Email address.
      *
-     * @return the email value.
+     * @return the address value.
      */
-    public String getEmail() {
-        return this.email;
+    public String getAddress() {
+        return this.address;
     }
 
     /**

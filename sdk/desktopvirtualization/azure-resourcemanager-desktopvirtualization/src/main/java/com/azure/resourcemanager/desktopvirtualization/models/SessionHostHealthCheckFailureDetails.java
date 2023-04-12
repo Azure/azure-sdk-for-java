@@ -29,6 +29,10 @@ public final class SessionHostHealthCheckFailureDetails {
     @JsonProperty(value = "lastHealthCheckDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHealthCheckDateTime;
 
+    /** Creates an instance of SessionHostHealthCheckFailureDetails class. */
+    public SessionHostHealthCheckFailureDetails() {
+    }
+
     /**
      * Get the message property: Failure message: hints on what is wrong and how to recover.
      *

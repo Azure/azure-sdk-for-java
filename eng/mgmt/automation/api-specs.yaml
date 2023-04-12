@@ -47,6 +47,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+graphservicesprod:
+  service: graphservices
 hybridaks:
   service: hybridcontainerservice
 keyvault:
@@ -63,6 +65,8 @@ mysql:
   service: mysqlflexibleserver
 network:
   suffix: generated
+newrelic:
+  service: newrelicobservability
 operationalinsights:
   service: loganalytics
 postgresql:

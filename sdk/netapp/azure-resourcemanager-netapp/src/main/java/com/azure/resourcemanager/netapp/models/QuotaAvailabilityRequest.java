@@ -29,6 +29,10 @@ public final class QuotaAvailabilityRequest {
     @JsonProperty(value = "resourceGroup", required = true)
     private String resourceGroup;
 
+    /** Creates an instance of QuotaAvailabilityRequest class. */
+    public QuotaAvailabilityRequest() {
+    }
+
     /**
      * Get the name property: Name of the resource to verify.
      *

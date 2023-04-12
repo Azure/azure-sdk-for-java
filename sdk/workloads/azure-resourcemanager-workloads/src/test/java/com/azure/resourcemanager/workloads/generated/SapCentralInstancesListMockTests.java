@@ -32,7 +32,7 @@ public final class SapCentralInstancesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"instanceNo\":\"actxmwoteyowc\",\"subnet\":\"qovekqvgqou\",\"messageServerProperties\":{\"msPort\":8149113417599660646,\"internalMsPort\":825128842505011666,\"httpPort\":2552849107764611056,\"httpsPort\":2912455516432354405,\"hostname\":\"xcvhrfs\",\"ipAddress\":\"uagrttikteusqc\",\"health\":\"Healthy\"},\"enqueueServerProperties\":{\"hostname\":\"lxubyj\",\"ipAddress\":\"fmmfblcqcu\",\"port\":5812695396560817956,\"health\":\"Unknown\"},\"gatewayServerProperties\":{\"port\":323149241327703760,\"health\":\"Degraded\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"gdslqxihhrmoo\",\"hostname\":\"qseypxiutcxa\",\"kernelVersion\":\"hyrpetogebjoxs\",\"kernelPatch\":\"vnh\",\"ipAddress\":\"brqnkkzjcjb\",\"health\":\"Degraded\"},\"kernelVersion\":\"ehvvib\",\"kernelPatch\":\"jj\",\"loadBalancerDetails\":{\"id\":\"qbeitpkxztmoob\"},\"vmDetails\":[],\"status\":\"SoftShutdown\",\"health\":\"Degraded\",\"provisioningState\":\"Deleting\",\"errors\":{}},\"location\":\"pimaqxzhemjyh\",\"tags\":{\"lkb\":\"jswtwkozzwc\"},\"id\":\"wpfaj\",\"name\":\"jwltlwtjjgu\",\"type\":\"talhsnvkcdmxzr\"}]}";
+            "{\"value\":[{\"properties\":{\"instanceNo\":\"ogfnzjvusf\",\"subnet\":\"dmozu\",\"messageServerProperties\":{\"msPort\":7577578253018507167,\"internalMsPort\":4531739800208315375,\"httpPort\":2038378510011319534,\"httpsPort\":866081564724906036,\"hostname\":\"nbtgkbugrjqctoj\",\"ipAddress\":\"isofieypefojyqd\",\"health\":\"Unknown\"},\"enqueueServerProperties\":{\"hostname\":\"cp\",\"ipAddress\":\"wkhihihlhzdsqt\",\"port\":85207592738444256,\"health\":\"Unknown\"},\"gatewayServerProperties\":{\"port\":7805991014076189664,\"health\":\"Degraded\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"cact\",\"hostname\":\"wotey\",\"kernelVersion\":\"cluqovekqvgqo\",\"kernelPatch\":\"ifzmpjwyivqi\",\"ipAddress\":\"xcvhrfs\",\"health\":\"Degraded\"},\"kernelVersion\":\"grttikteusqczk\",\"kernelPatch\":\"klxubyja\",\"loadBalancerDetails\":{\"id\":\"mfblcqcuubg\"},\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Degraded\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"wgdsl\",\"tags\":{\"xiutcx\":\"hhrmooizqsey\",\"etoge\":\"pzhyr\"},\"id\":\"joxslhvnhla\",\"name\":\"rqnkkzjcjbtr\",\"type\":\"aehvvibrxjjstoq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class SapCentralInstancesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SapCentralServerInstance> response =
-            manager.sapCentralInstances().list("ihlhzdsqtzb", "rgnowcjhfgm", com.azure.core.util.Context.NONE);
+            manager.sapCentralInstances().list("yr", "giagtcojo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pimaqxzhemjyh", response.iterator().next().location());
-        Assertions.assertEquals("jswtwkozzwc", response.iterator().next().tags().get("lkb"));
+        Assertions.assertEquals("wgdsl", response.iterator().next().location());
+        Assertions.assertEquals("hhrmooizqsey", response.iterator().next().tags().get("xiutcx"));
     }
 }

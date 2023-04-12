@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RouteMaps Get. */
 public final class RouteMapsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RouteMapGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RouteMapGet.json
      */
     /**
      * Sample code: RouteMapGet.
@@ -22,6 +20,6 @@ public final class RouteMapsGetSamples {
             .manager()
             .serviceClient()
             .getRouteMaps()
-            .getWithResponse("rg1", "virtualHub1", "routeMap1", Context.NONE);
+            .getWithResponse("rg1", "virtualHub1", "routeMap1", com.azure.core.util.Context.NONE);
     }
 }

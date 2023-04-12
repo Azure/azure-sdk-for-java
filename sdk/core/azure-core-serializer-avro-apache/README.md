@@ -15,7 +15,7 @@ Azure Core Apache Avro Serializer is a plugin for the `azure-core` `AvroSerializ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-avro-apache</artifactId>
-    <version>1.0.0-beta.32</version>
+    <version>1.0.0-beta.34</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

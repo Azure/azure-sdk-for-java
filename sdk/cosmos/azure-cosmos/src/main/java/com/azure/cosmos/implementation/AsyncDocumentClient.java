@@ -11,12 +11,14 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -290,40 +292,12 @@ public interface AsyncDocumentClient {
             return desiredConsistencyLevel;
         }
 
-        public void setDesiredConsistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
-            this.desiredConsistencyLevel = desiredConsistencyLevel;
-        }
-
-        public List<Permission> getPermissionFeed() {
-            return permissionFeed;
-        }
-
-        public void setPermissionFeed(List<Permission> permissionFeed) {
-            this.permissionFeed = permissionFeed;
-        }
-
-        public String getMasterKeyOrResourceToken() {
-            return masterKeyOrResourceToken;
-        }
-
-        public void setMasterKeyOrResourceToken(String masterKeyOrResourceToken) {
-            this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-        }
-
         public URI getServiceEndpoint() {
             return serviceEndpoint;
         }
 
         public void setServiceEndpoint(URI serviceEndpoint) {
             this.serviceEndpoint = serviceEndpoint;
-        }
-
-        public CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
-            return cosmosAuthorizationTokenResolver;
-        }
-
-        public void setCosmosAuthorizationTokenResolver(CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
-            this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         }
 
         public AzureKeyCredential getCredential() {
@@ -337,20 +311,6 @@ public interface AsyncDocumentClient {
      * @return the service endpoint URI
      */
     URI getServiceEndpoint();
-
-    /**
-     * Gets the current write endpoint chosen based on availability and preference.
-     *
-     * @return the write endpoint URI
-     */
-    URI getWriteEndpoint();
-
-    /**
-     * Gets the current read endpoint chosen based on availability and preference.
-     *
-     * @return the read endpoint URI
-     */
-    URI getReadEndpoint();
 
     /**
      * Gets the desired consistency level
@@ -370,14 +330,16 @@ public interface AsyncDocumentClient {
 
     String getMachineId();
 
+    String getUserAgent();
+
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <p>
      * If set to false (which is by default), this removes the resource from response. It reduces networking
      * and CPU load by not sending the resource back over the network and serializing it
      * on the client.
-     *
+     * <p>
      * By-default, this is false.
      *
      * @return a boolean indicating whether resource will be included in the response or not.
@@ -777,21 +739,6 @@ public interface AsyncDocumentClient {
                                                                   RequestOptions options);
 
     /**
-     * Upserts a stored procedure.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the upserted stored procedure.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param collectionLink  the collection link.
-     * @param storedProcedure the stored procedure to upsert.
-     * @param options         the request options.
-     * @return a {@link Mono} containing the single resource response with the upserted stored procedure or an error.
-     */
-    Mono<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
-                                                                        RequestOptions options);
-
-    /**
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
@@ -880,19 +827,6 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Mono} will error.
      *
      * @param storedProcedureLink the stored procedure link.
-     * @param procedureParams     the array of procedure parameter values.
-     * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
-     */
-    Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, List<Object> procedureParams);
-
-    /**
-     * Executes a stored procedure
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
      * @param procedureParams     the array of procedure parameter values.
      * @return a {@link Mono} containing the single resource response with the stored procedure response or an error.
@@ -931,20 +865,6 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the created trigger or an error.
      */
     Mono<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger, RequestOptions options);
-
-    /**
-     * Upserts a trigger.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the upserted trigger.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param collectionLink the collection link.
-     * @param trigger        the trigger to upsert.
-     * @param options        the request options.
-     * @return a {@link Mono} containing the single resource response with the upserted trigger or an error.
-     */
-    Mono<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger, RequestOptions options);
 
     /**
      * Replaces a trigger.
@@ -1041,22 +961,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
                                                                           RequestOptions options);
 
-    /**
-     * Upserts a user defined function.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the upserted user defined function.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @param collectionLink the collection link.
-     * @param udf            the user defined function to upsert.
-     * @param options        the request options.
-     * @return a {@link Mono} containing the single resource response with the upserted user defined function or an error.
-     */
-    Mono<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
-                                                                                RequestOptions options);
-
-    /**
+      /**
      * Replaces a user defined function.
      * <p>
      * After subscription the operation will be performed.
@@ -1374,20 +1279,6 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param databaseLink the database link.
-     * @param query        the query.
-     * @param options      the query request options.
-     * @return a {@link Flux} containing one or several feed response pages of the obtained client encryption keys or an error.
-     */
-    Flux<FeedResponse<ClientEncryptionKey>> queryClientEncryptionKeys(String databaseLink, String query, CosmosQueryRequestOptions options);
-
-    /**
-     * Query for client encryption keys.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Flux} will contain one or several feed response pages of the obtained client encryption keys.
-     * In case of failure the {@link Flux} will error.
-     *
-     * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
      * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained client encryption keys or an error.
@@ -1576,13 +1467,6 @@ public interface AsyncDocumentClient {
     Mono<DatabaseAccount> getDatabaseAccount();
 
     /**
-     * Gets latest cached database account information from GlobalEndpointManager.
-     *
-     * @return the database account.
-     */
-    DatabaseAccount getLatestDatabaseAccount();
-
-    /**
      * Reads many documents at once
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
@@ -1632,6 +1516,19 @@ public interface AsyncDocumentClient {
      */
     RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
+    /***
+     * Get the global endpoint manager.
+     *
+     * @return the global endpoint manager.
+     */
+    GlobalEndpointManager getGlobalEndpointManager();
+
+    /***
+     * Get the address selector.
+     * @return the address selector.
+     */
+    AddressSelector getAddressSelector();
+
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.
      */
@@ -1655,4 +1552,13 @@ public interface AsyncDocumentClient {
      * @return A flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+
+    ConsistencyLevel getDefaultConsistencyLevelOfAccount();
+    
+    /***
+     * Configure fault injector provider.
+     *
+     * @param injectorProvider the fault injector provider.
+     */
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 }

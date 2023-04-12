@@ -20,7 +20,7 @@ public final class UpdateMonitorRequest {
     private Map<String, String> tags;
 
     /*
-     * Managed service identity (user assigned identities)
+     * [currently not in use] Managed service identity(user assigned identities)
      */
     @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
@@ -50,7 +50,7 @@ public final class UpdateMonitorRequest {
     }
 
     /**
-     * Get the identity property: Managed service identity (user assigned identities).
+     * Get the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @return the identity value.
      */
@@ -59,7 +59,7 @@ public final class UpdateMonitorRequest {
     }
 
     /**
-     * Set the identity property: Managed service identity (user assigned identities).
+     * Set the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @param identity the identity value to set.
      * @return the UpdateMonitorRequest object itself.

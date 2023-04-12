@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -31,6 +32,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -50,6 +52,9 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap;
@@ -74,7 +79,8 @@ public class ParallelDocumentQueryExecutionContext<T>
     public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
-            PipelinedDocumentQueryParams<T> initParams) {
+            PipelinedDocumentQueryParams<T> initParams,
+            DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
 
@@ -97,7 +103,7 @@ public class ParallelDocumentQueryExecutionContext<T>
 
         try {
             context.initialize(
-                    initParams.getCollectionRid(),
+                    collection,
                     initParams.getFeedRanges(),
                     initParams.getInitialPageSize(),
                     ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
@@ -131,9 +137,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         return Flux.just(context);
     }
 
-
     private void initialize(
-        String collectionRid,
+        DocumentCollection collection,
         List<FeedRangeEpkImpl> feedRanges,
         int initialPageSize,
         String continuationToken) {
@@ -176,7 +181,7 @@ public class ParallelDocumentQueryExecutionContext<T>
 
         }
 
-        super.initialize(collectionRid,
+        super.initialize(collection,
                 partitionKeyRangeToContinuationTokenMap,
                 initialPageSize,
                 this.querySpec);
@@ -375,8 +380,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                 }
 
                 DocumentProducer<T>.DocumentProducerFeedResponse page;
-                page = current;
-                page = this.addCompositeContinuationToken(page,
+                page = this.addCompositeContinuationToken(current,
                         compositeContinuationToken);
 
                 return page;
@@ -401,8 +405,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         UUID correlatedActivityId,
         String activityId,
         Supplier<String> operationContextTextProvider) {
-        List<ClientSideRequestStatistics> requestStatistics =
-            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+        Collection<ClientSideRequestStatistics> requestStatistics =
+            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {

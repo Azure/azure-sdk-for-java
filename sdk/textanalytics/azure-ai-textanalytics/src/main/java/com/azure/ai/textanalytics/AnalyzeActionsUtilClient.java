@@ -788,7 +788,7 @@ class AnalyzeActionsUtilClient {
         AbstractSummaryAction action) {
         return new AbstractiveSummarizationTaskParameters()
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-            .setSentenceCount(action.getMaxSentenceCount())
+            .setSentenceCount(action.getSentenceCount())
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }

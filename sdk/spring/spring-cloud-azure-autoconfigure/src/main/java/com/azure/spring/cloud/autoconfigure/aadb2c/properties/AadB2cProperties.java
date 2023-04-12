@@ -54,23 +54,30 @@ public class AadB2cProperties implements InitializingBean {
     private final AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
 
     /**
-     * App ID URI which might be used in the "aud" claim of a token.
+     * App ID URI which might be used in the "aud" claim of a token. For instance, 'https://{hostname}/{applicationId}'.
+     * See Microsoft doc about APP ID URL for more details: https://learn.microsoft.com/azure/active-directory/develop/security-best-practices-for-app-registration#application-id-uri
      */
     private String appIdUri;
 
     /**
-     * Connection Timeout for the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
+     * @deprecated If you want to configure this, please provide a RestOperations bean.
      */
+    @Deprecated
     private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout for the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
+     * @deprecated If you want to configure this, please provide a RestOperations bean.
      */
+    @Deprecated
     private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call.  Deprecated. If you want to configure this, please provide a RestOperations bean.
+     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.
+     * @deprecated If you want to configure this, please provide a RestOperations bean.
      */
+    @Deprecated
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
@@ -79,7 +86,8 @@ public class AadB2cProperties implements InitializingBean {
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
     /**
-     * Additional parameters for authentication.
+     * Additional parameters above the standard parameters defined in the OAuth 2.0 Authorization Framework. Would be added to the Authorization URL for customizing the Authorization Request. For instance, 'prompt: login'.
+     * See Microsoft doc about more additional parameters information: https://learn.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
@@ -104,12 +112,18 @@ public class AadB2cProperties implements InitializingBean {
     private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
     /**
-     * User flows.
+     * Azure AD B2C User flows. Configure the user flow type and name mapping. For instance, 'sign-up-or-sign-in: B2C_signin_or_signup'.
+     * See Microsoft doc about User flows for more details: https://learn.microsoft.com/azure/active-directory-b2c/user-flow-overview#user-flows
      */
     private Map<String, String> userFlows = new HashMap<>();
 
     /**
-     * Specify client configuration.
+     * The OAuth2 authorization clients, contains the authorization grant type(only support client credentials) and scope.
+     * The clients will be converted to OAuth2 ClientRegistration, the other ClientRegistration information(such as client id, client secret) inherits from the OAuth2 login client(sign-in user flow).
+     * For instance, '
+     * authorization-clients.webapi.authorization-grant-type=client_credentials,
+     * authorization-clients.webapi.scopes[0]={WEB_API_APP_ID_URL}/.default
+     * '.
      */
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 

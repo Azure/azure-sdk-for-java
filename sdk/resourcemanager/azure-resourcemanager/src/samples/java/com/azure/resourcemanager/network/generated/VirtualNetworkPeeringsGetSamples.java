@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkPeerings Get. */
 public final class VirtualNetworkPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkPeeringGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkPeeringGet.json
      */
     /**
      * Sample code: Get peering.
@@ -22,11 +20,11 @@ public final class VirtualNetworkPeeringsGetSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkPeerings()
-            .getWithResponse("peerTest", "vnet1", "peer", Context.NONE);
+            .getWithResponse("peerTest", "vnet1", "peer", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Get peering with remote virtual network encryption.
@@ -40,6 +38,6 @@ public final class VirtualNetworkPeeringsGetSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkPeerings()
-            .getWithResponse("peerTest", "vnet1", "peer", Context.NONE);
+            .getWithResponse("peerTest", "vnet1", "peer", com.azure.core.util.Context.NONE);
     }
 }

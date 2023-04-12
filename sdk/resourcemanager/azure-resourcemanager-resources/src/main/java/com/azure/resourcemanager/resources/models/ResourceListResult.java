@@ -24,6 +24,10 @@ public final class ResourceListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ResourceListResult class. */
+    public ResourceListResult() {
+    }
+
     /**
      * Get the value property: An array of resources.
      *

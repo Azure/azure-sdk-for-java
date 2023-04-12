@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,8 +23,24 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
     @JsonProperty(value = "result")
     private DocumentModelDetails result;
 
-    /** Creates an instance of DocumentModelBuildOperationDetails class. */
-    public DocumentModelBuildOperationDetails() {}
+    /**
+     * Creates an instance of DocumentModelBuildOperationDetails class.
+     *
+     * @param operationId the operationId value to set.
+     * @param status the status value to set.
+     * @param createdDateTime the createdDateTime value to set.
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @JsonCreator
+    public DocumentModelBuildOperationDetails(
+            @JsonProperty(value = "operationId", required = true) String operationId,
+            @JsonProperty(value = "status", required = true) OperationStatus status,
+            @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
+            @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime,
+            @JsonProperty(value = "resourceLocation", required = true) String resourceLocation) {
+        super(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+    }
 
     /**
      * Get the result property: Operation result upon success.
@@ -47,43 +64,8 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
 
     /** {@inheritDoc} */
     @Override
-    public DocumentModelBuildOperationDetails setOperationId(String operationId) {
-        super.setOperationId(operationId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setStatus(OperationStatus status) {
-        super.setStatus(status);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public DocumentModelBuildOperationDetails setPercentCompleted(Integer percentCompleted) {
         super.setPercentCompleted(percentCompleted);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
-        super.setCreatedDateTime(createdDateTime);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
-        super.setLastUpdatedDateTime(lastUpdatedDateTime);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setResourceLocation(String resourceLocation) {
-        super.setResourceLocation(resourceLocation);
         return this;
     }
 

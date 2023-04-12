@@ -21,6 +21,15 @@ public final class VirtualNetworkGatewayConnectionMode
     public static final VirtualNetworkGatewayConnectionMode INITIATOR_ONLY = fromString("InitiatorOnly");
 
     /**
+     * Creates a new instance of VirtualNetworkGatewayConnectionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkGatewayConnectionMode() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkGatewayConnectionMode from its string representation.
      *
      * @param name a name to look for.

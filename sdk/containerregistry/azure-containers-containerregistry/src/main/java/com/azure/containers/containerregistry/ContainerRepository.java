@@ -30,7 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
@@ -45,7 +44,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ma
  * ContainerRepository repositoryClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildClient&#40;&#41;.getRepository&#40;repository&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRepository.instantiation -->
@@ -138,7 +136,7 @@ public final class ContainerRepository {
     public Response<Void> deleteWithResponse(Context context) {
         try {
             Response<DeleteRepositoryResult> response =
-                this.serviceClient.deleteRepositoryWithResponse(repositoryName, enableSync(context));
+                this.serviceClient.deleteRepositoryWithResponse(repositoryName, context);
             return UtilsImpl.deleteResponseToSuccess(response);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -193,7 +191,7 @@ public final class ContainerRepository {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerRepositoryProperties> getPropertiesWithResponse(Context context) {
         try {
-            return this.serviceClient.getPropertiesWithResponse(repositoryName, enableSync(context));
+            return this.serviceClient.getPropertiesWithResponse(repositoryName, context);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -352,7 +350,7 @@ public final class ContainerRepository {
         try {
             PagedResponse<ManifestAttributesBase> res =
                 this.serviceClient.getManifestsSinglePage(repositoryName, null, pageSize, orderString,
-                    enableSync(context));
+                    context);
 
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
@@ -364,7 +362,7 @@ public final class ContainerRepository {
     private PagedResponse<ArtifactManifestProperties> listManifestPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
             PagedResponse<ManifestAttributesBase> res = this.serviceClient.getManifestsNextSinglePage(nextLink,
-                enableSync(context));
+                context);
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName, registryLoginServer));
         } catch (AcrErrorsException exception) {
@@ -441,7 +439,7 @@ public final class ContainerRepository {
 
         try {
             return this.serviceClient.updatePropertiesWithResponse(repositoryName, writableProperties,
-                enableSync(context));
+                context);
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }

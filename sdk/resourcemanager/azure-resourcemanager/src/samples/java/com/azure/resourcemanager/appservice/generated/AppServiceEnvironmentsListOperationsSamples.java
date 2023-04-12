@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListOperations. */
 public final class AppServiceEnvironmentsListOperationsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListOperations.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListOperations.json
      */
     /**
      * Sample code: List all currently running operations on the App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListOperationsSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listOperationsWithResponse("test-rg", "test-ase", Context.NONE);
+            .listOperationsWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

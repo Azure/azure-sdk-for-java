@@ -7,34 +7,33 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesPropertiesVmwareStorageProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageSpacesPropertiesVmwareStorageProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageSpacesPropertiesVmwareStorageProfile model =
             BinaryData
                 .fromString(
-                    "{\"datacenter\":\"jk\",\"datastore\":\"fhmouwq\",\"folder\":\"zrfze\",\"resourcePool\":\"ebizikayuh\"}")
+                    "{\"datacenter\":\"wrlkdmtn\",\"datastore\":\"ok\",\"folder\":\"llxdyhgs\",\"resourcePool\":\"cogjltdtbn\"}")
                 .toObject(StorageSpacesPropertiesVmwareStorageProfile.class);
-        Assertions.assertEquals("jk", model.datacenter());
-        Assertions.assertEquals("fhmouwq", model.datastore());
-        Assertions.assertEquals("zrfze", model.folder());
-        Assertions.assertEquals("ebizikayuh", model.resourcePool());
+        Assertions.assertEquals("wrlkdmtn", model.datacenter());
+        Assertions.assertEquals("ok", model.datastore());
+        Assertions.assertEquals("llxdyhgs", model.folder());
+        Assertions.assertEquals("cogjltdtbn", model.resourcePool());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StorageSpacesPropertiesVmwareStorageProfile model =
             new StorageSpacesPropertiesVmwareStorageProfile()
-                .withDatacenter("jk")
-                .withDatastore("fhmouwq")
-                .withFolder("zrfze")
-                .withResourcePool("ebizikayuh");
+                .withDatacenter("wrlkdmtn")
+                .withDatastore("ok")
+                .withFolder("llxdyhgs")
+                .withResourcePool("cogjltdtbn");
         model = BinaryData.fromObject(model).toObject(StorageSpacesPropertiesVmwareStorageProfile.class);
-        Assertions.assertEquals("jk", model.datacenter());
-        Assertions.assertEquals("fhmouwq", model.datastore());
-        Assertions.assertEquals("zrfze", model.folder());
-        Assertions.assertEquals("ebizikayuh", model.resourcePool());
+        Assertions.assertEquals("wrlkdmtn", model.datacenter());
+        Assertions.assertEquals("ok", model.datastore());
+        Assertions.assertEquals("llxdyhgs", model.folder());
+        Assertions.assertEquals("cogjltdtbn", model.resourcePool());
     }
 }

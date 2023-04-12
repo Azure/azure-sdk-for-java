@@ -47,7 +47,8 @@ import com.azure.resourcemanager.security.fluent.DiscoveredSecuritySolutionsClie
 import com.azure.resourcemanager.security.fluent.ExternalSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.GovernanceAssignmentsClient;
 import com.azure.resourcemanager.security.fluent.GovernanceRulesClient;
-import com.azure.resourcemanager.security.fluent.GovernanceRulesOperationsClient;
+import com.azure.resourcemanager.security.fluent.HealthReportOperationsClient;
+import com.azure.resourcemanager.security.fluent.HealthReportsClient;
 import com.azure.resourcemanager.security.fluent.InformationProtectionPoliciesClient;
 import com.azure.resourcemanager.security.fluent.IngestionSettingsClient;
 import com.azure.resourcemanager.security.fluent.IotSecuritySolutionAnalyticsClient;
@@ -68,9 +69,6 @@ import com.azure.resourcemanager.security.fluent.SecureScoresClient;
 import com.azure.resourcemanager.security.fluent.SecurityCenter;
 import com.azure.resourcemanager.security.fluent.SecurityConnectorApplicationOperationsClient;
 import com.azure.resourcemanager.security.fluent.SecurityConnectorApplicationsClient;
-import com.azure.resourcemanager.security.fluent.SecurityConnectorGovernanceRulesClient;
-import com.azure.resourcemanager.security.fluent.SecurityConnectorGovernanceRulesExecuteStatusClient;
-import com.azure.resourcemanager.security.fluent.SecurityConnectorGovernanceRulesOperationsClient;
 import com.azure.resourcemanager.security.fluent.SecurityConnectorsClient;
 import com.azure.resourcemanager.security.fluent.SecurityContactsClient;
 import com.azure.resourcemanager.security.fluent.SecuritySolutionsClient;
@@ -82,7 +80,6 @@ import com.azure.resourcemanager.security.fluent.SqlVulnerabilityAssessmentBasel
 import com.azure.resourcemanager.security.fluent.SqlVulnerabilityAssessmentScanResultsClient;
 import com.azure.resourcemanager.security.fluent.SqlVulnerabilityAssessmentScansClient;
 import com.azure.resourcemanager.security.fluent.SubAssessmentsClient;
-import com.azure.resourcemanager.security.fluent.SubscriptionGovernanceRulesExecuteStatusClient;
 import com.azure.resourcemanager.security.fluent.TasksClient;
 import com.azure.resourcemanager.security.fluent.TopologiesClient;
 import com.azure.resourcemanager.security.fluent.WorkspaceSettingsClient;
@@ -650,42 +647,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
         return this.connectors;
     }
 
-    /** The SqlVulnerabilityAssessmentScansClient object to access its operations. */
-    private final SqlVulnerabilityAssessmentScansClient sqlVulnerabilityAssessmentScans;
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentScansClient object.
-     */
-    public SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans() {
-        return this.sqlVulnerabilityAssessmentScans;
-    }
-
-    /** The SqlVulnerabilityAssessmentScanResultsClient object to access its operations. */
-    private final SqlVulnerabilityAssessmentScanResultsClient sqlVulnerabilityAssessmentScanResults;
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentScanResultsClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentScanResultsClient object.
-     */
-    public SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults() {
-        return this.sqlVulnerabilityAssessmentScanResults;
-    }
-
-    /** The SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations. */
-    private final SqlVulnerabilityAssessmentBaselineRulesClient sqlVulnerabilityAssessmentBaselineRules;
-
-    /**
-     * Gets the SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations.
-     *
-     * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
-     */
-    public SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules() {
-        return this.sqlVulnerabilityAssessmentBaselineRules;
-    }
-
     /** The AlertsClient object to access its operations. */
     private final AlertsClient alerts;
 
@@ -756,66 +717,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
      */
     public GovernanceRulesClient getGovernanceRules() {
         return this.governanceRules;
-    }
-
-    /** The GovernanceRulesOperationsClient object to access its operations. */
-    private final GovernanceRulesOperationsClient governanceRulesOperations;
-
-    /**
-     * Gets the GovernanceRulesOperationsClient object to access its operations.
-     *
-     * @return the GovernanceRulesOperationsClient object.
-     */
-    public GovernanceRulesOperationsClient getGovernanceRulesOperations() {
-        return this.governanceRulesOperations;
-    }
-
-    /** The SecurityConnectorGovernanceRulesClient object to access its operations. */
-    private final SecurityConnectorGovernanceRulesClient securityConnectorGovernanceRules;
-
-    /**
-     * Gets the SecurityConnectorGovernanceRulesClient object to access its operations.
-     *
-     * @return the SecurityConnectorGovernanceRulesClient object.
-     */
-    public SecurityConnectorGovernanceRulesClient getSecurityConnectorGovernanceRules() {
-        return this.securityConnectorGovernanceRules;
-    }
-
-    /** The SecurityConnectorGovernanceRulesOperationsClient object to access its operations. */
-    private final SecurityConnectorGovernanceRulesOperationsClient securityConnectorGovernanceRulesOperations;
-
-    /**
-     * Gets the SecurityConnectorGovernanceRulesOperationsClient object to access its operations.
-     *
-     * @return the SecurityConnectorGovernanceRulesOperationsClient object.
-     */
-    public SecurityConnectorGovernanceRulesOperationsClient getSecurityConnectorGovernanceRulesOperations() {
-        return this.securityConnectorGovernanceRulesOperations;
-    }
-
-    /** The SubscriptionGovernanceRulesExecuteStatusClient object to access its operations. */
-    private final SubscriptionGovernanceRulesExecuteStatusClient subscriptionGovernanceRulesExecuteStatus;
-
-    /**
-     * Gets the SubscriptionGovernanceRulesExecuteStatusClient object to access its operations.
-     *
-     * @return the SubscriptionGovernanceRulesExecuteStatusClient object.
-     */
-    public SubscriptionGovernanceRulesExecuteStatusClient getSubscriptionGovernanceRulesExecuteStatus() {
-        return this.subscriptionGovernanceRulesExecuteStatus;
-    }
-
-    /** The SecurityConnectorGovernanceRulesExecuteStatusClient object to access its operations. */
-    private final SecurityConnectorGovernanceRulesExecuteStatusClient securityConnectorGovernanceRulesExecuteStatus;
-
-    /**
-     * Gets the SecurityConnectorGovernanceRulesExecuteStatusClient object to access its operations.
-     *
-     * @return the SecurityConnectorGovernanceRulesExecuteStatusClient object.
-     */
-    public SecurityConnectorGovernanceRulesExecuteStatusClient getSecurityConnectorGovernanceRulesExecuteStatus() {
-        return this.securityConnectorGovernanceRulesExecuteStatus;
     }
 
     /** The GovernanceAssignmentsClient object to access its operations. */
@@ -914,6 +815,66 @@ public final class SecurityCenterImpl implements SecurityCenter {
         return this.apiCollectionOffboardings;
     }
 
+    /** The HealthReportsClient object to access its operations. */
+    private final HealthReportsClient healthReports;
+
+    /**
+     * Gets the HealthReportsClient object to access its operations.
+     *
+     * @return the HealthReportsClient object.
+     */
+    public HealthReportsClient getHealthReports() {
+        return this.healthReports;
+    }
+
+    /** The HealthReportOperationsClient object to access its operations. */
+    private final HealthReportOperationsClient healthReportOperations;
+
+    /**
+     * Gets the HealthReportOperationsClient object to access its operations.
+     *
+     * @return the HealthReportOperationsClient object.
+     */
+    public HealthReportOperationsClient getHealthReportOperations() {
+        return this.healthReportOperations;
+    }
+
+    /** The SqlVulnerabilityAssessmentScansClient object to access its operations. */
+    private final SqlVulnerabilityAssessmentScansClient sqlVulnerabilityAssessmentScans;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScansClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScansClient object.
+     */
+    public SqlVulnerabilityAssessmentScansClient getSqlVulnerabilityAssessmentScans() {
+        return this.sqlVulnerabilityAssessmentScans;
+    }
+
+    /** The SqlVulnerabilityAssessmentScanResultsClient object to access its operations. */
+    private final SqlVulnerabilityAssessmentScanResultsClient sqlVulnerabilityAssessmentScanResults;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentScanResultsClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentScanResultsClient object.
+     */
+    public SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults() {
+        return this.sqlVulnerabilityAssessmentScanResults;
+    }
+
+    /** The SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations. */
+    private final SqlVulnerabilityAssessmentBaselineRulesClient sqlVulnerabilityAssessmentBaselineRules;
+
+    /**
+     * Gets the SqlVulnerabilityAssessmentBaselineRulesClient object to access its operations.
+     *
+     * @return the SqlVulnerabilityAssessmentBaselineRulesClient object.
+     */
+    public SqlVulnerabilityAssessmentBaselineRulesClient getSqlVulnerabilityAssessmentBaselineRules() {
+        return this.sqlVulnerabilityAssessmentBaselineRules;
+    }
+
     /**
      * Initializes an instance of SecurityCenter client.
      *
@@ -979,22 +940,12 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.secureScoreControlDefinitions = new SecureScoreControlDefinitionsClientImpl(this);
         this.securitySolutions = new SecuritySolutionsClientImpl(this);
         this.connectors = new ConnectorsClientImpl(this);
-        this.sqlVulnerabilityAssessmentScans = new SqlVulnerabilityAssessmentScansClientImpl(this);
-        this.sqlVulnerabilityAssessmentScanResults = new SqlVulnerabilityAssessmentScanResultsClientImpl(this);
-        this.sqlVulnerabilityAssessmentBaselineRules = new SqlVulnerabilityAssessmentBaselineRulesClientImpl(this);
         this.alerts = new AlertsClientImpl(this);
         this.settings = new SettingsClientImpl(this);
         this.ingestionSettings = new IngestionSettingsClientImpl(this);
         this.softwareInventories = new SoftwareInventoriesClientImpl(this);
         this.securityConnectors = new SecurityConnectorsClientImpl(this);
         this.governanceRules = new GovernanceRulesClientImpl(this);
-        this.governanceRulesOperations = new GovernanceRulesOperationsClientImpl(this);
-        this.securityConnectorGovernanceRules = new SecurityConnectorGovernanceRulesClientImpl(this);
-        this.securityConnectorGovernanceRulesOperations =
-            new SecurityConnectorGovernanceRulesOperationsClientImpl(this);
-        this.subscriptionGovernanceRulesExecuteStatus = new SubscriptionGovernanceRulesExecuteStatusClientImpl(this);
-        this.securityConnectorGovernanceRulesExecuteStatus =
-            new SecurityConnectorGovernanceRulesExecuteStatusClientImpl(this);
         this.governanceAssignments = new GovernanceAssignmentsClientImpl(this);
         this.applications = new ApplicationsClientImpl(this);
         this.applicationOperations = new ApplicationOperationsClientImpl(this);
@@ -1003,6 +954,11 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.apiCollections = new ApiCollectionsClientImpl(this);
         this.apiCollectionOnboardings = new ApiCollectionOnboardingsClientImpl(this);
         this.apiCollectionOffboardings = new ApiCollectionOffboardingsClientImpl(this);
+        this.healthReports = new HealthReportsClientImpl(this);
+        this.healthReportOperations = new HealthReportOperationsClientImpl(this);
+        this.sqlVulnerabilityAssessmentScans = new SqlVulnerabilityAssessmentScansClientImpl(this);
+        this.sqlVulnerabilityAssessmentScanResults = new SqlVulnerabilityAssessmentScanResultsClientImpl(this);
+        this.sqlVulnerabilityAssessmentBaselineRules = new SqlVulnerabilityAssessmentBaselineRulesClientImpl(this);
     }
 
     /**

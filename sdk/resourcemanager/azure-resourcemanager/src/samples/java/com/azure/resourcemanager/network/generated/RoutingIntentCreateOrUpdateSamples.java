@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.RoutingIntentInner;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for RoutingIntent CreateOrUpdate. */
 public final class RoutingIntentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RoutingIntentPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/RoutingIntentPut.json
      */
     /**
      * Sample code: RouteTablePut.
@@ -43,6 +42,6 @@ public final class RoutingIntentCreateOrUpdateSamples {
                                     .withDestinations(Arrays.asList("PrivateTraffic"))
                                     .withNextHop(
                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azfw1"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

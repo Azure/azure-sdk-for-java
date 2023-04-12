@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the send operation. */
-public final class EmailsSendResponse extends ResponseBase<EmailsSendHeaders, Void> {
+public final class EmailsSendResponse extends ResponseBase<EmailsSendHeaders, EmailSendResult> {
     /**
      * Creates an instance of EmailsSendResponse.
      *
@@ -20,7 +20,21 @@ public final class EmailsSendResponse extends ResponseBase<EmailsSendHeaders, Vo
      * @param headers the deserialized headers of the HTTP response.
      */
     public EmailsSendResponse(
-            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, EmailsSendHeaders headers) {
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            EmailSendResult value,
+            EmailsSendHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
+    }
+
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
+    @Override
+    public EmailSendResult getValue() {
+        return super.getValue();
     }
 }

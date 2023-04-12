@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The structure of the property that a time series id can have. An environment can have multiple such properties. */
 @Fluent
 public final class TimeSeriesIdProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesIdProperty.class);
-
     /*
      * The name of the property.
      */
@@ -25,6 +21,10 @@ public final class TimeSeriesIdProperty {
      */
     @JsonProperty(value = "type")
     private PropertyType type;
+
+    /** Creates an instance of TimeSeriesIdProperty class. */
+    public TimeSeriesIdProperty() {
+    }
 
     /**
      * Get the name property: The name of the property.

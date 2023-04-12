@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.models.KeyType;
 import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
 
 /** Samples for WebPubSub RegenerateKey. */
 public final class WebPubSubRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSub_RegenerateKey.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_RegenerateKey.json
      */
     /**
      * Sample code: WebPubSub_RegenerateKey.
@@ -25,6 +24,6 @@ public final class WebPubSubRegenerateKeySamples {
                 "myResourceGroup",
                 "myWebPubSubService",
                 new RegenerateKeyParameters().withKeyType(KeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

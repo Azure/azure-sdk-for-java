@@ -364,19 +364,21 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                         }
                     }
                     if (nameFound) {
-                        SearchIndexerDataSourceConnection deserializedValue =
+                        SearchIndexerDataSourceConnection deserializedSearchIndexerDataSourceConnection =
                                 new SearchIndexerDataSourceConnection(name);
-                        deserializedValue.description = description;
-                        deserializedValue.type = type;
-                        deserializedValue.credentials = credentials;
-                        deserializedValue.container = container;
-                        deserializedValue.identity = identity;
-                        deserializedValue.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
-                        deserializedValue.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
-                        deserializedValue.eTag = eTag;
-                        deserializedValue.encryptionKey = encryptionKey;
+                        deserializedSearchIndexerDataSourceConnection.description = description;
+                        deserializedSearchIndexerDataSourceConnection.type = type;
+                        deserializedSearchIndexerDataSourceConnection.credentials = credentials;
+                        deserializedSearchIndexerDataSourceConnection.container = container;
+                        deserializedSearchIndexerDataSourceConnection.identity = identity;
+                        deserializedSearchIndexerDataSourceConnection.dataChangeDetectionPolicy =
+                                dataChangeDetectionPolicy;
+                        deserializedSearchIndexerDataSourceConnection.dataDeletionDetectionPolicy =
+                                dataDeletionDetectionPolicy;
+                        deserializedSearchIndexerDataSourceConnection.eTag = eTag;
+                        deserializedSearchIndexerDataSourceConnection.encryptionKey = encryptionKey;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerDataSourceConnection;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

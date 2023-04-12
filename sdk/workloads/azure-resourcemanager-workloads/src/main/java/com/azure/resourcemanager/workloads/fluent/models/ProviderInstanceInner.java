@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ProviderInstanceInner extends ProxyResource {
     /*
-     * Managed service identity (user assigned identities)
+     * [currently not in use] Managed service identity(user assigned identities)
      */
     @JsonProperty(value = "identity")
     private UserAssignedServiceIdentity identity;
@@ -39,7 +39,7 @@ public final class ProviderInstanceInner extends ProxyResource {
     }
 
     /**
-     * Get the identity property: Managed service identity (user assigned identities).
+     * Get the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @return the identity value.
      */
@@ -48,7 +48,7 @@ public final class ProviderInstanceInner extends ProxyResource {
     }
 
     /**
-     * Set the identity property: Managed service identity (user assigned identities).
+     * Set the identity property: [currently not in use] Managed service identity(user assigned identities).
      *
      * @param identity the identity value to set.
      * @return the ProviderInstanceInner object itself.
@@ -95,7 +95,7 @@ public final class ProviderInstanceInner extends ProxyResource {
     }
 
     /**
-     * Get the providerSettings property: Defines the provider instance errors.
+     * Get the providerSettings property: Defines the provider specific properties.
      *
      * @return the providerSettings value.
      */
@@ -104,7 +104,7 @@ public final class ProviderInstanceInner extends ProxyResource {
     }
 
     /**
-     * Set the providerSettings property: Defines the provider instance errors.
+     * Set the providerSettings property: Defines the provider specific properties.
      *
      * @param providerSettings the providerSettings value to set.
      * @return the ProviderInstanceInner object itself.

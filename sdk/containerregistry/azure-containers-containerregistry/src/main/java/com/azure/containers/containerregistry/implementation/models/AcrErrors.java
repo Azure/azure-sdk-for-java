@@ -61,21 +61,20 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
     public static AcrErrors fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<AcrErrorInfo> errors = null;
+                    AcrErrors deserializedAcrErrors = new AcrErrors();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("errors".equals(fieldName)) {
-                            errors = reader.readArray(reader1 -> AcrErrorInfo.fromJson(reader1));
+                            List<AcrErrorInfo> errors = reader.readArray(reader1 -> AcrErrorInfo.fromJson(reader1));
+                            deserializedAcrErrors.errors = errors;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    AcrErrors deserializedValue = new AcrErrors();
-                    deserializedValue.errors = errors;
 
-                    return deserializedValue;
+                    return deserializedAcrErrors;
                 });
     }
 }

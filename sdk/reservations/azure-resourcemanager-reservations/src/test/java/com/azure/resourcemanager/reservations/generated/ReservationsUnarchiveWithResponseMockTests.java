@@ -56,6 +56,6 @@ public final class ReservationsUnarchiveWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.reservations().unarchiveWithResponse("qatmtdhtmdvy", "gikdgsz", com.azure.core.util.Context.NONE);
+        manager.reservations().unarchiveWithResponse("z", "ybycnunvj", com.azure.core.util.Context.NONE);
     }
 }

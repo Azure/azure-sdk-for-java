@@ -17,6 +17,15 @@ public final class SecurityRuleDirection extends ExpandableStringEnum<SecurityRu
     public static final SecurityRuleDirection OUTBOUND = fromString("Outbound");
 
     /**
+     * Creates a new instance of SecurityRuleDirection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityRuleDirection() {
+    }
+
+    /**
      * Creates or finds a SecurityRuleDirection from its string representation.
      *
      * @param name a name to look for.

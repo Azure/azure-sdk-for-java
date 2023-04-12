@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SsoSecretType. */
+/** The type of single sign on Secret Type. */
 public final class SsoSecretType extends ExpandableStringEnum<SsoSecretType> {
     /** Static value SharedKey for SsoSecretType. */
     public static final SsoSecretType SHARED_KEY = fromString("SharedKey");
@@ -21,6 +21,15 @@ public final class SsoSecretType extends ExpandableStringEnum<SsoSecretType> {
 
     /** Static value CertificateInKeyVault for SsoSecretType. */
     public static final SsoSecretType CERTIFICATE_IN_KEY_VAULT = fromString("CertificateInKeyVault");
+
+    /**
+     * Creates a new instance of SsoSecretType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsoSecretType() {
+    }
 
     /**
      * Creates or finds a SsoSecretType from its string representation.

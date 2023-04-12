@@ -15,7 +15,7 @@ public interface AccountBackups {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface AccountBackups {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,22 +44,7 @@ public interface AccountBackups {
      *
      * <p>Gets the specified backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup for a Netapp Account.
-     */
-    Backup get(String resourceGroupName, String accountName, String backupName);
-
-    /**
-     * Get Backup for a Netapp Account
-     *
-     * <p>Gets the specified backup for a Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -71,11 +56,26 @@ public interface AccountBackups {
     Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupName, Context context);
 
     /**
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified backup for a Netapp Account.
+     */
+    Backup get(String resourceGroupName, String accountName, String backupName);
+
+    /**
      * Delete Backup for a Netapp Account
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +89,7 @@ public interface AccountBackups {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyExemptions ListByResourceGroup. */
 public final class PolicyExemptionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/listPolicyExemptionsForResourceGroup.json
      */
     /**
      * Sample code: List policy exemptions that apply to a resource group.
@@ -23,6 +21,6 @@ public final class PolicyExemptionsListByResourceGroupSamples {
             .manager()
             .policyClient()
             .getPolicyExemptions()
-            .listByResourceGroup("TestResourceGroup", "atScope()", Context.NONE);
+            .listByResourceGroup("TestResourceGroup", "atScope()", com.azure.core.util.Context.NONE);
     }
 }

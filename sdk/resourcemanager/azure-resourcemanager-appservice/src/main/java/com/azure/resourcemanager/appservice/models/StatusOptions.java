@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StatusOptions. */
+/** App Service plan status. */
 public enum StatusOptions {
     /** Enum value Ready. */
     READY("Ready"),
@@ -33,6 +33,9 @@ public enum StatusOptions {
      */
     @JsonCreator
     public static StatusOptions fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StatusOptions[] items = StatusOptions.values();
         for (StatusOptions item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum StatusOptions {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

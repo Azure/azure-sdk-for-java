@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
 import com.azure.resourcemanager.resources.models.LockLevel;
 
@@ -32,6 +31,6 @@ public final class ManagementLocksCreateOrUpdateAtResourceLevelSamples {
                 "teststorageaccount",
                 "testlock",
                 new ManagementLockObjectInner().withLevel(LockLevel.READ_ONLY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

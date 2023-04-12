@@ -12,20 +12,22 @@ import java.util.List;
 @Fluent
 public final class ExportTemplateRequest {
     /*
-     * The IDs of the resources to filter the export by. To export all
-     * resources, supply an array with single entry '*'.
+     * The IDs of the resources to filter the export by. To export all resources, supply an array with single entry
+     * '*'.
      */
     @JsonProperty(value = "resources")
     private List<String> resources;
 
     /*
-     * The export template options. A CSV-formatted list containing zero or
-     * more of the following: 'IncludeParameterDefaultValue',
-     * 'IncludeComments', 'SkipResourceNameParameterization',
-     * 'SkipAllParameterization'
+     * The export template options. A CSV-formatted list containing zero or more of the following:
+     * 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization', 'SkipAllParameterization'
      */
     @JsonProperty(value = "options")
     private String options;
+
+    /** Creates an instance of ExportTemplateRequest class. */
+    public ExportTemplateRequest() {
+    }
 
     /**
      * Get the resources property: The IDs of the resources to filter the export by. To export all resources, supply an

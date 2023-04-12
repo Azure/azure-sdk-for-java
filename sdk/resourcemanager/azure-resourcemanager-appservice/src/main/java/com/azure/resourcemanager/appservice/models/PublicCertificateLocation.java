@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PublicCertificateLocation. */
+/** Public Certificate Location. */
 public enum PublicCertificateLocation {
     /** Enum value CurrentUserMy. */
     CURRENT_USER_MY("CurrentUserMy"),
@@ -33,6 +33,9 @@ public enum PublicCertificateLocation {
      */
     @JsonCreator
     public static PublicCertificateLocation fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PublicCertificateLocation[] items = PublicCertificateLocation.values();
         for (PublicCertificateLocation item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum PublicCertificateLocation {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

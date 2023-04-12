@@ -20,6 +20,15 @@ public final class LoadDistribution extends ExpandableStringEnum<LoadDistributio
     public static final LoadDistribution SOURCE_IPPROTOCOL = fromString("SourceIPProtocol");
 
     /**
+     * Creates a new instance of LoadDistribution value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadDistribution() {
+    }
+
+    /**
      * Creates or finds a LoadDistribution from its string representation.
      *
      * @param name a name to look for.

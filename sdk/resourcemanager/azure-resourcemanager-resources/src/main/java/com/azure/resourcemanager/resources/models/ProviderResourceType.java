@@ -74,6 +74,10 @@ public final class ProviderResourceType {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
+    /** Creates an instance of ProviderResourceType class. */
+    public ProviderResourceType() {
+    }
+
     /**
      * Get the resourceType property: The resource type.
      *

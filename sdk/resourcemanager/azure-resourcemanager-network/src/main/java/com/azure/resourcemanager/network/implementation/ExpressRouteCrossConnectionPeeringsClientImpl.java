@@ -179,7 +179,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -240,7 +240,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -370,7 +370,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -426,7 +426,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -500,7 +500,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName).getSyncPoller();
     }
 
     /**
@@ -518,7 +518,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName, context).getSyncPoller();
     }
 
     /**
@@ -628,7 +628,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +685,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -802,7 +802,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -872,7 +872,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -976,7 +976,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             String crossConnectionName,
             String peeringName,
             ExpressRouteCrossConnectionPeeringInner peeringParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters)
             .getSyncPoller();
     }
 
@@ -1002,7 +1003,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             String peeringName,
             ExpressRouteCrossConnectionPeeringInner peeringParameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context)
             .getSyncPoller();
     }
 

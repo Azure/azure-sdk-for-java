@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SoftwareInventories List. */
 public final class SoftwareInventoriesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class SoftwareInventoriesListSamples {
      */
     public static void getsTheSoftwareInventoryOfAllVirtualMachinesInTheSubscriptions(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.softwareInventories().list(Context.NONE);
+        manager.softwareInventories().list(com.azure.core.util.Context.NONE);
     }
 }

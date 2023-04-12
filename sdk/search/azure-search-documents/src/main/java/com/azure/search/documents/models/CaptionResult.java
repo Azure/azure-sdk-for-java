@@ -108,17 +108,16 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
     public static CaptionResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String text = null;
-                    String highlights = null;
+                    CaptionResult deserializedCaptionResult = new CaptionResult();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("text".equals(fieldName)) {
-                            text = reader.getString();
+                            deserializedCaptionResult.text = reader.getString();
                         } else if ("highlights".equals(fieldName)) {
-                            highlights = reader.getString();
+                            deserializedCaptionResult.highlights = reader.getString();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -127,12 +126,9 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    CaptionResult deserializedValue = new CaptionResult();
-                    deserializedValue.text = text;
-                    deserializedValue.highlights = highlights;
-                    deserializedValue.additionalProperties = additionalProperties;
+                    deserializedCaptionResult.additionalProperties = additionalProperties;
 
-                    return deserializedValue;
+                    return deserializedCaptionResult;
                 });
     }
 }

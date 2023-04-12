@@ -17,6 +17,10 @@ public final class SiteSealInner {
     @JsonProperty(value = "html", required = true)
     private String html;
 
+    /** Creates an instance of SiteSealInner class. */
+    public SiteSealInner() {
+    }
+
     /**
      * Get the html property: HTML snippet.
      *

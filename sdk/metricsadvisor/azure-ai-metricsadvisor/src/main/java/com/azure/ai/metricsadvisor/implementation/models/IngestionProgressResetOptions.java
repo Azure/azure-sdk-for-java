@@ -23,6 +23,9 @@ public final class IngestionProgressResetOptions {
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of IngestionProgressResetOptions class. */
+    public IngestionProgressResetOptions() {}
+
     /**
      * Get the startTime property: the start point of time range to reset data ingestion status.
      *

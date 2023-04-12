@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.17.0</version>
+  <version>12.18.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -218,6 +218,23 @@ Once you have the ConnectionString, you can construct the share client with `${a
 String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
     .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
+```
+
+#### Share with `TokenCredential`
+Once you have the TokenCredential, you can construct the share client with `${accountName}`, `${shareName}` and `ShareTokenIntent`. 
+`ShareTokenIntent.BACKUP` specifies requests that are intended for backup/admin type operations, meaning that all
+file/directory ACLs are bypassed and full permissions are granted. User must have required RBAC permission in order to 
+use `ShareTokenIntent.BACKUP`.
+
+```java readme-sample-createShareClientWithTokenCredential
+String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
+
+ShareClient serviceClient = new ShareClientBuilder()
+    .endpoint(shareURL)
+    .credential(tokenCredential)
+    .shareTokenIntent(ShareTokenIntent.BACKUP)
+    .shareName(shareName)
+    .buildClient();
 ```
 
 ### Directory
@@ -398,7 +415,7 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with data of "defa
 ```java readme-sample-uploadDataToStorageBiggerThan4MB
 byte[] data = "Hello, data sample!".getBytes(StandardCharsets.UTF_8);
 
-long chunkSize = ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE;
+long chunkSize = 4 * 1024 * 1024L;
 if (data.length > chunkSize) {
     for (int offset = 0; offset < data.length; offset += chunkSize) {
         try {

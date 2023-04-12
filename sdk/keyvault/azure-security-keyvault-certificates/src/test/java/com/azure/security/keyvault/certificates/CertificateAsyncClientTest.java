@@ -11,9 +11,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -501,19 +501,24 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         cancelCertificateOperationRunner((certName) -> {
             PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                    .setPollInterval(Duration.ofMillis(250));
 
-            StepVerifier.create(certPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
-                    .last().flatMap(AsyncPollResponse::cancelOperation))
-                .assertNext(certificateOperation -> {
-                    assertTrue(certificateOperation.getCancellationRequested());
-                }).verifyComplete();
+            StepVerifier.create(certPoller
+                    .takeUntil(asyncPollResponse ->
+                        asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
+                    .flatMap(AsyncPollResponse::cancelOperation))
+                .assertNext(certificateOperation ->
+                    assertTrue(certificateOperation.getCancellationRequested()))
+                .verifyComplete();
 
-            StepVerifier.create(certPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.USER_CANCELLED)
-                    .last().flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(certificate -> {
-                    assertFalse(certificate.getProperties().isEnabled());
-                }).verifyComplete();
+            StepVerifier.create(certPoller
+                    .takeUntil(asyncPollResponse ->
+                        asyncPollResponse.getStatus() == LongRunningOperationStatus.USER_CANCELLED)
+                    .flatMap(AsyncPollResponse::getFinalResult))
+                .assertNext(certificate ->
+                    assertFalse(certificate.getProperties().isEnabled()))
+                .verifyComplete();
         });
     }
 
@@ -945,7 +950,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
                     assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
-                        .equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
+                        .equalsIgnoreCase("db1497bc2c82b365c5c7c73f611513ee117790a9"));
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                     // Load the CER part into X509Certificate object
@@ -959,7 +964,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     }
 
                     assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
-                    assertEquals("CN=Root Agency", x509Certificate.getIssuerX500Principal().getName());
+                    assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
                 }).verifyComplete();
         });
     }

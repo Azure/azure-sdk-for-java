@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteConnections List. */
 public final class ExpressRouteConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteConnectionList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteConnectionList.json
      */
     /**
      * Sample code: ExpressRouteConnectionList.
@@ -22,6 +20,6 @@ public final class ExpressRouteConnectionsListSamples {
             .manager()
             .serviceClient()
             .getExpressRouteConnections()
-            .listWithResponse("resourceGroupName", "expressRouteGatewayName", Context.NONE);
+            .listWithResponse("resourceGroupName", "expressRouteGatewayName", com.azure.core.util.Context.NONE);
     }
 }

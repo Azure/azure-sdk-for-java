@@ -18,6 +18,10 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
     @JsonProperty(value = "properties")
     private SiteConfigurationSnapshotInfoProperties innerProperties;
 
+    /** Creates an instance of SiteConfigurationSnapshotInfoInner class. */
+    public SiteConfigurationSnapshotInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: SiteConfigurationSnapshotInfo resource specific properties.
      *

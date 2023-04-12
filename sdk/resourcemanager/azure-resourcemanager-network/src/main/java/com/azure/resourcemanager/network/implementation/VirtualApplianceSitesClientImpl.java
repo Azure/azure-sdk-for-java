@@ -179,7 +179,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -237,7 +237,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,7 +311,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
-        return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
     }
 
     /**
@@ -329,7 +329,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
     }
 
     /**
@@ -441,7 +441,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +500,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -616,7 +616,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +685,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -783,7 +783,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         String networkVirtualApplianceName,
         String siteName,
         VirtualApplianceSiteInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters)
             .getSyncPoller();
     }
 
@@ -807,7 +808,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         String siteName,
         VirtualApplianceSiteInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters, context)
             .getSyncPoller();
     }
 
@@ -940,7 +942,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1003,7 +1005,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

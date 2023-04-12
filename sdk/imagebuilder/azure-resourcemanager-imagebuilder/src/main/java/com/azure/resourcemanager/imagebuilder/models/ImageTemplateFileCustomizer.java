@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     /*
-     * The URI of the file to be uploaded for customizing the VM. It can be a
-     * github link, SAS URI for Azure Storage, etc
+     * The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage,
+     * etc
      */
     @JsonProperty(value = "sourceUri")
     private String sourceUri;
@@ -28,11 +28,15 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     private String sha256Checksum;
 
     /*
-     * The absolute path to a file (with nested directory structures already
-     * created) where the file (from sourceUri) will be uploaded to in the VM
+     * The absolute path to a file (with nested directory structures already created) where the file (from sourceUri)
+     * will be uploaded to in the VM
      */
     @JsonProperty(value = "destination")
     private String destination;
+
+    /** Creates an instance of ImageTemplateFileCustomizer class. */
+    public ImageTemplateFileCustomizer() {
+    }
 
     /**
      * Get the sourceUri property: The URI of the file to be uploaded for customizing the VM. It can be a github link,

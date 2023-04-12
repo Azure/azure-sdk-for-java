@@ -11,220 +11,220 @@ import java.util.Collection;
 
 /** The language of the query. */
 public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
-    /** Static value none for QueryLanguage. */
+    /** Query language not specified. */
     public static final QueryLanguage NONE = fromString("none");
 
-    /** Static value en-us for QueryLanguage. */
+    /** Query language value for English (United States). */
     public static final QueryLanguage EN_US = fromString("en-us");
 
-    /** Static value en-gb for QueryLanguage. */
+    /** Query language value for English (Great Britain). */
     public static final QueryLanguage EN_GB = fromString("en-gb");
 
-    /** Static value en-in for QueryLanguage. */
+    /** Query language value for English (India). */
     public static final QueryLanguage EN_IN = fromString("en-in");
 
-    /** Static value en-ca for QueryLanguage. */
+    /** Query language value for English (Canada). */
     public static final QueryLanguage EN_CA = fromString("en-ca");
 
-    /** Static value en-au for QueryLanguage. */
+    /** Query language value for English (Australia). */
     public static final QueryLanguage EN_AU = fromString("en-au");
 
-    /** Static value fr-fr for QueryLanguage. */
+    /** Query language value for French (France). */
     public static final QueryLanguage FR_FR = fromString("fr-fr");
 
-    /** Static value fr-ca for QueryLanguage. */
+    /** Query language value for French (Canada). */
     public static final QueryLanguage FR_CA = fromString("fr-ca");
 
-    /** Static value de-de for QueryLanguage. */
+    /** Query language value for German (Germany). */
     public static final QueryLanguage DE_DE = fromString("de-de");
 
-    /** Static value es-es for QueryLanguage. */
+    /** Query language value for Spanish (Spain). */
     public static final QueryLanguage ES_ES = fromString("es-es");
 
-    /** Static value es-mx for QueryLanguage. */
+    /** Query language value for Spanish (Mexico). */
     public static final QueryLanguage ES_MX = fromString("es-mx");
 
-    /** Static value zh-cn for QueryLanguage. */
+    /** Query language value for Chinese (China). */
     public static final QueryLanguage ZH_CN = fromString("zh-cn");
 
-    /** Static value zh-tw for QueryLanguage. */
+    /** Query language value for Chinese (Taiwan). */
     public static final QueryLanguage ZH_TW = fromString("zh-tw");
 
-    /** Static value pt-br for QueryLanguage. */
+    /** Query language value for Portuguese (Brazil). */
     public static final QueryLanguage PT_BR = fromString("pt-br");
 
-    /** Static value pt-pt for QueryLanguage. */
+    /** Query language value for Portuguese (Portugal). */
     public static final QueryLanguage PT_PT = fromString("pt-pt");
 
-    /** Static value it-it for QueryLanguage. */
+    /** Query language value for Italian (Italy). */
     public static final QueryLanguage IT_IT = fromString("it-it");
 
-    /** Static value ja-jp for QueryLanguage. */
+    /** Query language value for Japanese (Japan). */
     public static final QueryLanguage JA_JP = fromString("ja-jp");
 
-    /** Static value ko-kr for QueryLanguage. */
+    /** Query language value for Korean (Korea). */
     public static final QueryLanguage KO_KR = fromString("ko-kr");
 
-    /** Static value ru-ru for QueryLanguage. */
+    /** Query language value for Russian (Russia). */
     public static final QueryLanguage RU_RU = fromString("ru-ru");
 
-    /** Static value cs-cz for QueryLanguage. */
+    /** Query language value for Czech (Czech Republic). */
     public static final QueryLanguage CS_CZ = fromString("cs-cz");
 
-    /** Static value nl-be for QueryLanguage. */
+    /** Query language value for Dutch (Belgium). */
     public static final QueryLanguage NL_BE = fromString("nl-be");
 
-    /** Static value nl-nl for QueryLanguage. */
+    /** Query language value for Dutch (Netherlands). */
     public static final QueryLanguage NL_NL = fromString("nl-nl");
 
-    /** Static value hu-hu for QueryLanguage. */
+    /** Query language value for Hungarian (Hungary). */
     public static final QueryLanguage HU_HU = fromString("hu-hu");
 
-    /** Static value pl-pl for QueryLanguage. */
+    /** Query language value for Polish (Poland). */
     public static final QueryLanguage PL_PL = fromString("pl-pl");
 
-    /** Static value sv-se for QueryLanguage. */
+    /** Query language value for Swedish (Sweden). */
     public static final QueryLanguage SV_SE = fromString("sv-se");
 
-    /** Static value tr-tr for QueryLanguage. */
+    /** Query language value for Turkish (Turkey). */
     public static final QueryLanguage TR_TR = fromString("tr-tr");
 
-    /** Static value hi-in for QueryLanguage. */
+    /** Query language value for Hindi (India). */
     public static final QueryLanguage HI_IN = fromString("hi-in");
 
-    /** Static value ar-sa for QueryLanguage. */
+    /** Query language value for Arabic (Saudi Arabia). */
     public static final QueryLanguage AR_SA = fromString("ar-sa");
 
-    /** Static value ar-eg for QueryLanguage. */
+    /** Query language value for Arabic (Egypt). */
     public static final QueryLanguage AR_EG = fromString("ar-eg");
 
-    /** Static value ar-ma for QueryLanguage. */
+    /** Query language value for Arabic (Morocco). */
     public static final QueryLanguage AR_MA = fromString("ar-ma");
 
-    /** Static value ar-kw for QueryLanguage. */
+    /** Query language value for Arabic (Kuwait). */
     public static final QueryLanguage AR_KW = fromString("ar-kw");
 
-    /** Static value ar-jo for QueryLanguage. */
+    /** Query language value for Arabic (Jordan). */
     public static final QueryLanguage AR_JO = fromString("ar-jo");
 
-    /** Static value da-dk for QueryLanguage. */
+    /** Query language value for Danish (Denmark). */
     public static final QueryLanguage DA_DK = fromString("da-dk");
 
-    /** Static value no-no for QueryLanguage. */
+    /** Query language value for Norwegian (Norway). */
     public static final QueryLanguage NO_NO = fromString("no-no");
 
-    /** Static value bg-bg for QueryLanguage. */
+    /** Query language value for Bulgarian (Bulgaria). */
     public static final QueryLanguage BG_BG = fromString("bg-bg");
 
-    /** Static value hr-hr for QueryLanguage. */
+    /** Query language value for Croatian (Croatia). */
     public static final QueryLanguage HR_HR = fromString("hr-hr");
 
-    /** Static value hr-ba for QueryLanguage. */
+    /** Query language value for Croatian (Bosnia and Herzegovina). */
     public static final QueryLanguage HR_BA = fromString("hr-ba");
 
-    /** Static value ms-my for QueryLanguage. */
+    /** Query language value for Malay (Malaysia). */
     public static final QueryLanguage MS_MY = fromString("ms-my");
 
-    /** Static value ms-bn for QueryLanguage. */
+    /** Query language value for Malay (Brunei Darussalam). */
     public static final QueryLanguage MS_BN = fromString("ms-bn");
 
-    /** Static value sl-sl for QueryLanguage. */
+    /** Query language value for Slovenian (Slovenia). */
     public static final QueryLanguage SL_SL = fromString("sl-sl");
 
-    /** Static value ta-in for QueryLanguage. */
+    /** Query language value for Tamil (India). */
     public static final QueryLanguage TA_IN = fromString("ta-in");
 
-    /** Static value vi-vn for QueryLanguage. */
+    /** Query language value for Vietnamese (Viet Nam). */
     public static final QueryLanguage VI_VN = fromString("vi-vn");
 
-    /** Static value el-gr for QueryLanguage. */
+    /** Query language value for Greek (Greece). */
     public static final QueryLanguage EL_GR = fromString("el-gr");
 
-    /** Static value ro-ro for QueryLanguage. */
+    /** Query language value for Romanian (Romania). */
     public static final QueryLanguage RO_RO = fromString("ro-ro");
 
-    /** Static value is-is for QueryLanguage. */
+    /** Query language value for Icelandic (Iceland). */
     public static final QueryLanguage IS_IS = fromString("is-is");
 
-    /** Static value id-id for QueryLanguage. */
+    /** Query language value for Indonesian (Indonesia). */
     public static final QueryLanguage ID_ID = fromString("id-id");
 
-    /** Static value th-th for QueryLanguage. */
+    /** Query language value for Thai (Thailand). */
     public static final QueryLanguage TH_TH = fromString("th-th");
 
-    /** Static value lt-lt for QueryLanguage. */
+    /** Query language value for Lithuanian (Lithuania). */
     public static final QueryLanguage LT_LT = fromString("lt-lt");
 
-    /** Static value uk-ua for QueryLanguage. */
+    /** Query language value for Ukrainian (Ukraine). */
     public static final QueryLanguage UK_UA = fromString("uk-ua");
 
-    /** Static value lv-lv for QueryLanguage. */
+    /** Query language value for Latvian (Latvia). */
     public static final QueryLanguage LV_LV = fromString("lv-lv");
 
-    /** Static value et-ee for QueryLanguage. */
+    /** Query language value for Estonian (Estonia). */
     public static final QueryLanguage ET_EE = fromString("et-ee");
 
-    /** Static value ca-es for QueryLanguage. */
+    /** Query language value for Catalan (Spain). */
     public static final QueryLanguage CA_ES = fromString("ca-es");
 
-    /** Static value fi-fi for QueryLanguage. */
+    /** Query language value for Finnish (Finland). */
     public static final QueryLanguage FI_FI = fromString("fi-fi");
 
-    /** Static value sr-ba for QueryLanguage. */
+    /** Query language value for Serbian (Bosnia and Herzegovina). */
     public static final QueryLanguage SR_BA = fromString("sr-ba");
 
-    /** Static value sr-me for QueryLanguage. */
+    /** Query language value for Serbian (Montenegro). */
     public static final QueryLanguage SR_ME = fromString("sr-me");
 
-    /** Static value sr-rs for QueryLanguage. */
+    /** Query language value for Serbian (Serbia). */
     public static final QueryLanguage SR_RS = fromString("sr-rs");
 
-    /** Static value sk-sk for QueryLanguage. */
+    /** Query language value for Slovak (Slovakia). */
     public static final QueryLanguage SK_SK = fromString("sk-sk");
 
-    /** Static value nb-no for QueryLanguage. */
+    /** Query language value for Norwegian (Norway). */
     public static final QueryLanguage NB_NO = fromString("nb-no");
 
-    /** Static value hy-am for QueryLanguage. */
+    /** Query language value for Armenian (Armenia). */
     public static final QueryLanguage HY_AM = fromString("hy-am");
 
-    /** Static value bn-in for QueryLanguage. */
+    /** Query language value for Bengali (India). */
     public static final QueryLanguage BN_IN = fromString("bn-in");
 
-    /** Static value eu-es for QueryLanguage. */
+    /** Query language value for Basque (Spain). */
     public static final QueryLanguage EU_ES = fromString("eu-es");
 
-    /** Static value gl-es for QueryLanguage. */
+    /** Query language value for Galician (Spain). */
     public static final QueryLanguage GL_ES = fromString("gl-es");
 
-    /** Static value gu-in for QueryLanguage. */
+    /** Query language value for Gujarati (India). */
     public static final QueryLanguage GU_IN = fromString("gu-in");
 
-    /** Static value he-il for QueryLanguage. */
+    /** Query language value for Hebrew (Israel). */
     public static final QueryLanguage HE_IL = fromString("he-il");
 
-    /** Static value ga-ie for QueryLanguage. */
+    /** Query language value for Irish (Ireland). */
     public static final QueryLanguage GA_IE = fromString("ga-ie");
 
-    /** Static value kn-in for QueryLanguage. */
+    /** Query language value for Kannada (India). */
     public static final QueryLanguage KN_IN = fromString("kn-in");
 
-    /** Static value ml-in for QueryLanguage. */
+    /** Query language value for Malayalam (India). */
     public static final QueryLanguage ML_IN = fromString("ml-in");
 
-    /** Static value mr-in for QueryLanguage. */
+    /** Query language value for Marathi (India). */
     public static final QueryLanguage MR_IN = fromString("mr-in");
 
-    /** Static value fa-ae for QueryLanguage. */
+    /** Query language value for Persian (U.A.E.). */
     public static final QueryLanguage FA_AE = fromString("fa-ae");
 
-    /** Static value pa-in for QueryLanguage. */
+    /** Query language value for Punjabi (India). */
     public static final QueryLanguage PA_IN = fromString("pa-in");
 
-    /** Static value te-in for QueryLanguage. */
+    /** Query language value for Telugu (India). */
     public static final QueryLanguage TE_IN = fromString("te-in");
 
-    /** Static value ur-pk for QueryLanguage. */
+    /** Query language value for Urdu (Pakistan). */
     public static final QueryLanguage UR_PK = fromString("ur-pk");
 
     /**

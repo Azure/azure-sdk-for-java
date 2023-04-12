@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteGateways ListBySubscription. */
 public final class ExpressRouteGatewaysListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteGatewayListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteGatewayListBySubscription.json
      */
     /**
      * Sample code: ExpressRouteGatewayListBySubscription.
@@ -22,6 +20,6 @@ public final class ExpressRouteGatewaysListBySubscriptionSamples {
             .manager()
             .serviceClient()
             .getExpressRouteGateways()
-            .listBySubscriptionWithResponse(Context.NONE);
+            .listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }

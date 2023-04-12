@@ -17,6 +17,15 @@ public final class VpnGatewayTunnelingProtocol extends ExpandableStringEnum<VpnG
     public static final VpnGatewayTunnelingProtocol OPEN_VPN = fromString("OpenVPN");
 
     /**
+     * Creates a new instance of VpnGatewayTunnelingProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnGatewayTunnelingProtocol() {
+    }
+
+    /**
      * Creates or finds a VpnGatewayTunnelingProtocol from its string representation.
      *
      * @param name a name to look for.

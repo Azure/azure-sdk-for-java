@@ -191,7 +191,7 @@
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
-    <graalvm.enable>false</graalvm.enable>
+    <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
     <!-- The following properties configure the revapi-maven-plugin. -->
@@ -225,7 +225,7 @@
     need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
     by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
     <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
-    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../core/azure-json/src/main/java</javadoc.sourcepath>
   </properties>
 
   <build>
@@ -1540,9 +1540,10 @@
             <artifactId>native-maven-plugin</artifactId>
             <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
-              <skip>${graalvm.enable}</skip>
-              <buildArgs>--no-fallback ${nativeImage.buildArgs}</buildArgs>
+              <skip>${graalvm.disable}</skip>
+              <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
             </configuration>
+            <extensions>true</extensions>
             <executions>
               <execution>
                 <id>test-native</id>

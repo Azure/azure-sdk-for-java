@@ -27,11 +27,14 @@ public final class FileSystemHttpLogsConfig {
     private Integer retentionInDays;
 
     /*
-     * True if configuration is enabled, false if it is disabled and null if
-     * configuration is not set.
+     * True if configuration is enabled, false if it is disabled and null if configuration is not set.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of FileSystemHttpLogsConfig class. */
+    public FileSystemHttpLogsConfig() {
+    }
 
     /**
      * Get the retentionInMb property: Maximum size in megabytes that http log files can use. When reached old log files

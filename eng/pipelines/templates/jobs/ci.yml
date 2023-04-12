@@ -155,7 +155,7 @@ jobs:
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
       - script: |
-          pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
+          python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
@@ -329,7 +329,15 @@ jobs:
         displayName: Verify Code Generation
         inputs:
           pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Compare-CurrentToCodegeneration.ps1
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -Directory sdk/${{ parameters.ServiceDirectory }}
+
+      - task: PowerShell@2
+        displayName: Verify TypeSpec Code Generation
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
           arguments: >
             -Directory sdk/${{ parameters.ServiceDirectory }}
 

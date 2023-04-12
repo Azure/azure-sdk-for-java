@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CertificateOrderActionType. */
+/** Action type. */
 public enum CertificateOrderActionType {
     /** Enum value CertificateIssued. */
     CERTIFICATE_ISSUED("CertificateIssued"),
@@ -66,6 +66,9 @@ public enum CertificateOrderActionType {
      */
     @JsonCreator
     public static CertificateOrderActionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CertificateOrderActionType[] items = CertificateOrderActionType.values();
         for (CertificateOrderActionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -75,6 +78,7 @@ public enum CertificateOrderActionType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

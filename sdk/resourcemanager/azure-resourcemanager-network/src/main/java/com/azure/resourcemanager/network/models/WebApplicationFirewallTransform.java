@@ -32,6 +32,15 @@ public final class WebApplicationFirewallTransform extends ExpandableStringEnum<
     public static final WebApplicationFirewallTransform HTML_ENTITY_DECODE = fromString("HtmlEntityDecode");
 
     /**
+     * Creates a new instance of WebApplicationFirewallTransform value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallTransform() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallTransform from its string representation.
      *
      * @param name a name to look for.

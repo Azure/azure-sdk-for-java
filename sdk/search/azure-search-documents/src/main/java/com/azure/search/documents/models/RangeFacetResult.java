@@ -6,8 +6,10 @@ package com.azure.search.documents.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * A single bucket of a range facet query result that reports the number of documents
- * with a field value falling within a particular range.
+ * A single bucket of a range facet query result that reports the number of documents with a field value falling within
+ * a particular range.
+ *
+ * @param <T> The type of the facets.
  */
 @Immutable
 public class RangeFacetResult<T> {
@@ -52,8 +54,9 @@ public class RangeFacetResult<T> {
     }
 
     /**
-     * Gets a value indicating the inclusive lower bound of the facet's range, or null to indicate that there is
-     * no lower bound (i.e. -- for the first bucket).
+     * Gets a value indicating the inclusive lower bound of the facet's range, or null to indicate that there is no
+     * lower bound (i.e. -- for the first bucket).
+     *
      * @return from
      */
     public T getFrom() {
@@ -61,8 +64,8 @@ public class RangeFacetResult<T> {
     }
 
     /**
-     * Gets a value indicating the exclusive upper bound of the facet's range, or null to indicate that there is
-     * no upper bound (i.e. -- for the last bucket).
+     * Gets a value indicating the exclusive upper bound of the facet's range, or null to indicate that there is no
+     * upper bound (i.e. -- for the last bucket).
      *
      * @return to
      */

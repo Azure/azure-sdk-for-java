@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /** The ChangePointFeedback model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "feedbackType")
@@ -22,8 +23,7 @@ public final class ChangePointFeedback extends MetricFeedback {
     private OffsetDateTime startTime;
 
     /*
-     * the end timestamp of feedback time range, when equals to startTime means
-     * only one timestamp
+     * the end timestamp of feedback time range, when equals to startTime means only one timestamp
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
@@ -33,6 +33,9 @@ public final class ChangePointFeedback extends MetricFeedback {
      */
     @JsonProperty(value = "value", required = true)
     private ChangePointFeedbackValue value;
+
+    /** Creates an instance of ChangePointFeedback class. */
+    public ChangePointFeedback() {}
 
     /**
      * Get the startTime property: the start timestamp of feedback time range.
@@ -93,6 +96,20 @@ public final class ChangePointFeedback extends MetricFeedback {
      */
     public ChangePointFeedback setValue(ChangePointFeedbackValue value) {
         this.value = value;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ChangePointFeedback setMetricId(UUID metricId) {
+        super.setMetricId(metricId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ChangePointFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
         return this;
     }
 }

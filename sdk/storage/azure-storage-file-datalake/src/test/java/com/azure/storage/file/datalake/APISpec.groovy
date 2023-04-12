@@ -79,7 +79,7 @@ class APISpec extends StorageSpec {
         fileSystemName = generateFileSystemName()
         fsc = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName)
         fscAsync = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName)
-        fsc.create()
+        fsc.createIfNotExists()
     }
 
     def cleanup() {

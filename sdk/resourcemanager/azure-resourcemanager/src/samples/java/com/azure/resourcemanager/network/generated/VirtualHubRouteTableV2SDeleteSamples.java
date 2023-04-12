@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualHubRouteTableV2S Delete. */
 public final class VirtualHubRouteTableV2SDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualHubRouteTableV2Delete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubRouteTableV2Delete.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Delete.
@@ -22,6 +20,6 @@ public final class VirtualHubRouteTableV2SDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualHubRouteTableV2S()
-            .delete("rg1", "virtualHub1", "virtualHubRouteTable1a", Context.NONE);
+            .delete("rg1", "virtualHub1", "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
     }
 }

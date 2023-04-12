@@ -5,80 +5,32 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetCreationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The ReferenceDataSetCreateOrUpdateParameters model. */
-@JsonFlatten
 @Fluent
-public class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceDataSetCreateOrUpdateParameters.class);
-
+public final class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
     /*
-     * The list of key properties for the reference data set.
+     * Properties used to create a reference data set.
      */
-    @JsonProperty(value = "properties.keyProperties", required = true)
-    private List<ReferenceDataSetKeyProperty> keyProperties;
+    @JsonProperty(value = "properties", required = true)
+    private ReferenceDataSetCreationProperties innerProperties = new ReferenceDataSetCreationProperties();
 
-    /*
-     * The reference data set key comparison behavior can be set using this
-     * property. By default, the value is 'Ordinal' - which means case
-     * sensitive key comparison will be performed while joining reference data
-     * with events or while adding new reference data. When 'OrdinalIgnoreCase'
-     * is set, case insensitive comparison will be used.
-     */
-    @JsonProperty(value = "properties.dataStringComparisonBehavior")
-    private DataStringComparisonBehavior dataStringComparisonBehavior;
-
-    /**
-     * Get the keyProperties property: The list of key properties for the reference data set.
-     *
-     * @return the keyProperties value.
-     */
-    public List<ReferenceDataSetKeyProperty> keyProperties() {
-        return this.keyProperties;
+    /** Creates an instance of ReferenceDataSetCreateOrUpdateParameters class. */
+    public ReferenceDataSetCreateOrUpdateParameters() {
     }
 
     /**
-     * Set the keyProperties property: The list of key properties for the reference data set.
+     * Get the innerProperties property: Properties used to create a reference data set.
      *
-     * @param keyProperties the keyProperties value to set.
-     * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
+     * @return the innerProperties value.
      */
-    public ReferenceDataSetCreateOrUpdateParameters withKeyProperties(List<ReferenceDataSetKeyProperty> keyProperties) {
-        this.keyProperties = keyProperties;
-        return this;
-    }
-
-    /**
-     * Get the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
-     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
-     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
-     * case insensitive comparison will be used.
-     *
-     * @return the dataStringComparisonBehavior value.
-     */
-    public DataStringComparisonBehavior dataStringComparisonBehavior() {
-        return this.dataStringComparisonBehavior;
-    }
-
-    /**
-     * Set the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
-     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
-     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
-     * case insensitive comparison will be used.
-     *
-     * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
-     * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
-     */
-    public ReferenceDataSetCreateOrUpdateParameters withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
-        this.dataStringComparisonBehavior = dataStringComparisonBehavior;
-        return this;
+    private ReferenceDataSetCreationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -96,6 +48,59 @@ public class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrac
     }
 
     /**
+     * Get the keyProperties property: The list of key properties for the reference data set.
+     *
+     * @return the keyProperties value.
+     */
+    public List<ReferenceDataSetKeyProperty> keyProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyProperties();
+    }
+
+    /**
+     * Set the keyProperties property: The list of key properties for the reference data set.
+     *
+     * @param keyProperties the keyProperties value to set.
+     * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
+     */
+    public ReferenceDataSetCreateOrUpdateParameters withKeyProperties(List<ReferenceDataSetKeyProperty> keyProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReferenceDataSetCreationProperties();
+        }
+        this.innerProperties().withKeyProperties(keyProperties);
+        return this;
+    }
+
+    /**
+     * Get the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
+     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
+     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
+     * case insensitive comparison will be used.
+     *
+     * @return the dataStringComparisonBehavior value.
+     */
+    public DataStringComparisonBehavior dataStringComparisonBehavior() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataStringComparisonBehavior();
+    }
+
+    /**
+     * Set the dataStringComparisonBehavior property: The reference data set key comparison behavior can be set using
+     * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
+     * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
+     * case insensitive comparison will be used.
+     *
+     * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
+     * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
+     */
+    public ReferenceDataSetCreateOrUpdateParameters withDataStringComparisonBehavior(
+        DataStringComparisonBehavior dataStringComparisonBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReferenceDataSetCreationProperties();
+        }
+        this.innerProperties().withDataStringComparisonBehavior(dataStringComparisonBehavior);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -103,13 +108,15 @@ public class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrac
     @Override
     public void validate() {
         super.validate();
-        if (keyProperties() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property keyProperties in model ReferenceDataSetCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model ReferenceDataSetCreateOrUpdateParameters"));
         } else {
-            keyProperties().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReferenceDataSetCreateOrUpdateParameters.class);
 }

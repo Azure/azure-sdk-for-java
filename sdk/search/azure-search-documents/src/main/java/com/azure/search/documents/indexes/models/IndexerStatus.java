@@ -8,13 +8,13 @@ package com.azure.search.documents.indexes.models;
 
 /** Represents the overall indexer status. */
 public enum IndexerStatus {
-    /** Enum value unknown. */
+    /** Indicates that the indexer is in an unknown state. */
     UNKNOWN("unknown"),
 
-    /** Enum value error. */
+    /** Indicates that the indexer experienced an error that cannot be corrected without human intervention. */
     ERROR("error"),
 
-    /** Enum value running. */
+    /** Indicates that the indexer is running normally. */
     RUNNING("running");
 
     /** The actual serialized value for a IndexerStatus instance. */

@@ -55,6 +55,10 @@ public final class CsmDeploymentStatusProperties {
     @JsonProperty(value = "errors")
     private List<ErrorEntity> errors;
 
+    /** Creates an instance of CsmDeploymentStatusProperties class. */
+    public CsmDeploymentStatusProperties() {
+    }
+
     /**
      * Get the deploymentId property: Deployment operation id.
      *

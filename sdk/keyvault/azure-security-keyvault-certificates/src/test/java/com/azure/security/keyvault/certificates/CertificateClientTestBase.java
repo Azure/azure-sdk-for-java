@@ -385,7 +385,7 @@ public abstract class CertificateClientTestBase extends TestBase {
                 .setFirstName("otherFirst")
                 .setLastName("otherLast")
                 .setEmail("otherFirst.otherLast@hotmail.com")
-                .setPhone("fakePhoneNumberPlaceholder")))
+                .setPhone("000-000-0000")))
             .setAccountId("otherIssuerAccountId")
             .setEnabled(false)
             .setOrganizationId("otherOrgId")
@@ -414,7 +414,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         return new CertificateContact()
             .setName("name")
             .setEmail("first.last@gmail.com")
-            .setPhone("2323-31232");
+            .setPhone("000-000-0000");
     }
 
     Boolean validateContact(CertificateContact expected, CertificateContact actual) {
@@ -517,7 +517,7 @@ public abstract class CertificateClientTestBase extends TestBase {
                 .setFirstName("first")
                 .setLastName("last")
                 .setEmail("first.last@hotmail.com")
-                .setPhone("fakePhoneNumberPlaceholder")))
+                .setPhone("000-000-0000")))
             .setAccountId("issuerAccountId")
             .setEnabled(true)
             .setOrganizationId("orgId")

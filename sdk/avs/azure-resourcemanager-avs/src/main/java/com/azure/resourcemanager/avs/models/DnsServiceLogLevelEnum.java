@@ -26,6 +26,15 @@ public final class DnsServiceLogLevelEnum extends ExpandableStringEnum<DnsServic
     public static final DnsServiceLogLevelEnum FATAL = fromString("FATAL");
 
     /**
+     * Creates a new instance of DnsServiceLogLevelEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsServiceLogLevelEnum() {
+    }
+
+    /**
      * Creates or finds a DnsServiceLogLevelEnum from its string representation.
      *
      * @param name a name to look for.

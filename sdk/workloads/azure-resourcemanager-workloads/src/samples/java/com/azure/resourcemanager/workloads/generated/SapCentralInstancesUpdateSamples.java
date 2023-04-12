@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for SapCentralInstances Update. */
 public final class SapCentralInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPCentralInstances_Update.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPCentralInstances_Update.json
      */
     /**
      * Sample code: SAPCentralInstances_Update.

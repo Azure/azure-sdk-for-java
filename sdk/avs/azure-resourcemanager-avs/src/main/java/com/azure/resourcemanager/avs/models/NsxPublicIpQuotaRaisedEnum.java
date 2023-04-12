@@ -19,6 +19,15 @@ public final class NsxPublicIpQuotaRaisedEnum extends ExpandableStringEnum<NsxPu
     public static final NsxPublicIpQuotaRaisedEnum DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of NsxPublicIpQuotaRaisedEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NsxPublicIpQuotaRaisedEnum() {
+    }
+
+    /**
      * Creates or finds a NsxPublicIpQuotaRaisedEnum from its string representation.
      *
      * @param name a name to look for.

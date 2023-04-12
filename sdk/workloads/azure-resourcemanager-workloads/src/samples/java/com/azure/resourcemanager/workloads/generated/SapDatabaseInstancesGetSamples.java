@@ -7,7 +7,7 @@ package com.azure.resourcemanager.workloads.generated;
 /** Samples for SapDatabaseInstances Get. */
 public final class SapDatabaseInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPDatabaseInstances_Get.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPDatabaseInstances_Get.json
      */
     /**
      * Sample code: SAPDatabaseInstances_Get.

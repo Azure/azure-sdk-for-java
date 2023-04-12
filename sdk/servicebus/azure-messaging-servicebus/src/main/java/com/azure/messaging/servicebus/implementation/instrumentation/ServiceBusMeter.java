@@ -24,7 +24,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DISPOSITION_STATUS_KEY;
 
 /**
- * Contains methods to report servicebus metrics.
+ * Contains methods to report Service Bus metrics.
  */
 public class ServiceBusMeter {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMeter.class);
@@ -32,8 +32,8 @@ public class ServiceBusMeter {
     private static final int DISPOSITION_STATUSES_COUNT  = DispositionStatus.values().length;
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
-    private final Meter meter;
     private final boolean isEnabled;
+    private final AtomicReference<CompositeSubscription> lastSeqNoSubscription = new AtomicReference<>(null);
 
     private TelemetryAttributes sendAttributesSuccess;
     private TelemetryAttributes sendAttributesFailure;
@@ -47,14 +47,12 @@ public class ServiceBusMeter {
     private TelemetryAttributes[] settleSuccessAttributes;
     private TelemetryAttributes[] settleFailureAttributes;
 
-    private AtomicReference<CompositeSubscription> lastSeqNoSubscription = new AtomicReference<>(null);
     private LongCounter sentMessagesCounter;
     private DoubleHistogram consumerLag;
     private DoubleHistogram settleMessageDuration;
     private LongGauge settledSequenceNumber;
 
     public ServiceBusMeter(Meter meter, String namespace, String entityPath, String subscriptionName) {
-        this.meter = meter;
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             Map<String, Object> commonAttributesMap = new HashMap<>(3);
@@ -94,7 +92,7 @@ public class ServiceBusMeter {
             this.sentMessagesCounter = meter.createLongCounter("messaging.servicebus.messages.sent", "Number of sent messages", "messages");
             this.settleMessageDuration = meter.createDoubleHistogram("messaging.servicebus.settlement.request.duration", "Duration of settlement call.", "ms");
             this.consumerLag = meter.createDoubleHistogram("messaging.servicebus.receiver.lag", "Difference between local time when event was received and the local time it was enqueued on broker.", "sec");
-            this.settledSequenceNumber = this.meter.createLongGauge("messaging.servicebus.settlement.sequence_number", "Last settled message sequence number", "seqNo");
+            this.settledSequenceNumber = meter.createLongGauge("messaging.servicebus.settlement.sequence_number", "Last settled message sequence number", "seqNo");
         }
     }
 

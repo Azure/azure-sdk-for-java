@@ -13,22 +13,22 @@ public final class ChangeDirectoryResultTests {
     public void testDeserialize() throws Exception {
         ChangeDirectoryResult model =
             BinaryData
-                .fromString("{\"id\":\"j\",\"name\":\"mszkkfo\",\"isSucceeded\":true,\"error\":\"fkzikfj\"}")
+                .fromString("{\"id\":\"e\",\"name\":\"zar\",\"isSucceeded\":true,\"error\":\"uu\"}")
                 .toObject(ChangeDirectoryResult.class);
-        Assertions.assertEquals("j", model.id());
-        Assertions.assertEquals("mszkkfo", model.name());
+        Assertions.assertEquals("e", model.id());
+        Assertions.assertEquals("zar", model.name());
         Assertions.assertEquals(true, model.isSucceeded());
-        Assertions.assertEquals("fkzikfj", model.error());
+        Assertions.assertEquals("uu", model.error());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChangeDirectoryResult model =
-            new ChangeDirectoryResult().withId("j").withName("mszkkfo").withIsSucceeded(true).withError("fkzikfj");
+            new ChangeDirectoryResult().withId("e").withName("zar").withIsSucceeded(true).withError("uu");
         model = BinaryData.fromObject(model).toObject(ChangeDirectoryResult.class);
-        Assertions.assertEquals("j", model.id());
-        Assertions.assertEquals("mszkkfo", model.name());
+        Assertions.assertEquals("e", model.id());
+        Assertions.assertEquals("zar", model.name());
         Assertions.assertEquals(true, model.isSucceeded());
-        Assertions.assertEquals("fkzikfj", model.error());
+        Assertions.assertEquals("uu", model.error());
     }
 }

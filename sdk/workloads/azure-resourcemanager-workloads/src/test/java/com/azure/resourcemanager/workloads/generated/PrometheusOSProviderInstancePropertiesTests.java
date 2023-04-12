@@ -15,26 +15,26 @@ public final class PrometheusOSProviderInstancePropertiesTests {
         PrometheusOSProviderInstanceProperties model =
             BinaryData
                 .fromString(
-                    "{\"providerType\":\"PrometheusOS\",\"prometheusUrl\":\"hostgktstvdxecl\",\"sslPreference\":\"RootCertificate\",\"sslCertificateUri\":\"bcvhzlhpl\",\"sapSid\":\"qkdlw\"}")
+                    "{\"providerType\":\"PrometheusOS\",\"prometheusUrl\":\"rhnj\",\"sslPreference\":\"Disabled\",\"sslCertificateUri\":\"v\",\"sapSid\":\"ovqfzge\"}")
                 .toObject(PrometheusOSProviderInstanceProperties.class);
-        Assertions.assertEquals("hostgktstvdxecl", model.prometheusUrl());
-        Assertions.assertEquals(SslPreference.ROOT_CERTIFICATE, model.sslPreference());
-        Assertions.assertEquals("bcvhzlhpl", model.sslCertificateUri());
-        Assertions.assertEquals("qkdlw", model.sapSid());
+        Assertions.assertEquals("rhnj", model.prometheusUrl());
+        Assertions.assertEquals(SslPreference.DISABLED, model.sslPreference());
+        Assertions.assertEquals("v", model.sslCertificateUri());
+        Assertions.assertEquals("ovqfzge", model.sapSid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrometheusOSProviderInstanceProperties model =
             new PrometheusOSProviderInstanceProperties()
-                .withPrometheusUrl("hostgktstvdxecl")
-                .withSslPreference(SslPreference.ROOT_CERTIFICATE)
-                .withSslCertificateUri("bcvhzlhpl")
-                .withSapSid("qkdlw");
+                .withPrometheusUrl("rhnj")
+                .withSslPreference(SslPreference.DISABLED)
+                .withSslCertificateUri("v")
+                .withSapSid("ovqfzge");
         model = BinaryData.fromObject(model).toObject(PrometheusOSProviderInstanceProperties.class);
-        Assertions.assertEquals("hostgktstvdxecl", model.prometheusUrl());
-        Assertions.assertEquals(SslPreference.ROOT_CERTIFICATE, model.sslPreference());
-        Assertions.assertEquals("bcvhzlhpl", model.sslCertificateUri());
-        Assertions.assertEquals("qkdlw", model.sapSid());
+        Assertions.assertEquals("rhnj", model.prometheusUrl());
+        Assertions.assertEquals(SslPreference.DISABLED, model.sslPreference());
+        Assertions.assertEquals("v", model.sslCertificateUri());
+        Assertions.assertEquals("ovqfzge", model.sapSid());
     }
 }

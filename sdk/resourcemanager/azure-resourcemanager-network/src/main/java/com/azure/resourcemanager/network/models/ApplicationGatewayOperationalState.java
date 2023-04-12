@@ -23,6 +23,15 @@ public final class ApplicationGatewayOperationalState extends ExpandableStringEn
     public static final ApplicationGatewayOperationalState STOPPING = fromString("Stopping");
 
     /**
+     * Creates a new instance of ApplicationGatewayOperationalState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayOperationalState() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayOperationalState from its string representation.
      *
      * @param name a name to look for.

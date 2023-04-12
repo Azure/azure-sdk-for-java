@@ -17,6 +17,15 @@ public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
     public static final ServiceKind RAW_WEB_SOCKETS = fromString("RawWebSockets");
 
     /**
+     * Creates a new instance of ServiceKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceKind() {
+    }
+
+    /**
      * Creates or finds a ServiceKind from its string representation.
      *
      * @param name a name to look for.
