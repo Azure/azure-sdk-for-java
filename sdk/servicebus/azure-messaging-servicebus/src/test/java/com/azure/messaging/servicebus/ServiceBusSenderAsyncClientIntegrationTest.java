@@ -170,15 +170,15 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         setSenderAndReceiver(entityType, viaIntermediateEntity, useCredentials);
 
-        final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
+        final ServiceBusSenderAsyncClient destination1ViaSender = toClose(getSenderBuilder(useCredentials, entityType,
             destinationEntity, false, shareConnection)
             //.viaQueueName(viaQueueName)
-            .buildAsyncClient();
-        final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
+            .buildAsyncClient());
+        final ServiceBusReceiverAsyncClient destination1Receiver = toClose(getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
-            .buildAsyncClient();
+            .buildAsyncClient());
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
 
@@ -254,16 +254,16 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
         final ServiceBusSenderAsyncClient intermediateSender = sender;
 
-        final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
+        final ServiceBusSenderAsyncClient destination1ViaSender = toClose(getSenderBuilder(useCredentials, entityType,
             destinationEntity, false, shareConnection)
             //.viaTopicName(viaTopicName)
-            .buildAsyncClient();
+            .buildAsyncClient());
 
-        final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
+        final ServiceBusReceiverAsyncClient destination1Receiver = toClose(getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
-            .buildAsyncClient();
+            .buildAsyncClient());
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
 
@@ -521,11 +521,11 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionAware = false;
         final boolean sharedConnection = true;
 
-        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
-            .buildAsyncClient();
-        this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
+        this.sender = toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
+            .buildAsyncClient());
+        this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
-            .buildAsyncClient();
+            .buildAsyncClient());
     }
 }

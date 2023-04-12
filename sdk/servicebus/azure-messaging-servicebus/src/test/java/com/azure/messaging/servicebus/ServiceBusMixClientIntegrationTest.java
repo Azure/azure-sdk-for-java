@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -97,12 +98,9 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
 
-        final ServiceBusSenderAsyncClient senderAsyncA;
-        final ServiceBusSenderClient senderSyncB;
-
         // Initialize sender
-        senderAsyncA = builder.sender().queueName(queueA).buildAsyncClient();
-        senderSyncB = builder.sender().queueName(queueB).buildClient();
+        final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().queueName(queueA).buildAsyncClient());
+        final ServiceBusSenderClient senderSyncB = toClose(builder.sender().queueName(queueB).buildClient());
 
         Consumer<ServiceBusReceivedMessageContext> processMessage = (context) -> {
             receivedMessages.incrementAndGet();
@@ -136,13 +134,13 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusProcessorClient processorA;
         // Initialize processor client
         if (isSessionEnabled) {
-            processorA = builder.sessionProcessor().disableAutoComplete().queueName(queueA)
+            processorA = toClose(builder.sessionProcessor().disableAutoComplete().queueName(queueA)
                 .processMessage(processMessage).processError(processError)
-                .buildProcessorClient();
+                .buildProcessorClient());
         } else {
-            processorA = builder.processor().disableAutoComplete().queueName(queueA)
+            processorA = toClose(builder.processor().disableAutoComplete().queueName(queueA)
                 .processMessage(processMessage).processError(processError)
-                .buildProcessorClient();
+                .buildProcessorClient());
         }
 
         // Send messages
@@ -152,6 +150,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Act
         System.out.println("Starting the processor");
         processorA.start();
+        toClose(() -> processorA.stop());
 
         // Assert
         System.out.println("Listening for 10 seconds...");
@@ -206,8 +205,8 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
 
         // Initialize sender
-        final ServiceBusSenderAsyncClient senderAsyncA = builder.sender().topicName(topicA).buildAsyncClient();
-        final ServiceBusSenderClient senderSyncB = builder.sender().topicName(topicB).buildClient();
+        final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().topicName(topicA).buildAsyncClient());
+        final ServiceBusSenderClient senderSyncB = toClose(builder.sender().topicName(topicB).buildClient());
 
         Consumer<ServiceBusReceivedMessageContext> processMessage = (context) -> {
             receivedMessages.incrementAndGet();
@@ -241,13 +240,13 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusProcessorClient processorA;
         // Initialize processor client
         if (isSessionEnabled) {
-            processorA = builder.sessionProcessor().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
+            processorA = toClose(builder.sessionProcessor().disableAutoComplete().topicName(topicA).subscriptionName("subscription-session")
                 .processMessage(processMessage).processError(processError)
-                .buildProcessorClient();
+                .buildProcessorClient());
         } else {
-            processorA = builder.processor().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
+            processorA = toClose(builder.processor().disableAutoComplete().topicName(topicA).subscriptionName("subscription")
                 .processMessage(processMessage).processError(processError)
-                .buildProcessorClient();
+                .buildProcessorClient());
         }
 
         // Send messages
@@ -257,6 +256,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Act
         System.out.println("Starting the processor");
         processorA.start();
+        toClose(() -> processorA.stop());
 
         // Assert
         System.out.println("Listening for 10 seconds...");
@@ -310,8 +310,8 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
 
         // Initialize sender
-        final ServiceBusSenderAsyncClient senderAsyncA = builder.sender().queueName(queueA).buildAsyncClient();
-        final ServiceBusSenderClient senderSyncB = builder.sender().queueName(queueB).buildClient();
+        final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().queueName(queueA).buildAsyncClient());
+        final ServiceBusSenderClient senderSyncB = toClose(builder.sender().queueName(queueB).buildClient());
 
         // Send messages
         StepVerifier.create(senderAsyncA.sendMessages(messages)).verifyComplete();
@@ -326,7 +326,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
         }
 
-        receiverA.receiveMessages()
+        Disposable subscription = receiverA.receiveMessages()
             .filter(receiveMessage -> messageId.equals(receiveMessage.getMessageId()))
             .flatMap(receivedMessage -> {
                 //Start a transaction
@@ -340,6 +340,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 logger.info("Transaction committed.");
                 return Mono.just(receivedMessage);
             }).subscribe();
+        toClose(() -> subscription.dispose());
 
         // Act
         System.out.println("Listening for 10 seconds...");
@@ -393,8 +394,8 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
 
         // Initialize sender
-        final ServiceBusSenderAsyncClient senderAsyncA = builder.sender().topicName(topicA).buildAsyncClient();
-        final ServiceBusSenderClient senderSyncB = builder.sender().topicName(topicB).buildClient();
+        final ServiceBusSenderAsyncClient senderAsyncA = toClose(builder.sender().topicName(topicA).buildAsyncClient());
+        final ServiceBusSenderClient senderSyncB = toClose(builder.sender().topicName(topicB).buildClient());
 
 
         // Send messages
@@ -410,7 +411,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncClient();
         }
 
-        receiverA.receiveMessages().flatMap(receivedMessage -> {
+        Disposable subscription = receiverA.receiveMessages().flatMap(receivedMessage -> {
             //Start a transaction
             logger.info("Received message sequence number {}. Creating transaction", receivedMessage.getSequenceNumber());
             ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
@@ -422,7 +423,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             logger.info("Transaction committed.");
             return Mono.just(receivedMessage);
         }).subscribe();
-
+        toClose(() -> subscription.dispose());
         // Act
         System.out.println("Listening for 10 seconds...");
         if (countdownLatch.await(10, TimeUnit.SECONDS)) {
@@ -452,11 +453,11 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionAware = false;
         final boolean sharedConnection = true;
 
-        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
-            .buildAsyncClient();
-        this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
+        this.sender = toClose(getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
+            .buildAsyncClient());
+        this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
-            .buildAsyncClient();
+            .buildAsyncClient());
     }
 }
