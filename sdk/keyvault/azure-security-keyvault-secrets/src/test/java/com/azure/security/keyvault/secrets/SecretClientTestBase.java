@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -18,10 +19,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxyRequestMatcher;
-import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -30,6 +28,7 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -75,11 +74,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
-        TokenCredential credential = null;
-
-        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
-        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
-        interceptorManager.addMatchers(customMatcher);
+        TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
@@ -98,6 +93,9 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+        } else {
+            credential = tokenRequestContext ->
+                Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -112,19 +110,20 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+            // If in playback mode, disable the challenge resource verification.
+            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
@@ -410,7 +409,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     public String getEndpoint() {
         final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 

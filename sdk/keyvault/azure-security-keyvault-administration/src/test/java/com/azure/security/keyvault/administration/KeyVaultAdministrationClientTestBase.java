@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.administration;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -16,8 +19,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxyRequestMatcher;
-import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
@@ -25,8 +26,10 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,16 +54,12 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         return "";
     }
 
-    protected List<HttpPipelinePolicy> getPolicies() {
-        TokenCredential credential = null;
+    HttpPipeline getPipeline(HttpClient httpClient, boolean forCleanup) {
+        TokenCredential credential;
 
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         customSanitizers.add(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(customSanitizers);
-
-        List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
-        customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
-        interceptorManager.addMatchers(customMatcher);
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
@@ -77,6 +76,9 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+        } else {
+            credential = tokenRequestContext ->
+                Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -89,17 +91,25 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+            // If in playback mode, disable the challenge resource verification.
+            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        return policies;
+        if (interceptorManager.isRecordMode() && !forCleanup) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .build();
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080"
+        final String endpoint = interceptorManager.isPlaybackMode() ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT");
 
         Objects.requireNonNull(endpoint);

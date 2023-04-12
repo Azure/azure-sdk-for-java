@@ -17,7 +17,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,8 +26,9 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
     private KeyVaultAccessControlClient client;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = getClientBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildClient();
+        client = getClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildClient();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
