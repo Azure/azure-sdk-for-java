@@ -350,7 +350,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * Disposes of registered with {@code toClose} method resources.
      */
     protected void dispose() {
-        dispose(toClose.toArray(new Closeable[0]));
+        dispose(toClose.toArray(new AutoCloseable[0]));
         toClose.clear();
     }
 
