@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -21,6 +22,8 @@ import java.util.stream.IntStream;
  * Code snippets for {@link IterableStream}
  */
 public class IterableStreamJavaDocCodeSnippets {
+    private static final HttpHeaderName HEADER1 = HttpHeaderName.fromString("header1");
+    private static final HttpHeaderName HEADER2 = HttpHeaderName.fromString("header2");
 
     /**
      * Iterate over {@link java.util.stream.Stream}
@@ -28,8 +31,9 @@ public class IterableStreamJavaDocCodeSnippets {
      * @throws MalformedURLException if can not create URL object.
      */
     public void streamSnippet() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HEADER1, "value1")
+            .set(HEADER2, "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -55,8 +59,9 @@ public class IterableStreamJavaDocCodeSnippets {
      * @throws MalformedURLException if can not create URL object.
      */
     public void iteratorwhileSnippet() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HEADER1, "value1")
+            .set(HEADER2, "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -82,8 +87,9 @@ public class IterableStreamJavaDocCodeSnippets {
      * @throws MalformedURLException if can not create URL object.
      */
     public void iteratorStreamFilterSnippet() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set(HEADER1, "value1")
+            .set(HEADER2, "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";

@@ -163,6 +163,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
+    void beginClassifierRunner(Consumer<String> testRunner) {
+        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
     void validatePngReceiptData(AnalyzeResult actualAnalyzeResult) {
         validateReceipt(actualAnalyzeResult);
 

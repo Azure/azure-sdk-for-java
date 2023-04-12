@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation.polling;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -550,7 +551,7 @@ public final class PollingState {
      * @return the duration if exists, null otherwise
      */
     private static Duration getRetryAfter(HttpHeaders headers) {
-        final String value = headers.getValue("Retry-After");
+        final String value = headers.getValue(HttpHeaderName.RETRY_AFTER);
         if (value != null) {
             try {
                 long retryAfterInSeconds = Long.parseLong(value);
