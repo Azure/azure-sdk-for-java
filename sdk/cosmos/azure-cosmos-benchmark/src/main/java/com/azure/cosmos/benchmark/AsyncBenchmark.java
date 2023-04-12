@@ -374,6 +374,8 @@ abstract class AsyncBenchmark<T> {
                         .endpointDiscoveryEnabled(true);
             } else {
 
+                logger.info("Setting an aggressive proactive connection establishment duration of {}", configuration.getAggressiveProactiveConnectionEstablishmentDuration());
+
                 cosmosContainerProactiveInitConfigBuilder = cosmosContainerProactiveInitConfigBuilder
                         .setAggressiveProactiveConnectionEstablishmentDuration(configuration.getAggressiveProactiveConnectionEstablishmentDuration());
 
