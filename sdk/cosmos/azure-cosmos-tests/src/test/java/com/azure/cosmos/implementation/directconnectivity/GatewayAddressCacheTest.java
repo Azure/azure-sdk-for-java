@@ -311,9 +311,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         cache.resolveAddressesAndInitCaches(
                 collectionLink,
                 createdCollection,
-                pkriList,
-                AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
-        ).blockLast();
+                pkriList)
+                .blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -378,7 +377,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
+        cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -448,7 +447,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
+        origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList).blockLast();
 
         assertThat(httpClientWrapper.capturedRequests).asList().hasSize(1);
         httpClientWrapper.capturedRequests.clear();
@@ -948,7 +947,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         if (openConnectionAndInitCaches) {
             List<PartitionKeyRangeIdentity> pkriList = Arrays.asList(new PartitionKeyRangeIdentity("0"));
-            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE).blockLast();
+            cache.resolveAddressesAndInitCaches(createdCollection.getSelfLink(), createdCollection, pkriList).blockLast();
             Mockito.clearInvocations(openConnectionsHandlerMock);
             httpClientWrapper.capturedRequests.clear();
         }

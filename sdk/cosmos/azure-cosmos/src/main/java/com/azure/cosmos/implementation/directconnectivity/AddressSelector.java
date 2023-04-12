@@ -86,10 +86,7 @@ public class AddressSelector {
         );
     }
 
-    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
-        return this.addressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 }

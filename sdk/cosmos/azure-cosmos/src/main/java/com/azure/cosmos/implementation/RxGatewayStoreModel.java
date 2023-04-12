@@ -528,10 +528,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         return Flux.empty();
     }
 

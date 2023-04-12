@@ -4302,11 +4302,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            OpenConnectionAggressivenessHint hint
-    ) {
-        return this.storeModel.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.storeModel.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     @Override

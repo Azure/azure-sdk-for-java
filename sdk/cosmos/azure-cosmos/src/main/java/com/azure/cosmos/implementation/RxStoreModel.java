@@ -63,17 +63,8 @@ public interface RxStoreModel {
      *
      * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and
      *                                     no. of proactive connection regions
-     * @param hint an aggressiveness hint which can be used by any class in some context-specific way which that class can make sense of.
-     *             An example could be :
-     *             <p>
-     *             {@link ProactiveOpenConnectionsProcessor} can make use of the hint to determine the concurrency associated
-     *             with processing open connection tasks.
-     *             </p>
      */
-    Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    );
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     /***
      * Configure fault injector provider.

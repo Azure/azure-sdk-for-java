@@ -203,7 +203,7 @@ public class GlobalAddressResolverTest {
         openConnectionResponses.add(response2);
 
         Mockito
-                .when(gatewayAddressCache.resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.any()))
+                .when(gatewayAddressCache.resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any()))
                         .thenReturn(Flux.fromIterable(collectionToAddresses));
 
         Mockito
@@ -214,7 +214,7 @@ public class GlobalAddressResolverTest {
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
-        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE))
+        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig))
                 .expectComplete()
                 .verify();
 
@@ -231,7 +231,7 @@ public class GlobalAddressResolverTest {
                         null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any(), Mockito.any());
+                .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any());
 
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))

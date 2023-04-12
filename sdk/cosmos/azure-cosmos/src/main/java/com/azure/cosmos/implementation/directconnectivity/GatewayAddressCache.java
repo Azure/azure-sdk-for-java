@@ -936,9 +936,7 @@ public class GatewayAddressCache implements IAddressCache {
     public Flux<ImmutablePair<ImmutablePair<String, DocumentCollection> , AddressInformation>> resolveAddressesAndInitCaches(
             String containerLink,
             DocumentCollection collection,
-            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
+            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
 
         checkNotNull(collection, "Argument 'collection' should not be null");
         checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");

@@ -820,10 +820,7 @@ public class CosmosAsyncContainer {
     ) {
         final Duration idleSinkTimeout = Duration.ofSeconds(1);
 
-        this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(
-                        proactiveContainerInitConfig,
-                        hint
-                )
+        this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
 

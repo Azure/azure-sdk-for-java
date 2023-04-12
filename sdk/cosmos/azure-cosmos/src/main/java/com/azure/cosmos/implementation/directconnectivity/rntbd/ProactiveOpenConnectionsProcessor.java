@@ -91,7 +91,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         Uri addressUri = openConnectionOperation.getAddressUri();
                         URI serviceEndpoint = openConnectionOperation.getServiceEndpoint();
                         int minConnectionsForEndpoint = openConnectionOperation.getMinConnectionsRequiredForEndpoint();
-                        AsyncDocumentClient.OpenConnectionAggressivenessHint hint = aggressivenessHint.get();
                         String collectionRid = openConnectionOperation.getCollectionRid();
 
                         return Flux.zip(Mono.just(openConnectionOperation), openConnectionsHandler.openConnections(

@@ -37,8 +37,5 @@ public interface IStoreClient {
         return processMessageAsync(request, null, null);
     }
 
-    Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    );
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 }

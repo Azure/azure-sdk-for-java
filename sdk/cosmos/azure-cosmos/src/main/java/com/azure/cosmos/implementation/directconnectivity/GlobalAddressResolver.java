@@ -97,10 +97,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
 
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/",
@@ -155,9 +152,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                             containerLinkToPkrs.left,
                                                             collection,
                                                             containerLinkToPkrs.right,
-                                                            proactiveContainerInitConfig,
-                                                            hint
-                                                    )
+                                                            proactiveContainerInitConfig)
                                             ).flatMap(collectionToAddresses -> {
                                                 ImmutablePair<String, DocumentCollection> containerLinkToCollection
                                                         = collectionToAddresses.left;
@@ -179,9 +174,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         addressInformation,
                                                         containerLinkToCollection.getRight(),
                                                         proactiveContainerInitConfig,
-                                                        connectionsPerEndpointCountForContainer,
-                                                        hint
-                                                );
+                                                        connectionsPerEndpointCountForContainer);
                                             });
                                 }), Configs.getCPUCnt(), Configs.getCPUCnt());
     }
@@ -190,9 +183,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             String containerLink,
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
+            CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
                     .take(proactiveContainerInitConfig.getProactiveConnectionRegionsCount())
@@ -203,9 +194,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     .resolveAddressesAndInitCaches(
                                             containerLink,
                                             collection,
-                                            partitionKeyRangeIdentities,
-                                            hint
-                                    );
+                                            partitionKeyRangeIdentities);
                         }
                         return Flux.empty();
                     });
@@ -218,9 +207,7 @@ public class GlobalAddressResolver implements IAddressResolver {
             AddressInformation address,
             DocumentCollection documentCollection,
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            int connectionPerEndpointCount,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
+            int connectionPerEndpointCount) {
         if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
                     .take(proactiveContainerInitConfig.getProactiveConnectionRegionsCount())

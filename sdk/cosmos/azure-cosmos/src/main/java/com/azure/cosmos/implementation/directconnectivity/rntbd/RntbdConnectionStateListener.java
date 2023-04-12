@@ -95,7 +95,7 @@ public class RntbdConnectionStateListener {
         // openConnectionsAndInitCaches flow
         if (Configs.getMinConnectionPoolSizePerEndpoint() > 0) {
 
-            logger.debug("Channel related exception occurred, try to open the connection.");
+            logger.warn("Channel related exception occurred, try to open the connection.");
 
             this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
                     new OpenConnectionOperation(

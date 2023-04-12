@@ -191,11 +191,8 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
-        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

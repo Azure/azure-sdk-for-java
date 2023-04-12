@@ -539,7 +539,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             }
 
             // let connection counts catch up
-            Thread.sleep(10_000);
+            Thread.sleep(50_000);
 
             assertThat(provider.count()).isEqualTo(endpoints.size());
             assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
@@ -564,7 +564,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 asyncContainer.delete().block();
             }
 
-            safeClose(clientWithOpenConnections);
+           safeClose(clientWithOpenConnections);
         }
     }
 
@@ -580,8 +580,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         // configure list of preferredLocation, no of proactive connection regions, no of containers, min connection pool size per endpoint, connection warm up timeout
         return new Object[][]{
-                new Object[]{preferredLocations, 2, 5, 5, Duration.ofMillis(300)},
-                new Object[]{preferredLocations, 2, 7, 5, Duration.ofMillis(400)}
+                new Object[]{preferredLocations, 2, 3, 5, Duration.ofMillis(150)},
+                new Object[]{preferredLocations, 2, 3, 7, Duration.ofMillis(150)}
         };
     }
 

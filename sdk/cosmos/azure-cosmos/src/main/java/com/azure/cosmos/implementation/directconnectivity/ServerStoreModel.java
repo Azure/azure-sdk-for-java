@@ -58,11 +58,8 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<Void> submitOpenConnectionTasksAndInitCaches(
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-            AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
-        return this.storeClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig, hint);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.storeClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     @Override
