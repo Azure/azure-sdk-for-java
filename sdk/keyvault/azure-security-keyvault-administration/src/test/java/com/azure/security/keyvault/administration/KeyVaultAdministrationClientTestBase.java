@@ -55,7 +55,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
         TokenCredential credential = null;
 
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(new TestProxySanitizer("token",  null,"REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         interceptorManager.addSanitizers(customSanitizers);
 
         List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
