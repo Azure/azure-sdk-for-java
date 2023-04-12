@@ -4,9 +4,12 @@ package com.azure.spring.cloud.feature.management.implementation.targeting;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Audience of a TargetingFilter rollout
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Audience {
 
     private List<String> users;
