@@ -462,16 +462,27 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
         Set<String> receivedMessages = Collections.synchronizedSet(new HashSet<>());
-        for (int t = 0; t < 3 && receivedMessages.size() < maxMessages; t++) {
-            receivedMessages.addAll(
-                receiver.peekMessages(maxMessages)
-                    .stream()
-                    .map(ServiceBusReceivedMessage::getMessageId)
-                    .collect(Collectors.toSet()));
+        int t = 0;
+        for (t = 0; t < 3 && receivedMessages.size() < maxMessages; t++) {
+            Set<String> received = receiver.peekMessages(maxMessages)
+                .stream()
+                .map(ServiceBusReceivedMessage::getMessageId)
+                .collect(Collectors.toSet());
+            LOGGER.atInfo()
+                .addKeyValue("iteration", t)
+                .addKeyValue("received", received.size())
+                .log("received some messages");
+            receivedMessages.addAll(received);
         }
 
         // Assert
         List<String> receivedFiltered = receivedMessages.stream().filter(mId -> messageIds.contains(mId)).collect(Collectors.toList());
+        LOGGER.atInfo()
+            .addKeyValue("iterations", t)
+            .addKeyValue("received", receivedMessages.size())
+            .addKeyValue("receivedFilteres", receivedFiltered.size())
+            .log("done receiving");
+
         Assumptions.assumeTrue(receivedMessages.size() < maxMessages, String.format("Expected %s messages, got %s, test is inconclusive", maxMessages, receivedFiltered.size()));
 
         assertTrue(maxMessages == receivedFiltered.size(), String.format("Expected at least %s messages, got %s", maxMessages, receivedFiltered.size()));
