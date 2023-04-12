@@ -1,26 +1,46 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ad0f7821-787e-4df8-a1ec-7900289b909a",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "925",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6fb14534-3001-40e8-afcf-e05df340a023",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"innererror\": {\n      \"code\": \"TrainingContentMissing\",\n      \"message\": \"Training data is missing: Could not find any training data at the given path.\"\n    }\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:21:07 GMT",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "318",
+        "Content-Type": "application/json",
+        "Date": "Wed, 12 Apr 2023 20:36:18 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8a3b5cfc-0a5e-4a90-813f-41abbddfe8a4"
+      },
+      "RequestBody": {
+        "modelId": "c97f16a6-2c48-41a3-ba69-d4175275df04",
+        "buildMode": "template",
+        "azureBlobSource": {
+          "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/trainingdata-error?sp=rl\u0026st=2022-01-24T21:35:02Z\u0026se=2025-01-25T05:35:02Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=Jh%2B4x2BQAzp1ldIn1%2BqDHU60Bqqu1HCDwWmMeiIxqTo%3D"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "e0ad94cb-0626-4075-9868-9dc96dd12c38",
+        "Content-Type": "application/json",
+        "Date": "Wed, 12 Apr 2023 20:36:19 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "945",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid request.",
+          "innererror": {
+            "code": "TrainingContentMissing",
+            "message": "Training data is missing: Could not find any training data at the given path."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

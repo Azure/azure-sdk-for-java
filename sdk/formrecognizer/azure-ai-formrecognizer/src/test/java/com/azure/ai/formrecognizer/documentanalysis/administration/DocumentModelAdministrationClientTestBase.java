@@ -12,16 +12,20 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -30,6 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -39,7 +44,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENAN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class DocumentModelAdministrationClientTestBase extends TestBase {
+public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
     Duration durationTestMode;
 
     /**
@@ -71,7 +76,14 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         } else {
-            if (interceptorManager.isRecordMode()) {
+            if (interceptorManager.isPlaybackMode()) {
+                builder.credential(new TokenCredential() {
+                    @Override
+                    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+                        return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+                    }
+                });
+            } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
