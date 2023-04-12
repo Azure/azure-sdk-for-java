@@ -8,17 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ErrorResponse contains code and message that shows the error information. */
+/** Error information that the API returned. */
 @Immutable
 public final class ErrorResponse {
     /*
-     * The error code.
+     * Error code.
      */
     @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
-     * The message explaining the error reported by the service.
+     * Message that explains the error that the service reported.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
@@ -38,7 +38,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the code property: The error code.
+     * Get the code property: Error code.
      *
      * @return the code value.
      */
@@ -47,7 +47,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the message property: The message explaining the error reported by the service.
+     * Get the message property: Message that explains the error that the service reported.
      *
      * @return the message value.
      */

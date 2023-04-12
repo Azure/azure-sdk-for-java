@@ -9,17 +9,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The definition of input timeseries points. */
+/** Definition of input time series points. */
 @Fluent
 public final class TimeSeriesPoint {
     /*
-     * Optional argument, timestamp of a data point (ISO8601 format).
+     * Argument that indicates the time stamp of a data point (ISO8601 format).
      */
     @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
-     * The measurement of that point, should be float.
+     * Measurement of that point.
      */
     @JsonProperty(value = "value", required = true)
     private double value;
@@ -35,7 +35,7 @@ public final class TimeSeriesPoint {
     }
 
     /**
-     * Get the timestamp property: Optional argument, timestamp of a data point (ISO8601 format).
+     * Get the timestamp property: Argument that indicates the time stamp of a data point (ISO8601 format).
      *
      * @return the timestamp value.
      */
@@ -44,7 +44,7 @@ public final class TimeSeriesPoint {
     }
 
     /**
-     * Set the timestamp property: Optional argument, timestamp of a data point (ISO8601 format).
+     * Set the timestamp property: Argument that indicates the time stamp of a data point (ISO8601 format).
      *
      * @param timestamp the timestamp value to set.
      * @return the TimeSeriesPoint object itself.
@@ -55,7 +55,7 @@ public final class TimeSeriesPoint {
     }
 
     /**
-     * Get the value property: The measurement of that point, should be float.
+     * Get the value property: Measurement of that point.
      *
      * @return the value value.
      */

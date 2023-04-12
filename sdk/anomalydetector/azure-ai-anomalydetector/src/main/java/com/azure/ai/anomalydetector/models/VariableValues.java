@@ -13,13 +13,13 @@ import java.util.List;
 @Immutable
 public final class VariableValues {
     /*
-     * Variable name of last detection request.
+     * Variable name of the last detection request.
      */
     @JsonProperty(value = "variable", required = true)
     private String variable;
 
     /*
-     * Timestamps of last detection request
+     * Time stamps of the last detection request.
      */
     @JsonProperty(value = "timestamps", required = true)
     private List<String> timestamps;
@@ -48,7 +48,7 @@ public final class VariableValues {
     }
 
     /**
-     * Get the variable property: Variable name of last detection request.
+     * Get the variable property: Variable name of the last detection request.
      *
      * @return the variable value.
      */
@@ -57,7 +57,7 @@ public final class VariableValues {
     }
 
     /**
-     * Get the timestamps property: Timestamps of last detection request.
+     * Get the timestamps property: Time stamps of the last detection request.
      *
      * @return the timestamps value.
      */

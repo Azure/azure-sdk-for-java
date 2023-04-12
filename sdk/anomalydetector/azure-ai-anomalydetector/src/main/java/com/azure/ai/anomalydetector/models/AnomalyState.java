@@ -14,19 +14,19 @@ import java.util.List;
 @Immutable
 public final class AnomalyState {
     /*
-     * The timestamp for this anomaly.
+     * Time stamp for this anomaly.
      */
     @JsonProperty(value = "timestamp", required = true)
     private OffsetDateTime timestamp;
 
     /*
-     * The detailed value of this anomalous timestamp.
+     * Detailed value of this anomalous time stamp.
      */
     @JsonProperty(value = "value")
     private AnomalyValue value;
 
     /*
-     * Error message for the current timestamp.
+     * Error message for the current time stamp.
      */
     @JsonProperty(value = "errors")
     private List<ErrorResponse> errors;
@@ -42,7 +42,7 @@ public final class AnomalyState {
     }
 
     /**
-     * Get the timestamp property: The timestamp for this anomaly.
+     * Get the timestamp property: Time stamp for this anomaly.
      *
      * @return the timestamp value.
      */
@@ -51,7 +51,7 @@ public final class AnomalyState {
     }
 
     /**
-     * Get the value property: The detailed value of this anomalous timestamp.
+     * Get the value property: Detailed value of this anomalous time stamp.
      *
      * @return the value value.
      */
@@ -60,7 +60,7 @@ public final class AnomalyState {
     }
 
     /**
-     * Get the errors property: Error message for the current timestamp.
+     * Get the errors property: Error message for the current time stamp.
      *
      * @return the errors value.
      */

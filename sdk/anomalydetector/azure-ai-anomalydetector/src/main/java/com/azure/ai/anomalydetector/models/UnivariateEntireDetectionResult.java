@@ -9,54 +9,54 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of entire anomaly detection. */
+/** Response of the entire anomaly detection. */
 @Immutable
 public final class UnivariateEntireDetectionResult {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has been
+     * Frequency extracted from the series. Zero means no recurrent pattern has been
      * found.
      */
     @JsonProperty(value = "period", required = true)
     private int period;
 
     /*
-     * ExpectedValues contain expected value for each input point. The index of the
+     * Expected value for each input point. The index of the
      * array is consistent with the input series.
      */
     @JsonProperty(value = "expectedValues", required = true)
     private List<Double> expectedValues;
 
     /*
-     * UpperMargins contain upper margin of each input point. UpperMargin is used to
-     * calculate upperBoundary, which equals to expectedValue + (100 -
-     * marginScale)*upperMargin. Anomalies in response can be filtered by
-     * upperBoundary and lowerBoundary. By adjusting marginScale value, less
-     * significant anomalies can be filtered in client side. The index of the array is
+     * Upper margin of each input point. UpperMargin is used to
+     * calculate upperBoundary, which is equal to expectedValue + (100 -
+     * marginScale)*upperMargin. Anomalies in the response can be filtered by
+     * upperBoundary and lowerBoundary. Adjusting the marginScale value can help filter less
+     * significant anomalies on the client side. The index of the array is
      * consistent with the input series.
      */
     @JsonProperty(value = "upperMargins", required = true)
     private List<Double> upperMargins;
 
     /*
-     * LowerMargins contain lower margin of each input point. LowerMargin is used to
-     * calculate lowerBoundary, which equals to expectedValue - (100 -
+     * Lower margin of each input point. LowerMargin is used to
+     * calculate lowerBoundary, which is equal to expectedValue - (100 -
      * marginScale)*lowerMargin. Points between the boundary can be marked as normal
-     * ones in client side. The index of the array is consistent with the input
+     * ones on the client side. The index of the array is consistent with the input
      * series.
      */
     @JsonProperty(value = "lowerMargins", required = true)
     private List<Double> lowerMargins;
 
     /*
-     * IsAnomaly contains anomaly properties for each input point. True means an
-     * anomaly either negative or positive has been detected. The index of the array
+     * Anomaly properties for each input point. True means an
+     * anomaly (either negative or positive) has been detected. The index of the array
      * is consistent with the input series.
      */
     @JsonProperty(value = "isAnomaly", required = true)
     private List<Boolean> isAnomaly;
 
     /*
-     * IsNegativeAnomaly contains anomaly status in negative direction for each input
+     * Anomaly status in a negative direction for each input
      * point. True means a negative anomaly has been detected. A negative anomaly
      * means the point is detected as an anomaly and its real value is smaller than
      * the expected one. The index of the array is consistent with the input series.
@@ -65,7 +65,7 @@ public final class UnivariateEntireDetectionResult {
     private List<Boolean> isNegativeAnomaly;
 
     /*
-     * IsPositiveAnomaly contain anomaly status in positive direction for each input
+     * Anomaly status in a positive direction for each input
      * point. True means a positive anomaly has been detected. A positive anomaly
      * means the point is detected as an anomaly and its real value is larger than the
      * expected one. The index of the array is consistent with the input series.
@@ -74,8 +74,8 @@ public final class UnivariateEntireDetectionResult {
     private List<Boolean> isPositiveAnomaly;
 
     /*
-     * The severity score for each input point. The larger the value is, the more
-     * sever the anomaly is. For normal points, the "severity" is always 0.
+     * Severity score for each input point. The larger the value is, the more
+     * severe the anomaly is. For normal points, the severity is always 0.
      */
     @JsonProperty(value = "severity")
     private List<Double> severity;
@@ -110,7 +110,7 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
+     * Get the period property: Frequency extracted from the series. Zero means no recurrent pattern has been found.
      *
      * @return the period value.
      */
@@ -119,8 +119,8 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the expectedValues property: ExpectedValues contain expected value for each input point. The index of the
-     * array is consistent with the input series.
+     * Get the expectedValues property: Expected value for each input point. The index of the array is consistent with
+     * the input series.
      *
      * @return the expectedValues value.
      */
@@ -129,10 +129,10 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the upperMargins property: UpperMargins contain upper margin of each input point. UpperMargin is used to
-     * calculate upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin. Anomalies in response
-     * can be filtered by upperBoundary and lowerBoundary. By adjusting marginScale value, less significant anomalies
-     * can be filtered in client side. The index of the array is consistent with the input series.
+     * Get the upperMargins property: Upper margin of each input point. UpperMargin is used to calculate upperBoundary,
+     * which is equal to expectedValue + (100 - marginScale)*upperMargin. Anomalies in the response can be filtered by
+     * upperBoundary and lowerBoundary. Adjusting the marginScale value can help filter less significant anomalies on
+     * the client side. The index of the array is consistent with the input series.
      *
      * @return the upperMargins value.
      */
@@ -141,9 +141,9 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the lowerMargins property: LowerMargins contain lower margin of each input point. LowerMargin is used to
-     * calculate lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin. Points between the
-     * boundary can be marked as normal ones in client side. The index of the array is consistent with the input series.
+     * Get the lowerMargins property: Lower margin of each input point. LowerMargin is used to calculate lowerBoundary,
+     * which is equal to expectedValue - (100 - marginScale)*lowerMargin. Points between the boundary can be marked as
+     * normal ones on the client side. The index of the array is consistent with the input series.
      *
      * @return the lowerMargins value.
      */
@@ -152,8 +152,8 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the isAnomaly property: IsAnomaly contains anomaly properties for each input point. True means an anomaly
-     * either negative or positive has been detected. The index of the array is consistent with the input series.
+     * Get the isAnomaly property: Anomaly properties for each input point. True means an anomaly (either negative or
+     * positive) has been detected. The index of the array is consistent with the input series.
      *
      * @return the isAnomaly value.
      */
@@ -162,10 +162,9 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the isNegativeAnomaly property: IsNegativeAnomaly contains anomaly status in negative direction for each
-     * input point. True means a negative anomaly has been detected. A negative anomaly means the point is detected as
-     * an anomaly and its real value is smaller than the expected one. The index of the array is consistent with the
-     * input series.
+     * Get the isNegativeAnomaly property: Anomaly status in a negative direction for each input point. True means a
+     * negative anomaly has been detected. A negative anomaly means the point is detected as an anomaly and its real
+     * value is smaller than the expected one. The index of the array is consistent with the input series.
      *
      * @return the isNegativeAnomaly value.
      */
@@ -174,10 +173,9 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the isPositiveAnomaly property: IsPositiveAnomaly contain anomaly status in positive direction for each input
-     * point. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an
-     * anomaly and its real value is larger than the expected one. The index of the array is consistent with the input
-     * series.
+     * Get the isPositiveAnomaly property: Anomaly status in a positive direction for each input point. True means a
+     * positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real
+     * value is larger than the expected one. The index of the array is consistent with the input series.
      *
      * @return the isPositiveAnomaly value.
      */
@@ -186,8 +184,8 @@ public final class UnivariateEntireDetectionResult {
     }
 
     /**
-     * Get the severity property: The severity score for each input point. The larger the value is, the more sever the
-     * anomaly is. For normal points, the "severity" is always 0.
+     * Get the severity property: Severity score for each input point. The larger the value is, the more severe the
+     * anomaly is. For normal points, the severity is always 0.
      *
      * @return the severity value.
      */

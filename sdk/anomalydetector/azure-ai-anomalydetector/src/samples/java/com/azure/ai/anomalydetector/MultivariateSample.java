@@ -128,7 +128,7 @@ public class MultivariateSample {
         // Check model status util the model get ready
         while (true) {
             ModelInfo modelInfo = getModelInfo(client, modelId);
-            ModelStatus modelStatus = ModelStatus.valueOf(modelInfo.getStatus().toString());
+            ModelStatus modelStatus = modelInfo.getStatus();
             if (modelStatus == ModelStatus.READY) {
                 System.out.println("READY");
                 break;
