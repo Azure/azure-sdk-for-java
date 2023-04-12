@@ -31,8 +31,6 @@ feature-management:
 
 ### Breaking Changes
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 ### Other Changes
