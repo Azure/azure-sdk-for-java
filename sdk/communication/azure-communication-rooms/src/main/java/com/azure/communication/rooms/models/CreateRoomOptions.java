@@ -24,7 +24,7 @@ public final class CreateRoomOptions {
     /**
      * A list of participants
      */
-    private List<InvitedRoomParticipant> participants;
+    private Iterable<RoomParticipant> participants;
 
     /**
      * The default constructor of CreateRoomOptions
@@ -60,7 +60,7 @@ public final class CreateRoomOptions {
      * @param participants The invited participants.
      * @return The CreateRoomOptions object itself.
      */
-    public CreateRoomOptions setParticipants(List<InvitedRoomParticipant> participants) {
+    public CreateRoomOptions setParticipants(List<RoomParticipant> participants) {
         this.participants = participants;
         return this;
     }
@@ -88,7 +88,7 @@ public final class CreateRoomOptions {
      *
      * @return The invited participants.
      */
-    public List<InvitedRoomParticipant> getParticipants() {
+    public Iterable<RoomParticipant> getParticipants() {
         return participants;
     }
 }

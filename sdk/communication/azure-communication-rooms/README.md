@@ -63,21 +63,23 @@ Use the `createRoom` function to create a new Room on Azure Communication Servic
 ```java readme-sample-createRoomWithValidInput
 public void createRoomWithValidInput() {
     OffsetDateTime validFrom = OffsetDateTime.now();
-    OffsetDateTime validUntil = VALID_FROM.plusDays(30);
-    List<InvitedRoomParticipant> participants = new ArrayList<>();
+    OffsetDateTime validUntil = validFrom.plusDays(30);
+    List<RoomParticipant> participants = new ArrayList<>();
 
     // Add two participants
-    InvitedRoomParticipant participant1 = new InvitedRoomParticipant("<ACS User MRI identity 1>").setRole(ParticipantRole.ATTENDEE);
-    InvitedRoomParticipant participant2 = new InvitedRoomParticipant("<ACS User MRI identity 2>").setRole(ParticipantRole.CONSUMER);
+    participant1 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 1>"),
+            ParticipantRole.ATTENDEE);
+    participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>"),
+            ParticipantRole.CONSUMER);
 
     participants.add(participant1);
     participants.add(participant2);
 
-    //Create Room options
+    // Create Room options
     CreateRoomOptions roomOptions = new CreateRoomOptions()
-                .setValidFrom(validFrom)
-                .setValidUntil(validUntil)
-                .setParticipants(participants);
+            .setValidFrom(validFrom)
+            .setValidUntil(validUntil)
+            .setParticipants(participants);
 
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
@@ -92,18 +94,17 @@ Use the `updateRoom`  function to update an existing Room on Azure Communication
 ```java readme-sample-updateRoomWithRoomId
 public void updateRoomWithRoomId() {
     OffsetDateTime validFrom = OffsetDateTime.now();
-    OffsetDateTime validUntil = VALID_FROM.plusDays(30);
+    OffsetDateTime validUntil = validFrom.plusDays(30);
 
-    //Update Room options
+    // Update Room options
     UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
-                .setRoomId("<Room Id in String>")
-                .setValidFrom(validFrom)
-                .setValidUntil(validUntil);
+            .setValidFrom(validFrom)
+            .setValidUntil(validUntil);
 
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
     try {
-        CommunicationRoom roomResult = roomsClient.updateRoom(updateRoomOptions);
+        CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id in String>", updateRoomOptions);
         System.out.println("Room Id: " + roomResult.getRoomId());
     } catch (RuntimeException ex) {
         System.out.println(ex);
@@ -146,24 +147,23 @@ public void deleteRoomWithRoomId() {
 Use the `upsertParticipants` function to add or update participants in an existing Room on Azure Communication Service.
 
 ```java readme-sample-addRoomParticipantsWithRoomId
-public void upsertRoomParticipantsWithRoomId() {
-    List<InvitedRoomParticipant> participantsToUpsert = new ArrayList<>();
+public void addRoomParticipantsWithRoomId() {
+    List<RoomParticipant> participantsToUpsert = new ArrayList<>();
 
-    //New participant to add
-    InvitedRoomParticipant participantToAdd = new InvitedRoomParticipant("<ACS User MRI identity 3>").setRole(ParticipantRole.ATTENDEE);
+    // New participant to add
+    RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>"), ParticipantRole.ATTENDEE);
 
-    //Existing participant to update, assume participant2 is part of the room as a consumer
-    participant2 = new InvitedRoomParticipant("<ACS User MRI identity 2>").setRole(ParticipantRole.ATTENDEE);
+    // Existing participant to update, assume participant2 is part of the room as a
+    // consumer
+    participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>"), ParticipantRole.ATTENDEE);
 
-    participantsToUpsert.add(
-                participantToAdd, //Adding new participant to room
-                participant2);    //Update participant from Consumer -> Attendee
+    participantsToUpsert.add(participantToAdd); // Adding new participant to room
+    participantsToUpsert.add(participant2); // Update participant from Consumer -> Attendee
 
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
     try {
-        ParticipantsCollection roomParticipants =  roomsClient.upsertParticipants("<Room Id>", participantsToUpsert);
-        System.out.println("No. of Participants in Room: " + roomParticipants.getParticipants().size());
+        UpsertParticipantsResult upsertResult = roomsClient.upsertParticipants("<Room Id>", participantsToUpsert);
     } catch (RuntimeException ex) {
         System.out.println(ex);
     }
@@ -183,8 +183,7 @@ public void removeRoomParticipantsWithRoomId() {
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
     try {
-        ParticipantsCollection roomParticipants =  roomsClient.removeParticipants("<Room Id>", participants);
-        System.out.println("Room Id: " + roomParticipants.getParticipants().size());
+        RemoveParticipantsResult removeResult = roomsClient.removeParticipants("<Room Id>", participantsToRemove);
     } catch (RuntimeException ex) {
         System.out.println(ex);
     }

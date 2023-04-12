@@ -21,7 +21,7 @@ To update generated files for rooms service, run the following command
 ### Code generation settings
 ``` yaml
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/49ef4666b13e2e5675dfb92dab3b3d13aa8b3596/specification/communication/data-plane/Rooms/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/af0e925f435eed808cfa0168057405a43991c7ab/specification/communication/data-plane/Rooms/readme.md
 use: '@autorest/java@4.0.59'
 java: true
 title: AzureCommunicationRoomService
@@ -44,21 +44,11 @@ custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 ```
  
-### Rename RoomModal to CommunicationRoom
+### Rename Role to ParticipantRole
 ```yaml
 directive:
   - from: swagger-document
     where: $.definitions.Role["x-ms-enum"]
     transform: >
       $.name = "ParticipantRole";
-```
-
-
-### Rename RoomModal to CommunicationRoom
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.RoleModal
-    transform: >
-      $.name = "CommunicationRoom";
 ```

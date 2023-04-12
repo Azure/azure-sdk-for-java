@@ -12,7 +12,7 @@ import java.util.List;
 @Fluent
 public final class ParticipantsCollection {
     /*
-     * A collection of participants
+     * A collection of participants.
      */
     @JsonProperty(value = "value", required = true)
     private List<RoomParticipant> value;

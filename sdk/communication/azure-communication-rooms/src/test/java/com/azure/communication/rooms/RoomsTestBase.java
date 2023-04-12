@@ -45,15 +45,17 @@ public class RoomsTestBase extends TestBase {
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
-    protected List<InvitedRoomParticipant> participants1;
-    protected List<InvitedRoomParticipant> participants2;
-    protected List<InvitedRoomParticipant> participants3;
-    protected List<InvitedRoomParticipant> participants4;
-    protected List<InvitedRoomParticipant> participants5;
-    protected List<InvitedRoomParticipant> participants6;
-    protected List<InvitedRoomParticipant> participants7;
-    protected List<InvitedRoomParticipant> badParticipant;
-    protected List<InvitedRoomParticipant> participantsWithRoleUpdates;
+    protected List<RoomParticipant> participants1;
+    protected List<RoomParticipant> participants2;
+    protected List<RoomParticipant> participants3;
+    protected List<RoomParticipant> participants4;
+    protected List<RoomParticipant> participants5;
+    protected List<RoomParticipant> participants6;
+    protected List<RoomParticipant> participants7;
+    protected List<RoomParticipant> participants8;
+    protected List<RoomParticipant> participants9;
+    protected List<RoomParticipant> badParticipant;
+    protected List<RoomParticipant> participantsWithRoleUpdates;
 
     protected List<CommunicationIdentifier> communicationIdentifiersForParticipants5;
 
@@ -63,14 +65,15 @@ public class RoomsTestBase extends TestBase {
     protected CommunicationUserIdentifier secondParticipantId;
     protected CommunicationUserIdentifier thirdParticipantId;
 
-    protected InvitedRoomParticipant firstParticipant;
-    protected InvitedRoomParticipant secondParticipant;
-    protected InvitedRoomParticipant thirdParticipant;
-    protected InvitedRoomParticipant firstChangeParticipant;
-    protected InvitedRoomParticipant secondChangeParticipant;
-    protected InvitedRoomParticipant validateParticipant1;
-    protected InvitedRoomParticipant validateParticipant2;
-    protected InvitedRoomParticipant validateParticipant3;
+    protected RoomParticipant firstParticipant;
+    protected RoomParticipant secondParticipant;
+    protected RoomParticipant thirdParticipant;
+    protected RoomParticipant thirdParticipantWithDefaultRole;
+    protected RoomParticipant firstChangeParticipant;
+    protected RoomParticipant secondChangeParticipant;
+    protected RoomParticipant validateParticipant1;
+    protected RoomParticipant validateParticipant2;
+    protected RoomParticipant validateParticipant3;
 
     protected static final String NONEXIST_ROOM_ID = "NotExistingRoomID";
 
@@ -169,17 +172,19 @@ public class RoomsTestBase extends TestBase {
         secondParticipantId = communicationClient.createUser();
         thirdParticipantId = communicationClient.createUser();
 
-        firstParticipant = new InvitedRoomParticipant(firstParticipantId).setRole(ParticipantRole.ATTENDEE);
+        firstParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.ATTENDEE);
 
-        secondParticipant = new InvitedRoomParticipant(secondParticipantId).setRole(ParticipantRole.ATTENDEE);
-        thirdParticipant = new InvitedRoomParticipant(thirdParticipantId).setRole(ParticipantRole.CONSUMER);
+        secondParticipant = new RoomParticipant(secondParticipantId, ParticipantRole.ATTENDEE);
+        thirdParticipant = new RoomParticipant(thirdParticipantId, ParticipantRole.CONSUMER);
 
-        firstChangeParticipant = new InvitedRoomParticipant(firstParticipantId).setRole(ParticipantRole.CONSUMER);
-        secondChangeParticipant = new InvitedRoomParticipant(firstParticipantId).setRole(ParticipantRole.CONSUMER);
+        thirdParticipantWithDefaultRole = new RoomParticipant(thirdParticipantId, ParticipantRole.ATTENDEE);
 
-        validateParticipant1 = new InvitedRoomParticipant(firstParticipantId);
-        validateParticipant2 = new InvitedRoomParticipant(secondParticipantId);
-        validateParticipant3 = new InvitedRoomParticipant(thirdParticipantId);
+        firstChangeParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.CONSUMER);
+        secondChangeParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.CONSUMER);
+
+        validateParticipant1 = new RoomParticipant(firstParticipantId, ParticipantRole.ATTENDEE);
+        validateParticipant2 = new RoomParticipant(secondParticipantId, ParticipantRole.ATTENDEE);
+        validateParticipant3 = new RoomParticipant(thirdParticipantId, ParticipantRole.ATTENDEE);
 
         participants1 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
         participants2 = Arrays.asList(firstParticipant, secondParticipant);
@@ -190,8 +195,9 @@ public class RoomsTestBase extends TestBase {
 
         participants6 = Arrays.asList(secondParticipant, thirdParticipant);
         participants7 = Arrays.asList();
-        badParticipant = Arrays.asList(new InvitedRoomParticipant(new CommunicationUserIdentifier("Dummy_Mri"))
-                .setRole(ParticipantRole.CONSUMER));
+        participants8 = Arrays.asList(thirdParticipant);
+        participants9 = Arrays.asList(thirdParticipantWithDefaultRole);
+        badParticipant = Arrays.asList(new RoomParticipant(new CommunicationUserIdentifier("Dummy_Mri"), ParticipantRole.CONSUMER));
         participantsWithRoleUpdates = Arrays.asList(firstChangeParticipant, secondChangeParticipant);
     }
 
@@ -248,9 +254,9 @@ public class RoomsTestBase extends TestBase {
                 && participant1.getRole().toString().equals(participant2.getRole().toString());
     }
 
-    protected List<CommunicationIdentifier> getCommunicationIdentifiers(List<InvitedRoomParticipant> participants) {
+    protected List<CommunicationIdentifier> getCommunicationIdentifiers(List<RoomParticipant> participants) {
         List<CommunicationIdentifier> identifiers = new ArrayList<>();
-        for (InvitedRoomParticipant participant : participants) {
+        for (RoomParticipant participant : participants) {
             identifiers.add(participant.getCommunicationIdentifier());
         }
         return identifiers;

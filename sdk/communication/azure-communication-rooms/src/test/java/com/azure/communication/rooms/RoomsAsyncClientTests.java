@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.communication.rooms.models.*;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,11 +63,10 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         String roomId = response1.block().getValue().getRoomId();
 
         UpdateRoomOptions updateOptions = new UpdateRoomOptions()
-                .setRoomId(roomId)
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_FROM.plusMonths(3));
 
-        Mono<Response<CommunicationRoom>> response3 = roomsAsyncClient.updateRoomWithResponse(updateOptions);
+        Mono<Response<CommunicationRoom>> response3 = roomsAsyncClient.updateRoomWithResponse(roomId, updateOptions);
 
         System.out.println(VALID_FROM.plusMonths(3).getDayOfYear());
 
@@ -111,11 +111,10 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         String roomId = response1.block().getRoomId();
 
         UpdateRoomOptions updateOptions = new UpdateRoomOptions()
-                .setRoomId(roomId)
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_FROM.plusMonths(3));
 
-        Mono<CommunicationRoom> response3 = roomsAsyncClient.updateRoom(updateOptions);
+        Mono<CommunicationRoom> response3 = roomsAsyncClient.updateRoom(roomId, updateOptions);
 
         // StepVerifier.create(response3)
         // .assertNext(result3 -> {
@@ -166,6 +165,8 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                     assertTrue(result4 instanceof RemoveParticipantsResult);
                 }).verifyComplete();
 
+        //TODO: Add get after delete
+
         Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
         StepVerifier.create(response5)
                 .assertNext(result5 -> {
@@ -207,7 +208,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     public void addParticipantsWithOutResponseStep(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient, "addParticipantsWithOutResponseStep");
         assertNotNull(roomsAsyncClient);
-        List<InvitedRoomParticipant> participants = new ArrayList<InvitedRoomParticipant>();
+        List<RoomParticipant> participants = new ArrayList<RoomParticipant>();
 
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
@@ -265,6 +266,105 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 .assertNext(result2 -> {
                     assertEquals(result2.getStatusCode(), 200);
                 }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateParticipantsToDefaultRoleWithOutResponseStep(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient, "updateParticipantsToDefaultRoleWithOutResponseStep");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions roomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants8);
+
+        Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertTrue(roomResult.getValidFrom() != null);
+                }).verifyComplete();
+
+        String roomId = response1.block().getRoomId();
+
+        Mono<UpsertParticipantsResult> response2 = roomsAsyncClient.upsertParticipants(roomId, participants9);
+
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertTrue(result2 instanceof UpsertParticipantsResult);
+                }).verifyComplete();
+
+        // StepVerifier.create(roomsAsyncClient.listParticipants(roomId)).assertNext(response4 -> {
+        //     assertEquals(ParticipantRole.ATTENDEE, response4.getRole());
+        // })
+        //         .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateParticipantsToDefaultRoleWithResponseStep(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient, "updateParticipantsToDefaultRoleWithResponseStep");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions roomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants8);
+
+        Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertHappyPath(roomResult, 201);
+                })
+                .verifyComplete();
+
+        String roomId = response1.block().getValue().getRoomId();
+
+        Mono<Response<UpsertParticipantsResult>> response2 = roomsAsyncClient.upsertParticipantsWithResponse(roomId,
+                participants9);
+
+        StepVerifier.create(response2)
+                .assertNext(result2 -> {
+                    assertEquals(result2.getStatusCode(), 200);
+                }).verifyComplete();
+
+        PagedFlux<RoomParticipant> response3 = roomsAsyncClient.listParticipants(roomId);
+
+        // StepVerifier.create(response3).assertNext(response4 -> {
+        //     assertTrue(response4.getRole() == ParticipantRole.ATTENDEE);
+        // })
+        //         .verifyComplete();
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listParticipantsWithOutResponseStep(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient, "listParticipantsWithOutResponseStep");
+        assertNotNull(roomsAsyncClient);
+
+        CreateRoomOptions roomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL)
+                .setParticipants(participants5);
+
+        Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
+
+        StepVerifier.create(response1)
+                .assertNext(roomResult -> {
+                    assertTrue(roomResult.getValidFrom() != null);
+                }).verifyComplete();
+
+        String roomId = response1.block().getRoomId();
+
+        PagedFlux<RoomParticipant> response2 = roomsAsyncClient.listParticipants(roomId);
+
+        // StepVerifier.create(response2).assertNext(response4 -> {
+        //     assertEquals(participants5.size(), response2.getPageSize());
+        // })
+        //         .verifyComplete();
     }
 
     @ParameterizedTest

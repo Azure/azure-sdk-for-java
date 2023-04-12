@@ -11,11 +11,6 @@ import java.time.OffsetDateTime;
 public final class UpdateRoomOptions {
 
     /**
-     * The Room Id.
-     */
-    private String roomId;
-
-    /**
      * The starting time point of the room.
      */
     private OffsetDateTime validFrom;
@@ -29,18 +24,6 @@ public final class UpdateRoomOptions {
      * The default constructor of CreateRoomOptions
      */
     public UpdateRoomOptions() {
-    }
-
-
-    /**
-     * Set the Room Id.
-     *
-     * @param roomId The starting time of the room.
-     * @return The CreateRoomOptions object itself.
-     */
-    public UpdateRoomOptions setRoomId(String roomId) {
-        this.roomId = roomId;
-        return this;
     }
 
     /**
@@ -64,17 +47,6 @@ public final class UpdateRoomOptions {
         this.validUntil = validUntil;
         return this;
     }
-
-
-    /**
-     * Get the Room Id.
-     *
-     * @return Room Id.
-     */
-    public String getRoomId() {
-        return roomId;
-    }
-
 
     /**
      * Get the valid starting time point of a room.
