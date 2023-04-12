@@ -12,7 +12,6 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -25,17 +24,14 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -466,7 +462,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
         Set<String> receivedMessages = Collections.synchronizedSet(new HashSet<>());
-        for (int t = 0; t < 3 && receivedMessages.size() < maxMessages; t ++) {
+        for (int t = 0; t < 3 && receivedMessages.size() < maxMessages; t++) {
             receivedMessages.addAll(
                 receiver.peekMessages(maxMessages)
                     .stream()
