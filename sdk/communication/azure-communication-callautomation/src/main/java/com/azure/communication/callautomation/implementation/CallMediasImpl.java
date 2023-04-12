@@ -8,7 +8,7 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequest;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SendDtmfRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -114,7 +114,7 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
+                @BodyParam("application/json") SendDtmfRequest sendDtmfRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -680,18 +680,17 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Send dtmf tones.
+     * Send DTMF tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfRequest The sendDTMF request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendDtmfWithResponseAsync(
-            String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
+    public Mono<Response<Void>> sendDtmfWithResponseAsync(String callConnectionId, SendDtmfRequest sendDtmfRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -705,10 +704,10 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Send dtmf tones.
+     * Send DTMF tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfRequest The sendDTMF request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -717,7 +716,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendDtmfWithResponseAsync(
-            String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
+            String callConnectionId, SendDtmfRequest sendDtmfRequest, Context context) {
         final String accept = "application/json";
         return service.sendDtmf(
                 this.client.getEndpoint(),
@@ -729,25 +728,25 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Send dtmf tones.
+     * Send DTMF tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfRequest The sendDTMF request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
+    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequest sendDtmfRequest) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Send dtmf tones.
+     * Send DTMF tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfRequest The sendDTMF request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -755,29 +754,29 @@ public final class CallMediasImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
+    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequest sendDtmfRequest, Context context) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Send dtmf tones.
+     * Send DTMF tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfRequest The sendDTMF request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
+    public void sendDtmf(String callConnectionId, SendDtmfRequest sendDtmfRequest) {
         sendDtmfAsync(callConnectionId, sendDtmfRequest).block();
     }
 
     /**
-     * Send dtmf tones.
+     * Send DTMF tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
+     * @param sendDtmfRequest The sendDTMF request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -786,7 +785,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendDtmfWithResponse(
-            String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
+            String callConnectionId, SendDtmfRequest sendDtmfRequest, Context context) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context).block();
     }
 }
