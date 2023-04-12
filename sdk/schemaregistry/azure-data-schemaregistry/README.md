@@ -87,22 +87,23 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 ##### Async client
 
 ```java com.azure.data.schemaregistry.schemaregistryasyncclient.construct
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
-    .credential(tokenCredential)
+// AAD credential to authorize with Schema Registry service.
+DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
+    .build();
+SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+    .credential(azureCredential)
     .buildAsyncClient();
 ```
 
 ##### Sync client
 
 ```java com.azure.data.schemaregistry.schemaregistryclient.construct
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
-    .credential(tokenCredential)
+DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
+    .build();
+SchemaRegistryClient client = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+    .credential(azureCredential)
     .buildClient();
 ```
 
@@ -131,44 +132,28 @@ SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 Register a schema to be stored in the Azure Schema Registry.
 
 ```java com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro
-SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint}")
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
+SchemaProperties properties = client.registerSchema("{schema-group}", "{schema-name}", schema,
+    SchemaFormat.AVRO);
 
-String schemaContent = "{\n"
-    + "    \"type\" : \"record\",  \n"
-    + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
-    + "    \"name\" : \"Person\", \n"
-    + "    \"fields\" : [\n"
-    + "        { \n"
-    + "            \"name\" : \"FirstName\" , \"type\" : \"string\" \n"
-    + "        }, \n"
-    + "        { \n"
-    + "            \"name\" : \"LastName\", \"type\" : \"string\" \n"
-    + "        }\n"
-    + "    ]\n"
-    + "}";
-SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
-    schemaContent, SchemaFormat.AVRO);
-
-System.out.println("Registered schema: " + schemaProperties.getId());
+System.out.printf("Schema id: %s, schema format: %s%n", properties.getId(), properties.getFormat());
 ```
 
 ### Retrieve a schema's properties
 Retrieve a previously registered schema's properties from the Azure Schema Registry.
 
 ```java com.azure.data.schemaregistry.schemaregistryclient.getschema
-SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
+SchemaRegistrySchema schema = client.getSchema("{schema-id}");
 
-System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
-    schema.getDefinition());
+System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
+    schema.getProperties().getFormat());
+System.out.println("Schema contents: " + schema.getDefinition());
 ```
 
 ### Retrieve a schema
 Retrieve a previously registered schema's content and properties from the Azure Schema Registry.
 
-```java com.azure.data.schemaregistry.schemaregistryclient.getschemaid
+```java com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties
 String schemaContent = "{\n"
     + "    \"type\" : \"record\",  \n"
     + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -182,7 +167,7 @@ String schemaContent = "{\n"
     + "        }\n"
     + "    ]\n"
     + "}";
-SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
+SchemaProperties properties = client.getSchemaProperties("{schema-group}", "{schema-name}",
     schemaContent, SchemaFormat.AVRO);
 
 System.out.println("Retrieved schema id: " + properties.getId());

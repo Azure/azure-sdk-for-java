@@ -52,9 +52,8 @@ import java.util.Objects;
  * and an Azure AD credential.
  *
  * <p><strong>Instantiating the client</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.instantiation -->
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
  * <pre>
- * &#47;&#47; AAD credential to authorize with Schema Registry service.
  * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .build&#40;&#41;;
  * SchemaRegistryClient client = new SchemaRegistryClientBuilder&#40;&#41;
@@ -62,10 +61,10 @@ import java.util.Objects;
  *     .credential&#40;azureCredential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryclient.instantiation -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.construct -->
  *
  * <p><strong>Instantiating the async client</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation -->
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  * <pre>
  * &#47;&#47; AAD credential to authorize with Schema Registry service.
  * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
@@ -75,10 +74,10 @@ import java.util.Objects;
  *     .credential&#40;azureCredential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  *
  * <p><strong>Instantiating with custom retry policy and HTTP log options</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.construct -->
  * <pre>
  * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .build&#40;&#41;;
@@ -95,7 +94,7 @@ import java.util.Objects;
  *     .credential&#40;azureCredential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.construct -->
  */
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
 public class SchemaRegistryClientBuilder implements
