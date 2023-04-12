@@ -10,6 +10,8 @@ import com.azure.storage.common.implementation.Constants
 
 import javax.crypto.spec.SecretKeySpec
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class LocalKeyTest extends APISpec {
     CryptographyServiceVersion cryptographyServiceVersion = CryptographyServiceVersion.V7_2
     BlobContainerClient cc
@@ -50,7 +52,7 @@ class LocalKeyTest extends APISpec {
         bec.download(os)
 
         then:
-        inputArray == os.toByteArray()
+        assertArraysEqual(inputArray, os.toByteArray())
     }
 
 

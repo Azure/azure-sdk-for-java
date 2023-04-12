@@ -23,6 +23,8 @@ import spock.lang.Unroll
 
 import java.security.MessageDigest
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class AppendBlobAPITest extends APISpec {
     AppendBlobClient bc
     String blobName
@@ -488,7 +490,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         def os = new ByteArrayOutputStream()
         bc.download(os)
-        os.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
     }
 
     def "Append block from URL min"() {
@@ -525,7 +527,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         def downloadStream = new ByteArrayOutputStream(1024)
         destURL.download(downloadStream)
-        downloadStream.toByteArray() == Arrays.copyOfRange(data, 2 * 1024, 3 * 1024)
+        assertArraysEqual(data, 2 * 1024, downloadStream.toByteArray(), 0, 1024)
     }
 
     def "Append block from URL MD5"() {

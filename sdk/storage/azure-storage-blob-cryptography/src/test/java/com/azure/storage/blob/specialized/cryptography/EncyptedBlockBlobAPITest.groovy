@@ -54,7 +54,6 @@ import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
 import java.nio.file.OpenOption
@@ -62,6 +61,8 @@ import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH
@@ -144,7 +145,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         encryptedBlobClient.downloadStream(plaintextOut)
 
         then:
-        data == ByteBuffer.wrap(plaintextOut.toByteArray())
+        assertByteBuffersEqual(data, ByteBuffer.wrap(plaintextOut.toByteArray()))
 
         where:
         dataSize              | _
@@ -352,7 +353,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
 
         then:
-        ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
+        assertArraysEqual(plaintextOriginal, plaintextOutputStream.toByteArray())
 
         where:
         dataSize              | _
@@ -413,7 +414,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         decryptionClient.downloadStream(decryptStream)
 
         then:
-        outStream.toByteArray() == decryptStream.toByteArray()
+        assertArraysEqual(outStream.toByteArray(), decryptStream.toByteArray())
 
         and:
         def data = getRandomByteArray(20 * Constants.MB)
@@ -718,7 +719,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(IllegalStateException)
-        os.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
 
         cleanup:
         cac.delete()
@@ -754,7 +755,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(IllegalStateException)
-        ByteBuffer.wrap(os.toByteArray()) == data.defaultData.duplicate().position(3).limit(5)
+        assertArraysEqual(data.defaultBytes, 3, os.toByteArray(), 0, 2)
 
         cleanup:
         cac.delete()
@@ -858,7 +859,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         decryptClient.download(outputStream)
 
         then:
-        outputStream.toByteArray() == data
+        assertArraysEqual(data, outputStream.toByteArray())
     }
 
     // Upload with new SDK download with old SDK.
@@ -892,7 +893,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         v8DecryptBlob.download(stream, null, downloadOptions, null)
 
         then:
-        stream.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, stream.toByteArray())
     }
 
     // TODO: cross platform v2 tests
@@ -1110,7 +1111,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def outBuffer = ByteBuffer.wrap(outStream.toByteArray())
 
         then:
-        outBuffer == expectedData
+        assertByteBuffersEqual(expectedData, outBuffer)
 
         where:
         offset           | count
@@ -1201,7 +1202,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         def snapshotStream = new ByteArrayOutputStream()
         bc2.download(snapshotStream)
-        snapshotStream.toByteArray() == originalStream.toByteArray()
+        assertArraysEqual(originalStream.toByteArray(), snapshotStream.toByteArray())
     }
 
     def "Download to file exists"() {
@@ -1234,7 +1235,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFile(testFile.getPath(), true)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -1251,7 +1252,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFile(testFile.getPath())
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -1272,7 +1273,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -1294,7 +1295,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -1857,7 +1858,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         def stream = new ByteArrayOutputStream()
         ebc.downloadWithResponse(stream, null, null, null, false, null, null)
-        stream.toByteArray() == randomData
+        assertArraysEqual(randomData, stream.toByteArray())
     }
 
     // This test checks that encryption is not just a no-op
@@ -1892,7 +1893,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == randomData
+        assertArraysEqual(randomData, os.toByteArray())
     }
 
     @Unroll
@@ -1931,7 +1932,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         def stream = new ByteArrayOutputStream()
         ebc.downloadStream(stream)
-        stream.toByteArray() == randomData
+        assertArraysEqual(randomData, stream.toByteArray())
     }
 
     def "Encryption upload IS no length with options"() {
@@ -1947,7 +1948,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == randomData
+        assertArraysEqual(randomData, os.toByteArray())
     }
 
     def getPerCallVersionPolicy() {

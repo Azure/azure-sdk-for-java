@@ -122,6 +122,24 @@ class StorageSpec extends Specification {
             .block()
     }
 
+    static def readInputStream(InputStream stream, Integer sizeHint) {
+        def outputStream = (sizeHint != null)
+            ? new ByteArrayOutputStream(sizeHint)
+            : new ByteArrayOutputStream()
+
+        def buffer = new byte[16384]
+        def readCount = -1
+        try {
+            while ((readCount = stream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, readCount)
+            }
+
+            return outputStream.toByteArray()
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex)
+        }
+    }
+
     protected <T, E extends Exception> T retry(
         Supplier<T> action, Predicate<E> retryPredicate,
         int times=6, Duration delay=Duration.ofSeconds(10)) {

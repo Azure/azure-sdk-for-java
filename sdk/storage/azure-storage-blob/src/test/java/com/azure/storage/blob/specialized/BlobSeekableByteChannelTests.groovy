@@ -28,6 +28,8 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import java.nio.ByteBuffer
 import java.time.Duration
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class BlobSeekableByteChannelTests extends APISpec {
     BlobClient bc
     BlockBlobClient blockClient
@@ -61,7 +63,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         channel.position() == dataLength
 
         and: "expected data downloaded"
-        downloadedData.toByteArray() == data
+        assertArraysEqual(data, downloadedData.toByteArray())
 
         where:
         streamBufferSize  | copyBufferSize | dataLength
@@ -90,7 +92,7 @@ class BlobSeekableByteChannelTests extends APISpec {
         channel.close()
 
         then: "appropriate data uploaded"
-        blockClient.downloadContent().toBytes() == data
+        assertArraysEqual(data, blockClient.downloadContent().toBytes())
 
         where:
         streamBufferSize  | copyBufferSize | dataLength

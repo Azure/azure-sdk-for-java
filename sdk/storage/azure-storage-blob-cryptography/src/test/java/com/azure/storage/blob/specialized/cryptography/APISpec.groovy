@@ -34,6 +34,8 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 
+import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual
+
 class APISpec extends StorageSpec {
 
     /*
@@ -277,19 +279,14 @@ class APISpec extends StorageSpec {
     }
 
     def compareDataToFile(Flux<ByteBuffer> data, File file) {
-        FileInputStream fis = new FileInputStream(file)
-
-        for (ByteBuffer received : data.toIterable()) {
-            byte[] readBuffer = new byte[received.remaining()]
-            fis.read(readBuffer)
-            for (int i = 0; i < received.remaining(); i++) {
-                if (readBuffer[i] != received.get(i)) {
-                    return false
-                }
+        try (FileInputStream fis = new FileInputStream(file)) {
+            for (ByteBuffer received : data.toIterable()) {
+                byte[] readBuffer = new byte[received.remaining()]
+                fis.read(readBuffer)
+                assertByteBuffersEqual(received, ByteBuffer.wrap(readBuffer))
             }
         }
 
-        fis.close()
         return true
     }
 

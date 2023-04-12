@@ -16,6 +16,8 @@ import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Retry
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
 class OAuthCopySourceTests extends APISpec {
     BlobClient defaultDataSourceBlobClient
@@ -87,7 +89,7 @@ class OAuthCopySourceTests extends APISpec {
             null, Context.NONE)
 
         then:
-        blockBlobClient.downloadContent().toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, blockBlobClient.downloadContent().toBytes())
     }
 
     def "Block blob upload from URL source oauth fail"() {
@@ -121,7 +123,7 @@ class OAuthCopySourceTests extends APISpec {
         blockBlobClient.commitBlockList([blockId], true)
 
         then:
-        blockBlobClient.downloadContent().toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, blockBlobClient.downloadContent().toBytes())
     }
 
     def "Block blob stage block from URL source oauth fail"() {
@@ -155,7 +157,7 @@ class OAuthCopySourceTests extends APISpec {
             null, Context.NONE)
 
         then:
-        pageBlobClient.downloadContent().toBytes() == pageBlobDataSourceBlobClient.downloadContent().toBytes()
+        assertArraysEqual(pageBlobDataSourceBlobClient.downloadContent().toBytes(), pageBlobClient.downloadContent().toBytes())
     }
 
     def "Upload pages from URL source oauth fail"() {

@@ -9,6 +9,8 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class BlobChunkedDownloaderTest extends APISpec {
 
     BlobAsyncClient bc
@@ -22,12 +24,7 @@ class BlobChunkedDownloaderTest extends APISpec {
     }
 
     byte[] downloadHelper(BlobChunkedDownloader downloader) {
-        OutputStream os = downloader.download()
-            .reduce(new ByteArrayOutputStream(),  { outputStream, buffer ->
-            outputStream.write(FluxUtil.byteBufferToArray(buffer))
-            return outputStream;
-        }).block()
-        return os.toByteArray()
+        return FluxUtil.collectBytesInByteBufferStream(downloader.download()).block()
     }
 
     byte[] uploadHelper(int size) {
@@ -46,7 +43,7 @@ class BlobChunkedDownloaderTest extends APISpec {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, blockSize, 0))
 
         then:
-        output == input
+        assertArraysEqual(input, output)
         numDownloads * bc.downloadWithResponse(_,_,_,_)
 
         where:
@@ -65,9 +62,7 @@ class BlobChunkedDownloaderTest extends APISpec {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset))
 
         then:
-        for (int i = 0; i < input.length - offset; i++) {
-            assert output[i] == input[i + offset]
-        }
+        assertArraysEqual(input, offset, output, 0, input.length - offset)
         1 * bc.downloadWithResponse(_,_,_,_)
 
         where:
@@ -87,9 +82,7 @@ class BlobChunkedDownloaderTest extends APISpec {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset))
 
         then:
-        for (int i = 0; i < input.length - offset; i++) {
-            assert output[i] == input[i + offset]
-        }
+        assertArraysEqual(input, offset, output, 0, input.length - offset)
         numDownloads * bc.downloadWithResponse(_,_,_,_)
 
         where:
@@ -121,9 +114,7 @@ class BlobChunkedDownloaderTest extends APISpec {
 
         then:
         assert output.length == downloadSize
-        for (int i = 0; i < downloadSize; i++) {
-            assert output[i] == input[i]
-        }
+        assertArraysEqual(input, 0, output, 0, downloadSize)
         1 * bc.downloadWithResponse(_,_,_,_)
 
         where:

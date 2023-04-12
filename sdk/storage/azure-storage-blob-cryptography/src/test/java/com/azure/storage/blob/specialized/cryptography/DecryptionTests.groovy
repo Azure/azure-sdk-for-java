@@ -19,6 +19,8 @@ import com.azure.storage.blob.models.BlobRange
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Unroll
 
+import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual
+
 class DecryptionTests extends APISpec {
     String keyId
     def fakeKey
@@ -59,7 +61,7 @@ class DecryptionTests extends APISpec {
             .block()
 
         then:
-        decryptedData == desiredOutput
+        assertByteBuffersEqual(desiredOutput, decryptedData)
 
         where:
         testCase                      | _

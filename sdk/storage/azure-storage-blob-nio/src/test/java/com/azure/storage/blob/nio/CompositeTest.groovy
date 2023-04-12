@@ -8,9 +8,10 @@ import spock.lang.Unroll
 import java.nio.file.FileVisitResult
 import java.nio.file.FileVisitor
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.BasicFileAttributes
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 /**
  * This test class is for testing static helper methods provided by the JDK. Customers often rely on these methods
@@ -60,7 +61,7 @@ class CompositeTest extends APISpec {
         fs.provider().newInputStream(dest).read(resultArr)
 
         then:
-        resultArr == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, resultArr)
 
         when:
         def dest2 = fs.getPath("dest2")
@@ -71,7 +72,7 @@ class CompositeTest extends APISpec {
         fs.provider().newInputStream(dest2).read(resultArr)
 
         then:
-        resultArr == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, resultArr)
 
         when:
         def dest3 = fs.getPath("dest3")
@@ -80,7 +81,7 @@ class CompositeTest extends APISpec {
         fs.provider().newInputStream(dest3).read(resultArr)
 
         then:
-        resultArr == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, resultArr)
     }
 
     // Bug: https://github.com/Azure/azure-sdk-for-java/issues/20325

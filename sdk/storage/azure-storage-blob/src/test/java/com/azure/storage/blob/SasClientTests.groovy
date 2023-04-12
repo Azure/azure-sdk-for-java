@@ -36,6 +36,8 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class SasClientTests extends APISpec {
 
     BlockBlobClient sasClient
@@ -88,7 +90,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == data.defaultText
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
         validateSasProperties(properties)
     }
 
@@ -120,7 +122,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == data.defaultText
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
         validateSasProperties(properties)
     }
 
@@ -150,7 +152,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == data.defaultText
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
         validateSasProperties(properties)
     }
 
@@ -231,7 +233,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == data.defaultText
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
         validateSasProperties(properties)
     }
 
@@ -268,7 +270,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
 
         then:
         validateSasProperties(properties)
@@ -309,7 +311,7 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == data.defaultText
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
         validateSasProperties(properties)
     }
 

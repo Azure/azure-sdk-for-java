@@ -6,6 +6,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class EncryptedBlobOutputStreamTest extends APISpec {
 
     EncryptedBlobClient bec // encrypted client
@@ -68,7 +70,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        convertInputStreamToByteArray(bec.openInputStream()) == data
+        assertArraysEqual(data, readInputStream(bec.openInputStream(), data.length))
     }
 
     @LiveOnly
@@ -121,20 +123,6 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        convertInputStreamToByteArray(bec.openInputStream()) == randomData
-    }
-
-    static def convertInputStreamToByteArray(InputStream inputStream) {
-        int b
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b)
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex)
-        }
-
-        return outputStream.toByteArray()
+        assertArraysEqual(randomData, readInputStream(bec.openInputStream(), randomData.length))
     }
 }

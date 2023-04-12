@@ -9,6 +9,8 @@ import spock.lang.Unroll
 
 import java.nio.file.ClosedFileSystemException
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class NioBlobInputStreamTest extends APISpec {
 
     File sourceFile
@@ -41,10 +43,15 @@ class NioBlobInputStreamTest extends APISpec {
     }
 
     def "Read min"() {
-        expect:
-        for (i in 1..100) {
-            assert nioStream.read() == fileStream.read()
-        }
+        when:
+        def nioBuffer = new byte[100]
+        def nioReadCount = nioStream.read(nioBuffer)
+        def fileBuffer = new byte[100]
+        def fileReadCount = fileStream.read(fileBuffer)
+
+        then:
+        nioReadCount == fileReadCount
+        assertArraysEqual(fileBuffer, nioBuffer)
     }
 
     @Unroll
@@ -58,7 +65,7 @@ class NioBlobInputStreamTest extends APISpec {
         fileStream.read(fileBytes)
 
         then:
-        nioBytes == fileBytes
+        assertArraysEqual(fileBytes, nioBytes)
 
         where:
         size            | _
@@ -77,7 +84,7 @@ class NioBlobInputStreamTest extends APISpec {
         fileStream.read(fileBytes, 5, 50)
 
         then:
-        nioBytes == fileBytes
+        assertArraysEqual(fileBytes, nioBytes)
     }
 
     @Unroll

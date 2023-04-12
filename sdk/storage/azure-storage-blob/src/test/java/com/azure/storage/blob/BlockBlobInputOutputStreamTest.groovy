@@ -10,10 +10,11 @@ import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -29,17 +30,14 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         bc.upload(new ByteArrayInputStream(data), data.length, true)
         def is = bc.openInputStream()
         byte[] outArr = new byte[10 * 1024 * 1024]
+        byte[] zeroArr = new byte[outArr.length - dataSize]
 
         when:
         def count = is.read(outArr)
 
         then:
-        for (int i = 0; i < dataSize; i++) {
-            assert data[i] == outArr[i]
-        }
-        for (int i = dataSize; i < (outArr.length); i++) {
-            assert outArr[i] == (byte) 0
-        }
+        assertArraysEqual(data, 0, outArr, 0, dataSize)
+        assertArraysEqual(zeroArr, 0, outArr, dataSize, zeroArr.length)
 
         count == retVal
 
@@ -62,20 +60,10 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         then:
         def inputStream = bc.openInputStream()
-        int b
-        def outputStream = new ByteArrayOutputStream()
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b)
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex)
-        }
         def propertiesAfter = inputStream.getProperties()
         propertiesAfter.getBlobType() == BlobType.BLOCK_BLOB
         propertiesAfter.getBlobSize() == 5 * Constants.MB
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+        assertArraysEqual(randomBytes, Constants.MB, readInputStream(inputStream, 5 * Constants.MB), 0, 5 * Constants.MB)
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
@@ -101,10 +89,16 @@ class BlockBlobInputOutputStreamTest extends APISpec {
                 outputStream.write(b)
                 assert inputStream.available() == sizes[i] - 1 // Make sure the internal buffer is the expected chunk size.
                 // Read the rest of the chunk
-                for (int j = 0; j < sizes[i] - 1; j++) {
-                    b = inputStream.read()
-                    assert b != -1
-                    outputStream.write(b)
+                def remaining = sizes[i] - 1
+                while (remaining > 0) {
+                    def buffer = new byte[remaining]
+                    def read = inputStream.read(buffer)
+                    if (read >= 0) {
+                        remaining -= read
+                    } else {
+                        assert remaining == 0
+                    }
+                    outputStream.write(buffer)
                 }
             }
         } catch (IOException ex) {
@@ -114,8 +108,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def propertiesAfter = inputStream.getProperties()
         propertiesAfter.getBlobType() == BlobType.BLOCK_BLOB
         propertiesAfter.getBlobSize() == 6 * Constants.MB
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == randomBytes
+        assertArraysEqual(randomBytes, outputStream.toByteArray())
 
         where:
         blockSize        || numChunks | sizes
@@ -177,19 +170,9 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         then:
         def inputStream = bc.openInputStream()
         def propertiesBefore = inputStream.getProperties()
-        int b
-        def outputStream = new ByteArrayOutputStream()
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b)
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex)
-        }
         propertiesBefore.getBlobType() == BlobType.BLOCK_BLOB
         propertiesBefore.getBlobSize() == 5 * Constants.MB
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+        assertArraysEqual(randomBytes, Constants.MB, readInputStream(inputStream, 5 * Constants.MB), 0, 5 * Constants.MB)
     }
 
     def "Input stream etag lock default"() {
@@ -245,16 +228,9 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         when:
         // No eTag specified - client will lock on latest one.
         def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG))
-        def outputStream = new ByteArrayOutputStream()
 
         then: "Successful read"
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray()
-        assert randomBytes1 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     def "IS consistent read control etag user provides etag"() {
@@ -270,16 +246,9 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG)
         // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
-        def outputStream = new ByteArrayOutputStream()
 
         then: "Successful read"
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray()
-        assert randomBytes1 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     def "IS consistent read control etag user provides version and etag"() {
@@ -296,16 +265,9 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG)
         // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
-        def outputStream = new ByteArrayOutputStream()
 
         then: "Successful read"
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray()
-        assert randomBytes1 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -321,18 +283,11 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         when:
         // User provides version client
         def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG))
-        def outputStream = new ByteArrayOutputStream()
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
 
         then: "Successful read"
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray()
-        assert randomBytes1 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     // Error case
@@ -372,18 +327,12 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         when:
         // No version specified - client will lock on it.
         def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
-        def outputStream = new ByteArrayOutputStream()
 
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
 
         then:
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -401,18 +350,12 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         when:
         // User provides version client
         def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
-        def outputStream = new ByteArrayOutputStream()
 
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
 
         then:
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -430,18 +373,12 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID)
         // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
-        def outputStream = new ByteArrayOutputStream()
 
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
 
         then:
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -459,18 +396,11 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID)
         // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
-        def outputStream = new ByteArrayOutputStream()
         // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
 
         then: "Successful read"
-        def b
-        while ((b = inputStream.read()) != -1) {
-            outputStream.write(b)
-        }
-
-        byte[] randomBytes1 = outputStream.toByteArray()
-        assert randomBytes1 == randomBytes
+        assertArraysEqual(randomBytes, readInputStream(inputStream, length))
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")

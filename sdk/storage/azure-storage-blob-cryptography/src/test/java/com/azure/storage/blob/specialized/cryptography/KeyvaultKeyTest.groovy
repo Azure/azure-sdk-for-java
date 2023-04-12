@@ -30,6 +30,8 @@ import com.azure.storage.common.implementation.Constants
 import java.time.Duration
 import java.time.OffsetDateTime
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class KeyvaultKeyTest extends APISpec {
     KeyServiceVersion keyServiceVersion = KeyServiceVersion.V7_2
     CryptographyServiceVersion cryptographyServiceVersion = CryptographyServiceVersion.V7_2
@@ -90,7 +92,7 @@ class KeyvaultKeyTest extends APISpec {
         bec.download(os)
 
         then:
-        inputArray == os.toByteArray()
+        assertArraysEqual(inputArray, os.toByteArray())
     }
 
 

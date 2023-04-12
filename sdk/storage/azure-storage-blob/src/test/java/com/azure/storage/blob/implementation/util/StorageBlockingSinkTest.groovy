@@ -12,6 +12,8 @@ import java.time.Duration
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual
+
 class StorageBlockingSinkTest extends Specification {
     // Use a delay of 5 ms to test.
     // This is more than long enough to ensure that nothing odd happens in the blocking sink.
@@ -81,7 +83,7 @@ class StorageBlockingSinkTest extends Specification {
             .index()
             .delayElements(Duration.ofMillis(delayMs)) // This simulates the slower network bound IO
             .doOnNext({ tuple ->
-                assert tuple.getT2() == buffers[(int)tuple.getT1()] // Check for data integrity
+                assertByteBuffersEqual(buffers[(int)tuple.getT1()], tuple.getT2()) // Check for data integrity
             })
             .subscribe()
 
@@ -142,7 +144,7 @@ class StorageBlockingSinkTest extends Specification {
         blockingSink.asFlux()
             .index()
             .doOnNext({ tuple ->
-                assert tuple.getT2() == buffers[(int)tuple.getT1()] // Check for data integrity
+                assertByteBuffersEqual(buffers[(int)tuple.getT1()], tuple.getT2()) // Check for data integrity
             })
             .subscribe()
 

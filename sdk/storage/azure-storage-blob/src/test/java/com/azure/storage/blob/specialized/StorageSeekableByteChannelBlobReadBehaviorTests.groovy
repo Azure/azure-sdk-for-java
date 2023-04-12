@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse
 import com.azure.storage.blob.models.BlobDownloadHeaders
 import com.azure.storage.blob.models.BlobDownloadResponse
@@ -16,11 +15,12 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.common.implementation.Constants
-import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.time.Duration
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
     BlockBlobClient blockBlobClient
@@ -83,7 +83,7 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
         then: "Cache used"
         0 * client.downloadStreamWithResponse(_, _, _, _, _, _, _)
         read1 == Math.min(bufferSize, cacheSize)
-        buffer.array()[0..read1-1] == initialCache.array()[0..read1-1]
+        assertArraysEqual(initialCache.array()[0..read1-1] as byte[], buffer.array()[0..read1-1] as byte[])
 
         when: "Read again at same offset"
         buffer.clear()
@@ -122,17 +122,17 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
             case "block":
                 blockBlobClient.upload(BinaryData.fromBytes(data))
                 client = blockBlobClient
-                break;
+                break
             case "page":
                 pageBlobClient.create(fileSize)
                 pageBlobClient.uploadPages(new PageRange().setStart(0).setEnd(fileSize-1), new ByteArrayInputStream(data))
                 client = pageBlobClient
-                break;
+                break
             case "append":
                 appendBlobClient.create()
                 appendBlobClient.appendBlock(new ByteArrayInputStream(data), fileSize)
                 client = appendBlobClient
-                break;
+                break
             default:
                 throw new RuntimeException("Bad test input")
         }
@@ -160,7 +160,7 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
             buffer.rewind()
             def validBufferContent = new byte[buffer.limit()]
             buffer.get(validBufferContent)
-            assert validBufferContent as List<Byte> == data[offset..-1]
+            assertArraysEqual(data[offset..-1] as byte[], validBufferContent)
         }
 
         where:
@@ -204,7 +204,7 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
 
         and: "buffer correctly filled"
         buffer.position() == buffer.capacity()
-        buffer.array() as List<Byte> == data[0..halfLength-1]
+        assertArraysEqual(data[0..halfLength-1] as byte[], buffer.array())
 
         when: "read at end of blob"
         buffer.clear()
@@ -233,6 +233,6 @@ class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
 
         and: "buffer correctly filled"
         buffer.position() == buffer.capacity()
-        buffer.array() as List<Byte> == data[halfLength..-1]
+        assertArraysEqual(data[halfLength..-1] as byte[], buffer.array())
     }
 }

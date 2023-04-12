@@ -22,6 +22,8 @@ import spock.lang.Unroll
 import java.time.Duration
 import java.util.concurrent.TimeoutException
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
@@ -39,7 +41,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, outputStream.toByteArray())
     }
 
     def "Network call no etag returned"() {
@@ -66,7 +68,7 @@ class DownloadResponseTest extends APISpec {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
         bu.download(outputStream)
-        outputStream.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, outputStream.toByteArray())
     }
 
     @Unroll
@@ -85,7 +87,7 @@ class DownloadResponseTest extends APISpec {
         def response = bu.downloadStreamWithResponse(range, options, null, false).block()
 
         then:
-        FluxUtil.collectBytesInByteBufferStream(response.getValue()).block() == flux.getScenarioData().array()
+        assertArraysEqual(flux.getScenarioData().array(), FluxUtil.collectBytesInByteBufferStream(response.getValue()).block())
         flux.getTryNumber() == tryNumber
 
 

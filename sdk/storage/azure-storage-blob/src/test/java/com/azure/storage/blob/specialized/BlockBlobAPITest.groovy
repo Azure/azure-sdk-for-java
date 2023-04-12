@@ -68,6 +68,9 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Predicate
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual
+
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
     BlockBlobAsyncClient blockBlobAsyncClient
@@ -349,7 +352,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         def os = new ByteArrayOutputStream()
         blobClient.download(os)
-        os.toByteArray() == data
+        assertArraysEqual(data, os.toByteArray())
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
@@ -370,7 +373,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         def os = new ByteArrayOutputStream()
         blobClient.download(os)
-        os.toByteArray() == binaryData.toBytes()
+        assertArraysEqual(binaryData.toBytes(), os.toByteArray())
 
         where:
         binaryData << [
@@ -406,7 +409,7 @@ class BlockBlobAPITest extends APISpec {
         bu2.download(outputStream)
 
         then:
-        ByteBuffer.wrap(outputStream.toByteArray()) == data.defaultData
+        assertArraysEqual(data.defaultBytes, outputStream.toByteArray())
     }
 
     def "Stage block from url min"() {
@@ -915,7 +918,7 @@ class BlockBlobAPITest extends APISpec {
         response.getStatusCode() == 201
         def outStream = new ByteArrayOutputStream()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+        assertArraysEqual(data.defaultBytes, outStream.toByteArray())
         validateBasicHeaders(response.getHeaders())
         response.getHeaders().getValue("Content-MD5") != null
         Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
@@ -932,7 +935,7 @@ class BlockBlobAPITest extends APISpec {
         response.getStatusCode() == 201
         def outStream = new ByteArrayOutputStream()
         blockBlobClient.downloadStream(outStream)
-        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+        assertArraysEqual(data.defaultBytes, outStream.toByteArray())
         validateBasicHeaders(response.getHeaders())
         response.getHeaders().getValue("Content-MD5") != null
         Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
@@ -1039,7 +1042,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         metadata == blockBlobClient.getProperties().getMetadata()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == Files.readAllBytes(file.toPath())
+        assertArraysEqual(Files.readAllBytes(file.toPath()), outStream.toByteArray())
 
         cleanup:
         file.delete()
@@ -1060,7 +1063,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         tags == blockBlobClient.getTags()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == Files.readAllBytes(file.toPath())
+        assertArraysEqual(Files.readAllBytes(file.toPath()), outStream.toByteArray())
 
         cleanup:
         file.delete()
@@ -1241,7 +1244,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         def outStream = new ByteArrayOutputStream()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+        assertArraysEqual(data.defaultBytes, outStream.toByteArray())
     }
 
     // Override name to prevent BinaryData.toString() invocation by test framework.
@@ -1253,7 +1256,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         def outStream = new ByteArrayOutputStream()
         blockBlobClient.download(outStream)
-        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+        assertArraysEqual(data.defaultBytes, outStream.toByteArray())
 
         where:
         binaryData << [
@@ -1541,7 +1544,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         def os = new ByteArrayOutputStream()
         blobClient.download(os)
-        os.toByteArray() == data
+        assertArraysEqual(data, os.toByteArray())
     }
 
     @LiveOnly
@@ -1596,7 +1599,7 @@ class BlockBlobAPITest extends APISpec {
             // Due to memory issues, this check only runs on small to medium sized data sets.
             if (dataSize < 100 * 1024 * 1024) {
             StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
-                .assertNext({ assert it == data })
+                .assertNext({ assertByteBuffersEqual(data, it) })
                 .verifyComplete()
         }
 
@@ -1622,7 +1625,7 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         StepVerifier.create(blockBlobAsyncClient.downloadContent())
-                .assertNext({ assert it.toBytes() == data.defaultBinaryData.toBytes() })
+                .assertNext({ assertArraysEqual(data.defaultBytes, it.toBytes()) })
                 .verifyComplete()
     }
 
@@ -1921,7 +1924,7 @@ class BlockBlobAPITest extends APISpec {
         expect:
         def os = new ByteArrayOutputStream(dataSize)
         blobClient.download(os)
-        data == os.toByteArray()
+        assertArraysEqual(data, os.toByteArray())
 
         blobClient.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks().size() == blockCount
 
@@ -2440,7 +2443,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
@@ -2462,7 +2465,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
@@ -2524,7 +2527,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobItem != null
         blockBlobItem.ETag != null
         blockBlobItem.lastModified != null
-        os.toByteArray() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, os.toByteArray())
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL

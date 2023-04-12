@@ -79,6 +79,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1049,7 +1050,7 @@ public abstract class RestProxyTests {
 
         final String base64String = (String) httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
-        assertArrayEquals(expectedBytes, actualBytes);
+        assertArraysEqual(expectedBytes, actualBytes);
     }
 
     @Test
@@ -1058,7 +1059,7 @@ public abstract class RestProxyTests {
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(expectedBytes))
             .assertNext(json -> {
                 assertTrue(json.data() instanceof String);
-                assertArrayEquals(expectedBytes, ((String) json.data()).getBytes());
+                assertArraysEqual(expectedBytes, ((String) json.data()).getBytes());
             }).verifyComplete();
     }
 

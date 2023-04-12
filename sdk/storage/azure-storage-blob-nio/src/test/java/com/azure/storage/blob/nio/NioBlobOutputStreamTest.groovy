@@ -15,6 +15,8 @@ import spock.lang.Unroll
 
 import java.nio.file.ClosedFileSystemException
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+
 class NioBlobOutputStreamTest extends APISpec {
     BlockBlobClient bc
     NioBlobOutputStream nioStream
@@ -91,7 +93,7 @@ class NioBlobOutputStreamTest extends APISpec {
         def inputStream = bc.openInputStream()
 
         then:
-        compareInputStreams(inputStream, new ByteArrayInputStream(data), dataSize)
+        assertArraysEqual(data, readInputStream(inputStream, dataSize))
     }
 
     @LiveOnly // Because we upload in blocks

@@ -3,14 +3,16 @@
 
 package com.azure.storage.common.implementation
 
-import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.implementation.StorageSeekableByteChannel
+
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.channels.NonReadableChannelException
 import java.nio.channels.NonWritableChannelException
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
+import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual
 
 class StorageSeekableByteChannelTest extends Specification {
     private byte[] getRandomData(int size) {
@@ -48,7 +50,7 @@ class StorageSeekableByteChannelTest extends Specification {
 
         then:
         channel.size() == data.length
-        dest.toByteArray() == data
+        assertArraysEqual(data, dest.toByteArray())
 
         where:
         dataSize         | chunkSize    | readLength
@@ -139,7 +141,7 @@ class StorageSeekableByteChannelTest extends Specification {
         channel.read(result)
 
         then:
-        result.array() == data[seekIndex..seekIndex+bufferLength-1] as byte[]
+        assertArraysEqual(data[seekIndex..seekIndex+bufferLength-1] as byte[], result.array())
         // expect exactly one read at the chosen index
         1 * behavior.read(_, seekIndex) >> { ByteBuffer dst, long sourceOffset ->
             dst.put(data, (int)sourceOffset, bufferLength)
@@ -204,7 +206,7 @@ class StorageSeekableByteChannelTest extends Specification {
         channel.close()
 
         then:
-        source == dest
+        assertArraysEqual(source, dest)
 
         where:
         dataSize         | chunkSize    | writeSize
@@ -303,7 +305,7 @@ class StorageSeekableByteChannelTest extends Specification {
         data2.position() == Constants.KB
         written == Constants.KB
         channel.position() == Constants.KB
-        testWriteDest.array() == data2.array()
+        assertByteBuffersEqual(data2, testWriteDest)
     }
 
     def "Write mode cannot read"() {

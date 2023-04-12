@@ -22,7 +22,6 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
-import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.ListPageRangesDiffOptions
 import com.azure.storage.blob.options.ListPageRangesOptions
@@ -36,6 +35,8 @@ import spock.lang.Unroll
 
 import java.security.MessageDigest
 import java.time.OffsetDateTime
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 class PageBlobAPITest extends APISpec {
     PageBlobClient bc
@@ -303,7 +304,6 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create if not exists metadata"() {
         setup:
-        setup:
         def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
         bc = cc.getBlobClient(blobName).getPageBlobClient()
 
@@ -520,7 +520,7 @@ class PageBlobAPITest extends APISpec {
         then:
         def os = new ByteArrayOutputStream()
         bc.download(os)
-        os.toByteArray() == data
+        assertArraysEqual(data, os.toByteArray())
     }
 
     def "Upload page from URL min"() {
@@ -561,7 +561,7 @@ class PageBlobAPITest extends APISpec {
         then:
         def outputStream = new ByteArrayOutputStream()
         destURL.download(outputStream)
-        outputStream.toByteArray() == Arrays.copyOfRange(data, PageBlobClient.PAGE_BYTES * 2, PageBlobClient.PAGE_BYTES * 4)
+        assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(), 0, PageBlobClient.PAGE_BYTES * 2)
     }
 
     def "Upload page from URL IA"() {

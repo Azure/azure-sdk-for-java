@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -268,18 +268,18 @@ public abstract class HttpClientTests {
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
 
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
+        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
 
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
+        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
 
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
+        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
 
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
 
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
 
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
 
     }
 
@@ -330,25 +330,25 @@ public abstract class HttpClientTests {
         assertEquals(requestBody.toString(), response.getBodyAsString().block());
         assertEquals(requestBody.toString(), response.getBodyAsString().block());
 
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsByteArray().block());
 
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
 
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
 
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
 
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
 
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
     }
 
     /**
@@ -388,7 +388,7 @@ public abstract class HttpClientTests {
         StepVerifier.create(createHttpClient()
             .send(request)
             .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
     }
 
@@ -413,7 +413,7 @@ public abstract class HttpClientTests {
             .getBodyAsByteArray()
             .block();
 
-        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertArraysEqual(expectedResponseBody, responseBytes);
     }
 
     /**
@@ -439,7 +439,7 @@ public abstract class HttpClientTests {
         StepVerifier.create(createHttpClient()
                 .send(request, context)
                 .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
 
         assertEquals(expectedResponseBody.length, progress.intValue());
@@ -472,7 +472,7 @@ public abstract class HttpClientTests {
             .getBodyAsByteArray()
             .block();
 
-        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertArraysEqual(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }
 

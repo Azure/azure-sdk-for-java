@@ -65,8 +65,6 @@ import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
 
-import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
 import java.nio.file.OpenOption
@@ -76,6 +74,8 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -116,7 +116,7 @@ class BlobAPITest extends APISpec {
         then:
         def stream = new ByteArrayOutputStream()
         bc.downloadWithResponse(stream, null, null, null, false, null, null)
-        stream.toByteArray() == randomData
+        assertArraysEqual(randomData, stream.toByteArray())
     }
 
     def "Upload binary data overwrite"() {
@@ -128,7 +128,7 @@ class BlobAPITest extends APISpec {
 
         then:
         def blobContent = bc.downloadContent()
-        blobContent.toBytes() == randomData
+        assertArraysEqual(randomData, blobContent.toBytes())
     }
 
     /* Tests an issue found where buffered upload would not deep copy buffers while determining what upload path to take. */
@@ -145,7 +145,7 @@ class BlobAPITest extends APISpec {
         then:
         def stream = new ByteArrayOutputStream()
         bc.downloadWithResponse(stream, null, null, null, false, null, null)
-        stream.toByteArray() == randomData
+        assertArraysEqual(randomData, stream.toByteArray())
 
         where:
         size              || _
@@ -230,7 +230,7 @@ class BlobAPITest extends APISpec {
 
         then:
         notThrown(Exception)
-        bc.downloadContent().toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, bc.downloadContent().toBytes())
     }
 
     def "Upload input stream no length overwrite"() {
@@ -244,7 +244,7 @@ class BlobAPITest extends APISpec {
         then:
         def stream = new ByteArrayOutputStream()
         bc.downloadWithResponse(stream, null, null, null, false, null, null)
-        stream.toByteArray() == randomData
+        assertArraysEqual(randomData, stream.toByteArray())
     }
 
     def "Upload InputStream no length"() {
@@ -253,7 +253,7 @@ class BlobAPITest extends APISpec {
 
         then:
         notThrown(Exception)
-        bc.downloadContent().toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, bc.downloadContent().toBytes())
     }
 
     def "Upload InputStream bad length"() {
@@ -283,7 +283,7 @@ class BlobAPITest extends APISpec {
 
         then:
         notThrown(Exception)
-        bc.downloadContent().toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, bc.downloadContent().toBytes())
     }
 
     @LiveOnly
@@ -332,7 +332,6 @@ class BlobAPITest extends APISpec {
         then:
         // test whether failure occurs due to small timeout intervals set on the service client
         thrown(RuntimeException)
-
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
@@ -356,11 +355,11 @@ class BlobAPITest extends APISpec {
         def stream = new ByteArrayOutputStream()
         bc.setTags(Collections.singletonMap("foo", "bar"))
         def response = bc.downloadWithResponse(stream, null, null, null, false, null, null)
-        def body = ByteBuffer.wrap(stream.toByteArray())
+        def body = stream.toByteArray()
         def headers = response.getDeserializedHeaders()
 
         then:
-        body == data.defaultData
+        assertArraysEqual(data.defaultBytes, body)
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -396,11 +395,11 @@ class BlobAPITest extends APISpec {
         def stream = new ByteArrayOutputStream()
         bc.setTags(Collections.singletonMap("foo", "bar"))
         def response = bc.downloadStreamWithResponse(stream, null, null, null, false, null, null)
-        def body = ByteBuffer.wrap(stream.toByteArray())
+        def body = stream.toByteArray()
         def headers = response.getDeserializedHeaders()
 
         then:
-        body == data.defaultData
+        assertArraysEqual(data.defaultBytes, body)
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -438,7 +437,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getDeserializedHeaders()
 
         then:
-        body.toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, body.toBytes())
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getTagCount() == 1
         headers.getContentLength() != null
@@ -520,7 +519,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, result)
     }
 
     def "Download streaming min"() {
@@ -530,7 +529,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        result == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, result)
     }
 
     def "Download binary data min"() {
@@ -538,7 +537,7 @@ class BlobAPITest extends APISpec {
         def result = bc.downloadContent()
 
         then:
-        result.toBytes() == data.defaultBytes
+        assertArraysEqual(data.defaultBytes, result.toBytes())
     }
 
     @Unroll
@@ -753,7 +752,7 @@ class BlobAPITest extends APISpec {
         def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes())
+        assertArraysEqual(MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes()), contentMD5)
     }
 
     def "Download md5 streaming"() {
@@ -762,7 +761,7 @@ class BlobAPITest extends APISpec {
         def contentMD5 = response.getDeserializedHeaders().getContentMd5()
 
         then:
-        contentMD5 == MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes())
+        assertArraysEqual(MessageDigest.getInstance("MD5").digest(data.defaultText.substring(0, 3).getBytes()), contentMD5)
     }
 
     def "Download retry default"() {
@@ -803,7 +802,7 @@ class BlobAPITest extends APISpec {
         then:
         def snapshotStream = new ByteArrayOutputStream()
         bc2.download(snapshotStream)
-        snapshotStream.toByteArray() == originalStream.toByteArray()
+        assertArraysEqual(originalStream.toByteArray(), snapshotStream.toByteArray())
     }
 
     def "Download snapshot streaming"() {
@@ -820,7 +819,7 @@ class BlobAPITest extends APISpec {
         then:
         def snapshotStream = new ByteArrayOutputStream()
         bc2.downloadStream(snapshotStream)
-        snapshotStream.toByteArray() == originalStream.toByteArray()
+        assertArraysEqual(originalStream.toByteArray(), snapshotStream.toByteArray())
     }
 
     def "Download snapshot binary data"() {
@@ -835,7 +834,7 @@ class BlobAPITest extends APISpec {
 
         then:
         def snapshotContent = bc2.downloadContent()
-        snapshotContent.toBytes() == originalContent.toBytes()
+        assertArraysEqual(originalContent.toBytes(), snapshotContent.toBytes())
     }
 
     def "Download to file exists"() {
@@ -868,7 +867,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFile(testFile.getPath(), true)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -885,7 +884,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFile(testFile.getPath())
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -906,7 +905,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()
@@ -928,7 +927,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
-        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == data.defaultText
+        assertArraysEqual(data.defaultBytes, Files.readAllBytes(testFile.toPath()))
 
         cleanup:
         testFile.delete()

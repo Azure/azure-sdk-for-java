@@ -4,17 +4,28 @@ import com.azure.core.test.TestMode
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceVersion
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.models.BlobQueryArrowField
+import com.azure.storage.blob.models.BlobQueryArrowFieldType
+import com.azure.storage.blob.models.BlobQueryArrowSerialization
+import com.azure.storage.blob.models.BlobQueryDelimitedSerialization
+import com.azure.storage.blob.models.BlobQueryError
+import com.azure.storage.blob.models.BlobQueryJsonSerialization
+import com.azure.storage.blob.models.BlobQueryParquetSerialization
+import com.azure.storage.blob.models.BlobQueryProgress
+import com.azure.storage.blob.models.BlobQuerySerialization
+import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.Exceptions
 import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.util.function.Consumer
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 class BlobBaseAPITest extends APISpec {
 
@@ -106,16 +117,16 @@ class BlobBaseAPITest extends APISpec {
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         bc.download(downloadData)
-        byte[] downloadedData = downloadData.toByteArray()
+        def downloadedData = downloadData.toByteArray()
 
         /* Input Stream. */
         when:
         InputStream qqStream = bc.openQueryInputStream(expression)
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+        def queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
         notThrown(IOException)
-        queryData == downloadedData
+        assertArraysEqual(downloadedData, queryData)
 
         /* Output Stream. */
         when:
@@ -125,7 +136,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        osData == downloadedData
+        assertArraysEqual(downloadedData, osData)
 
         // To calculate the size of data being tested = numCopies * 32 bytes
         where:
@@ -170,14 +181,12 @@ class BlobBaseAPITest extends APISpec {
         notThrown(IOException)
         if (headersPresentIn && !headersPresentOut) {
             /* Account for 16 bytes of header. */
-            for (int j = 16; j < downloadedData.length; j++) {
-                assert queryData[j - 16] == downloadedData[j]
-            }
+            assertArraysEqual(downloadedData, 16, queryData, 0, downloadedData.length - 16)
             for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
-                assert queryData[k] == 0
+                assert queryData[k] == (byte) 0
             }
         } else {
-            queryData == downloadedData
+            assertArraysEqual(downloadedData, queryData)
         }
 
         /* Output Stream. */
@@ -192,11 +201,9 @@ class BlobBaseAPITest extends APISpec {
         if (headersPresentIn && !headersPresentOut) {
             assert osData.length == downloadedData.length - 16
             /* Account for 16 bytes of header. */
-            for (int j = 16; j < downloadedData.length; j++) {
-                assert osData[j - 16] == downloadedData[j]
-            }
+            assertArraysEqual(downloadedData, 16, queryData, 0, downloadedData.length - 16)
         } else {
-            osData == downloadedData
+            assertArraysEqual(downloadedData, osData)
         }
 
         where:
@@ -247,7 +254,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        queryData == downloadedData
+        assertArraysEqual(downloadedData, queryData)
 
 
         /* Output Stream. */
@@ -259,7 +266,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        osData == downloadedData
+        assertArraysEqual(downloadedData, osData)
     }
 
     /* Note: Input delimited tested everywhere */
@@ -288,7 +295,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        queryData == downloadedData
+        assertArraysEqual(downloadedData, queryData)
 
         /* Output Stream. */
         when:
@@ -297,7 +304,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        osData == downloadedData
+        assertArraysEqual(downloadedData, osData)
 
         where:
         numCopies || _
@@ -331,7 +338,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        queryData == expectedData
+        assertArraysEqual(expectedData, queryData)
 
         /* Output Stream. */
         when:
@@ -340,7 +347,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        osData == expectedData
+        assertArraysEqual(expectedData, osData)
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -368,9 +375,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert queryData[j] == expectedData[j]
-        }
+        assertArraysEqual(expectedData, 0, queryData, 0, expectedData.length)
 
         /* Output Stream. */
         when:
@@ -379,9 +384,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert osData[j] == expectedData[j]
-        }
+        assertArraysEqual(expectedData, 0, osData, 0, expectedData.length)
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -409,9 +412,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert queryData[j] == expectedData[j]
-        }
+        assertArraysEqual(expectedData, 0, queryData, 0, expectedData.length)
 
         /* Output Stream. */
         when:
@@ -420,9 +421,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert osData[j] == expectedData[j]
-        }
+        assertArraysEqual(expectedData, 0, osData, 0, expectedData.length)
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -654,7 +653,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        queryData == downloadedData
+        assertArraysEqual(downloadedData, queryData)
 
         /* Output Stream. */
         when:
@@ -664,7 +663,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        osData == downloadedData
+        assertArraysEqual(downloadedData, osData)
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")

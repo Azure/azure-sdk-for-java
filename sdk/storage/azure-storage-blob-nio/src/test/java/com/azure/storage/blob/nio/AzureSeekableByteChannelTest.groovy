@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.nio;
+package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.BlobOutputStream
-import org.mockito.Answers
 import org.mockito.Mockito
 import spock.lang.Unroll
 
@@ -15,6 +14,8 @@ import java.nio.channels.NonReadableChannelException
 import java.nio.channels.NonWritableChannelException
 import java.nio.channels.SeekableByteChannel
 import java.nio.file.ClosedFileSystemException
+
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual
 
 class AzureSeekableByteChannelTest extends APISpec {
 
@@ -63,7 +64,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         }
 
         then:
-        os.toByteArray() == fileContent
+        assertArraysEqual(fileContent, os.toByteArray())
     }
 
     def "Read loop until EOF"() {
@@ -85,7 +86,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         }
 
         then:
-        os.toByteArray() == fileContent
+        assertArraysEqual(fileContent, os.toByteArray())
         System.currentTimeMillis() < timeLimit // else potential inf. loop if read() always returns 0
     }
 
@@ -114,18 +115,12 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         then:
         dest.position() == initialOffset + sourceFileSize
-        compareInputStreams( // destination content should match file content at initial read position
-            new ByteArrayInputStream(destArray, initialOffset, sourceFileSize),
-            new ByteArrayInputStream(fileContent),
-            sourceFileSize)
-        compareInputStreams( // destination content should be untouched prior to initial position
-            new ByteArrayInputStream(destArray, 0, initialOffset),
-            new ByteArrayInputStream(randArray, 0, initialOffset),
-            initialOffset)
-        compareInputStreams( // destination content should be untouched past end of read
-            new ByteArrayInputStream(destArray, initialOffset + sourceFileSize, initialOffset),
-            new ByteArrayInputStream(randArray, initialOffset + sourceFileSize, initialOffset),
-            initialOffset)
+        // destination content should match file content at initial read position
+        assertArraysEqual(fileContent, 0, destArray, initialOffset, sourceFileSize)
+        // destination content should be untouched prior to initial position
+        assertArraysEqual(randArray, 0, destArray, 0, initialOffset)
+        // destination content should be untouched past end of read
+        assertArraysEqual(randArray, initialOffset + sourceFileSize, destArray, initialOffset + sourceFileSize, initialOffset)
     }
 
     def "Read fs close"() {
@@ -210,10 +205,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         srcBuffer.position() == initialOffset + sourceFileSize // src buffer position SHOULD be updated
         srcBuffer.limit() == srcBuffer.position() // limit SHOULD be unchanged (still at end of content)
         // the above report back to the caller, but this verifies the correct bytes are going to the blob:
-        compareInputStreams(
-            new ByteArrayInputStream(actualOutput.toByteArray()),
-            new ByteArrayInputStream(fileContent),
-            sourceFileSize)
+        assertArraysEqual(fileContent, 0, actualOutput.toByteArray(), 0, sourceFileSize)
     }
 
     def "Write fs close"() {
