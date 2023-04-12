@@ -211,8 +211,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId
-                                ) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -247,8 +246,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId
-    ) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -264,8 +262,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId
-                );
+                clientCorrelationId);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -283,8 +280,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId
-                                 ) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -299,8 +295,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId
-                );
+                clientCorrelationId);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
