@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
