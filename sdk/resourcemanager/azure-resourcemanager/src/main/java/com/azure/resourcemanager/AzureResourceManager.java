@@ -836,7 +836,7 @@ public final class AzureResourceManager {
         return this.computeManager.diskEncryptionSets();
     }
 
-    /** @return entry point to managed HSMs management */
+    /** @return entry point to Managed Hardware Security Module management */
     public ManagedHsms managedHsms() {
         return this.keyVaultManager.managedHsms();
     }

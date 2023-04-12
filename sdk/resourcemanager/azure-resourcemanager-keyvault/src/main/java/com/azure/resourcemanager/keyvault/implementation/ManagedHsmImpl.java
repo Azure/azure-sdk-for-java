@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Implementation for ManagedHsm and its parent interfaces.
+ * Implementation for Managed Hardware Security Module and its parent interfaces.
  */
 class ManagedHsmImpl
     extends GroupableResourceImpl<ManagedHsm, ManagedHsmInner, ManagedHsmImpl, KeyVaultManager>
@@ -54,14 +54,12 @@ class ManagedHsmImpl
     }
 
     /**
-     * (Internal use only)
      * We haven't supported creating {@link ManagedHsm} in convenience layer yet. This is for implementing necessary abstract class contract.
      * @return {@link Mono} of the created {@link ManagedHsm} instance
      */
     @Override
     public Mono<ManagedHsm> createResourceAsync() {
-        return manager().serviceClient().getManagedHsms().createOrUpdateAsync(resourceGroupName(), name(), innerModel())
-            .map(innerToFluentMap(this));
+        throw new UnsupportedOperationException("method [createResourceAsync] not implemented in class [com.azure.resourcemanager.keyvault.implementation.ManagedHsmImpl]");
     }
 
     @Override
@@ -107,7 +105,7 @@ class ManagedHsmImpl
     }
 
     @Override
-    public Integer softDeleteRetentionDays() {
+    public Integer softDeleteRetentionInDays() {
         if (innerModel().properties() == null) {
             return null;
         }

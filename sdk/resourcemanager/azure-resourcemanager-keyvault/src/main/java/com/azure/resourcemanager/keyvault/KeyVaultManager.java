@@ -109,7 +109,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
         return vaults;
     }
 
-    /** @return the Managed HSM management API entry point */
+    /** @return the Managed Hardware Security Module management API entry point */
     public ManagedHsms managedHsms() {
         if (managedHsms == null) {
             managedHsms = new ManagedHsmsImpl(this, tenantId);

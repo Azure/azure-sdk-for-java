@@ -20,7 +20,4 @@ module com.azure.resourcemanager.keyvault {
     opens com.azure.resourcemanager.keyvault.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
-
-    opens com.azure.resourcemanager.keyvault to
-        com.fasterxml.jackson.databind;
 }

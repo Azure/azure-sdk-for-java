@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- *
+ * Managed HSM tests.
+ * Live tests can be skipped and use only playback as a validation.
  */
 public class ManagedHsmTests extends KeyVaultManagementTest {
     @Override
@@ -78,7 +79,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
             Assertions.assertTrue(softDelete);
 
             // softDelete data retention days. It accepts >=7 and <=90.
-            Integer softDeleteRetentionDays = hsm.softDeleteRetentionDays();
+            Integer softDeleteRetentionDays = hsm.softDeleteRetentionInDays();
             Assertions.assertEquals(7, softDeleteRetentionDays);
 
             // Property specifying whether protection against purge is enabled for this managed HSM pool.
@@ -129,7 +130,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
                             .withInitialAdminObjectIds(Arrays.asList(objectId))
                             .withEnableSoftDelete(true)
                             .withSoftDeleteRetentionInDays(7)
-                            .withEnablePurgeProtection(false)),
+                            .withEnablePurgeProtection(false)), // DO NOT set it to true, otherwise you can't purge the instance
                 Context.NONE);
 
         keyVaultManager.serviceClient()
