@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -71,16 +72,29 @@ public class RntbdConnectionStateListener {
             }
         }
 
-        openConnectionIfNeeded();
+        openConnectionIfNeeded(exception);
     }
 
     public RntbdConnectionStateListenerMetrics getMetrics() {
         return this.metrics;
     }
 
-    private void openConnectionIfNeeded() {
+    private void openConnectionIfNeeded(Throwable exception) {
 
         if (this.endpoint.isClosed()) {
+            return;
+        }
+
+        // do not fail here, just log
+        // this attempts to make the open connections flow
+        // best effort
+        if (this.rntbdOpenConnectionsHandler == null) {
+            logger.warn("openConnectionsHandler is null");
+            return;
+        }
+
+        if (this.proactiveOpenConnectionsProcessor == null) {
+            logger.warn("proactiveOpenConnectionsProcessor is null");
             return;
         }
 
@@ -95,13 +109,13 @@ public class RntbdConnectionStateListener {
         // openConnectionsAndInitCaches flow
         if (Configs.getMinConnectionPoolSizePerEndpoint() > 0) {
 
-            logger.warn("Channel related exception occurred, try to open the connection.");
+            logger.warn("Exception occurred {}, trying to proactively open a connection.", exception.getMessage());
 
             this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
                     new OpenConnectionOperation(
-                            rntbdOpenConnectionsHandler,
+                            this.rntbdOpenConnectionsHandler,
                             "",
-                            endpoint.serviceEndpoint(),
+                            this.endpoint.serviceEndpoint(),
                             this.addressUris.stream().findFirst().get(),
                             this.endpoint.getMinChannelsRequired()
                     )

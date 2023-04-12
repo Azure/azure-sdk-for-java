@@ -1002,28 +1002,32 @@ public class GatewayAddressCache implements IAddressCache {
     public Flux<Void> submitOpenConnectionTask(
             AddressInformation address,
             DocumentCollection documentCollection,
-            int connectionsPerEndpointCount
-    ) {
-        if (this.openConnectionsHandler != null && this.proactiveOpenConnectionsProcessor != null) {
+            int connectionsPerEndpointCount) {
 
-            int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
-                    Configs.getMinConnectionPoolSizePerEndpoint());
-
-            OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                    this.openConnectionsHandler,
-                    documentCollection.getResourceId(),
-                    this.serviceEndpoint,
-                    address.getPhysicalUri(),
-                    connectionsRequiredForEndpoint);
-
-            this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(openConnectionOperation);
-
+        // do not fail here, just log
+        // this attempts to make the open connections flow
+        // best effort
+        if (this.openConnectionsHandler == null) {
+            logger.warn("openConnectionsHandler is null");
             return Flux.empty();
         }
 
-        checkArgument(this.openConnectionsHandler != null, "openConnectionsHandler should not be null");
-        checkArgument(this.proactiveOpenConnectionsProcessor != null, "proactiveOpenConnectionsProcessor should not be null");
+        if (this.proactiveOpenConnectionsProcessor == null) {
+            logger.warn("proactiveOpenConnectionsProcessor is null");
+            return Flux.empty();
+        }
 
+        int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
+                Configs.getMinConnectionPoolSizePerEndpoint());
+
+        OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
+                this.openConnectionsHandler,
+                documentCollection.getResourceId(),
+                this.serviceEndpoint,
+                address.getPhysicalUri(),
+                connectionsRequiredForEndpoint);
+
+        this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(openConnectionOperation);
         return Flux.empty();
     }
 
