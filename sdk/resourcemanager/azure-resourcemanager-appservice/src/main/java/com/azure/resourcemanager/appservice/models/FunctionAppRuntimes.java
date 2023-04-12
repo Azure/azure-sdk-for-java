@@ -22,6 +22,10 @@ public final class FunctionAppRuntimes {
     @JsonProperty(value = "windowsRuntimeSettings", access = JsonProperty.Access.WRITE_ONLY)
     private FunctionAppRuntimeSettings windowsRuntimeSettings;
 
+    /** Creates an instance of FunctionAppRuntimes class. */
+    public FunctionAppRuntimes() {
+    }
+
     /**
      * Get the linuxRuntimeSettings property: Linux-specific settings associated with the minor version.
      *

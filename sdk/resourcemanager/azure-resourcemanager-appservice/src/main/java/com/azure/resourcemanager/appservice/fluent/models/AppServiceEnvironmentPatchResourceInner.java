@@ -25,6 +25,10 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
     @JsonProperty(value = "properties")
     private AppServiceEnvironmentInner innerProperties;
 
+    /** Creates an instance of AppServiceEnvironmentPatchResourceInner class. */
+    public AppServiceEnvironmentPatchResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

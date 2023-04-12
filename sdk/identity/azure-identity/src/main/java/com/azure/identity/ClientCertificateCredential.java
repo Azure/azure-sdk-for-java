@@ -19,12 +19,40 @@ import java.io.InputStream;
 import java.util.Objects;
 
 /**
- * An AAD credential that acquires a token with a client certificate for an AAD application.
+ * <p>The ClientCertificateCredential acquires a token via service principal authentication. It is a type of
+ * authentication in Azure that enables a non-interactive login to
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a>, allowing an application or service to authenticate itself with Azure resources.
+ * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
+ * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
+ * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory
+ * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
+ * A client certificate associated with the registered service principal is used as the password when authenticating
+ * the service principal.
+ * The ClientCertificateCredential acquires an access token with a client certificate for a service principal/registered
+ * AAD application. The tenantId, clientId and clientCertificate of the service principal are required for this
+ * credential to acquire an access token. It can be used both in Azure hosted and local development environments for
+ * authentication. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/clientcertificatecredential/docs">conceptual knowledge and configuration
+ * details</a>.</p>
+ *
+ * <p>As a pre-requisite, a service principal is required to use this authentication mechanism. If you don't have a
+ * service principal, refer to
+ * <a href="https://aka.ms/azsdk/java/identity/serviceprincipal/create/docs">create a service principal with Azure CLI.
+ * </a></p>
  *
  * <p><strong>Sample: Construct a simple ClientCertificateCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ClientCertificateCredential},
+ * using the {@link com.azure.identity.ClientCertificateCredentialBuilder} to configure it. The {@code tenantId},
+ * {@code clientId} and {@code certificate} parameters are required to create
+ * {@link com.azure.identity.ClientCertificateCredential}. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.construct -->
  * <pre>
- * ClientCertificateCredential credential1 = new ClientCertificateCredentialBuilder&#40;&#41;
+ * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
  *     .tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;&quot;&lt;PATH-TO-PEM-CERTIFICATE&gt;&quot;&#41;
@@ -33,9 +61,17 @@ import java.util.Objects;
  * <!-- end com.azure.identity.credential.clientcertificatecredential.construct -->
  *
  * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ClientCertificateCredential},
+ * using the {@link com.azure.identity.ClientCertificateCredentialBuilder} to configure it. The {@code tenantId},
+ * {@code clientId} and {@code certificate} parameters are required to create
+ * {@link com.azure.identity.ClientSecretCredential}. THe {@code proxyOptions} can be optionally configured to target
+ * a proxy. Once this credential is created, it may be passed into the builder of many of the Azure SDK for Java
+ * client builders as the 'credential' parameter.</p>
+ *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
  * <pre>
- * ClientCertificateCredential credential2 = new ClientCertificateCredentialBuilder&#40;&#41;
+ * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
  *     .tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pfxCertificate&#40;&quot;&lt;PATH-TO-PFX-CERTIFICATE&gt;&quot;, &quot;P&#64;s$w0rd&quot;&#41;
@@ -43,6 +79,9 @@ import java.util.Objects;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
+ *
+ * @see com.azure.identity
+ * @see ClientCertificateCredentialBuilder
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
@@ -52,7 +91,7 @@ public class ClientCertificateCredential implements TokenCredential {
     private final IdentitySyncClient identitySyncClient;
 
     /**
-     * Creates a ClientSecretCredential with default identity client options.
+     * Creates a ClientCertificateCredential with default identity client options.
      * @param tenantId the tenant ID of the application
      * @param clientId the client ID of the application
      * @param certificatePath the PEM file or PFX file containing the certificate

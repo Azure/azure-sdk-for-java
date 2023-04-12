@@ -18,6 +18,10 @@ public final class StaticSiteLinkedBackendArmResourceInner extends ProxyOnlyReso
     @JsonProperty(value = "properties")
     private StaticSiteLinkedBackendArmResourceProperties innerProperties;
 
+    /** Creates an instance of StaticSiteLinkedBackendArmResourceInner class. */
+    public StaticSiteLinkedBackendArmResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteLinkedBackendARMResource resource specific properties.
      *

@@ -5,19 +5,18 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.{ModelBridgeInternal, PartitionKey, ThroughputProperties}
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
-import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
-
-import java.util.UUID
-import java.util.concurrent.atomic.AtomicLong
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
+import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
 import org.apache.spark.sql.types.StringType
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.scalatest.Retries
 import org.scalatest.tagobjects.Retryable
 
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.Pattern
 
 class SparkE2EStructuredStreamingITest
@@ -779,6 +778,8 @@ class SparkE2EStructuredStreamingITest
       .appName("spark connector sample for recovering structure streaming query")
       .master("local")
       .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
 
     spark.streams.addListener(new StreamingQueryListener() {
       override def onQueryStarted(queryStarted: QueryStartedEvent): Unit = {}

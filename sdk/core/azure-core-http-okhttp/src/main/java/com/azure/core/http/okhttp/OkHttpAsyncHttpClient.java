@@ -5,6 +5,7 @@ package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -162,7 +163,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return EMPTY_REQUEST_BODY;
         }
 
-        String contentType = headers.getValue("Content-Type");
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
@@ -191,7 +192,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static long getRequestContentLength(BinaryDataContent content, HttpHeaders headers) {
         Long contentLength = content.getLength();
         if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue("Content-Length");
+            String contentLengthHeaderValue = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
             if (contentLengthHeaderValue != null) {
                 contentLength = Long.parseLong(contentLengthHeaderValue);
             } else {

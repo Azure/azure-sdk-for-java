@@ -28,6 +28,10 @@ public class Identity {
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
+    /** Creates an instance of Identity class. */
+    public Identity() {
+    }
+
     /**
      * Get the principalId property: The principal ID of resource identity.
      *

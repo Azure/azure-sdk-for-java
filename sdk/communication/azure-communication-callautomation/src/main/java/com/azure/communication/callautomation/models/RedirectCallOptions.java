@@ -44,7 +44,7 @@ public class RedirectCallOptions {
      * Information of target of being redirected to
      * @return the callInvite to redirect target
      */
-    public CallInvite getTargetCallImvite() {
+    public CallInvite getTargetCallInvite() {
         return targetCallInvite;
     }
 }

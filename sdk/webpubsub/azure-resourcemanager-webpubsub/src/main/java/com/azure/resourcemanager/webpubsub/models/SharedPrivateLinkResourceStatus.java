@@ -26,6 +26,15 @@ public final class SharedPrivateLinkResourceStatus extends ExpandableStringEnum<
     public static final SharedPrivateLinkResourceStatus TIMEOUT = fromString("Timeout");
 
     /**
+     * Creates a new instance of SharedPrivateLinkResourceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharedPrivateLinkResourceStatus() {
+    }
+
+    /**
      * Creates or finds a SharedPrivateLinkResourceStatus from its string representation.
      *
      * @param name a name to look for.

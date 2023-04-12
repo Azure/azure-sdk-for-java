@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironmentPatchResourceInner;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 
 /** Samples for AppServiceEnvironments Update. */
 public final class AppServiceEnvironmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_Update.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_Update.json
      */
     /**
      * Sample code: Create or update an App Service Environment.
@@ -33,6 +32,6 @@ public final class AppServiceEnvironmentsUpdateSamples {
                             .withId(
                                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-subnet/subnets/delegated"))
                     .withFrontEndScaleFactor(20),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

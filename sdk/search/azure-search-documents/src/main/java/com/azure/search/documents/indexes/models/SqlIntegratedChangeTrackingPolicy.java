@@ -45,6 +45,8 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     public static SqlIntegratedChangeTrackingPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
+                    SqlIntegratedChangeTrackingPolicy deserializedSqlIntegratedChangeTrackingPolicy =
+                            new SqlIntegratedChangeTrackingPolicy();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -63,9 +65,8 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
                             reader.skipChildren();
                         }
                     }
-                    SqlIntegratedChangeTrackingPolicy deserializedValue = new SqlIntegratedChangeTrackingPolicy();
 
-                    return deserializedValue;
+                    return deserializedSqlIntegratedChangeTrackingPolicy;
                 });
     }
 }

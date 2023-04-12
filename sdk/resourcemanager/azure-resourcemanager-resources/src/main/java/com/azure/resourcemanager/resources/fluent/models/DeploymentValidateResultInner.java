@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeploymentValidateResultInner {
     /*
-     * Error Response The deployment validation error.
+     * Error Response
+     *
+     * The deployment validation error.
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
@@ -24,8 +26,14 @@ public final class DeploymentValidateResultInner {
     @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
 
+    /** Creates an instance of DeploymentValidateResultInner class. */
+    public DeploymentValidateResultInner() {
+    }
+
     /**
-     * Get the error property: Error Response The deployment validation error.
+     * Get the error property: Error Response
+     *
+     * <p>The deployment validation error.
      *
      * @return the error value.
      */

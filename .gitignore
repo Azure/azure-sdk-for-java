@@ -117,5 +117,5 @@ generatedValues.yaml
 stress-test-resources.json
 stress-test-addons*
 
-# Temp cadl files
-TempCadlFiles/
+# Temp typespec files
+TempTypeSpecFiles/

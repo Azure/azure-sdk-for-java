@@ -22,6 +22,10 @@ public final class SubscriptionQuotaItemProperties {
     @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultProperty;
 
+    /** Creates an instance of SubscriptionQuotaItemProperties class. */
+    public SubscriptionQuotaItemProperties() {
+    }
+
     /**
      * Get the current property: The current quota value.
      *

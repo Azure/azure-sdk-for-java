@@ -150,31 +150,6 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
      * @param actionName The workflow action name.
      * @param repetitionName The workflow repetition.
      * @param requestHistoryName The request history name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RequestHistoryInner get(
-        String resourceGroupName,
-        String name,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        String requestHistoryName);
-
-    /**
-     * Gets a workflow run repetition request history.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The request history name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,4 +166,29 @@ public interface WorkflowRunActionRepetitionsRequestHistoriesClient {
         String repetitionName,
         String requestHistoryName,
         Context context);
+
+    /**
+     * Gets a workflow run repetition request history.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
+     * @param requestHistoryName The request history name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run repetition request history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RequestHistoryInner get(
+        String resourceGroupName,
+        String name,
+        String workflowName,
+        String runName,
+        String actionName,
+        String repetitionName,
+        String requestHistoryName);
 }

@@ -1,9 +1,9 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer62600ebdb0?api-version=7.3",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer26188980be?api-version=7.4",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -11,19 +11,19 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Sat, 04 Mar 2023 01:31:16 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:17 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
       "Expires" : "-1",
-      "Content-Length" : "380",
-      "x-ms-keyvault-service-version" : "1.9.713.1",
-      "x-ms-request-id" : "64cc1724-42e6-4224-b0d5-c9c91c9cc63e",
-      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/certificates/issuers/testissuer62600ebdb0\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"000-000-0000\"}]},\"attributes\":{\"enabled\":true,\"created\":1677893477,\"updated\":1677893477}}",
+      "Content-Length" : "382",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "1b3af582-f8c9-4e92-ad29-adaeff38dea8",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/issuers/testissuer26188980be\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"000-000-0000\"}]},\"attributes\":{\"enabled\":true,\"created\":1678954158,\"updated\":1678954158}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testissuer62600ebdb0" ]
+  "variables" : [ "testissuer26188980be" ]
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import java.util.List;
@@ -55,6 +56,13 @@ public interface ImageTemplate {
     ImageTemplateIdentity identity();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the source property: Specifies the properties used to describe the source image.
      *
      * @return the source value.
@@ -68,6 +76,13 @@ public interface ImageTemplate {
      * @return the customize value.
      */
     List<ImageTemplateCustomizer> customize();
+
+    /**
+     * Gets the optimize property: Specifies optimization to be performed on image.
+     *
+     * @return the optimize value.
+     */
+    ImageTemplatePropertiesOptimize optimize();
 
     /**
      * Gets the validation property: Configuration options and list of validations to be performed on the resulting
@@ -107,7 +122,7 @@ public interface ImageTemplate {
 
     /**
      * Gets the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
-     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
+     * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @return the buildTimeoutInMinutes value.
      */
@@ -229,6 +244,7 @@ public interface ImageTemplate {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithSource,
                 DefinitionStages.WithCustomize,
+                DefinitionStages.WithOptimize,
                 DefinitionStages.WithValidation,
                 DefinitionStages.WithDistribute,
                 DefinitionStages.WithBuildTimeoutInMinutes,
@@ -281,6 +297,16 @@ public interface ImageTemplate {
              */
             WithCreate withCustomize(List<ImageTemplateCustomizer> customize);
         }
+        /** The stage of the ImageTemplate definition allowing to specify optimize. */
+        interface WithOptimize {
+            /**
+             * Specifies the optimize property: Specifies optimization to be performed on image..
+             *
+             * @param optimize Specifies optimization to be performed on image.
+             * @return the next definition stage.
+             */
+            WithCreate withOptimize(ImageTemplatePropertiesOptimize optimize);
+        }
         /** The stage of the ImageTemplate definition allowing to specify validation. */
         interface WithValidation {
             /**
@@ -306,11 +332,12 @@ public interface ImageTemplate {
         interface WithBuildTimeoutInMinutes {
             /**
              * Specifies the buildTimeoutInMinutes property: Maximum duration to wait while building the image template
-             * (includes all customizations, validations, and distributions). Omit or specify 0 to use the default (4
-             * hours)..
+             * (includes all customizations, optimization, validations, and distributions). Omit or specify 0 to use the
+             * default (4 hours)..
              *
              * @param buildTimeoutInMinutes Maximum duration to wait while building the image template (includes all
-             *     customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
+             *     customizations, optimization, validations, and distributions). Omit or specify 0 to use the default
+             *     (4 hours).
              * @return the next definition stage.
              */
             WithCreate withBuildTimeoutInMinutes(Integer buildTimeoutInMinutes);

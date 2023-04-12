@@ -95,6 +95,12 @@ public final class ScanProperties {
     @JsonProperty(value = "isBaselineApplied")
     private Boolean isBaselineApplied;
 
+    /*
+     * Last scan time.
+     */
+    @JsonProperty(value = "lastScanTime")
+    private OffsetDateTime lastScanTime;
+
     /** Creates an instance of ScanProperties class. */
     public ScanProperties() {
     }
@@ -376,6 +382,26 @@ public final class ScanProperties {
      */
     public ScanProperties withIsBaselineApplied(Boolean isBaselineApplied) {
         this.isBaselineApplied = isBaselineApplied;
+        return this;
+    }
+
+    /**
+     * Get the lastScanTime property: Last scan time.
+     *
+     * @return the lastScanTime value.
+     */
+    public OffsetDateTime lastScanTime() {
+        return this.lastScanTime;
+    }
+
+    /**
+     * Set the lastScanTime property: Last scan time.
+     *
+     * @param lastScanTime the lastScanTime value to set.
+     * @return the ScanProperties object itself.
+     */
+    public ScanProperties withLastScanTime(OffsetDateTime lastScanTime) {
+        this.lastScanTime = lastScanTime;
         return this;
     }
 

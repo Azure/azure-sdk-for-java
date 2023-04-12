@@ -33,6 +33,10 @@ public final class CheckAvailabilityResponseInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of CheckAvailabilityResponseInner class. */
+    public CheckAvailabilityResponseInner() {
+    }
+
     /**
      * Get the isAvailable property: &lt;code&gt;true&lt;/code&gt; indicates name is valid and available.
      * &lt;code&gt;false&lt;/code&gt; indicates the name is invalid, unavailable, or both.

@@ -1,0 +1,79 @@
+{
+  "networkCallRecords" : [
+  {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/healthinsights/oncophenotype/jobs?api-version=2023-03-01-preview",
+    "Headers" : {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Connection": "keep-alive",
+      "Content-Length": "776",
+      "Content-Type": "application/json",
+      "Ocp-Apim-Subscription-Key": "00000000000000000000000000000000"
+    },
+    "Response" : {
+      "apim-request-id": "6fe9d49e-abb0-4d34-9b3b-bb1ae44eef3a",
+      "Content-Length": "0",
+      "Date": "Sun, 29 Jan 2023 09:11:47 GMT",
+      "operation-location": "https://fake_ad_resource.cognitiveservices.azure.com//healthinsights/oncophenotype/jobs/7b4841b5-e7d4-4202-a300-6455ff4148de?api-version=2023-03-01-preview",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "x-envoy-upstream-service-time": "101",
+      "x-ms-region": "West Europe",
+      "StatusCode" : "202",
+      "Body" : null,
+      "Content-Type" : "application/json",
+      "Retry-After": "1"
+    },
+    "Exception" : null
+  },
+  {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/healthinsights/oncophenotype/jobs/7b4841b5-e7d4-4202-a300-6455ff4148de?api-version=2023-03-01-preview",
+    "Headers" : {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Connection": "keep-alive",
+      "Ocp-Apim-Subscription-Key": "00000000000000000000000000000000"
+    },
+    "Response" : {
+      "apim-request-id": "1012b87e-f033-479d-829f-c74f6077060e",
+      "Content-Length": "196",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Sun, 29 Jan 2023 09:11:48 GMT",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "x-envoy-upstream-service-time": "63",
+      "x-ms-region": "West Europe",
+      "StatusCode" : "200",
+      "Body" : "{\n\"jobId\": \"7b4841b5-e7d4-4202-a300-6455ff4148de\",\n\"createdDateTime\": \"2023-01-29T09:16:35Z\",\n\"expirationDateTime\": \"2023-01-30T09:16:35Z\",\n\"lastUpdateDateTime\": \"2023-01-29T09:16:35Z\",\n\"status\": \"running\"\n}",
+      "Exception" : null
+    }
+  },
+  {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/healthinsights/oncophenotype/jobs/7b4841b5-e7d4-4202-a300-6455ff4148de?api-version=2023-03-01-preview",
+    "Headers" : {
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate",
+      "Connection": "keep-alive",
+      "Ocp-Apim-Subscription-Key": "00000000000000000000000000000000"
+    },
+    "Response" : {
+      "apim-request-id": "8fc0d436-b092-42ab-bdf9-bc75af5a7a5a",
+      "Content-Length": "4462",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Sun, 29 Jan 2023 09:11:48 GMT",
+      "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      "X-Content-Type-Options": "nosniff",
+      "x-envoy-upstream-service-time": "63",
+      "x-ms-region": "West Europe",
+      "StatusCode" : "200",
+      "Body" : "{\n\"results\": {\n\"patients\": [\n{\n\"id\": \"patient1\",\n\"inferences\": [\n{\n\"type\": \"tumorSite\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Upper inner\",\n\"offset\": 108,\n\"length\": 11\n},\n\"importance\": 0.5563\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"duct\",\n\"offset\": 68,\n\"length\": 4\n},\n\"importance\": 0.0156\n}\n],\n\"value\": \"C50.2\",\n\"description\": \"BREAST\",\n\"confidenceScore\": 0.9214\n},\n{\n\"type\": \"histology\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Ductal\",\n\"offset\": 174,\n\"length\": 6\n},\n\"importance\": 0.2937\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct\",\n\"offset\": 43,\n\"length\": 13\n},\n\"importance\": 0.2439\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive\",\n\"offset\": 193,\n\"length\": 8\n},\n\"importance\": 0.1588\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"duct\",\n\"offset\": 68,\n\"length\": 4\n},\n\"importance\": 0.1483\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"solid\",\n\"offset\": 368,\n\"length\": 5\n},\n\"importance\": 0.0694\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Cribriform\",\n\"offset\": 353,\n\"length\": 10\n},\n\"importance\": 0.043\n}\n],\n\"value\": \"8500\",\n\"confidenceScore\": 0.9973\n},\n{\n\"type\": \"clinicalStageT\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct carcinoma; duct\",\n\"offset\": 43,\n\"length\": 29\n},\n\"importance\": 0.2613\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive\",\n\"offset\": 193,\n\"length\": 8\n},\n\"importance\": 0.1341\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Laterality:  Left\",\n\"offset\": 0,\n\"length\": 17\n},\n\"importance\": 0.0874\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive\",\n\"offset\": 133,\n\"length\": 8\n},\n\"importance\": 0.0722\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"situ\",\n\"offset\": 86,\n\"length\": 4\n},\n\"importance\": 0.0651\n}\n],\n\"value\": \"T1\",\n\"confidenceScore\": 0.9956\n},\n{\n\"type\": \"clinicalStageN\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct carcinoma; duct carcinoma in situ\",\n\"offset\": 43,\n\"length\": 47\n},\n\"importance\": 0.1529\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive carcinoma:  Extensive\",\n\"offset\": 423,\n\"length\": 30\n},\n\"importance\": 0.0782\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive\",\n\"offset\": 133,\n\"length\": 8\n},\n\"importance\": 0.0715\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 95,\n\"length\": 5\n},\n\"importance\": 0.0513\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Left\",\n\"offset\": 13,\n\"length\": 4\n},\n\"importance\": 0.0325\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 22,\n\"length\": 5\n},\n\"importance\": 0.0174\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Histologic\",\n\"offset\": 156,\n\"length\": 10\n},\n\"importance\": 0.0066\n}\n],\n\"value\": \"N0\",\n\"confidenceScore\": 0.9931\n},\n{\n\"type\": \"clinicalStageM\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Laterality:  Left\",\n\"offset\": 0,\n\"length\": 17\n},\n\"importance\": 0.1579\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct\",\n\"offset\": 43,\n\"length\": 13\n},\n\"importance\": 0.1493\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Histologic Grade - Nottingham\",\n\"offset\": 225,\n\"length\": 29\n},\n\"importance\": 0.1038\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive\",\n\"offset\": 133,\n\"length\": 8\n},\n\"importance\": 0.089\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"duct carcinoma\",\n\"offset\": 68,\n\"length\": 14\n},\n\"importance\": 0.0807\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive\",\n\"offset\": 423,\n\"length\": 8\n},\n\"importance\": 0.057\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Extensive\",\n\"offset\": 444,\n\"length\": 9\n},\n\"importance\": 0.0494\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 22,\n\"length\": 5\n},\n\"importance\": 0.0311\n}\n],\n\"value\": \"None\",\n\"confidenceScore\": 0.5217\n},\n{\n\"type\": \"pathologicStageT\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct\",\n\"offset\": 43,\n\"length\": 13\n},\n\"importance\": 0.3125\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Left\",\n\"offset\": 13,\n\"length\": 4\n},\n\"importance\": 0.201\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive\",\n\"offset\": 193,\n\"length\": 8\n},\n\"importance\": 0.1244\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive\",\n\"offset\": 423,\n\"length\": 8\n},\n\"importance\": 0.0961\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive\",\n\"offset\": 133,\n\"length\": 8\n},\n\"importance\": 0.0623\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 22,\n\"length\": 5\n},\n\"importance\": 0.0583\n}\n],\n\"value\": \"T1\",\n\"confidenceScore\": 0.9477\n},\n{\n\"type\": \"pathologicStageN\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive component:\",\n\"offset\": 193,\n\"length\": 19\n},\n\"importance\": 0.1402\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Nottingham combined histologic score:\",\n\"offset\": 244,\n\"length\": 37\n},\n\"importance\": 0.1096\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive carcinoma\",\n\"offset\": 133,\n\"length\": 18\n},\n\"importance\": 0.1067\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Ductal\",\n\"offset\": 174,\n\"length\": 6\n},\n\"importance\": 0.0896\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct carcinoma;\",\n\"offset\": 43,\n\"length\": 24\n},\n\"importance\": 0.0831\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Histologic\",\n\"offset\": 156,\n\"length\": 10\n},\n\"importance\": 0.0447\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"in situ\",\n\"offset\": 83,\n\"length\": 7\n},\n\"importance\": 0.042\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 22,\n\"length\": 5\n},\n\"importance\": 0.0092\n}\n],\n\"value\": \"N0\",\n\"confidenceScore\": 0.7927\n},\n{\n\"type\": \"pathologicStageM\",\n\"evidence\": [\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"In situ carcinoma (DCIS)\",\n\"offset\": 298,\n\"length\": 24\n},\n\"importance\": 0.1111\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Nottingham combined histologic\",\n\"offset\": 244,\n\"length\": 30\n},\n\"importance\": 0.0999\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive carcinoma:\",\n\"offset\": 423,\n\"length\": 19\n},\n\"importance\": 0.0787\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"invasive\",\n\"offset\": 193,\n\"length\": 8\n},\n\"importance\": 0.0617\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive duct carcinoma;\",\n\"offset\": 43,\n\"length\": 24\n},\n\"importance\": 0.0594\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 22,\n\"length\": 5\n},\n\"importance\": 0.0579\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"of DCIS:\",\n\"offset\": 343,\n\"length\": 8\n},\n\"importance\": 0.0483\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Laterality:\",\n\"offset\": 0,\n\"length\": 11\n},\n\"importance\": 0.0324\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Invasive carcinoma\",\n\"offset\": 133,\n\"length\": 18\n},\n\"importance\": 0.0269\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"carcinoma in\",\n\"offset\": 73,\n\"length\": 12\n},\n\"importance\": 0.0202\n},\n{\n\"patientDataEvidence\": {\n\"id\": \"document1\",\n\"text\": \"Tumor\",\n\"offset\": 95,\n\"length\": 5\n},\n\"importance\": 0.0112\n}\n],\n\"value\": \"M0\",\n\"confidenceScore\": 0.9208\n}\n]\n}\n],\n\"modelVersion\": \"2023-03-01-preview\"\n},\n\"jobId\": \"7b4841b5-e7d4-4202-a300-6455ff4148de\",\n\"createdDateTime\": \"2023-01-29T09:16:35Z\",\n\"expirationDateTime\": \"2023-01-30T09:16:35Z\",\n\"lastUpdateDateTime\": \"2023-01-29T09:16:36Z\",\n\"status\": \"succeeded\"\n}",
+      "Exception" : null
+    }
+  }
+
+  ],
+  "variables" : [ ]
+}

@@ -70,8 +70,8 @@ public class ServiceBusReceiverInstrumentation {
                 })
                 .contextWrite(ctx -> {
                     startTime.set(Instant.now().toEpochMilli());
-                    return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLink(getSettlementSpanName(status), message,
-                        messageContext, messageContext));
+                    return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLink(getSettlementSpanName(status), ServiceBusTracer.OperationName.SETTLE,
+                        message, messageContext, messageContext));
                 });
         }
 

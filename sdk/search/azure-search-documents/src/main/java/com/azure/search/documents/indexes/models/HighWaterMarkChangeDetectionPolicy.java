@@ -90,10 +90,10 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
                         }
                     }
                     if (highWaterMarkColumnNameFound) {
-                        HighWaterMarkChangeDetectionPolicy deserializedValue =
+                        HighWaterMarkChangeDetectionPolicy deserializedHighWaterMarkChangeDetectionPolicy =
                                 new HighWaterMarkChangeDetectionPolicy(highWaterMarkColumnName);
 
-                        return deserializedValue;
+                        return deserializedHighWaterMarkChangeDetectionPolicy;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!highWaterMarkColumnNameFound) {

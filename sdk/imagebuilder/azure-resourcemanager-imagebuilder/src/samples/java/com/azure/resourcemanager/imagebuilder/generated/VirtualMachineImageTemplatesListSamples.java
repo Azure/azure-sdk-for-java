@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.imagebuilder.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineImageTemplates List. */
 public final class VirtualMachineImageTemplatesListSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/ListImageTemplates.json
+     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-07-01/examples/ListImageTemplates.json
      */
     /**
      * Sample code: List images by subscription.
@@ -17,6 +15,6 @@ public final class VirtualMachineImageTemplatesListSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void listImagesBySubscription(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().list(Context.NONE);
+        manager.virtualMachineImageTemplates().list(com.azure.core.util.Context.NONE);
     }
 }

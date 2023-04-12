@@ -28,6 +28,10 @@ public final class AccountEncryption {
     @JsonProperty(value = "identity")
     private EncryptionIdentity identity;
 
+    /** Creates an instance of AccountEncryption class. */
+    public AccountEncryption() {
+    }
+
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.NetApp, Microsoft.KeyVault.

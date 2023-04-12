@@ -32,6 +32,10 @@ public class ImageTemplateCustomizer {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ImageTemplateCustomizer class. */
+    public ImageTemplateCustomizer() {
+    }
+
     /**
      * Get the name property: Friendly Name to provide context on what this customization step does.
      *

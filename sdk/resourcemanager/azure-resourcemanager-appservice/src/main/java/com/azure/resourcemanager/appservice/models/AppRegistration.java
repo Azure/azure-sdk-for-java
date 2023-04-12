@@ -22,6 +22,10 @@ public final class AppRegistration {
     @JsonProperty(value = "appSecretSettingName")
     private String appSecretSettingName;
 
+    /** Creates an instance of AppRegistration class. */
+    public AppRegistration() {
+    }
+
     /**
      * Get the appId property: The App ID of the app used for login.
      *

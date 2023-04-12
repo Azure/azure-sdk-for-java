@@ -17,6 +17,15 @@ public final class AclAction extends ExpandableStringEnum<AclAction> {
     public static final AclAction DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of AclAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AclAction() {
+    }
+
+    /**
      * Creates or finds a AclAction from its string representation.
      *
      * @param name a name to look for.

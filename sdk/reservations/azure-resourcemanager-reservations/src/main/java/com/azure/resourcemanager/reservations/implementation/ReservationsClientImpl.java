@@ -74,8 +74,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
     public interface ReservationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-                + "/availableScopes")
+            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/availableScopes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> availableScopes(
@@ -163,8 +162,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-                + "/unarchive")
+            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/unarchive")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> unarchive(
@@ -177,8 +175,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}"
-                + "/revisions")
+            "/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}/revisions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReservationList>> listRevisions(

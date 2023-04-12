@@ -95,29 +95,25 @@ public final class OCIIndex extends Manifest {
     public static OCIIndex fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    Integer schemaVersion = null;
-                    List<ManifestListAttributes> manifests = null;
-                    OciAnnotations annotations = null;
+                    OCIIndex deserializedOCIIndex = new OCIIndex();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("schemaVersion".equals(fieldName)) {
-                            schemaVersion = reader.getNullable(JsonReader::getInt);
+                            deserializedOCIIndex.setSchemaVersion(reader.getNullable(JsonReader::getInt));
                         } else if ("manifests".equals(fieldName)) {
-                            manifests = reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                            List<ManifestListAttributes> manifests =
+                                    reader.readArray(reader1 -> ManifestListAttributes.fromJson(reader1));
+                            deserializedOCIIndex.manifests = manifests;
                         } else if ("annotations".equals(fieldName)) {
-                            annotations = OciAnnotations.fromJson(reader);
+                            deserializedOCIIndex.annotations = OciAnnotations.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    OCIIndex deserializedValue = new OCIIndex();
-                    deserializedValue.setSchemaVersion(schemaVersion);
-                    deserializedValue.manifests = manifests;
-                    deserializedValue.annotations = annotations;
 
-                    return deserializedValue;
+                    return deserializedOCIIndex;
                 });
     }
 }

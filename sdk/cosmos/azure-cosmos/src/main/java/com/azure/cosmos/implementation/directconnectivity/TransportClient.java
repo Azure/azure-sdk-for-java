@@ -49,11 +49,11 @@ public abstract class TransportClient implements AutoCloseable {
     /***
      * Only open new connection if there is no existed established connection.
      *
-     * @param addressUri the replica address.
-     *
+     * @param physicalAddress the store physical addresses.
+     * @param openConnectionRequest open connection request.
      * @return the {@link OpenConnectionResponse}.
      */
-    public abstract Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, final Uri addressUri);
+    public abstract Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest);
 
     public abstract void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
 

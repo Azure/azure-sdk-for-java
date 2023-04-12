@@ -1,30 +1,4 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "070ee2f5-951b-404e-86cf-08bbf0d5ebae",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "retry-after" : "0",
-      "StatusCode" : "503"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fe1bbceb-4420-4eb2-87dd-eb7909513644",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "retry-after" : "0",
-      "StatusCode" : "503"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [],
+  "Variables": {}
 }

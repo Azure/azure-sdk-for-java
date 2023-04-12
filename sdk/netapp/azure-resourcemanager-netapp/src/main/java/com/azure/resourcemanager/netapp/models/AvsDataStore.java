@@ -21,6 +21,15 @@ public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
     public static final AvsDataStore DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of AvsDataStore value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvsDataStore() {
+    }
+
+    /**
      * Creates or finds a AvsDataStore from its string representation.
      *
      * @param name a name to look for.

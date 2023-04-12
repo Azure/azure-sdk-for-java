@@ -21,7 +21,6 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
@@ -53,7 +52,6 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
@@ -1336,67 +1334,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             }
         });
         // END: Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context
-    }
-
-    // Dynamic classification
-    /**
-     * Code snippet for {@link TextAnalyticsClient#dynamicClassifyBatch(Iterable, Iterable, String, DynamicClassifyOptions)}
-     */
-    public void dynamicClassificationStringInputWithLanguage() {
-        // BEGIN: Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
-        List<String> documents = new ArrayList<>();
-        documents.add("The WHO is issuing a warning about Monkey Pox.");
-        documents.add("Mo Salah plays in Liverpool FC in England.");
-        DynamicClassifyOptions options = new DynamicClassifyOptions();
-
-        // Analyzing dynamic classification
-        DynamicClassifyDocumentResultCollection resultCollection = textAnalyticsClient.dynamicClassifyBatch(
-            documents, Arrays.asList("Health", "Politics", "Music", "Sport"), "en", options);
-
-        // Result of dynamic classification
-        resultCollection.forEach(documentResult -> {
-            System.out.println("Document ID: " + documentResult.getId());
-            for (ClassificationCategory classification : documentResult.getClassifications()) {
-                System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                    classification.getCategory(), classification.getConfidenceScore());
-            }
-        });
-        // END: Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
-    }
-
-    /**
-     * Code snippet for {@link TextAnalyticsClient#dynamicClassifyBatchWithResponse(Iterable, Iterable, DynamicClassifyOptions, Context)}
-     */
-    public void dynamicClassificationMaxOverload() {
-        // BEGIN: Client.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions-Context
-        List<TextDocumentInput> documents = new ArrayList<>();
-        documents.add(new TextDocumentInput("1", "The WHO is issuing a warning about Monkey Pox."));
-        documents.add(new TextDocumentInput("2", "Mo Salah plays in Liverpool FC in England."));
-        DynamicClassifyOptions options = new DynamicClassifyOptions();
-
-        // Analyzing dynamic classification
-        Response<DynamicClassifyDocumentResultCollection> response =
-            textAnalyticsClient.dynamicClassifyBatchWithResponse(documents,
-                Arrays.asList("Health", "Politics", "Music", "Sport"), options, Context.NONE);
-
-        // Response's status code
-        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        DynamicClassifyDocumentResultCollection resultCollection = response.getValue();
-
-        // Batch statistics
-        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
-        System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-        // Result of dynamic classification
-        resultCollection.forEach(documentResult -> {
-            System.out.println("Document ID: " + documentResult.getId());
-            for (ClassificationCategory classification : documentResult.getClassifications()) {
-                System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                    classification.getCategory(), classification.getConfidenceScore());
-            }
-        });
-        // END: Client.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions-Context
     }
 
     // Abstractive Summarization

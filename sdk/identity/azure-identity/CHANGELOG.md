@@ -1,14 +1,35 @@
 # Release History
 
-## 1.9.0-beta.2 (Unreleased)
+## 1.9.0-beta.3 (Unreleased)
 
-### Features Added
+### Bugs Fixed
+- Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
-### Breaking Changes
+### Other Changes
+- Removed feature from previous betas to compute refresh values for managed identity tokens.
+
+## 1.8.2 (2023-04-10)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug in managed identity not properly URLEncoding a value. [#34375](https://github.com/Azure/azure-sdk-for-java/pull/34375)
+
+### Other Changes	### Other Changes
+
+#### Dependency Updates	#### Dependency Updates
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.	- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.	- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `msal4j` from `1.13.5` to version `1.13.7`.	- Upgraded `msal4j` from `1.13.5` to version `1.13.7`.
+
+## 1.9.0-beta.2 (2023-03-16)
+
+### Features Added
+- Added CAE support to service principal authentication.
+- Pass more detailed refresh policy for managed identity tokens to MSAL.
+- Add configurable timeout for developer credentials (Azure CLI, Azure Developer CLI)
+
+### Bugs Fixed
+- Fixed detection logic for az/azd.
 
 ## 1.8.1 (2023-03-06)
 

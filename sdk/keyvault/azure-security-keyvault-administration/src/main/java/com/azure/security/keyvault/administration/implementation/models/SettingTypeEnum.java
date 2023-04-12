@@ -14,6 +14,14 @@ public final class SettingTypeEnum extends ExpandableStringEnum<SettingTypeEnum>
     public static final SettingTypeEnum BOOLEAN = fromString("boolean");
 
     /**
+     * Creates a new instance of SettingTypeEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingTypeEnum() {}
+
+    /**
      * Creates or finds a SettingTypeEnum from its string representation.
      *
      * @param name a name to look for.

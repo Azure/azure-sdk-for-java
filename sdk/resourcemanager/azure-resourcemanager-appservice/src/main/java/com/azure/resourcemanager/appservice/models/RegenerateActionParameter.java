@@ -16,6 +16,10 @@ public final class RegenerateActionParameter {
     @JsonProperty(value = "keyType")
     private KeyType keyType;
 
+    /** Creates an instance of RegenerateActionParameter class. */
+    public RegenerateActionParameter() {
+    }
+
     /**
      * Get the keyType property: The key type.
      *

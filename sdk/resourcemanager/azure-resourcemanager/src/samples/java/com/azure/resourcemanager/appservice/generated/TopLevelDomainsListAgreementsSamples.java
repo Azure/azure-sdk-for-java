@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 
 /** Samples for TopLevelDomains ListAgreements. */
 public final class TopLevelDomainsListAgreementsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/ListTopLevelDomainAgreements.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/ListTopLevelDomainAgreements.json
      */
     /**
      * Sample code: List Top Level Domain Agreements.
@@ -26,6 +25,6 @@ public final class TopLevelDomainsListAgreementsSamples {
             .listAgreements(
                 "in",
                 new TopLevelDomainAgreementOption().withIncludePrivacy(true).withForTransfer(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

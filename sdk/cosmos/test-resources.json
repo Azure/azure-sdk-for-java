@@ -23,10 +23,17 @@
         "description": "Enable multiple regions, default value is false"
       },
       "defaultValue": false
+    },
+    "enablePartitionMerge": {
+      "type": "bool",
+      "metadata": {
+        "description": "Enable partition merge, default value is false"
+      },
+      "defaultValue": false
     }
   },
   "variables": {
-    "apiVersion": "2020-04-01",
+    "apiVersion": "2022-08-15",
     "accountName": "[toLower(parameters('baseName'))]",
     "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
@@ -53,7 +60,6 @@
       }
     ],
     "locationsConfiguration": "[if(parameters('enableMultipleRegions'), variables('multiRegionConfiguration'), variables('singleRegionConfiguration'))]"
-
   },
   "resources": [
     {
@@ -66,6 +72,7 @@
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
         "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "enablePartitionMerge": "[parameters('enablePartitionMerge')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -92,6 +99,7 @@
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
         "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "enablePartitionMerge": "[parameters('enablePartitionMerge')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,

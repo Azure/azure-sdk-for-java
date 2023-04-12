@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
@@ -14,6 +15,39 @@ import java.util.Map;
 @JsonTypeName("VHD")
 @Fluent
 public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor {
+    /*
+     * Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty string) in which case
+     * VHD would be published to the storage account in the staging resource group.
+     */
+    @JsonProperty(value = "uri")
+    private String uri;
+
+    /** Creates an instance of ImageTemplateVhdDistributor class. */
+    public ImageTemplateVhdDistributor() {
+    }
+
+    /**
+     * Get the uri property: Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty
+     * string) in which case VHD would be published to the storage account in the staging resource group.
+     *
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.uri;
+    }
+
+    /**
+     * Set the uri property: Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty
+     * string) in which case VHD would be published to the storage account in the staging resource group.
+     *
+     * @param uri the uri value to set.
+     * @return the ImageTemplateVhdDistributor object itself.
+     */
+    public ImageTemplateVhdDistributor withUri(String uri) {
+        this.uri = uri;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ImageTemplateVhdDistributor withRunOutputName(String runOutputName) {

@@ -17,27 +17,53 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * A credential provider that provides token credentials based on environment variables.  The environment variables
- * expected are:
+ * <p>The EnvironmentCredential is appropriate for scenarios where the application is looking to read credential
+ * information from environment variables. The credential supports service principal and user credential based
+ * authentication and requires a set of environment variables to be configured for each scenario.</p>
+ *
+ * <p>The required environment variables for service principal authentication using client secret are as follows:</p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_SECRET AZURE_CLIENT_SECRET}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
- * or:
+ *
+ * <p>The required environment variables for service principal authentication using client certificate are as follows:
+ * </p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH AZURE_CLIENT_CERTIFICATE_PATH}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD AZURE_CLIENT_CERTIFICATE_PASSWORD}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
- * or:
+ *
+ * <p>The required environment variables for username password authentication are as follows:</p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_PASSWORD AZURE_PASSWORD}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
+ *
+ * <p>The credential looks for authentication scenarios in the order above, so ensure that only targeted authentication
+ * scenario's environment variables are configured.</p>
+ *
+ * <p><strong>Sample: Construct EnvironmentCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.EnvironmentCredential},
+ * using the {@link com.azure.identity.EnvironmentCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
+ * <pre>
+ * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.environmentcredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see EnvironmentCredentialBuilder
  */
 @Immutable
 public class EnvironmentCredential implements TokenCredential {

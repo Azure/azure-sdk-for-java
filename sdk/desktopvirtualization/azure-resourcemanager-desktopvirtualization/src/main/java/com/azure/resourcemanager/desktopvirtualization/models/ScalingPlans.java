@@ -15,18 +15,6 @@ public interface ScalingPlans {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scaling plan.
-     */
-    ScalingPlan getByResourceGroup(String resourceGroupName, String scalingPlanName);
-
-    /**
-     * Get a scaling plan.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scalingPlanName The name of the scaling plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,15 +25,16 @@ public interface ScalingPlans {
         String resourceGroupName, String scalingPlanName, Context context);
 
     /**
-     * Remove a scaling plan.
+     * Get a scaling plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a scaling plan.
      */
-    void deleteByResourceGroup(String resourceGroupName, String scalingPlanName);
+    ScalingPlan getByResourceGroup(String resourceGroupName, String scalingPlanName);
 
     /**
      * Remove a scaling plan.
@@ -58,7 +47,18 @@ public interface ScalingPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String scalingPlanName, Context context);
+
+    /**
+     * Remove a scaling plan.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scalingPlanName The name of the scaling plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceGroupName, String scalingPlanName);
 
     /**
      * List scaling plans.
@@ -75,13 +75,17 @@ public interface ScalingPlans {
      * List scaling plans.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ScalingPlan> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<ScalingPlan> listByResourceGroup(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List scaling plans in subscription.
@@ -95,13 +99,16 @@ public interface ScalingPlans {
     /**
      * List scaling plans in subscription.
      *
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ScalingPlan> list(Context context);
+    PagedIterable<ScalingPlan> list(Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List scaling plan associated with hostpool.
@@ -120,13 +127,22 @@ public interface ScalingPlans {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scalingPlanList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ScalingPlan> listByHostPool(String resourceGroupName, String hostPoolName, Context context);
+    PagedIterable<ScalingPlan> listByHostPool(
+        String resourceGroupName,
+        String hostPoolName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context);
 
     /**
      * Get a scaling plan.

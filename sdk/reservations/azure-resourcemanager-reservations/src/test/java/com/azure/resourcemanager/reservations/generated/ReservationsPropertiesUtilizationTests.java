@@ -15,7 +15,7 @@ public final class ReservationsPropertiesUtilizationTests {
         ReservationsPropertiesUtilization model =
             BinaryData
                 .fromString(
-                    "{\"trend\":\"djpjumasxazjpq\",\"aggregates\":[{\"grain\":29.506851,\"grainUnit\":\"hb\",\"value\":27.095669,\"valueUnit\":\"jj\"}]}")
+                    "{\"trend\":\"hmenevfyexfwhybc\",\"aggregates\":[{\"grain\":53.581215,\"grainUnit\":\"c\",\"value\":88.85056,\"valueUnit\":\"nnaamdectehfiqsc\"},{\"grain\":55.374454,\"grainUnit\":\"vhezrkgqhcj\",\"value\":92.9146,\"valueUnit\":\"vgmkqsleyyvxyqjp\"}]}")
                 .toObject(ReservationsPropertiesUtilization.class);
     }
 
@@ -23,7 +23,8 @@ public final class ReservationsPropertiesUtilizationTests {
     public void testSerialize() throws Exception {
         ReservationsPropertiesUtilization model =
             new ReservationsPropertiesUtilization()
-                .withAggregates(Arrays.asList(new ReservationUtilizationAggregates()));
+                .withAggregates(
+                    Arrays.asList(new ReservationUtilizationAggregates(), new ReservationUtilizationAggregates()));
         model = BinaryData.fromObject(model).toObject(ReservationsPropertiesUtilization.class);
     }
 }

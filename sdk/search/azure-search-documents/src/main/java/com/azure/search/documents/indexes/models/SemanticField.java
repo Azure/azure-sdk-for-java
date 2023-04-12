@@ -62,21 +62,19 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
     public static SemanticField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String fieldName = null;
+                    SemanticField deserializedSemanticField = new SemanticField();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String jsonFieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("fieldName".equals(jsonFieldName)) {
-                            fieldName = reader.getString();
+                            deserializedSemanticField.fieldName = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SemanticField deserializedValue = new SemanticField();
-                    deserializedValue.fieldName = fieldName;
 
-                    return deserializedValue;
+                    return deserializedSemanticField;
                 });
     }
 }

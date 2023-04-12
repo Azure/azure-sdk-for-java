@@ -1,229 +1,229 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey713665bc7/create?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey7523108e2/create?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:31 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "034976a3-ca44-449e-8231-76c8330e6be3",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey713665bc7/22402cbb3ee44ce08495ff92f9f1f7bc\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"xat6mpKJQDu8sMY1vvxhLIoosVYCLcI48WAmbO2ZuGyespncSQhGcklyb3Cxbqi7a6ST3zk3jaRvqdZijjAPxVFZSRLm3fcjb1AgJTvgUH6GzYJxvczXRQaSXhH9BgvAm4jlioIb2ZSQGdWu-dAS6sJi3SBTCoOuoFtnPz45XedEJS0zW0kqkHmqzZeEwTAp6Tz88tpkgl3UlzQ7tjZkPXUdGHogqHivYzPr3nESR9KDMRZoxbFl_jrQGaby8Gp2ys8_YZgizrckmMpN-vXwA2_d3BAu0QAXSfrspDXmu50j30NDdCjf_RUP_O2QtZWyeeqAler5JR8k2ie2CcKBeQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "734",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "37819a8b-2261-44bc-bef4-f2ca5e4e2ebb",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey7523108e2/8cd103441d0c4e9aad4828fe38d00ec4\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"0qkyvZXw1AmIZSJtNES9dW2teV_ptGojRQeQvz95AAw23rXZlIYbpEuPjfE06Pkb7cMsSNGdNm5ALsRMFNKOTLxqU4tnJYtxDZgJ8pAQI7gO7wh3TzaOejR0KKNij5kueWC8SsSZjyEFNpaJW-3g_aysIoY_yiJ3KB5QpnfsqAYKr9FN4O44RtvpibFgLWwBAnbfY7YnkkSVOCBZyiVI8VyxNO9je0YXLzG0f2JSX2c6qk7ShaYJ4TFTtZCfHkAGfS4Wcg0-Xjfm904GdpbjTBYkZrHjRJcP5wiITrgXML0VRk-5q3HogwwQKmYnKO3MgqjGCHi0imfH44-9R5F93Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey713665bc7?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey7523108e2?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "875",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:31 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "903bf2dc-c55f-41e9-8e97-1c22fbbf78d7",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"recoveryId\":\"https://vicolinakeyvault.vault.azure.net/deletedkeys/testkey713665bc7\",\"deletedDate\":1668205771,\"scheduledPurgeDate\":1668810571,\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey713665bc7/22402cbb3ee44ce08495ff92f9f1f7bc\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"xat6mpKJQDu8sMY1vvxhLIoosVYCLcI48WAmbO2ZuGyespncSQhGcklyb3Cxbqi7a6ST3zk3jaRvqdZijjAPxVFZSRLm3fcjb1AgJTvgUH6GzYJxvczXRQaSXhH9BgvAm4jlioIb2ZSQGdWu-dAS6sJi3SBTCoOuoFtnPz45XedEJS0zW0kqkHmqzZeEwTAp6Tz88tpkgl3UlzQ7tjZkPXUdGHogqHivYzPr3nESR9KDMRZoxbFl_jrQGaby8Gp2ys8_YZgizrckmMpN-vXwA2_d3BAu0QAXSfrspDXmu50j30NDdCjf_RUP_O2QtZWyeeqAler5JR8k2ie2CcKBeQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "877",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "53828a40-b745-40cd-b559-e51c8666f379",
+      "Body" : "{\"recoveryId\":\"https://azsdktests.vault.azure.net/deletedkeys/testkey7523108e2\",\"deletedDate\":1678954170,\"scheduledPurgeDate\":1679558970,\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey7523108e2/8cd103441d0c4e9aad4828fe38d00ec4\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"0qkyvZXw1AmIZSJtNES9dW2teV_ptGojRQeQvz95AAw23rXZlIYbpEuPjfE06Pkb7cMsSNGdNm5ALsRMFNKOTLxqU4tnJYtxDZgJ8pAQI7gO7wh3TzaOejR0KKNij5kueWC8SsSZjyEFNpaJW-3g_aysIoY_yiJ3KB5QpnfsqAYKr9FN4O44RtvpibFgLWwBAnbfY7YnkkSVOCBZyiVI8VyxNO9je0YXLzG0f2JSX2c6qk7ShaYJ4TFTtZCfHkAGfS4Wcg0-Xjfm904GdpbjTBYkZrHjRJcP5wiITrgXML0VRk-5q3HogwwQKmYnKO3MgqjGCHi0imfH44-9R5F93Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey713665bc7?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey7523108e2?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "84",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 11 Nov 2022 22:29:32 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:30 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "e8f9bcf2-7f11-453a-9553-433893db17e5",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey713665bc7\"}}",
+      "Content-Length" : "84",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "76480885-2eaa-4ddb-9307-ca2a959dcdaa",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey7523108e2\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey713665bc7?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey7523108e2?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "84",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 11 Nov 2022 22:29:32 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:31 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "f21cda4d-0b11-414a-9c8c-719ecafab0fe",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey713665bc7\"}}",
+      "Content-Length" : "84",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "fc92363c-a934-45e6-b6a7-b625c2e738bd",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey7523108e2\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey713665bc7?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey7523108e2?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "875",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:34 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:32 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "11ac4f19-4509-43b0-b401-bc79dad94f24",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"recoveryId\":\"https://vicolinakeyvault.vault.azure.net/deletedkeys/testkey713665bc7\",\"deletedDate\":1668205771,\"scheduledPurgeDate\":1668810571,\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey713665bc7/22402cbb3ee44ce08495ff92f9f1f7bc\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"xat6mpKJQDu8sMY1vvxhLIoosVYCLcI48WAmbO2ZuGyespncSQhGcklyb3Cxbqi7a6ST3zk3jaRvqdZijjAPxVFZSRLm3fcjb1AgJTvgUH6GzYJxvczXRQaSXhH9BgvAm4jlioIb2ZSQGdWu-dAS6sJi3SBTCoOuoFtnPz45XedEJS0zW0kqkHmqzZeEwTAp6Tz88tpkgl3UlzQ7tjZkPXUdGHogqHivYzPr3nESR9KDMRZoxbFl_jrQGaby8Gp2ys8_YZgizrckmMpN-vXwA2_d3BAu0QAXSfrspDXmu50j30NDdCjf_RUP_O2QtZWyeeqAler5JR8k2ie2CcKBeQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "877",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "133ad0bb-d42e-4c58-a2b4-2cd01d16a0c1",
+      "Body" : "{\"recoveryId\":\"https://azsdktests.vault.azure.net/deletedkeys/testkey7523108e2\",\"deletedDate\":1678954170,\"scheduledPurgeDate\":1679558970,\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey7523108e2/8cd103441d0c4e9aad4828fe38d00ec4\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"0qkyvZXw1AmIZSJtNES9dW2teV_ptGojRQeQvz95AAw23rXZlIYbpEuPjfE06Pkb7cMsSNGdNm5ALsRMFNKOTLxqU4tnJYtxDZgJ8pAQI7gO7wh3TzaOejR0KKNij5kueWC8SsSZjyEFNpaJW-3g_aysIoY_yiJ3KB5QpnfsqAYKr9FN4O44RtvpibFgLWwBAnbfY7YnkkSVOCBZyiVI8VyxNO9je0YXLzG0f2JSX2c6qk7ShaYJ4TFTtZCfHkAGfS4Wcg0-Xjfm904GdpbjTBYkZrHjRJcP5wiITrgXML0VRk-5q3HogwwQKmYnKO3MgqjGCHi0imfH44-9R5F93Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey713665bc7/recover?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey7523108e2/recover?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:34 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:32 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "adb87e66-eade-46f9-9130-e78b00b40ad0",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey713665bc7/22402cbb3ee44ce08495ff92f9f1f7bc\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"xat6mpKJQDu8sMY1vvxhLIoosVYCLcI48WAmbO2ZuGyespncSQhGcklyb3Cxbqi7a6ST3zk3jaRvqdZijjAPxVFZSRLm3fcjb1AgJTvgUH6GzYJxvczXRQaSXhH9BgvAm4jlioIb2ZSQGdWu-dAS6sJi3SBTCoOuoFtnPz45XedEJS0zW0kqkHmqzZeEwTAp6Tz88tpkgl3UlzQ7tjZkPXUdGHogqHivYzPr3nESR9KDMRZoxbFl_jrQGaby8Gp2ys8_YZgizrckmMpN-vXwA2_d3BAu0QAXSfrspDXmu50j30NDdCjf_RUP_O2QtZWyeeqAler5JR8k2ie2CcKBeQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "734",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "05400e17-3fe0-4264-860e-58c0756dc5f4",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey7523108e2/8cd103441d0c4e9aad4828fe38d00ec4\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"0qkyvZXw1AmIZSJtNES9dW2teV_ptGojRQeQvz95AAw23rXZlIYbpEuPjfE06Pkb7cMsSNGdNm5ALsRMFNKOTLxqU4tnJYtxDZgJ8pAQI7gO7wh3TzaOejR0KKNij5kueWC8SsSZjyEFNpaJW-3g_aysIoY_yiJ3KB5QpnfsqAYKr9FN4O44RtvpibFgLWwBAnbfY7YnkkSVOCBZyiVI8VyxNO9je0YXLzG0f2JSX2c6qk7ShaYJ4TFTtZCfHkAGfS4Wcg0-Xjfm904GdpbjTBYkZrHjRJcP5wiITrgXML0VRk-5q3HogwwQKmYnKO3MgqjGCHi0imfH44-9R5F93Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey713665bc7/?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey7523108e2/?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "304",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 11 Nov 2022 22:29:34 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:32 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "445491ab-0be5-4607-8153-0d45363e5ad6",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey713665bc7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
+      "Content-Length" : "304",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "cbdef001-d857-4e98-8881-389a4fbb167d",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey7523108e2 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey713665bc7/?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey7523108e2/?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "304",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 11 Nov 2022 22:29:33 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:32 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "0ca6f18d-3a75-4cee-8327-9a41c340fc09",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey713665bc7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
+      "Content-Length" : "304",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "c7102ca8-043c-4451-b36f-d9d5f05dd505",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey7523108e2 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey713665bc7/?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey7523108e2/?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:35 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:33 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "7e0e0a19-b830-4434-b001-4039db2dea32",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/testkey713665bc7/22402cbb3ee44ce08495ff92f9f1f7bc\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"xat6mpKJQDu8sMY1vvxhLIoosVYCLcI48WAmbO2ZuGyespncSQhGcklyb3Cxbqi7a6ST3zk3jaRvqdZijjAPxVFZSRLm3fcjb1AgJTvgUH6GzYJxvczXRQaSXhH9BgvAm4jlioIb2ZSQGdWu-dAS6sJi3SBTCoOuoFtnPz45XedEJS0zW0kqkHmqzZeEwTAp6Tz88tpkgl3UlzQ7tjZkPXUdGHogqHivYzPr3nESR9KDMRZoxbFl_jrQGaby8Gp2ys8_YZgizrckmMpN-vXwA2_d3BAu0QAXSfrspDXmu50j30NDdCjf_RUP_O2QtZWyeeqAler5JR8k2ie2CcKBeQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1668205771,\"updated\":1668205771,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
+      "Content-Length" : "734",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "df7f38b1-2863-4a53-97d6-90d785543edf",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/testkey7523108e2/8cd103441d0c4e9aad4828fe38d00ec4\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"0qkyvZXw1AmIZSJtNES9dW2teV_ptGojRQeQvz95AAw23rXZlIYbpEuPjfE06Pkb7cMsSNGdNm5ALsRMFNKOTLxqU4tnJYtxDZgJ8pAQI7gO7wh3TzaOejR0KKNij5kueWC8SsSZjyEFNpaJW-3g_aysIoY_yiJ3KB5QpnfsqAYKr9FN4O44RtvpibFgLWwBAnbfY7YnkkSVOCBZyiVI8VyxNO9je0YXLzG0f2JSX2c6qk7ShaYJ4TFTtZCfHkAGfS4Wcg0-Xjfm904GdpbjTBYkZrHjRJcP5wiITrgXML0VRk-5q3HogwwQKmYnKO3MgqjGCHi0imfH44-9R5F93Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1678954170,\"updated\":1678954170,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testkey713665bc7" ]
+  "variables" : [ "testkey7523108e2" ]
 }

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 
 /** Samples for StaticSites UpdateStaticSite. */
 public final class StaticSitesUpdateStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/PatchStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/PatchStaticSite.json
      */
     /**
      * Sample code: Patch a static site.
@@ -23,6 +22,7 @@ public final class StaticSitesUpdateStaticSiteSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .updateStaticSiteWithResponse("rg", "testStaticSite0", new StaticSitePatchResource(), Context.NONE);
+            .updateStaticSiteWithResponse(
+                "rg", "testStaticSite0", new StaticSitePatchResource(), com.azure.core.util.Context.NONE);
     }
 }

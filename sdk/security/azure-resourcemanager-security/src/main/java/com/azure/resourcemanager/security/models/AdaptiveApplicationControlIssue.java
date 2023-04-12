@@ -32,6 +32,15 @@ public final class AdaptiveApplicationControlIssue extends ExpandableStringEnum<
     public static final AdaptiveApplicationControlIssue RULES_VIOLATED_MANUALLY = fromString("RulesViolatedManually");
 
     /**
+     * Creates a new instance of AdaptiveApplicationControlIssue value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdaptiveApplicationControlIssue() {
+    }
+
+    /**
      * Creates or finds a AdaptiveApplicationControlIssue from its string representation.
      *
      * @param name a name to look for.

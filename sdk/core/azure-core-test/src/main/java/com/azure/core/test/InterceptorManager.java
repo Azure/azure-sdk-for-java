@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,6 +73,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
+    private URL proxyUrl;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -319,7 +321,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
             }
             if (testProxyPlaybackClient == null) {
-                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, proxyUrl);
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
             }
             return testProxyPlaybackClient;
@@ -367,7 +369,7 @@ public class InterceptorManager implements AutoCloseable {
             if (!isRecordMode()) {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
-            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, proxyUrl);
             testProxyRecordPolicy.startRecording(playbackRecordName);
         }
         return testProxyRecordPolicy;
@@ -466,5 +468,14 @@ public class InterceptorManager implements AutoCloseable {
     void setHttpClient(HttpClient httpClient) {
 
         this.httpClient = httpClient;
+    }
+
+    /**
+     * Sets the {@link URL} to use for connecting to the test proxy.
+     * @param proxyUrl The test proxy {@link URL}.
+     */
+    public void setProxyUrl(URL proxyUrl) {
+
+        this.proxyUrl = proxyUrl;
     }
 }

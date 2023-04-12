@@ -63,7 +63,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface ProvidersService {
+    public interface ProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Web/availableStacks")
         @ExpectedResponses({200})
@@ -215,7 +215,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +255,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @param context The context to associate with this operation.
@@ -288,7 +292,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +310,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,7 +327,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @param context The context to associate with this operation.
@@ -337,7 +347,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -350,7 +362,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @param context The context to associate with this operation.
@@ -366,7 +380,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -404,7 +420,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
@@ -439,7 +457,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,7 +475,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -470,7 +492,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
@@ -488,7 +512,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -501,7 +527,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions.
+     * Get available Function app frameworks and their versions
+     *
+     * <p>Description for Get available Function app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
@@ -516,7 +544,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @param stackOsType Stack OS Type.
@@ -563,7 +593,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @param stackOsType Stack OS Type.
@@ -603,7 +635,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @param stackOsType Stack OS Type.
@@ -621,7 +655,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -638,7 +674,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @param stackOsType Stack OS Type.
@@ -657,7 +695,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -672,7 +712,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Function app frameworks and their versions for location.
+     * Get available Function app frameworks and their versions for location
+     *
+     * <p>Description for Get available Function app frameworks and their versions for location.
      *
      * @param location Function App stack location.
      * @param stackOsType Stack OS Type.
@@ -689,7 +731,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @param stackOsType Stack OS Type.
@@ -735,7 +779,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @param stackOsType Stack OS Type.
@@ -774,7 +820,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @param stackOsType Stack OS Type.
@@ -792,7 +840,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -809,7 +859,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @param stackOsType Stack OS Type.
@@ -828,7 +880,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,7 +897,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions for location.
+     * Get available Web app frameworks and their versions for location
+     *
+     * <p>Description for Get available Web app frameworks and their versions for location.
      *
      * @param location Web App stack location.
      * @param stackOsType Stack OS Type.
@@ -860,7 +916,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
+     *
+     * <p>Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
      * metric definitions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -894,7 +952,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
+     *
+     * <p>Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
      * metric definitions.
      *
      * @param context The context to associate with this operation.
@@ -928,7 +988,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
+     *
+     * <p>Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
      * metric definitions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -942,7 +1004,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
+     *
+     * <p>Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
      * metric definitions.
      *
      * @param context The context to associate with this operation.
@@ -959,7 +1023,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
+     *
+     * <p>Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
      * metric definitions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -972,7 +1038,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric definitions
+     *
+     * <p>Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
      * metric definitions.
      *
      * @param context The context to associate with this operation.
@@ -987,7 +1055,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,7 +1093,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
@@ -1057,7 +1129,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1073,7 +1147,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1088,7 +1164,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
@@ -1105,7 +1183,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1118,7 +1198,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available Web app frameworks and their versions.
+     * Get available Web app frameworks and their versions
+     *
+     * <p>Description for Get available Web app frameworks and their versions.
      *
      * @param stackOsType Stack OS Type.
      * @param context The context to associate with this operation.
@@ -1133,7 +1215,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1182,7 +1266,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @param context The context to associate with this operation.
@@ -1229,7 +1315,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1245,7 +1333,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1260,7 +1350,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @param context The context to associate with this operation.
@@ -1277,7 +1369,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1290,7 +1384,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
-     * Description for Get available application frameworks and their versions.
+     * Get available application frameworks and their versions
+     *
+     * <p>Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
      * @param context The context to associate with this operation.
@@ -1307,7 +1403,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1344,7 +1441,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1382,7 +1480,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1419,7 +1518,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1457,7 +1557,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1496,7 +1597,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1534,7 +1636,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1570,7 +1673,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1607,7 +1711,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1643,7 +1748,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1681,7 +1787,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1716,7 +1823,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1752,7 +1860,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1790,7 +1899,8 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

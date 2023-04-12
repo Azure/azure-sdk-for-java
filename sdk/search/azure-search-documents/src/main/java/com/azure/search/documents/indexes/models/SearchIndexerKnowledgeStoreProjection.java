@@ -119,42 +119,39 @@ public final class SearchIndexerKnowledgeStoreProjection
     public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables = null;
-                    List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects = null;
-                    List<SearchIndexerKnowledgeStoreFileProjectionSelector> files = null;
+                    SearchIndexerKnowledgeStoreProjection deserializedSearchIndexerKnowledgeStoreProjection =
+                            new SearchIndexerKnowledgeStoreProjection();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("tables".equals(fieldName)) {
-                            tables =
+                            List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables =
                                     reader.readArray(
                                             reader1 ->
                                                     SearchIndexerKnowledgeStoreTableProjectionSelector.fromJson(
                                                             reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.tables = tables;
                         } else if ("objects".equals(fieldName)) {
-                            objects =
+                            List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects =
                                     reader.readArray(
                                             reader1 ->
                                                     SearchIndexerKnowledgeStoreObjectProjectionSelector.fromJson(
                                                             reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.objects = objects;
                         } else if ("files".equals(fieldName)) {
-                            files =
+                            List<SearchIndexerKnowledgeStoreFileProjectionSelector> files =
                                     reader.readArray(
                                             reader1 ->
                                                     SearchIndexerKnowledgeStoreFileProjectionSelector.fromJson(
                                                             reader1));
+                            deserializedSearchIndexerKnowledgeStoreProjection.files = files;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    SearchIndexerKnowledgeStoreProjection deserializedValue =
-                            new SearchIndexerKnowledgeStoreProjection();
-                    deserializedValue.tables = tables;
-                    deserializedValue.objects = objects;
-                    deserializedValue.files = files;
 
-                    return deserializedValue;
+                    return deserializedSearchIndexerKnowledgeStoreProjection;
                 });
     }
 }

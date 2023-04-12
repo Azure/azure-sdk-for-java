@@ -71,8 +71,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     public interface DigitalTwinsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DigitalTwinsDescriptionInner>> getByResourceGroup(
@@ -86,8 +85,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -118,8 +115,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -144,8 +140,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
-                + "/digitalTwinsInstances")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DigitalTwinsDescriptionListResult>> listByResourceGroup(
@@ -158,8 +153,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DigitalTwins/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -530,7 +524,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsDescriptionInner digitalTwinsCreate) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate).getSyncPoller();
     }
 
     /**
@@ -553,7 +547,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         String resourceName,
         DigitalTwinsDescriptionInner digitalTwinsCreate,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, digitalTwinsCreate, context)
+            .getSyncPoller();
     }
 
     /**
@@ -834,7 +830,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, DigitalTwinsPatchDescription digitalTwinsPatchDescription) {
-        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription).getSyncPoller();
     }
 
     /**
@@ -855,7 +851,9 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
         String resourceName,
         DigitalTwinsPatchDescription digitalTwinsPatchDescription,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, resourceName, digitalTwinsPatchDescription, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1096,7 +1094,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -1113,7 +1111,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DigitalTwinsDescriptionInner>, DigitalTwinsDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**

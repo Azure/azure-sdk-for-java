@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegistrationTokenOperation. */
+/** The type of resetting the token. */
 public final class RegistrationTokenOperation extends ExpandableStringEnum<RegistrationTokenOperation> {
     /** Static value Delete for RegistrationTokenOperation. */
     public static final RegistrationTokenOperation DELETE = fromString("Delete");
@@ -18,6 +18,15 @@ public final class RegistrationTokenOperation extends ExpandableStringEnum<Regis
 
     /** Static value Update for RegistrationTokenOperation. */
     public static final RegistrationTokenOperation UPDATE = fromString("Update");
+
+    /**
+     * Creates a new instance of RegistrationTokenOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RegistrationTokenOperation() {
+    }
 
     /**
      * Creates or finds a RegistrationTokenOperation from its string representation.

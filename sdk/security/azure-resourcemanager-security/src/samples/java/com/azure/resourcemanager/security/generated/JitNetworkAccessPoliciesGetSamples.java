@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JitNetworkAccessPolicies Get. */
 public final class JitNetworkAccessPoliciesGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class JitNetworkAccessPoliciesGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getJITNetworkAccessPolicy(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.jitNetworkAccessPolicies().getWithResponse("myRg1", "westeurope", "default", Context.NONE);
+        manager
+            .jitNetworkAccessPolicies()
+            .getWithResponse("myRg1", "westeurope", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -23,6 +23,10 @@ public final class CertificateEmailInner {
     @JsonProperty(value = "timeStamp")
     private OffsetDateTime timestamp;
 
+    /** Creates an instance of CertificateEmailInner class. */
+    public CertificateEmailInner() {
+    }
+
     /**
      * Get the emailId property: Email id.
      *

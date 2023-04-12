@@ -7,19 +7,18 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.ResourceLogCategory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceLogCategoryTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceLogCategory model =
             BinaryData.fromString("{\"name\":\"ibycno\",\"enabled\":\"knme\"}").toObject(ResourceLogCategory.class);
         Assertions.assertEquals("ibycno", model.name());
         Assertions.assertEquals("knme", model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceLogCategory model = new ResourceLogCategory().withName("ibycno").withEnabled("knme");
         model = BinaryData.fromObject(model).toObject(ResourceLogCategory.class);
         Assertions.assertEquals("ibycno", model.name());

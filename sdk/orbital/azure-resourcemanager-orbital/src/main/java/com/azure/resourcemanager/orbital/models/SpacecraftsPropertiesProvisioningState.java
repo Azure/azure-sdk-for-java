@@ -8,26 +8,35 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpacecraftsPropertiesProvisioningState. */
+/** The current state of the resource's creation, deletion, or modification. */
 public final class SpacecraftsPropertiesProvisioningState
     extends ExpandableStringEnum<SpacecraftsPropertiesProvisioningState> {
-    /** Static value Creating for SpacecraftsPropertiesProvisioningState. */
-    public static final SpacecraftsPropertiesProvisioningState CREATING = fromString("Creating");
+    /** Static value creating for SpacecraftsPropertiesProvisioningState. */
+    public static final SpacecraftsPropertiesProvisioningState CREATING = fromString("creating");
 
-    /** Static value Succeeded for SpacecraftsPropertiesProvisioningState. */
-    public static final SpacecraftsPropertiesProvisioningState SUCCEEDED = fromString("Succeeded");
+    /** Static value succeeded for SpacecraftsPropertiesProvisioningState. */
+    public static final SpacecraftsPropertiesProvisioningState SUCCEEDED = fromString("succeeded");
 
-    /** Static value Failed for SpacecraftsPropertiesProvisioningState. */
-    public static final SpacecraftsPropertiesProvisioningState FAILED = fromString("Failed");
+    /** Static value failed for SpacecraftsPropertiesProvisioningState. */
+    public static final SpacecraftsPropertiesProvisioningState FAILED = fromString("failed");
 
-    /** Static value Canceled for SpacecraftsPropertiesProvisioningState. */
-    public static final SpacecraftsPropertiesProvisioningState CANCELED = fromString("Canceled");
+    /** Static value canceled for SpacecraftsPropertiesProvisioningState. */
+    public static final SpacecraftsPropertiesProvisioningState CANCELED = fromString("canceled");
 
-    /** Static value Updating for SpacecraftsPropertiesProvisioningState. */
-    public static final SpacecraftsPropertiesProvisioningState UPDATING = fromString("Updating");
+    /** Static value updating for SpacecraftsPropertiesProvisioningState. */
+    public static final SpacecraftsPropertiesProvisioningState UPDATING = fromString("updating");
 
-    /** Static value Deleting for SpacecraftsPropertiesProvisioningState. */
-    public static final SpacecraftsPropertiesProvisioningState DELETING = fromString("Deleting");
+    /** Static value deleting for SpacecraftsPropertiesProvisioningState. */
+    public static final SpacecraftsPropertiesProvisioningState DELETING = fromString("deleting");
+
+    /**
+     * Creates a new instance of SpacecraftsPropertiesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpacecraftsPropertiesProvisioningState() {
+    }
 
     /**
      * Creates or finds a SpacecraftsPropertiesProvisioningState from its string representation.

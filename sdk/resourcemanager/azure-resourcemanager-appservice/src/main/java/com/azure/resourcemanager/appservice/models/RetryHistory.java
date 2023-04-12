@@ -48,6 +48,10 @@ public final class RetryHistory {
     @JsonProperty(value = "error")
     private ManagementError error;
 
+    /** Creates an instance of RetryHistory class. */
+    public RetryHistory() {
+    }
+
     /**
      * Get the startTime property: Gets the start time.
      *

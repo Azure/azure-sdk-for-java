@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
 
 /** Samples for StaticSites UpdateStaticSiteUser. */
 public final class StaticSitesUpdateStaticSiteUserSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/UpdateStaticSiteUser.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/UpdateStaticSiteUser.json
      */
     /**
      * Sample code: Create or update a user for a static site.
@@ -29,6 +28,6 @@ public final class StaticSitesUpdateStaticSiteUserSamples {
                 "aad",
                 "1234",
                 new StaticSiteUserArmResourceInner().withRoles("contributor"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

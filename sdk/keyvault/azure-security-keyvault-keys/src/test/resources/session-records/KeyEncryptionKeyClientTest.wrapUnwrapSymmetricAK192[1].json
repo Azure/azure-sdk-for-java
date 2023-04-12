@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretkey26564ceb?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretkey58164833?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "293",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:27 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:26 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "2edb52e3-cd43-4b6a-9fa9-6a716d8c0a39",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://vicolinakeyvault.vault.azure.net/secrets/secretkey26564ceb/afe2a830190e4877b5930d0a1c1ff7c0\",\"attributes\":{\"enabled\":true,\"created\":1668205768,\"updated\":1668205768,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
+      "Content-Length" : "294",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "20ed4439-71c8-4cc9-b604-a51c1161d6af",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azsdktests.vault.azure.net/secrets/secretkey58164833/6a2f6e77a03a4bb39cc3ff0e8ffded32\",\"attributes\":{\"enabled\":true,\"created\":1678954167,\"updated\":1678954167,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretkey26564ceb/afe2a830190e4877b5930d0a1c1ff7c0?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretkey58164833/6a2f6e77a03a4bb39cc3ff0e8ffded32?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "293",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:29:27 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:27 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "eaaf6531-ea61-4bf5-811d-d92c310d4cac",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://vicolinakeyvault.vault.azure.net/secrets/secretkey26564ceb/afe2a830190e4877b5930d0a1c1ff7c0\",\"attributes\":{\"enabled\":true,\"created\":1668205768,\"updated\":1668205768,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
+      "Content-Length" : "294",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "56d04d96-2a64-4ac8-9c4e-48fb5c720699",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azsdktests.vault.azure.net/secrets/secretkey58164833/6a2f6e77a03a4bb39cc3ff0e8ffded32\",\"attributes\":{\"enabled\":true,\"created\":1678954167,\"updated\":1678954167,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "secretkey26564ceb" ]
+  "variables" : [ "secretkey58164833" ]
 }

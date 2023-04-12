@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Spacecrafts CreateOrUpdate. */
 public final class SpacecraftsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftCreate.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/SpacecraftCreate.json
      */
     /**
      * Sample code: Create a spacecraft.
@@ -25,7 +25,6 @@ public final class SpacecraftsCreateOrUpdateSamples {
             .define("CONTOSO_SAT")
             .withRegion("eastus2")
             .withExistingResourceGroup("contoso-Rgp")
-            .withNoradId("36411")
             .withTitleLine("CONTOSO_SAT")
             .withTleLine1("1 27424U 02022A   22167.05119303  .00000638  00000+0  15103-3 0  9994")
             .withTleLine2("2 27424  98.2477 108.9546 0000928  92.9194 327.0802 14.57300770 69982")
@@ -44,6 +43,7 @@ public final class SpacecraftsCreateOrUpdateSamples {
                             .withBandwidthMHz(15f)
                             .withDirection(Direction.DOWNLINK)
                             .withPolarization(Polarization.RHCP)))
+            .withNoradId("36411")
             .create();
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicySetDefinitions Get. */
 public final class PolicySetDefinitionsGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class PolicySetDefinitionsGetSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .getWithResponse("CostManagement", Context.NONE);
+            .getWithResponse("CostManagement", com.azure.core.util.Context.NONE);
     }
 }

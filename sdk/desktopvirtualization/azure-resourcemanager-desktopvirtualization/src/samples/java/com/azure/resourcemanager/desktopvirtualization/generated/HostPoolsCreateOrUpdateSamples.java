@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.RegistrationInfoInner;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.Operation;
+import com.azure.resourcemanager.desktopvirtualization.models.MaintenanceWindowProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationTokenOperation;
+import com.azure.resourcemanager.desktopvirtualization.models.SessionHostComponentUpdateType;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for HostPools CreateOrUpdate. */
 public final class HostPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/HostPool_Create.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/HostPool_Create.json
      */
     /**
      * Sample code: HostPool_Create.
@@ -53,12 +55,16 @@ public final class HostPoolsCreateOrUpdateSamples {
             .withSsoClientSecretKeyVaultPath("https://keyvault/secret")
             .withSsoSecretType(SsoSecretType.SHARED_KEY)
             .withStartVMOnConnect(false)
-            .withMigrationRequest(
-                new MigrationRequestProperties()
-                    .withOperation(Operation.START)
-                    .withMigrationPath(
-                        "TenantGroups/{defaultV1TenantGroup.Name}/Tenants/{defaultV1Tenant.Name}/HostPools/{sessionHostPool.Name}"))
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAgentUpdate(
+                new AgentUpdateProperties()
+                    .withType(SessionHostComponentUpdateType.SCHEDULED)
+                    .withUseSessionHostLocalTime(false)
+                    .withMaintenanceWindowTimeZone("Alaskan Standard Time")
+                    .withMaintenanceWindows(
+                        Arrays
+                            .asList(
+                                new MaintenanceWindowProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
+                                new MaintenanceWindowProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
             .create();
     }
 

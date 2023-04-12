@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Providers GetAtTenantScope. */
 public final class ProvidersGetAtTenantScopeSamples {
     /*
@@ -22,6 +20,7 @@ public final class ProvidersGetAtTenantScopeSamples {
             .manager()
             .serviceClient()
             .getProviders()
-            .getAtTenantScopeWithResponse("Microsoft.Storage", "resourceTypes/aliases", Context.NONE);
+            .getAtTenantScopeWithResponse(
+                "Microsoft.Storage", "resourceTypes/aliases", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerType. */
+/** The type of the load balancer. */
 public final class LoadBalancerType extends ExpandableStringEnum<LoadBalancerType> {
     /** Static value BreadthFirst for LoadBalancerType. */
     public static final LoadBalancerType BREADTH_FIRST = fromString("BreadthFirst");
@@ -18,6 +18,15 @@ public final class LoadBalancerType extends ExpandableStringEnum<LoadBalancerTyp
 
     /** Static value Persistent for LoadBalancerType. */
     public static final LoadBalancerType PERSISTENT = fromString("Persistent");
+
+    /**
+     * Creates a new instance of LoadBalancerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerType() {
+    }
 
     /**
      * Creates or finds a LoadBalancerType from its string representation.

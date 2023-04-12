@@ -106,10 +106,10 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        KeywordTokenizerV1 deserializedValue = new KeywordTokenizerV1(name);
-                        deserializedValue.bufferSize = bufferSize;
+                        KeywordTokenizerV1 deserializedKeywordTokenizerV1 = new KeywordTokenizerV1(name);
+                        deserializedKeywordTokenizerV1.bufferSize = bufferSize;
 
-                        return deserializedValue;
+                        return deserializedKeywordTokenizerV1;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

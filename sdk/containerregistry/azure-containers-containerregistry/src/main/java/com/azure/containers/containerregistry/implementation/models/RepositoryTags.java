@@ -87,25 +87,22 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
     public static RepositoryTags fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String name = null;
-                    List<String> tags = null;
+                    RepositoryTags deserializedRepositoryTags = new RepositoryTags();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("name".equals(fieldName)) {
-                            name = reader.getString();
+                            deserializedRepositoryTags.name = reader.getString();
                         } else if ("tags".equals(fieldName)) {
-                            tags = reader.readArray(reader1 -> reader1.getString());
+                            List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                            deserializedRepositoryTags.tags = tags;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    RepositoryTags deserializedValue = new RepositoryTags();
-                    deserializedValue.name = name;
-                    deserializedValue.tags = tags;
 
-                    return deserializedValue;
+                    return deserializedRepositoryTags;
                 });
     }
 }

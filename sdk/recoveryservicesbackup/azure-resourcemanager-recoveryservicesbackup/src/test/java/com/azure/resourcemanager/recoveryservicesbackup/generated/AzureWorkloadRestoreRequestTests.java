@@ -20,53 +20,53 @@ public final class AzureWorkloadRestoreRequestTests {
         AzureWorkloadRestoreRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadRestoreRequest\",\"recoveryType\":\"Invalid\",\"sourceResourceId\":\"ijouwivkxoyzunb\",\"propertyBag\":{\"lrcivtsoxfrke\":\"rtikvcpwpg\",\"skawaoqvmmb\":\"xpmyyefrpmpdnq\",\"egnitg\":\"pqfrtqlkz\",\"ealzxwhcansymoyq\":\"kxlzyqdrfeg\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"divb\",\"databaseName\":\"xgomfajuwa\",\"targetDirectoryForFileRestore\":\"vdaeyyguxakjsq\"},\"recoveryMode\":\"Invalid\",\"targetVirtualMachineId\":\"ezkgi\"}")
+                    "{\"objectType\":\"AzureWorkloadRestoreRequest\",\"recoveryType\":\"AlternateLocation\",\"sourceResourceId\":\"sx\",\"propertyBag\":{\"sbhud\":\"fbuzjyihs\",\"foobrlttyms\":\"pohyuemslynsqyr\",\"nfwqzdzgtilaxhn\":\"nygq\",\"wivkxo\":\"hqlyvijo\"},\"targetInfo\":{\"overwriteOption\":\"Overwrite\",\"containerId\":\"ixxrtikvcpw\",\"databaseName\":\"clrcivtsox\",\"targetDirectoryForFileRestore\":\"kenx\"},\"recoveryMode\":\"WorkloadRecovery\",\"targetVirtualMachineId\":\"efrp\"}")
                 .toObject(AzureWorkloadRestoreRequest.class);
-        Assertions.assertEquals(RecoveryType.INVALID, model.recoveryType());
-        Assertions.assertEquals("ijouwivkxoyzunb", model.sourceResourceId());
-        Assertions.assertEquals("rtikvcpwpg", model.propertyBag().get("lrcivtsoxfrke"));
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("divb", model.targetInfo().containerId());
-        Assertions.assertEquals("xgomfajuwa", model.targetInfo().databaseName());
-        Assertions.assertEquals("vdaeyyguxakjsq", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.INVALID, model.recoveryMode());
-        Assertions.assertEquals("ezkgi", model.targetVirtualMachineId());
+        Assertions.assertEquals(RecoveryType.ALTERNATE_LOCATION, model.recoveryType());
+        Assertions.assertEquals("sx", model.sourceResourceId());
+        Assertions.assertEquals("fbuzjyihs", model.propertyBag().get("sbhud"));
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("ixxrtikvcpw", model.targetInfo().containerId());
+        Assertions.assertEquals("clrcivtsox", model.targetInfo().databaseName());
+        Assertions.assertEquals("kenx", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
+        Assertions.assertEquals("efrp", model.targetVirtualMachineId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadRestoreRequest model =
             new AzureWorkloadRestoreRequest()
-                .withRecoveryType(RecoveryType.INVALID)
-                .withSourceResourceId("ijouwivkxoyzunb")
+                .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+                .withSourceResourceId("sx")
                 .withPropertyBag(
                     mapOf(
-                        "lrcivtsoxfrke",
-                        "rtikvcpwpg",
-                        "skawaoqvmmb",
-                        "xpmyyefrpmpdnq",
-                        "egnitg",
-                        "pqfrtqlkz",
-                        "ealzxwhcansymoyq",
-                        "kxlzyqdrfeg"))
+                        "sbhud",
+                        "fbuzjyihs",
+                        "foobrlttyms",
+                        "pohyuemslynsqyr",
+                        "nfwqzdzgtilaxhn",
+                        "nygq",
+                        "wivkxo",
+                        "hqlyvijo"))
                 .withTargetInfo(
                     new TargetRestoreInfo()
-                        .withOverwriteOption(OverwriteOptions.INVALID)
-                        .withContainerId("divb")
-                        .withDatabaseName("xgomfajuwa")
-                        .withTargetDirectoryForFileRestore("vdaeyyguxakjsq"))
-                .withRecoveryMode(RecoveryMode.INVALID)
-                .withTargetVirtualMachineId("ezkgi");
+                        .withOverwriteOption(OverwriteOptions.OVERWRITE)
+                        .withContainerId("ixxrtikvcpw")
+                        .withDatabaseName("clrcivtsox")
+                        .withTargetDirectoryForFileRestore("kenx"))
+                .withRecoveryMode(RecoveryMode.WORKLOAD_RECOVERY)
+                .withTargetVirtualMachineId("efrp");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadRestoreRequest.class);
-        Assertions.assertEquals(RecoveryType.INVALID, model.recoveryType());
-        Assertions.assertEquals("ijouwivkxoyzunb", model.sourceResourceId());
-        Assertions.assertEquals("rtikvcpwpg", model.propertyBag().get("lrcivtsoxfrke"));
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("divb", model.targetInfo().containerId());
-        Assertions.assertEquals("xgomfajuwa", model.targetInfo().databaseName());
-        Assertions.assertEquals("vdaeyyguxakjsq", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.INVALID, model.recoveryMode());
-        Assertions.assertEquals("ezkgi", model.targetVirtualMachineId());
+        Assertions.assertEquals(RecoveryType.ALTERNATE_LOCATION, model.recoveryType());
+        Assertions.assertEquals("sx", model.sourceResourceId());
+        Assertions.assertEquals("fbuzjyihs", model.propertyBag().get("sbhud"));
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
+        Assertions.assertEquals("ixxrtikvcpw", model.targetInfo().containerId());
+        Assertions.assertEquals("clrcivtsox", model.targetInfo().databaseName());
+        Assertions.assertEquals("kenx", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
+        Assertions.assertEquals("efrp", model.targetVirtualMachineId());
     }
 
     @SuppressWarnings("unchecked")

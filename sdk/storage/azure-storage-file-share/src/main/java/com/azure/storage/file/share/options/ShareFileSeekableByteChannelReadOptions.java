@@ -10,21 +10,21 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  */
 public class ShareFileSeekableByteChannelReadOptions {
     private ShareRequestConditions requestConditions;
-    private Long chunkSize;
+    private Long chunkSizeInBytes;
 
     /**
      * @return The size of individual writes to the service.
      */
-    public Long getChunkSize() {
-        return chunkSize;
+    public Long getChunkSizeInBytes() {
+        return chunkSizeInBytes;
     }
 
     /**
-     * @param chunkSize The size of individual writes to the service.
+     * @param chunkSizeInBytes The size of individual writes to the service.
      * @return The updated instance.
      */
-    public ShareFileSeekableByteChannelReadOptions setChunkSize(Long chunkSize) {
-        this.chunkSize = chunkSize;
+    public ShareFileSeekableByteChannelReadOptions setChunkSizeInBytes(Long chunkSizeInBytes) {
+        this.chunkSizeInBytes = chunkSizeInBytes;
         return this;
     }
 

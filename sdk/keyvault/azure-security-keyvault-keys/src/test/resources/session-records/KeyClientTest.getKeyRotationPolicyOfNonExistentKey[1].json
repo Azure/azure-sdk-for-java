@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/nonexistentkey89551/rotationpolicy?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/nonexistentkey41610/rotationpolicy?api-version=7.4",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)"
     },
     "Response" : {
-      "content-length" : "307",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 11 Nov 2022 22:29:37 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:44 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "a1d0afae-6821-476e-b5b5-ba5cedd07691",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) nonexistentkey89551 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
+      "Content-Length" : "307",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "x-ms-request-id" : "619dd1e5-c4ca-4f08-8c84-1b3f9262b913",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) nonexistentkey41610 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "nonexistentkey89551" ]
+  "variables" : [ "nonexistentkey41610" ]
 }

@@ -21,31 +21,36 @@ public final class GenericProtectionPolicyTests {
         GenericProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"GenericProtectionPolicy\",\"subProtectionPolicy\":[{\"policyType\":\"SnapshotCopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"SnapshotCopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}}],\"timeZone\":\"kjaosrxuzv\",\"fabricName\":\"mktcqiosmgbza\",\"protectedItemsCount\":1221237045,\"resourceGuardOperationRequests\":[\"lyrtltlaprlt\"]}")
+                    "{\"backupManagementType\":\"GenericProtectionPolicy\",\"subProtectionPolicy\":[{\"policyType\":\"SnapshotFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"Full\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"SnapshotCopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}}],\"timeZone\":\"ndvnoaml\",\"fabricName\":\"ehaohdjhh\",\"protectedItemsCount\":152942786,\"resourceGuardOperationRequests\":[\"xcoxpelnjet\",\"gltsxoat\",\"tgzpnpb\"]}")
                 .toObject(GenericProtectionPolicy.class);
-        Assertions.assertEquals(1221237045, model.protectedItemsCount());
-        Assertions.assertEquals("lyrtltlaprlt", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(PolicyType.SNAPSHOT_COPY_ONLY_FULL, model.subProtectionPolicy().get(0).policyType());
-        Assertions.assertEquals("kjaosrxuzv", model.timeZone());
-        Assertions.assertEquals("mktcqiosmgbza", model.fabricName());
+        Assertions.assertEquals(152942786, model.protectedItemsCount());
+        Assertions.assertEquals("xcoxpelnjet", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(PolicyType.SNAPSHOT_FULL, model.subProtectionPolicy().get(0).policyType());
+        Assertions.assertEquals("ndvnoaml", model.timeZone());
+        Assertions.assertEquals("ehaohdjhh", model.fabricName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenericProtectionPolicy model =
             new GenericProtectionPolicy()
-                .withProtectedItemsCount(1221237045)
-                .withResourceGuardOperationRequests(Arrays.asList("lyrtltlaprlt"))
+                .withProtectedItemsCount(152942786)
+                .withResourceGuardOperationRequests(Arrays.asList("xcoxpelnjet", "gltsxoat", "tgzpnpb"))
                 .withSubProtectionPolicy(
                     Arrays
                         .asList(
                             new SubProtectionPolicy()
-                                .withPolicyType(PolicyType.SNAPSHOT_COPY_ONLY_FULL)
+                                .withPolicyType(PolicyType.SNAPSHOT_FULL)
                                 .withSchedulePolicy(new SchedulePolicy())
                                 .withRetentionPolicy(new RetentionPolicy())
                                 .withTieringPolicy(mapOf()),
                             new SubProtectionPolicy()
-                                .withPolicyType(PolicyType.COPY_ONLY_FULL)
+                                .withPolicyType(PolicyType.LOG)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(mapOf()),
+                            new SubProtectionPolicy()
+                                .withPolicyType(PolicyType.FULL)
                                 .withSchedulePolicy(new SchedulePolicy())
                                 .withRetentionPolicy(new RetentionPolicy())
                                 .withTieringPolicy(mapOf()),
@@ -54,14 +59,14 @@ public final class GenericProtectionPolicyTests {
                                 .withSchedulePolicy(new SchedulePolicy())
                                 .withRetentionPolicy(new RetentionPolicy())
                                 .withTieringPolicy(mapOf())))
-                .withTimeZone("kjaosrxuzv")
-                .withFabricName("mktcqiosmgbza");
+                .withTimeZone("ndvnoaml")
+                .withFabricName("ehaohdjhh");
         model = BinaryData.fromObject(model).toObject(GenericProtectionPolicy.class);
-        Assertions.assertEquals(1221237045, model.protectedItemsCount());
-        Assertions.assertEquals("lyrtltlaprlt", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(PolicyType.SNAPSHOT_COPY_ONLY_FULL, model.subProtectionPolicy().get(0).policyType());
-        Assertions.assertEquals("kjaosrxuzv", model.timeZone());
-        Assertions.assertEquals("mktcqiosmgbza", model.fabricName());
+        Assertions.assertEquals(152942786, model.protectedItemsCount());
+        Assertions.assertEquals("xcoxpelnjet", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(PolicyType.SNAPSHOT_FULL, model.subProtectionPolicy().get(0).policyType());
+        Assertions.assertEquals("ndvnoaml", model.timeZone());
+        Assertions.assertEquals("ehaohdjhh", model.fabricName());
     }
 
     @SuppressWarnings("unchecked")

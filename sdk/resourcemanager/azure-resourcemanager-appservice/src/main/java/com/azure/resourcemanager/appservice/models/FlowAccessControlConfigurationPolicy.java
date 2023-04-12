@@ -23,6 +23,10 @@ public final class FlowAccessControlConfigurationPolicy {
     @JsonProperty(value = "openAuthenticationPolicies")
     private OpenAuthenticationAccessPolicies openAuthenticationPolicies;
 
+    /** Creates an instance of FlowAccessControlConfigurationPolicy class. */
+    public FlowAccessControlConfigurationPolicy() {
+    }
+
     /**
      * Get the allowedCallerIpAddresses property: The allowed caller IP address ranges.
      *

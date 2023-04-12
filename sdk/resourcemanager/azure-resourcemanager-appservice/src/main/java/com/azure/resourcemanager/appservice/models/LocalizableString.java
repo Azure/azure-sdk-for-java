@@ -22,6 +22,10 @@ public final class LocalizableString {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of LocalizableString class. */
+    public LocalizableString() {
+    }
+
     /**
      * Get the value property: Non-localized name.
      *

@@ -5,10 +5,11 @@ package com.azure.spring.cloud.actuator.appconfiguration;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 
-import com.azure.spring.cloud.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 
 /**
- * Indicator class of App Configuration 
+ * Indicator class of App Configuration
  */
 public final class AppConfigurationConfigHealthIndicator implements HealthIndicator {
 
@@ -28,13 +29,14 @@ public final class AppConfigurationConfigHealthIndicator implements HealthIndica
         boolean healthy = true;
 
         for (String store : refresh.getAppConfigurationStoresHealth().keySet()) {
-            if ("DOWN".equals(refresh.getAppConfigurationStoresHealth().get(store))) {
+            if (AppConfigurationStoreHealth.DOWN.equals(refresh.getAppConfigurationStoresHealth().get(store))) {
                 healthy = false;
-                healthBuilder.withDetail(store, "DOWN");
-            } else if ("NOT_LOADED".equals(refresh.getAppConfigurationStoresHealth().get(store))) {
-                healthBuilder.withDetail(store, "NOT LOADED");
+                healthBuilder.withDetail(store, AppConfigurationStoreHealth.DOWN.toString());
+            } else if (AppConfigurationStoreHealth.NOT_LOADED
+                .equals(refresh.getAppConfigurationStoresHealth().get(store))) {
+                healthBuilder.withDetail(store, AppConfigurationStoreHealth.NOT_LOADED.toString());
             } else {
-                healthBuilder.withDetail(store, "UP");
+                healthBuilder.withDetail(store, AppConfigurationStoreHealth.UP.toString());
             }
         }
 

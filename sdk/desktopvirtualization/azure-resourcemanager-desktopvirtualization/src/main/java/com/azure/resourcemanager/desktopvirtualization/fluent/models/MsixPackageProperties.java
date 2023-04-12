@@ -27,8 +27,7 @@ public final class MsixPackageProperties {
     private String packageName;
 
     /*
-     * Package Family Name from appxmanifest.xml. Contains Package Name and
-     * Publisher name.
+     * Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name.
      */
     @JsonProperty(value = "packageFamilyName")
     private String packageFamilyName;
@@ -80,6 +79,10 @@ public final class MsixPackageProperties {
      */
     @JsonProperty(value = "packageApplications")
     private List<MsixPackageApplications> packageApplications;
+
+    /** Creates an instance of MsixPackageProperties class. */
+    public MsixPackageProperties() {
+    }
 
     /**
      * Get the imagePath property: VHD/CIM image path on Network Share.

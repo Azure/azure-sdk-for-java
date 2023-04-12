@@ -26,6 +26,10 @@ public final class HttpScaleRule {
     @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
+    /** Creates an instance of HttpScaleRule class. */
+    public HttpScaleRule() {
+    }
+
     /**
      * Get the metadata property: Metadata properties to describe http scale rule.
      *

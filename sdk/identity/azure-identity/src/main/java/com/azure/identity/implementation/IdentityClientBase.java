@@ -223,6 +223,13 @@ public abstract class IdentityClientBase {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         }
+
+        if (!options.isCp1Disabled()) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            applicationBuilder.clientCapabilities(set);
+        }
+
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -337,10 +344,6 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                if (accessToken.getClass().isInstance(MSIToken.class)) {
-                    MSIToken msiToken = (MSIToken) accessToken;
-                    result.setRefreshInSeconds(msiToken.getRefreshInSeconds());
-                }
                 return result;
             }).toFuture();
         });
@@ -377,10 +380,15 @@ public abstract class IdentityClientBase {
     }
 
     OnBehalfOfParameters buildOBOFlowParameters(TokenRequestContext request) {
-        return OnBehalfOfParameters
+        OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options))
-            .build();
+            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(customClaimRequest);
+        }
+        return builder.build();
     }
 
     InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {
@@ -466,7 +474,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -551,7 +559,7 @@ public abstract class IdentityClientBase {
                                                 +
                                                 "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                                                 +
-                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                                                "https://aka.ms/azsdk/java/identity/azdevclicredential/troubleshoot"));
                     }
                     output.append(line);
                 }
@@ -559,7 +567,7 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {

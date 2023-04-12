@@ -1,230 +1,474 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6f786638-46ee-491f-9fdb-d7f8ba67f4ad",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "291",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:16:29 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4d31708d-534c-45e7-95bf-6e08bbcb48e0"
+      },
+      "RequestBody": {
+        "name": "indexforindexers828635a609",
+        "fields": [
+          {
+            "name": "county_name",
+            "type": "Edm.String",
+            "searchable": false,
+            "filterable": true
+          },
+          {
+            "name": "state",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true
+          },
+          {
+            "name": "feature_id",
+            "type": "Edm.String",
+            "key": true,
+            "searchable": true,
+            "filterable": false
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "4d31708d-534c-45e7-95bf-6e08bbcb48e0",
+        "Content-Length": "1184",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:16:30 GMT",
+        "elapsed-time": "1221",
+        "ETag": "W/\u00220x8DB20DB2B860C14\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/indexes(\u0027indexforindexers828635a609\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "4d31708d-534c-45e7-95bf-6e08bbcb48e0",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "4d31708d-534c-45e7-95bf-6e08bbcb48e0"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\u00220x8DB20DB2B860C14\u0022",
+        "name": "indexforindexers828635a609",
+        "defaultScoringProfile": null,
+        "fields": [
+          {
+            "name": "county_name",
+            "type": "Edm.String",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "state",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "feature_id",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": false,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": true,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [],
+        "corsOptions": null,
+        "suggesters": [],
+        "analyzers": [],
+        "normalizers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "encryptionKey": null,
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+          "k1": null,
+          "b": null
+        },
+        "semantic": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "6f786638-46ee-491f-9fdb-d7f8ba67f4ad",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:45:19 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "6f786638-46ee-491f-9fdb-d7f8ba67f4ad",
-      "ETag" : "W/\"0x8DAF8CBBF177E10\"",
-      "elapsed-time" : "807",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "1172",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBBF177E10\\\"\",\"name\":\"indexforindexers41923b951f\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"county_name\",\"type\":\"Edm.String\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"state\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"feature_id\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "6f786638-46ee-491f-9fdb-d7f8ba67f4ad",
-      "Location" : "https://alzimmer-basic.search.windows.net/indexes('indexforindexers41923b951f')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/datasources(\u0027azs-java-live-blob05713a20d\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "382",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "7740e55f-bca2-40b9-9abe-29bb8cbae636"
+      },
+      "RequestBody": {
+        "name": "azs-java-live-blob05713a20d",
+        "description": "real live blob",
+        "type": "azureblob",
+        "credentials": {
+          "connectionString": "REDACTED"
+        },
+        "container": {
+          "name": "searchcontainer",
+          "query": "/"
+        },
+        "dataDeletionDetectionPolicy": {
+          "@odata.type": "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+          "softDeleteColumnName": "fieldName",
+          "softDeleteMarkerValue": "someValue"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "7740e55f-bca2-40b9-9abe-29bb8cbae636",
+        "Content-Length": "602",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:16:30 GMT",
+        "elapsed-time": "40",
+        "ETag": "W/\u00220x8DB20DB2B98F50F\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/datasources(\u0027azs-java-live-blob05713a20d\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "7740e55f-bca2-40b9-9abe-29bb8cbae636",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "7740e55f-bca2-40b9-9abe-29bb8cbae636"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#datasources/$entity",
+        "@odata.etag": "\u00220x8DB20DB2B98F50F\u0022",
+        "name": "azs-java-live-blob05713a20d",
+        "description": "real live blob",
+        "type": "azureblob",
+        "subtype": null,
+        "credentials": {
+          "connectionString": null
+        },
+        "container": {
+          "name": "searchcontainer",
+          "query": "/"
+        },
+        "dataChangeDetectionPolicy": null,
+        "dataDeletionDetectionPolicy": {
+          "@odata.type": "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+          "softDeleteColumnName": "fieldName",
+          "softDeleteMarkerValue": "someValue"
+        },
+        "encryptionKey": null,
+        "identity": null
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-live-blob68716a2ae')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "36206597-ddb9-4637-90ca-a5b257c7d260",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/indexers?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "160",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1c1896d4-3961-4510-bbde-384b85af834b"
+      },
+      "RequestBody": {
+        "name": "aindexer92176073cc9e28f",
+        "dataSourceName": "azs-java-live-blob05713a20d",
+        "targetIndexName": "indexforindexers828635a609",
+        "schedule": {
+          "interval": "PT24H"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "1c1896d4-3961-4510-bbde-384b85af834b",
+        "Content-Length": "489",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:16:30 GMT",
+        "elapsed-time": "482",
+        "ETag": "W/\u00220x8DB20DB2BC5F1D8\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/indexers(\u0027aindexer92176073cc9e28f\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "1c1896d4-3961-4510-bbde-384b85af834b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "1c1896d4-3961-4510-bbde-384b85af834b"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexers/$entity",
+        "@odata.etag": "\u00220x8DB20DB2BC5F1D8\u0022",
+        "name": "aindexer92176073cc9e28f",
+        "description": null,
+        "dataSourceName": "azs-java-live-blob05713a20d",
+        "skillsetName": null,
+        "targetIndexName": "indexforindexers828635a609",
+        "disabled": null,
+        "schedule": {
+          "interval": "P1D",
+          "startTime": "2023-03-09T20:16:30.523503Z"
+        },
+        "parameters": null,
+        "fieldMappings": [],
+        "outputFieldMappings": [],
+        "cache": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "36206597-ddb9-4637-90ca-a5b257c7d260",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:45:19 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "36206597-ddb9-4637-90ca-a5b257c7d260",
-      "ETag" : "W/\"0x8DAF8CBBF305990\"",
-      "elapsed-time" : "83",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "576",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#datasources/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBBF305990\\\"\",\"name\":\"azs-java-live-blob68716a2ae\",\"description\":\"real live blob\",\"type\":\"azureblob\",\"subtype\":null,\"credentials\":{\"connectionString\":null},\"container\":{\"name\":\"searchcontainer\",\"query\":\"/\"},\"dataChangeDetectionPolicy\":null,\"dataDeletionDetectionPolicy\":{\"@odata.type\":\"#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy\",\"softDeleteColumnName\":\"fieldName\",\"softDeleteMarkerValue\":\"someValue\"},\"encryptionKey\":null,\"identity\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "36206597-ddb9-4637-90ca-a5b257c7d260",
-      "Location" : "https://alzimmer-basic.search.windows.net/datasources('azs-java-live-blob68716a2ae')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/indexers?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "160",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "83cc5bbe-3c5f-4ec7-bfb2-10a89f6013c0"
+      },
+      "RequestBody": {
+        "name": "bindexer032548fa9b2ac20",
+        "dataSourceName": "azs-java-live-blob05713a20d",
+        "targetIndexName": "indexforindexers828635a609",
+        "schedule": {
+          "interval": "PT24H"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "83cc5bbe-3c5f-4ec7-bfb2-10a89f6013c0",
+        "Content-Length": "490",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "elapsed-time": "438",
+        "ETag": "W/\u00220x8DB20DB2C1B7F55\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/indexers(\u0027bindexer032548fa9b2ac20\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "83cc5bbe-3c5f-4ec7-bfb2-10a89f6013c0",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "83cc5bbe-3c5f-4ec7-bfb2-10a89f6013c0"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexers/$entity",
+        "@odata.etag": "\u00220x8DB20DB2C1B7F55\u0022",
+        "name": "bindexer032548fa9b2ac20",
+        "description": null,
+        "dataSourceName": "azs-java-live-blob05713a20d",
+        "skillsetName": null,
+        "targetIndexName": "indexforindexers828635a609",
+        "disabled": null,
+        "schedule": {
+          "interval": "P1D",
+          "startTime": "2023-03-09T20:16:31.0860219Z"
+        },
+        "parameters": null,
+        "fieldMappings": [],
+        "outputFieldMappings": [],
+        "cache": null,
+        "encryptionKey": null
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexers?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "47a566e1-c583-46e0-b4e1-a152a14fd6e6",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/indexers?$select=name\u0026api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:16:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f99682f0-eaa0-41b9-a29a-1ec516fffbb1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "f99682f0-eaa0-41b9-a29a-1ec516fffbb1",
+        "Content-Length": "179",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "elapsed-time": "9",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "f99682f0-eaa0-41b9-a29a-1ec516fffbb1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "f99682f0-eaa0-41b9-a29a-1ec516fffbb1"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexers(name)",
+        "value": [
+          {
+            "name": "aindexer92176073cc9e28f"
+          },
+          {
+            "name": "bindexer032548fa9b2ac20"
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "47a566e1-c583-46e0-b4e1-a152a14fd6e6",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:45:19 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "47a566e1-c583-46e0-b4e1-a152a14fd6e6",
-      "ETag" : "W/\"0x8DAF8CBBF71ECB5\"",
-      "elapsed-time" : "536",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "477",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexers/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBBF71ECB5\\\"\",\"name\":\"aindexer819282c9fb5295a\",\"description\":null,\"dataSourceName\":\"azs-java-live-blob68716a2ae\",\"skillsetName\":null,\"targetIndexName\":\"indexforindexers41923b951f\",\"disabled\":null,\"schedule\":{\"interval\":\"P1D\",\"startTime\":\"2023-01-17T20:45:19.675982Z\"},\"parameters\":null,\"fieldMappings\":[],\"outputFieldMappings\":[],\"cache\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "47a566e1-c583-46e0-b4e1-a152a14fd6e6",
-      "Location" : "https://alzimmer-basic.search.windows.net/indexers('aindexer819282c9fb5295a')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/datasources(\u0027azs-java-live-blob05713a20d\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:16:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a31c236e-9878-408b-8288-f2e6a9be802d"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "a31c236e-9878-408b-8288-f2e6a9be802d",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "elapsed-time": "78",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "a31c236e-9878-408b-8288-f2e6a9be802d",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "a31c236e-9878-408b-8288-f2e6a9be802d"
+      },
+      "ResponseBody": null
     },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexers?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e61a7aef-25aa-412f-aacd-570bb1bfceb3",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/indexers(\u0027aindexer92176073cc9e28f\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:16:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5874ab21-261d-497b-920f-0bfe2a6338d2"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "5874ab21-261d-497b-920f-0bfe2a6338d2",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "elapsed-time": "43",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "5874ab21-261d-497b-920f-0bfe2a6338d2",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "5874ab21-261d-497b-920f-0bfe2a6338d2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e61a7aef-25aa-412f-aacd-570bb1bfceb3",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:45:20 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e61a7aef-25aa-412f-aacd-570bb1bfceb3",
-      "ETag" : "W/\"0x8DAF8CBBFCB7115\"",
-      "elapsed-time" : "556",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "478",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexers/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBBFCB7115\\\"\",\"name\":\"bindexer785700c50b176c8\",\"description\":null,\"dataSourceName\":\"azs-java-live-blob68716a2ae\",\"skillsetName\":null,\"targetIndexName\":\"indexforindexers41923b951f\",\"disabled\":null,\"schedule\":{\"interval\":\"P1D\",\"startTime\":\"2023-01-17T20:45:20.2853531Z\"},\"parameters\":null,\"fieldMappings\":[],\"outputFieldMappings\":[],\"cache\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e61a7aef-25aa-412f-aacd-570bb1bfceb3",
-      "Location" : "https://alzimmer-basic.search.windows.net/indexers('bindexer785700c50b176c8')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/indexers(\u0027bindexer032548fa9b2ac20\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:16:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "19999055-537b-4bdf-860c-038572628674"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "19999055-537b-4bdf-860c-038572628674",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "elapsed-time": "46",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "19999055-537b-4bdf-860c-038572628674",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "19999055-537b-4bdf-860c-038572628674"
+      },
+      "ResponseBody": null
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexers?$select=name&api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a0e21e4b-141c-434c-965f-fe09fa9cff4d"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "a0e21e4b-141c-434c-965f-fe09fa9cff4d",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:45:20 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "a0e21e4b-141c-434c-965f-fe09fa9cff4d",
-      "elapsed-time" : "8",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "167",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexers(name)\",\"value\":[{\"name\":\"aindexer819282c9fb5295a\"},{\"name\":\"bindexer785700c50b176c8\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "a0e21e4b-141c-434c-965f-fe09fa9cff4d",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-live-blob68716a2ae')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "56f1cea7-9a40-43e5-9006-374525ac0815"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "56f1cea7-9a40-43e5-9006-374525ac0815",
-      "elapsed-time" : "25",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "56f1cea7-9a40-43e5-9006-374525ac0815",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:45:20 GMT",
-      "x-ms-client-request-id" : "56f1cea7-9a40-43e5-9006-374525ac0815"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexers('aindexer819282c9fb5295a')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a17a22e0-4fb9-440e-8e88-c9266c42482b"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "a17a22e0-4fb9-440e-8e88-c9266c42482b",
-      "elapsed-time" : "39",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "a17a22e0-4fb9-440e-8e88-c9266c42482b",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:45:20 GMT",
-      "x-ms-client-request-id" : "a17a22e0-4fb9-440e-8e88-c9266c42482b"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexers('bindexer785700c50b176c8')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0c09a595-05f7-4083-8b72-e98dc7cc4f2e"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "0c09a595-05f7-4083-8b72-e98dc7cc4f2e",
-      "elapsed-time" : "50",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "0c09a595-05f7-4083-8b72-e98dc7cc4f2e",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:45:20 GMT",
-      "x-ms-client-request-id" : "0c09a595-05f7-4083-8b72-e98dc7cc4f2e"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('indexforindexers41923b951f')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "41e68be4-2adf-4204-a45f-ad9f8264d567"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "41e68be4-2adf-4204-a45f-ad9f8264d567",
-      "elapsed-time" : "171",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "41e68be4-2adf-4204-a45f-ad9f8264d567",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:45:20 GMT",
-      "x-ms-client-request-id" : "41e68be4-2adf-4204-a45f-ad9f8264d567"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "indexforindexers41923b951f", "azs-java-live-blob68716a2ae", "indexer819282c9fb5295a", "indexer785700c50b176c8" ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027indexforindexers828635a609\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:16:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b2742aa8-eace-4752-8b43-d4397f4770c5"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "b2742aa8-eace-4752-8b43-d4397f4770c5",
+        "Date": "Thu, 09 Mar 2023 20:16:31 GMT",
+        "elapsed-time": "228",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "b2742aa8-eace-4752-8b43-d4397f4770c5",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "b2742aa8-eace-4752-8b43-d4397f4770c5"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "indexforindexers828635a609",
+    "1": "azs-java-live-blob05713a20d",
+    "2": "indexer92176073cc9e28f",
+    "3": "indexer032548fa9b2ac20"
+  }
 }

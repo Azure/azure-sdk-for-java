@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
@@ -35,7 +34,7 @@ public final class DigitalTwinsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-09-27T17:09:21Z\",\"lastUpdatedTime\":\"2021-02-01T20:47:43Z\",\"provisioningState\":\"Deleted\",\"hostName\":\"ghxpkdw\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"umnyqu\",\"tenantId\":\"deoj\",\"userAssignedIdentities\":{}},\"location\":\"khsmtxpsiebt\",\"tags\":{\"htldwk\":\"pesapskrdqmhjj\",\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"}]}";
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-04-27T01:09:59Z\",\"lastUpdatedTime\":\"2021-06-10T13:25:17Z\",\"provisioningState\":\"Failed\",\"hostName\":\"twrupqsxvnm\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"eil\",\"tenantId\":\"notyfjfcnjbkcn\",\"userAssignedIdentities\":{}},\"location\":\"ttkphywpnvjtoqne\",\"tags\":{\"oxuscrpabgyepsbj\":\"lfplp\"},\"id\":\"azqugxywpmueefj\",\"name\":\"wfqkquj\",\"type\":\"dsuyonobgla\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +62,11 @@ public final class DigitalTwinsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DigitalTwinsDescription> response = manager.digitalTwins().list(Context.NONE);
+        PagedIterable<DigitalTwinsDescription> response = manager.digitalTwins().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("khsmtxpsiebt", response.iterator().next().location());
-        Assertions.assertEquals("pesapskrdqmhjj", response.iterator().next().tags().get("htldwk"));
-        Assertions
-            .assertEquals(
-                DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("ttkphywpnvjtoqne", response.iterator().next().location());
+        Assertions.assertEquals("lfplp", response.iterator().next().tags().get("oxuscrpabgyepsbj"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
     }
 }

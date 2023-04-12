@@ -20,6 +20,10 @@ public final class TriggeredWebJobInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private TriggeredWebJobProperties innerProperties;
 
+    /** Creates an instance of TriggeredWebJobInner class. */
+    public TriggeredWebJobInner() {
+    }
+
     /**
      * Get the innerProperties property: TriggeredWebJob resource specific properties.
      *

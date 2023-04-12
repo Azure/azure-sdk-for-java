@@ -9,11 +9,10 @@ import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnection
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnectionList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionList model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class PrivateEndpointConnectionListTests {
         Assertions.assertEquals("plbpodxun", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionList model =
             new PrivateEndpointConnectionList()
                 .withValue(Arrays.asList(new PrivateEndpointConnectionInner()))

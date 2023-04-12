@@ -20,6 +20,15 @@ public final class RuleStatus extends ExpandableStringEnum<RuleStatus> {
     public static final RuleStatus INTERNAL_ERROR = fromString("InternalError");
 
     /**
+     * Creates a new instance of RuleStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleStatus() {
+    }
+
+    /**
      * Creates or finds a RuleStatus from its string representation.
      *
      * @param name a name to look for.

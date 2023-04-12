@@ -29,20 +29,24 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
     spec_root = os.path.abspath(config['specFolder'])
 
     packages = []
-    if 'relatedCadlProjectFolder' not in config:
+    if 'relatedTypeSpecProjectFolder' not in config:
         return packages
 
-    cadl_projects = config['relatedCadlProjectFolder']
+    cadl_projects = config['relatedTypeSpecProjectFolder']
     if isinstance(cadl_projects, str):
         cadl_projects = [cadl_projects]
 
     for cadl_project in cadl_projects:
         cadl_dir = os.path.join(spec_root, cadl_project)
 
-        sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
+        sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'tspconfig.yaml'))
         if not sdk_folder:
-            logging.warning('[Skip] "options.@azure-tools/cadl-java.emitter-output-dir" '
-                            'or "parameters.service-directory-name.default" not found in cadl-project.yaml')
+            # fallback to cadl file
+            sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
+        if not sdk_folder:
+            logging.warning('[Skip] "options.@azure-tools/typespec-java.emitter-output-dir" '
+                            'or "parameters.service-directory-name.default" not found '
+                            'in tspconfig.yaml or cadl-project.yaml')
         else:
             sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
             require_sdk_integration = not os.path.exists(os.path.join(sdk_folder_abspath, 'src'))
@@ -72,11 +76,14 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
 
                     # check client.cadl
                     cadl_source = '.'
-                    if os.path.exists(os.path.join(cadl_dir, 'client.cadl')):
+                    if os.path.exists(os.path.join(cadl_dir, 'client.tsp')):
+                        cadl_source = 'client.tsp'
+                    if cadl_source == '.' and os.path.exists(os.path.join(cadl_dir, 'client.cadl')):
+                        # fallback to cadl file
                         cadl_source = 'client.cadl'
 
                     # generate Java project
-                    command = 'npx cadl compile {0} --emit=@azure-tools/cadl-java --arg="java-sdk-folder={1}"'\
+                    command = 'npx tsp compile {0} --emit=@azure-tools/typespec-java --arg="java-sdk-folder={1}"'\
                         .format(cadl_source, sdk_root)
                     logging.info(command)
                     subprocess.run(command, shell=True, check=True)
@@ -111,7 +118,7 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                         'eng/versioning',
                         'pom.xml'
                     ],
-                    'cadlProject': [cadl_project],
+                    'typespecProject': [cadl_project],
                     'packageFolder': sdk_folder,
                     'artifacts': artifacts,
                     'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
@@ -128,9 +135,9 @@ def get_cadl_sdk_folder(project_filename: str) -> Optional[str]:
         with open(project_filename, 'r', encoding='utf-8') as f_in:
             project_yaml = yaml.safe_load(f_in)
             if 'parameters' in project_yaml and 'service-directory-name' in project_yaml['parameters'] \
-                    and 'options' in project_yaml and '@azure-tools/cadl-java' in project_yaml['options']:
+                    and 'options' in project_yaml and '@azure-tools/typespec-java' in project_yaml['options']:
                 service: str = project_yaml['parameters']['service-directory-name']['default']
-                sdk_folder = project_yaml['options']['@azure-tools/cadl-java']['emitter-output-dir']
+                sdk_folder = project_yaml['options']['@azure-tools/typespec-java']['emitter-output-dir']
                 sdk_folder = sdk_folder.replace(
                     r'{java-sdk-folder}/sdk/{service-directory-name}/',
                     'sdk/{0}/'.format(service))

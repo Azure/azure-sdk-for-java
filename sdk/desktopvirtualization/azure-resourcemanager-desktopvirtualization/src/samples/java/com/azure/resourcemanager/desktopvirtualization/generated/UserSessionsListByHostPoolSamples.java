@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UserSessions ListByHostPool. */
 public final class UserSessionsListByHostPoolSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_ListByHostPool.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/UserSession_ListByHostPool.json
      */
     /**
      * Sample code: UserSession_ListByHostPool.
@@ -24,6 +22,9 @@ public final class UserSessionsListByHostPoolSamples {
                 "resourceGroup1",
                 "hostPool1",
                 "userPrincipalName eq 'user1@microsoft.com' and state eq 'active'",
-                Context.NONE);
+                10,
+                true,
+                0,
+                com.azure.core.util.Context.NONE);
     }
 }

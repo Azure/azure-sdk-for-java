@@ -11,7 +11,6 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.Application
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroup;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
@@ -99,10 +98,6 @@ public final class ApplicationGroupImpl
 
     public ApplicationGroupType applicationGroupType() {
         return this.innerModel().applicationGroupType();
-    }
-
-    public MigrationRequestProperties migrationRequest() {
-        return this.innerModel().migrationRequest();
     }
 
     public Boolean cloudPcResource() {
@@ -294,11 +289,6 @@ public final class ApplicationGroupImpl
             this.updateApplicationGroup.withFriendlyName(friendlyName);
             return this;
         }
-    }
-
-    public ApplicationGroupImpl withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        this.innerModel().withMigrationRequest(migrationRequest);
-        return this;
     }
 
     private boolean isInCreateMode() {

@@ -20,6 +20,15 @@ public final class ChownMode extends ExpandableStringEnum<ChownMode> {
     public static final ChownMode UNRESTRICTED = fromString("Unrestricted");
 
     /**
+     * Creates a new instance of ChownMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChownMode() {
+    }
+
+    /**
      * Creates or finds a ChownMode from its string representation.
      *
      * @param name a name to look for.

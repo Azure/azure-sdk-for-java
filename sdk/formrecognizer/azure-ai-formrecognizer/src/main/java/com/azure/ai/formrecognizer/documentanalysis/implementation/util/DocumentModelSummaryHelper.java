@@ -25,6 +25,8 @@ public final class DocumentModelSummaryHelper {
         void setDescription(DocumentModelSummary documentModelSummary, String description);
         void setCreatedOn(DocumentModelSummary documentModelSummary, OffsetDateTime createdDateTime);
         void setTags(DocumentModelSummary documentModelSummary, Map<String, String> tags);
+
+        void setExpiresOn(DocumentModelSummary documentModelSummary, OffsetDateTime expiresOn);
     }
 
     /**
@@ -50,5 +52,9 @@ public final class DocumentModelSummaryHelper {
 
     static void setTags(DocumentModelSummary documentModelSummary, Map<String, String> tags) {
         accessor.setTags(documentModelSummary, tags);
+    }
+
+    static void setExpiresOn(DocumentModelSummary documentModelSummary, OffsetDateTime expirationDateTime) {
+        accessor.setExpiresOn(documentModelSummary, expirationDateTime);
     }
 }

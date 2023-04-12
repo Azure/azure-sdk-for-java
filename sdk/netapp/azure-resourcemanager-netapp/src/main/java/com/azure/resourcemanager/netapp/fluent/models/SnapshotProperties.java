@@ -33,6 +33,10 @@ public final class SnapshotProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of SnapshotProperties class. */
+    public SnapshotProperties() {
+    }
+
     /**
      * Get the snapshotId property: snapshotId
      *

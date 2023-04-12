@@ -18,6 +18,10 @@ public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SubscriptionFeatureRegistrationProperties properties;
 
+    /** Creates an instance of SubscriptionFeatureRegistrationInner class. */
+    public SubscriptionFeatureRegistrationInner() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *

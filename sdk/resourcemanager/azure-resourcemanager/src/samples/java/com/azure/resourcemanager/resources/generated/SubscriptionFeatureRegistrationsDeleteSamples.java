@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SubscriptionFeatureRegistrations Delete. */
 public final class SubscriptionFeatureRegistrationsDeleteSamples {
     /*
@@ -22,6 +20,7 @@ public final class SubscriptionFeatureRegistrationsDeleteSamples {
             .manager()
             .featureClient()
             .getSubscriptionFeatureRegistrations()
-            .deleteWithResponse("subscriptionFeatureRegistrationGroupTestRG", "testFeature", Context.NONE);
+            .deleteWithResponse(
+                "subscriptionFeatureRegistrationGroupTestRG", "testFeature", com.azure.core.util.Context.NONE);
     }
 }

@@ -56,11 +56,10 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface WorkflowRunsService {
+    public interface WorkflowRunsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunListResult>> list(
@@ -77,8 +76,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkflowRunInner>> get(
@@ -94,9 +92,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}"
-                + "/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/cancel")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
@@ -486,31 +482,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkflowRunInner> getAsync(String resourceGroupName, String name, String workflowName, String runName) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, runName)
-            .flatMap(
-                (Response<WorkflowRunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a workflow run.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowRunInner get(String resourceGroupName, String name, String workflowName, String runName) {
-        return getAsync(resourceGroupName, name, workflowName, runName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -530,6 +502,23 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
     public Response<WorkflowRunInner> getWithResponse(
         String resourceGroupName, String name, String workflowName, String runName, Context context) {
         return getWithResponseAsync(resourceGroupName, name, workflowName, runName, context).block();
+    }
+
+    /**
+     * Gets a workflow run.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkflowRunInner get(String resourceGroupName, String name, String workflowName, String runName) {
+        return getWithResponse(resourceGroupName, name, workflowName, runName, Context.NONE).getValue();
     }
 
     /**
@@ -660,24 +649,7 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String name, String workflowName, String runName) {
-        return cancelWithResponseAsync(resourceGroupName, name, workflowName, runName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancels a workflow run.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String name, String workflowName, String runName) {
-        cancelAsync(resourceGroupName, name, workflowName, runName).block();
+        return cancelWithResponseAsync(resourceGroupName, name, workflowName, runName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -700,9 +672,26 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
     }
 
     /**
+     * Cancels a workflow run.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String resourceGroupName, String name, String workflowName, String runName) {
+        cancelWithResponse(resourceGroupName, name, workflowName, runName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -737,7 +726,8 @@ public final class WorkflowRunsClientImpl implements WorkflowRunsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

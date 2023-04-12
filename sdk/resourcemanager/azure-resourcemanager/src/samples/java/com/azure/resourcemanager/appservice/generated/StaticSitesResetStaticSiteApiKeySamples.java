@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 
 /** Samples for StaticSites ResetStaticSiteApiKey. */
 public final class StaticSitesResetStaticSiteApiKeySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ResetStaticSiteApiKey.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ResetStaticSiteApiKey.json
      */
     /**
      * Sample code: Reset the api key for a static site.
@@ -27,8 +26,8 @@ public final class StaticSitesResetStaticSiteApiKeySamples {
                 "rg",
                 "testStaticSite0",
                 new StaticSiteResetPropertiesArmResource()
-                    .withRepositoryToken("repoToken123")
+                    .withRepositoryToken("fakeTokenPlaceholder")
                     .withShouldUpdateRepository(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,8 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -62,7 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Abstract base class for all Search API tests
  */
-public abstract class SearchTestBase extends TestBase {
+public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
@@ -72,15 +72,13 @@ public abstract class SearchTestBase extends TestBase {
 
     private static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-    private static final String BLOB_CONTAINER_NAME = Configuration.getGlobalConfiguration()
-        .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
+    private static final String BLOB_CONTAINER_NAME = "searchcontainer";
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     private static final String FAKE_DESCRIPTION = "Some data source";
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
-    static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
 
     static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
         new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(60)));

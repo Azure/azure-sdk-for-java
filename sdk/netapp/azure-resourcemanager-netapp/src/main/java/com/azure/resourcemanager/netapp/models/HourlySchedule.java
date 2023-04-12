@@ -28,6 +28,10 @@ public final class HourlySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
+    /** Creates an instance of HourlySchedule class. */
+    public HourlySchedule() {
+    }
+
     /**
      * Get the snapshotsToKeep property: Hourly snapshot count to keep.
      *

@@ -16,10 +16,10 @@ public final class SimpleRetentionPolicyTests {
         SimpleRetentionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":1875092168,\"durationType\":\"Days\"}}")
+                    "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":2014474860,\"durationType\":\"Invalid\"}}")
                 .toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1875092168, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.retentionDuration().durationType());
+        Assertions.assertEquals(2014474860, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.retentionDuration().durationType());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,9 +27,9 @@ public final class SimpleRetentionPolicyTests {
         SimpleRetentionPolicy model =
             new SimpleRetentionPolicy()
                 .withRetentionDuration(
-                    new RetentionDuration().withCount(1875092168).withDurationType(RetentionDurationType.DAYS));
+                    new RetentionDuration().withCount(2014474860).withDurationType(RetentionDurationType.INVALID));
         model = BinaryData.fromObject(model).toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1875092168, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.retentionDuration().durationType());
+        Assertions.assertEquals(2014474860, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.retentionDuration().durationType());
     }
 }

@@ -66,25 +66,23 @@ public final class DeleteRepositoryResult implements JsonSerializable<DeleteRepo
     public static DeleteRepositoryResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    List<String> deletedManifests = null;
-                    List<String> deletedTags = null;
+                    DeleteRepositoryResult deserializedDeleteRepositoryResult = new DeleteRepositoryResult();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("manifestsDeleted".equals(fieldName)) {
-                            deletedManifests = reader.readArray(reader1 -> reader1.getString());
+                            List<String> deletedManifests = reader.readArray(reader1 -> reader1.getString());
+                            deserializedDeleteRepositoryResult.deletedManifests = deletedManifests;
                         } else if ("tagsDeleted".equals(fieldName)) {
-                            deletedTags = reader.readArray(reader1 -> reader1.getString());
+                            List<String> deletedTags = reader.readArray(reader1 -> reader1.getString());
+                            deserializedDeleteRepositoryResult.deletedTags = deletedTags;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    DeleteRepositoryResult deserializedValue = new DeleteRepositoryResult();
-                    deserializedValue.deletedManifests = deletedManifests;
-                    deserializedValue.deletedTags = deletedTags;
 
-                    return deserializedValue;
+                    return deserializedDeleteRepositoryResult;
                 });
     }
 }

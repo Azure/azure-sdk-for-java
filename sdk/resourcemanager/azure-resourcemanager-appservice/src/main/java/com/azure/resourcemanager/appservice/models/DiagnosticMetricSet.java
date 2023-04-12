@@ -49,6 +49,10 @@ public final class DiagnosticMetricSet {
     @JsonProperty(value = "values")
     private List<DiagnosticMetricSample> values;
 
+    /** Creates an instance of DiagnosticMetricSet class. */
+    public DiagnosticMetricSet() {
+    }
+
     /**
      * Get the name property: Name of the metric.
      *

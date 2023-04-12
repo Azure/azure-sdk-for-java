@@ -11,6 +11,10 @@ import java.util.Map;
 /** The base resource type. */
 @Fluent
 public class WorkflowResource extends Resource {
+    /** Creates an instance of WorkflowResource class. */
+    public WorkflowResource() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public WorkflowResource withLocation(String location) {
