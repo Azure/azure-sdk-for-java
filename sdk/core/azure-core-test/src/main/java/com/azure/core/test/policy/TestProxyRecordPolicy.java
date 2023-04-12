@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
@@ -68,7 +69,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
         HttpResponse response = client.sendSync(request, Context.NONE);
 
-        this.xRecordingId = response.getHeaderValue("x-recording-id");
+        this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
     }
@@ -79,7 +80,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void stopRecording(Queue<String> variables) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", proxyUrl.toString()))
-            .setHeader("content-type", "application/json")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
         client.sendSync(request, Context.NONE);

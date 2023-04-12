@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
@@ -207,7 +208,7 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassIsDeserialized() throws IOException {
         final String expectedDate = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
 
-        HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
+        HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.DATE, expectedDate);
 
         StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.defaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class);
@@ -217,7 +218,7 @@ public class JacksonAdapterTests {
 
     @Test
     public void stronglyTypedHeadersClassThrowsEagerly() {
-        HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
+        HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.DATE, "invalid-rfc1123-date");
 
         assertThrows(DateTimeParseException.class, () -> JacksonAdapter.defaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class));
@@ -398,7 +399,7 @@ public class JacksonAdapterTests {
         private final DateTimeRfc1123 date;
 
         public StronglyTypedHeaders(HttpHeaders rawHeaders) {
-            String dateString = rawHeaders.getValue("Date");
+            String dateString = rawHeaders.getValue(HttpHeaderName.DATE);
             this.date = (dateString == null) ? null : new DateTimeRfc1123(dateString);
         }
 

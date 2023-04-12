@@ -64,6 +64,8 @@ public class TestProxyTests extends TestProxyTestBase {
 
     public static final String REDACTED = "REDACTED";
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
+    private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY =
+        HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
 
 
     static {
@@ -177,9 +179,9 @@ public class TestProxyTests extends TestProxyTestBase {
         }
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("header1", "value1");
-        request.setHeader("header2", "value2");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(HttpHeaderName.fromString("header1"), "value1")
+            .setHeader(HttpHeaderName.fromString("header2"), "value2");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -247,32 +249,35 @@ public class TestProxyTests extends TestProxyTestBase {
         }
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url)
-            .setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY")
-            .setHeader("Content-Type", "application/json")
+            .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
             // test being flaky
             .setHeader(HttpHeaderName.ACCEPT, "*/*");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            assertEquals(response.getStatusCode(), 200);
-            assertEquals(200, response.getStatusCode());
-        }
 
-        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
-        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-        // default sanitizers
-        assertEquals("http://REDACTED/fr/path/1", record.getUri());
-        assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
-        assertTrue(record.getResponseHeaders().get("Operation-Location").startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
-        // custom sanitizers
-        assertEquals(REDACTED, record.getResponse().get("modelId"));
+            assertEquals(response.getStatusCode(), 200);
+
+            assertEquals(200, response.getStatusCode());
+            RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+            RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+            // default sanitizers
+            assertEquals("http://REDACTED/fr/path/1", record.getUri());
+            assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+            assertTrue(record.getResponseHeaders().get("Operation-Location")
+                .startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
+            // custom sanitizers
+            assertEquals(REDACTED, record.getResponse().get("modelId"));
+        }
     }
 
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
+        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher()
+            .setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 
@@ -287,8 +292,8 @@ public class TestProxyTests extends TestProxyTestBase {
             throw new RuntimeException(e);
         }
         HttpRequest request = new HttpRequest(HttpMethod.GET, url)
-            .setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY")
-            .setHeader("Content-Type", "application/json")
+            .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
             // test being flaky
             .setHeader(HttpHeaderName.ACCEPT, "*/*");
@@ -321,7 +326,7 @@ public class TestProxyTests extends TestProxyTestBase {
         }
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Content-Type", "application/json");
+        request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(response.getStatusCode(), 200);

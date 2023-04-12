@@ -3,6 +3,7 @@
 
 package com.azure.core.test.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,6 +17,7 @@ public final class TestingHelpers {
     private static final ClientLogger LOGGER = new ClientLogger(TestingHelpers.class);
 
     public static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
+    public static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
 
     /**
      * Gets the {@link TestMode} being used to run tests.

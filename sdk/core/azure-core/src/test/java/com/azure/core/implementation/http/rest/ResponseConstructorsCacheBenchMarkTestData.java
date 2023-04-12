@@ -4,6 +4,7 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.CoreTestUtils;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -138,6 +139,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
             return this.headers.getValue(name);
         }
@@ -172,10 +174,12 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final HttpResponseDecoder RESPONSE_DECODER = new HttpResponseDecoder(SERIALIZER_ADAPTER);
     //
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
-    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set("hello", "world");
+    private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
+    private static final HttpHeaderName CUSTOM_HDR = HttpHeaderName.fromString("customHdr");
+    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
     private static final HttpHeaders RESPONSE_CUSTOM_HEADERS = new HttpHeaders()
-            .set("hello", "world")          // General header
-            .set("customHdr", "customVal"); // Custom header
+            .set(HELLO, "world")          // General header
+            .set(CUSTOM_HDR, "customVal"); // Custom header
     private static final int RESPONSE_STATUS_CODE = 200;
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);

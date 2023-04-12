@@ -141,6 +141,7 @@ public class HttpRequestTests {
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testClone() throws IOException {
         final HttpHeaders headers = new HttpHeaders().set("my-header", "my-value")
@@ -182,7 +183,7 @@ public class HttpRequestTests {
     }
 
     private Long getContentLength(HttpRequest request) {
-        String contentLengthValue = request.getHeaders().getValue("Content-Length");
+        String contentLengthValue = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         return contentLengthValue == null ? null : Long.parseLong(contentLengthValue);
     }
 }
