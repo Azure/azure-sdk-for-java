@@ -7,7 +7,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.UnsupportedEncodingException;
@@ -276,6 +275,7 @@ public class ProxyOptions {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     private static ProxyOptions attemptToLoadSystemProxy(Configuration configuration, boolean createUnresolved,
         String proxyProperty) {
         String proxyConfiguration = configuration.get(proxyProperty);
@@ -286,7 +286,9 @@ public class ProxyOptions {
         }
 
         try {
-            URL proxyUrl = UrlBuilder.parse(proxyConfiguration).toUrl();
+            // TODO (alzimmer): UrlBuilder needs to add support for userinfo
+            //  https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1
+            URL proxyUrl = new URL(proxyConfiguration);
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
             InetSocketAddress socketAddress = (createUnresolved)
