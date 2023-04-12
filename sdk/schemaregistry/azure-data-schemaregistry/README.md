@@ -86,7 +86,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Async client
 
-```java readme-sample-createAsyncClient
+```java com.azure.data.schemaregistry.schemaregistryasyncclient.construct
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
@@ -97,7 +97,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 
 ##### Sync client
 
-```java readme-sample-createSyncClient
+```java com.azure.data.schemaregistry.schemaregistryclient.construct
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
@@ -130,7 +130,12 @@ SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 ### Register a schema
 Register a schema to be stored in the Azure Schema Registry.
 
-```java readme-sample-registerSchema
+```java com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro
+SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("{schema-registry-endpoint}")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
 String schemaContent = "{\n"
     + "    \"type\" : \"record\",  \n"
     + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -153,7 +158,7 @@ System.out.println("Registered schema: " + schemaProperties.getId());
 ### Retrieve a schema's properties
 Retrieve a previously registered schema's properties from the Azure Schema Registry.
 
-```java readme-sample-getSchema
+```java com.azure.data.schemaregistry.schemaregistryclient.getschema
 SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
 System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
@@ -163,7 +168,7 @@ System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties
 ### Retrieve a schema
 Retrieve a previously registered schema's content and properties from the Azure Schema Registry.
 
-```java readme-sample-getSchemaId
+```java com.azure.data.schemaregistry.schemaregistryclient.getschemaid
 String schemaContent = "{\n"
     + "    \"type\" : \"record\",  \n"
     + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"

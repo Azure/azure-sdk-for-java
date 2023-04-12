@@ -10,12 +10,12 @@ import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Code samples for the README.md
+ * Code samples for Javadocs
  */
 @SuppressWarnings("unused")
-public class ReadmeSamples {
+public class JavaDocCodeSnippets {
     private final SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-        .fullyQualifiedNamespace("{schema-registry-endpoint")
+        .fullyQualifiedNamespace("{schema-registry-endpoint}")
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
@@ -23,35 +23,40 @@ public class ReadmeSamples {
      * Sample for creating async client.
      */
     public void createAsyncClient() {
-        // BEGIN: readme-sample-createAsyncClient
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.construct
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildAsyncClient();
-        // END: readme-sample-createAsyncClient
+        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.construct
     }
 
     /**
      * Sample for creating sync client.
      */
     public void createSyncClient() {
-        // BEGIN: readme-sample-createSyncClient
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.construct
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
-        // END: readme-sample-createSyncClient
+        // END: com.azure.data.schemaregistry.schemaregistryclient.construct
     }
 
     /**
-     * Sample for registering a schema.
+     * Sample for registering an avro schema.
      */
     public void registerSchema() {
-        // BEGIN: readme-sample-registerSchema
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro
+        SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
         String schemaContent = "{\n"
             + "    \"type\" : \"record\",  \n"
             + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -69,26 +74,26 @@ public class ReadmeSamples {
             schemaContent, SchemaFormat.AVRO);
 
         System.out.println("Registered schema: " + schemaProperties.getId());
-        // END: readme-sample-registerSchema
+        // END: com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro
     }
 
     /**
      * Sample for getting the schema's properties from a schema.
      */
     public void getSchema() {
-        // BEGIN: readme-sample-getSchema
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getschema
         SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
         System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
             schema.getDefinition());
-        // END: readme-sample-getSchema
+        // END: com.azure.data.schemaregistry.schemaregistryclient.getschema
     }
 
     /**
      * Sample for getting the schema id of a registered schema.
      */
     public void getSchemaId() {
-        // BEGIN: readme-sample-getSchemaId
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getschemaid
         String schemaContent = "{\n"
             + "    \"type\" : \"record\",  \n"
             + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -106,6 +111,6 @@ public class ReadmeSamples {
             schemaContent, SchemaFormat.AVRO);
 
         System.out.println("Retrieved schema id: " + properties.getId());
-        // END: readme-sample-getSchemaId
+        // END: com.azure.data.schemaregistry.schemaregistryclient.getschemaid
     }
 }
