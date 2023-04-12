@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
@@ -38,7 +39,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -205,7 +206,7 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassIsDeserialized() throws IOException {
         final String expectedDate = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
 
-        HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
+        HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.DATE, expectedDate);
 
         StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.createDefaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class);
@@ -215,7 +216,7 @@ public class JacksonAdapterTests {
 
     @Test
     public void stronglyTypedHeadersClassThrowsEagerly() {
-        HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
+        HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.DATE, "invalid-rfc1123-date");
 
         assertThrows(DateTimeParseException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
             .deserialize(rawHeaders, StronglyTypedHeaders.class));
@@ -304,7 +305,7 @@ public class JacksonAdapterTests {
             SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
-            assertArrayEquals((byte[]) expected, (byte[]) actual);
+            assertArraysEqual((byte[]) expected, (byte[]) actual);
         } else {
             assertEquals(expected, actual);
         }
@@ -316,7 +317,7 @@ public class JacksonAdapterTests {
         Object actual = ADAPTER.deserialize(bytes, type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
-            assertArrayEquals((byte[]) expected, (byte[]) actual);
+            assertArraysEqual((byte[]) expected, (byte[]) actual);
         } else {
             assertEquals(expected, actual);
         }
@@ -329,7 +330,7 @@ public class JacksonAdapterTests {
         Object actual = ADAPTER.deserialize(new ByteArrayInputStream(inputStreamBytes), type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
-            assertArrayEquals((byte[]) expected, (byte[]) actual);
+            assertArraysEqual((byte[]) expected, (byte[]) actual);
         } else {
             assertEquals(expected, actual);
         }
@@ -397,7 +398,7 @@ public class JacksonAdapterTests {
         private final DateTimeRfc1123 date;
 
         public StronglyTypedHeaders(HttpHeaders rawHeaders) {
-            String dateString = rawHeaders.getValue("Date");
+            String dateString = rawHeaders.getValue(HttpHeaderName.DATE);
             this.date = (dateString == null) ? null : new DateTimeRfc1123(dateString);
         }
 

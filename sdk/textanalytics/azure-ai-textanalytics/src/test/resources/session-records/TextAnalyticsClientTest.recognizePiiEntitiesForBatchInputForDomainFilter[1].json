@@ -1,27 +1,109 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "732b5a5f-da56-4a3a-bc6a-36033d10724c",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "876",
-      "x-envoy-upstream-service-time" : "56",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "apim-request-id" : "c6c25b7a-e3a9-4319-9fed-4befe0b91c97",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"PiiEntityRecognitionResults\",\"results\":{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.94},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:56:43 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "362",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:32:26 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "08bba2d0-e24b-416b-bc20-cefbdf7ca916"
+      },
+      "RequestBody": {
+        "kind": "PiiEntityRecognition",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+            },
+            {
+              "id": "1",
+              "text": "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": true,
+          "domain": "PHI",
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "700f46ee-6c19-4d08-9115-76c7df13e367",
+        "Content-Length": "876",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 05 Apr 2023 18:32:25 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "40",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "PiiEntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "redactedText": "********* employee with ssn *********** is using our awesome API\u0027s.",
+              "id": "0",
+              "entities": [
+                {
+                  "text": "Microsoft",
+                  "category": "Organization",
+                  "offset": 0,
+                  "length": 9,
+                  "confidenceScore": 0.94
+                },
+                {
+                  "text": "859-98-0987",
+                  "category": "USSocialSecurityNumber",
+                  "offset": 28,
+                  "length": 11,
+                  "confidenceScore": 0.65
+                }
+              ],
+              "warnings": []
+            },
+            {
+              "redactedText": "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.",
+              "id": "1",
+              "entities": [
+                {
+                  "text": "111000025",
+                  "category": "PhoneNumber",
+                  "offset": 18,
+                  "length": 9,
+                  "confidenceScore": 0.8
+                },
+                {
+                  "text": "111000025",
+                  "category": "ABARoutingNumber",
+                  "offset": 18,
+                  "length": 9,
+                  "confidenceScore": 0.75
+                },
+                {
+                  "text": "111000025",
+                  "category": "NZSocialWelfareNumber",
+                  "offset": 18,
+                  "length": 9,
+                  "confidenceScore": 0.65
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2021-01-15"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

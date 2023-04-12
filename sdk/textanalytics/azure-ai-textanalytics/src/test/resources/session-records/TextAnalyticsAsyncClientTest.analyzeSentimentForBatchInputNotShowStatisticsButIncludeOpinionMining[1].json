@@ -1,28 +1,282 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c86fe495-9ca0-45d2-abf6-6b76d42b391f",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "35",
-      "apim-request-id" : "f58d24c3-06fe-4704-aec1-c1db6940bdf5",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Thu, 16 Feb 2023 23:00:04 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.Language.Text.Sentiment=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Content-Length" : "2872",
-      "Body" : "{\"kind\":\"SentimentAnalysisResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":32,\"text\":\"The hotel was dark and unclean. \",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":4,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/0\"},{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/1\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":14,\"length\":4,\"text\":\"dark\",\"isNegated\":false},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":23,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\",\"targets\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"negative\":0.0},\"offset\":59,\"length\":7,\"text\":\"gnocchi\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/1/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"negative\":0.0},\"offset\":51,\"length\":7,\"text\":\"amazing\",\"isNegated\":false}]}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":36,\"text\":\"The restaurant had amazing gnocchi. \",\"targets\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"negative\":0.0},\"offset\":27,\"length\":7,\"text\":\"gnocchi\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/1/sentences/0/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"negative\":0.0},\"offset\":19,\"length\":7,\"text\":\"amazing\",\"isNegated\":false}]},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":36,\"length\":31,\"text\":\"The hotel was dark and unclean.\",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":40,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/1/sentences/1/assessments/0\"},{\"relationType\":\"assessment\",\"ref\":\"#/documents/1/sentences/1/assessments/1\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":50,\"length\":4,\"text\":\"dark\",\"isNegated\":false},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":59,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-11-01\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "328",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:55:13 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "eb805f9d-68db-440d-a5b7-e30aa3c8ae68"
+      },
+      "RequestBody": {
+        "kind": "SentimentAnalysis",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "The hotel was dark and unclean. The restaurant had amazing gnocchi."
+            },
+            {
+              "id": "1",
+              "text": "The restaurant had amazing gnocchi. The hotel was dark and unclean."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "opinionMining": true,
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0e85eaf2-3b12-4748-8ed8-c9d76d8c259c",
+        "Content-Length": "2872",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.Sentiment=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 05 Apr 2023 18:55:12 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "46",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "SentimentAnalysisResults",
+        "results": {
+          "documents": [
+            {
+              "id": "0",
+              "sentiment": "mixed",
+              "confidenceScores": {
+                "positive": 0.5,
+                "neutral": 0.0,
+                "negative": 0.5
+              },
+              "sentences": [
+                {
+                  "sentiment": "negative",
+                  "confidenceScores": {
+                    "positive": 0.0,
+                    "neutral": 0.0,
+                    "negative": 1.0
+                  },
+                  "offset": 0,
+                  "length": 32,
+                  "text": "The hotel was dark and unclean. ",
+                  "targets": [
+                    {
+                      "sentiment": "negative",
+                      "confidenceScores": {
+                        "positive": 0.0,
+                        "negative": 1.0
+                      },
+                      "offset": 4,
+                      "length": 5,
+                      "text": "hotel",
+                      "relations": [
+                        {
+                          "relationType": "assessment",
+                          "ref": "#/documents/0/sentences/0/assessments/0"
+                        },
+                        {
+                          "relationType": "assessment",
+                          "ref": "#/documents/0/sentences/0/assessments/1"
+                        }
+                      ]
+                    }
+                  ],
+                  "assessments": [
+                    {
+                      "sentiment": "negative",
+                      "confidenceScores": {
+                        "positive": 0.0,
+                        "negative": 1.0
+                      },
+                      "offset": 14,
+                      "length": 4,
+                      "text": "dark",
+                      "isNegated": false
+                    },
+                    {
+                      "sentiment": "negative",
+                      "confidenceScores": {
+                        "positive": 0.0,
+                        "negative": 1.0
+                      },
+                      "offset": 23,
+                      "length": 7,
+                      "text": "unclean",
+                      "isNegated": false
+                    }
+                  ]
+                },
+                {
+                  "sentiment": "positive",
+                  "confidenceScores": {
+                    "positive": 0.99,
+                    "neutral": 0.0,
+                    "negative": 0.0
+                  },
+                  "offset": 32,
+                  "length": 35,
+                  "text": "The restaurant had amazing gnocchi.",
+                  "targets": [
+                    {
+                      "sentiment": "positive",
+                      "confidenceScores": {
+                        "positive": 1.0,
+                        "negative": 0.0
+                      },
+                      "offset": 59,
+                      "length": 7,
+                      "text": "gnocchi",
+                      "relations": [
+                        {
+                          "relationType": "assessment",
+                          "ref": "#/documents/0/sentences/1/assessments/0"
+                        }
+                      ]
+                    }
+                  ],
+                  "assessments": [
+                    {
+                      "sentiment": "positive",
+                      "confidenceScores": {
+                        "positive": 1.0,
+                        "negative": 0.0
+                      },
+                      "offset": 51,
+                      "length": 7,
+                      "text": "amazing",
+                      "isNegated": false
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            },
+            {
+              "id": "1",
+              "sentiment": "mixed",
+              "confidenceScores": {
+                "positive": 0.5,
+                "neutral": 0.0,
+                "negative": 0.5
+              },
+              "sentences": [
+                {
+                  "sentiment": "positive",
+                  "confidenceScores": {
+                    "positive": 0.99,
+                    "neutral": 0.0,
+                    "negative": 0.0
+                  },
+                  "offset": 0,
+                  "length": 36,
+                  "text": "The restaurant had amazing gnocchi. ",
+                  "targets": [
+                    {
+                      "sentiment": "positive",
+                      "confidenceScores": {
+                        "positive": 1.0,
+                        "negative": 0.0
+                      },
+                      "offset": 27,
+                      "length": 7,
+                      "text": "gnocchi",
+                      "relations": [
+                        {
+                          "relationType": "assessment",
+                          "ref": "#/documents/1/sentences/0/assessments/0"
+                        }
+                      ]
+                    }
+                  ],
+                  "assessments": [
+                    {
+                      "sentiment": "positive",
+                      "confidenceScores": {
+                        "positive": 1.0,
+                        "negative": 0.0
+                      },
+                      "offset": 19,
+                      "length": 7,
+                      "text": "amazing",
+                      "isNegated": false
+                    }
+                  ]
+                },
+                {
+                  "sentiment": "negative",
+                  "confidenceScores": {
+                    "positive": 0.0,
+                    "neutral": 0.0,
+                    "negative": 1.0
+                  },
+                  "offset": 36,
+                  "length": 31,
+                  "text": "The hotel was dark and unclean.",
+                  "targets": [
+                    {
+                      "sentiment": "negative",
+                      "confidenceScores": {
+                        "positive": 0.0,
+                        "negative": 1.0
+                      },
+                      "offset": 40,
+                      "length": 5,
+                      "text": "hotel",
+                      "relations": [
+                        {
+                          "relationType": "assessment",
+                          "ref": "#/documents/1/sentences/1/assessments/0"
+                        },
+                        {
+                          "relationType": "assessment",
+                          "ref": "#/documents/1/sentences/1/assessments/1"
+                        }
+                      ]
+                    }
+                  ],
+                  "assessments": [
+                    {
+                      "sentiment": "negative",
+                      "confidenceScores": {
+                        "positive": 0.0,
+                        "negative": 1.0
+                      },
+                      "offset": 50,
+                      "length": 4,
+                      "text": "dark",
+                      "isNegated": false
+                    },
+                    {
+                      "sentiment": "negative",
+                      "confidenceScores": {
+                        "positive": 0.0,
+                        "negative": 1.0
+                      },
+                      "offset": 59,
+                      "length": 7,
+                      "text": "unclean",
+                      "isNegated": false
+                    }
+                  ]
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2022-11-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

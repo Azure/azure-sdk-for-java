@@ -1,67 +1,294 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bd3984e3-fd17-40e2-93d7-07d42de251c7",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "373",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:57:51 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "949768db-ff52-4488-9902-7d63c8199d72"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+              "language": "en"
+            },
+            {
+              "id": "1",
+              "text": "The restaurant had amazing gnocchi. The hotel was dark and unclean.",
+              "language": "en"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "SentimentAnalysis",
+            "parameters": {
+              "loggingOptOut": false,
+              "opinionMining": false,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "dfacc0c2-7039-42e7-a80b-b83ac8fca26f",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:57:50 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/d4aaea0f-2256-453f-b4a9-8c0c58eb8793?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "323",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "212",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/148b663f-2be5-4bb5-8bf5-2f994b578cdc?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "54b058ea-9e73-4c3f-99b6-95244aea1f64",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "202",
-      "Date" : "Thu, 16 Feb 2023 23:14:15 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/d4aaea0f-2256-453f-b4a9-8c0c58eb8793?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:58:21 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8a796a68-68f4-471b-bd30-80e6e4f7bc94"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "094597b6-9492-4d1b-b7df-175c0365d190",
+        "Content-Length": "1337",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:58:21 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "67",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "d4aaea0f-2256-453f-b4a9-8c0c58eb8793",
+        "lastUpdatedDateTime": "2023-04-05T18:57:53Z",
+        "createdDateTime": "2023-04-05T18:57:51Z",
+        "expirationDateTime": "2023-04-06T18:57:51Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "SentimentAnalysisLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:57:53.0344133Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "sentiment": "mixed",
+                    "confidenceScores": {
+                      "positive": 0.5,
+                      "neutral": 0.0,
+                      "negative": 0.5
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "negative",
+                        "confidenceScores": {
+                          "positive": 0.0,
+                          "neutral": 0.0,
+                          "negative": 1.0
+                        },
+                        "offset": 0,
+                        "length": 32,
+                        "text": "The hotel was dark and unclean. "
+                      },
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 0.99,
+                          "neutral": 0.0,
+                          "negative": 0.0
+                        },
+                        "offset": 32,
+                        "length": 35,
+                        "text": "The restaurant had amazing gnocchi."
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "sentiment": "mixed",
+                    "confidenceScores": {
+                      "positive": 0.5,
+                      "neutral": 0.0,
+                      "negative": 0.5
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 0.99,
+                          "neutral": 0.0,
+                          "negative": 0.0
+                        },
+                        "offset": 0,
+                        "length": 36,
+                        "text": "The restaurant had amazing gnocchi. "
+                      },
+                      {
+                        "sentiment": "negative",
+                        "confidenceScores": {
+                          "positive": 0.0,
+                          "neutral": 0.0,
+                          "negative": 1.0
+                        },
+                        "offset": 36,
+                        "length": 31,
+                        "text": "The hotel was dark and unclean."
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-11-01"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/148b663f-2be5-4bb5-8bf5-2f994b578cdc?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a2a5a006-396f-4cb2-a508-c594be5cf182"
-    },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "56",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7d810a03-8231-4831-bbc0-0b5651a54ec5",
-      "retry-after" : "0",
-      "Content-Length" : "1337",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"148b663f-2be5-4bb5-8bf5-2f994b578cdc\",\"lastUpdatedDateTime\":\"2023-02-16T23:14:19Z\",\"createdDateTime\":\"2023-02-16T23:14:16Z\",\"expirationDateTime\":\"2023-02-17T23:14:16Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"SentimentAnalysisLROResults\",\"lastUpdateDateTime\":\"2023-02-16T23:14:19.4179488Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":32,\"text\":\"The hotel was dark and unclean. \"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":36,\"text\":\"The restaurant had amazing gnocchi. \"},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":36,\"length\":31,\"text\":\"The hotel was dark and unclean.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-11-01\"}}]}}",
-      "Date" : "Thu, 16 Feb 2023 23:14:46 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/148b663f-2be5-4bb5-8bf5-2f994b578cdc?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f1a4884d-cfa8-4636-8932-d24ecb1220ba"
-    },
-    "Response" : {
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "52",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "81845220-da82-43f7-a2d1-73b8261e01b7",
-      "retry-after" : "0",
-      "Content-Length" : "1337",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"148b663f-2be5-4bb5-8bf5-2f994b578cdc\",\"lastUpdatedDateTime\":\"2023-02-16T23:14:19Z\",\"createdDateTime\":\"2023-02-16T23:14:16Z\",\"expirationDateTime\":\"2023-02-17T23:14:16Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"SentimentAnalysisLROResults\",\"lastUpdateDateTime\":\"2023-02-16T23:14:19.4179488Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":32,\"text\":\"The hotel was dark and unclean. \"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.99,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":36,\"text\":\"The restaurant had amazing gnocchi. \"},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":36,\"length\":31,\"text\":\"The hotel was dark and unclean.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-11-01\"}}]}}",
-      "Date" : "Thu, 16 Feb 2023 23:14:47 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/d4aaea0f-2256-453f-b4a9-8c0c58eb8793?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:58:22 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "255df10e-0472-46b0-91f7-23f064fb29df"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "eb942202-9782-4af0-8259-201992906e00",
+        "Content-Length": "1337",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:58:21 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "52",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "d4aaea0f-2256-453f-b4a9-8c0c58eb8793",
+        "lastUpdatedDateTime": "2023-04-05T18:57:53Z",
+        "createdDateTime": "2023-04-05T18:57:51Z",
+        "expirationDateTime": "2023-04-06T18:57:51Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "SentimentAnalysisLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:57:53.0344133Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "sentiment": "mixed",
+                    "confidenceScores": {
+                      "positive": 0.5,
+                      "neutral": 0.0,
+                      "negative": 0.5
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "negative",
+                        "confidenceScores": {
+                          "positive": 0.0,
+                          "neutral": 0.0,
+                          "negative": 1.0
+                        },
+                        "offset": 0,
+                        "length": 32,
+                        "text": "The hotel was dark and unclean. "
+                      },
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 0.99,
+                          "neutral": 0.0,
+                          "negative": 0.0
+                        },
+                        "offset": 32,
+                        "length": 35,
+                        "text": "The restaurant had amazing gnocchi."
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "sentiment": "mixed",
+                    "confidenceScores": {
+                      "positive": 0.5,
+                      "neutral": 0.0,
+                      "negative": 0.5
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 0.99,
+                          "neutral": 0.0,
+                          "negative": 0.0
+                        },
+                        "offset": 0,
+                        "length": 36,
+                        "text": "The restaurant had amazing gnocchi. "
+                      },
+                      {
+                        "sentiment": "negative",
+                        "confidenceScores": {
+                          "positive": 0.0,
+                          "neutral": 0.0,
+                          "negative": 1.0
+                        },
+                        "offset": 36,
+                        "length": 31,
+                        "text": "The hotel was dark and unclean."
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-11-01"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

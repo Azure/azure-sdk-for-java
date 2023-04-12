@@ -1,27 +1,129 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5283e444-1dd2-47b8-ba31-0f375b260d76",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "1191",
-      "x-envoy-upstream-service-time" : "59",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "apim-request-id" : "dfb79843-af4b-4f37-9cef-acdaf0ba98fb",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"PiiEntityRecognitionResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"redactedText\":\"********* ******** with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"statistics\":{\"charactersCount\":67,\"transactionsCount\":1},\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.94},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.95},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"statistics\":{\"charactersCount\":105,\"transactionsCount\":1},\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}",
-      "Date" : "Tue, 11 Oct 2022 20:01:36 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=true",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "347",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:44:20 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "028b9321-f2c9-429d-8d0d-33799750bbbc"
+      },
+      "RequestBody": {
+        "kind": "PiiEntityRecognition",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+            },
+            {
+              "id": "1",
+              "text": "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": true,
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0679a147-cbfe-43a0-ae19-379f7614ba00",
+        "Content-Length": "1191",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.PII=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 05 Apr 2023 18:44:19 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "50",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "PiiEntityRecognitionResults",
+        "results": {
+          "statistics": {
+            "documentsCount": 2,
+            "validDocumentsCount": 2,
+            "erroneousDocumentsCount": 0,
+            "transactionsCount": 2
+          },
+          "documents": [
+            {
+              "redactedText": "********* ******** with ssn *********** is using our awesome API\u0027s.",
+              "id": "0",
+              "statistics": {
+                "charactersCount": 67,
+                "transactionsCount": 1
+              },
+              "entities": [
+                {
+                  "text": "Microsoft",
+                  "category": "Organization",
+                  "offset": 0,
+                  "length": 9,
+                  "confidenceScore": 0.94
+                },
+                {
+                  "text": "employee",
+                  "category": "PersonType",
+                  "offset": 10,
+                  "length": 8,
+                  "confidenceScore": 0.95
+                },
+                {
+                  "text": "859-98-0987",
+                  "category": "USSocialSecurityNumber",
+                  "offset": 28,
+                  "length": 11,
+                  "confidenceScore": 0.65
+                }
+              ],
+              "warnings": []
+            },
+            {
+              "redactedText": "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.",
+              "id": "1",
+              "statistics": {
+                "charactersCount": 105,
+                "transactionsCount": 1
+              },
+              "entities": [
+                {
+                  "text": "111000025",
+                  "category": "PhoneNumber",
+                  "offset": 18,
+                  "length": 9,
+                  "confidenceScore": 0.8
+                },
+                {
+                  "text": "111000025",
+                  "category": "ABARoutingNumber",
+                  "offset": 18,
+                  "length": 9,
+                  "confidenceScore": 0.75
+                },
+                {
+                  "text": "111000025",
+                  "category": "NZSocialWelfareNumber",
+                  "offset": 18,
+                  "length": 9,
+                  "confidenceScore": 0.65
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2021-01-15"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

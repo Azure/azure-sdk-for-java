@@ -1,28 +1,61 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d93fdb17-3029-4d81-8544-248889a6c92b",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "151",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "12",
-      "apim-request-id" : "832bdaf9-6484-4eb8-bc21-30d22dc26678",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Mon, 14 Nov 2022 20:13:10 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"monde\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "141",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:53:39 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "389a8c9d-81c2-4636-aadf-d3606a73685a"
+      },
+      "RequestBody": {
+        "kind": "KeyPhraseExtraction",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Bonjour tout le monde"
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0813ad74-0d1f-43c6-a5d9-db1e68f06bfe",
+        "Content-Length": "151",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.KeyPhraseExtraction=1,CognitiveServices.TextAnalytics.TextRecords=1",
+        "Date": "Wed, 05 Apr 2023 18:53:38 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "11",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "KeyPhraseExtractionResults",
+        "results": {
+          "documents": [
+            {
+              "id": "0",
+              "keyPhrases": [
+                "monde"
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2022-10-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
