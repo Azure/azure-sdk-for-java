@@ -66,6 +66,7 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     }
 
     void beforeTestSetup() {
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient)   {

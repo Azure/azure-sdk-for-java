@@ -90,6 +90,8 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
                 Configuration.getGlobalConfiguration()
                     .get("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net"))
                 && interceptorManager.isLiveMode()));
+
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient) {
