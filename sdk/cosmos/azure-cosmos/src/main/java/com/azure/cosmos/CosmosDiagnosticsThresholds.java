@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -47,7 +47,7 @@ public final class CosmosDiagnosticsThresholds {
     private float requestChargeThreshold;
     private int payloadSizeInBytesThreshold;
 
-    private BiFunction<Integer, Integer, Boolean> isFailureHandler = (statusCode, subStatusCode) -> {
+    private BiPredicate<Integer, Integer> isFailureHandler = (statusCode, subStatusCode) -> {
         checkNotNull(statusCode, "Argument 'statusCode' must not be null." );
         checkNotNull(subStatusCode, "Argument 'subStatusCode' must not be null." );
         if (statusCode >= 500) {
@@ -177,7 +177,7 @@ public final class CosmosDiagnosticsThresholds {
      * tuple should be considered a failure.
      * @return current CosmosDiagnosticsThresholds instance
      */
-    public CosmosDiagnosticsThresholds setIsFailureHandler(BiFunction<Integer, Integer, Boolean> isFailureHandler) {
+    public CosmosDiagnosticsThresholds setFailureHandler(BiPredicate<Integer, Integer> isFailureHandler) {
         checkNotNull(nonPointOperationLatencyThreshold,
             "Argument 'isFailureHandler' must not be null.");
         this.isFailureHandler = isFailureHandler;
@@ -202,7 +202,7 @@ public final class CosmosDiagnosticsThresholds {
 
     boolean isFailureCondition(int statusCode, int subStatusCode) {
         try {
-            return this.isFailureHandler.apply(statusCode, subStatusCode);
+            return this.isFailureHandler.test(statusCode, subStatusCode);
         } catch (Exception error) {
             LOGGER.error("Execution of custom isFailureHandler failed - treating operation as failure.", error);
             return false;

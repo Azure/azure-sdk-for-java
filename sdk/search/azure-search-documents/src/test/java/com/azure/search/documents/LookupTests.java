@@ -24,11 +24,11 @@ import reactor.test.StepVerifier;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -813,6 +813,12 @@ public class LookupTests extends SearchTestBase {
 
     @SuppressWarnings({"deprecation", "UseOfObsoleteDateTimeApi"})
     static Hotel prepareSelectedFieldsHotel(String key) {
+        // Since Date doesn't have time zone information to make this test durable against time zones create the Date
+        // from an OffsetDateTime.
+        OffsetDateTime dateTime = OffsetDateTime.parse("2010-06-26T17:00:00.000+00:00")
+            .atZoneSameInstant(ZoneId.systemDefault())
+            .toOffsetDateTime();
+
         return new Hotel()
             .hotelId(key)
             .hotelName("Countryside Hotel")
@@ -822,7 +828,7 @@ public class LookupTests extends SearchTestBase {
             .tags(Arrays.asList("24-hour front desk service", "coffee in lobby", "restaurant"))
             .parkingIncluded(false)
             .smokingAllowed(true)
-            .lastRenovationDate(new Date(2010 - 1900, Calendar.JUNE, 26, 13, 0, 0))
+            .lastRenovationDate(new Date(dateTime.getYear() - 1900, dateTime.getMonth().ordinal(), dateTime.getDayOfMonth(), dateTime.getHour(), dateTime.getMinute()))
             .rating(3)
             .location(new GeoPoint(-78.940483, 35.904160))
             .address(new HotelAddress().streetAddress("6910 Fayetteville Rd").city("Durham").stateProvince("NC").country("USA").postalCode("27713"))

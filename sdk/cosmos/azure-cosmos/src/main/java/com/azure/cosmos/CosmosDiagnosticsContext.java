@@ -412,7 +412,7 @@ public final class CosmosDiagnosticsContext {
 
     /**
      * A flag indicating whether the operation should be considered failed or not based on the status code handling
-     * rules in {@link CosmosDiagnosticsThresholds#setIsFailureHandler(BiFunction)}
+     * rules in {@link CosmosDiagnosticsThresholds#setFailureHandler(java.util.function.BiPredicate)}
      * @return a flag indicating whether the operation should be considered failed or not
      */
     public boolean isFailure() {

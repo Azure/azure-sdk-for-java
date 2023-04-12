@@ -4,6 +4,7 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OperationResourcePollingStrategyTest {
     private static final TypeReference<TestPollResult> POLL_RESULT_TYPE_REFERENCE
         = TypeReference.createInstance(TestPollResult.class);
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
 
     @Test
     public void operationLocationPollingStrategySucceedsOnPollWithResourceLocation() {
@@ -45,7 +47,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl), new TestPollResult("InProgress"));
+                new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
@@ -89,7 +91,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl).set("Location", finalResultUrl),
+                new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl).set(HttpHeaderName.LOCATION, finalResultUrl),
                 new TestPollResult("InProgress"));
         });
 
@@ -132,7 +134,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl),
+                new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl),
                 new TestPollResult("InProgress"));
         });
 
@@ -173,7 +175,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl), new TestPollResult("InProgress"));
+                new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
@@ -208,6 +210,7 @@ public class OperationResourcePollingStrategyTest {
         assertEquals(1, activationCallCount[0]);
     }
 
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @ValueSource(strings = {"Operation-Location", "resourceLocation"})
     public void operationResourcePollingStrategyRelativePath(String headerName) {
@@ -267,7 +270,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl), new TestPollResult("InProgress"));
+                new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
@@ -308,7 +311,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl).set("Location", finalResultUrl),
+                new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl).set(HttpHeaderName.LOCATION, finalResultUrl),
                 new TestPollResult("InProgress"));
         });
 
@@ -320,11 +323,11 @@ public class OperationResourcePollingStrategyTest {
                 int count = attemptCount.getAndIncrement();
                 if (mockPollUrl.equals(request.getUrl().toString()) && count == 0) {
                     return Mono.just(new MockHttpResponse(pollRequest, args[0],
-                        new HttpHeaders().set("Location", finalResultUrl),
+                        new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
                         new TestPollResult("Retry")));
                 } else if (mockPollUrl.equals(request.getUrl().toString()) && count == 1) {
                     return Mono.just(new MockHttpResponse(pollRequest, args[1],
-                        new HttpHeaders().set("Location", finalResultUrl),
+                        new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
                         new TestPollResult("Succeeded")));
                 } else if (finalResultUrl.equals(request.getUrl().toString())) {
                     return Mono.just(new MockHttpResponse(pollRequest, args[2], new HttpHeaders(),
@@ -357,7 +360,7 @@ public class OperationResourcePollingStrategyTest {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", responsePollUrl), new TestPollResult("InProgress"));
+                new HttpHeaders().set(OPERATION_LOCATION, responsePollUrl), new TestPollResult("InProgress"));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, requestPollUrl);

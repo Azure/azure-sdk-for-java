@@ -72,6 +72,10 @@ jobs:
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
 
+      - template: /eng/common/testproxy/test-proxy-tool.yml
+        parameters:
+          runProxy: false
+
       - template: ../steps/install-reporting-tools.yml
         parameters:
           JdkVersion: $(JavaTestVersion)

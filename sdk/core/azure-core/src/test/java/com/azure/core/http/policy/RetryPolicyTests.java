@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -98,8 +99,9 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = sendRequestSync(pipeline);
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = sendRequestSync(pipeline)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @ParameterizedTest
@@ -148,8 +150,9 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = sendRequestSync(pipeline);
-        assertEquals(returnCode, response.getStatusCode());
+        try (HttpResponse response = sendRequestSync(pipeline)) {
+            assertEquals(returnCode, response.getStatusCode());
+        }
     }
 
     @ParameterizedTest
@@ -199,8 +202,9 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = sendRequestSync(pipeline);
-        assertEquals(200, response.getStatusCode());
+        try (HttpResponse response = sendRequestSync(pipeline)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @ParameterizedTest
@@ -258,8 +262,9 @@ public class RetryPolicyTests {
             })
             .build();
 
-        HttpResponse response = sendRequestSync(pipeline);
-        assertEquals(expectedStatusCode, response.getStatusCode());
+        try (HttpResponse response = sendRequestSync(pipeline)) {
+            assertEquals(expectedStatusCode, response.getStatusCode());
+        }
     }
 
     @ParameterizedTest
@@ -297,11 +302,12 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(1))))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline),
             () -> sendRequest(pipeline)
-        );
-        assertEquals(500, response.getStatusCode());
+        )) {
+            assertEquals(500, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
@@ -336,11 +342,12 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(delayMillis))))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline),
             () -> sendRequest(pipeline)
-        );
-        assertEquals(500, response.getStatusCode());
+        )) {
+            assertEquals(500, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
@@ -381,12 +388,12 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(exponentialBackoff))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline),
             () -> sendRequest(pipeline)
-        );
-
-        assertEquals(503, response.getStatusCode());
+        )) {
+            assertEquals(503, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
@@ -474,7 +481,8 @@ public class RetryPolicyTests {
     @Test
     public void retryAfterDateTime() {
         OffsetDateTime now = OffsetDateTime.now().withNano(0);
-        HttpHeaders headers = new HttpHeaders().set("Retry-After", new DateTimeRfc1123(now.plusSeconds(30)).toString());
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.RETRY_AFTER,
+            new DateTimeRfc1123(now.plusSeconds(30)).toString());
         Duration actual = RetryPolicy.getWellKnownRetryDelay(headers, 1, null, () -> now);
 
         assertEquals(Duration.ofSeconds(30), actual);
@@ -547,6 +555,9 @@ public class RetryPolicyTests {
         };
     }
 
+    private static final HttpHeaderName X_MS_RETRY_AFTER_MS = HttpHeaderName.fromString("x-ms-retry-after-ms");
+    private static final HttpHeaderName RETRY_AFTER_MS = HttpHeaderName.fromString("retry-after-ms");
+
     static Stream<Arguments> getWellKnownRetryDelaySupplier() {
         RetryStrategy retryStrategy = new RetryStrategy() {
             @Override
@@ -565,28 +576,31 @@ public class RetryPolicyTests {
             Arguments.of(new HttpHeaders(), retryStrategy, Duration.ofSeconds(1)),
 
             // x-ms-retry-after-ms should be respected as milliseconds.
-            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "10"), retryStrategy, Duration.ofMillis(10)),
+            Arguments.of(new HttpHeaders().set(X_MS_RETRY_AFTER_MS, "10"), retryStrategy, Duration.ofMillis(10)),
 
             // x-ms-retry-after-ms wasn't a valid number, fallback to the default.
-            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
-            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set(X_MS_RETRY_AFTER_MS, "-10"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set(X_MS_RETRY_AFTER_MS, "ten"), retryStrategy, Duration.ofSeconds(1)),
 
             // retry-after-ms should be respected as milliseconds.
-            Arguments.of(new HttpHeaders().set("retry-after-ms", "64"), retryStrategy, Duration.ofMillis(64)),
+            Arguments.of(new HttpHeaders().set(RETRY_AFTER_MS, "64"), retryStrategy, Duration.ofMillis(64)),
 
             // retry-after-ms wasn't a valid number, fallback to the default.
-            Arguments.of(new HttpHeaders().set("retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
-            Arguments.of(new HttpHeaders().set("retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set(RETRY_AFTER_MS, "-10"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set(RETRY_AFTER_MS, "ten"), retryStrategy, Duration.ofSeconds(1)),
 
             // Retry-After should be respected as seconds.
-            Arguments.of(new HttpHeaders().set("Retry-After", "10"), retryStrategy, Duration.ofSeconds(10)),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "10"), retryStrategy,
+                Duration.ofSeconds(10)),
 
             // Retry-After wasn't a valid number, fallback to the default.
-            Arguments.of(new HttpHeaders().set("Retry-After", "-10"), retryStrategy, Duration.ofSeconds(1)),
-            Arguments.of(new HttpHeaders().set("Retry-After", "ten"), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "-10"), retryStrategy,
+                Duration.ofSeconds(1)),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "ten"), retryStrategy,
+                Duration.ofSeconds(1)),
 
             // Retry-After was before the current time, fallback to the default.
-            Arguments.of(new HttpHeaders().set("Retry-After", OffsetDateTime.now().minusMinutes(1)
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, OffsetDateTime.now().minusMinutes(1)
                 .atZoneSameInstant(ZoneOffset.UTC)
                 .format(DateTimeFormatter.RFC_1123_DATE_TIME)), retryStrategy, Duration.ofSeconds(1))
         );

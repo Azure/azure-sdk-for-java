@@ -175,7 +175,9 @@ public class HttpRequest {
      * @param name the header name
      * @param value the header value
      * @return this HttpRequest
+     * @deprecated Use {@link #setHeader(HttpHeaderName, String)} instead as is offers better performance.
      */
+    @Deprecated
     public HttpRequest setHeader(String name, String value) {
         headers.set(name, value);
         return this;

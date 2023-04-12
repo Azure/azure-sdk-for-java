@@ -281,6 +281,7 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
   "azure-sdk-template" = "Depends on unreleased core.";
@@ -630,6 +631,10 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
   # skip spark packages
   if ($pkgName.Contains("-spark")) {
+    return $null
+  }
+  # skip azure-cosmos-test package because it needs to be releaesd
+  if ($pkgName.Contains("azure-cosmos-test")) {
     return $null
   }
 

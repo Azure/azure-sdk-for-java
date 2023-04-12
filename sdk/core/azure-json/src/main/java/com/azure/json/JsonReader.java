@@ -16,7 +16,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Reads a JSON encoded value as a stream of tokens.
+ * Reads a JSON value as a stream of tokens.
+ * <p>
+ * Instances of {@link JsonReader} are created using an instance of {@link JsonProvider} or using the utility methods
+ * in {@link JsonProviders}.
+ *
+ * @see com.azure.json
+ * @see JsonProvider
+ * @see JsonProviders
  */
 public abstract class JsonReader implements Closeable {
     private static final JsonStringEncoder ENCODER = JsonStringEncoder.getInstance();
