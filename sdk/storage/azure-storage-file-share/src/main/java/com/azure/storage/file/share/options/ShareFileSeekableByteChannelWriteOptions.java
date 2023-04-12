@@ -12,7 +12,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 public final class ShareFileSeekableByteChannelWriteOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileSeekableByteChannelWriteOptions.class);
 
-    private final boolean isOverwrite;
+    private final boolean overwriteMode;
     private Long fileSize;
     private ShareRequestConditions requestConditions;
     private FileLastWrittenMode fileLastWrittenMode;
@@ -20,17 +20,17 @@ public final class ShareFileSeekableByteChannelWriteOptions {
 
     /**
      * Options constructor.
-     * @param isOverwrite Whether to open the channel in write mode.
+     * @param overwriteMode Whether to open the channel in write mode.
      */
-    public ShareFileSeekableByteChannelWriteOptions(boolean isOverwrite) {
-        this.isOverwrite = isOverwrite;
+    public ShareFileSeekableByteChannelWriteOptions(boolean overwriteMode) {
+        this.overwriteMode = overwriteMode;
     }
 
     /**
      * @return Whether the channel is in write mode.
      */
     public boolean isOverwriteMode() {
-        return isOverwrite;
+        return overwriteMode;
     }
 
 
@@ -48,7 +48,7 @@ public final class ShareFileSeekableByteChannelWriteOptions {
      * @throws UnsupportedOperationException When setting a file size on options that don't create a new file.
      */
     public ShareFileSeekableByteChannelWriteOptions setFileSize(Long fileSize) {
-        if (!isOverwrite) {
+        if (!overwriteMode) {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("Cannot set 'fileSize' unless creating a new file."));
         }
