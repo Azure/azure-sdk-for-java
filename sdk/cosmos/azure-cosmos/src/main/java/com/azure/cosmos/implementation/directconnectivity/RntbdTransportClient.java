@@ -127,16 +127,14 @@ public class RntbdTransportClient extends TransportClient {
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
         final GlobalEndpointManager globalEndpointManager,
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
             clientTelemetry,
             globalEndpointManager,
-                proactiveOpenConnectionsProcessor
-        );
+            proactiveOpenConnectionsProcessor);
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -157,8 +155,7 @@ public class RntbdTransportClient extends TransportClient {
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
         final GlobalEndpointManager globalEndpointManager,
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
@@ -168,8 +165,7 @@ public class RntbdTransportClient extends TransportClient {
             addressResolver,
             clientTelemetry,
             this.serverErrorInjector,
-            proactiveOpenConnectionsProcessor
-        );
+            proactiveOpenConnectionsProcessor);
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);

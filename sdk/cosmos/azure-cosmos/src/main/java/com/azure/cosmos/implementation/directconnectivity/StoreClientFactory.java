@@ -34,8 +34,7 @@ public class StoreClientFactory implements AutoCloseable {
         boolean enableTransportClientSharing,
         ClientTelemetry clientTelemetry,
         GlobalEndpointManager globalEndpointManager,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
@@ -49,8 +48,7 @@ public class StoreClientFactory implements AutoCloseable {
                 addressResolver,
                 clientTelemetry,
                 globalEndpointManager,
-                    proactiveOpenConnectionsProcessor
-                );
+                proactiveOpenConnectionsProcessor);
         } else {
             if (protocol == Protocol.HTTPS) {
                 this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
@@ -65,8 +63,7 @@ public class StoreClientFactory implements AutoCloseable {
                         addressResolver,
                         clientTelemetry,
                         globalEndpointManager,
-                            proactiveOpenConnectionsProcessor
-                        );
+                        proactiveOpenConnectionsProcessor);
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {

@@ -70,7 +70,7 @@ public final class OpenConnectionOperation {
 
     private static class ProactiveOpenConnectionsRetryPolicy implements IRetryPolicy {
 
-        private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
+        private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsRetryPolicy.class);
         private static final int MaxRetryAttempts = 2;
         private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(1_000);
         private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(10_000);
