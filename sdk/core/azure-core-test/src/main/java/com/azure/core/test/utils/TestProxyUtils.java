@@ -50,6 +50,7 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
+            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
