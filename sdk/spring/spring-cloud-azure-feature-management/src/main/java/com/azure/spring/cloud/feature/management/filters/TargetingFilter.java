@@ -6,10 +6,11 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,11 @@ public class TargetingFilter implements FeatureFilter {
      * Audience in the filter
      */
     protected static final String AUDIENCE = "Audience";
+    
+    /*
+     * 
+     */
+    protected static final String EXCLUSION = "exclusion";
 
     /**
      * Error message for when the total Audience value is greater than 100 percent.
@@ -59,8 +65,8 @@ public class TargetingFilter implements FeatureFilter {
     /**
      * Object Mapper for converting configurations to features
      */
-    protected static final ObjectMapper OBJECT_MAPPER =
-        JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    protected static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     /**
      * Accessor for identifying the current user/group when evaluating
@@ -113,36 +119,43 @@ public class TargetingFilter implements FeatureFilter {
 
         Map<String, Object> parameters = context.getParameters();
 
-        if (parameters != null) {
-            Object audienceObject = parameters.get(AUDIENCE);
-            if (audienceObject != null) {
-                parameters = (Map<String, Object>) audienceObject;
-            }
-
-            updateValueFromMapToList(parameters, USERS);
-            updateValueFromMapToList(parameters, GROUPS);
-
-            settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
+        Object audienceObject = parameters.get(AUDIENCE);
+        if (audienceObject != null) {
+            parameters = (Map<String, Object>) audienceObject;
         }
+
+        updateValueFromMapToList(parameters, USERS);
+        updateValueFromMapToList(parameters, GROUPS);
+
+        Map<String, Map<String, Object>> exclusionMap = (Map<String, Map<String, Object>>) parameters
+            .get(EXCLUSION);
+        Map<String, Object> exclusionAsLists = new HashMap<>();
+        if (exclusionMap != null) {
+            exclusionAsLists.put(USERS, exclusionMap.getOrDefault(USERS, new HashMap<String, Object>()).values());
+            exclusionAsLists.put(GROUPS, exclusionMap.getOrDefault(GROUPS, new HashMap<String, Object>()).values());
+        }
+        parameters.put(EXCLUSION, exclusionAsLists);
+        settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
 
         validateSettings(settings);
 
         Audience audience = settings.getAudience();
-        
+
         // Need to Check Denyed first
         if (targetUser(targetingContext.getUserId(), audience.getExclusion().getUsers())) {
             return false;
         }
-        
+
         if (targetingContext.getGroups() != null && audience.getExclusion().getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
-                Optional<String> groupRollout = audience.getExclusion().getGroups().stream().filter(g -> equals(g, group)).findFirst();
+                Optional<String> groupRollout = audience.getExclusion().getGroups().stream()
+                    .filter(g -> equals(g, group)).findFirst();
                 if (groupRollout.isPresent()) {
                     return false;
                 }
             }
         }
-        
+
         // Check if Allowed
         if (targetUser(targetingContext.getUserId(), audience.getUsers())) {
             return true;
@@ -150,8 +163,8 @@ public class TargetingFilter implements FeatureFilter {
 
         if (targetingContext.getGroups() != null && audience.getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
-                Optional<GroupRollout> groupRollout =
-                    audience.getGroups().stream().filter(g -> equals(g.getName(), group)).findFirst();
+                Optional<GroupRollout> groupRollout = audience.getGroups().stream()
+                    .filter(g -> equals(g.getName(), group)).findFirst();
 
                 if (groupRollout.isPresent()) {
                     String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
@@ -219,8 +232,7 @@ public class TargetingFilter implements FeatureFilter {
      * Validates the settings of a targeting filter.
      * 
      * @param settings targeting filter settings
-     * @throws TargetingException when a required parameter is missing or percentage value is greater
-     *         than 100.
+     * @throws TargetingException when a required parameter is missing or percentage value is greater than 100.
      */
     void validateSettings(TargetingFilterSettings settings) {
         String paramName = "";
@@ -270,8 +282,8 @@ public class TargetingFilter implements FeatureFilter {
     }
 
     /**
-     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used
-     * for updating fields in the targeting filter.
+     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating
+     * fields in the targeting filter.
      * 
      * @param <T> Type of object inside of parameters for the given key
      * @param parameters map of generic objects
@@ -281,7 +293,7 @@ public class TargetingFilter implements FeatureFilter {
     private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
-            List<Object> toType = ((Map<String, Object>) objectMap).values().stream().collect(Collectors.toList());
+            Collection<Object> toType = ((Map<String, Object>) objectMap).values();
             parameters.put(key, toType);
         }
     }

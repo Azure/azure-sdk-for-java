@@ -15,7 +15,7 @@ public class Audience {
 
     private double defaultRolloutPercentage;
 
-    private Exclusion exclusion;
+    private Exclusion exclusion = new Exclusion();
 
     /**
      * @return the users

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.targeting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,9 +10,9 @@ import java.util.List;
  */
 public class Exclusion {
 
-    private List<String> users;
+    private List<String> users = new ArrayList<>();
 
-    private List<String> groups;
+    private List<String> groups = new ArrayList<>();
 
     /**
      * @return the users
