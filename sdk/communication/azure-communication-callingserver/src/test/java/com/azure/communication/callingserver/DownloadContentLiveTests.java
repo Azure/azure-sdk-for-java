@@ -7,7 +7,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -31,8 +31,9 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithConnectionStringClient(HttpClient httpClient) throws UnsupportedEncodingException {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -41,8 +42,9 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
     }
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataWithTokenCredentialClient(HttpClient httpClient) throws UnsupportedEncodingException {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
@@ -63,8 +65,9 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideo(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -89,8 +92,9 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContent404(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -121,8 +125,9 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);

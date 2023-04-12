@@ -6,7 +6,7 @@ package com.azure.communication.callingserver;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -20,8 +20,9 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithConnectionStringClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -31,8 +32,9 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithTokenCredentialClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
@@ -53,8 +55,9 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording401(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
@@ -67,8 +70,9 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callingserver.CallAutomationLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording404(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);

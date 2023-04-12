@@ -13,6 +13,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.Header;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +25,6 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivilegedActionException;
@@ -423,8 +423,8 @@ public class JacksonAdapter implements SerializerAdapter {
             return new DateTimeRfc1123(value);
         } else if (type == URL.class) {
             try {
-                return new URI(value).toURL();
-            } catch (URISyntaxException | MalformedURLException ex) {
+                return UrlBuilder.parse(value).toUrl();
+            } catch (MalformedURLException ex) {
                 throw new IOException(ex);
             }
         } else if (type == URI.class) {

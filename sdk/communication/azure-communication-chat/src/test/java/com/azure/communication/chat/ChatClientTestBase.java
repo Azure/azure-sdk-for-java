@@ -103,16 +103,6 @@ public class ChatClientTestBase extends TestBase {
         return builder;
     }
 
-    /**
-     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
-     * environment variable is true.
-     *
-     * @return Whether the live test should be skipped.
-     */
-    public static boolean skipLiveTest() {
-        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST")) || TEST_MODE == TestMode.PLAYBACK;
-    }
-
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)

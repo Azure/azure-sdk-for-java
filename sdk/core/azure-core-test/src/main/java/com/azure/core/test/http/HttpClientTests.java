@@ -14,6 +14,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -33,8 +34,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -587,8 +586,8 @@ public abstract class HttpClientTests {
     protected URL getRequestUrl(String requestPath) {
         try {
             String prefix = isSecure() ? "https://" : "http://";
-            return new URI(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+            return UrlBuilder.parse(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath).toUrl();
+        } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }

@@ -12,6 +12,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.UrlBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
@@ -35,8 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -446,8 +445,8 @@ public class JdkHttpClientTests {
 
     private static URL url(WireMockServer server, String path) {
         try {
-            return new URI("http://localhost:" + server.port() + path).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+            return UrlBuilder.parse("http://localhost:" + server.port() + path).toUrl();
+        } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }

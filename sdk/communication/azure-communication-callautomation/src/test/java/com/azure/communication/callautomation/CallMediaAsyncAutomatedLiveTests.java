@@ -16,7 +16,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,8 +32,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callautomation.CallAutomationAutomatedLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
     public void playMediaInACallAutomatedTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call

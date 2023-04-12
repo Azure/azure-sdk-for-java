@@ -58,18 +58,6 @@ public class CallAutomationLiveTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
-    /**
-     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
-     * environment variable is true.
-     *
-     * @return Whether the live test should be skipped.
-     */
-    public static boolean skipLiveTest() {
-        String testMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
-        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST"))
-            || (!"LIVE".equalsIgnoreCase(testMode) && !"RECORD".equalsIgnoreCase(testMode));
-    }
-
     protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
             .connectionString(CONNECTION_STRING)

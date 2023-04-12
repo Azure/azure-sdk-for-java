@@ -99,18 +99,6 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         }
     }
 
-    /**
-     * Whether a test should be skipped due to either not being tested against live services or {@code SKIP_LIVE_TEST}
-     * environment variable is true.
-     *
-     * @return Whether the live test should be skipped.
-     */
-    public static boolean skipLiveTest() {
-        String testMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
-        return Boolean.parseBoolean(System.getenv("SKIP_LIVE_TEST"))
-            || (!"LIVE".equalsIgnoreCase(testMode) && !"RECORD".equalsIgnoreCase(testMode));
-    }
-
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
         return new ServiceBusClientBuilder()
             .connectionString(SERVICEBUS_CONNECTION_STRING)

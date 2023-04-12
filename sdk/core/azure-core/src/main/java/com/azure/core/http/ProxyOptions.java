@@ -7,14 +7,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -287,7 +286,7 @@ public class ProxyOptions {
         }
 
         try {
-            URL proxyUrl = new URI(proxyConfiguration).toURL();
+            URL proxyUrl = UrlBuilder.parse(proxyConfiguration).toUrl();
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
             InetSocketAddress socketAddress = (createUnresolved)
@@ -321,7 +320,7 @@ public class ProxyOptions {
             }
 
             return proxyOptions;
-        } catch (URISyntaxException | MalformedURLException ex) {
+        } catch (MalformedURLException ex) {
             LOGGER.atWarning()
                 .addKeyValue("url", proxyProperty)
                 .log(INVALID_AZURE_PROXY_URL);

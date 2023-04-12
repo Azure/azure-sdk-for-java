@@ -20,7 +20,7 @@ import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -38,8 +38,9 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
     @ParameterizedTest
     @Disabled("Disabling this test for this release - fix after recording update")
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIf(
-        value = "com.azure.communication.callautomation.CallAutomationAutomatedLiveTestBase#skipLiveTest",
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
     public void createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call

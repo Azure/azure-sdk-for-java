@@ -3,6 +3,7 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -16,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -129,11 +128,11 @@ public final class TestProxyDownloader {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "Downloading test proxy. This may take a few moments.");
 
         try {
-            URL url = new URI(getProxyDownloadUrl(platformInfo)).toURL();
+            URL url = UrlBuilder.parse(getProxyDownloadUrl(platformInfo)).toUrl();
             Files.copy(url.openStream(),
                 getZipFileLocation(platformInfo.getExtension()),
                 StandardCopyOption.REPLACE_EXISTING);
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Could not save test proxy download", e);
         }
 

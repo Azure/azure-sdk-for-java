@@ -11,6 +11,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.azure.core.CoreTestUtils.createUrl;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -778,7 +778,7 @@ public class UrlBuilderTests {
 
     @Test
     public void parseURLSchemeAndHost() throws MalformedURLException {
-        final UrlBuilder builder = UrlBuilder.parse(createUrl("http://www.bing.com"));
+        final UrlBuilder builder = UrlBuilder.parse(URI.create("http://www.bing.com").toURL());
         assertEquals("http://www.bing.com", builder.toString());
     }
 

@@ -27,7 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,7 +45,7 @@ public class RestProxyUtilsTests {
         StepVerifier.create(
                 RestProxyUtils.validateLengthAsync(httpRequest)
                     .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
     }
 
@@ -105,11 +105,11 @@ public class RestProxyUtilsTests {
             .flatMapMany(HttpRequest::getBody);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
     }
 
@@ -229,7 +229,7 @@ public class RestProxyUtilsTests {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream))
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
-            assertArrayEquals(EXPECTED, validateAndCollectRequestSync(httpRequest));
+            assertArraysEqual(EXPECTED, validateAndCollectRequestSync(httpRequest));
         }
     }
 
