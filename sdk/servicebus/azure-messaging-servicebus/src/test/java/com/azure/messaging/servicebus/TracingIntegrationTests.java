@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -53,7 +54,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Execution(ExecutionMode.SAME_THREAD)
 public class TracingIntegrationTests extends IntegrationTestBase {
     private TestSpanProcessor spanProcessor;
-    private List<AutoCloseable> toClose = new ArrayList<>();
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverClient receiverSync;
@@ -74,26 +74,23 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .build())
             .buildAndRegisterGlobal();
 
-        sender = new ServiceBusClientBuilder()
+        sender = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .sender()
             .queueName(getQueueName(0))
-            .buildAsyncClient();
+            .buildAsyncClient());
 
-        receiver = new ServiceBusClientBuilder()
+        receiver = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
             .queueName(getQueueName(0))
-            .buildAsyncClient(false, false);
+            .buildAsyncClient(false, false));
 
-        receiverSync = new ServiceBusClientBuilder()
+        receiverSync = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
             .queueName(getQueueName(0))
-            .buildClient();
-        toClose.add(sender);
-        toClose.add(receiver);
-        toClose.add(receiverSync);
+            .buildClient());
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
     }
@@ -102,16 +99,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     protected void afterTest() {
         GlobalOpenTelemetry.resetForTest();
         sharedBuilder = null;
-
-        if (processor != null) {
-            toClose.add(processor);
-        }
-
-        try {
-            dispose(toClose.toArray(new AutoCloseable[0]));
-        } catch (Exception e) {
-            logger.warning("Error disposing resources.", e);
-        }
     }
 
     @Test
@@ -126,7 +113,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
 
         List<ServiceBusReceivedMessage> received = new ArrayList<>();
-        receiver.receiveMessages()
+        Disposable subscription = receiver.receiveMessages()
             .take(2)
             .doOnNext(msg -> {
                 received.add(msg);
@@ -139,7 +126,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 receiver.complete(msg).block();
             })
             .subscribe();
-
+        toClose(() -> subscription.dispose());
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -175,7 +162,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
 
         List<ServiceBusReceivedMessage> received = new ArrayList<>();
-        receiver.receiveMessages()
+        Disposable subscription = receiver.receiveMessages()
             .take(2)
             .subscribe(msg -> {
                 received.add(msg);
@@ -187,7 +174,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 assertFalse(((ReadableSpan) Span.current()).hasEnded());
                 receiver.complete(msg).block();
             });
-
+        toClose(() -> subscription.dispose());
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -258,13 +245,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        ServiceBusReceiverAsyncClient receiverAutoComplete = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiverAutoComplete = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .receiver()
             .queueName(getQueueName(0))
-            .buildAsyncClient();
+            .buildAsyncClient());
 
-        toClose.add(receiverAutoComplete);
         StepVerifier.create(
                 receiverAutoComplete.receiveMessages()
                 .take(messageCount)
@@ -308,7 +294,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.process") && s.getSpanContext().getTraceId().equals(traceId));
-        receiver.receiveMessages()
+        Disposable subscription = receiver.receiveMessages()
             .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
             .flatMap(m -> receiver.renewMessageLock(m, Duration.ofSeconds(1)).thenReturn(m))
             .flatMap(m -> receiver.defer(m, new DeferOptions()).thenReturn(m))
@@ -319,7 +305,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     latch.countDown();
                 }
             });
-
+        toClose(() -> subscription.dispose());
         assertTrue(latch.await(50, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -460,7 +446,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
             .queueName(getQueueName(0))
@@ -470,12 +456,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedMessage.compareAndSet(null, mc.getMessage());
                 }
             })
-            .processError(e -> {
-                fail("unexpected error", e.getException());
-            })
-            .buildProcessorClient();
+            .processError(e -> fail("unexpected error", e.getException()))
+            .buildProcessorClient());
 
-        toClose.add(() -> processor.stop());
+        toClose(() -> processor.stop());
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -518,7 +502,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(10);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
 
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
             .queueName(getQueueName(0))
@@ -532,8 +516,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 assertFalse(((ReadableSpan) Span.current()).hasEnded());
             })
             .processError(e -> fail("unexpected error", e.getException()))
-            .buildProcessorClient();
-        toClose.add(() -> processor.stop());
+            .buildProcessorClient());
+        toClose(() -> processor.stop());
         processor.start();
         assertTrue(processedFound.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -563,7 +547,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch completedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(completedFound, span -> span.getName().equals("ServiceBus.complete"));
 
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
             .queueName(getQueueName(0))
@@ -578,8 +562,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 mc.complete();
             })
             .processError(e -> fail("unexpected error", e.getException()))
-            .buildProcessorClient();
-        toClose.add(() -> processor.stop());
+            .buildProcessorClient());
+        toClose(() -> processor.stop());
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -611,7 +595,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             "ServiceBus.process".equals(span.getName()) && span.getParentSpanContext().getSpanId().equals(message1SpanId));
 
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        processor = new ServiceBusClientBuilder()
+        processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .processor()
             .queueName(getQueueName(0))
@@ -622,8 +606,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 }
             })
             .processError(e -> { })
-            .buildProcessorClient();
-        toClose.add(() -> processor.stop());
+            .buildProcessorClient());
+        toClose(() -> processor.stop());
         processor.start();
         assertTrue(messageProcessed.await(10, TimeUnit.SECONDS));
         processor.stop();

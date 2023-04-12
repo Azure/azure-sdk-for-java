@@ -30,6 +30,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -63,7 +64,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
-
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
 
@@ -84,6 +85,7 @@ public abstract class IntegrationTestBase extends TestBase {
         assumeTrue(getTestMode() == TestMode.RECORD);
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
+        toClose = new ArrayList<>();
         beforeTest();
     }
 
@@ -104,6 +106,9 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
+
+        logger.info("Disposing of subscriptions, consumers and clients.");
+        dispose();
     }
 
     /**
@@ -336,6 +341,19 @@ public abstract class IntegrationTestBase extends TestBase {
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
         );
+    }
+
+    protected <T extends AutoCloseable> T toClose(T closeable) {
+        toClose.add(closeable);
+        return closeable;
+    }
+
+    /**
+     * Disposes of registered with {@code toClose} method resources.
+     */
+    protected void dispose() {
+        dispose(toClose.toArray(new Closeable[0]));
+        toClose.clear();
     }
 
     /**

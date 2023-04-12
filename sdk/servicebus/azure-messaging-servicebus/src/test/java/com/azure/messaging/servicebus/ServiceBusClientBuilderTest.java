@@ -69,17 +69,17 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     void ensureIdentifierString() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        final ServiceBusSenderAsyncClient client = builder
+        final ServiceBusSenderAsyncClient client = toClose(builder
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .sender()
             .queueName(QUEUE_NAME)
-            .buildAsyncClient();
+            .buildAsyncClient());
 
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(client.getIdentifier()));
     }
 
     @Test
-    void deadLetterqueueClient() {
+    void deadLetterQueueClient() {
         // Arrange
         final ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
@@ -87,8 +87,9 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .queueName(QUEUE_NAME)
             .subQueue(SubQueue.DEAD_LETTER_QUEUE);
 
+
         // Act
-        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+        final ServiceBusReceiverAsyncClient client = toClose(builder.buildAsyncClient());
 
         // Assert
         assertTrue(client.getEntityPath().endsWith(DEAD_LETTER_QUEUE_NAME_SUFFIX));
@@ -104,7 +105,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE);
 
         // Act
-        final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+        final ServiceBusReceiverAsyncClient client = toClose(builder.buildAsyncClient());
 
         // Assert
         assertTrue(client.getEntityPath().endsWith(TRANSFER_DEAD_LETTER_QUEUE_NAME_SUFFIX));
@@ -235,19 +236,18 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @MethodSource("getProxyConfigurations")
     @ParameterizedTest
     public void testProxyOptionsConfiguration(String proxyConfiguration) {
-        Configuration configuration = TestUtils.getGlobalConfiguration().clone();
-        configuration
+        Configuration configuration = TestUtils.getGlobalConfiguration()
             .put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration)
             .put(JAVA_NET_USER_SYSTEM_PROXIES, "true");
 
         // Client creation should not fail with incorrect proxy configuration
-        ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
+        toClose(new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .configuration(configuration)
             .receiver()
             .topicName("baz").subscriptionName("bar")
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .buildClient();
+            .buildClient());
     }
 
     @Test
@@ -276,23 +276,18 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
 
-        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusSenderAsyncClient senderAsyncClient = toClose(new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
             .sender()
             .queueName(queueName)
-            .buildAsyncClient();
-        try {
-            StepVerifier.create(
-                senderAsyncClient.createMessageBatch().flatMap(batch -> {
-                    assertTrue(batch.tryAddMessage(testData));
-                    return senderAsyncClient.sendMessages(batch);
-                })
+            .buildAsyncClient());
+        StepVerifier.create(
+            senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                assertTrue(batch.tryAddMessage(testData));
+                return senderAsyncClient.sendMessages(batch);
+            })
             ).verifyComplete();
-        } finally {
-            senderAsyncClient.close();
-        }
     }
-
 
     @Test
     public void testBatchSendEventByAzureSasCredential() {
@@ -303,22 +298,19 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
 
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
 
-        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusSenderAsyncClient senderAsyncClient = toClose(new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace,
                 new AzureSasCredential(sharedAccessSignature))
             .sender()
             .queueName(queueName)
-            .buildAsyncClient();
-        try {
-            StepVerifier.create(
-                senderAsyncClient.createMessageBatch().flatMap(batch -> {
-                    assertTrue(batch.tryAddMessage(testData));
-                    return senderAsyncClient.sendMessages(batch);
-                })
-            ).verifyComplete();
-        } finally {
-            senderAsyncClient.close();
-        }
+            .buildAsyncClient());
+
+        StepVerifier.create(
+            senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                assertTrue(batch.tryAddMessage(testData));
+                return senderAsyncClient.sendMessages(batch);
+            })
+        ).verifyComplete();
     }
 
     @Test
