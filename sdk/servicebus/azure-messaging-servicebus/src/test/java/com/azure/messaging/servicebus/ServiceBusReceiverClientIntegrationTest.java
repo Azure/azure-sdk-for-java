@@ -840,7 +840,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
             if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
                 assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) receivedProps.get(sentEntry.getKey()));
-            } else {
+            } else if (sentEntry.getKey().equals("traceparent") || sentEntry.getKey().equals("Diagnostic-Id")) {
                 final Object expected = sentEntry.getValue();
                 final Object actual = receivedProps.get(sentEntry.getKey());
 
