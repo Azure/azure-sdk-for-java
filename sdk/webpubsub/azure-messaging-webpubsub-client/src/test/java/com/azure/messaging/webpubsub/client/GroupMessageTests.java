@@ -149,7 +149,7 @@ public class GroupMessageTests extends TestBase {
             final long beginNano = System.nanoTime();
             for (int i = 0; i < count; ++i) {
                 WebPubSubResult result = client.sendToGroup(groupName, HELLO + i, new SendToGroupOptions()
-                    .setFireAndForget(true  ));
+                    .setFireAndForget(true));
                 Assertions.assertNotNull(result);
             }
             final long endNanoSend = System.nanoTime();
@@ -158,10 +158,10 @@ public class GroupMessageTests extends TestBase {
             Assertions.assertEquals(0, latch.getCount());
             final long endNanoReceive = System.nanoTime();
 
-            // about 90ms for 1k
-            System.out.println("send takes milliseconds: " + (endNanoSend - beginNano) / 10E6);
-            // about 110ms for 1k
-            System.out.println("send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 10E6);
+            // about 800 ms for 1k messages
+            System.out.println("send takes milliseconds: " + (endNanoSend - beginNano) / 1E6);
+            // about 1 second for 1k messages
+            System.out.println("send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 1E6);
         } finally {
             client.stop();
         }

@@ -54,6 +54,7 @@ import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
@@ -422,7 +423,9 @@ class WebPubSubAsyncClient implements Closeable {
         Objects.requireNonNull(dataType);
         Objects.requireNonNull(options);
 
-        long ackId = options.getAckId() != null ? options.getAckId() : nextAckId();
+        Long ackId = options.isFireAndForget()
+            ? null
+            : (options.getAckId() != null ? options.getAckId() : nextAckId());
 
         Object data = content;
         if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
@@ -569,7 +572,7 @@ class WebPubSubAsyncClient implements Closeable {
                         .serialize(message, SerializerEncoding.JSON);
                     logger.atVerbose().addKeyValue("message", json).log("Send message");
                 } catch (IOException e) {
-                    //
+                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
                 }
             }
 
@@ -782,7 +785,8 @@ class WebPubSubAsyncClient implements Closeable {
                     .serialize(webPubSubMessage, SerializerEncoding.JSON);
                 logger.atVerbose().addKeyValue("message", json).log("Received message");
             } catch (IOException e) {
-                //
+                throw logger.logExceptionAsError(
+                    new UncheckedIOException("Failed to serialize received message for VERBOSE logging", e));
             }
         }
 

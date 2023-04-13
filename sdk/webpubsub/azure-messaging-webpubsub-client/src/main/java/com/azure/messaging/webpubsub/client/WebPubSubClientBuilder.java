@@ -42,6 +42,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
     private WebPubSubClientCredential credential;
     private String clientAccessUrl;
 
+    // default protocol be WebPubSubJsonReliableProtocol
     private WebPubSubProtocol webPubSubProtocol = new WebPubSubJsonReliableProtocol();
 
     private ClientOptions clientOptions;
@@ -211,6 +212,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
                     new IllegalArgumentException("'retryOptions' didn't define any retry strategy options"));
             }
         } else {
+            // default retry strategy be ExponentialBackoff
             retryStrategy = new ExponentialBackoff();
         }
 
@@ -218,7 +220,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
         Mono<String> clientAccessUrlProvider;
         if (credential != null && clientAccessUrl != null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Both credential and clientAccessUrl have been set. "
+                new IllegalStateException("Both credential and clientAccessUrl have been set. "
                     + "Set null to one of them to clear that option."));
         } else if (credential != null) {
             clientAccessUrlProvider = credential.getClientAccessUrl();
@@ -226,7 +228,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
             clientAccessUrlProvider = Mono.just(clientAccessUrl);
         } else {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Credentials have not been set. "
+                new IllegalStateException("Credentials have not been set. "
                     + "They can be set using: clientAccessUrl(String), credential(WebPubSubClientCredential)"));
         }
 

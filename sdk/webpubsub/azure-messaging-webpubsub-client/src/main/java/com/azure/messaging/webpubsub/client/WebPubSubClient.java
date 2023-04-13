@@ -25,7 +25,35 @@ import reactor.core.scheduler.Schedulers;
 import java.util.function.Consumer;
 
 /**
- * The WebPubSubAsync client.
+ * The WebPubSub client that manages the WebSocket connections, join group, and send messages.
+ * <p>
+ * This client is instantiated through {@link WebPubSubClientBuilder}.
+ * <p>
+ * Please refer to <a href="https://aka.ms/awps/doc">Azure Web PubSub</a> for more information.
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <!-- src_embed com.azure.messaging.webpubsub.client.WebPubSubClient -->
+ * <pre>
+ * &#47;&#47; create WebPubSub client
+ * WebPubSubClient client = new WebPubSubClientBuilder&#40;&#41;
+ *     .clientAccessUrl&#40;&quot;&lt;client-access-url&gt;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; add event handler for group message
+ * client.addOnGroupMessageEventHandler&#40;event -&gt; &#123;
+ *     System.out.println&#40;&quot;Received group message from &quot; + event.getFromUserId&#40;&#41; + &quot;: &quot;
+ *         + event.getData&#40;&#41;.toString&#40;&#41;&#41;;
+ * &#125;&#41;;
+ *
+ * &#47;&#47; start
+ * client.start&#40;&#41;;
+ * &#47;&#47; join group
+ * client.joinGroup&#40;&quot;message-group&quot;&#41;;
+ * &#47;&#47; send message
+ * client.sendToGroup&#40;&quot;message-group&quot;, &quot;hello world&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient -->
  */
 @ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubClient {
@@ -46,6 +74,8 @@ public class WebPubSubClient {
 
     /**
      * Gets the connection ID.
+     * <p>
+     * Connection ID may not be available immediately after client start. It is provided by server via ConnectedEvent.
      *
      * @return the connection ID.
      */
@@ -55,6 +85,12 @@ public class WebPubSubClient {
 
     /**
      * Starts the client for connecting to the server.
+     * <p>
+     * Client is required to be started, before message to server can be sent via
+     * {@link #joinGroup(String)} or {@link #sendToGroup(String, String)}.
+     * A WebSocket connection is established between the client and the Web PubSub server/hub.
+     * <p>
+     * Event handler can be added before client start, via e.g. {@link #addOnGroupMessageEventHandler(Consumer)}.
      *
      * @exception IllegalStateException thrown if client is not currently stopped.
      * @exception ConnectFailedException thrown if failed to connect to server.
@@ -78,6 +114,8 @@ public class WebPubSubClient {
 
     /**
      * Stops the client for disconnecting from the server.
+     * <p>
+     * The WebSocket connection is closed.
      *
      * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
      */

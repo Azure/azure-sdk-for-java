@@ -202,7 +202,7 @@ public class ClientTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testNoCredential() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
             WebPubSubClient client = new WebPubSubClientBuilder().buildClient();
         });
     }
@@ -210,7 +210,7 @@ public class ClientTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testBothCredential() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
             WebPubSubClient client = new WebPubSubClientBuilder()
                 .credential(new WebPubSubClientCredential(Mono.just("mock")))
                 .clientAccessUrl("mock")

@@ -26,7 +26,7 @@ public final class LeaveGroupMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public LeaveGroupMessage setAckId(long ackId) {
+    public LeaveGroupMessage setAckId(Long ackId) {
         super.setAckId(ackId);
         return this;
     }

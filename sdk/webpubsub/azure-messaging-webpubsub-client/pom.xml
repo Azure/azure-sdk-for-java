@@ -15,8 +15,8 @@
   <artifactId>azure-messaging-webpubsub-client</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub-client;current} -->
 
-  <name>Microsoft Azure client library for Azure Web Pub Sub Client</name>
-  <description>This package contains the Microsoft Azure Web Pub Sub Client library.</description>
+  <name>Microsoft Azure client library for Azure Web PubSub Client</name>
+  <description>This package contains the Microsoft Azure Web PubSub Client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -45,6 +45,7 @@
       <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
+    <!-- netty-codec-http is included in dependency for internal WebSocket implementation -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>

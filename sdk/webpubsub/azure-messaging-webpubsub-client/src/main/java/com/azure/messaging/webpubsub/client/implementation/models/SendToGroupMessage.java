@@ -33,7 +33,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public SendToGroupMessage setAckId(long ackId) {
+    public SendToGroupMessage setAckId(Long ackId) {
         super.setAckId(ackId);
         return this;
     }

@@ -26,7 +26,7 @@ public final class JoinGroupMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public JoinGroupMessage setAckId(long ackId) {
+    public JoinGroupMessage setAckId(Long ackId) {
         super.setAckId(ackId);
         return this;
     }

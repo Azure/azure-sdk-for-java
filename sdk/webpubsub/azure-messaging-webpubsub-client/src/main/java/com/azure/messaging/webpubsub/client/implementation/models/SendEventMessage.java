@@ -32,7 +32,7 @@ public final class SendEventMessage extends WebPubSubMessageAck {
     }
 
     @Override
-    public SendEventMessage setAckId(long ackId) {
+    public SendEventMessage setAckId(Long ackId) {
         super.setAckId(ackId);
         return this;
     }

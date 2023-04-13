@@ -44,4 +44,26 @@ public final class WebPubSubClientJavaDocCodeSnippets {
         client.joinGroup("message-group");
         // END: com.azure.messaging.webpubsub.client.WebPubSubClient.joinGroup
     }
+
+    public void client() {
+        // BEGIN: com.azure.messaging.webpubsub.client.WebPubSubClient
+        // create WebPubSub client
+        WebPubSubClient client = new WebPubSubClientBuilder()
+            .clientAccessUrl("<client-access-url>")
+            .buildClient();
+
+        // add event handler for group message
+        client.addOnGroupMessageEventHandler(event -> {
+            System.out.println("Received group message from " + event.getFromUserId() + ": "
+                + event.getData().toString());
+        });
+
+        // start
+        client.start();
+        // join group
+        client.joinGroup("message-group");
+        // send message
+        client.sendToGroup("message-group", "hello world");
+        // END: com.azure.messaging.webpubsub.client.WebPubSubClient
+    }
 }
