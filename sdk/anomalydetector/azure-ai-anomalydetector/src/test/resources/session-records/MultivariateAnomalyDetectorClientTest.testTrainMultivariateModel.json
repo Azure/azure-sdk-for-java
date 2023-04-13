@@ -7,17 +7,17 @@
     },
     "Response" : {
       "x-ms-region" : "Central US EUAP",
-      "x-envoy-upstream-service-time" : "228",
+      "x-envoy-upstream-service-time" : "100",
       "Server" : "istio-envoy",
       "X-Content-Type-Options" : "nosniff",
-      "apim-request-id" : "455a0d43-65ad-4321-ae18-af64f6a527bc",
+      "apim-request-id" : "08133722-d023-4b16-bd61-94330fb048a9",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Thu, 13 Apr 2023 08:04:52 GMT",
+      "Date" : "Thu, 13 Apr 2023 09:25:01 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "Content-Length" : "665",
-      "Body" : "{\"modelId\": \"de839b08-d9d1-11ed-8e60-7e0cee56af36\", \"createdTime\": \"2023-04-13T08:04:52Z\", \"lastUpdatedTime\": \"2023-04-13T08:04:52Z\", \"modelInfo\": {\"dataSource\": \"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\", \"dataSchema\": \"MultiTable\", \"startTime\": \"2021-01-02T00:00:00Z\", \"endTime\": \"2021-01-02T05:00:00Z\", \"displayName\": \"SampleRequest\", \"slidingWindow\": 200, \"alignPolicy\": {\"alignMode\": \"Outer\", \"fillNAMethod\": \"Linear\", \"paddingValue\": 0.0}, \"status\": \"CREATED\", \"errors\": [], \"diagnosticsInfo\": {\"modelState\": {\"epochIds\": [], \"trainLosses\": [], \"validationLosses\": [], \"latenciesInSeconds\": []}, \"variableStates\": []}}}\n",
-      "Location" : "https://multiadsdk-test.cognitiveservices.azure.com:443/anomalydetector/v1.1/multivariate/models/de839b08-d9d1-11ed-8e60-7e0cee56af36",
+      "Body" : "{\"modelId\": \"1135b79c-d9dd-11ed-8943-9a61f2d93fdd\", \"createdTime\": \"2023-04-13T09:25:01Z\", \"lastUpdatedTime\": \"2023-04-13T09:25:01Z\", \"modelInfo\": {\"dataSource\": \"https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000\", \"dataSchema\": \"MultiTable\", \"startTime\": \"2021-01-02T00:00:00Z\", \"endTime\": \"2021-01-02T05:00:00Z\", \"displayName\": \"SampleRequest\", \"slidingWindow\": 200, \"alignPolicy\": {\"alignMode\": \"Outer\", \"fillNAMethod\": \"Linear\", \"paddingValue\": 0.0}, \"status\": \"CREATED\", \"errors\": [], \"diagnosticsInfo\": {\"modelState\": {\"epochIds\": [], \"trainLosses\": [], \"validationLosses\": [], \"latenciesInSeconds\": []}, \"variableStates\": []}}}\n",
+      "Location" : "https://multiadsdk-test.cognitiveservices.azure.com:443/anomalydetector/v1.1/multivariate/models/1135b79c-d9dd-11ed-8943-9a61f2d93fdd",
       "Content-Type" : "application/json"
     },
     "Exception" : null
