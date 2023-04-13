@@ -12,7 +12,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests for Metrics Advisor Administration client builder
  */
-public class MetricsAdvisorAdminClientBuilderTest extends TestBase {
+public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
     /**
      * Test client builder with invalid API key
      */

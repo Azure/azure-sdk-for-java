@@ -12,7 +12,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests for Metrics Advisor client builder
  */
-public class MetricsAdvisorClientBuilderTest extends TestBase {
+public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     private static final String METRIC_ID = "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066";
     private static final int PAGE_SIZE = 10;
     private static final int LISTING_LIMIT = 100;
