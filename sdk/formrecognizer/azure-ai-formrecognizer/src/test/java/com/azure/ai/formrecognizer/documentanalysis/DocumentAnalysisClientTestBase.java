@@ -24,6 +24,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -38,6 +39,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -86,6 +88,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -98,6 +101,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
                         return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
                     }
                 });
+                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -106,6 +110,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    private void setMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+    }
 
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
@@ -167,7 +174,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
-        TestUtils.getDataRunnerHelper(testRunner, fileName, interceptorManager.isPlaybackMode());
+        TestUtils.getDataRunnerHelper(testRunner, fileName);
     }
 
     void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {

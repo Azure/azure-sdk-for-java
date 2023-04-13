@@ -20,6 +20,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -33,6 +36,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -40,9 +44,11 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIEN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.URL_REGEX;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
+    public static final String REDACTED_VALUE = "REDACTED";
     Duration durationTestMode;
 
     /**
@@ -61,14 +67,19 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);
 
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("targetModelLocation", REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("targetResourceId", REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("resourceLocation", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)));
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -81,12 +92,17 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
                         return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
                     }
                 });
+                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
         return builder;
+    }
+
+    private void setMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
     }
 
     static TokenCredential getCredentialByAuthority(String endpoint) {
@@ -134,16 +150,12 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
 
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TestUtils.TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
-                fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
+        try {
+            testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
         }
+
     }
 
     void buildModelRunner(Consumer<String> testRunner) {

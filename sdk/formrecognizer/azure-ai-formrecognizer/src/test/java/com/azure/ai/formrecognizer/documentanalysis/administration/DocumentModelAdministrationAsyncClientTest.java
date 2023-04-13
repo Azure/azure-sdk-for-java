@@ -75,7 +75,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     private DocumentModelAdministrationAsyncClient getDocumentModelAdminAsyncClient(HttpClient httpClient,
                                                                                     DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
             false)

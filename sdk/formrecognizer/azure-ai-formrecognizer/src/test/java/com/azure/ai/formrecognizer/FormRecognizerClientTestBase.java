@@ -27,6 +27,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -39,7 +40,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -55,7 +55,6 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getAudience;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
@@ -151,6 +150,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
                     return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
                 }
             });
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -178,6 +178,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
                     return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
                 }
             });
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -464,15 +465,12 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
         final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
+        try {
+            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
         }
+
     }
 
     void localFilePathRunner(BiConsumer<String, Long> testRunner, String fileName) {
@@ -1208,19 +1206,11 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
      * @return the training data set Url
      */
     private String getTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
-        }
+        return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL, "https://isPlaybackmode");
     }
 
     private String getSelectionMarkTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL);
-        }
+        return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL, "https://isPlaybackmode");
     }
 
     /**
@@ -1229,12 +1219,8 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
      * @return the training data set Url
      */
     private String getMultipageTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration()
-                .get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL);
-        }
+        return Configuration.getGlobalConfiguration()
+                .get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL, "https://isPlaybackmode");
     }
 
     /**
@@ -1243,11 +1229,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
      * @return the testing data set Url
      */
     private String getTestingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode?SASToken";
-        } else {
-            return Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
-        }
+        return Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL", "https://isPlaybackmode?SASToken");
     }
 
     /**

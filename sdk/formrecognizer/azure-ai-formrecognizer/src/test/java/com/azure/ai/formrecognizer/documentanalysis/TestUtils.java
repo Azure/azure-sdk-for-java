@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +69,7 @@ public final class TestUtils {
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
     static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or empty";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
+    public static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     public static final String INVALID_KEY = "invalid key";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
@@ -138,17 +138,13 @@ public final class TestUtils {
             Long.valueOf(7));
     }
 
-    static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName, boolean isPlaybackMode) {
+    static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName) {
         final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
-        if (isPlaybackMode) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
+        try {
+            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
         }
     }
 
