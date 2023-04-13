@@ -452,7 +452,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .then(sender.cancelScheduledMessage(sequenceNumber))
                 .block(TIMEOUT);
 
-            logMessage(message, receiver.getEntityPath(), "cancelled messaged with sequence number " + sequenceNumber);
+            logMessage(message, sender.getEntityPath(), "cancelled messaged with sequence number " + sequenceNumber);
             setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
             // Assert & Act
