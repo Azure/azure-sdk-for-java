@@ -108,7 +108,7 @@ public class ConfigurationClientCredentials {
             String signature = Base64.getEncoder()
                 .encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             headers.set(HttpHeaderName.AUTHORIZATION, "HMAC-SHA256 Credential=" + credentials.id()
-                + "&SignedHeaders=Host;Date;x-ms-content-sha256&signature=" + signature);
+                + "&SignedHeaders=Host;Date;x-ms-content-sha256&Signature=" + signature);
         } catch (GeneralSecurityException e) {
             throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
