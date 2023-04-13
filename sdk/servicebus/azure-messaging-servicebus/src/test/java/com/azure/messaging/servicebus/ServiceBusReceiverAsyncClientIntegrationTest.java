@@ -18,10 +18,17 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.SubQueue;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -64,6 +71,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration tests for {@link ServiceBusReceiverAsyncClient} from queues or subscriptions.
  */
 @Tag("integration")
+@Execution(ExecutionMode.SAME_THREAD)
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
@@ -76,12 +84,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSessionReceiverAsyncClient sessionReceiver;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
-        super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
+        super(LOGGER);
     }
 
     @Override
     protected void beforeTest() {
         sessionId = UUID.randomUUID().toString();
+        OpenTelemetrySdk.builder()
+            .setTracerProvider(
+                SdkTracerProvider.builder()
+                    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+                    .build())
+            .buildAndRegisterGlobal();
     }
 
     @Override
@@ -890,6 +904,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             LOGGER.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
 
             receiver.complete(receivedMessage)
+                .doOnNext(m -> logMessage(receivedMessage, receiver.getEntityPath(), "complete"))
                 .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
                 .block(TIMEOUT);
         }
@@ -1075,6 +1090,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         assertNotNull(receivedMessage);
 
+        LOGGER.info("going to call receiveDeferredMessage");
         // Assert & Act
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())

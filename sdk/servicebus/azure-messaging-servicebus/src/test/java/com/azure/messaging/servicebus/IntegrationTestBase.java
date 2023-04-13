@@ -23,6 +23,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -80,6 +81,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
+        GlobalOpenTelemetry.resetForTest();
         Method testMethod = testInfo.getTestMethod().orElseGet(null);
         testName = String.format("%s-%s",
             testMethod == null ? "unknown" : testMethod.getName(),
@@ -114,6 +116,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
+        GlobalOpenTelemetry.resetForTest();
     }
 
     /**
