@@ -106,9 +106,7 @@ public class ConnectionStateListenerTest {
             new UserAgentContainer(),
             addressResolver,
             null,
-            null,
-            null
-        );
+            null);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -143,12 +141,11 @@ public class ConnectionStateListenerTest {
     @Test(groups = { "unit" }, dataProvider = "connectionStateListenerExceptionProvider")
     public void connectionStateListenerOnException(Exception exception, boolean canHandle) {
         RntbdEndpoint endpointMock = Mockito.mock(RntbdEndpoint.class);
-        RntbdOpenConnectionsHandler rntbdOpenConnectionsHandlerMock = Mockito.mock(RntbdOpenConnectionsHandler.class);
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
 
         Uri testRequestUri = new Uri("http://127.0.0.1:1");
         testRequestUri.setConnected();
-        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, rntbdOpenConnectionsHandlerMock, proactiveOpenConnectionsProcessorMock);
+        RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock);
 
         Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher())
                 .thenReturn(ParallelFlux.from(Flux.empty()));

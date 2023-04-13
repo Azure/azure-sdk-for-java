@@ -101,7 +101,6 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
-    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -162,7 +161,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
-        this.proactiveOpenConnectionsProcessor = this.asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
         String machineId = this.asyncDocumentClient.getMachineId();
@@ -593,6 +591,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     void openConnectionsAndInitCaches() {
         final Duration lastSuccessResponseTimeout = Duration.ofSeconds(5);
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
@@ -608,6 +607,8 @@ public final class CosmosAsyncClient implements Closeable {
 
 
     void openConnectionsAndInitCaches(Duration aggressiveProactiveConnectionEstablishmentDuration) {
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
+
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
@@ -791,10 +792,6 @@ public final class CosmosAsyncClient implements Closeable {
 
     String getUserAgent() {
         return this.asyncDocumentClient.getUserAgent();
-    }
-
-    ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-        return this.proactiveOpenConnectionsProcessor;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

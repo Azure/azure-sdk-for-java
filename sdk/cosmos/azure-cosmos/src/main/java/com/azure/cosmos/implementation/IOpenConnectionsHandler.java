@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -14,12 +15,14 @@ public interface IOpenConnectionsHandler {
         String collectionRid,
         URI serviceEndpoint,
         List<Uri> addresses,
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
         int minConnectionsRequiredForEndpoint
     );
 
     Flux<OpenConnectionResponse> openConnections(
         String collectionRid,
         URI serviceEndpoint,
-        List<Uri> addresses
+        List<Uri> addresses,
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
     );
 }

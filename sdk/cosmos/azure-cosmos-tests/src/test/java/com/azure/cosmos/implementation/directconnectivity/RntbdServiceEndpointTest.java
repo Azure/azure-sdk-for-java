@@ -7,6 +7,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -27,11 +28,13 @@ public class RntbdServiceEndpointTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
-        RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null, null);
+        RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null);
         URI uri = new URI(TestConfigurations.HOST);
         List<Uri> uriList = new ArrayList<>();
 
         RntbdEndpoint.Provider endpointProvider = (RntbdEndpoint.Provider) FieldUtils.readField(transportClient, "endpointProvider", true);
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = (ProactiveOpenConnectionsProcessor) FieldUtils.readField(transportClient, "proactiveOpenConnectionsProcessor", true);
+
         for(int i = 0;i <10;i++) {
             int port=uri.getPort()+i;
             Uri physicalAddress = new Uri("rntbd://"
@@ -41,13 +44,13 @@ public class RntbdServiceEndpointTest {
             uriList.add(physicalAddress);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI(), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);
 
         for(int i = 0;i <5;i++) {
-            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI(), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
             assertThat(rntbdEndpoint.isClosed()).isFalse();
             rntbdEndpoint.close();
             assertThat(rntbdEndpoint.isClosed()).isTrue();

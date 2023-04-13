@@ -6,20 +6,17 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
@@ -41,7 +38,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionOperation;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -102,7 +98,6 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
     private final GlobalEndpointManager globalEndpointManager;
-    private IOpenConnectionsHandler openConnectionsHandler;
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
@@ -119,9 +114,7 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IOpenConnectionsHandler openConnectionsHandler,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
 
         this.clientContext = clientContext;
         try {
@@ -165,7 +158,6 @@ public class GatewayAddressCache implements IAddressCache {
 
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
-        this.openConnectionsHandler = openConnectionsHandler;
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         this.connectionPolicy = connectionPolicy;
         this.replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
@@ -185,9 +177,7 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IOpenConnectionsHandler openConnectionsHandler,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-    ) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -198,9 +188,7 @@ public class GatewayAddressCache implements IAddressCache {
                 apiType,
                 globalEndpointManager,
                 connectionPolicy,
-                openConnectionsHandler,
-                proactiveOpenConnectionsProcessor
-                );
+                proactiveOpenConnectionsProcessor);
     }
 
     @Override
@@ -323,11 +311,6 @@ public class GatewayAddressCache implements IAddressCache {
                         return Mono.error(unwrappedException);
                     }
         });
-    }
-
-    @Override
-    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler) {
-        this.openConnectionsHandler = openConnectionsHandler;
     }
 
     @Override
@@ -899,16 +882,17 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         if (addressesNeedToValidation.size() > 0) {
-            this.openConnectionsHandler
-                    .openConnections(
-                            collectionRid,
-                            this.serviceEndpoint,
-                            addressesNeedToValidation,
-                            Configs.getMinConnectionPoolSizePerEndpoint()
-                    )
-                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                    .subscribe();
+            for (Uri addressToBeValidated : addressesNeedToValidation) {
+                this.proactiveOpenConnectionsProcessor
+                        .submitOpenConnectionTask(
+                                collectionRid,
+                                this.serviceEndpoint,
+                                addressToBeValidated,
+                                Configs.getMinConnectionPoolSizePerEndpoint());
+            }
         }
+
+        this.proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().subscribe();
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {
@@ -1007,11 +991,6 @@ public class GatewayAddressCache implements IAddressCache {
         // do not fail here, just log
         // this attempts to make the open connections flow
         // best effort
-        if (this.openConnectionsHandler == null) {
-            logger.warn("openConnectionsHandler is null");
-            return Flux.empty();
-        }
-
         if (this.proactiveOpenConnectionsProcessor == null) {
             logger.warn("proactiveOpenConnectionsProcessor is null");
             return Flux.empty();
@@ -1020,14 +999,12 @@ public class GatewayAddressCache implements IAddressCache {
         int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
                 Configs.getMinConnectionPoolSizePerEndpoint());
 
-        OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                this.openConnectionsHandler,
+        this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
                 documentCollection.getResourceId(),
                 this.serviceEndpoint,
                 address.getPhysicalUri(),
                 connectionsRequiredForEndpoint);
 
-        this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(openConnectionOperation);
         return Flux.empty();
     }
 

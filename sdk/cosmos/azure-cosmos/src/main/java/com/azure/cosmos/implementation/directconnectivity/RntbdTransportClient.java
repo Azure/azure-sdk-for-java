@@ -126,15 +126,13 @@ public class RntbdTransportClient extends TransportClient {
         final UserAgentContainer userAgent,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager,
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        final GlobalEndpointManager globalEndpointManager) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
             addressResolver,
             clientTelemetry,
-            globalEndpointManager,
-            proactiveOpenConnectionsProcessor);
+            globalEndpointManager);
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -145,7 +143,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
-        this.proactiveOpenConnectionsProcessor = null;
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -154,8 +152,7 @@ public class RntbdTransportClient extends TransportClient {
         final SslContext sslContext,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager,
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        final GlobalEndpointManager globalEndpointManager) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
@@ -164,14 +161,12 @@ public class RntbdTransportClient extends TransportClient {
             checkNotNull(sslContext, "expected non-null sslContext"),
             addressResolver,
             clientTelemetry,
-            this.serverErrorInjector,
-            proactiveOpenConnectionsProcessor);
-
+            this.serverErrorInjector);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
         this.globalEndpointManager = globalEndpointManager;
-        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         if (clientTelemetry != null &&
             clientTelemetry.getClientTelemetryConfig() != null) {
 
@@ -215,13 +210,8 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public IOpenConnectionsHandler getOpenConnectionsHandler() {
-        return this.endpointProvider.getOpenConnectionHandler();
-    }
-
-    @Override
     public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
-        return this.endpointProvider.getProactiveOpenConnectionsProcessor();
+        return this.proactiveOpenConnectionsProcessor;
     }
 
     /**
@@ -270,7 +260,12 @@ public class RntbdTransportClient extends TransportClient {
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI(), Configs.getMinConnectionPoolSizePerEndpoint());
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
+                request.requestContext.locationEndpointToRoute,
+                addressUri.getURI(),
+                this.proactiveOpenConnectionsProcessor,
+                Configs.getMinConnectionPoolSizePerEndpoint());
+
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);

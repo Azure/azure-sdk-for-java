@@ -1546,8 +1546,7 @@ public interface AsyncDocumentClient {
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
     /**
-     * Submits open connection tasks represented by {@link com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionOperation}
-     * and warms up caches for replicas for containers specified by
+     * Submits open connection tasks and warms up caches for replicas for containers specified by
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} and in
      * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *

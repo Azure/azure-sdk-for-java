@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -56,8 +55,7 @@ public interface RxStoreModel {
     void enableThroughputControl(ThroughputControlStore throughputControlStore);
 
     /**
-     * Submits open connection tasks represented by {@link com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionOperation}
-     * and warms up caches for replicas for containers specified by
+     * Submits open connection tasks and warms up caches for replicas for containers specified by
      * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} and in
      * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *

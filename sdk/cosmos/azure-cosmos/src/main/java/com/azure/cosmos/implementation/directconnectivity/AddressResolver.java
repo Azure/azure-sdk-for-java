@@ -94,11 +94,6 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
-    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler) {
-        throw new NotImplementedException("setOpenConnectionsHandler is not supported on AddressResolver");
-    }
-
-    @Override
     public void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         throw new NotImplementedException("setOpenConnectionsExecutor is not supported on AddressResolver");
     }

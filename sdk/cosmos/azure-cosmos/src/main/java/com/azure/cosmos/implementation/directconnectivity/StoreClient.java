@@ -78,7 +78,6 @@ public class StoreClient implements IStoreClient {
             false,
             useMultipleWriteLocations);
 
-        addressResolver.setOpenConnectionsHandler(this.transportClient.getOpenConnectionsHandler());
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getOpenConnectionsProcessor());
     }
 

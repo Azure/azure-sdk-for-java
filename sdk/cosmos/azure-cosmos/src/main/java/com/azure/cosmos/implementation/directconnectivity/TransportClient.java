@@ -49,8 +49,6 @@ public abstract class TransportClient implements AutoCloseable {
 
     protected abstract GlobalEndpointManager getGlobalEndpointManager();
 
-    public abstract IOpenConnectionsHandler getOpenConnectionsHandler();
-
     public abstract ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor();
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {

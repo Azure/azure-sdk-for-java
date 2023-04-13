@@ -28,12 +28,10 @@ public interface IAddressResolver {
      */
     Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
-    /***
-     * Set the open connection handler so SDK can proactively create connections based on need.
+    /**
+     * Sets the open connection processor so SDK can proactively create connections based on need.
      *
-     * @param openConnectionHandler the {@link IOpenConnectionsHandler}.
+     * @param proactiveOpenConnectionsProcessor the {@link ProactiveOpenConnectionsProcessor}.
      */
-    void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler);
-
     void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
 }

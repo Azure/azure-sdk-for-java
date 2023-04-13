@@ -249,11 +249,6 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public IOpenConnectionsHandler getOpenConnectionsHandler() {
-        return null;
-    }
-
-    @Override
     public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
         return null;
     }

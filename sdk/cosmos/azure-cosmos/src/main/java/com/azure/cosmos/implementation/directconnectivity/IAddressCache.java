@@ -27,12 +27,6 @@ public interface IAddressCache {
             PartitionKeyRangeIdentity partitionKeyRangeIdentity,
             boolean forceRefreshPartitionAddresses);
 
-    /***
-     * Set open connection handler.
-     *
-     * @param openConnectionsHandler
-     */
-    void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler);
 
     void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor);
 }

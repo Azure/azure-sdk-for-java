@@ -195,7 +195,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -450,7 +449,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
-            this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor();
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -592,9 +590,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled,
             this.clientTelemetry,
-            this.globalEndpointManager,
-            this.proactiveOpenConnectionsProcessor
-        );
+            this.globalEndpointManager);
 
         this.createStoreModel(true);
     }
@@ -663,8 +659,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.sessionContainer,
                 this.gatewayConfigurationReader,
                 this,
-                this.useMultipleWriteLocations
-        );
+                this.useMultipleWriteLocations);
 
         this.storeModel = new ServerStoreModel(storeClient);
     }
@@ -4258,8 +4253,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             LifeCycleUtils.closeQuietly(this.storeClientFactory);
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
-            logger.info("Closing ProactiveOpenConnectionsProcessor ...");
-            LifeCycleUtils.closeQuietly(this.proactiveOpenConnectionsProcessor);
             logger.info("Shutting down CpuMonitor ...");
             CpuMemoryMonitor.unregister(this);
 
@@ -4308,7 +4301,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-        return this.proactiveOpenConnectionsProcessor;
+        return this.storeClientFactory.getTransportClient().getOpenConnectionsProcessor();
     }
 
     /***

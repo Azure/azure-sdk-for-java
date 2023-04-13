@@ -229,17 +229,6 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler) {
-        this.openConnectionsHandler = openConnectionHandler;
-
-        // setup openConnectionHandler for existing address cache
-        // For the new ones added later, the openConnectionHandler will pass through constructor
-        for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
-            endpointCache.addressCache.setOpenConnectionsHandler(openConnectionsHandler);
-        }
-    }
-
-    @Override
     public void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
 
@@ -279,9 +268,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.apiType,
                 this.endpointManager,
                 this.connectionPolicy,
-                this.openConnectionsHandler,
-                this.proactiveOpenConnectionsProcessor
-            );
+                this.proactiveOpenConnectionsProcessor);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

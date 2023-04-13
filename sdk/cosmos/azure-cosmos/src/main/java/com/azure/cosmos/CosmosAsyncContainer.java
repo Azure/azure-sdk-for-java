@@ -825,7 +825,7 @@ public class CosmosAsyncContainer {
                 .subscribe();
 
         Flux<OpenConnectionResponse> openConnectionResponseFlux = database
-                .getClient()
+                .getDocClientWrapper()
                 .getProactiveOpenConnectionsProcessor()
                 .getOpenConnectionsPublisher()
                 .sequential();

@@ -25,14 +25,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private static final Logger logger = LoggerFactory.getLogger(RntbdOpenConnectionsHandler.class);
     private final RntbdEndpoint.Provider endpointProvider;
-    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
-    public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+    public RntbdOpenConnectionsHandler(RntbdEndpoint.Provider endpointProvider) {
 
         checkNotNull(endpointProvider, "Argument 'endpointProvider' can not be null");
 
         this.endpointProvider = endpointProvider;
-        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     @Override
@@ -40,8 +38,8 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
             String collectionRid,
             URI serviceEndpoint,
             List<Uri> addresses,
-            int minConnectionsRequiredForEndpoint
-    ) {
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minConnectionsRequiredForEndpoint) {
         // collectionRid may not always be available, especially for open connection flows
         // from the RntbdConnectionsStateListener, hence there is no null check for collectionRid
 
@@ -63,6 +61,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                     this.endpointProvider.createIfAbsent(
                                             serviceEndpoint,
                                             addressUri.getURI(),
+                                            proactiveOpenConnectionsProcessor,
                                             minConnectionsRequiredForEndpoint
                                     );
 
@@ -81,28 +80,12 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
 
                             if (connectionsOpened < newMinConnectionsRequired) {
                                 OpenConnectionRntbdRequestRecord requestRecord = endpoint.openConnection(requestArgs);
-                                return Mono.defer(() -> Mono.fromFuture(requestRecord).doFinally(signalType -> {
-                                    if (signalType.equals(SignalType.CANCEL)) {
-                                        requestRecord.cancel(false);
-                                    }
-                                        }))
+                                return Mono.fromFuture(requestRecord)
                                         .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
                                         .doOnNext(response -> {
 
                                             if (logger.isDebugEnabled()) {
                                                 logger.debug("Connection result: isConnected [{}], address [{}]", response.isConnected(), response.getUri());
-                                            }
-
-                                            if (response.isConnected() && endpoint.channelsMetrics() < newMinConnectionsRequired) {
-                                                OpenConnectionOperation openConnectionOperation = new OpenConnectionOperation(
-                                                        this,
-                                                        collectionRid,
-                                                        serviceEndpoint,
-                                                        addressUri,
-                                                        minConnectionsRequiredForEndpoint
-                                                );
-
-                                                this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(openConnectionOperation);
                                             }
                                         });
                             }
@@ -112,13 +95,13 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses) {
+    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         return openConnections(
                 collectionRid,
                 serviceEndpoint,
                 addresses,
-                Configs.getMinConnectionPoolSizePerEndpoint()
-        );
+                proactiveOpenConnectionsProcessor,
+                Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
     private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {

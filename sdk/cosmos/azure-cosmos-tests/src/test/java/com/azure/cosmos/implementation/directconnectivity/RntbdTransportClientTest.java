@@ -641,7 +641,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -839,7 +839,8 @@ public final class RntbdTransportClientTest {
         Mockito.when(rntbdEndpoint.request(any())).thenReturn(rntbdRequestRecord);
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
+
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Mockito.any(ProactiveOpenConnectionsProcessor.class), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
         transportClient
@@ -1189,7 +1190,7 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress, int minChannelsRequired) {
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minChannelsRequired) {
                 return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
@@ -1206,16 +1207,6 @@ public final class RntbdTransportClientTest {
             @Override
             public Stream<RntbdEndpoint> list() {
                 return Stream.empty();
-            }
-
-            @Override
-            public IOpenConnectionsHandler getOpenConnectionHandler() {
-                throw new NotImplementedException("getOpenConnectionHandler is not implemented for RntbdTransportClient");
-            }
-
-            @Override
-            public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-                throw new NotImplementedException("getProactiveOpenConnectionsProcessor is not implemented for RntbdTransportClient");
             }
         }
 

@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -25,16 +24,14 @@ public class RntbdConnectionStateListener {
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
-    private final RntbdOpenConnectionsHandler rntbdOpenConnectionsHandler;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final RntbdOpenConnectionsHandler openConnectionsHandler, final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
-        this.rntbdOpenConnectionsHandler = checkNotNull(openConnectionsHandler, "expected non-null openConnectionsHandler");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
         this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
@@ -88,17 +85,10 @@ public class RntbdConnectionStateListener {
         // do not fail here, just log
         // this attempts to make the open connections flow
         // best effort
-        if (this.rntbdOpenConnectionsHandler == null) {
-            logger.warn("openConnectionsHandler is null");
-            return;
-        }
-
         if (this.proactiveOpenConnectionsProcessor == null) {
             logger.warn("proactiveOpenConnectionsProcessor is null");
             return;
         }
-
-        this.proactiveOpenConnectionsProcessor.decrementTotalConnectionCount();
 
         // if an application developer has set the default min pool size to 0
         // (a system config which applies to all endpoints) then it is best
@@ -112,14 +102,10 @@ public class RntbdConnectionStateListener {
             logger.warn("Exception occurred {}, trying to proactively open a connection.", exception.getMessage());
 
             this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
-                    new OpenConnectionOperation(
-                            this.rntbdOpenConnectionsHandler,
-                            "",
-                            this.endpoint.serviceEndpoint(),
-                            this.addressUris.stream().findFirst().get(),
-                            this.endpoint.getMinChannelsRequired()
-                    )
-            );
+                    "",
+                    this.endpoint.serviceEndpoint(),
+                    this.addressUris.stream().findFirst().get(),
+                    this.endpoint.getMinChannelsRequired());
         }
 
         this.proactiveOpenConnectionsProcessor

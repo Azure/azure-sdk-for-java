@@ -46,16 +46,14 @@ public class SharedTransportClient extends TransportClient {
         DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         IAddressResolver addressResolver,
         ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        GlobalEndpointManager globalEndpointManager) {
 
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
                 sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy,
-                    userAgent, addressResolver, clientTelemetry, globalEndpointManager, proactiveOpenConnectionsProcessor);
+                    userAgent, addressResolver, clientTelemetry, globalEndpointManager);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -78,14 +76,12 @@ public class SharedTransportClient extends TransportClient {
         UserAgentContainer userAgent,
         IAddressResolver addressResolver,
         ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-        ) {
+        GlobalEndpointManager globalEndpointManager) {
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
             this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver,
-                clientTelemetry, globalEndpointManager, proactiveOpenConnectionsProcessor);
+                clientTelemetry, globalEndpointManager);
 
         } else if (protocol == Protocol.HTTPS){
             this.rntbdOptions = null;
@@ -125,11 +121,6 @@ public class SharedTransportClient extends TransportClient {
     @Override
     protected GlobalEndpointManager getGlobalEndpointManager() {
         return this.transportClient.getGlobalEndpointManager();
-    }
-
-    @Override
-    public IOpenConnectionsHandler getOpenConnectionsHandler() {
-        return this.transportClient.getOpenConnectionsHandler();
     }
 
     @Override
