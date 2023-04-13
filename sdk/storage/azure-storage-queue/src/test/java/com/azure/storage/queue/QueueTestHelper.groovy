@@ -5,7 +5,6 @@ package com.azure.storage.queue
 
 import com.azure.core.http.rest.Response
 import com.azure.core.util.CoreUtils
-import com.azure.core.util.Configuration
 import com.azure.storage.queue.models.QueueAnalyticsLogging
 import com.azure.storage.queue.models.QueueCorsRule
 import com.azure.storage.queue.models.QueueErrorCode
@@ -15,8 +14,6 @@ import com.azure.storage.queue.models.QueueRetentionPolicy
 import com.azure.storage.queue.models.QueueServiceProperties
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
-
-import java.time.Duration
 
 class QueueTestHelper {
     static boolean assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
@@ -124,20 +121,5 @@ class QueueTestHelper {
             Objects.equals(expected.getAccessPolicy().getPermissions(), actual.getAccessPolicy().getPermissions()) &&
             Objects.equals(expected.getAccessPolicy().getStartsOn(), actual.getAccessPolicy().getStartsOn()) &&
             Objects.equals(expected.getAccessPolicy().getExpiresOn(), actual.getAccessPolicy().getExpiresOn())
-    }
-
-    static void sleepInRecord(Duration time) {
-        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE")
-        if (!"PLAYBACK".equalsIgnoreCase(azureTestMode)) {
-            sleep(time)
-        }
-    }
-
-    private static void sleep(Duration time) {
-        try {
-            Thread.sleep(time.toMillis())
-        } catch (InterruptedException ignored) {
-            // Ignore the error
-        }
     }
 }

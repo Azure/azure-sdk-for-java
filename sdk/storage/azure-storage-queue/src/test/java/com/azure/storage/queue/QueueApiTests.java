@@ -1,160 +1,155 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.queue
+package com.azure.storage.queue;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueAccessPolicy;
+import com.azure.storage.queue.models.QueueErrorCode;
+import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
+import com.azure.storage.queue.models.QueueStorageException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import spock.lang.Retry;
+import spock.lang.Unroll;
 
-import com.azure.core.util.BinaryData
-import com.azure.core.util.Context
-import com.azure.core.util.HttpClientOptions
-import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.queue.models.PeekedMessageItem
-import com.azure.storage.queue.models.QueueAccessPolicy
-import com.azure.storage.queue.models.QueueErrorCode
-import com.azure.storage.queue.models.QueueMessageItem
-import com.azure.storage.queue.models.QueueSignedIdentifier
-import com.azure.storage.queue.models.QueueStorageException
-import reactor.core.publisher.Mono
-import spock.lang.Retry
-import spock.lang.Unroll
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.Map;
 
-import java.nio.charset.StandardCharsets
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class QueueAPITests extends APISpec {
-    QueueClient queueClient
+public class QueueApiTests extends QueueTestBase {
+    private static final Map<String, String> TEST_METADATA = Collections.singletonMap("metadata", "value");
+    private static final Map<String, String> CREATE_METADATA = Collections.singletonMap("metadata1", "value");
 
-    static def testMetadata = Collections.singletonMap("metadata", "value")
-    static def createMetadata = Collections.singletonMap("metadata1", "value")
-    String queueName
+    private String queueName;
+    private QueueClient queueClient;
 
-    def setup() {
-        queueName = namer.getRandomName(60)
-        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
-        queueClient = primaryQueueServiceClient.getQueueClient(queueName)
+    @BeforeEach
+    public void setup() {
+        queueName = getRandomName(60);
+        primaryQueueServiceClient = queueServiceBuilderHelper().buildClient();
+        queueClient = primaryQueueServiceClient.getQueueClient(queueName);
     }
 
-    def "Get queue URL"() {
-        given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
-        def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
+    @Test
+    public void getQueueUrl() {
+        String accountName = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString())
+            .getAccountName();
+        String expectedUrl = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName);
 
-        when:
-        def queueURL = queueClient.getQueueUrl()
-
-        then:
-        expectURL == queueURL
+        assertEquals(expectedUrl, queueClient.getQueueUrl());
     }
 
-    def "IP based endpoint"() {
-        when:
-        def queueClient = new QueueClientBuilder()
-            .connectionString(environment.primaryAccount.connectionString)
+    @Test
+    public void ipBaseEndpoint() {
+        QueueClient queueClient = new QueueClientBuilder()
+            .connectionString(getPrimaryConnectionString())
             .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
-            .buildClient()
+            .buildClient();
 
-        then:
-        queueClient.getAccountName() == "devstoreaccount1"
-        queueClient.getQueueName() == "myqueue"
+        assertEquals("devstoreaccount1", queueClient.getAccountName());
+        assertEquals("myqueue", queueClient.getQueueName());
     }
 
-    def "Create queue with shared key"() {
-        expect:
-        QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null, null), 201)
+    @Test
+    public void createQueueWithSharedKey() {
+        QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null, null), 201);
     }
 
-    def "Create if not exists queue with shared key"() {
-        expect:
-        QueueTestHelper.assertResponseStatusCode(queueClient.createIfNotExistsWithResponse(null, null, null), 201)
+    @Test
+    public void createIfNotExistsQueueWithSharedKey() {
+        QueueTestHelper.assertResponseStatusCode(queueClient.createIfNotExistsWithResponse(null, null, null), 201);
     }
 
-    def "Create if not exists min"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
+    @Test
+    public void createIfNotExistsMin() {
+        String queueName = getRandomName(60);
+        QueueClient client = primaryQueueServiceClient.getQueueClient(queueName);
 
-        when:
-        def result = client.createIfNotExists()
-
-        then:
-        client.getQueueName() == queueName
-        client.getProperties() != null
-        result
+        assertEquals(queueName, client.getQueueName());
+        assertDoesNotThrow(client::createIfNotExists);
+        assertNotNull(client.getProperties());
     }
 
-    def "Create if not exists with same metadata on a queue client that already exists"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-        def initialResponse = client.createIfNotExistsWithResponse(null, null, null)
+    @Test
+    public void createIfNotExistsWithSameMetadataOnAQueueClientThatAlreadyExists() {
+        String queueName = getRandomName(60);
+        QueueClient client = primaryQueueServiceClient.getQueueClient(queueName);
 
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
-
-        then:
-        initialResponse.getStatusCode() == 201
-        secondResponse.getStatusCode() == 204
+        assertEquals(201, client.createIfNotExistsWithResponse(null, null, null).getStatusCode());
+        assertEquals(204, client.createIfNotExistsWithResponse(null, null, null).getStatusCode());
     }
 
-    def "Create if not exists with conflicting metadata on a queue client that already exists"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-        def initialResponse = client.createIfNotExistsWithResponse(testMetadata, null, null)
+    @Test
+    public void createIfNotExistsWithConflictingMetadataOnAQueueClientThatAlreadyExists() {
+        String queueName = getRandomName(60);
+        QueueClient client = primaryQueueServiceClient.getQueueClient(queueName);
 
-        when:
-        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
+        Response<Boolean> initialResponse = client.createIfNotExistsWithResponse(TEST_METADATA, null, null);
+        Response<Boolean> secondResponse = client.createIfNotExistsWithResponse(null, null, null);
 
-        then:
-        initialResponse.getStatusCode() == 201
-        secondResponse.getStatusCode() == 409
-        initialResponse.getValue()
-        !secondResponse.getValue()
+        assertEquals(201, initialResponse.getStatusCode());
+        assertTrue(initialResponse.getValue());
+        assertEquals(409, secondResponse.getStatusCode());
+        assertFalse(secondResponse.getValue());
     }
 
-    def "Delete exist queue"() {
-        given:
-        queueClient.create()
-        when:
-        def deleteQueueResponse = queueClient.deleteWithResponse(null, null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
+    @Test
+    public void deleteExistingQueue() {
+        queueClient.create();;
+        QueueTestHelper.assertResponseStatusCode(queueClient.deleteWithResponse(null, null), 204);
+    }
+
+
+    @Test
+    public void deleteQueueError() {
+        QueueStorageException exception = assertThrows(QueueStorageException.class, queueClient::delete);
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.QUEUE_NOT_FOUND);
+    }
+
+    @Test
+    public void deleteIfExistsMin() {
+        queueClient.create();
+        assertTrue(queueClient.deleteIfExists());
+    }
+
+    @Test
+    public void deleteIfExistsQueue() {
+        queueClient.create();
+        QueueTestHelper.assertResponseStatusCode(queueClient.deleteIfExistsWithResponse(null, null), 204);
+    }
+
+    @Test
+    public void deleteIfExistsWithResponseOnAQueueClientThatDoesNotExist() {
 
     }
 
-    def "Delete queue error"() {
-        when:
-        queueClient.delete()
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
-    }
 
-    def "Delete if exists min"() {
-        setup:
-        queueClient.create()
 
-        when:
-        def result = queueClient.deleteIfExists()
 
-        then:
-        result
-    }
-
-    def "Delete if exists queue"() {
-        given:
-        queueClient.create()
-        when:
-        def deleteQueueResponse = queueClient.deleteIfExistsWithResponse(null, null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
-
-    }
 
     def "Delete if exists with response on a queue client that does not exist"() {
         setup:
@@ -446,7 +441,7 @@ class QueueAPITests extends APISpec {
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getQueueMessageItem()
                 queueUrl = failure.getQueueAsyncClient().getQueueUrl()
-                return Mono.empty()
+        return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
         when:
@@ -471,7 +466,7 @@ class QueueAPITests extends APISpec {
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ failure ->
                 badMessage = failure.getQueueMessageItem()
-                return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+        return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
             })
             .buildClient().getQueueClient(queueName)
         when:
@@ -517,7 +512,7 @@ class QueueAPITests extends APISpec {
         def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ message ->
-                throw new IllegalStateException("KABOOM")
+        throw new IllegalStateException("KABOOM")
             })
             .buildClient().getQueueClient(queueName)
         when:
@@ -628,7 +623,7 @@ class QueueAPITests extends APISpec {
                 badMessage = failure.getPeekedMessageItem()
                 queueUrl = failure.getQueueAsyncClient().getQueueUrl()
                 cause = failure.getCause()
-                return Mono.empty()
+        return Mono.empty()
             })
             .buildClient().getQueueClient(queueName)
         when:
@@ -680,7 +675,7 @@ class QueueAPITests extends APISpec {
         def encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
             .processMessageDecodingErrorAsync({ message ->
-                throw new IllegalStateException("KABOOM")
+        throw new IllegalStateException("KABOOM")
             })
             .buildClient().getQueueClient(queueName)
         when:
