@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2023-04-12)
+## 3.0.0-beta.6 (2023-04-12)
 ### Other Changes
 
 - GA release
