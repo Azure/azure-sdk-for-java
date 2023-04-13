@@ -130,6 +130,43 @@ public class GroupMessageTests extends TestBase {
         }
     }
 
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testSendMessagePerformance() throws Exception {
+        final int count = 1000;
+        CountDownLatch latch = new CountDownLatch(count);
+
+        String groupName = "testSendMessagePerformance";
+        WebPubSubClient client = getClient();
+        try {
+            client.start();
+            client.joinGroup(groupName);
+
+            client.addOnGroupMessageEventHandler(event -> {
+                latch.countDown();
+            });
+
+            final long beginNano = System.nanoTime();
+            for (int i = 0; i < count; ++i) {
+                WebPubSubResult result = client.sendToGroup(groupName, HELLO + i, new SendToGroupOptions()
+                    .setFireAndForget(true  ));
+                Assertions.assertNotNull(result);
+            }
+            final long endNanoSend = System.nanoTime();
+
+            latch.await(10, TimeUnit.SECONDS);
+            Assertions.assertEquals(0, latch.getCount());
+            final long endNanoReceive = System.nanoTime();
+
+            // about 90ms for 1k
+            System.out.println("send takes milliseconds: " + (endNanoSend - beginNano) / 10E6);
+            // about 110ms for 1k
+            System.out.println("send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 10E6);
+        } finally {
+            client.stop();
+        }
+    }
+
     private static class JsonModel {
         private String name;
         private String description;
