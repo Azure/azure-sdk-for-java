@@ -14,6 +14,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -585,7 +586,7 @@ public abstract class HttpClientTests {
     protected URL getRequestUrl(String requestPath) {
         try {
             String prefix = isSecure() ? "https://" : "http://";
-            return new URL(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
+            return UrlBuilder.parse(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath).toUrl();
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

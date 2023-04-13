@@ -12,6 +12,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.Header;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -324,7 +325,7 @@ public final class JacksonAdapter implements SerializerAdapter {
             return new DateTimeRfc1123(value);
         } else if (type == URL.class) {
             try {
-                return new URL(value);
+                return UrlBuilder.parse(value).toUrl();
             } catch (MalformedURLException ex) {
                 throw new IOException(ex);
             }

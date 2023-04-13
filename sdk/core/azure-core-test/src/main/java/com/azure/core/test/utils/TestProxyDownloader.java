@@ -3,6 +3,7 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -127,7 +128,7 @@ public final class TestProxyDownloader {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "Downloading test proxy. This may take a few moments.");
 
         try {
-            URL url = new URL(getProxyDownloadUrl(platformInfo));
+            URL url = UrlBuilder.parse(getProxyDownloadUrl(platformInfo)).toUrl();
             Files.copy(url.openStream(),
                 getZipFileLocation(platformInfo.getExtension()),
                 StandardCopyOption.REPLACE_EXISTING);

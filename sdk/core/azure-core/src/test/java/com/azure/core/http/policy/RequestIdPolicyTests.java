@@ -19,11 +19,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+
+import static com.azure.core.CoreTestUtils.createUrl;
 
 public class RequestIdPolicyTests {
 
@@ -124,6 +125,6 @@ public class RequestIdPolicyTests {
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.GET, new URL(url));
+        return new HttpRequest(HttpMethod.GET, createUrl(url));
     }
 }
