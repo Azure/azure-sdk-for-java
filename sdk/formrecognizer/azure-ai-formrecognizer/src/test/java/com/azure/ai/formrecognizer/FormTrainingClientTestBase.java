@@ -38,6 +38,7 @@ import java.util.function.Consumer;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -107,6 +108,8 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
+
         return builder;
     }
 

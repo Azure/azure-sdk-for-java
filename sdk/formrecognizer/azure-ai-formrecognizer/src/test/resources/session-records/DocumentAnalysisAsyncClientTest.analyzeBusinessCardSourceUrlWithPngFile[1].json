@@ -6,55 +6,55 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "178",
+        "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:30:46 GMT",
+        "Date": "Fri, 14 Apr 2023 18:18:02 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "b6459d75-5cd2-49c6-88f2-cd3d71bd3246"
+        "x-ms-client-request-id": "087e5684-5c57-4dd4-81a8-4672e440e5e9"
       },
       "RequestBody": {
-        "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/businessCard.png"
+        "urlSource": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "31c4a17c-14f9-488b-bfc3-4e1c51cc0ac3",
+        "apim-request-id": "3c3d98c8-590d-4437-8064-b19b634d1100",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:46 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/31c4a17c-14f9-488b-bfc3-4e1c51cc0ac3?api-version=2023-02-28-preview",
+        "Date": "Fri, 14 Apr 2023 18:18:01 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/3c3d98c8-590d-4437-8064-b19b634d1100?api-version=2023-02-28-preview",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "799",
+        "x-envoy-upstream-service-time": "620",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/31c4a17c-14f9-488b-bfc3-4e1c51cc0ac3?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/3c3d98c8-590d-4437-8064-b19b634d1100?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:53 GMT",
+        "Date": "Fri, 14 Apr 2023 18:18:08 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "aeb718cb-088d-49ad-b422-95f36a7cc467"
+        "x-ms-client-request-id": "18d7e336-9411-43a1-a21b-80dbed099ad5"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "a8b47708-3b3f-4f38-88aa-8f890672b7d7",
-        "Content-Length": "10109",
+        "apim-request-id": "f3f43a07-b63d-4a0f-ac21-d4ddd181a419",
+        "Content-Length": "10106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:52 GMT",
+        "Date": "Fri, 14 Apr 2023 18:18:06 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "37",
+        "x-envoy-upstream-service-time": "46",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-12T20:30:47Z",
-        "lastUpdatedDateTime": "2023-04-12T20:30:51Z",
+        "createdDateTime": "2023-04-14T18:18:01Z",
+        "lastUpdatedDateTime": "2023-04-14T18:18:04Z",
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
           "modelId": "prebuilt-businessCard",
@@ -1221,7 +1221,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B442067892345",
+                      "valuePhoneNumber": "\u002B10207892345",
                       "content": "\u002B44 (0) 20 6789 2345",
                       "boundingRegions": [
                         {
@@ -1285,7 +1285,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B447911123456",
+                      "valuePhoneNumber": "\u002B10791112345",
                       "content": "\u002B44 (0) 7911 123456",
                       "boundingRegions": [
                         {
@@ -1349,7 +1349,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B442098765432",
+                      "valuePhoneNumber": "\u002B10209875432",
                       "content": "\u002B44 (0) 20 9876 5432",
                       "boundingRegions": [
                         {
@@ -1390,32 +1390,32 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/31c4a17c-14f9-488b-bfc3-4e1c51cc0ac3?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/3c3d98c8-590d-4437-8064-b19b634d1100?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:53 GMT",
+        "Date": "Fri, 14 Apr 2023 18:18:08 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "0a61c3e9-3dc5-4f12-bc9c-d89007921614"
+        "x-ms-client-request-id": "0c737327-ae0d-4877-8cb2-e6f515b6bf29"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "932d6b44-67cd-4311-b040-9c7e976dc2dd",
-        "Content-Length": "10109",
+        "apim-request-id": "b0ba55a2-9872-4895-b5b4-ca9078424e1e",
+        "Content-Length": "10106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:52 GMT",
+        "Date": "Fri, 14 Apr 2023 18:18:07 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "36",
+        "x-envoy-upstream-service-time": "32",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-12T20:30:47Z",
-        "lastUpdatedDateTime": "2023-04-12T20:30:51Z",
+        "createdDateTime": "2023-04-14T18:18:01Z",
+        "lastUpdatedDateTime": "2023-04-14T18:18:04Z",
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
           "modelId": "prebuilt-businessCard",
@@ -2582,7 +2582,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B442067892345",
+                      "valuePhoneNumber": "\u002B10207892345",
                       "content": "\u002B44 (0) 20 6789 2345",
                       "boundingRegions": [
                         {
@@ -2646,7 +2646,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B447911123456",
+                      "valuePhoneNumber": "\u002B10791112345",
                       "content": "\u002B44 (0) 7911 123456",
                       "boundingRegions": [
                         {
@@ -2710,7 +2710,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B442098765432",
+                      "valuePhoneNumber": "\u002B10209875432",
                       "content": "\u002B44 (0) 20 9876 5432",
                       "boundingRegions": [
                         {

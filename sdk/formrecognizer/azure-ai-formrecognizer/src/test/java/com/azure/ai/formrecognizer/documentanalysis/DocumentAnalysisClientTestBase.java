@@ -53,6 +53,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENAN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -80,7 +81,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);
@@ -107,13 +108,13 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
     private void setMatchers() {
         interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
     }
-
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
@@ -122,7 +123,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);
@@ -130,6 +131,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -142,14 +144,15 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
                         return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
                     }
                 });
+                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
-
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
         if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
@@ -175,6 +178,10 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
         TestUtils.getDataRunnerHelper(testRunner, fileName);
+    }
+
+    void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {
+        TestUtils.getTestingContainerHelper(testRunner, fileName, interceptorManager.isPlaybackMode());
     }
 
     void buildModelRunner(Consumer<String> testRunner) {
@@ -495,6 +502,32 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(licensePageFields.get("Endorsements").getConfidence());
         assertEquals("NONE", licensePageFields.get("Restrictions").getValueAsString());
         assertNotNull(licensePageFields.get("Restrictions").getConfidence());
+    }
+
+    void validateGermanContentData(AnalyzeResult analyzeResult) {
+        assertNotNull(analyzeResult.getPages());
+        assertEquals(1, analyzeResult.getPages().size());
+        analyzeResult.getPages().forEach(documentPage -> {
+            Assertions.assertTrue(
+                documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
+            assertNotNull(analyzeResult.getTables());
+            Assertions.assertEquals(8.5f, documentPage.getWidth());
+            Assertions.assertEquals(11f, documentPage.getHeight());
+            Assertions.assertEquals(DocumentPageLengthUnit.INCH, documentPage.getUnit());
+
+        });
+
+        assertNotNull(analyzeResult.getTables());
+        int[] table = new int[] {8, 3, 24};
+        Assertions.assertEquals(1, analyzeResult.getTables().size());
+        for (int i = 0; i < analyzeResult.getTables().size(); i++) {
+            DocumentTable actualDocumentTable = analyzeResult.getTables().get(i);
+            Assertions.assertEquals(table[i], actualDocumentTable.getRowCount());
+            Assertions.assertEquals(table[++i], actualDocumentTable.getColumnCount());
+            Assertions.assertEquals(table[++i], actualDocumentTable.getCells().size());
+            actualDocumentTable.getCells().forEach(documentTableCell
+                -> assertNotNull(documentTableCell.getKind()));
+        }
     }
 
     void validateSelectionMarkContentData(AnalyzeResult analyzeResult) {

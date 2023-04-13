@@ -6,25 +6,25 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "172",
+        "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:30:55 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:57 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "cfe78833-9f14-4561-9431-bde3298393d1"
+        "x-ms-client-request-id": "fdf9bdfc-b30b-40e2-a76f-f3f30aea6f4b"
       },
       "RequestBody": {
-        "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/Form_1.jpg"
+        "urlSource": "REDACTED"
       },
       "StatusCode": 404,
       "ResponseHeaders": {
-        "apim-request-id": "ef0e6ff6-1a46-4fde-8824-631276bc7db1",
+        "apim-request-id": "984f1679-a01f-4d35-8357-44736a227eb7",
         "Content-Length": "146",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:54 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:55 GMT",
         "ms-azure-ai-errorcode": "NotFound",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "344",
+        "x-envoy-upstream-service-time": "176",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

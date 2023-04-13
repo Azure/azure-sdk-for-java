@@ -21,8 +21,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -42,11 +40,10 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIEN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.URL_REGEX;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
-    public static final String REDACTED_VALUE = "REDACTED";
     Duration durationTestMode;
 
     /**
@@ -70,10 +67,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             .serviceVersion(serviceVersion)
             .audience(audience);
 
-        interceptorManager.addSanitizers(Arrays.asList(
-            new TestProxySanitizer("targetModelLocation", REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("targetResourceId", REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("resourceLocation", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)));
+
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -96,13 +90,12 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
-
     private void setMatchers() {
         interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
     }
-
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
         if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {

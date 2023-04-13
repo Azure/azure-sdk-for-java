@@ -6,25 +6,25 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "49",
+        "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:30:59 GMT",
+        "Date": "Fri, 14 Apr 2023 18:17:41 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "b86192ad-601a-45cc-a329-a9e7999c8fe4"
+        "x-ms-client-request-id": "51ef3a1f-41e4-41c8-907d-013b4f5b6d74"
       },
       "RequestBody": {
-        "urlSource": "https://fakeuri.com/blank%20space"
+        "urlSource": "REDACTED"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "078edb81-d5a5-4f33-bc1c-89c0c8f6f650",
+        "apim-request-id": "5809f003-d81f-44d2-89a5-27cb5b76ecdf",
         "Content-Length": "221",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:58 GMT",
+        "Date": "Fri, 14 Apr 2023 18:17:40 GMT",
         "ms-azure-ai-errorcode": "InvalidRequest",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "479",
+        "x-envoy-upstream-service-time": "540",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

@@ -8,31 +8,31 @@
         "Authorization": "Sanitized",
         "Content-Length": "50",
         "Content-Type": "application/json",
-        "Date": "Thu, 13 Apr 2023 03:03:04 GMT",
+        "Date": "Fri, 14 Apr 2023 18:15:58 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "7c954dde-3464-4eef-9adf-eaa8937f65df"
+        "x-ms-client-request-id": "6f82ab5b-d089-4bec-8b29-e2d1e1a186ff"
       },
       "RequestBody": {
-        "modelId": "fd4cfb4e-474c-427c-bae2-fea6012b0f11"
+        "modelId": "b3e822fa-9913-4b95-9341-c4aa75c2783a"
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e406c5d7-2f8c-46f0-b244-87bb21f8a68e",
+        "apim-request-id": "5e80a21e-0d85-4c12-95c8-e5e38ed095aa",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 13 Apr 2023 03:03:05 GMT",
+        "Date": "Fri, 14 Apr 2023 18:15:57 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "464",
+        "x-envoy-upstream-service-time": "557",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "targetResourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR",
+        "targetResourceId": "REDACTED",
         "targetResourceRegion": "eastus",
-        "targetModelId": "fd4cfb4e-474c-427c-bae2-fea6012b0f11",
-        "targetModelLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/fd4cfb4e-474c-427c-bae2-fea6012b0f11?api-version=2023-02-28-preview",
+        "targetModelId": "b3e822fa-9913-4b95-9341-c4aa75c2783a",
+        "targetModelLocation": "REDACTED",
         "accessToken": "REDACTED",
-        "expirationDateTime": "2023-04-13T04:03:05Z"
+        "expirationDateTime": "2023-04-14T19:15:57Z"
       }
     }
   ],

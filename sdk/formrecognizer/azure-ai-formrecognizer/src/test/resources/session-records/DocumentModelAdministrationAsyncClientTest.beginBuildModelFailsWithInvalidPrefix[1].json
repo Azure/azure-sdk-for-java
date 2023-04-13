@@ -6,29 +6,29 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "337",
+        "Content-Length": "144",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:35:57 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:25 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "7d39ee46-f42c-4a8c-b524-3d9bfe309f65"
+        "x-ms-client-request-id": "04c45b6a-a3ba-4660-9a06-713acff9f1c4"
       },
       "RequestBody": {
-        "modelId": "3401f651-a63b-47fc-83e8-894cadebe815",
+        "modelId": "29166b23-1694-4591-b426-2997f9eeb097",
         "buildMode": "template",
         "azureBlobSource": {
-          "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/trainingdata?sp=rl\u0026st=2022-01-24T21:29:02Z\u0026se=2025-01-25T05:29:02Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=q71NyEgO5ebO7aKW%2FcN2rzeVaCJP49O%2BRw9T9pGXhkE%3D",
+          "containerUrl": "REDACTED",
           "prefix": "invalidPrefix"
         }
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "d698ecef-5dba-4007-b0bb-8fe2bc7ad396",
+        "apim-request-id": "cb95e79c-2c80-4c14-b4e2-f83d685c071e",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:35:58 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:24 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "848",
+        "x-envoy-upstream-service-time": "955",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

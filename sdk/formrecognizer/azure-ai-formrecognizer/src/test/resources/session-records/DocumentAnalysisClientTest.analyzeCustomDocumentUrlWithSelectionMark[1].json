@@ -6,271 +6,271 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "311",
+        "Content-Length": "119",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:30:48 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:55 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e8c6c425-b38f-4483-a950-963e37504c1e"
+        "x-ms-client-request-id": "e6150ed8-ea91-4c3f-81c7-0290fe4f66ee"
       },
       "RequestBody": {
-        "modelId": "cad90649-fc57-4ca0-a70f-8aae71c84412",
+        "modelId": "bbf5f4e2-c895-4410-a901-4a95caea6714",
         "buildMode": "template",
         "azureBlobSource": {
-          "containerUrl": "https://azuresdktrainingdata.blob.core.windows.net/selectionmark?sp=rl\u0026st=2022-01-24T21:27:59Z\u0026se=2027-01-25T05:27:59Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=bDPM6rwWkIwC7F1kJTPSYbcLF9T4U97jNC%2Bvxo6yxzc%3D"
+          "containerUrl": "REDACTED"
         }
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "44faa2e6-148b-4c7a-a726-9981f7e7857c",
+        "apim-request-id": "d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:52 GMT",
-        "operation-location": "https://REDACTED/formrecognizer/operations/31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c?api-version=2023-02-28-preview",
+        "Date": "Fri, 14 Apr 2023 18:19:56 GMT",
+        "operation-location": "https://REDACTED/formrecognizer/operations/31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55?api-version=2023-02-28-preview",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3373",
+        "x-envoy-upstream-service-time": "3001",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:52 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:59 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "6d4a462e-850c-433a-bf93-57ed6b168954"
+        "x-ms-client-request-id": "d85616a6-c934-4da1-95e3-bcbc3d3dce2a"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "21f0c7ae-c836-420e-bdc4-58630d4643bd",
+        "apim-request-id": "0d62f949-3b94-4d5f-99ee-d6478a5b6e1a",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:52 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:57 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "37",
+        "x-envoy-upstream-service-time": "14",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c",
+        "operationId": "31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55",
         "kind": "documentModelBuild",
-        "status": "running",
-        "createdDateTime": "2023-04-12T20:30:49Z",
-        "lastUpdatedDateTime": "2023-04-12T20:30:52Z",
-        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412?api-version=2023-02-28-preview"
+        "status": "notStarted",
+        "createdDateTime": "2023-04-14T18:19:54Z",
+        "lastUpdatedDateTime": "2023-04-14T18:19:54Z",
+        "resourceLocation": "REDACTED"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:57 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:04 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "c05ba7e9-a6fc-47b3-a319-7d2848b31a3f"
+        "x-ms-client-request-id": "6c04964a-638f-4bf6-9bde-10c3e663fef6"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "3f4e5b20-bcd3-43f2-85d0-b99e7b9d8d16",
+        "apim-request-id": "ec969128-f34d-4f71-a7d6-6797a74412a7",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:56 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:03 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "16",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "operationId": "31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c",
-        "kind": "documentModelBuild",
-        "status": "succeeded",
-        "createdDateTime": "2023-04-12T20:30:49Z",
-        "lastUpdatedDateTime": "2023-04-12T20:30:53Z",
-        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412?api-version=2023-02-28-preview",
-        "percentCompleted": 100,
-        "result": {
-          "docTypes": {
-            "cad90649-fc57-4ca0-a70f-8aae71c84412": {
-              "fieldSchema": {
-                "VISA_SELECTION_MARK": {
-                  "type": "selectionMark"
-                },
-                "AMEX_SELECTION_MARK": {
-                  "type": "selectionMark"
-                },
-                "MASTERCARD_SELECTION_MARK": {
-                  "type": "selectionMark"
-                }
-              },
-              "buildMode": "template",
-              "fieldConfidence": {
-                "AMEX_SELECTION_MARK": 0.995,
-                "MASTERCARD_SELECTION_MARK": 0.995,
-                "VISA_SELECTION_MARK": 0.995
-              }
-            }
-          },
-          "modelId": "cad90649-fc57-4ca0-a70f-8aae71c84412",
-          "createdDateTime": "2023-04-12T20:30:53Z",
-          "expirationDateTime": "2025-04-11T20:30:53Z",
-          "apiVersion": "2023-02-28-preview"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c?api-version=2023-02-28-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:58 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "1895b5c9-1bbf-4601-a6bb-2ce63e27049f"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "5036a9dd-e66a-4e47-b155-0202cb82b58b",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:57 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "22",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "operationId": "31485036551_44faa2e6-148b-4c7a-a726-9981f7e7857c",
-        "kind": "documentModelBuild",
-        "status": "succeeded",
-        "createdDateTime": "2023-04-12T20:30:49Z",
-        "lastUpdatedDateTime": "2023-04-12T20:30:53Z",
-        "resourceLocation": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412?api-version=2023-02-28-preview",
-        "percentCompleted": 100,
-        "result": {
-          "docTypes": {
-            "cad90649-fc57-4ca0-a70f-8aae71c84412": {
-              "fieldSchema": {
-                "VISA_SELECTION_MARK": {
-                  "type": "selectionMark"
-                },
-                "AMEX_SELECTION_MARK": {
-                  "type": "selectionMark"
-                },
-                "MASTERCARD_SELECTION_MARK": {
-                  "type": "selectionMark"
-                }
-              },
-              "buildMode": "template",
-              "fieldConfidence": {
-                "AMEX_SELECTION_MARK": 0.995,
-                "MASTERCARD_SELECTION_MARK": 0.995,
-                "VISA_SELECTION_MARK": 0.995
-              }
-            }
-          },
-          "modelId": "cad90649-fc57-4ca0-a70f-8aae71c84412",
-          "createdDateTime": "2023-04-12T20:30:53Z",
-          "expirationDateTime": "2025-04-11T20:30:53Z",
-          "apiVersion": "2023-02-28-preview"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "183",
-        "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 20:30:58 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "0a83e5c6-1327-41bc-8819-2c62fc64a5f2"
-      },
-      "RequestBody": {
-        "urlSource": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/selectionMarkForm.pdf"
-      },
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "apim-request-id": "3af08dc0-711e-435e-bfdb-a31661430b65",
-        "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:57 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412/analyzeResults/3af08dc0-711e-435e-bfdb-a31661430b65?api-version=2023-02-28-preview",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "218",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": null
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412/analyzeResults/3af08dc0-711e-435e-bfdb-a31661430b65?api-version=2023-02-28-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:30:58 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "5c68741a-2772-44ff-90ad-93c11a7cef72"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "5a6e0a23-aa80-4dea-9bd5-eb1405f0fa23",
-        "Content-Length": "106",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:30:57 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "17",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "status": "running",
-        "createdDateTime": "2023-04-12T20:30:58Z",
-        "lastUpdatedDateTime": "2023-04-12T20:30:58Z"
+        "operationId": "31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55",
+        "kind": "documentModelBuild",
+        "status": "succeeded",
+        "createdDateTime": "2023-04-14T18:19:54Z",
+        "lastUpdatedDateTime": "2023-04-14T18:19:59Z",
+        "resourceLocation": "REDACTED",
+        "percentCompleted": 100,
+        "result": {
+          "docTypes": {
+            "bbf5f4e2-c895-4410-a901-4a95caea6714": {
+              "fieldSchema": {
+                "VISA_SELECTION_MARK": {
+                  "type": "selectionMark"
+                },
+                "AMEX_SELECTION_MARK": {
+                  "type": "selectionMark"
+                },
+                "MASTERCARD_SELECTION_MARK": {
+                  "type": "selectionMark"
+                }
+              },
+              "buildMode": "template",
+              "fieldConfidence": {
+                "AMEX_SELECTION_MARK": 0.995,
+                "MASTERCARD_SELECTION_MARK": 0.995,
+                "VISA_SELECTION_MARK": 0.995
+              }
+            }
+          },
+          "modelId": "bbf5f4e2-c895-4410-a901-4a95caea6714",
+          "createdDateTime": "2023-04-14T18:19:59Z",
+          "expirationDateTime": "2025-04-13T18:19:59Z",
+          "apiVersion": "2023-02-28-preview"
+        }
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412/analyzeResults/3af08dc0-711e-435e-bfdb-a31661430b65?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:31:03 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:04 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "57610491-6937-44aa-9f3e-7d78f79d5323"
+        "x-ms-client-request-id": "6076bffd-3ddf-4fdb-8989-7accaebc1ef2"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "1b962745-ba9c-4b7e-b3b0-3e09ff00d7ff",
-        "Content-Length": "45982",
+        "apim-request-id": "804fe0a9-4dec-40e7-a8bf-85dc77e346ca",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:31:03 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:03 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "14",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "operationId": "31484871605_d80698c6-cfb4-4a0e-b7d8-cc95dd81aa55",
+        "kind": "documentModelBuild",
+        "status": "succeeded",
+        "createdDateTime": "2023-04-14T18:19:54Z",
+        "lastUpdatedDateTime": "2023-04-14T18:19:59Z",
+        "resourceLocation": "REDACTED",
+        "percentCompleted": 100,
+        "result": {
+          "docTypes": {
+            "bbf5f4e2-c895-4410-a901-4a95caea6714": {
+              "fieldSchema": {
+                "VISA_SELECTION_MARK": {
+                  "type": "selectionMark"
+                },
+                "AMEX_SELECTION_MARK": {
+                  "type": "selectionMark"
+                },
+                "MASTERCARD_SELECTION_MARK": {
+                  "type": "selectionMark"
+                }
+              },
+              "buildMode": "template",
+              "fieldConfidence": {
+                "AMEX_SELECTION_MARK": 0.995,
+                "MASTERCARD_SELECTION_MARK": 0.995,
+                "VISA_SELECTION_MARK": 0.995
+              }
+            }
+          },
+          "modelId": "bbf5f4e2-c895-4410-a901-4a95caea6714",
+          "createdDateTime": "2023-04-14T18:19:59Z",
+          "expirationDateTime": "2025-04-13T18:19:59Z",
+          "apiVersion": "2023-02-28-preview"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/bbf5f4e2-c895-4410-a901-4a95caea6714:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "24",
+        "Content-Type": "application/json",
+        "Date": "Fri, 14 Apr 2023 18:20:04 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "549f72bb-dfa3-459c-8883-2a29ab9768be"
+      },
+      "RequestBody": {
+        "urlSource": "REDACTED"
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "b1bd9f44-d05d-4bd9-a400-215a7c2ffe49",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 18:20:02 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/bbf5f4e2-c895-4410-a901-4a95caea6714/analyzeResults/b1bd9f44-d05d-4bd9-a400-215a7c2ffe49?api-version=2023-02-28-preview",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "46",
+        "x-envoy-upstream-service-time": "198",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/bbf5f4e2-c895-4410-a901-4a95caea6714/analyzeResults/b1bd9f44-d05d-4bd9-a400-215a7c2ffe49?api-version=2023-02-28-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 18:20:05 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "e3cd5b4c-38d7-4221-a7e8-be35988593d9"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "8685311a-e01f-4841-a480-689c4448bcde",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 14 Apr 2023 18:20:03 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "19",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-14T18:20:03Z",
+        "lastUpdatedDateTime": "2023-04-14T18:20:03Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/bbf5f4e2-c895-4410-a901-4a95caea6714/analyzeResults/b1bd9f44-d05d-4bd9-a400-215a7c2ffe49?api-version=2023-02-28-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 18:20:10 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "d7ee0194-37bc-413a-80e4-6c74450c228d"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "2b743a49-a309-4b08-9415-237025689ffc",
+        "Content-Length": "45982",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 14 Apr 2023 18:20:08 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "67",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-12T20:30:58Z",
-        "lastUpdatedDateTime": "2023-04-12T20:31:02Z",
+        "createdDateTime": "2023-04-14T18:20:03Z",
+        "lastUpdatedDateTime": "2023-04-14T18:20:06Z",
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
-          "modelId": "cad90649-fc57-4ca0-a70f-8aae71c84412",
+          "modelId": "bbf5f4e2-c895-4410-a901-4a95caea6714",
           "stringIndexType": "utf16CodeUnit",
           "content": "STATE OF CALIFORNIA: CONTOSO BUREAU OF INSURANCE 124 Main Street Palo Alto CA 842325 (650)768-2322\nAUTHORIZATION OF CREDIT CARD PAYMENT\nFees owed to this Department may be paid by the use of a credit card. If you wish to pay your fee(s) with your credit card, please complete this form and send it with your paperwork. Payment through credit cards will not be processed without this authorization form. Please print or type clearly.\nName (company/individual for whom payment is being made) (Please Include License # and SSN/FEIN): Contoso Insurance 54353T7A, 36-1222985\nPurpose of Payment:\nBalance on Account\nCard Type: \u2751Visa\n\u2751x AMEX\n\u2751Master Card\nName of Cardholder: John Singer\nContact persons phone #, if questions with this form. Telephone #: ( 425 ) 779 3479 -\nEmail Address: johnsinger@hotmail.com\nMailing Address: 472 SE 74th ST\nCity: Lakewood\nState: WA\nZip Code: 98712\nI authorize Contoso Department of Professional and Financial Regulation, Bureau of Insurance to charge my: Visa\n____________________________\n(Card number \u2013 Please print clearly)\n4872876432425423\nExpiration date:\n09\n/\n21\nin the amount of: $__________________\n263.00\nSignature: ___________________________________________ Date: ______\n(must be signed by authorized person to validate)\nJohn Singer\n08\n/\n23\n/\n2018\n______\n________\nForm is available on our website: www.contoso.com/insurance You may fax the form to: 650-768-2322 or e-mail to: insurance@contoso.com\nOFFICES LOCATED AT 24 Main Street Palo Alto CA 842325 www.contoso.com/insurance\nContoso\nCONTOSO BANK :unselected: :selected: :unselected:",
           "pages": [
@@ -5945,7 +5945,7 @@
           ],
           "documents": [
             {
-              "docType": "cad90649-fc57-4ca0-a70f-8aae71c84412:cad90649-fc57-4ca0-a70f-8aae71c84412",
+              "docType": "bbf5f4e2-c895-4410-a901-4a95caea6714:bbf5f4e2-c895-4410-a901-4a95caea6714",
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -5962,30 +5962,30 @@
                 }
               ],
               "fields": {
-                "AMEX_SELECTION_MARK": {
+                "VISA_SELECTION_MARK": {
                   "type": "selectionMark",
-                  "valueSelectionMark": "selected",
-                  "content": ":selected:",
+                  "valueSelectionMark": "unselected",
+                  "content": ":unselected:",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        2.38,
-                        5.475,
-                        2.445,
-                        5.475,
-                        2.445,
-                        5.545,
-                        2.38,
-                        5.545
+                        1.615,
+                        5.43,
+                        1.775,
+                        5.43,
+                        1.775,
+                        5.595,
+                        1.615,
+                        5.595
                       ]
                     }
                   ],
                   "confidence": 0.995,
                   "spans": [
                     {
-                      "offset": 1550,
-                      "length": 10
+                      "offset": 1537,
+                      "length": 12
                     }
                   ]
                 },
@@ -6016,30 +6016,30 @@
                     }
                   ]
                 },
-                "VISA_SELECTION_MARK": {
+                "AMEX_SELECTION_MARK": {
                   "type": "selectionMark",
-                  "valueSelectionMark": "unselected",
-                  "content": ":unselected:",
+                  "valueSelectionMark": "selected",
+                  "content": ":selected:",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        1.615,
-                        5.43,
-                        1.775,
-                        5.43,
-                        1.775,
-                        5.595,
-                        1.615,
-                        5.595
+                        2.38,
+                        5.475,
+                        2.445,
+                        5.475,
+                        2.445,
+                        5.545,
+                        2.38,
+                        5.545
                       ]
                     }
                   ],
                   "confidence": 0.995,
                   "spans": [
                     {
-                      "offset": 1537,
-                      "length": 12
+                      "offset": 1550,
+                      "length": 10
                     }
                   ]
                 }
@@ -6057,59 +6057,59 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/bbf5f4e2-c895-4410-a901-4a95caea6714?api-version=2023-02-28-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:31:04 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:10 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "5ee314a5-bd64-49c2-8444-002e736efadf"
+        "x-ms-client-request-id": "a6080b1b-695c-4508-8586-9f4186fbc41f"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "apim-request-id": "288502fe-5cd2-4659-bde5-876be9ca279f",
+        "apim-request-id": "9fd2208d-0abd-4d06-967c-a7e95348c8da",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:31:04 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "70",
+        "x-envoy-upstream-service-time": "76",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/cad90649-fc57-4ca0-a70f-8aae71c84412/analyzeResults/3af08dc0-711e-435e-bfdb-a31661430b65?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/bbf5f4e2-c895-4410-a901-4a95caea6714/analyzeResults/b1bd9f44-d05d-4bd9-a400-215a7c2ffe49?api-version=2023-02-28-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 20:31:04 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:10 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "f55958af-5ef8-4a01-b03b-9d937e064d2a"
+        "x-ms-client-request-id": "1d9ee162-99cd-4dfd-a421-35c8fe9938c1"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "55c0d7d3-1b20-412a-a8a4-512b54ef75fa",
+        "apim-request-id": "4b4801a3-a7c7-440e-b950-dbf87eaa792e",
         "Content-Length": "45982",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 20:31:04 GMT",
+        "Date": "Fri, 14 Apr 2023 18:20:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "37",
+        "x-envoy-upstream-service-time": "76",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-12T20:30:58Z",
-        "lastUpdatedDateTime": "2023-04-12T20:31:02Z",
+        "createdDateTime": "2023-04-14T18:20:03Z",
+        "lastUpdatedDateTime": "2023-04-14T18:20:06Z",
         "analyzeResult": {
           "apiVersion": "2023-02-28-preview",
-          "modelId": "cad90649-fc57-4ca0-a70f-8aae71c84412",
+          "modelId": "bbf5f4e2-c895-4410-a901-4a95caea6714",
           "stringIndexType": "utf16CodeUnit",
           "content": "STATE OF CALIFORNIA: CONTOSO BUREAU OF INSURANCE 124 Main Street Palo Alto CA 842325 (650)768-2322\nAUTHORIZATION OF CREDIT CARD PAYMENT\nFees owed to this Department may be paid by the use of a credit card. If you wish to pay your fee(s) with your credit card, please complete this form and send it with your paperwork. Payment through credit cards will not be processed without this authorization form. Please print or type clearly.\nName (company/individual for whom payment is being made) (Please Include License # and SSN/FEIN): Contoso Insurance 54353T7A, 36-1222985\nPurpose of Payment:\nBalance on Account\nCard Type: \u2751Visa\n\u2751x AMEX\n\u2751Master Card\nName of Cardholder: John Singer\nContact persons phone #, if questions with this form. Telephone #: ( 425 ) 779 3479 -\nEmail Address: johnsinger@hotmail.com\nMailing Address: 472 SE 74th ST\nCity: Lakewood\nState: WA\nZip Code: 98712\nI authorize Contoso Department of Professional and Financial Regulation, Bureau of Insurance to charge my: Visa\n____________________________\n(Card number \u2013 Please print clearly)\n4872876432425423\nExpiration date:\n09\n/\n21\nin the amount of: $__________________\n263.00\nSignature: ___________________________________________ Date: ______\n(must be signed by authorized person to validate)\nJohn Singer\n08\n/\n23\n/\n2018\n______\n________\nForm is available on our website: www.contoso.com/insurance You may fax the form to: 650-768-2322 or e-mail to: insurance@contoso.com\nOFFICES LOCATED AT 24 Main Street Palo Alto CA 842325 www.contoso.com/insurance\nContoso\nCONTOSO BANK :unselected: :selected: :unselected:",
           "pages": [
@@ -11784,7 +11784,7 @@
           ],
           "documents": [
             {
-              "docType": "cad90649-fc57-4ca0-a70f-8aae71c84412:cad90649-fc57-4ca0-a70f-8aae71c84412",
+              "docType": "bbf5f4e2-c895-4410-a901-4a95caea6714:bbf5f4e2-c895-4410-a901-4a95caea6714",
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -11801,30 +11801,30 @@
                 }
               ],
               "fields": {
-                "AMEX_SELECTION_MARK": {
+                "VISA_SELECTION_MARK": {
                   "type": "selectionMark",
-                  "valueSelectionMark": "selected",
-                  "content": ":selected:",
+                  "valueSelectionMark": "unselected",
+                  "content": ":unselected:",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        2.38,
-                        5.475,
-                        2.445,
-                        5.475,
-                        2.445,
-                        5.545,
-                        2.38,
-                        5.545
+                        1.615,
+                        5.43,
+                        1.775,
+                        5.43,
+                        1.775,
+                        5.595,
+                        1.615,
+                        5.595
                       ]
                     }
                   ],
                   "confidence": 0.995,
                   "spans": [
                     {
-                      "offset": 1550,
-                      "length": 10
+                      "offset": 1537,
+                      "length": 12
                     }
                   ]
                 },
@@ -11855,30 +11855,30 @@
                     }
                   ]
                 },
-                "VISA_SELECTION_MARK": {
+                "AMEX_SELECTION_MARK": {
                   "type": "selectionMark",
-                  "valueSelectionMark": "unselected",
-                  "content": ":unselected:",
+                  "valueSelectionMark": "selected",
+                  "content": ":selected:",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        1.615,
-                        5.43,
-                        1.775,
-                        5.43,
-                        1.775,
-                        5.595,
-                        1.615,
-                        5.595
+                        2.38,
+                        5.475,
+                        2.445,
+                        5.475,
+                        2.445,
+                        5.545,
+                        2.38,
+                        5.545
                       ]
                     }
                   ],
                   "confidence": 0.995,
                   "spans": [
                     {
-                      "offset": 1537,
-                      "length": 12
+                      "offset": 1550,
+                      "length": 10
                     }
                   ]
                 }

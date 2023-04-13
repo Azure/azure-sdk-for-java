@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
@@ -32,6 +34,8 @@ import static com.azure.core.test.TestBase.getHttpClients;
  * Contains helper methods for generating inputs for test methods
  */
 public final class TestUtils {
+    private static final String REDACTED_VALUE = "REDACTED";
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     // Duration
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
 
@@ -41,6 +45,7 @@ public final class TestUtils {
     // Local test files
     public static final String BLANK_PDF = "blank.pdf";
     static final String CONTENT_FORM_JPG = "Form_1.jpg";
+    public static final String TEST_DATA_PNG = "testData.png";
     static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
     static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
@@ -68,7 +73,6 @@ public final class TestUtils {
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
     static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or empty";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
-    public static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     public static final String INVALID_KEY = "invalid key";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
@@ -85,6 +89,8 @@ public final class TestUtils {
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
+    public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
     public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
     public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION =
@@ -101,10 +107,8 @@ public final class TestUtils {
         = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
     public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
-
     private TestUtils() {
     }
-
     static InputStream getContentDetectionFileData(String localFileUrl) {
         try {
             return new FileInputStream(localFileUrl);
@@ -144,27 +148,48 @@ public final class TestUtils {
             throw new RuntimeException("Local file not found.", e);
         }
     }
-
     public static void getTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
     }
-
     public static void getErrorTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getErrorTrainingFilesContainerUrl(isPlaybackMode));
     }
-
     public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
     }
-
     public static void getSelectionMarkTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
     }
-
+    static void getTestingContainerHelper(Consumer<String> testRunner, String fileName, boolean isPlaybackMode) {
+        testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
+    }
     public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
 
+    /**
+     * Get the testing data set SAS Url value based on the test running mode.
+     *
+     * @return the testing data set Url
+     * @param isPlaybackMode boolean to indicate if the test running in playback mode
+     */
+    private static String getTestingSasUri(boolean isPlaybackMode) {
+        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Prepare the file url from the testing data set SAS Url value.
+     *
+     * @return the testing data specific file Url
+     */
+    private static String getStorageTestingFileUrl(String fileName, boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "https://isPlaybackmode";
+        } else {
+            final String[] urlParts = getTestingSasUri(isPlaybackMode).split("\\?");
+            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
+        }
+    }
 
     /**
      * Get the training data set SAS Url value based on the test running mode.
@@ -261,6 +286,17 @@ public final class TestUtils {
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
+
+    public static List<TestProxySanitizer> getTestProxySanitizers() {
+        return Arrays.asList(
+            new TestProxySanitizer("$..targetModelLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..targetResourceId", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..azureBlobSource.containerUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..source", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..resourceLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+    }
     public static DocumentAnalysisAudience getAudience(String endpoint) {
         String authority = getAuthority(endpoint);
         switch (authority) {
@@ -277,7 +313,6 @@ public final class TestUtils {
                 return null;
         }
     }
-
     public static String getAuthority(String endpoint) {
         if (endpoint == null) {
             return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;

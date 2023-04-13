@@ -57,6 +57,7 @@ import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getAudience;
+import static com.azure.ai.formrecognizer.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -156,6 +157,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
@@ -183,6 +185,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 

@@ -6,31 +6,31 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "74",
+        "Content-Length": "21",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 22:38:00 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:25 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "40486886-407b-4bd4-94cd-fabc44500150"
+        "x-ms-client-request-id": "77e6c220-7ab3-40d0-afb9-8fb19ba66cde"
       },
       "RequestBody": {
-        "source": "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg"
+        "source": "REDACTED"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "42245fea-cf4d-4590-bed2-5d004012dd5e",
+        "apim-request-id": "9d258f15-8489-4241-8ae8-99dbc804fe53",
         "Content-Length": "170",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:38:01 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:24 GMT",
         "ms-azure-ai-errorcode": "InvalidImage",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "52",
+        "x-envoy-upstream-service-time": "101",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "error": {
           "innerError": {
-            "requestId": "42245fea-cf4d-4590-bed2-5d004012dd5e"
+            "requestId": "9d258f15-8489-4241-8ae8-99dbc804fe53"
           },
           "code": "InvalidImage",
           "message": "The input data is not a valid image or password protected."

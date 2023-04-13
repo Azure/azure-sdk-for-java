@@ -6,25 +6,25 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "74",
+        "Content-Length": "21",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 22:30:23 GMT",
+        "Date": "Fri, 14 Apr 2023 18:17:34 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "2d9d6991-71b2-4d9f-90cf-080dbc9898bf"
+        "x-ms-client-request-id": "a3443531-323e-45ae-bc21-15e4b45eaa63"
       },
       "RequestBody": {
-        "source": "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg"
+        "source": "REDACTED"
       },
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "318f83ab-149f-4012-9d6c-9c4dd0828c5d",
+        "apim-request-id": "0a3fa068-0367-4b01-9e44-c78a94595457",
         "Content-Length": "270",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:30:23 GMT",
+        "Date": "Fri, 14 Apr 2023 18:17:32 GMT",
         "ms-azure-ai-errorcode": "InvalidImage",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "81",
+        "x-envoy-upstream-service-time": "35",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

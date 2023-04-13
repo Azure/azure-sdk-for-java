@@ -602,17 +602,15 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     public void analyzeGermanContentFromUrl(HttpClient httpClient,
                                               DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        urlRunner(sourceUrl -> {
+        testingContainerUrlRunner(sourceUrl -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl,
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl,
                     new AnalyzeDocumentOptions().setLocale("de"))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
-            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertNotNull(analyzeResult);
-            Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
-        }, GERMAN_PNG);
+            validateGermanContentData(syncPoller.getFinalResult());
+        }, CONTENT_GERMAN_PDF);
     }
 
     // Business Card Recognition

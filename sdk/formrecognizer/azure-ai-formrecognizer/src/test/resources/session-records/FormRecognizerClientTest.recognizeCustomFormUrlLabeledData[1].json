@@ -6,14 +6,14 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "277",
+        "Content-Length": "84",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 22:38:01 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:14 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d7381675-4ddd-4f1a-96b8-ef121114cc33"
+        "x-ms-client-request-id": "8210ad58-e3ca-4895-81f5-0537b8b532d4"
       },
       "RequestBody": {
-        "source": "https://azuresdktrainingdata.blob.core.windows.net/trainingdata?sp=rl\u0026st=2022-01-24T21:29:02Z\u0026se=2025-01-25T05:29:02Z\u0026spr=https\u0026sv=2020-08-04\u0026sr=c\u0026sig=q71NyEgO5ebO7aKW%2FcN2rzeVaCJP49O%2BRw9T9pGXhkE%3D",
+        "source": "REDACTED",
         "sourceFilter": {
           "includeSubFolders": false
         },
@@ -21,49 +21,49 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "apim-request-id": "27203512-15dc-4398-a4da-28e86788c27c",
+        "apim-request-id": "ea64f33a-0339-4f24-85b5-0470ccd3e31b",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:02 GMT",
-        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f",
+        "Date": "Fri, 14 Apr 2023 18:19:12 GMT",
+        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "681",
+        "x-envoy-upstream-service-time": "559",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f?includeKeys=true",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a?includeKeys=true",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:07 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:19 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d92d544a-0b4e-4b86-baeb-f1f727a5b06b"
+        "x-ms-client-request-id": "164c572f-f2ee-4a4f-8adc-2a66ce442762"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "cc60d173-5a45-4668-b7b6-ead8b6f291ff",
+        "apim-request-id": "31de302a-ad92-4d6e-9f6f-95010e168449",
         "Content-Length": "1242",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:38:06 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:17 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "17",
+        "x-envoy-upstream-service-time": "21",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "modelInfo": {
-          "modelId": "1fdef44e-420e-4368-8d71-95bc51c8870f",
+          "modelId": "addab059-e946-49f6-8a19-4f0cb4a2a41a",
           "attributes": {
             "isComposed": false
           },
           "status": "ready",
-          "createdDateTime": "2023-04-12T22:38:01Z",
-          "lastUpdatedDateTime": "2023-04-12T22:38:05Z"
+          "createdDateTime": "2023-04-14T18:19:13Z",
+          "lastUpdatedDateTime": "2023-04-14T18:19:16Z"
         },
         "trainResult": {
           "averageModelAccuracy": 0.96,
@@ -161,37 +161,37 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f?includeKeys=true",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a?includeKeys=true",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:07 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:20 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "cd61efbd-8ce0-484e-b4c3-33ac7f2cc538"
+        "x-ms-client-request-id": "dae712fb-30ad-49e7-8ac4-7b341f19dcad"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "19a3dcb1-c266-4ada-a331-f71fe2eb2ac9",
+        "apim-request-id": "77b29dc9-b2bb-4e0b-9068-d9618f70775e",
         "Content-Length": "1242",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:38:06 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:17 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "23",
+        "x-envoy-upstream-service-time": "19",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "modelInfo": {
-          "modelId": "1fdef44e-420e-4368-8d71-95bc51c8870f",
+          "modelId": "addab059-e946-49f6-8a19-4f0cb4a2a41a",
           "attributes": {
             "isComposed": false
           },
           "status": "ready",
-          "createdDateTime": "2023-04-12T22:38:01Z",
-          "lastUpdatedDateTime": "2023-04-12T22:38:05Z"
+          "createdDateTime": "2023-04-14T18:19:13Z",
+          "lastUpdatedDateTime": "2023-04-14T18:19:16Z"
         },
         "trainResult": {
           "averageModelAccuracy": 0.96,
@@ -289,89 +289,60 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f/analyze?includeTextDetails=false",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a/analyze?includeTextDetails=false",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "Content-Length": "169",
+        "Content-Length": "21",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 22:38:07 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:20 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "34162cf3-135b-4ab9-9ea5-c53668e8f4f8"
+        "x-ms-client-request-id": "1d0190ab-6c6d-40a1-9b92-184c121f1e90"
       },
       "RequestBody": {
-        "source": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/Form_1.jpg"
+        "source": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "f43d4cb6-0701-4ae2-ad26-15f98a92f1cb",
+        "apim-request-id": "4f450732-209e-4284-97f2-179b81b6cd26",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:07 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f/analyzeresults/ba2694c4-aeee-4cba-8991-85d096c3c731",
+        "Date": "Fri, 14 Apr 2023 18:19:18 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a/analyzeresults/4e3d694d-848a-4d26-8aa0-87f01aaf79e5",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "99",
+        "x-envoy-upstream-service-time": "107",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f/analyzeResults/ba2694c4-aeee-4cba-8991-85d096c3c731",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a/analyzeResults/4e3d694d-848a-4d26-8aa0-87f01aaf79e5",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:12 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:25 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "adc815ac-c8cd-4238-a69f-366204437b6d"
+        "x-ms-client-request-id": "a6f0c8c9-066e-48e4-8e9c-887435a16156"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "622b8a14-0b81-4f1f-ab41-096932ac8afb",
-        "Content-Length": "109",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:38:12 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "32",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "status": "notStarted",
-        "createdDateTime": "2023-04-12T22:38:07Z",
-        "lastUpdatedDateTime": "2023-04-12T22:38:11Z"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f/analyzeResults/ba2694c4-aeee-4cba-8991-85d096c3c731",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:18 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "69d032d1-c98c-4aa8-be6b-fdd0d3837b9a"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "64cee9d1-ead3-40d9-a191-ba550650b2ef",
+        "apim-request-id": "bc302247-e581-4bdb-9b73-b8db639eaff5",
         "Content-Length": "6641",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:38:17 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:23 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "24",
+        "x-envoy-upstream-service-time": "27",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-12T22:38:07Z",
-        "lastUpdatedDateTime": "2023-04-12T22:38:14Z",
+        "createdDateTime": "2023-04-14T18:19:19Z",
+        "lastUpdatedDateTime": "2023-04-14T18:19:23Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -872,182 +843,29 @@
           ],
           "documentResults": [
             {
-              "docType": "custom:1fdef44e-420e-4368-8d71-95bc51c8870f",
-              "modelId": "1fdef44e-420e-4368-8d71-95bc51c8870f",
+              "docType": "custom:addab059-e946-49f6-8a19-4f0cb4a2a41a",
+              "modelId": "addab059-e946-49f6-8a19-4f0cb4a2a41a",
               "pageRange": [
                 1,
                 1
               ],
               "fields": {
-                "Signature": {
+                "CompanyName": {
                   "type": "string",
-                  "valueString": "Bernie Sanders",
-                  "text": "Bernie Sanders",
+                  "valueString": "Higgly Wiggly Books",
+                  "text": "Higgly Wiggly Books",
                   "page": 1,
                   "boundingBox": [
-                    484.0,
-                    1670.0,
-                    762.0,
-                    1670.0,
-                    762.0,
-                    1708.0,
-                    484.0,
-                    1708.0
+                    375.0,
+                    646.0,
+                    629.0,
+                    646.0,
+                    629.0,
+                    679.0,
+                    375.0,
+                    679.0
                   ],
-                  "confidence": 0.437
-                },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "$4.00",
-                  "text": "$4.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1458.0,
-                    1615.0,
-                    1529.0,
-                    1615.0,
-                    1529.0,
-                    1643.0,
-                    1458.0,
-                    1643.0
-                  ],
-                  "confidence": 0.994
-                },
-                "VendorName": {
-                  "type": "string",
-                  "valueString": "Hillary Swank",
-                  "text": "Hillary Swank",
-                  "page": 1,
-                  "boundingBox": [
-                    349.0,
-                    609.0,
-                    520.0,
-                    609.0,
-                    520.0,
-                    639.0,
-                    349.0,
-                    639.0
-                  ],
-                  "confidence": 0.991
-                },
-                "Total": {
-                  "type": "string",
-                  "valueString": "$144.00",
-                  "text": "$144.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1427.0,
-                    1669.0,
-                    1527.0,
-                    1669.0,
-                    1527.0,
-                    1698.0,
-                    1427.0,
-                    1698.0
-                  ],
-                  "confidence": 0.995
-                },
-                "CompanyPhoneNumber": {
-                  "type": "string",
-                  "valueString": "938-294-2949",
-                  "text": "938-294-2949",
-                  "page": 1,
-                  "boundingBox": [
-                    709.0,
-                    722.0,
-                    882.0,
-                    722.0,
-                    882.0,
-                    749.0,
-                    709.0,
-                    749.0
-                  ],
-                  "confidence": 0.995
-                },
-                "Merchant": {
-                  "type": "string",
-                  "valueString": "Hero Limited",
-                  "text": "Hero Limited",
-                  "page": 1,
-                  "boundingBox": [
-                    620.0,
-                    205.0,
-                    1062.0,
-                    205.0,
-                    1062.0,
-                    266.0,
-                    620.0,
-                    266.0
-                  ],
-                  "confidence": 0.99
-                },
-                "DatedAs": {
-                  "type": "string",
-                  "valueString": "12/20/2020",
-                  "text": "12/20/2020",
-                  "page": 1,
-                  "boundingBox": [
-                    1163.0,
-                    420.0,
-                    1310.0,
-                    420.0,
-                    1310.0,
-                    449.0,
-                    1163.0,
-                    449.0
-                  ],
-                  "confidence": 0.994
-                },
-                "PhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-348-6512",
-                  "text": "555-348-6512",
-                  "page": 1,
-                  "boundingBox": [
-                    365.0,
-                    351.0,
-                    525.0,
-                    351.0,
-                    525.0,
-                    378.0,
-                    365.0,
-                    378.0
-                  ],
-                  "confidence": 0.992
-                },
-                "CompanyAddress": {
-                  "type": "string",
-                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
-                  "text": "938 NE Burner Road Boulder City, CO 92848",
-                  "page": 1,
-                  "boundingBox": [
-                    275.0,
-                    685.0,
-                    561.0,
-                    685.0,
-                    561.0,
-                    751.0,
-                    275.0,
-                    751.0
-                  ],
-                  "confidence": 0.622
-                },
-                "Email": {
-                  "type": "string",
-                  "valueString": "accounts@herolimited.com",
-                  "text": "accounts@herolimited.com",
-                  "page": 1,
-                  "boundingBox": [
-                    164.0,
-                    479.0,
-                    471.0,
-                    479.0,
-                    471.0,
-                    503.0,
-                    164.0,
-                    503.0
-                  ],
-                  "confidence": 0.953
+                  "confidence": 0.993
                 },
                 "Quantity": {
                   "type": "number",
@@ -1066,39 +884,39 @@
                   ],
                   "confidence": 0.99
                 },
-                "Website": {
+                "CompanyPhoneNumber": {
                   "type": "string",
-                  "valueString": "www.herolimited.com",
-                  "text": "www.herolimited.com",
+                  "valueString": "938-294-2949",
+                  "text": "938-294-2949",
                   "page": 1,
                   "boundingBox": [
-                    273.0,
-                    393.0,
-                    524.0,
-                    393.0,
-                    524.0,
-                    418.0,
-                    273.0,
-                    418.0
+                    709.0,
+                    722.0,
+                    882.0,
+                    722.0,
+                    882.0,
+                    749.0,
+                    709.0,
+                    749.0
                   ],
-                  "confidence": 0.992
+                  "confidence": 0.995
                 },
-                "PurchaseOrderNumber": {
+                "Total": {
                   "type": "string",
-                  "valueString": "948284",
-                  "text": "948284",
+                  "valueString": "$144.00",
+                  "text": "$144.00",
                   "page": 1,
                   "boundingBox": [
-                    1278.0,
-                    461.0,
-                    1372.0,
-                    461.0,
-                    1372.0,
-                    489.0,
-                    1278.0,
-                    489.0
+                    1427.0,
+                    1669.0,
+                    1527.0,
+                    1669.0,
+                    1527.0,
+                    1698.0,
+                    1427.0,
+                    1698.0
                   ],
-                  "confidence": 0.994
+                  "confidence": 0.995
                 },
                 "Subtotal": {
                   "type": "string",
@@ -1117,22 +935,175 @@
                   ],
                   "confidence": 0.994
                 },
-                "CompanyName": {
+                "Website": {
                   "type": "string",
-                  "valueString": "Higgly Wiggly Books",
-                  "text": "Higgly Wiggly Books",
+                  "valueString": "www.herolimited.com",
+                  "text": "www.herolimited.com",
                   "page": 1,
                   "boundingBox": [
-                    375.0,
-                    646.0,
-                    629.0,
-                    646.0,
-                    629.0,
-                    679.0,
-                    375.0,
-                    679.0
+                    273.0,
+                    393.0,
+                    524.0,
+                    393.0,
+                    524.0,
+                    418.0,
+                    273.0,
+                    418.0
                   ],
-                  "confidence": 0.993
+                  "confidence": 0.992
+                },
+                "Signature": {
+                  "type": "string",
+                  "valueString": "Bernie Sanders",
+                  "text": "Bernie Sanders",
+                  "page": 1,
+                  "boundingBox": [
+                    484.0,
+                    1670.0,
+                    762.0,
+                    1670.0,
+                    762.0,
+                    1708.0,
+                    484.0,
+                    1708.0
+                  ],
+                  "confidence": 0.437
+                },
+                "CompanyAddress": {
+                  "type": "string",
+                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
+                  "text": "938 NE Burner Road Boulder City, CO 92848",
+                  "page": 1,
+                  "boundingBox": [
+                    275.0,
+                    685.0,
+                    561.0,
+                    685.0,
+                    561.0,
+                    751.0,
+                    275.0,
+                    751.0
+                  ],
+                  "confidence": 0.622
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "text": "948284",
+                  "page": 1,
+                  "boundingBox": [
+                    1278.0,
+                    461.0,
+                    1372.0,
+                    461.0,
+                    1372.0,
+                    489.0,
+                    1278.0,
+                    489.0
+                  ],
+                  "confidence": 0.994
+                },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "$4.00",
+                  "text": "$4.00",
+                  "page": 1,
+                  "boundingBox": [
+                    1458.0,
+                    1615.0,
+                    1529.0,
+                    1615.0,
+                    1529.0,
+                    1643.0,
+                    1458.0,
+                    1643.0
+                  ],
+                  "confidence": 0.994
+                },
+                "Email": {
+                  "type": "string",
+                  "valueString": "accounts@herolimited.com",
+                  "text": "accounts@herolimited.com",
+                  "page": 1,
+                  "boundingBox": [
+                    164.0,
+                    479.0,
+                    471.0,
+                    479.0,
+                    471.0,
+                    503.0,
+                    164.0,
+                    503.0
+                  ],
+                  "confidence": 0.953
+                },
+                "DatedAs": {
+                  "type": "string",
+                  "valueString": "12/20/2020",
+                  "text": "12/20/2020",
+                  "page": 1,
+                  "boundingBox": [
+                    1163.0,
+                    420.0,
+                    1310.0,
+                    420.0,
+                    1310.0,
+                    449.0,
+                    1163.0,
+                    449.0
+                  ],
+                  "confidence": 0.994
+                },
+                "Merchant": {
+                  "type": "string",
+                  "valueString": "Hero Limited",
+                  "text": "Hero Limited",
+                  "page": 1,
+                  "boundingBox": [
+                    620.0,
+                    205.0,
+                    1062.0,
+                    205.0,
+                    1062.0,
+                    266.0,
+                    620.0,
+                    266.0
+                  ],
+                  "confidence": 0.99
+                },
+                "PhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-348-6512",
+                  "text": "555-348-6512",
+                  "page": 1,
+                  "boundingBox": [
+                    365.0,
+                    351.0,
+                    525.0,
+                    351.0,
+                    525.0,
+                    378.0,
+                    365.0,
+                    378.0
+                  ],
+                  "confidence": 0.992
+                },
+                "VendorName": {
+                  "type": "string",
+                  "valueString": "Hillary Swank",
+                  "text": "Hillary Swank",
+                  "page": 1,
+                  "boundingBox": [
+                    349.0,
+                    609.0,
+                    520.0,
+                    609.0,
+                    520.0,
+                    639.0,
+                    349.0,
+                    639.0
+                  ],
+                  "confidence": 0.991
                 }
               },
               "docTypeConfidence": 0.92
@@ -1143,32 +1114,32 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/1fdef44e-420e-4368-8d71-95bc51c8870f/analyzeResults/ba2694c4-aeee-4cba-8991-85d096c3c731",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/addab059-e946-49f6-8a19-4f0cb4a2a41a/analyzeResults/4e3d694d-848a-4d26-8aa0-87f01aaf79e5",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:38:18 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:25 GMT",
         "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "f9de4037-44ce-4887-bbc6-df0b20874689"
+        "x-ms-client-request-id": "d867b7ea-7066-43cb-a3d7-cee12676471f"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "1e8b018e-2f7b-46f4-a23e-6662ae3bca9c",
+        "apim-request-id": "b6a0ad13-7538-4fac-ba76-e3d3bc004ca7",
         "Content-Length": "6641",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:38:18 GMT",
+        "Date": "Fri, 14 Apr 2023 18:19:23 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "31",
+        "x-envoy-upstream-service-time": "27",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-12T22:38:07Z",
-        "lastUpdatedDateTime": "2023-04-12T22:38:14Z",
+        "createdDateTime": "2023-04-14T18:19:19Z",
+        "lastUpdatedDateTime": "2023-04-14T18:19:23Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -1669,182 +1640,29 @@
           ],
           "documentResults": [
             {
-              "docType": "custom:1fdef44e-420e-4368-8d71-95bc51c8870f",
-              "modelId": "1fdef44e-420e-4368-8d71-95bc51c8870f",
+              "docType": "custom:addab059-e946-49f6-8a19-4f0cb4a2a41a",
+              "modelId": "addab059-e946-49f6-8a19-4f0cb4a2a41a",
               "pageRange": [
                 1,
                 1
               ],
               "fields": {
-                "Signature": {
+                "CompanyName": {
                   "type": "string",
-                  "valueString": "Bernie Sanders",
-                  "text": "Bernie Sanders",
+                  "valueString": "Higgly Wiggly Books",
+                  "text": "Higgly Wiggly Books",
                   "page": 1,
                   "boundingBox": [
-                    484.0,
-                    1670.0,
-                    762.0,
-                    1670.0,
-                    762.0,
-                    1708.0,
-                    484.0,
-                    1708.0
+                    375.0,
+                    646.0,
+                    629.0,
+                    646.0,
+                    629.0,
+                    679.0,
+                    375.0,
+                    679.0
                   ],
-                  "confidence": 0.437
-                },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "$4.00",
-                  "text": "$4.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1458.0,
-                    1615.0,
-                    1529.0,
-                    1615.0,
-                    1529.0,
-                    1643.0,
-                    1458.0,
-                    1643.0
-                  ],
-                  "confidence": 0.994
-                },
-                "VendorName": {
-                  "type": "string",
-                  "valueString": "Hillary Swank",
-                  "text": "Hillary Swank",
-                  "page": 1,
-                  "boundingBox": [
-                    349.0,
-                    609.0,
-                    520.0,
-                    609.0,
-                    520.0,
-                    639.0,
-                    349.0,
-                    639.0
-                  ],
-                  "confidence": 0.991
-                },
-                "Total": {
-                  "type": "string",
-                  "valueString": "$144.00",
-                  "text": "$144.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1427.0,
-                    1669.0,
-                    1527.0,
-                    1669.0,
-                    1527.0,
-                    1698.0,
-                    1427.0,
-                    1698.0
-                  ],
-                  "confidence": 0.995
-                },
-                "CompanyPhoneNumber": {
-                  "type": "string",
-                  "valueString": "938-294-2949",
-                  "text": "938-294-2949",
-                  "page": 1,
-                  "boundingBox": [
-                    709.0,
-                    722.0,
-                    882.0,
-                    722.0,
-                    882.0,
-                    749.0,
-                    709.0,
-                    749.0
-                  ],
-                  "confidence": 0.995
-                },
-                "Merchant": {
-                  "type": "string",
-                  "valueString": "Hero Limited",
-                  "text": "Hero Limited",
-                  "page": 1,
-                  "boundingBox": [
-                    620.0,
-                    205.0,
-                    1062.0,
-                    205.0,
-                    1062.0,
-                    266.0,
-                    620.0,
-                    266.0
-                  ],
-                  "confidence": 0.99
-                },
-                "DatedAs": {
-                  "type": "string",
-                  "valueString": "12/20/2020",
-                  "text": "12/20/2020",
-                  "page": 1,
-                  "boundingBox": [
-                    1163.0,
-                    420.0,
-                    1310.0,
-                    420.0,
-                    1310.0,
-                    449.0,
-                    1163.0,
-                    449.0
-                  ],
-                  "confidence": 0.994
-                },
-                "PhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-348-6512",
-                  "text": "555-348-6512",
-                  "page": 1,
-                  "boundingBox": [
-                    365.0,
-                    351.0,
-                    525.0,
-                    351.0,
-                    525.0,
-                    378.0,
-                    365.0,
-                    378.0
-                  ],
-                  "confidence": 0.992
-                },
-                "CompanyAddress": {
-                  "type": "string",
-                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
-                  "text": "938 NE Burner Road Boulder City, CO 92848",
-                  "page": 1,
-                  "boundingBox": [
-                    275.0,
-                    685.0,
-                    561.0,
-                    685.0,
-                    561.0,
-                    751.0,
-                    275.0,
-                    751.0
-                  ],
-                  "confidence": 0.622
-                },
-                "Email": {
-                  "type": "string",
-                  "valueString": "accounts@herolimited.com",
-                  "text": "accounts@herolimited.com",
-                  "page": 1,
-                  "boundingBox": [
-                    164.0,
-                    479.0,
-                    471.0,
-                    479.0,
-                    471.0,
-                    503.0,
-                    164.0,
-                    503.0
-                  ],
-                  "confidence": 0.953
+                  "confidence": 0.993
                 },
                 "Quantity": {
                   "type": "number",
@@ -1863,39 +1681,39 @@
                   ],
                   "confidence": 0.99
                 },
-                "Website": {
+                "CompanyPhoneNumber": {
                   "type": "string",
-                  "valueString": "www.herolimited.com",
-                  "text": "www.herolimited.com",
+                  "valueString": "938-294-2949",
+                  "text": "938-294-2949",
                   "page": 1,
                   "boundingBox": [
-                    273.0,
-                    393.0,
-                    524.0,
-                    393.0,
-                    524.0,
-                    418.0,
-                    273.0,
-                    418.0
+                    709.0,
+                    722.0,
+                    882.0,
+                    722.0,
+                    882.0,
+                    749.0,
+                    709.0,
+                    749.0
                   ],
-                  "confidence": 0.992
+                  "confidence": 0.995
                 },
-                "PurchaseOrderNumber": {
+                "Total": {
                   "type": "string",
-                  "valueString": "948284",
-                  "text": "948284",
+                  "valueString": "$144.00",
+                  "text": "$144.00",
                   "page": 1,
                   "boundingBox": [
-                    1278.0,
-                    461.0,
-                    1372.0,
-                    461.0,
-                    1372.0,
-                    489.0,
-                    1278.0,
-                    489.0
+                    1427.0,
+                    1669.0,
+                    1527.0,
+                    1669.0,
+                    1527.0,
+                    1698.0,
+                    1427.0,
+                    1698.0
                   ],
-                  "confidence": 0.994
+                  "confidence": 0.995
                 },
                 "Subtotal": {
                   "type": "string",
@@ -1914,22 +1732,175 @@
                   ],
                   "confidence": 0.994
                 },
-                "CompanyName": {
+                "Website": {
                   "type": "string",
-                  "valueString": "Higgly Wiggly Books",
-                  "text": "Higgly Wiggly Books",
+                  "valueString": "www.herolimited.com",
+                  "text": "www.herolimited.com",
                   "page": 1,
                   "boundingBox": [
-                    375.0,
-                    646.0,
-                    629.0,
-                    646.0,
-                    629.0,
-                    679.0,
-                    375.0,
-                    679.0
+                    273.0,
+                    393.0,
+                    524.0,
+                    393.0,
+                    524.0,
+                    418.0,
+                    273.0,
+                    418.0
                   ],
-                  "confidence": 0.993
+                  "confidence": 0.992
+                },
+                "Signature": {
+                  "type": "string",
+                  "valueString": "Bernie Sanders",
+                  "text": "Bernie Sanders",
+                  "page": 1,
+                  "boundingBox": [
+                    484.0,
+                    1670.0,
+                    762.0,
+                    1670.0,
+                    762.0,
+                    1708.0,
+                    484.0,
+                    1708.0
+                  ],
+                  "confidence": 0.437
+                },
+                "CompanyAddress": {
+                  "type": "string",
+                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
+                  "text": "938 NE Burner Road Boulder City, CO 92848",
+                  "page": 1,
+                  "boundingBox": [
+                    275.0,
+                    685.0,
+                    561.0,
+                    685.0,
+                    561.0,
+                    751.0,
+                    275.0,
+                    751.0
+                  ],
+                  "confidence": 0.622
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "text": "948284",
+                  "page": 1,
+                  "boundingBox": [
+                    1278.0,
+                    461.0,
+                    1372.0,
+                    461.0,
+                    1372.0,
+                    489.0,
+                    1278.0,
+                    489.0
+                  ],
+                  "confidence": 0.994
+                },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "$4.00",
+                  "text": "$4.00",
+                  "page": 1,
+                  "boundingBox": [
+                    1458.0,
+                    1615.0,
+                    1529.0,
+                    1615.0,
+                    1529.0,
+                    1643.0,
+                    1458.0,
+                    1643.0
+                  ],
+                  "confidence": 0.994
+                },
+                "Email": {
+                  "type": "string",
+                  "valueString": "accounts@herolimited.com",
+                  "text": "accounts@herolimited.com",
+                  "page": 1,
+                  "boundingBox": [
+                    164.0,
+                    479.0,
+                    471.0,
+                    479.0,
+                    471.0,
+                    503.0,
+                    164.0,
+                    503.0
+                  ],
+                  "confidence": 0.953
+                },
+                "DatedAs": {
+                  "type": "string",
+                  "valueString": "12/20/2020",
+                  "text": "12/20/2020",
+                  "page": 1,
+                  "boundingBox": [
+                    1163.0,
+                    420.0,
+                    1310.0,
+                    420.0,
+                    1310.0,
+                    449.0,
+                    1163.0,
+                    449.0
+                  ],
+                  "confidence": 0.994
+                },
+                "Merchant": {
+                  "type": "string",
+                  "valueString": "Hero Limited",
+                  "text": "Hero Limited",
+                  "page": 1,
+                  "boundingBox": [
+                    620.0,
+                    205.0,
+                    1062.0,
+                    205.0,
+                    1062.0,
+                    266.0,
+                    620.0,
+                    266.0
+                  ],
+                  "confidence": 0.99
+                },
+                "PhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-348-6512",
+                  "text": "555-348-6512",
+                  "page": 1,
+                  "boundingBox": [
+                    365.0,
+                    351.0,
+                    525.0,
+                    351.0,
+                    525.0,
+                    378.0,
+                    365.0,
+                    378.0
+                  ],
+                  "confidence": 0.992
+                },
+                "VendorName": {
+                  "type": "string",
+                  "valueString": "Hillary Swank",
+                  "text": "Hillary Swank",
+                  "page": 1,
+                  "boundingBox": [
+                    349.0,
+                    609.0,
+                    520.0,
+                    609.0,
+                    520.0,
+                    639.0,
+                    349.0,
+                    639.0
+                  ],
+                  "confidence": 0.991
                 }
               },
               "docTypeConfidence": 0.92
