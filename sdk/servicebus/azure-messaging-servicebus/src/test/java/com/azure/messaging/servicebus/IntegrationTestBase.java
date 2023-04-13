@@ -67,7 +67,6 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
     private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
-    private String shortTestName;
     private final Scheduler scheduler = Schedulers.parallel();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
@@ -85,10 +84,6 @@ public abstract class IntegrationTestBase extends TestBase {
         Method testMethod = testInfo.getTestMethod().orElseGet(null);
         testName = String.format("%s.%s-%s",
             testClass == null ? "unknown" : testClass.getSimpleName(),
-            testMethod == null ? "unknown" : testMethod.getName(),
-            testInfo.getDisplayName());
-
-        shortTestName = String.format("%s-%s",
             testMethod == null ? "unknown" : testMethod.getName(),
             testInfo.getDisplayName());
 
@@ -404,7 +399,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
-        message.setMessageId(testName + "_" + messageId);
+        message.setMessageId(messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
