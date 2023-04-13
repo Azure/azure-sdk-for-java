@@ -861,7 +861,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.sessionReceiver = toClose(getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient());
-            this.receiver = this.sessionReceiver.acceptSession(sessionId);
+            this.receiver = toClose(this.sessionReceiver.acceptSession(sessionId));
         } else {
             this.receiver = toClose(getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient());

@@ -111,7 +111,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             entityType, entityIndex, false).disableAutoComplete();
 
         this.sessionReceiver = toClose(onBuild.apply(sessionBuilder).buildAsyncClient());
-        this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
+        this.receiver = toClose(this.sessionReceiver.acceptSession(sessionId).block());
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents, ServiceBusReceivedMessage message) {

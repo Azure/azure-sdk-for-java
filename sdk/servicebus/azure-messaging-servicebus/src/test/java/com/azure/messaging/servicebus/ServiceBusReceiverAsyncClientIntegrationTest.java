@@ -284,7 +284,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.sessionReceiver = toClose(getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient());
-            this.receiver = sessionReceiver.acceptSession(sessionId).block();
+            this.receiver = toClose(sessionReceiver.acceptSession(sessionId).block());
         } else {
             this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient());
@@ -325,7 +325,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.sessionReceiver = toClose(getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient());
-            this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
+            this.receiver = toClose(this.sessionReceiver.acceptSession(sessionId).block());
         } else {
             this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient());
@@ -796,7 +796,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.sessionReceiver = toClose(getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient());
-            this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
+            this.receiver = toClose(this.sessionReceiver.acceptSession(sessionId).block());
         } else {
             this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient());
@@ -1084,12 +1084,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 switch (dispositionStatus) {
                     case ABANDONED:
                         operation = receiver.abandon(m);
+                        logMessage(m, receiver.getEntityPath(), "abandon");
                         break;
                     case SUSPENDED:
                         operation = receiver.deadLetter(m);
+                        logMessage(m, receiver.getEntityPath(), "deadLetter");
                         break;
                     case COMPLETED:
                         operation = receiver.complete(m);
+                        logMessage(m, receiver.getEntityPath(), "complete");
                         break;
                     default:
                         throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -1529,7 +1532,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .disableAutoComplete()
                 .buildAsyncClient());
 
-            this.receiver = sessionReceiver.acceptSession(sessionId).block();
+            this.receiver = toClose(sessionReceiver.acceptSession(sessionId).block());
 
         } else {
             this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)

@@ -10,7 +10,7 @@ stages:
           safeName: azuremessagingservicebus
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:
-        AZURE_LOG_LEVEL: 1
+        AZURE_LOG_LEVEL: 2
         AZURE_CLIENT_ID: $(SERVICEBUS_CLIENT_ID)
         AZURE_TENANT_ID: $(SERVICEBUS_TENANT_ID)
         AZURE_CLIENT_SECRET: $(SERVICEBUS_CLIENT_SECRET)
