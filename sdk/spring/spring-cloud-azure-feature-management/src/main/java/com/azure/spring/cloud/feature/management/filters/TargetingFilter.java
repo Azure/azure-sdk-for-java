@@ -50,7 +50,7 @@ public class TargetingFilter implements FeatureFilter {
      */
     protected static final String AUDIENCE = "Audience";
 
-    /*
+    /**
      * Audience that always returns false
      */
     protected static final String EXCLUSION = "exclusion";
