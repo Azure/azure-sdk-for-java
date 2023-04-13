@@ -7,18 +7,18 @@
     },
     "Response" : {
       "x-ms-region" : "Central US EUAP",
-      "x-envoy-upstream-service-time" : "18",
+      "x-envoy-upstream-service-time" : "23",
       "Server" : "istio-envoy",
       "X-Content-Type-Options" : "nosniff",
-      "apim-request-id" : "9916933f-1021-4a67-8e2a-43b0bea316f7",
+      "apim-request-id" : "8bcdab05-9c47-4218-8f42-4ef62266ca8f",
       "model-id" : "60",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 13 Apr 2023 09:24:50 GMT",
+      "Date" : "Thu, 13 Apr 2023 11:06:20 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "csp-billing-usage" : "CognitiveServices.AnomalyDetector.DataPoints=1",
-      "Content-Length" : "646",
-      "Body" : "{\"confidenceScores\":[0.0,2.2737367544323206e-05,0.0,0.0,1.1368683772161603e-05,2.2737367544323206e-05,1.1368683772161603e-05,0.0,2.2737367544323206e-05,5.6843418860808015e-05,4.547473508864641e-05,3.410605131648481e-05,3.410605131648481e-05,1.1368683772161603e-05,5.6843418860808015e-05,0.0,3.410605131648481e-05,6.821210263296962e-05,4.547473508864641e-05,5.6843418860808015e-05,2.2737367544323206e-05,3.410605131648481e-05,2.2737367544323206e-05,2.2737367544323206e-05],\"isChangePoint\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"period\":0}\n",
+      "Content-Length" : "663",
+      "Body" : "{\"confidenceScores\":[0.0,2.2737367544323206e-05,1.1368683772161603e-05,1.1368683772161603e-05,0.0,2.2737367544323206e-05,1.1368683772161603e-05,0.0,2.2737367544323206e-05,5.6843418860808015e-05,4.547473508864641e-05,3.410605131648481e-05,3.410605131648481e-05,1.1368683772161603e-05,5.6843418860808015e-05,0.0,3.410605131648481e-05,6.821210263296962e-05,4.547473508864641e-05,5.6843418860808015e-05,3.410605131648481e-05,3.410605131648481e-05,4.547473508864641e-05,2.2737367544323206e-05],\"isChangePoint\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"period\":0}\n",
       "Content-Type" : "application/json"
     },
     "Exception" : null
