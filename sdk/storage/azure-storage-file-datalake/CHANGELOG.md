@@ -8,12 +8,6 @@
   file-level encryption keys. This value is returned on `DataLakeFileClient.getProperties()`, `DataLakeFileClient.readWithResponse()`,
   and `DataLakeFileClient.listPaths()`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.15.0-beta.1 (2023-03-28)
 
 ### Features Added

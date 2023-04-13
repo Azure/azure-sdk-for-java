@@ -12,12 +12,6 @@
   made from that client. `allowSourceTrailingDot` will apply this same rule to source files when performing a rename or copy operation.
 - Added support for reading and writing a file via SeekableByteChannel.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.18.0-beta.1 (2023-03-28)
 
 ### Features Added

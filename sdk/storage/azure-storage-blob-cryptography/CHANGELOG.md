@@ -5,12 +5,6 @@
 ### Features Added
 - Added support for 2022-11-02 service version.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.21.0-beta.1 (2023-03-28)
 
 ### Features Added
