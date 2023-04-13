@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
-    private static final String datasource = "https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000";
-    private static final DataSchema dataSchema = DataSchema.MULTI_TABLE;
+    private static final String DATA_SOURCE = "https://mvaddataset.blob.core.windows.net/sample-multitable/sample_data_20_3000";
+    private static final DataSchema DATA_SCHEMA = DataSchema.MULTI_TABLE;
 
     private AnomalyDetectorClient getClient() {
         return getClientBuilder().buildClient();
@@ -47,16 +47,16 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
         return modelIds;
     }
 
-    private static String trainModel(AnomalyDetectorClient client){
+    private static String trainModel(AnomalyDetectorClient client) {
         OffsetDateTime startTime = OffsetDateTime.parse("2021-01-02T00:00:00Z");
         OffsetDateTime endTime = OffsetDateTime.parse("2021-01-02T05:00:00Z");
-        ModelInfo trainRequest = new ModelInfo(datasource, startTime, endTime);
+        ModelInfo trainRequest = new ModelInfo(DATA_SOURCE, startTime, endTime);
         trainRequest.setSlidingWindow(200)
             .setAlignPolicy(new AlignPolicy()
                 .setAlignMode(AlignMode.OUTER)
                 .setFillNAMethod(FillNAMethod.LINEAR)
                 .setPaddingValue(0.0))
-            .setDataSchema(dataSchema)
+            .setDataSchema(DATA_SCHEMA)
             .setDisplayName("SampleRequest");
 
         // Start training and get Model ID
@@ -69,7 +69,7 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     private static void inferModel(AnomalyDetectorClient client, String modelId) throws Exception {
         OffsetDateTime startTime = OffsetDateTime.parse("2021-01-02T00:00:00Z");
         OffsetDateTime endTimeDetect = OffsetDateTime.parse("2021-01-02T12:00:00Z");
-        MultivariateBatchDetectionOptions detectionRequest = new MultivariateBatchDetectionOptions(datasource, 10, startTime, endTimeDetect);
+        MultivariateBatchDetectionOptions detectionRequest = new MultivariateBatchDetectionOptions(DATA_SOURCE, 10, startTime, endTimeDetect);
 
         MultivariateDetectionResult detectionResult = client.detectMultivariateBatchAnomaly(modelId, detectionRequest);
         UUID resultId = UUID.fromString(detectionResult.getResultId());
@@ -90,12 +90,12 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
         }
     }
 
-    private static String getModelId(AnomalyDetectorClient client){
+    private static String getModelId(AnomalyDetectorClient client) {
         List<String> modelIds = getModelList(client);
         String modelId;
-        if (modelIds.size() > 0){
+        if (modelIds.size() > 0) {
             modelId = modelIds.get(0);
-        }else{
+        } else {
             modelId = trainModel(client);
         }
         return modelId;
@@ -108,13 +108,13 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     }
 
     @Test
-    public void testTrainMultivariateModel(){
+    public void testTrainMultivariateModel() {
         AnomalyDetectorClient client = getClient();
         trainModel(client);
     }
 
     @Test
-    public void testGetMultivariateModel(){
+    public void testGetMultivariateModel() {
         AnomalyDetectorClient client = getClient();
         String modelId = getModelId(client);
         AnomalyDetectionModel model = client.getMultivariateModel(modelId);
@@ -125,7 +125,7 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     }
 
     @Test
-    public void testDeleteMultivariateModel(){
+    public void testDeleteMultivariateModel() {
         AnomalyDetectorClient client = getClient();
         String modelId = getModelId(client);
         client.deleteMultivariateModel(modelId);
@@ -133,12 +133,12 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     }
 
     @Test
-    public void testDetectAndGetMultivariateBatchAnomaly(){
+    public void testDetectAndGetMultivariateBatchAnomaly() {
         AnomalyDetectorClient client = getClient();
         String modelId = getModelId(client);
-        try{
+        try {
             inferModel(client, modelId);
-        }catch(Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception.fillInStackTrace().toString());
         }
     }
