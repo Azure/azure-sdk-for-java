@@ -34,7 +34,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  * Tracing helper.
  */
 public class ServiceBusTracer {
-    public static final String REACTOR_PARENT_TRACE_CONTEXT_KEY = "otel-context-key";
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusTracer.class);
@@ -74,15 +73,16 @@ public class ServiceBusTracer {
      */
     public <T> Mono<T> traceMono(String spanName, Mono<T> publisher) {
         if (isEnabled()) {
-            return publisher
-                .doOnEach(signal -> {
-                    if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                        endSpan(signal.getThrowable(), span, null);
-                    }
-                })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY,
-                    tracer.start(spanName, createStartOption(SpanKind.CLIENT, null), Context.NONE)));
+            return Mono.defer(() -> {
+                Context span = tracer.start(spanName, createStartOption(SpanKind.CLIENT, null), Context.NONE);
+                return publisher
+                    .doOnEach(signal -> {
+                        if (signal.isOnComplete() || signal.isOnError()) {
+                            endSpan(signal.getThrowable(), span, null);
+                        }
+                    })
+                    .doOnCancel(() -> cancelSpan(span));
+            });
         }
 
         return publisher;
@@ -93,14 +93,15 @@ public class ServiceBusTracer {
      */
     public <T> Mono<T> traceMonoWithLink(String spanName, Mono<T> publisher, ServiceBusReceivedMessage message, Context messageContext) {
         if (isEnabled()) {
-            return publisher
-                .doOnEach(signal -> {
+            return Mono.defer(() -> {
+                Context span = startSpanWithLink(spanName, null, message, messageContext, Context.NONE);
+                return publisher.doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
                         endSpan(signal.getThrowable(), span, null);
                     }
                 })
-                .contextWrite(ctx -> ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLink(spanName, null, message, messageContext, Context.NONE)));
+                .doOnCancel(() -> cancelSpan(span));
+            });
         }
 
         return publisher;
@@ -118,14 +119,16 @@ public class ServiceBusTracer {
      */
     public <T> Flux<T> traceScheduleFlux(String spanName, Flux<T> publisher, List<ServiceBusMessage> batch, Function<ServiceBusMessage, Context> getContext) {
         if (isEnabled()) {
-            return publisher
-                .doOnEach(signal -> {
-                    if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                        endSpan(signal.getThrowable(), span, null);
-                    }
-                })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpanWithLinks(spanName, OperationName.PUBLISH, batch, getContext, Context.NONE)));
+            return Flux.defer(() -> {
+                Context span = startSpanWithLinks(spanName, OperationName.PUBLISH, batch, getContext, Context.NONE);
+                return publisher
+                    .doOnEach(signal -> {
+                        if (signal.isOnComplete() || signal.isOnError()) {
+                            endSpan(signal.getThrowable(), span, null);
+                        }
+                    })
+                    .doOnCancel(() -> cancelSpan(span));
+            });
         }
         return publisher;
     }
@@ -195,20 +198,24 @@ public class ServiceBusTracer {
         Function<ServiceBusReceivedMessage, Context> getMessageContext) {
         if (isEnabled()) {
             final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
-            return publisher.doOnEach(signal -> {
-                if (signal.hasValue()) {
-                    ServiceBusReceivedMessage message = signal.get();
-                    if (message != null) {
-                        startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), getMessageContext.apply(message)));
+            return publisher
+                .doOnEach(signal -> {
+                    if (signal.hasValue()) {
+                        ServiceBusReceivedMessage message = signal.get();
+                        if (message != null) {
+                            startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), getMessageContext.apply(message)));
+                        }
                     }
-                }
 
-                if (signal.isOnComplete() || signal.isOnError()) {
-                    Context span = tracer.start(spanName, startOptions, Context.NONE);
-                    tracer.end(null, signal.getThrowable(), span);
-                }
-            })
-            .doOnSubscribe(s -> startOptions.setStartTimestamp(Instant.now()));
+                    if (signal.isOnComplete() || signal.isOnError()) {
+                        Context span = tracer.start(spanName, startOptions, Context.NONE);
+                        tracer.end(null, signal.getThrowable(), span);
+                    }
+                })
+                .doOnCancel(() ->  {
+                    cancelSpan(tracer.start(spanName, startOptions, Context.NONE));
+                })
+                .doOnSubscribe(s -> startOptions.setStartTimestamp(Instant.now()));
         }
         return publisher;
     }
@@ -224,22 +231,24 @@ public class ServiceBusTracer {
      */
     public Flux<ServiceBusReceivedMessage> traceSyncReceive(String spanName, Flux<ServiceBusReceivedMessage> messages) {
         if (isEnabled()) {
-            final StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
-            return messages
-                .doOnEach(signal -> {
-                    if (signal.hasValue()) {
-                        ServiceBusReceivedMessage message = signal.get();
-                        if (message != null) {
-                            startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), Context.NONE));
+            return Flux.defer(() -> {
+                StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
+                return messages
+                    .doOnEach(signal -> {
+                        if (signal.hasValue()) {
+                            ServiceBusReceivedMessage message = signal.get();
+                            if (message != null) {
+                                startOptions.addLink(createLink(message.getApplicationProperties(), message.getEnqueuedTime(), Context.NONE));
+                            }
+                        } else if (signal.isOnComplete() || signal.isOnError()) {
+                            int batchSize = startOptions.getLinks() == null ? 0 : startOptions.getLinks().size();
+                            startOptions.setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, batchSize);
+                            Context span = tracer.start(spanName, startOptions, Context.NONE);
+                            tracer.end(null, signal.getThrowable(), span);
                         }
-                    } else if (signal.isOnComplete() || signal.isOnError()) {
-                        int batchSize = startOptions.getLinks() == null ? 0 : startOptions.getLinks().size();
-                        startOptions.setAttribute(MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME, batchSize);
-                        Context span = tracer.start(spanName, startOptions, Context.NONE);
-                        tracer.end(null, signal.getThrowable(), span);
-                    }
-                })
-                .doOnSubscribe((ignored) -> startOptions.setStartTimestamp(Instant.now()));
+                    })
+                    .doOnCancel(() -> cancelSpan(tracer.start(spanName, startOptions, Context.NONE)));
+            });
         }
         return messages;
     }
@@ -345,26 +354,30 @@ public class ServiceBusTracer {
 
     private <T> Mono<T> traceMonoWithLink(String spanName, OperationName operationName, Mono<T> publisher, ServiceBusMessage message, Context messageContext) {
         if (isEnabled()) {
-            return publisher
-                .doOnEach(signal -> {
-                    if (signal.isOnComplete() || signal.isOnError()) {
-                        Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                        endSpan(signal.getThrowable(), span, null);
-                    }
-                })
-                .contextWrite(ctx -> {
-                    StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT, operationName);
-                    if (message != null) {
-                        reportMessageSpan(message, messageContext);
-                        startSpanOptions.addLink(createLink(message.getApplicationProperties(), null, messageContext));
-                    }
+            return Mono.defer(() -> {
+                StartSpanOptions startSpanOptions = createStartOption(SpanKind.CLIENT, operationName);
+                if (message != null) {
+                    reportMessageSpan(message, messageContext);
+                    startSpanOptions.addLink(createLink(message.getApplicationProperties(), null, messageContext));
+                }
 
-                    Context span = tracer.start(spanName, startSpanOptions, Context.NONE);
-                    return ctx.put(REACTOR_PARENT_TRACE_CONTEXT_KEY, span);
-                });
+                Context span = tracer.start(spanName, startSpanOptions, Context.NONE);
+
+                return publisher
+                    .doOnEach(signal -> {
+                        if (signal.isOnComplete() || signal.isOnError()) {
+                            endSpan(signal.getThrowable(), span, null);
+                        }
+                    })
+                    .doOnCancel(() -> cancelSpan(span));
+            });
         }
 
         return publisher;
+    }
+
+    public void cancelSpan(Context span) {
+        tracer.end("cancelled", null, span);
     }
 
     public enum OperationName {

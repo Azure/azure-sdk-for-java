@@ -18,7 +18,6 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.SubQueue;
-import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -1086,11 +1085,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages()
             .flatMap(m -> receiver.defer(m).thenReturn(m))
             .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received and deferred"))
-            .next().block(TIMEOUT);
+            .blockFirst(TIMEOUT);
 
         assertNotNull(receivedMessage);
 
-        LOGGER.info("going to call receiveDeferredMessage");
+        logMessage(receivedMessage, receiver.getEntityPath(), "going to call receiveDeferredMessage");
         // Assert & Act
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
