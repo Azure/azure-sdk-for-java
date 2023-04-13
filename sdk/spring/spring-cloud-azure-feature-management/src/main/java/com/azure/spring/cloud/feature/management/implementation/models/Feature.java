@@ -19,6 +19,8 @@ public class Feature {
     @JsonProperty("evaluate")
     private Boolean evaluate = true;
 
+    private String requirementType = "Any";
+
     @JsonProperty("enabled-for")
     private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
 
@@ -62,6 +64,20 @@ public class Feature {
      */
     public void setEnabledFor(HashMap<Integer, FeatureFilterEvaluationContext> enabledFor) {
         this.enabledFor = enabledFor;
+    }
+
+    /**
+     * @return the requirementType
+     */
+    public String getRequirementType() {
+        return requirementType;
+    }
+
+    /**
+     * @param requirementType the requirementType to set
+     */
+    public void setRequirementType(String requirementType) {
+        this.requirementType = requirementType;
     }
 
 }
