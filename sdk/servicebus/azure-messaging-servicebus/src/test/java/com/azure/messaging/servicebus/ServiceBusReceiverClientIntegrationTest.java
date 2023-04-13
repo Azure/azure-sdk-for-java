@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_BATCH;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -482,7 +481,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
         Set<String> receivedFiltered = new HashSet<>();
         long allReceived = 0;
-        for (int i = 0; i < 10 && receivedFiltered.size() < maxMessages; i ++) {
+        int t = 0;
+        for (; t < 10 && receivedFiltered.size() < maxMessages; t++) {
             IterableStream<ServiceBusReceivedMessage> received = receiver.peekMessages(maxMessages);
             List<ServiceBusReceivedMessage> messages = logReceivedMessages(received, receiver.getEntityPath(), "peeked messages");
 
@@ -495,6 +495,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Assert
         LOGGER.atInfo()
             .addKeyValue("received", allReceived)
+            .addKeyValue("iterations", t)
             .addKeyValue("receivedFiltered", receivedFiltered.size())
             .addKeyValue("isSessionEnabled", isSessionEnabled)
             .log("done receiving");

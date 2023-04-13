@@ -410,7 +410,7 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void logMessage(ServiceBusMessage message, String entity, String description) {
-        logMessage(message.getMessageId(),-1, entity, description);
+        logMessage(message.getMessageId(), -1, entity, description);
     }
 
     protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
