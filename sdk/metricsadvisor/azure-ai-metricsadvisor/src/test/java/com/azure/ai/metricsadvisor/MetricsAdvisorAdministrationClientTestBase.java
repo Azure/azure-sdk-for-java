@@ -13,11 +13,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
@@ -69,6 +72,8 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
+                // setting bodiless matcher to "exclude" matching request bodies with UUID's
+                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
             } else if (interceptorManager.isRecordMode()) {
                 builder
                     .credential(new MetricsAdvisorKeyCredential(
@@ -84,6 +89,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
                         return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
                     }
                 });
+                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
             } else if (interceptorManager.isRecordMode()) {
                 builder
                     .credential(new DefaultAzureCredentialBuilder().build())
