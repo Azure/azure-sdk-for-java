@@ -24,6 +24,10 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -93,6 +97,12 @@ public abstract class IntegrationTestBase extends TestBase {
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
         toClose = new ArrayList<>();
+        OpenTelemetrySdk.builder()
+            .setTracerProvider(
+                SdkTracerProvider.builder()
+                    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+                    .build())
+            .buildAndRegisterGlobal();
         beforeTest();
     }
 

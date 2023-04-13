@@ -12,10 +12,6 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -71,12 +67,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         sessionId = UUID.randomUUID().toString();
-        OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder()
-                    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
-                    .build())
-            .buildAndRegisterGlobal();
     }
 
     @Override
@@ -840,7 +830,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
             if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
                 assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) receivedProps.get(sentEntry.getKey()));
-            } else if (sentEntry.getKey().equals("traceparent") || sentEntry.getKey().equals("Diagnostic-Id")) {
+            } else if (!sentEntry.getKey().equals("traceparent") && !sentEntry.getKey().equals("Diagnostic-Id")) {
                 final Object expected = sentEntry.getValue();
                 final Object actual = receivedProps.get(sentEntry.getKey());
 
