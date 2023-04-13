@@ -9,7 +9,7 @@ import com.azure.communication.rooms.models.ParticipantRole;
  * A converter between {@link com.azure.communication.rooms.implementation.models.Role} and
  * {@link Role}.
  */
-public final class RoleTypeConverter {
+public final class ParticipantRoleConverter {
     /**
      * Maps from {com.azure.communication.rooms.implementation.models.Role} to {@link Role}.
      */

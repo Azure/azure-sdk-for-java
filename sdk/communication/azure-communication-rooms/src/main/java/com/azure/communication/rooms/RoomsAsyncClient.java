@@ -9,7 +9,7 @@ import com.azure.communication.rooms.implementation.AzureCommunicationRoomServic
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.rooms.implementation.RoomsImpl;
 import com.azure.communication.rooms.implementation.ParticipantsImpl;
-import com.azure.communication.rooms.implementation.converters.RoleTypeConverter;
+import com.azure.communication.rooms.implementation.converters.ParticipantRoleConverter;
 import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
 import com.azure.communication.rooms.implementation.converters.RoomsErrorConverter;
@@ -68,7 +68,7 @@ public final class RoomsAsyncClient {
     }
 
     /**
-     * Create a new Room, input fields is nullable.
+     * Create a new Room, input field is nullable.
      *
      * @param createRoomOptions the create room options.
      * @return response for a successful create room request.
@@ -94,7 +94,7 @@ public final class RoomsAsyncClient {
     }
 
     /**
-     * Create a new Room, input fields is nullable.
+     * Create a new Room, input field is nullable.
      *
      * @param createRoomOptions the create room options.
      * @return response for a successful create room request.
@@ -370,11 +370,11 @@ public final class RoomsAsyncClient {
      * @return response for a successful add participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoveParticipantsResult> removeParticipants(String roomId, List<CommunicationIdentifier> communicationIdentifiers) {
+    public Mono<RemoveParticipantsResult> removeParticipants(String roomId, Iterable<CommunicationIdentifier> communicationIdentifiers) {
         return removeParticipants(roomId, communicationIdentifiers, null);
     }
 
-    Mono<RemoveParticipantsResult> removeParticipants(String roomId, List<CommunicationIdentifier> communicationIdentifiers, Context context) {
+    Mono<RemoveParticipantsResult> removeParticipants(String roomId, Iterable<CommunicationIdentifier> communicationIdentifiers, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             Objects.requireNonNull(communicationIdentifiers, "'communicationIdentifiers' cannot be null.");
@@ -401,11 +401,11 @@ public final class RoomsAsyncClient {
      * @return response for a successful add participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RemoveParticipantsResult>>removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> communicationIdentifiers) {
+    public Mono<Response<RemoveParticipantsResult>>removeParticipantsWithResponse(String roomId, Iterable<CommunicationIdentifier> communicationIdentifiers) {
         return removeParticipantsWithResponse(roomId, communicationIdentifiers, null);
     }
 
-    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> communicationIdentifiers, Context context) {
+    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponse(String roomId, Iterable<CommunicationIdentifier> communicationIdentifiers, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             Objects.requireNonNull(communicationIdentifiers, "'communicationIdentifiers' cannot be null.");
@@ -546,7 +546,7 @@ public final class RoomsAsyncClient {
 
         if (participants != null) {
             for (RoomParticipant participant : participants) {
-                participantMap.put(participant.getCommunicationIdentifier().getRawId(), new ParticipantProperties().setRole(RoleTypeConverter.convert(participant.getRole())));
+                participantMap.put(participant.getCommunicationIdentifier().getRawId(), new ParticipantProperties().setRole(ParticipantRoleConverter.convert(participant.getRole())));
             }
         }
 
@@ -558,7 +558,7 @@ public final class RoomsAsyncClient {
      *
      * @return Map of participants.
      */
-    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(List<CommunicationIdentifier> identifiers) {
+    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(Iterable<CommunicationIdentifier> identifiers) {
         Map<String, ParticipantProperties> participantMap = new HashMap<>();
 
         if (identifiers != null) {

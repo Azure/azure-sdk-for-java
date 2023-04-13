@@ -17,7 +17,7 @@ public final class RoomParticipantConverter {
             return null;
         }
 
-        RoomParticipant roomParticipant = new RoomParticipant(CommunicationIdentifierConverter.convert(obj.getRawId()), RoleTypeConverter.convert(obj.getRole()));
+        RoomParticipant roomParticipant = new RoomParticipant(CommunicationIdentifierConverter.convert(obj.getRawId()), ParticipantRoleConverter.convert(obj.getRole()));
 
         return roomParticipant;
     }
@@ -33,7 +33,7 @@ public final class RoomParticipantConverter {
         com.azure.communication.rooms.implementation.models.RoomParticipant roomParticipant
             = new com.azure.communication.rooms.implementation.models.RoomParticipant()
                 .setRawId(CommunicationIdentifierConverter.convert(obj.getCommunicationIdentifier()))
-                .setRole(RoleTypeConverter.convert(obj.getRole()));
+                .setRole(ParticipantRoleConverter.convert(obj.getRole()));
 
         return roomParticipant;
     }

@@ -32,7 +32,7 @@ public final class RoomsClient {
     }
 
     /**
-     * Create a new room.
+     * Create a new room. Input field is nullable.
      *
      * @param createRoomOptions the create room options.
      * @return response for a successful create room request.
@@ -168,7 +168,7 @@ public final class RoomsClient {
      * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResult removeParticipants(String roomId, List<CommunicationIdentifier> identifiers) {
+    public RemoveParticipantsResult removeParticipants(String roomId, Iterable<CommunicationIdentifier> identifiers) {
         return roomsAsyncClient.removeParticipants(roomId, identifiers).block();
     }
 
@@ -181,7 +181,7 @@ public final class RoomsClient {
      * @return response for a successful remove participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, List<CommunicationIdentifier> identifiers, Context context) {
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(String roomId, Iterable<CommunicationIdentifier> identifiers, Context context) {
         return roomsAsyncClient.removeParticipantsWithResponse(roomId, identifiers, context).block();
     }
 
