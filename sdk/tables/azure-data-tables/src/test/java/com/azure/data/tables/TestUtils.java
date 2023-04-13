@@ -218,6 +218,7 @@ public final class TestUtils {
         customSanitizers.add(new TestProxySanitizer(null, ".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL).setGroupForReplace("query"));
         customSanitizers.add(new TestProxySanitizer("Location", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("DataServiceId", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
         interceptorManager.addSanitizers(customSanitizers);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -233,5 +234,11 @@ public final class TestUtils {
         public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
             return Mono.just(new AccessToken("TEST TOKEN", OffsetDateTime.now().plusHours(2)));
         }
+        
+        @Override
+        public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
+            return new AccessToken("TEST TOKEN", OffsetDateTime.now().plusHours(2));
+        }
+
     }
 }
