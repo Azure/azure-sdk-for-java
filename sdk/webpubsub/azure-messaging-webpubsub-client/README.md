@@ -64,6 +64,7 @@ WebPubSubClient client = new WebPubSubClientBuilder()
 In production, a client usually fetches the Client Access URL from a negotiation server. The server holds the connection string and generates the Client Access URL through `WebPubSubServiceClient`. As a sample, the code snippet below just demonstrates how to generate the Client Access URL inside a single process.
 
 ```java readme-sample-createClientFromCredential
+// WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
 // create WebPubSub service client
 WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder()
     .connectionString("<connection-string>")

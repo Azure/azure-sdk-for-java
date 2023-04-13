@@ -24,6 +24,7 @@ public final class ReadmeSamples {
 
     public void createClientFromCredential() {
         // BEGIN: readme-sample-createClientFromCredential
+        // WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
         // create WebPubSub service client
         WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder()
             .connectionString("<connection-string>")

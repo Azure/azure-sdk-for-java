@@ -223,6 +223,15 @@ public class WebPubSubClient {
      * <p>
      * {@link #start()} the client, before join group.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.messaging.webpubsub.client.WebPubSubClient.joinGroup -->
+     * <pre>
+     * client.start&#40;&#41;;
+     * client.joinGroup&#40;&quot;message-group&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.joinGroup -->
+     *
      * @param group the group name.
      * @exception SendMessageFailedException thrown if client not connected, or join group message failed.
      * @return the result.

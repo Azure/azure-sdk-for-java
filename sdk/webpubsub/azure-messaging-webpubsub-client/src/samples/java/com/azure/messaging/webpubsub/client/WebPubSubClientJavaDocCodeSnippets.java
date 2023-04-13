@@ -13,14 +13,14 @@ public final class WebPubSubClientJavaDocCodeSnippets {
 
     private final WebPubSubClient client = new WebPubSubClientBuilder().buildClient();
 
-    public void joinAndSendGroupMessageAsText() {
+    public void sendGroupMessageAsText() {
         // BEGIN: com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.text
         client.start();
         client.sendToGroup("message-group", "hello world");
         // END: com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.text
     }
 
-    public void joinAndSendGroupMessageAsJson() {
+    public void sendGroupMessageAsJson() {
         // BEGIN: com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.json
         client.start();
         // it can be any class instance that can be serialized to JSON
@@ -36,5 +36,12 @@ public final class WebPubSubClientJavaDocCodeSnippets {
             System.out.println("Client is stopped");
         });
         // END: com.azure.messaging.webpubsub.client.WebPubSubClient.addOnStoppedEventHandler
+    }
+
+    public void joinGroup() {
+        // BEGIN: com.azure.messaging.webpubsub.client.WebPubSubClient.joinGroup
+        client.start();
+        client.joinGroup("message-group");
+        // END: com.azure.messaging.webpubsub.client.WebPubSubClient.joinGroup
     }
 }

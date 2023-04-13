@@ -68,6 +68,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      *
      * <!-- src_embed readme-sample-createClientFromCredential -->
      * <pre>
+     * &#47;&#47; WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
      * &#47;&#47; create WebPubSub service client
      * WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder&#40;&#41;
      *     .connectionString&#40;&quot;&lt;connection-string&gt;&quot;&#41;
