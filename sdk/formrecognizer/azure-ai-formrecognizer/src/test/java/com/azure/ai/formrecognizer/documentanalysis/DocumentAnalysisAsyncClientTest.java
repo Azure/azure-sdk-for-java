@@ -3,6 +3,10 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
@@ -25,6 +29,9 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_JPG;
@@ -39,6 +46,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_XLS
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.GERMAN_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_PDF;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.IRS_1040;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.LICENSE_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_BUSINESS_CARD_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_INVOICE_PDF;
@@ -81,6 +89,16 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
                                                                        DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
+            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+                : httpClient),
+            serviceVersion,
+            false)
+            .buildAsyncClient();
+    }
+
+    private DocumentModelAdministrationAsyncClient getDocumentAdminAsyncClient(HttpClient httpClient,
+                                                                               DocumentAnalysisServiceVersion serviceVersion) {
+        return getDocumentModelAdminClientBuilder(
             buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
@@ -1360,7 +1378,87 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertEquals("$56,651.49", analyzeResult.getDocuments().get(0).getFields().get("Charges").getValueAsString());
+            Assertions.assertEquals("$56,651.49",
+                analyzeResult.getDocuments().get(0).getFields().get("Charges").getValueAsString());
         }, INVOICE_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/34365")
+    public void testClassifyAnalyzeFromUrl(HttpClient httpClient,
+                                             DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        DocumentModelAdministrationAsyncClient adminClient = getDocumentAdminAsyncClient(httpClient, serviceVersion);
+        AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
+        beginClassifierRunner((trainingFilesUrl) -> {
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
+                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
+                adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller();
+            buildModelPoller.waitForCompletion();
+            documentClassifierDetails.set(buildModelPoller.getFinalResult());
+
+        });
+
+        if (documentClassifierDetails.get() != null) {
+            dataRunner((data, dataLength) -> {
+                SyncPoller<OperationResult, AnalyzeResult>
+                    syncPoller
+                    = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
+                        BinaryData.fromStream(data, dataLength))
+                    .setPollInterval(durationTestMode).getSyncPoller();
+                AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+                Assertions.assertNotNull(analyzeResult);
+                Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
+                Assertions.assertEquals(2, analyzeResult.getDocuments().size());
+            }, IRS_1040);
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/34365")
+    public void testClassifyAnalyze(HttpClient httpClient,
+                                             DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        DocumentModelAdministrationAsyncClient adminClient = getDocumentAdminAsyncClient(httpClient, serviceVersion);
+        AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
+        beginClassifierRunner((trainingFilesUrl) -> {
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
+                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
+            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
+            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
+            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
+            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
+                adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller();
+            buildModelPoller.waitForCompletion();
+            documentClassifierDetails.set(buildModelPoller.getFinalResult());
+
+        });
+
+        if (documentClassifierDetails.get() != null) {
+            dataRunner((data, dataLength) -> {
+                SyncPoller<OperationResult, AnalyzeResult>
+                    syncPoller
+                    = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
+                        BinaryData.fromStream(data, dataLength))
+                    .setPollInterval(durationTestMode).getSyncPoller();
+                AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+                Assertions.assertNotNull(analyzeResult);
+                Assertions.assertEquals(2, analyzeResult.getDocuments().size());
+            }, IRS_1040);
+        }
     }
 }

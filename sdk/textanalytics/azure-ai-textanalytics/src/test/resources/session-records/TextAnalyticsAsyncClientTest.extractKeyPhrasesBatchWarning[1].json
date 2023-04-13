@@ -1,28 +1,72 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "14cb57db-e80c-4feb-8cbe-8d7e3d600934",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "285",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "29",
-      "apim-request-id" : "49f5b088-7d4a-462a-a000-f9e883aa1d72",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Mon, 14 Nov 2022 19:58:39 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "516",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 19:04:03 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "069e52d5-e0b7-4bad-9679-00820c0df208"
+      },
+      "RequestBody": {
+        "kind": "KeyPhraseExtraction",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn\u0027tseemtostopatanygivenpointintime.ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage.Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase.ThisallowsustotestwhathappensifitisnotOK.Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure!"
+            },
+            {
+              "id": "1",
+              "text": "I work at Microsoft."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "029169b6-f7a5-44c3-8784-8bb3920c13da",
+        "Content-Length": "285",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.KeyPhraseExtraction=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 05 Apr 2023 19:04:02 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "94",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "KeyPhraseExtractionResults",
+        "results": {
+          "documents": [
+            {
+              "id": "0",
+              "keyPhrases": [
+                "ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage"
+              ],
+              "warnings": []
+            },
+            {
+              "id": "1",
+              "keyPhrases": [
+                "Microsoft"
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2022-10-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

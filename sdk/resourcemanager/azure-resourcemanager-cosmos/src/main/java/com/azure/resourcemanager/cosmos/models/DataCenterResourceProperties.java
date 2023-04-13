@@ -81,17 +81,35 @@ public final class DataCenterResourceProperties {
     private String diskSku;
 
     /*
-     * Number of disk used for data centers. Default value is 4.
+     * Number of disks attached to each node. Default is 4.
      */
     @JsonProperty(value = "diskCapacity")
     private Integer diskCapacity;
 
     /*
-     * If the azure data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the
+     * If the data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the
      * cassandra data center virtual machines.
      */
     @JsonProperty(value = "availabilityZone")
     private Boolean availabilityZone;
+
+    /*
+     * Ldap authentication method properties. This feature is in preview.
+     */
+    @JsonProperty(value = "authenticationMethodLdapProperties")
+    private AuthenticationMethodLdapProperties authenticationMethodLdapProperties;
+
+    /*
+     * Whether the data center has been deallocated.
+     */
+    @JsonProperty(value = "deallocated")
+    private Boolean deallocated;
+
+    /*
+     * Error related to resource provisioning.
+     */
+    @JsonProperty(value = "provisionError")
+    private CassandraError provisionError;
 
     /** Creates an instance of DataCenterResourceProperties class. */
     public DataCenterResourceProperties() {
@@ -312,7 +330,7 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Get the diskCapacity property: Number of disk used for data centers. Default value is 4.
+     * Get the diskCapacity property: Number of disks attached to each node. Default is 4.
      *
      * @return the diskCapacity value.
      */
@@ -321,7 +339,7 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Set the diskCapacity property: Number of disk used for data centers. Default value is 4.
+     * Set the diskCapacity property: Number of disks attached to each node. Default is 4.
      *
      * @param diskCapacity the diskCapacity value to set.
      * @return the DataCenterResourceProperties object itself.
@@ -332,8 +350,8 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Get the availabilityZone property: If the azure data center has Availability Zone support, apply it to the
-     * Virtual Machine ScaleSet that host the cassandra data center virtual machines.
+     * Get the availabilityZone property: If the data center has Availability Zone support, apply it to the Virtual
+     * Machine ScaleSet that host the cassandra data center virtual machines.
      *
      * @return the availabilityZone value.
      */
@@ -342,14 +360,77 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Set the availabilityZone property: If the azure data center has Availability Zone support, apply it to the
-     * Virtual Machine ScaleSet that host the cassandra data center virtual machines.
+     * Set the availabilityZone property: If the data center has Availability Zone support, apply it to the Virtual
+     * Machine ScaleSet that host the cassandra data center virtual machines.
      *
      * @param availabilityZone the availabilityZone value to set.
      * @return the DataCenterResourceProperties object itself.
      */
     public DataCenterResourceProperties withAvailabilityZone(Boolean availabilityZone) {
         this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
+     * Get the authenticationMethodLdapProperties property: Ldap authentication method properties. This feature is in
+     * preview.
+     *
+     * @return the authenticationMethodLdapProperties value.
+     */
+    public AuthenticationMethodLdapProperties authenticationMethodLdapProperties() {
+        return this.authenticationMethodLdapProperties;
+    }
+
+    /**
+     * Set the authenticationMethodLdapProperties property: Ldap authentication method properties. This feature is in
+     * preview.
+     *
+     * @param authenticationMethodLdapProperties the authenticationMethodLdapProperties value to set.
+     * @return the DataCenterResourceProperties object itself.
+     */
+    public DataCenterResourceProperties withAuthenticationMethodLdapProperties(
+        AuthenticationMethodLdapProperties authenticationMethodLdapProperties) {
+        this.authenticationMethodLdapProperties = authenticationMethodLdapProperties;
+        return this;
+    }
+
+    /**
+     * Get the deallocated property: Whether the data center has been deallocated.
+     *
+     * @return the deallocated value.
+     */
+    public Boolean deallocated() {
+        return this.deallocated;
+    }
+
+    /**
+     * Set the deallocated property: Whether the data center has been deallocated.
+     *
+     * @param deallocated the deallocated value to set.
+     * @return the DataCenterResourceProperties object itself.
+     */
+    public DataCenterResourceProperties withDeallocated(Boolean deallocated) {
+        this.deallocated = deallocated;
+        return this;
+    }
+
+    /**
+     * Get the provisionError property: Error related to resource provisioning.
+     *
+     * @return the provisionError value.
+     */
+    public CassandraError provisionError() {
+        return this.provisionError;
+    }
+
+    /**
+     * Set the provisionError property: Error related to resource provisioning.
+     *
+     * @param provisionError the provisionError value to set.
+     * @return the DataCenterResourceProperties object itself.
+     */
+    public DataCenterResourceProperties withProvisionError(CassandraError provisionError) {
+        this.provisionError = provisionError;
         return this;
     }
 
@@ -361,6 +442,12 @@ public final class DataCenterResourceProperties {
     public void validate() {
         if (seedNodes() != null) {
             seedNodes().forEach(e -> e.validate());
+        }
+        if (authenticationMethodLdapProperties() != null) {
+            authenticationMethodLdapProperties().validate();
+        }
+        if (provisionError() != null) {
+            provisionError().validate();
         }
     }
 }

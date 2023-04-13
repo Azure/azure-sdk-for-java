@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -84,7 +84,7 @@ public class HttpRequestTests {
         assertSame(data, request.getBodyAsBinaryData());
         assertEquals(expectedContentLength, getContentLength(request));
         if (data != null) {
-            assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+            assertArraysEqual(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
         } else  {
             assertNull(request.getBody());
         }
@@ -101,7 +101,7 @@ public class HttpRequestTests {
         assertSame(data, request.getBodyAsBinaryData());
         assertEquals(expectedContentLength, getContentLength(request));
         if (data != null) {
-            assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+            assertArraysEqual(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
         } else  {
             assertNull(request.getBody());
         }
@@ -115,7 +115,7 @@ public class HttpRequestTests {
 
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
-        assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+        assertArraysEqual(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class HttpRequestTests {
 
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
-        assertArrayEquals(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
+        assertArraysEqual(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
     }
 
     @Test
@@ -141,6 +141,7 @@ public class HttpRequestTests {
         assertEquals(BODY, request.getBodyAsBinaryData().toString());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void testClone() throws IOException {
         final HttpHeaders headers = new HttpHeaders().set("my-header", "my-value")
@@ -185,7 +186,7 @@ public class HttpRequestTests {
     }
 
     private Long getContentLength(HttpRequest request) {
-        String contentLengthValue = request.getHeaders().getValue("Content-Length");
+        String contentLengthValue = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         return contentLengthValue == null ? null : Long.parseLong(contentLengthValue);
     }
 }

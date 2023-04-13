@@ -113,21 +113,19 @@ public final class ContainerRegistryBlobsImpl {
         @Delete("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, BinaryData>> deleteBlob(
+        Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void>> deleteBlob(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
-                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, BinaryData> deleteBlobSync(
+        ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void> deleteBlobSync(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @PathParam("digest") String digest,
-                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/v2/{name}/blobs/uploads/")
@@ -526,13 +524,12 @@ public final class ContainerRegistryBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, BinaryData>> deleteBlobWithResponseAsync(
+    public Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void>> deleteBlobWithResponseAsync(
             String name, String digest) {
-        final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.deleteBlob(this.client.getUrl(), name, digest, accept, context));
+        return FluxUtil.withContext(context -> service.deleteBlob(this.client.getUrl(), name, digest, context));
     }
 
     /**
@@ -544,13 +541,12 @@ public final class ContainerRegistryBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, BinaryData>> deleteBlobWithResponseAsync(
+    public Mono<ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void>> deleteBlobWithResponseAsync(
             String name, String digest, Context context) {
-        final String accept = "application/octet-stream";
-        return service.deleteBlob(this.client.getUrl(), name, digest, accept, context);
+        return service.deleteBlob(this.client.getUrl(), name, digest, context);
     }
 
     /**
@@ -561,27 +557,11 @@ public final class ContainerRegistryBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> deleteBlobAsync(String name, String digest) {
-        return deleteBlobWithResponseAsync(name, digest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Removes an already uploaded blob.
-     *
-     * @param name Name of the image (including the namespace).
-     * @param digest Digest of a BLOB.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> deleteBlobAsync(String name, String digest, Context context) {
-        return deleteBlobWithResponseAsync(name, digest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Void> deleteBlobAsync(String name, String digest) {
+        return deleteBlobWithResponseAsync(name, digest).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -593,13 +573,28 @@ public final class ContainerRegistryBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link ResponseBase}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, BinaryData> deleteBlobWithResponse(
+    public Mono<Void> deleteBlobAsync(String name, String digest, Context context) {
+        return deleteBlobWithResponseAsync(name, digest, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Removes an already uploaded blob.
+     *
+     * @param name Name of the image (including the namespace).
+     * @param digest Digest of a BLOB.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ContainerRegistryBlobsDeleteBlobHeaders, Void> deleteBlobWithResponse(
             String name, String digest, Context context) {
-        final String accept = "application/octet-stream";
-        return service.deleteBlobSync(this.client.getUrl(), name, digest, accept, context);
+        return service.deleteBlobSync(this.client.getUrl(), name, digest, context);
     }
 
     /**
@@ -610,11 +605,10 @@ public final class ContainerRegistryBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData deleteBlob(String name, String digest) {
-        return deleteBlobWithResponse(name, digest, Context.NONE).getValue();
+    public void deleteBlob(String name, String digest) {
+        deleteBlobWithResponse(name, digest, Context.NONE);
     }
 
     /**

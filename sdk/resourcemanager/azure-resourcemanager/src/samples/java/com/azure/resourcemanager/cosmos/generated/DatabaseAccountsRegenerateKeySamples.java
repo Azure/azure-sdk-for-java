@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.KeyKind;
 /** Samples for DatabaseAccounts RegenerateKey. */
 public final class DatabaseAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountRegenerateKey.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBDatabaseAccountRegenerateKey.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegenerateKey.

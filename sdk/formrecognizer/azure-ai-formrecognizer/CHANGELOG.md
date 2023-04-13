@@ -1,7 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
-
+## 4.1.0-beta.1 (2023-04-12)
 ### Features Added
 - Added support for analyzing new document types
 - Added support for AzureBlobList source type when building document models
@@ -20,11 +19,15 @@
 - Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
 - Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+#### Known Bug
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClassifyDocument` 
+method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 ## 4.0.5 (2023-03-16)
 
