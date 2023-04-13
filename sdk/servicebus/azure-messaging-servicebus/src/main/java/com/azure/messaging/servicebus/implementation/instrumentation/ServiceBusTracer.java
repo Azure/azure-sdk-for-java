@@ -276,7 +276,9 @@ public class ServiceBusTracer {
             StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, OperationName.PROCESS)
                 .setRemoteParent(extractContext(message.getApplicationProperties()));
 
-            startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime().toEpochSecond());
+            if (message.getEnqueuedTime() != null) {
+                startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime().toEpochSecond());
+            }
 
             return tracer.start(spanName, startOptions, parent);
         }
