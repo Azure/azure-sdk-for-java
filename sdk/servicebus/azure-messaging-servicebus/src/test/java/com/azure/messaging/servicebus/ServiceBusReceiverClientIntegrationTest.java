@@ -15,6 +15,8 @@ import com.azure.messaging.servicebus.models.DeferOptions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,7 +25,6 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_BATCH;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -48,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Integration tests for {@link com.azure.messaging.servicebus.ServiceBusReceiverClient} from queues or subscriptions.
  */
 @Tag("integration")
+@Execution(ExecutionMode.SAME_THREAD)
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
 
@@ -443,44 +446,37 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
+
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
+        setSender(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
         final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());
         final int maxMessages = 4;
 
         Set<String> messageIds = new HashSet<>();
         // in case some other tests consume from the same queue
         for (int i = 0; i < maxMessages; ++i) {
-            ServiceBusMessage message = getMessage("" + i, isSessionEnabled, AmqpMessageBody.fromData(payload));
+            ServiceBusMessage message = getMessage(String.format("%s-%s-%s", entityType, isSessionEnabled, i), isSessionEnabled, AmqpMessageBody.fromData(payload));
             messageIds.add(message.getMessageId());
             sendMessage(message);
         }
-        setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH, isSessionEnabled);
+        setReceiver(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
 
         // Act
 
         // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
-        Set<String> receivedMessages = Collections.synchronizedSet(new HashSet<>());
-        int t = 0;
-        for (t = 0; t < 3 && receivedMessages.size() < maxMessages; t++) {
-            Set<String> received = receiver.peekMessages(maxMessages)
-                .stream()
-                .map(ServiceBusReceivedMessage::getMessageId)
-                .collect(Collectors.toSet());
-            LOGGER.atInfo()
-                .addKeyValue("iteration", t)
-                .addKeyValue("received", received.size())
-                .log("received some messages");
-            receivedMessages.addAll(received);
-        }
+        Set<String> receivedMessages = receiver.peekMessages(maxMessages)
+            .stream()
+            .map(ServiceBusReceivedMessage::getMessageId)
+            .collect(Collectors.toSet());
 
         // Assert
         List<String> receivedFiltered = receivedMessages.stream().filter(mId -> messageIds.contains(mId)).collect(Collectors.toList());
         LOGGER.atInfo()
-            .addKeyValue("iterations", t)
             .addKeyValue("received", receivedMessages.size())
-            .addKeyValue("receivedFilteres", receivedFiltered.size())
+            .addKeyValue("receivedFiltered", receivedFiltered.size())
+            .addKeyValue("isSessionEnabled", isSessionEnabled)
+            .addKeyValue("ids", () -> String.join(",", receivedMessages))
             .log("done receiving");
 
         Assumptions.assumeTrue(receivedMessages.size() < maxMessages, String.format("Expected %s messages, got %s, test is inconclusive", maxMessages, receivedFiltered.size()));
@@ -841,34 +837,22 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
-     */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
-        boolean sharedConnection) {
-        this.sender = toClose(getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient());
-
-        if (isSessionEnabled) {
-            assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.sessionReceiver = toClose(getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient());
-            this.receiver = this.sessionReceiver.acceptSession(sessionId);
-        } else {
-            this.receiver = toClose(getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient());
-        }
-    }
-
     private void sendMessages(List<ServiceBusMessage> messageList) {
         sender.sendMessages(messageList);
         int number = messagesPending.getAndSet(messageList.size());
-        LOGGER.info("Number sent: {}", number);
+        LOGGER.atInfo()
+            .addKeyValue("messageIds", () -> String.join(",", messageList.stream().map(ServiceBusMessage::getMessageId).collect(Collectors.toList())))
+            .addKeyValue("number", number)
+            .log("messages sent");
     }
 
     private void sendMessage(ServiceBusMessage message) {
         sender.sendMessage(message);
         int number = messagesPending.incrementAndGet();
-        LOGGER.info("Number sent: {}", number);
+        LOGGER.atInfo()
+            .addKeyValue("messageId", message.getMessageId())
+            .addKeyValue("number", number)
+            .log("message sent");
     }
 
     private int completeMessages(ServiceBusReceiverClient client, int totalMessages) {
@@ -876,6 +860,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusReceivedMessage> asList = contextStream.stream().collect(Collectors.toList());
         for (ServiceBusReceivedMessage message : asList) {
             receiver.complete(message);
+            LOGGER.atInfo()
+                .addKeyValue("messageId", message.getMessageId())
+                .log("received and completed");
         }
         return asList.size();
     }

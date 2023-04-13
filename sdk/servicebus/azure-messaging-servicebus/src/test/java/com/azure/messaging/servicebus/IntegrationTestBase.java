@@ -80,6 +80,7 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
+
         assumeTrue(getTestMode() == TestMode.RECORD);
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
@@ -390,7 +391,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
-        message.setMessageId(messageId);
+        message.setMessageId(testName + "_" + messageId);
         logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
