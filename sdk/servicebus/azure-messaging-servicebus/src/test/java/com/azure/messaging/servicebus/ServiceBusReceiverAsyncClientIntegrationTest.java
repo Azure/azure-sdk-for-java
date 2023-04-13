@@ -916,24 +916,24 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
             // Act & Assert
             StepVerifier.create(receiver.receiveMessages().flatMap(received -> {
-                    LOGGER.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
-                        received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
+                LOGGER.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
+                    received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
-                    // Simulate some sort of long processing.
-                    while (lockRenewCount.get() < 4) {
-                        lockRenewCount.incrementAndGet();
-                        LOGGER.info("Iteration {}: Curren time {}.", lockRenewCount.get(), OffsetDateTime.now());
-                        try {
-                            TimeUnit.SECONDS.sleep(5);
-                        } catch (InterruptedException error) {
-                            LOGGER.error("Error occurred while sleeping: " + error);
-                        }
+                // Simulate some sort of long processing.
+                while (lockRenewCount.get() < 4) {
+                    lockRenewCount.incrementAndGet();
+                    LOGGER.info("Iteration {}: Curren time {}.", lockRenewCount.get(), OffsetDateTime.now());
+                    try {
+                        TimeUnit.SECONDS.sleep(5);
+                    } catch (InterruptedException error) {
+                        LOGGER.error("Error occurred while sleeping: " + error);
                     }
-                    return receiver.complete(received).thenReturn(received);
-                }))
-                .assertNext(received -> assertTrue(lockRenewCount.get() > 0))
-                .thenCancel()
-                .verify();
+                }
+                return receiver.complete(received).thenReturn(received);
+            }))
+            .assertNext(received -> assertTrue(lockRenewCount.get() > 0))
+            .thenCancel()
+            .verify();
         }
     }
 

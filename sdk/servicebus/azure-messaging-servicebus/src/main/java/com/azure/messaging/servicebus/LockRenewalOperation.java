@@ -92,18 +92,18 @@ class LockRenewalOperation implements AutoCloseable {
             .then();
         this.subscription = renewLockOperation
             .subscribe(until -> this.lockedUntil.set(until),
-            error -> {
-                logger.error("Error occurred while renewing lock token.", error);
-                status.set(LockRenewalStatus.FAILED);
-                throwable.set(error);
-                cancellationProcessor.onComplete();
-            }, () -> {
-                if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                    logger.verbose("Renewing session lock task completed.");
-                }
+                error -> {
+                    logger.error("Error occurred while renewing lock token.", error);
+                    status.set(LockRenewalStatus.FAILED);
+                    throwable.set(error);
+                    cancellationProcessor.onComplete();
+                }, () -> {
+                    if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
+                        logger.verbose("Renewing session lock task completed.");
+                    }
 
-                cancellationProcessor.onComplete();
-            });
+                    cancellationProcessor.onComplete();
+                });
     }
 
     /**
