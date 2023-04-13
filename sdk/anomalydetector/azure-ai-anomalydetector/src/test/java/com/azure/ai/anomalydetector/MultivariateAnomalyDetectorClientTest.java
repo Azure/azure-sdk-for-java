@@ -147,7 +147,7 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     public void testDetectMultivariateLastAnomaly() throws FileNotFoundException {
         AnomalyDetectorClient client = getClient();
         String modelId = getModelId(client);
-        InputStream fileInputStream = new FileInputStream("src\\samples\\java\\sample_data\\sync_infer_body.json");
+        InputStream fileInputStream = new FileInputStream("./src/samples/java/sample_data/sync_infer_body.json");
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
         MultivariateLastDetectionOptions lastDetectionRequest = detectBody.toObject(MultivariateLastDetectionOptions.class);
