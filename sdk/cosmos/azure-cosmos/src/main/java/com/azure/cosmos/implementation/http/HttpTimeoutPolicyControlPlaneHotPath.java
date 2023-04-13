@@ -14,9 +14,9 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
     public static final HttpTimeoutPolicy INSTANCE = new HttpTimeoutPolicyControlPlaneHotPath();
 
     private HttpTimeoutPolicyControlPlaneHotPath() {
+        timeoutAndDelaysList = getTimeoutList();
     }
 
-    @Override
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
         return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofMillis(500), 0),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),

@@ -76,9 +76,9 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
         }
         // Setting the current responseTimeout and delayForNextRequest using the timeout policy being used
         if (!isOutOfRetries()) {
-            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutList().get(this.retryCountTimeout);
+            ResponseTimeoutAndDelays current = timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCountTimeout);
             this.request.setResponseTimeout(current.getResponseTimeout());
-            this.backoffSecondsTimeout = current.getDelayForNextRequest();
+            this.backoffSecondsTimeout = current.getDelayForNextRequestInSeconds();
         }
     }
 

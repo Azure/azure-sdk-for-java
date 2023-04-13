@@ -6,7 +6,8 @@
 | -----------------  |------------------------ |------------------- |
 | QueryPlan          | .5s, 5s, 10s            | 45s                |
 | AddressRefresh     | .5s, 5s, 10s            | 45s                |
-| Other Http calls   | 60s                     | 45s                |
+| AddressRefresh     | 5s, 10s, 20s            | 45s                |
+| Other Http calls   | 60s, 60s, 60s           | 45s                |
 
 
 ### Timeout config - Direct

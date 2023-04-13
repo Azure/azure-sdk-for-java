@@ -15,22 +15,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
+    public List<ResponseTimeoutAndDelays> timeoutAndDelaysList;
+
     public static final HttpTimeoutPolicy getTimeoutPolicy(RxDocumentServiceRequest request) {
         if (OperationType.QueryPlan.equals(request.getOperationType()) ||
             request.isAddressRefresh() ||
             request.getResourceType() == ResourceType.PartitionKeyRange) {
             return HttpTimeoutPolicyControlPlaneHotPath.INSTANCE;
         }
+        if (OperationType.Read.equals(request.getOperationType()) && request.getResourceType() == ResourceType.DatabaseAccount) {
+            return HttpTimeoutPolicyControlPlaneRead.INSTANCE;
+        }
         return HttpTimeoutPolicyDefault.INSTANCE;
     }
 
     public int totalRetryCount() {
-        return getTimeoutList().size();
+        return timeoutAndDelaysList.size();
     }
 
     public long maximumRetryTimeLimit() { return Configs.getHttpResponseTimeoutInSeconds(); };
 
-    public abstract List<ResponseTimeoutAndDelays> getTimeoutList();
-
     public abstract boolean isSafeToRetry(HttpMethod httpMethod);
+
+    public List<ResponseTimeoutAndDelays> getTimeoutAndDelaysList() {
+        return timeoutAndDelaysList;
+    }
 }

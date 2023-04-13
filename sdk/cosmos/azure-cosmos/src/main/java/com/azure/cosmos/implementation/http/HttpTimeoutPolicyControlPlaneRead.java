@@ -14,9 +14,9 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
     public static final HttpTimeoutPolicy INSTANCE = new HttpTimeoutPolicyControlPlaneRead();
 
     private HttpTimeoutPolicyControlPlaneRead() {
+        timeoutAndDelaysList = getTimeoutList();
     }
 
-    @Override
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
         return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 0),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 1),

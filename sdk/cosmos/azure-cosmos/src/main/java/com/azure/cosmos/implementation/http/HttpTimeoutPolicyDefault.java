@@ -15,13 +15,13 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     public static final HttpTimeoutPolicy INSTANCE = new HttpTimeoutPolicyDefault();
 
     private HttpTimeoutPolicyDefault() {
+        timeoutAndDelaysList = getTimeoutList();
     }
 
-    @Override
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 1),
-            new ResponseTimeoutAndDelays(Duration.ofSeconds(65), 0)));
+        return Collections.unmodifiableList(Arrays.asList(new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 0),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 1),
+            new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 0)));
     }
 
     // Assume that it is not safe to retry unless it is a get method.
@@ -30,4 +30,6 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
     public boolean isSafeToRetry(HttpMethod httpMethod) {
         return httpMethod == HttpMethod.GET;
     }
+
+
 }
