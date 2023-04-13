@@ -9,8 +9,8 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -198,6 +198,7 @@ public class RntbdTransportClient extends TransportClient {
         if (this.closed.compareAndSet(false, true)) {
             logger.debug("close {}", this);
             this.endpointProvider.close();
+            LifeCycleUtils.closeQuietly(this.proactiveOpenConnectionsProcessor);;
             return;
         }
 
@@ -210,7 +211,7 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
+    public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
         return this.proactiveOpenConnectionsProcessor;
     }
 

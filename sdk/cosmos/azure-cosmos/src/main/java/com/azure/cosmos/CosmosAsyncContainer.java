@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -824,9 +825,17 @@ public class CosmosAsyncContainer {
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
 
-        Flux<OpenConnectionResponse> openConnectionResponseFlux = database
-                .getDocClientWrapper()
-                .getProactiveOpenConnectionsProcessor()
+        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = database
+                .getClient()
+                .getContextClient()
+                .getProactiveOpenConnectionsProcessor();
+
+        if (proactiveOpenConnectionsProcessor == null) {
+            logger.warn("proactiveOpenConnectionsProcessor cannot be null, no connections will be opened ...");
+            return Mono.just("");
+        }
+
+        Flux<OpenConnectionResponse> openConnectionResponseFlux = proactiveOpenConnectionsProcessor
                 .getOpenConnectionsPublisher()
                 .sequential();
 

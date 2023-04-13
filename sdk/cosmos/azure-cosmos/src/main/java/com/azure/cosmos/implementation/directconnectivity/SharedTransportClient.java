@@ -7,9 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.LifeCycleUtils;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -19,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -124,7 +121,7 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
-        return this.transportClient.getOpenConnectionsProcessor();
+    public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+        return this.transportClient.getProactiveOpenConnectionsProcessor();
     }
 }

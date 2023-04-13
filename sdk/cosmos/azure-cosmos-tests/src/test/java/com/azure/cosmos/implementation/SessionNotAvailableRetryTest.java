@@ -534,7 +534,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
 
         @Override
-        public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
+        public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
             throw new NotImplementedException("getOpenConnectionsProcessor is not supported in RntbdTransportClientTest");
         }
     }

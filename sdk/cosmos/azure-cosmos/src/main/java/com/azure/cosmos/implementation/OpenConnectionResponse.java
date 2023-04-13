@@ -9,15 +9,20 @@ public class OpenConnectionResponse {
     private final boolean connected;
     private final Throwable exception;
     private final Uri uri;
-
+    private final boolean openConnectionAttempted;
     public OpenConnectionResponse(Uri uri, boolean connected) {
-        this(uri, connected, null);
+        this(uri, connected, null, true);
     }
 
     public OpenConnectionResponse(Uri uri, boolean connected, Throwable exception) {
+        this(uri, connected, exception, true);
+    }
+
+    public OpenConnectionResponse(Uri uri, boolean connected, Throwable exception, boolean openConnectionAttempted) {
         this.uri = uri;
         this.connected = connected;
         this.exception = exception;
+        this.openConnectionAttempted = openConnectionAttempted;
     }
 
     public boolean isConnected() {
@@ -30,5 +35,9 @@ public class OpenConnectionResponse {
 
     public Uri getUri() {
         return uri;
+    }
+
+    public boolean isOpenConnectionAttempted() {
+        return openConnectionAttempted;
     }
 }

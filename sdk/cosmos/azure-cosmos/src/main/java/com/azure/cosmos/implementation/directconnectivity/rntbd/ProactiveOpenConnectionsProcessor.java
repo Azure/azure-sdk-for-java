@@ -39,15 +39,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final AtomicReference<AsyncDocumentClient.OpenConnectionAggressivenessHint> aggressivenessHint;
     private static final Map<AsyncDocumentClient.OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
-    private final RntbdEndpoint.Provider endpointProvider;
 
     static {
-        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(2, 2));
+        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsDefensiveConcurrency(), Configs.getOpenConnectionsDefensiveConcurrency()));
         concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), Configs.getCPUCnt()));
     }
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
-        this.endpointProvider = endpointProvider;
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
         this.aggressivenessHint = new AtomicReference<>(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
@@ -63,13 +61,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     private synchronized void submitOpenConnectionTask(OpenConnectionTask openConnectionTask) {
 
-        String addressUriAsString = openConnectionTask.getAddressUri().getURIAsString();
+        String addressUriAsString = openConnectionTask.addressUri.getURIAsString();
         boolean isEndpointTaskInSink = endpointToMinConnections.putIfAbsent(addressUriAsString,
-                openConnectionTask.getMinConnectionsRequiredForEndpoint()) != null;
+                openConnectionTask.minConnectionsRequiredForEndpoint) != null;
 
         endpointToMinConnections.computeIfPresent(addressUriAsString, (s, min) -> {
-            openConnectionTask.setMinConnectionsRequiredForEndpoint(Math.max(openConnectionTask.getMinConnectionsRequiredForEndpoint(), min));
-            return Math.max(openConnectionTask.getMinConnectionsRequiredForEndpoint(), min);
+            openConnectionTask.minConnectionsRequiredForEndpoint = Math.max(openConnectionTask.minConnectionsRequiredForEndpoint, min);
+            return openConnectionTask.minConnectionsRequiredForEndpoint;
         });
 
         if (!isEndpointTaskInSink) {
@@ -88,19 +86,17 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
-        return Flux.from(openConnectionsTaskSink.asFlux())
+        return Flux.concat(openConnectionsTaskSink.asFlux())
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionOperation -> {
-                    endpointToMinConnections.remove(openConnectionOperation.getAddressUri().getURIAsString());
+                    endpointToMinConnections.remove(openConnectionOperation.addressUri.getURIAsString());
 
-                    Uri addressUri = openConnectionOperation.getAddressUri();
-                    URI serviceEndpoint = openConnectionOperation.getServiceEndpoint();
-                    int minConnectionsForEndpoint = openConnectionOperation.getMinConnectionsRequiredForEndpoint();
-                    String collectionRid = openConnectionOperation.getCollectionRid();
-
-                    logger.info("Open connection");
+                    Uri addressUri = openConnectionOperation.addressUri;
+                    URI serviceEndpoint = openConnectionOperation.serviceEndpoint;
+                    int minConnectionsForEndpoint = openConnectionOperation.minConnectionsRequiredForEndpoint;
+                    String collectionRid = openConnectionOperation.collectionRid;
 
                     return Flux.zip(Mono.just(openConnectionOperation), openConnectionsHandler.openConnections(
                             collectionRid,
@@ -113,23 +109,18 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     OpenConnectionTask openConnectionTask = openConnectionOpToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionOpToResponse.getT2();
 
-                    URI serviceEndpoint = openConnectionTask.getServiceEndpoint();
-                    URI physicalAddress = openConnectionTask.getAddressUri().getURI();
-                    int minConnectionsRequiredForEndpoint = openConnectionTask.getMinConnectionsRequiredForEndpoint();
-
-                    RntbdEndpoint endpoint = endpointProvider.createIfAbsent(
-                            serviceEndpoint,
-                            physicalAddress,
-                            this,
-                            minConnectionsRequiredForEndpoint);
-
-                    if (openConnectionResponse.isConnected() && endpoint.channelsMetrics() < minConnectionsRequiredForEndpoint) {
+                    if (openConnectionResponse.isConnected() && openConnectionResponse.isOpenConnectionAttempted()) {
                         this.submitOpenConnectionTask(openConnectionTask);
                         return Mono.just(openConnectionResponse);
                     }
 
+                    // open connections handler has created the min. required connections for the endpoint
+                    if (openConnectionResponse.isConnected() && !openConnectionResponse.isOpenConnectionAttempted()) {
+                        return Mono.just(openConnectionResponse);
+                    }
+
                     return openConnectionTask
-                            .getRetryPolicy()
+                            .retryPolicy
                             .shouldRetry((Exception) openConnectionResponse.getException())
                             .flatMap(shouldRetryResult -> {
                                 if (shouldRetryResult.shouldRetry) {
@@ -142,7 +133,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public void reinstantiateOpenConnectionsPublisherAndSubscribe() {
         logger.debug("In open connections task sink and concurrency reduction flow");
-        this.toggleOpenConnectionsAggressiveness();
+        this.forceDefensiveOpenConnections();
         this.instantiateOpenConnectionsPublisher();
         this.getOpenConnectionsPublisher().runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).subscribe();
     }
@@ -173,11 +164,9 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
 
-    private void toggleOpenConnectionsAggressiveness() {
+    private void forceDefensiveOpenConnections() {
         if (aggressivenessHint.get() == AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE) {
             aggressivenessHint.set(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE);
-        } else {
-            aggressivenessHint.set(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
         }
     }
 
@@ -204,14 +193,14 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public final class OpenConnectionTask {
+    private static final class OpenConnectionTask {
         private final String collectionRid;
         private final URI serviceEndpoint;
         private final Uri addressUri;
         private int minConnectionsRequiredForEndpoint;
         private final IRetryPolicy retryPolicy;
 
-        public OpenConnectionTask(
+        OpenConnectionTask(
                 String collectionRid,
                 URI serviceEndpoint,
                 Uri addressUri,
@@ -221,30 +210,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             this.addressUri = addressUri;
             this.minConnectionsRequiredForEndpoint = minConnectionsRequiredForEndpoint;
             this.retryPolicy = new ProactiveOpenConnectionsRetryPolicy();
-        }
-
-        public URI getServiceEndpoint() {
-            return serviceEndpoint;
-        }
-
-        public Uri getAddressUri() {
-            return addressUri;
-        }
-
-        public String getCollectionRid() {
-            return collectionRid;
-        }
-
-        public int getMinConnectionsRequiredForEndpoint() {
-            return minConnectionsRequiredForEndpoint;
-        }
-
-        public IRetryPolicy getRetryPolicy() {
-            return retryPolicy;
-        }
-
-        public void setMinConnectionsRequiredForEndpoint(int minConnectionsRequiredForEndpoint) {
-            this.minConnectionsRequiredForEndpoint = minConnectionsRequiredForEndpoint;
         }
 
         private static class ProactiveOpenConnectionsRetryPolicy implements IRetryPolicy {
@@ -295,5 +260,4 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             }
         }
     }
-
 }

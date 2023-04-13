@@ -190,7 +190,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
     private final DiagnosticsClientConfig diagnosticsClientConfig;
-
     private final AtomicBoolean throughputControlEnabled;
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
@@ -4301,7 +4300,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-        return this.storeClientFactory.getTransportClient().getOpenConnectionsProcessor();
+        if (this.storeClientFactory == null) {
+            return null;
+        }
+        return this.storeClientFactory.getTransportClient().getProactiveOpenConnectionsProcessor();
     }
 
     /***

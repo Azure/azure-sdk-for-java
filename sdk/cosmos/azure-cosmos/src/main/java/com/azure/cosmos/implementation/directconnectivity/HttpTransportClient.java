@@ -249,7 +249,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    public ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor() {
+    public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
         return null;
     }
 

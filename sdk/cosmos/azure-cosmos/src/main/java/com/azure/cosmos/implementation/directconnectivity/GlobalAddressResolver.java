@@ -54,9 +54,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     final Map<URI, EndpointCache> addressCacheByEndpoint;
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
     private ApiType apiType;
-
     private HttpClient httpClient;
-    private IOpenConnectionsHandler openConnectionsHandler;
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
 
@@ -173,7 +171,6 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                 return this.submitOpenConnectionInternal(
                                                         addressInformation,
                                                         containerLinkToCollection.getRight(),
-                                                        proactiveContainerInitConfig,
                                                         connectionsPerEndpointCountForContainer);
                                             });
                                 }), Configs.getCPUCnt(), Configs.getCPUCnt());
@@ -197,7 +194,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                             partitionKeyRangeIdentities);
                         }
                         return Flux.empty();
-                    });
+                    }, 1);
         }
 
         return Flux.empty();
@@ -206,26 +203,11 @@ public class GlobalAddressResolver implements IAddressResolver {
     private Flux<Void> submitOpenConnectionInternal(
             AddressInformation address,
             DocumentCollection documentCollection,
-            CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
             int connectionPerEndpointCount) {
-        if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
-            return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
-                    .take(proactiveContainerInitConfig.getProactiveConnectionRegionsCount())
-                    .flatMap(readEndpoint -> {
-                        if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
-                            return this.addressCacheByEndpoint.get(readEndpoint)
-                                    .addressCache
-                                    .submitOpenConnectionTask(
-                                            address,
-                                            documentCollection,
-                                            connectionPerEndpointCount
-                                    );
-                        }
-                        return Flux.empty();
-                    });
-        }
 
-        return Flux.empty();
+        EndpointCache endpointCacheCache = this.addressCacheByEndpoint.get(this.endpointManager.getReadEndpoints().stream().findFirst().get());
+
+        return endpointCacheCache.addressCache.submitOpenConnectionTask(address, documentCollection, connectionPerEndpointCount);
     }
 
     @Override

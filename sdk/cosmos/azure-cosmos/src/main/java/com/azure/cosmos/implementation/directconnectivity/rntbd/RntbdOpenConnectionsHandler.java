@@ -81,7 +81,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             if (connectionsOpened < newMinConnectionsRequired) {
                                 OpenConnectionRntbdRequestRecord requestRecord = endpoint.openConnection(requestArgs);
                                 return Mono.fromFuture(requestRecord)
-                                        .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable)))
+                                        .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable, true)))
                                         .doOnNext(response -> {
 
                                             if (logger.isDebugEnabled()) {
@@ -89,7 +89,9 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                                             }
                                         });
                             }
-                            return Mono.just(new OpenConnectionResponse(addressUri, true, null));
+                            // when open connection is not attempted and connected status is true
+                            // do not submit open connection tasks to the sink for this endpoint
+                            return Mono.just(new OpenConnectionResponse(addressUri, true, null, false));
                         }
                 );
     }

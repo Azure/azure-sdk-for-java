@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -78,7 +77,7 @@ public class StoreClient implements IStoreClient {
             false,
             useMultipleWriteLocations);
 
-        addressResolver.setOpenConnectionsProcessor(this.transportClient.getOpenConnectionsProcessor());
+        addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {

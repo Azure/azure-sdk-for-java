@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
@@ -49,7 +48,7 @@ public abstract class TransportClient implements AutoCloseable {
 
     protected abstract GlobalEndpointManager getGlobalEndpointManager();
 
-    public abstract ProactiveOpenConnectionsProcessor getOpenConnectionsProcessor();
+    public abstract ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(
