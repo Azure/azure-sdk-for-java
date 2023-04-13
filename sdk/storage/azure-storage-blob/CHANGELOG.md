@@ -1,13 +1,16 @@
 # Release History
 
-## 12.22.0-beta.2 (Unreleased)
+## 12.22.0 (2023-04-13)
 
 ### Features Added
 - Added new method `StorageAccountInfo.isHierarchicalNamespaceEnabled()` to determine whether storage account has hierarchical namespace enabled.  
+- Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.
 
 ### Other Changes
 
