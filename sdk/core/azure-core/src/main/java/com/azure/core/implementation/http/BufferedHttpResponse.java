@@ -3,15 +3,22 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -52,8 +59,14 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public String getHeaderValue(String name) {
         return innerHttpResponse.getHeaderValue(name);
+    }
+
+    @Override
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return innerHttpResponse.getHeaderValue(headerName);
     }
 
     @Override
@@ -82,7 +95,7 @@ public final class BufferedHttpResponse extends HttpResponse {
             ? monoError(LOGGER, new IllegalStateException(
                 "Response with body size " + cachedBodySize.get() + " doesn't fit into a String."))
             : getBodyAsByteArray().map(bytes ->
-                CoreUtils.bomAwareToString(bytes, innerHttpResponse.getHeaderValue("Content-Type")));
+                CoreUtils.bomAwareToString(bytes, innerHttpResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
@@ -92,6 +105,26 @@ public final class BufferedHttpResponse extends HttpResponse {
             ? monoError(LOGGER, new IllegalStateException(
                 "Response with body size " + cachedBodySize.get() + " doesn't fit into a String."))
             : getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromFlux(getBody(), cachedBodySize.get(), false).block();
+    }
+
+    @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        return getBody().collectList().map(IterableOfByteBuffersInputStream::new);
+    }
+
+    @Override
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+        return FluxUtil.writeToAsynchronousByteChannel(getBody(), channel);
+    }
+
+    @Override
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
+        FluxUtil.writeToWritableByteChannel(getBody(), channel).block();
     }
 
     @Override

@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -57,12 +57,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 
@@ -111,12 +111,12 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -126,7 +126,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.8.1</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.8.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
       </dependencies>
     </profile>

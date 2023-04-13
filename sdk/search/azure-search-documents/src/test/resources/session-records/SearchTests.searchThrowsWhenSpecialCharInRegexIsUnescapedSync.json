@@ -1,31 +1,51 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-hotel-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "be6347cb-cfca-49cb-a160-6628cb398ef1",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "be6347cb-cfca-49cb-a160-6628cb398ef1",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:28:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "be6347cb-cfca-49cb-a160-6628cb398ef1",
-      "elapsed-time" : "133",
-      "Expires" : "-1",
-      "Content-Length" : "341",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\",\"details\":[{\"code\":\"InvalidSearchSyntax\",\"message\":\"Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "be6347cb-cfca-49cb-a160-6628cb398ef1",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-search-shared-hotel-instance\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "39",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "108cdf01-c002-42f8-9746-012c62e62e81"
+      },
+      "RequestBody": {
+        "queryType": "full",
+        "search": "/.*/.*/"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "108cdf01-c002-42f8-9746-012c62e62e81",
+        "Content-Language": "en",
+        "Content-Length": "341",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "elapsed-time": "180",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "108cdf01-c002-42f8-9746-012c62e62e81",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "108cdf01-c002-42f8-9746-012c62e62e81"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequestParameter",
+          "message": "Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax.",
+          "details": [
+            {
+              "code": "InvalidSearchSyntax",
+              "message": "Failed to parse query string at line 1, column 8. See https://aka.ms/azure-search-full-query for supported syntax."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

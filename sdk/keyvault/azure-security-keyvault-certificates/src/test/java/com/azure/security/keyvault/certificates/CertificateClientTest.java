@@ -46,6 +46,7 @@ import java.util.function.BiFunction;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.spy;
@@ -476,7 +477,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
                 certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
 
-            certPoller.poll();
+            LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
+
+            assertNotSame(LongRunningOperationStatus.FAILED, firstStatus);
+            assertNotSame(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, firstStatus);
+
+            if (firstStatus == LongRunningOperationStatus.NOT_STARTED || firstStatus != LongRunningOperationStatus.IN_PROGRESS) {
+                certPoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
+            }
+
             certPoller.cancelOperation();
             certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
 

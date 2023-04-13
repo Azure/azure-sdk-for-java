@@ -1,31 +1,55 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e0865e98-311f-4c90-83d3-4beb2853e179",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e0865e98-311f-4c90-83d3-4beb2853e179",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:14 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e0865e98-311f-4c90-83d3-4beb2853e179",
-      "elapsed-time" : "17",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "109",
-      "Body" : "{\"value\":[{\"text\":\"pool\",\"queryPlusText\":\"<b>pool</b>\"},{\"text\":\"popular\",\"queryPlusText\":\"<b>popular</b>\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e0865e98-311f-4c90-83d3-4beb2853e179",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-autocomplete-shared-instance\u0027)/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "180",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:23 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "02a58251-1c0b-43cf-80e3-a2e355b9a568"
+      },
+      "RequestBody": {
+        "search": "po",
+        "suggesterName": "sg",
+        "autocompleteMode": "oneTerm",
+        "filter": "HotelName eq \u0027EconoStay\u0027 or HotelName eq \u0027Fancy Stay\u0027",
+        "highlightPostTag": "\u003C/b\u003E",
+        "highlightPreTag": "\u003Cb\u003E"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "02a58251-1c0b-43cf-80e3-a2e355b9a568",
+        "Content-Length": "109",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:22 GMT",
+        "elapsed-time": "20",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "02a58251-1c0b-43cf-80e3-a2e355b9a568",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "02a58251-1c0b-43cf-80e3-a2e355b9a568"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "text": "pool",
+            "queryPlusText": "\u003Cb\u003Epool\u003C/b\u003E"
+          },
+          {
+            "text": "popular",
+            "queryPlusText": "\u003Cb\u003Epopular\u003C/b\u003E"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }
