@@ -30,6 +30,12 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
     private String status;
 
     /*
+     * Cassandra service status on this node
+     */
+    @JsonProperty(value = "cassandraProcessStatus")
+    private String cassandraProcessStatus;
+
+    /*
      * The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots
      * subdirectories. Because all SSTable data files are included, any data that is not cleaned up (such as
      * TTL-expired cells or tombstones) is counted.
@@ -171,6 +177,26 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
      */
     public CassandraClusterPublicStatusDataCentersItemNode withStatus(String status) {
         this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the cassandraProcessStatus property: Cassandra service status on this node.
+     *
+     * @return the cassandraProcessStatus value.
+     */
+    public String cassandraProcessStatus() {
+        return this.cassandraProcessStatus;
+    }
+
+    /**
+     * Set the cassandraProcessStatus property: Cassandra service status on this node.
+     *
+     * @param cassandraProcessStatus the cassandraProcessStatus value to set.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
+     */
+    public CassandraClusterPublicStatusDataCentersItemNode withCassandraProcessStatus(String cassandraProcessStatus) {
+        this.cassandraProcessStatus = cassandraProcessStatus;
         return this;
     }
 
