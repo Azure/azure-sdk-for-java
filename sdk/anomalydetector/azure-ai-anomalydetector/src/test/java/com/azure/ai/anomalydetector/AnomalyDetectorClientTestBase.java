@@ -11,9 +11,7 @@ import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import java.util.function.Consumer;
 
 
 /**
