@@ -1217,9 +1217,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             final String messageId = UUID.randomUUID().toString();
             final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-            final ServiceBusReceivedMessage receivedMessage = sendMessage(message)
-                .then(receiver.receiveMessages().next())
-                .block();
+            StepVerifier.create(sendMessage(message)).verifyComplete();
+
+            final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().blockFirst(OPERATION_TIMEOUT);
             assertNotNull(receivedMessage);
 
             final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
@@ -1229,6 +1229,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(receiver.renewMessageLock(receivedMessage, maximumDuration))
                 .thenAwait(sleepDuration)
                 .then(() -> toClose(receiver.receiveMessages()
+                    .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
                     .filter(m -> messageId.equals(m.getMessageId()))
                     .subscribe()))
                 .expectComplete()
