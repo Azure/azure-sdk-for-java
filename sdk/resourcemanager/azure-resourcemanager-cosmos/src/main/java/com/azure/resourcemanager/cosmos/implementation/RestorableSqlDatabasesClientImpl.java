@@ -59,8 +59,7 @@ public final class RestorableSqlDatabasesClientImpl implements RestorableSqlData
     public interface RestorableSqlDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
-                + "/restorableDatabaseAccounts/{instanceId}/restorableSqlDatabases")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableSqlDatabasesListResult>> list(

@@ -1,31 +1,53 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ef3a5a41-ea37-451f-a9d1-69f3e5ad2c7a",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "ef3a5a41-ea37-451f-a9d1-69f3e5ad2c7a",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:26:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "ef3a5a41-ea37-451f-a9d1-69f3e5ad2c7a",
-      "elapsed-time" : "21",
-      "Expires" : "-1",
-      "Content-Length" : "375",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Index alias was not valid for creation.\",\"details\":[{\"code\":\"InvalidIndexAliasMapping\",\"message\":\"An index alias can be created on an existing index. Index – 'index-that-does-not-exist' was not found within the search service – 'alzimmer-basic'. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "ef3a5a41-ea37-451f-a9d1-69f3e5ad2c7a",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/aliases?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "59",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:59:18 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8dfdb9f1-09da-430d-9141-d4b63e64776b"
+      },
+      "RequestBody": {
+        "name": "my-alias",
+        "indexes": [
+          "index-that-does-not-exist"
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "8dfdb9f1-09da-430d-9141-d4b63e64776b",
+        "Content-Language": "en",
+        "Content-Length": "387",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:59:17 GMT",
+        "elapsed-time": "28",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "8dfdb9f1-09da-430d-9141-d4b63e64776b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "8dfdb9f1-09da-430d-9141-d4b63e64776b"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequestParameter",
+          "message": "Index alias was not valid for creation.",
+          "details": [
+            {
+              "code": "InvalidIndexAliasMapping",
+              "message": "An index alias can be created on an existing index. Index \u2013 \u0027index-that-does-not-exist\u0027 was not found within the search service \u2013 \u0027azs-java-alzimmertestproxy\u0027. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

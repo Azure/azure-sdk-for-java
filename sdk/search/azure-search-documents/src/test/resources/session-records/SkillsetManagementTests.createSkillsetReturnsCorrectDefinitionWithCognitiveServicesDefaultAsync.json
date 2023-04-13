@@ -1,54 +1,142 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e5de5a2e-dab8-49e4-80d4-7c8f68a3f7a1",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "494",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:43 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "3ed160cb-d813-4163-a47b-63ec7105ba2c"
+      },
+      "RequestBody": {
+        "name": "cognitive-services-key-skillset63314723949",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url"
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "text",
+                "targetName": "mytext"
+              }
+            ],
+            "name": "myocr",
+            "description": "Tested OCR skill",
+            "context": "/document",
+            "defaultLanguageCode": "en"
+          }
+        ],
+        "cognitiveServices": {
+          "@odata.type": "#Microsoft.Azure.Search.DefaultCognitiveServices"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "3ed160cb-d813-4163-a47b-63ec7105ba2c",
+        "Content-Length": "835",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:42 GMT",
+        "elapsed-time": "52",
+        "ETag": "W/\u00220x8DB20DB7A7B07C0\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027cognitive-services-key-skillset63314723949\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "3ed160cb-d813-4163-a47b-63ec7105ba2c",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "3ed160cb-d813-4163-a47b-63ec7105ba2c"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB7A7B07C0\u0022",
+        "name": "cognitive-services-key-skillset63314723949",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+            "name": "myocr",
+            "description": "Tested OCR skill",
+            "context": "/document",
+            "textExtractionAlgorithm": null,
+            "lineEnding": null,
+            "defaultLanguageCode": "en",
+            "detectOrientation": null,
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "text",
+                "targetName": "mytext"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": {
+          "@odata.type": "#Microsoft.Azure.Search.DefaultCognitiveServices",
+          "description": null
+        },
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e5de5a2e-dab8-49e4-80d4-7c8f68a3f7a1",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:08 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e5de5a2e-dab8-49e4-80d4-7c8f68a3f7a1",
-      "ETag" : "W/\"0x8DAF8CBDC9744B2\"",
-      "elapsed-time" : "42",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "823",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBDC9744B2\\\"\",\"name\":\"cognitive-services-key-skillset89520d0bd11\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null},\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e5de5a2e-dab8-49e4-80d4-7c8f68a3f7a1",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('cognitive-services-key-skillset89520d0bd11')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('cognitive-services-key-skillset89520d0bd11')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "19e3b7c4-a81a-4dcc-8bdc-6ac5d8a48463"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "19e3b7c4-a81a-4dcc-8bdc-6ac5d8a48463",
-      "elapsed-time" : "25",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "19e3b7c4-a81a-4dcc-8bdc-6ac5d8a48463",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:08 GMT",
-      "x-ms-client-request-id" : "19e3b7c4-a81a-4dcc-8bdc-6ac5d8a48463"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "cognitive-services-key-skillset89520d0bd11" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027cognitive-services-key-skillset63314723949\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:43 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "982d93fc-a3ab-4722-ad1a-7313c3a3a93a"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "982d93fc-a3ab-4722-ad1a-7313c3a3a93a",
+        "Date": "Thu, 09 Mar 2023 20:18:42 GMT",
+        "elapsed-time": "43",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "982d93fc-a3ab-4722-ad1a-7313c3a3a93a",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "982d93fc-a3ab-4722-ad1a-7313c3a3a93a"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "cognitive-services-key-skillset63314723949"
+  }
 }

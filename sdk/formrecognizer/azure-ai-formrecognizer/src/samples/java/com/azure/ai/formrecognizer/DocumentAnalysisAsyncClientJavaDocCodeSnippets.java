@@ -170,4 +170,51 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-Options
     }
+
+    /**
+     * Code snippet for
+     * {@link DocumentAnalysisAsyncClient#beginClassifyDocument(String, BinaryData)}
+     * with options
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
+    public void beginClassifyDocument() throws IOException {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData
+        File document = new File("{local/file_path/fileName.jpg}");
+        String classifierId = "{model_id}";
+
+        // Utility method to convert input stream to Binary Data
+        BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
+
+        documentAnalysisAsyncClient.beginClassifyDocument(classifierId, buffer)
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(analyzeResult -> {
+                System.out.println(analyzeResult.getModelId());
+                analyzeResult.getDocuments()
+                    .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData
+    }
+
+    /**
+     * Code snippet for {@link DocumentAnalysisAsyncClient#beginClassifyDocumentFromUrl(String, String)}
+     */
+    public void beginClassifyDocumentFromUrl() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string
+        String documentUrl = "{document_url}";
+        // analyze a receipt using prebuilt model
+        String classifierId = "custom-trained-classifier-id";
+
+        documentAnalysisAsyncClient.beginClassifyDocumentFromUrl(classifierId, documentUrl)
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(analyzeResult -> {
+                System.out.println(analyzeResult.getModelId());
+                analyzeResult.getDocuments()
+                    .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
+            });
+
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string
+    }
 }

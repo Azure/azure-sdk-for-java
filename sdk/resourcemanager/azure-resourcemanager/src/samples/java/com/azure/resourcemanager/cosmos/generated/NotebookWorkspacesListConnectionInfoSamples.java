@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 /** Samples for NotebookWorkspaces ListConnectionInfo. */
 public final class NotebookWorkspacesListConnectionInfoSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBNotebookWorkspaceListConnectionInfo.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBNotebookWorkspaceListConnectionInfo.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceListConnectionInfo.
