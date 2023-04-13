@@ -839,9 +839,11 @@ public final class RntbdTransportClientTest {
 
         RntbdEndpoint.Provider endpointProvider = Mockito.mock(RntbdEndpoint.Provider.class);
 
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), Mockito.any(ProactiveOpenConnectionsProcessor.class), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
+
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
+
         transportClient
             .invokeStoreAsync(
                 physicalAddress,
