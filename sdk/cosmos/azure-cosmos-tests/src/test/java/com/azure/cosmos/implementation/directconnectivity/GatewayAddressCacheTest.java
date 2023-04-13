@@ -15,8 +15,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpClientUnderTestWrapper;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
@@ -47,7 +45,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ParallelFlux;
-import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -117,14 +114,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 { false, true },
                 { true, false },
                 { true, true },
-        };
-    }
-
-    @DataProvider(name = "openConnectionsArgsProvider")
-    public Object[][] openConnectionsArgsProvider() {
-        return new Object[][]{
-                {2, 1, false},
-                {3, 4, true}
         };
     }
 
@@ -1280,40 +1269,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         assertThat(mergedAddresses).hasSize(newAddresses.length)
                 .containsExactly(address1, address7, address5, address6);
-    }
-
-    @Test(groups = "unit")
-    public void openConnectionTest_WithBackgroundFlow() throws URISyntaxException {
-        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
-        URI serviceEndpoint = new URI(TestConfigurations.HOST);
-        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
-        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
-        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessorMock = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
-        AddressInformation addressInformation = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);
-        DocumentCollection documentCollection = getCollectionDefinition();
-        int connectionsPerEndpoint = 5;
-
-        GatewayAddressCache cache = new GatewayAddressCache(
-                mockDiagnosticsClientContext(),
-                serviceEndpoint,
-                Protocol.TCP,
-                authorizationTokenProvider,
-                null,
-                httpClientWrapper.getSpyHttpClient(),
-                null,
-                null,
-                ConnectionPolicy.getDefaultPolicy(),
-                proactiveOpenConnectionsProcessorMock
-        );
-
-        Mockito
-                .when(openConnectionsHandlerMock.openConnections(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
-                .thenReturn(Flux.just(new OpenConnectionResponse(new Uri("http://localhost:8081"), true)));
-
-        StepVerifier.create(cache.submitOpenConnectionTask(addressInformation, documentCollection, connectionsPerEndpoint))
-                .expectComplete()
-                .verify();
     }
 
     public static void assertSameAs(List<AddressInformation> actual, List<Address> expected) {

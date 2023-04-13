@@ -676,7 +676,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             // in the open channel flow, force a new channel
             // to be opened
-            if (!(promise instanceof OpenChannelPromise)) {
+            if ((!(promise instanceof OpenChannelPromise) ||
+                    durableEndpointMetrics.getEndpoint().getMinChannelsRequired() == this.channels(false))) {
                 candidate = this.pollChannel(channelAcquisitionTimeline);
 
                 if (candidate != null) {
