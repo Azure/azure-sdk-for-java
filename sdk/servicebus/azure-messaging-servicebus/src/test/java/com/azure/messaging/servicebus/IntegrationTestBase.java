@@ -67,6 +67,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
     private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
+    private String shortTestName;
     private final Scheduler scheduler = Schedulers.parallel();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
@@ -82,8 +83,12 @@ public abstract class IntegrationTestBase extends TestBase {
     public void setupTest(TestInfo testInfo) {
         Class<?> testClass = testInfo.getTestClass().orElseGet(null);
         Method testMethod = testInfo.getTestMethod().orElseGet(null);
-        testName = String.format("%s.%s - %s",
-            testClass == null ? "unknown" : testClass.getName(),
+        testName = String.format("%s.%s-%s",
+            testClass == null ? "unknown" : testClass.getSimpleName(),
+            testMethod == null ? "unknown" : testMethod.getName(),
+            testInfo.getDisplayName());
+
+        shortTestName = String.format("%s-%s",
             testMethod == null ? "unknown" : testMethod.getName(),
             testInfo.getDisplayName());
 
@@ -414,7 +419,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
-        logMessage(message == null ? null : message.getMessageId(), message.getSequenceNumber(), entity, description);
+        if (message == null) {
+            logMessage(null, -1, entity, description);
+        } else {
+            logMessage(message.getMessageId(), message.getSequenceNumber(), entity, description);
+        }
     }
 
     private void logMessage(String id, long seqNo, String entity, String description) {

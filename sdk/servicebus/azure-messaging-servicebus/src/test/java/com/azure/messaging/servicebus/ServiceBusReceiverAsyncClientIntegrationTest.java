@@ -277,7 +277,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        Mono.zip(sendMessage(message), sendMessage(message)).block();
+        Mono.when(sendMessage(message), sendMessage(message)).block();
 
         // Now create receiver
         if (isSessionEnabled) {
@@ -1485,7 +1485,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         final ServiceBusReceivedMessage newLastMessage = receiver.peekMessage().block(TIMEOUT);
-        logMessage(lastMessage, receiver.getEntityPath(), "peeked messages");
+        logMessage(newLastMessage, receiver.getEntityPath(), "peeked messages");
         if (lastMessage == null) {
             assertNull(newLastMessage,
                 String.format("Actual messageId[%s]", newLastMessage != null ? newLastMessage.getMessageId() : "n/a"));
