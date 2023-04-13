@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -35,12 +36,14 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.Closeable;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
@@ -77,9 +80,14 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
+        Class<?> testClass = testInfo.getTestClass().orElseGet(null);
+        Method testMethod = testInfo.getTestMethod().orElseGet(null);
+        testName = String.format("%s.%s - %s",
+            testClass == null ? "unknown" : testClass.getName(),
+            testMethod == null ? "unknown" : testMethod.getName(),
+            testInfo.getDisplayName());
 
-        testName = testInfo.getDisplayName();
+        logger.info("========= SET-UP [{}] =========", testName);
 
         assumeTrue(getTestMode() == TestMode.RECORD);
 
@@ -392,15 +400,40 @@ public abstract class IntegrationTestBase extends TestBase {
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
         message.setMessageId(testName + "_" + messageId);
-        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
         message.setMessageId(messageId);
-        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
+    }
+
+    protected void logMessage(ServiceBusMessage message, String entity, String description) {
+        logMessage(message.getMessageId(),-1, entity, description);
+    }
+
+    protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
+        logMessage(message == null ? null : message.getMessageId(), message.getSequenceNumber(), entity, description);
+    }
+
+    private void logMessage(String id, long seqNo, String entity, String description) {
+        logger.atInfo()
+            .addKeyValue("test", testName)
+            .addKeyValue("entity", entity)
+            .addKeyValue("sequenceNo", seqNo)
+            .addKeyValue("messageId(s)", id)
+            .log(description == null ? "logging messages" : description);
+    }
+
+    protected void logMessages(List<ServiceBusMessage> messages, String entity, String description) {
+        messages.stream().forEach(m -> logMessage(m.getMessageId(), -1, entity, description));
+    }
+
+    protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages, String entity, String description) {
+        List<ServiceBusReceivedMessage> messageList = messages.stream().collect(Collectors.toList());
+        messageList.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), entity, description));
+        return messageList;
     }
 
     protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {

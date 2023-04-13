@@ -67,6 +67,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         final String messageId = UUID.randomUUID().toString();
         final AtomicReference<OffsetTime> lastMessageReceivedTime = new AtomicReference<>();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled).setMessageId(messageId);
+
         // The message should comeback after the client release the lock once because maxAutoLockRenewDuration is set
         // by user.
         CountDownLatch countDownLatch = new CountDownLatch(2);
@@ -200,8 +201,9 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
     private Mono<Void> sendMessage(ServiceBusSenderAsyncClient sender, ServiceBusMessage message) {
         return sender.sendMessage(message).doOnSuccess(aVoid -> {
+            logMessage(message, sender.getEntityPath(), "sent");
             int number = messagesPending.incrementAndGet();
-            LOGGER.info("Message Id {}. Number sent: {}", message.getMessageId(), number);
+            LOGGER.atInfo().addKeyValue("number", number).log("Number sent");
         });
     }
 }
