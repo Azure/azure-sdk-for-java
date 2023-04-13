@@ -49,7 +49,7 @@ public class TargetingFilter implements FeatureFilter {
      * Audience in the filter
      */
     protected static final String AUDIENCE = "Audience";
-    
+
     /*
      * Audience that always returns false
      */
@@ -141,7 +141,7 @@ public class TargetingFilter implements FeatureFilter {
 
         Audience audience = settings.getAudience();
 
-        // Need to Check Denyed first
+        // Need to Check denied first
         if (targetUser(targetingContext.getUserId(), audience.getExclusion().getUsers())) {
             return false;
         }
