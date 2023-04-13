@@ -35,6 +35,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -53,6 +54,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
@@ -366,6 +368,11 @@ public abstract class IntegrationTestBase extends TestBase {
         return closeable;
     }
 
+    protected Disposable toClose(Disposable closeable) {
+        toClose.add(() -> closeable.dispose());
+        return closeable;
+    }
+
     /**
      * Disposes of registered with {@code toClose} method resources.
      */
@@ -421,33 +428,34 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void logMessage(ServiceBusMessage message, String entity, String description) {
-        logMessage(message.getMessageId(), -1, entity, description);
+        logMessage(message.getMessageId(), -1, message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
     }
 
     protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
         if (message == null) {
-            logMessage(null, -1, entity, description);
+            logMessage(null, -1, entity, null, description);
         } else {
-            logMessage(message.getMessageId(), message.getSequenceNumber(), entity, description);
+            logMessage(message.getMessageId(), message.getSequenceNumber(), message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
         }
     }
 
-    private void logMessage(String id, long seqNo, String entity, String description) {
+    private void logMessage(String id, long seqNo, Object positionId, String entity, String description) {
         logger.atInfo()
             .addKeyValue("test", testName)
             .addKeyValue("entity", entity)
             .addKeyValue("sequenceNo", seqNo)
             .addKeyValue("messageId(s)", id)
+            .addKeyValue("positionId", positionId)
             .log(description == null ? "logging messages" : description);
     }
 
     protected void logMessages(List<ServiceBusMessage> messages, String entity, String description) {
-        messages.stream().forEach(m -> logMessage(m.getMessageId(), -1, entity, description));
+        messages.stream().forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
     }
 
     protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages, String entity, String description) {
         List<ServiceBusReceivedMessage> messageList = messages.stream().collect(Collectors.toList());
-        messageList.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), entity, description));
+        messageList.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
         return messageList;
     }
 

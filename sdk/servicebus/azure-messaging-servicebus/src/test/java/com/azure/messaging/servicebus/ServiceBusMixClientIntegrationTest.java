@@ -150,7 +150,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Act
         System.out.println("Starting the processor");
         processorA.start();
-        toClose(() -> processorA.stop());
+        toClose((AutoCloseable) () -> processorA.stop());
 
         // Assert
         System.out.println("Listening for 10 seconds...");
@@ -256,7 +256,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Act
         System.out.println("Starting the processor");
         processorA.start();
-        toClose(() -> processorA.stop());
+        toClose((AutoCloseable) () -> processorA.stop());
 
         // Assert
         System.out.println("Listening for 10 seconds...");
@@ -340,7 +340,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
                 logger.info("Transaction committed.");
                 return Mono.just(receivedMessage);
             }).subscribe();
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
 
         // Act
         System.out.println("Listening for 10 seconds...");
@@ -423,7 +423,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             logger.info("Transaction committed.");
             return Mono.just(receivedMessage);
         }).subscribe();
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
         // Act
         System.out.println("Listening for 10 seconds...");
         if (countdownLatch.await(10, TimeUnit.SECONDS)) {

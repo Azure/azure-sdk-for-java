@@ -100,7 +100,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         // Assert & Act
         processor.start();
         toClose(processor);
-        toClose(() -> processor.stop());
+        toClose((AutoCloseable) () -> processor.stop());
 
         assertTrue(countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS), "Message not arrived, closing processor.");
         LOGGER.info("Message lock has been renewed. Now closing processor");

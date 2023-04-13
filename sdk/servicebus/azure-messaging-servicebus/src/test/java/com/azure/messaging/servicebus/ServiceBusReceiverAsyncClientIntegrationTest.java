@@ -28,6 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -38,9 +39,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -533,128 +536,68 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         };
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = getServiceBusMessages(10, messageId, CONTENTS_BYTES);
-        final List<Integer> receivedPositions = Collections.synchronizedList(new ArrayList<Integer>());
+        final Set<Integer> receivedPositions = Collections.synchronizedSet(new HashSet<>());
         final AtomicInteger messageCount = new AtomicInteger();
-        final List<ServiceBusReceivedMessage> receivedMessages = Collections.synchronizedList(new ArrayList<ServiceBusReceivedMessage>());
+        final List<ServiceBusReceivedMessage> receivedMessages = Collections.synchronizedList(new ArrayList<>());
 
         if (isSessionEnabled) {
             messages.forEach(m -> m.setSessionId(sessionId));
         }
 
-        sender.sendMessages(messages)
-            .doOnSuccess(aVoid -> {
-                logMessages(messages, sender.getEntityPath(), "sent");
-                int number = messagesPending.addAndGet(messages.size());
-                LOGGER.info("Number of messages sent: {}", number);
-            })
-            .block();
+        StepVerifier.create(sender.sendMessages(messages)
+                .doOnSuccess(aVoid -> logMessages(messages, sender.getEntityPath(), "sent")))
+            .verifyComplete();
 
         setReceiver(entityType, USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         // Assert & Act
         try {
-            // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try many times.
-            List<Thread> threadList = new ArrayList<Thread>();
-            threadList.add(new Thread(() -> {
-                final AtomicLong actualCount = new AtomicLong();
-                List<ServiceBusReceivedMessage> peekedMessages
-                    = receiver.peekMessages(3)
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) >= 0
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) <= 2
-                        && receivedPositions.stream().noneMatch(position ->
-                            Objects.equals(position, receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID))))
-                    .map(receivedMessage -> {
-                        receivedPositions.add((Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
-                        actualCount.incrementAndGet();
-                        return receivedMessage;
-                    })
-                    .repeat(() -> actualCount.get() < 3)
-                    .collectList().block();
+            CountDownLatch latchAll = new CountDownLatch(messages.size());
+            Disposable subscription1 = toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions)
+                .subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
+            Disposable subscription2 = toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions)
+                .subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
+            Disposable subscription3 = toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions)
+                .subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
 
-                if (Objects.nonNull(peekedMessages) && !peekedMessages.isEmpty()) {
-                    receivedMessages.addAll(peekedMessages);
-                }
-            }));
+            assertTrue(latchAll.await(60, TimeUnit.SECONDS));
 
-            // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try many times.
-            threadList.add(new Thread(() -> {
-                final AtomicLong actualCount = new AtomicLong();
-                List<ServiceBusReceivedMessage> peekedMessages
-                    = receiver.peekMessages(4)
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) >= 3
-                        && (int) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID) <= 6
-                        && receivedPositions.stream().noneMatch(position ->
-                            Objects.equals(position, receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID))))
-                    .map(receivedMessage -> {
-                        receivedPositions.add((Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
-                        actualCount.incrementAndGet();
-                        return receivedMessage;
-                    })
-                    .repeat(() -> actualCount.get() < 4)
-                    .collectList().block();
-                if (Objects.nonNull(peekedMessages) && !peekedMessages.isEmpty()) {
-                    receivedMessages.addAll(peekedMessages);
-                }
-            }));
-
-            // Reads the next active message is not always guaranteed, so we will try many times.
-            threadList.add(new Thread(() -> {
-                final AtomicLong actualCount = new AtomicLong();
-                List<ServiceBusReceivedMessage> peekedMessages
-                    = receiver.peekMessage()
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId())
-                        && Objects.equals(7, receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID)))
-                    .map(receivedMessage -> {
-                        actualCount.incrementAndGet();
-                        return receivedMessage;
-                    })
-                    .repeat(() -> actualCount.get() < 1)
-                    .collectList().block();
-                if (Objects.nonNull(peekedMessages) && !peekedMessages.isEmpty()) {
-                    receivedMessages.addAll(peekedMessages);
-                }
-            }));
-
-            threadList.forEach(Thread::start);
-            threadList.forEach(t -> {
-                try {
-                    t.join(TIMEOUT.toMillis());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            receivedMessages.stream()
-                .sorted((o1, o2) -> {
-                    int position1 = (int) o1.getApplicationProperties().get(MESSAGE_POSITION_ID);
-                    int position2 = (int) o2.getApplicationProperties().get(MESSAGE_POSITION_ID);
-                    return position1 - position2;
-                })
+            receivedMessages
+                .stream()
                 .forEach(actualMessage -> {
                     LOGGER.info("The position id of received message : {}", actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
                     checkCorrectMessage.accept(actualMessage, messageCount.getAndIncrement());
                 });
-
         } finally {
-            Thread finallyThread = new Thread(() -> {
+            CountDownLatch latch = new CountDownLatch(messages.size());
+            Disposable subscription = toClose(receiver.receiveMessages()
+                .flatMap(message -> receiver.complete(message).doOnSuccess(s -> {
+                    logMessage(message, receiver.getEntityPath(), "received and completed message");
+                    if (message.getMessageId().equals(messageId)) {
+                        latch.countDown();
+                    }
+                }))
+                .subscribe());
 
-                Disposable subscription = receiver.receiveMessages()
-                    .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
-                    .subscribe(serviceBusReceivedMessage ->
-                        receiver.complete(serviceBusReceivedMessage)
-                            .thenReturn(serviceBusReceivedMessage)
-                            .block()
-                    );
-
-                toClose(() -> subscription.dispose());
-                messagesPending.addAndGet(-messages.size());
-                receivedPositions.clear();
-            });
-            finallyThread.start();
-            finallyThread.join(TIMEOUT.toMillis());
+            assertTrue(latch.await(60, TimeUnit.SECONDS));
         }
+    }
+
+    private Flux<ServiceBusReceivedMessage> peekMessages(int count, CountDownLatch latch, String messageIdFilter, Set<Integer> receivedPositions) {
+        return receiver.peekMessages(count)
+            // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try many times.
+            .filter(receivedMessage -> {
+                logMessage(receivedMessage, receiver.getEntityPath(), "peeked message");
+                Integer position = (Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
+                boolean filtered = messageIdFilter.equals(receivedMessage.getMessageId()) && receivedPositions.add(position);
+                if (filtered) {
+                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message");
+                    latch.countDown();
+                }
+                return filtered;
+            })
+            .repeat(() -> latch.getCount() < count)
+            .delaySequence(Duration.ofMillis(1000));
     }
 
     /**
@@ -704,7 +647,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .repeat(() -> countdownLatch.getCount() > 0)
             .subscribe();
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
 
         assertTrue(countdownLatch.await(20, TimeUnit.SECONDS), "Failed peek messages from sequence.");
 
@@ -1311,7 +1254,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         messagesPending.addAndGet(-numberCompleted.get());
                         return Mono.just(m);
                     }).subscribe();
-                toClose(() -> subscription.dispose());
+                toClose(subscription);
             })
             .expectComplete()
             .verify(Duration.ofMinutes(3));

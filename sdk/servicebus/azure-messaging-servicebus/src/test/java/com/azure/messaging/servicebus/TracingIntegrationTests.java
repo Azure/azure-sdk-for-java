@@ -126,7 +126,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 receiver.complete(msg).block();
             })
             .subscribe();
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -174,7 +174,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 assertFalse(((ReadableSpan) Span.current()).hasEnded());
                 receiver.complete(msg).block();
             });
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -305,7 +305,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     latch.countDown();
                 }
             });
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
         assertTrue(latch.await(50, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -459,7 +459,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .processError(e -> fail("unexpected error", e.getException()))
             .buildProcessorClient());
 
-        toClose(() -> processor.stop());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -521,7 +521,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .processError(e -> fail("unexpected error", e.getException()))
             .buildProcessorClient());
-        toClose(() -> processor.stop());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(processedFound.await(10, TimeUnit.SECONDS));
         processor.stop();
@@ -567,7 +567,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .processError(e -> fail("unexpected error", e.getException()))
             .buildProcessorClient());
-        toClose(() -> processor.stop());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(completedFound.await(20, TimeUnit.SECONDS));
         processor.stop();
@@ -611,7 +611,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             })
             .processError(e -> { })
             .buildProcessorClient());
-        toClose(() -> processor.stop());
+        toClose((AutoCloseable) () -> processor.stop());
         processor.start();
         assertTrue(messageProcessed.await(10, TimeUnit.SECONDS));
         processor.stop();

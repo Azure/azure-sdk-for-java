@@ -76,7 +76,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
                 error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
                 () -> logger.info("sessionId[{}] Finished sending.", sessionId));
-        toClose(() -> subscription.dispose());
+        toClose(subscription);
         setReceiver(entityType, entityIndex, Function.identity());
 
         // Act & Assert
