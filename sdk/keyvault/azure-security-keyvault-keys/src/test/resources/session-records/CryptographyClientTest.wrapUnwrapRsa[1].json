@@ -48,14 +48,6 @@
       "RequestBody": {
         "key": {
           "logger": {
-            "logger": {
-              "classPath": "com.azure.security.keyvault.keys.models.JsonWebKey",
-              "isTraceEnabled": false,
-              "isDebugEnabled": true,
-              "isInfoEnabled": true,
-              "isWarnEnabled": true,
-              "isErrorEnabled": true
-            },
             "globalContextSerialized": "",
             "hasGlobalContext": false
           },
