@@ -3,48 +3,21 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.SyncAsyncExtension;
-import com.azure.core.test.annotation.SyncAsyncTest;
-import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.util.Context;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.net.URL;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link MockTokenCredential}.
  */
 public class MockTokenCredentialTests {
 
-    @SyncAsyncTest
+    @Test
     public void basicRetrieveToken() {
         MockTokenCredential credential = new MockTokenCredential();
-
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-            Assertions.assertTrue(headerValue != null && headerValue.startsWith("mockToken"));
-            return next.process();
-        };
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies((context, next) -> credential.getToken(new TokenRequestContext())
-                .flatMap(token -> {
-                    context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, token.getToken());
-                    return next.process();
-                }), auditorPolicy)
-            .build();
-
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost")), Context.NONE),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost")))
-        );
+        AccessToken credentialToken = credential.getTokenSync(new TokenRequestContext());
+        assertEquals(credentialToken.getToken(), "mockToken");
     }
 }
