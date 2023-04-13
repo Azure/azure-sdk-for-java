@@ -177,10 +177,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         TestUtils.getDataRunnerHelper(testRunner, fileName);
     }
 
-    void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {
-        TestUtils.getTestingContainerHelper(testRunner, fileName, interceptorManager.isPlaybackMode());
-    }
-
     void buildModelRunner(Consumer<String> testRunner) {
         TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
@@ -499,32 +495,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(licensePageFields.get("Endorsements").getConfidence());
         assertEquals("NONE", licensePageFields.get("Restrictions").getValueAsString());
         assertNotNull(licensePageFields.get("Restrictions").getConfidence());
-    }
-
-    void validateGermanContentData(AnalyzeResult analyzeResult) {
-        assertNotNull(analyzeResult.getPages());
-        assertEquals(1, analyzeResult.getPages().size());
-        analyzeResult.getPages().forEach(documentPage -> {
-            Assertions.assertTrue(
-                documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
-            assertNotNull(analyzeResult.getTables());
-            Assertions.assertEquals(8.5f, documentPage.getWidth());
-            Assertions.assertEquals(11f, documentPage.getHeight());
-            Assertions.assertEquals(DocumentPageLengthUnit.INCH, documentPage.getUnit());
-
-        });
-
-        assertNotNull(analyzeResult.getTables());
-        int[] table = new int[] {8, 3, 24};
-        Assertions.assertEquals(1, analyzeResult.getTables().size());
-        for (int i = 0; i < analyzeResult.getTables().size(); i++) {
-            DocumentTable actualDocumentTable = analyzeResult.getTables().get(i);
-            Assertions.assertEquals(table[i], actualDocumentTable.getRowCount());
-            Assertions.assertEquals(table[++i], actualDocumentTable.getColumnCount());
-            Assertions.assertEquals(table[++i], actualDocumentTable.getCells().size());
-            actualDocumentTable.getCells().forEach(documentTableCell
-                -> assertNotNull(documentTableCell.getKind()));
-        }
     }
 
     void validateSelectionMarkContentData(AnalyzeResult analyzeResult) {

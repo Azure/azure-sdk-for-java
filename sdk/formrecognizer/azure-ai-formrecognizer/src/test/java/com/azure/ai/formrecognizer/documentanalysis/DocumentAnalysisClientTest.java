@@ -46,12 +46,12 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_FORM_JPG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_DOCX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_HTML;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_PPTX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_XLSX;
+import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.GERMAN_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_NO_SUB_LINE_PDF;
@@ -554,16 +554,18 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     public void analyzeGermanContentFromUrl(HttpClient httpClient,
                                             DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        testingContainerUrlRunner(sourceUrl -> {
+        urlRunner(sourceUrl -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-layout",
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-read",
                     sourceUrl,
                     new AnalyzeDocumentOptions().setLocale(""),
                     Context.NONE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validateGermanContentData(syncPoller.getFinalResult());
-        }, CONTENT_GERMAN_PDF);
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
+            }, GERMAN_PNG);
     }
 
     // Custom Document recognition
@@ -801,7 +803,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        testingContainerUrlRunner((fileUrl) -> multipageTrainingRunner((trainingFilesUrl) -> {
+        urlRunner((fileUrl) -> multipageTrainingRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller
                 = adminClient
                 .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)

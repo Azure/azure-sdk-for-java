@@ -41,7 +41,6 @@ public final class TestUtils {
     // Local test files
     public static final String BLANK_PDF = "blank.pdf";
     static final String CONTENT_FORM_JPG = "Form_1.jpg";
-    public static final String TEST_DATA_PNG = "testData.png";
     static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
     static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
@@ -86,8 +85,6 @@ public final class TestUtils {
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
-    public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
     public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION =
         GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
     public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION =
@@ -164,38 +161,10 @@ public final class TestUtils {
         testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
     }
 
-    static void getTestingContainerHelper(Consumer<String> testRunner, String fileName, boolean isPlaybackMode) {
-        testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
-    }
-
     public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
 
-
-    /**
-     * Get the testing data set SAS Url value based on the test running mode.
-     *
-     * @return the testing data set Url
-     * @param isPlaybackMode boolean to indicate if the test running in playback mode
-     */
-    private static String getTestingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Prepare the file url from the testing data set SAS Url value.
-     *
-     * @return the testing data specific file Url
-     */
-    private static String getStorageTestingFileUrl(String fileName, boolean isPlaybackMode) {
-        if (isPlaybackMode) {
-            return "https://isPlaybackmode";
-        } else {
-            final String[] urlParts = getTestingSasUri(isPlaybackMode).split("\\?");
-            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
-        }
-    }
 
     /**
      * Get the training data set SAS Url value based on the test running mode.
