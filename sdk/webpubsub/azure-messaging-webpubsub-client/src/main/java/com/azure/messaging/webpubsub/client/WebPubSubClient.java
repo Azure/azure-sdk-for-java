@@ -103,73 +103,73 @@ public class WebPubSubClient {
      * </pre>
      * <!-- end readme-sample-listenMessages -->
      *
-     * @param eventEventHandler the event handler for GroupMessageEvent.
+     * @param onGroupMessageEventHandler the event handler for GroupMessageEvent.
      */
-    public void addOnGroupMessageEventHandler(Consumer<GroupMessageEvent> eventEventHandler) {
-        eventHandlerCollection.addEventHandler(GROUP_MESSAGE_EVENT, eventEventHandler);
+    public void addOnGroupMessageEventHandler(Consumer<GroupMessageEvent> onGroupMessageEventHandler) {
+        eventHandlerCollection.addEventHandler(GROUP_MESSAGE_EVENT, onGroupMessageEventHandler);
     }
 
     /**
      * Removes event handler for GroupMessageEvent.
      *
-     * @param eventEventHandler the event handler for GroupMessageEvent.
+     * @param onGroupMessageEventHandler the event handler for GroupMessageEvent.
      */
-    public void removeOnGroupMessageEventHandler(Consumer<GroupMessageEvent> eventEventHandler) {
-        eventHandlerCollection.removeEventHandler(GROUP_MESSAGE_EVENT, eventEventHandler);
+    public void removeOnGroupMessageEventHandler(Consumer<GroupMessageEvent> onGroupMessageEventHandler) {
+        eventHandlerCollection.removeEventHandler(GROUP_MESSAGE_EVENT, onGroupMessageEventHandler);
     }
 
     /**
      * Adds event handler for ServerMessageEvent.
      *
-     * @param eventEventHandler the event handler for ServerMessageEvent.
+     * @param onServiceMessageEventHandler the event handler for ServerMessageEvent.
      */
-    public void addOnServerMessageEventHandler(Consumer<ServerMessageEvent> eventEventHandler) {
-        eventHandlerCollection.addEventHandler(SERVER_MESSAGE_EVENT, eventEventHandler);
+    public void addOnServerMessageEventHandler(Consumer<ServerMessageEvent> onServiceMessageEventHandler) {
+        eventHandlerCollection.addEventHandler(SERVER_MESSAGE_EVENT, onServiceMessageEventHandler);
     }
 
     /**
      * Removes event handler for ServerMessageEvent.
      *
-     * @param eventEventHandler the event handler for ServerMessageEvent.
+     * @param onServiceMessageEventHandler the event handler for ServerMessageEvent.
      */
-    public void removeOnServerMessageEventHandler(Consumer<ServerMessageEvent> eventEventHandler) {
-        eventHandlerCollection.removeEventHandler(SERVER_MESSAGE_EVENT, eventEventHandler);
+    public void removeOnServerMessageEventHandler(Consumer<ServerMessageEvent> onServiceMessageEventHandler) {
+        eventHandlerCollection.removeEventHandler(SERVER_MESSAGE_EVENT, onServiceMessageEventHandler);
     }
 
     /**
      * Adds event handler for ConnectedEvent.
      *
-     * @param eventEventHandler the event handler for ConnectedEvent.
+     * @param onConnectedEventHandler the event handler for ConnectedEvent.
      */
-    public void addOnConnectedEventHandler(Consumer<ConnectedEvent> eventEventHandler) {
-        eventHandlerCollection.addEventHandler(CONNECT_EVENT, eventEventHandler);
+    public void addOnConnectedEventHandler(Consumer<ConnectedEvent> onConnectedEventHandler) {
+        eventHandlerCollection.addEventHandler(CONNECT_EVENT, onConnectedEventHandler);
     }
 
     /**
      * Removes event handler for ConnectedEvent.
      *
-     * @param eventEventHandler the event handler for ConnectedEvent.
+     * @param onConnectedEventHandler the event handler for ConnectedEvent.
      */
-    public void removeOnConnectedEventHandler(Consumer<ConnectedEvent> eventEventHandler) {
-        eventHandlerCollection.removeEventHandler(CONNECT_EVENT, eventEventHandler);
+    public void removeOnConnectedEventHandler(Consumer<ConnectedEvent> onConnectedEventHandler) {
+        eventHandlerCollection.removeEventHandler(CONNECT_EVENT, onConnectedEventHandler);
     }
 
     /**
      * Adds event handler for DisconnectedEvent.
      *
-     * @param eventEventHandler the event handler for DisconnectedEvent.
+     * @param onDisconnectedEventHandler the event handler for DisconnectedEvent.
      */
-    public void addOnDisconnectedEventHandler(Consumer<DisconnectedEvent> eventEventHandler) {
-        eventHandlerCollection.addEventHandler(DISCONNECT_EVENT, eventEventHandler);
+    public void addOnDisconnectedEventHandler(Consumer<DisconnectedEvent> onDisconnectedEventHandler) {
+        eventHandlerCollection.addEventHandler(DISCONNECT_EVENT, onDisconnectedEventHandler);
     }
 
     /**
      * Removes event handler for DisconnectedEvent.
      *
-     * @param eventEventHandler the event handler for DisconnectedEvent.
+     * @param onDisconnectedEventHandler the event handler for DisconnectedEvent.
      */
-    public void removeOnDisconnectedEventHandler(Consumer<DisconnectedEvent> eventEventHandler) {
-        eventHandlerCollection.removeEventHandler(DISCONNECT_EVENT, eventEventHandler);
+    public void removeOnDisconnectedEventHandler(Consumer<DisconnectedEvent> onDisconnectedEventHandler) {
+        eventHandlerCollection.removeEventHandler(DISCONNECT_EVENT, onDisconnectedEventHandler);
     }
 
     /**
@@ -185,37 +185,39 @@ public class WebPubSubClient {
      * </pre>
      * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.addOnStoppedEventHandler -->
      *
-     * @param eventEventHandler the event handler for StoppedEvent.
+     * @param onStoppedEventHandler the event handler for StoppedEvent.
      */
-    public void addOnStoppedEventHandler(Consumer<StoppedEvent> eventEventHandler) {
-        eventHandlerCollection.addEventHandler(STOPPED_EVENT, eventEventHandler);
+    public void addOnStoppedEventHandler(Consumer<StoppedEvent> onStoppedEventHandler) {
+        eventHandlerCollection.addEventHandler(STOPPED_EVENT, onStoppedEventHandler);
     }
 
     /**
      * Removes event handler for StoppedEvent.
      *
-     * @param eventEventHandler the event handler for StoppedEvent.
+     * @param onStoppedEventHandler the event handler for StoppedEvent.
      */
-    public void removeOnStoppedEventHandler(Consumer<StoppedEvent> eventEventHandler) {
-        eventHandlerCollection.removeEventHandler(STOPPED_EVENT, eventEventHandler);
+    public void removeOnStoppedEventHandler(Consumer<StoppedEvent> onStoppedEventHandler) {
+        eventHandlerCollection.removeEventHandler(STOPPED_EVENT, onStoppedEventHandler);
     }
 
     /**
      * Adds event handler for RejoinGroupFailedEvent.
      *
-     * @param eventEventHandler the event handler for RejoinGroupFailedEvent.
+     * @param onRejoinGroupFailedEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void addOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> eventEventHandler) {
-        eventHandlerCollection.addEventHandler(REJOIN_GROUP_FAILED_EVENT, eventEventHandler);
+    public void addOnRejoinGroupFailedEventHandler(
+        Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
+        eventHandlerCollection.addEventHandler(REJOIN_GROUP_FAILED_EVENT, onRejoinGroupFailedEventHandler);
     }
 
     /**
      * Removes event handler for RejoinGroupFailedEvent.
      *
-     * @param eventEventHandler the event handler for RejoinGroupFailedEvent.
+     * @param onRejoinGroupFailedEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void removeOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> eventEventHandler) {
-        eventHandlerCollection.removeEventHandler(REJOIN_GROUP_FAILED_EVENT, eventEventHandler);
+    public void removeOnRejoinGroupFailedEventHandler(
+        Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
+        eventHandlerCollection.removeEventHandler(REJOIN_GROUP_FAILED_EVENT, onRejoinGroupFailedEventHandler);
     }
 
     /**
