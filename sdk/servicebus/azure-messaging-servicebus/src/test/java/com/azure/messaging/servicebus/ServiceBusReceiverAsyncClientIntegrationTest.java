@@ -670,10 +670,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         fromSequenceNumber.set(1);
 
         final byte[] content = "peek-message-from-sequence".getBytes(Charset.defaultCharset());
-        List<String> messageIds = Collections.synchronizedList(new ArrayList<String>());
+        List<String> messageIds = Collections.synchronizedList(new ArrayList<>());
         for (int i = 0; i < maxMessages; ++i) {
             ServiceBusMessage message = getMessage(String.valueOf(i), isSessionEnabled, AmqpMessageBody.fromData(content));
-            logMessage(message, sender.getEntityPath(), "getMessage");
             messageIds.add(String.valueOf(i));
             sendMessage(message).block();
         }
@@ -682,8 +681,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
         // https://github.com/Azure/azure-sdk-for-java/issues/21168
-        List<String> receivedMessages = Collections.synchronizedList(new ArrayList<String>());
+        List<String> receivedMessages = Collections.synchronizedList(new ArrayList<>());
         Disposable subscription = receiver.peekMessages(maxMessages, fromSequenceNumber.get())
+            .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "peeked message"))
             .filter(receivedMessage -> messageIds.contains(receivedMessage.getMessageId())
                 && receivedMessages.parallelStream().noneMatch(mid ->
                     mid.equals(receivedMessage.getMessageId())))
@@ -702,9 +702,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .repeat(() -> countdownLatch.getCount() > 0)
             .subscribe();
         toClose(() -> subscription.dispose());
-        if (!countdownLatch.await(20, TimeUnit.SECONDS)) {
-            Assertions.fail("Failed peek messages from sequence.");
-        }
+
+        assertTrue(countdownLatch.await(20, TimeUnit.SECONDS), "Failed peek messages from sequence.");
 
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> receiver.complete(receivedMessage).block(Duration.ofSeconds(15)))
@@ -1071,6 +1070,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages()
             .flatMap(m -> receiver.defer(m).thenReturn(m))
+            .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received and deferred"))
             .next().block(TIMEOUT);
 
         assertNotNull(receivedMessage);
@@ -1079,6 +1079,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
             .flatMap(m -> {
+                logMessage(m, receiver.getEntityPath(), "received deferred");
                 final Mono<Void> operation;
                 switch (dispositionStatus) {
                     case ABANDONED:

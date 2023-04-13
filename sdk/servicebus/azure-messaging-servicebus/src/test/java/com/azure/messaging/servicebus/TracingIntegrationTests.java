@@ -496,7 +496,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                             .setMessageId(UUID.randomUUID().toString()));
                     }
                 })
-                .flatMap(batch -> sender.sendMessages(batch)))
+                .flatMap(batch -> {
+                    logMessages(batch.getMessages(), sender.getEntityPath(), "sending");
+                    return sender.sendMessages(batch);
+                }))
             .verifyComplete();
 
         CountDownLatch processedFound = new CountDownLatch(10);
@@ -508,6 +511,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .queueName(getQueueName(0))
             .maxConcurrentCalls(10)
             .processMessage(mc -> {
+                logMessage(mc.getMessage(), processor.getQueueName(), "processing");
                 String traceparent = (String) mc.getMessage().getApplicationProperties().get("traceparent");
                 String traceId = Span.current().getSpanContext().getTraceId();
 

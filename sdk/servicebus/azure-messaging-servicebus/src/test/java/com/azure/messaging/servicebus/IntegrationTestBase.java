@@ -80,10 +80,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        Class<?> testClass = testInfo.getTestClass().orElseGet(null);
         Method testMethod = testInfo.getTestMethod().orElseGet(null);
-        testName = String.format("%s.%s-%s",
-            testClass == null ? "unknown" : testClass.getSimpleName(),
+        testName = String.format("%s-%s",
             testMethod == null ? "unknown" : testMethod.getName(),
             testInfo.getDisplayName());
 
@@ -110,7 +108,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
+        logger.info("========= TEARDOWN [{}] =========", testName);
         StepVerifier.resetDefaultTimeout();
         afterTest();
 
