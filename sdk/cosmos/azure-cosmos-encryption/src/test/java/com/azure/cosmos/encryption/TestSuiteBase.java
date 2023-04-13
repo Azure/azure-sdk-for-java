@@ -567,6 +567,10 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         return collectionDefinition;
     }
 
+    static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
+        return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
+    }
+
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
         return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"));
     }
