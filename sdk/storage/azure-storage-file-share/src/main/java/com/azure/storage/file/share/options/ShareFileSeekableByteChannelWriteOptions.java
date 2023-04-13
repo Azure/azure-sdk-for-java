@@ -20,7 +20,8 @@ public final class ShareFileSeekableByteChannelWriteOptions {
 
     /**
      * Options constructor.
-     * @param overwriteMode Whether to open the channel in write mode.
+     * @param overwriteMode If {@code true}, the channel will be opened in overwrite mode. Otherwise, the channel will
+     * be opened in write mode.
      */
     public ShareFileSeekableByteChannelWriteOptions(boolean overwriteMode) {
         this.overwriteMode = overwriteMode;
