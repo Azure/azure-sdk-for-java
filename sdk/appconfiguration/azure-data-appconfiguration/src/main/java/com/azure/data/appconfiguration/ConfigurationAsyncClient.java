@@ -798,12 +798,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsBySnapshot#String -->
-     * <pre>
-     * client.listConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
-     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
-     *     .subscribe&#40;setting -&gt;
-     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsBySnapshot#String -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
@@ -956,14 +950,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.getSnapshot#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getSnapshot#String -->
      *
      * @param name the snapshot name.
@@ -980,14 +966,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.getSnapshotWithResponse#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getSnapshotWithResponse#String -->
      *
      * @param name The snapshot name.
@@ -1005,14 +983,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshot#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshot#String -->
      *
      * @param name The snapshot name.
@@ -1031,14 +1001,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
      *
      * @param snapshot The snapshot to be archived.
@@ -1062,14 +1024,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshot#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshot#String -->
      *
      * @param name The snapshot name.
@@ -1088,14 +1042,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
      *
      * @param snapshot The snapshot to be archived.
@@ -1118,14 +1064,6 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listSnapshots#SnapshotSelector -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listSnapshots#SnapshotSelector -->
      *
      * @param selector Optional. Used to filter {@link ConfigurationSettingSnapshot} from the service.
@@ -1137,7 +1075,7 @@ public final class ConfigurationAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(
                     context -> serviceClient.getSnapshotsSinglePageAsync(selector.getName(), null, null,
-                        Arrays.asList(selector.getSnapshotStatus()), addTracingNamespace(context))),
+                        selector.getSnapshotStatus(), addTracingNamespace(context))),
                 nextLink -> withContext(
                     context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))
             );

@@ -839,12 +839,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot#String -->
-     * <pre>
-     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-     * configurationClient.listConfigurationSettings&#40;settingSelector&#41;.forEach&#40;setting -&gt; &#123;
-     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
-     * &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot#String -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
@@ -1032,40 +1026,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotWithResponse -->
-     * <pre>
-     * client.listRevisions&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
-     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
-     *     .subscribe&#40;setting -&gt;
-     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotWithResponse-->
-     *
-     * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
-     * @param snapshot The {@link ConfigurationSettingSnapshot} to create.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SyncPoller} that polls the creating snapshot operation until it has completed or
-     * has failed. The completed operation returns a {@link ConfigurationSettingSnapshot}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshotWithResponse(
-        String name, ConfigurationSettingSnapshot snapshot, Context context) {
-        return createSnapshotUtilClient.beginCreateSnapshot(name, snapshot, context);
-    }
-
-    /**
-     * Get a {@link ConfigurationSettingSnapshot} by given the snapshot name.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshot#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshot#String -->
      *
      * @param name the snapshot name.
@@ -1082,14 +1043,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshotWithResponse#String-Context -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotWithResponse#String-Context -->
      *
      * @param name the snapshot name.
@@ -1109,14 +1062,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshot#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshot#String -->
      *
      * @param name The snapshot name.
@@ -1124,8 +1069,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot archiveSnapshot(String name) {
-        return archiveSnapshotWithResponse(new ConfigurationSettingSnapshot(null),
-            false, Context.NONE).getValue();
+        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
+        ConfigurationSettingSnapshotHelper.setName(snapshot, name);
+        return archiveSnapshotWithResponse(snapshot, false, Context.NONE).getValue();
     }
 
     /**
@@ -1134,14 +1080,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
      *
      * @param snapshot The snapshot to be archived.
@@ -1166,14 +1104,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshot#String -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshot#String -->
      *
      * @param name The snapshot name.
@@ -1192,14 +1122,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
      *
      * @param snapshot The snapshot to be archived.
@@ -1224,14 +1146,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector -->
      *
      * @param selector Optional. Used to filter {@link ConfigurationSettingSnapshot} from the service.
@@ -1248,14 +1162,6 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector-Context -->
-     * <pre>
-     * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         final ConfigurationSetting result = response.getValue&#40;&#41;;
-     *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
-     *             result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector-Context -->
      *
      * @param selector Optional. Used to filter {@link ConfigurationSettingSnapshot} from the service.
@@ -1266,11 +1172,11 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSettingSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
         return new PagedIterable<>(
             () -> serviceClient.getSnapshotsSinglePage(
-               selector.getName(),
-               null,
-               null,
-               Arrays.asList(selector.getSnapshotStatus()),
-               enableSyncRestProxy(addTracingNamespace(context))),
+                selector.getName(),
+                null,
+                null,
+                selector.getSnapshotStatus(),
+                enableSyncRestProxy(addTracingNamespace(context))),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
                 enableSyncRestProxy(addTracingNamespace(context))));
     }

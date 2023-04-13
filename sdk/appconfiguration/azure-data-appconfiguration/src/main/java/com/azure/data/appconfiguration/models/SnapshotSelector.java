@@ -5,13 +5,15 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.List;
+
 /**
  * Snapshot selector, the optional bag
  */
 @Fluent
 public final class SnapshotSelector {
     private String name;
-    private SnapshotStatus status;
+    private List<SnapshotStatus> status;
 
     /**
      * Gets the snapshot name
@@ -38,7 +40,7 @@ public final class SnapshotSelector {
      *
      * @return The snapshot status.
      */
-    public SnapshotStatus getSnapshotStatus() {
+    public List<SnapshotStatus> getSnapshotStatus() {
         return status;
     }
 
@@ -48,7 +50,7 @@ public final class SnapshotSelector {
      * @param status the snapshot status.
      * @return The updated SnapshotSelector object
      */
-    public SnapshotSelector setSnapshotStatus(SnapshotStatus status) {
+    public SnapshotSelector setSnapshotStatusList(List<SnapshotStatus> status) {
         this.status = status;
         return this;
     }

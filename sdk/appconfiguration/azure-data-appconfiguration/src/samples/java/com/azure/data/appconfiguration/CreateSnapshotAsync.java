@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
@@ -35,7 +36,7 @@ public class CreateSnapshotAsync {
                                                     .connectionString(connectionString)
                                                     .buildAsyncClient();
         // Prepare first setting.
-        client.setConfigurationSetting("key1", null, "v1").subscribe(
+        client.setConfigurationSetting("TestKey1", null, "v1").subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
                 System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
@@ -44,7 +45,7 @@ public class CreateSnapshotAsync {
             () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "key1", "v1"));
 
         // Prepare second setting.
-        client.setConfigurationSetting("key2", null, "v2").subscribe(
+        client.setConfigurationSetting("TestKey2", null, "v2").subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
                 System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
@@ -57,7 +58,7 @@ public class CreateSnapshotAsync {
         // Prepare the snapshot filters
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("k*"));
+        filters.add(new SnapshotSettingFilter("Test*"));
         String snapshotName = "{snapshotName}";
 
         client.beginCreateSnapshot(snapshotName, filters)
@@ -103,7 +104,7 @@ public class CreateSnapshotAsync {
         // List the configuration settings in the snapshot
         client.listConfigurationSettingsBySnapshot(snapshotName).subscribe(
             settingInSnapshot -> {
-                System.out.printf(String.format("[ConfigurationSettingInSnapshot] Key: %s, Value: %s",
+                System.out.printf(String.format("[ConfigurationSetting in snapshot] Key: %s, Value: %s.%n",
                     settingInSnapshot.getKey(), settingInSnapshot.getValue()));
             }
         );

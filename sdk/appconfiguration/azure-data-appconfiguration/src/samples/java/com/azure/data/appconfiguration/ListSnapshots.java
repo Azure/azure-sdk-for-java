@@ -33,10 +33,10 @@ public class ListSnapshots {
         System.out.println("Beginning of synchronous sample...");
 
         // 1. Prepare first setting.
-        ConfigurationSetting setting = client.setConfigurationSetting("Test1", null, "value1");
+        ConfigurationSetting setting = client.setConfigurationSetting("TestKey1", null, "value1");
         System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
         // 1. Prepare second setting.
-        ConfigurationSetting setting2 = client.setConfigurationSetting("Test2", null, "value2");
+        ConfigurationSetting setting2 = client.setConfigurationSetting("TestKey2", null, "value2");
         System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
         // 1. Prepare the snapshot filters
         List<SnapshotSettingFilter> filters = new ArrayList<>();
@@ -44,7 +44,7 @@ public class ListSnapshots {
         filters.add(new SnapshotSettingFilter("Test*"));
 
         // 1. Create first snapshot
-        String snapshotNameTest = "{snapshotName}";
+        String snapshotNameTest = "{snapshotNameInTest}";
         SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
             client.beginCreateSnapshot(snapshotNameTest, filters);
         poller.setPollInterval(Duration.ofSeconds(10));
@@ -54,10 +54,10 @@ public class ListSnapshots {
             snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 
         // 2. Prepare third setting.
-        ConfigurationSetting setting3 = client.setConfigurationSetting("Product1", null, "value1");
+        ConfigurationSetting setting3 = client.setConfigurationSetting("ProductKey1", null, "value1");
         System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
         // 2. Prepare fourth setting.
-        ConfigurationSetting setting4 = client.setConfigurationSetting("Product2", null, "value2");
+        ConfigurationSetting setting4 = client.setConfigurationSetting("ProductKey2", null, "value2");
         System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
         // 2. Prepare the snapshot filters
         List<SnapshotSettingFilter> filters2 = new ArrayList<>();
@@ -65,7 +65,7 @@ public class ListSnapshots {
         filters.add(new SnapshotSettingFilter("Product*"));
 
         // 2. Create second snapshot
-        String snapshotNameProduct = "{snapshotName2}";
+        String snapshotNameProduct = "{snapshotNameInProduct}";
         SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> pollerProduct =
             client.beginCreateSnapshot(snapshotNameProduct, filters);
         pollerProduct.setPollInterval(Duration.ofSeconds(10));
@@ -80,6 +80,29 @@ public class ListSnapshots {
                 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
             });
+
+        // Get the snapshot status
+        ConfigurationSettingSnapshot getSnapshot = client.getSnapshot(snapshotNameProduct);
+        System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+            getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+
+        // Archive a READY snapshot
+        ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(snapshotNameProduct);
+        System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
+            archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
+
+        // Recover the Archived snapshot
+        ConfigurationSettingSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotNameProduct);
+        System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
+            recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
+
+        // List the configuration settings in the snapshot
+        client.listConfigurationSettingsBySnapshot(snapshotNameProduct).forEach(
+            settingInSnapshot -> {
+                System.out.printf(String.format("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
+                    settingInSnapshot.getKey(), settingInSnapshot.getValue()));
+            }
+        );
 
         System.out.println("End of synchronous sample.");
     }

@@ -31,21 +31,21 @@ public class ListSnapshotsAsync {
             .connectionString(connectionString)
             .buildAsyncClient();
         // 1. Prepare first setting.
-        client.setConfigurationSetting("Test1", null, "v1").subscribe(
-            result -> {
-                final ConfigurationSetting setting = result;
-                System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
-            },
-            error -> System.err.println("There was an error adding the setting: " + error),
-            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "Test1", "v1"));
-        // 1. Prepare second setting.
-        client.setConfigurationSetting("Test2", null, "v2").subscribe(
+        client.setConfigurationSetting("TestKey1", null, "value1").subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
                 System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
             },
             error -> System.err.println("There was an error adding the setting: " + error),
-            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "Test2", "v2"));
+            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "TestKey1", "value1"));
+        // 1. Prepare second setting.
+        client.setConfigurationSetting("TestKey2", null, "value2").subscribe(
+            result -> {
+                final ConfigurationSetting setting = result;
+                System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
+            },
+            error -> System.err.println("There was an error adding the setting: " + error),
+            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "TestKey2", "value2"));
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
@@ -53,7 +53,7 @@ public class ListSnapshotsAsync {
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("Test*"));
-        String snapshotNameTest = "{snapshotName}";
+        String snapshotNameTest = "{snapshotNameInTest}";
 
         // 1. Create first snapshot
         client.beginCreateSnapshot(snapshotNameTest, filters)
@@ -68,23 +68,22 @@ public class ListSnapshotsAsync {
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
-
         // 2. Prepare third setting.
-        client.setConfigurationSetting("Product1", null, "v1").subscribe(
-            result -> {
-                final ConfigurationSetting setting = result;
-                System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
-            },
-            error -> System.err.println("There was an error adding the setting: " + error),
-            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "Product1", "v1"));
-        // 1. Prepare fourth setting.
-        client.setConfigurationSetting("Product2", null, "v2").subscribe(
+        client.setConfigurationSetting("ProductKey1", null, "value1").subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
                 System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
             },
             error -> System.err.println("There was an error adding the setting: " + error),
-            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "Product2", "v2"));
+            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "ProductKey1", "value1"));
+        // 1. Prepare fourth setting.
+        client.setConfigurationSetting("ProductKey2", null, "value2").subscribe(
+            result -> {
+                final ConfigurationSetting setting = result;
+                System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue());
+            },
+            error -> System.err.println("There was an error adding the setting: " + error),
+            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.%n", "ProductKey2", "value2"));
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
@@ -92,7 +91,7 @@ public class ListSnapshotsAsync {
         List<SnapshotSettingFilter> filtersInProduct = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filtersInProduct.add(new SnapshotSettingFilter("Product*"));
-        String snapshotNameProduct = "{snapshotName2}";
+        String snapshotNameProduct = "{snapshotNameInProduct}";
 
         // 2. Create first snapshot
         client.beginCreateSnapshot(snapshotNameTest, filters)

@@ -36,15 +36,15 @@ public class CreateSnapshot {
 
         System.out.println("Beginning of synchronous sample...");
         // Prepare first setting.
-        ConfigurationSetting setting = client.setConfigurationSetting("key1", null, "value1");
+        ConfigurationSetting setting = client.setConfigurationSetting("TestKey1", null, "value1");
         System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting.getKey(), setting.getValue()));
         // Prepare second setting.
-        ConfigurationSetting setting2 = client.setConfigurationSetting("key2", null, "value2");
+        ConfigurationSetting setting2 = client.setConfigurationSetting("TestKey2", null, "value2");
         System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s.%n", setting2.getKey(), setting2.getValue()));
         // Prepare the snapshot filters
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
-        filters.add(new SnapshotSettingFilter("k*"));
+        filters.add(new SnapshotSettingFilter("Test*"));
 
         // Create a snapshot
         String snapshotName = "{snapshotName}";
@@ -74,7 +74,7 @@ public class CreateSnapshot {
         // List the configuration settings in the snapshot
         client.listConfigurationSettingsBySnapshot(snapshotName).forEach(
             settingInSnapshot -> {
-                System.out.printf(String.format("[ConfigurationSettingInSnapshot] Key: %s, Value: %s",
+                System.out.printf(String.format("[ConfigurationSetting In Snapshot] Key: %s, Value: %s.%n",
                     settingInSnapshot.getKey(), settingInSnapshot.getValue()));
             }
         );
