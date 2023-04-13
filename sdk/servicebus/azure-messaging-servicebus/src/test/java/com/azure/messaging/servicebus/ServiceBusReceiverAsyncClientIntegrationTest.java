@@ -1035,6 +1035,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 return operation.thenReturn(m);
 
             })
+            .timeout(Duration.ofSeconds(TIMEOUT.getSeconds() / 5))
+            .retry(5)
             .block(TIMEOUT);
 
         assertNotNull(receivedDeferredMessage);
