@@ -59,8 +59,7 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
     public interface RestorableGremlinGraphsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
-                + "/restorableDatabaseAccounts/{instanceId}/restorableGraphs")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGraphs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableGremlinGraphsListResult>> list(
