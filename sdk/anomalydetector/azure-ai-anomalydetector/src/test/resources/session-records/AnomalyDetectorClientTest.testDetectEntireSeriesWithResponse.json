@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com//anomalydetector/v1.1/timeseries/entire/detect",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-region" : "Central US EUAP",
+      "x-envoy-upstream-service-time" : "36",
+      "Server" : "istio-envoy",
+      "X-Content-Type-Options" : "nosniff",
+      "apim-request-id" : "e91f9db6-5755-4d3f-8b91-7fe5d0310c76",
+      "model-id" : "40",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 13 Apr 2023 08:04:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "csp-billing-usage" : "CognitiveServices.AnomalyDetector.DataPoints=1",
+      "Content-Length" : "1684",
+      "Body" : "{\"expectedValues\":[855.0000000000005,855.0000000000003,855.0000000000003,855.0000000000002,855.0000000000001,855.0,855.0,854.9999999999998,854.9999999999999,855.0,854.9999999999999,855.0,854.9999999999999,855.0,855.0,855.0,855.0000000000001,855.0000000000002,855.0,855.0000000000002,855.0000000000002,855.0000000000002,855.0000000000002,855.0000000000002],\"isAnomaly\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"isNegativeAnomaly\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"isPositiveAnomaly\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"lowerMargins\":[3.4200000000004556,3.420000000000342,3.420000000000342,3.4200000000002277,3.4200000000001136,3.42,3.42,1.1400000000000756,1.1400000000000379,3.42,1.1400000000000379,3.42,1.1400000000000379,3.42,3.42,3.42,3.4200000000001136,3.4200000000002277,3.42,3.4200000000002277,3.4200000000002277,3.4200000000002277,3.4200000000002277,3.4200000000002277],\"period\":0,\"severity\":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],\"upperMargins\":[1.1400000000001518,1.140000000000114,1.140000000000114,1.1400000000000758,1.1400000000000379,1.14,1.14,3.420000000000227,3.4200000000001136,1.14,3.4200000000001136,1.14,3.4200000000001136,1.14,1.14,1.14,1.1400000000000379,1.1400000000000758,1.14,1.1400000000000758,1.1400000000000758,1.1400000000000758,1.1400000000000758,1.1400000000000758]}\n",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
