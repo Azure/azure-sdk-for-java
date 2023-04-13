@@ -933,7 +933,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             }))
             .assertNext(received -> assertTrue(lockRenewCount.get() > 0))
             .thenCancel()
-            .verify();
+                .verify();
         }
     }
 
@@ -1111,14 +1111,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
             StepVerifier.create(receiver.receiveMessages()
                     .flatMap(message -> {
-                            LOGGER.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
-                                message.getSessionId(), message.getLockToken(), message.getLockedUntil());
-                            assertMessageEquals(message, messageId, isSessionEnabled);
-                            return receiver.abandon(message)
-                                .then(receiver.setSessionState(sessionState))
-                                .then(receiver.getSessionState());
-                        }
-                    ).take(1))
+                        LOGGER.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
+                            message.getSessionId(), message.getLockToken(), message.getLockedUntil());
+                        assertMessageEquals(message, messageId, isSessionEnabled);
+                        return receiver.abandon(message)
+                            .then(receiver.setSessionState(sessionState))
+                            .then(receiver.getSessionState());
+                    })
+                    .take(1))
                 .assertNext(state -> {
                     LOGGER.info("State received: {}", new String(state, UTF_8));
                     assertArrayEquals(sessionState, state);
