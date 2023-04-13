@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -55,6 +56,7 @@ public class TestUtils {
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     static final int USE_CASE_DEFAULT = 0;
+    static final Object USE_CASE_DEFAULT_LOCK = new Object();
     static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
     static final int USE_CASE_SCHEDULE_MESSAGES = 2;
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
