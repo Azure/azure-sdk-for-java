@@ -90,24 +90,24 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .flatMap(openConnectionOperation -> {
-                    endpointToMinConnections.remove(openConnectionOperation.addressUri.getURIAsString());
+                .flatMap(openConnectionTask -> {
+                    endpointToMinConnections.remove(openConnectionTask.addressUri.getURIAsString());
 
-                    Uri addressUri = openConnectionOperation.addressUri;
-                    URI serviceEndpoint = openConnectionOperation.serviceEndpoint;
-                    int minConnectionsForEndpoint = openConnectionOperation.minConnectionsRequiredForEndpoint;
-                    String collectionRid = openConnectionOperation.collectionRid;
+                    Uri addressUri = openConnectionTask.addressUri;
+                    URI serviceEndpoint = openConnectionTask.serviceEndpoint;
+                    int minConnectionsForEndpoint = openConnectionTask.minConnectionsRequiredForEndpoint;
+                    String collectionRid = openConnectionTask.collectionRid;
 
-                    return Flux.zip(Mono.just(openConnectionOperation), openConnectionsHandler.openConnections(
+                    return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
                             collectionRid,
                             serviceEndpoint,
                             Arrays.asList(addressUri),
                             this,
                             minConnectionsForEndpoint));
                 }, false, concurrencyConfiguration.openConnectionExecutionConcurrency)
-                .flatMap(openConnectionOpToResponse -> {
-                    OpenConnectionTask openConnectionTask = openConnectionOpToResponse.getT1();
-                    OpenConnectionResponse openConnectionResponse = openConnectionOpToResponse.getT2();
+                .flatMap(openConnectionTaskToResponse -> {
+                    OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
+                    OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
 
                     if (openConnectionResponse.isConnected() && openConnectionResponse.isOpenConnectionAttempted()) {
                         this.submitOpenConnectionTask(openConnectionTask);
