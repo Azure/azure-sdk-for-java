@@ -94,7 +94,7 @@ public class ConfigurationClientCredentials {
                 headers.set(HttpHeaderName.DATE, date);
             }
 
-            String signed = url.getHost() + ";" + headers.getValue(HttpHeaderName.DATE) + ";" + contentHash;
+            String signed = url.getHost() + ";" + date + ";" + contentHash;
 
             headers.set(HttpHeaderName.HOST, url.getHost())
                 .set(X_MS_CONTENT_SHA256, contentHash);
