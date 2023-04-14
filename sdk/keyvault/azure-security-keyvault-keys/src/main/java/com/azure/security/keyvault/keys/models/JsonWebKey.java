@@ -55,9 +55,8 @@ import java.util.Set;
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility =
     JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-
     private static final ClientLogger LOGGER = new ClientLogger(JsonWebKey.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Key Identifier.
