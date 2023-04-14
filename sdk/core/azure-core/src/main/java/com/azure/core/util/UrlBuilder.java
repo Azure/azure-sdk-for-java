@@ -273,12 +273,8 @@ public final class UrlBuilder {
                 builder.append('&');
             }
 
-            builder.append(key);
-
-            if (!CoreUtils.isNullOrEmpty(value)) {
-                builder.append('=').append(value);
-            }
-
+            // TODO (alzimmer): It should be allowed to drop the '=' if the value is null or empty.
+            builder.append(key).append('=').append(value);
             first = false;
         }
 
