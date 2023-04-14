@@ -39,10 +39,6 @@
       },
       "RequestBody": {
         "key": {
-          "logger": {
-            "globalContextSerialized": "",
-            "hasGlobalContext": false
-          },
           "kty": "oct",
           "key_ops": [
             "wrapKey",
