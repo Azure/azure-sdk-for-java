@@ -303,7 +303,7 @@ public class QueueSasTests extends QueueTestBase {
         String queueName = getRandomName(60);
 
         assertDoesNotThrow(() ->
-            getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas, null)
+            getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas)
                 .buildClient()
                 .createQueue(queueName));
 

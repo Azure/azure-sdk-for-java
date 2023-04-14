@@ -3,11 +3,34 @@
 
 package com.azure.storage.queue;
 
-import com.azure.storage.common.test.shared.ServiceVersionSpec;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.DevopsPipeline;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 
-public class QueueServiceVersionTests extends ServiceVersionSpec {
-    @Override
-    protected Class<?> getServiceVersionClass() {
-        return QueueServiceVersion.class;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class QueueServiceVersionTests {
+    @DisabledIf("doNotRun")
+    @Test
+    public void getLatestPointsToLatest() {
+        QueueServiceVersion[] values = QueueServiceVersion.values();
+        assertEquals(values[values.length - 1], QueueServiceVersion.getLatest());
+    }
+
+    @DisabledIf("doNotRun")
+    @Test
+    public void sasVersionShouldMatchLastWhenWeRelease() {
+        assertEquals(Constants.SAS_SERVICE_VERSION, QueueServiceVersion.getLatest().getVersion());
+    }
+
+    @DisabledIf("doNotRun")
+    @Test
+    public void headerVersionShouldMatchLastWhenWeRelease() {
+        assertEquals(Constants.HeaderConstants.TARGET_STORAGE_VERSION, QueueServiceVersion.getLatest().getVersion());
+    }
+
+    static boolean doNotRun() {
+        return DevopsPipeline.getInstance().map(it -> !it.releasesToMavenCentral()).orElse(true);
     }
 }
