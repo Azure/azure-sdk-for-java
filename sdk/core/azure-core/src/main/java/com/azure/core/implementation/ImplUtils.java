@@ -26,7 +26,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -204,20 +203,14 @@ public final class ImplUtils {
         return result;
     }
 
-    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters))
-            ? Collections.emptyIterator()
-            : new QueryParameterIterator(queryParameters);
-    }
-
-    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
+    public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
         private final String queryParameters;
         private final int queryParametersLength;
 
         private boolean done = false;
         private int position;
 
-        QueryParameterIterator(String queryParameters) {
+        public QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
             this.queryParametersLength = queryParameters.length();
 
