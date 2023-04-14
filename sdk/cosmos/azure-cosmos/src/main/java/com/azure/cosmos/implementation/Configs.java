@@ -124,8 +124,15 @@ public class Configs {
     private static final String MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT";
     private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 1;
 
+    private static final String OPEN_CONNECTIONS_AGGRESSIVE_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_AGGRESSIVE_CONCURRENCY";
+    private static final int DEFAULT_OPEN_CONNECTIONS_AGGRESSIVE_CONCURRENCY = Configs.getCPUCnt();
+
     private static final String OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY = "COSMOS.OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY";
     private static final int DEFAULT_OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY = 1;
+
+    private static final String OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED = "COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED";
+    private static final boolean DEFAULT_OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED = true;
+
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -359,5 +366,13 @@ public class Configs {
 
     public static int getOpenConnectionsDefensiveConcurrency() {
         return getIntValue(System.getProperty(OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY), DEFAULT_OPEN_CONNECTIONS_DEFENSIVE_CONCURRENCY);
+    }
+
+    public static int getOpenConnectionsAggressiveConcurrency() {
+        return getIntValue(System.getProperty(OPEN_CONNECTIONS_AGGRESSIVE_CONCURRENCY), DEFAULT_OPEN_CONNECTIONS_AGGRESSIVE_CONCURRENCY);
+    }
+
+    public static boolean isOpenConnectionsForConnectionExceptionsEnabled() {
+        return getBooleanValue(System.getProperty(OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED), DEFAULT_OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED);
     }
 }

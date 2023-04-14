@@ -45,6 +45,8 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
             .contentResponseOnWriteEnabled(true)
             .directMode()
             .buildAsyncClient();
+
+        System.setProperty("COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED", "false");
     }
 
     @Test(groups = {"simple"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
@@ -105,6 +107,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        System.clearProperty("COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED");
         safeClose(client);
     }
 }

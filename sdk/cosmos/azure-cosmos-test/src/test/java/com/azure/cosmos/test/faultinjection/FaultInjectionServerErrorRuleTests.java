@@ -77,6 +77,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         this.readRegionMap = this.getRegionMap(databaseAccount, false);
         this.writeRegionMap = this.getRegionMap(databaseAccount, true);
+        System.setProperty("COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED", "false");
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -765,6 +766,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-region", "simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        System.clearProperty("COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED");
         safeClose(client);
     }
 

@@ -97,7 +97,7 @@ public class RntbdConnectionStateListener {
         // close / reset
         // connections will be opened proactively on this endpoint only in the
         // openConnectionsAndInitCaches flow
-        if (Configs.getMinConnectionPoolSizePerEndpoint() > 0) {
+        if (Configs.getMinConnectionPoolSizePerEndpoint() > 0 && Configs.isOpenConnectionsForConnectionExceptionsEnabled()) {
 
             logger.warn("Exception occurred {}, trying to proactively open a connection.", exception.getMessage());
 
