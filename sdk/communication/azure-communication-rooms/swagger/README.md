@@ -52,3 +52,78 @@ directive:
     transform: >
       $.name = "ParticipantRole";
 ```
+
+```yaml
+directive:
+- from: swagger-document
+  where: $["paths"]["/rooms/{roomId}/participants"]
+  transform: >
+    $["patch"] = {
+      "tags": [
+        "Participants"
+      ],
+      "summary": "Update participants in a room.",
+      "operationId": "Participants_Update",
+      "consumes": [
+        "application/merge-patch+json"
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "roomId",
+          "description": "The id of the room to update the participants in.",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "$ref": "#/parameters/ApiVersionParameter"
+        },
+        {
+          "in": "body",
+          "name": "updateParticipantsRequest",
+          "description": "An updated set of participants of the room.",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The participants were successfully updated.",
+          "schema": {
+            "$ref": "#/definitions/UpdateParticipantsResult"
+          }
+        },
+        "default": {
+          "description": "Error response",
+          "schema": {
+            "$ref": "#/definitions/CommunicationErrorResponse"
+          },
+          "headers": {
+            "x-ms-error-code": {
+              "x-ms-client-name": "ErrorCode",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "x-ms-examples": {
+        "Update participants": {
+          "$ref": "./examples/Participants_Update.json"
+        }
+      },
+      "headers": {
+        "x-ms-error-code": {
+          "x-ms-client-name": "ErrorCode",
+          "type": "string"
+        }
+      },
+      "x-ms-examples": {
+        "Update participants": {
+          "$ref": "./examples/Participants_Update.json"
+        }
+      }
+    }
+```

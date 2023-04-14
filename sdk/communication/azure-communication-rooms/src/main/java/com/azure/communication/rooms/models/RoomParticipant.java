@@ -23,12 +23,21 @@ public final class RoomParticipant {
     private final ParticipantRole role;
 
     /**
-     * Default constructor for Room Participant
-     * 
+     * Default constructor for Room Participant. Default role is Attendee
+     *
+     * @param communicationIdentifier The communication identifier.
+     */
+    public RoomParticipant(CommunicationIdentifier communicationIdentifier) {
+        this.communicationIdentifier = communicationIdentifier;
+        this.role = ParticipantRole.ATTENDEE;
+    }
+
+    /**
+     * Constructor for Room Participant
+     *
      * @param communicationIdentifier The communication identifier.
      * @param role The participant role.
      */
-
     public RoomParticipant(CommunicationIdentifier communicationIdentifier, ParticipantRole role) {
         this.communicationIdentifier = communicationIdentifier;
         this.role = role;

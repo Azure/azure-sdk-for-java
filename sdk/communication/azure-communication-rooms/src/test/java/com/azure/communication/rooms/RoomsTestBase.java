@@ -57,6 +57,7 @@ public class RoomsTestBase extends TestBase {
     protected List<RoomParticipant> badParticipant;
     protected List<RoomParticipant> participantsWithRoleUpdates;
 
+    protected List<CommunicationIdentifier> communicationIdentifiersForParticipants2;
     protected List<CommunicationIdentifier> communicationIdentifiersForParticipants5;
 
     private CommunicationIdentityClient communicationClient;
@@ -67,6 +68,8 @@ public class RoomsTestBase extends TestBase {
 
     protected RoomParticipant firstParticipant;
     protected RoomParticipant secondParticipant;
+    protected RoomParticipant firstParticipant2;
+    protected RoomParticipant secondParticipant2;
     protected RoomParticipant thirdParticipant;
     protected RoomParticipant thirdParticipantWithDefaultRole;
     protected RoomParticipant firstChangeParticipant;
@@ -172,15 +175,19 @@ public class RoomsTestBase extends TestBase {
         secondParticipantId = communicationClient.createUser();
         thirdParticipantId = communicationClient.createUser();
 
-        firstParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.ATTENDEE);
-
-        secondParticipant = new RoomParticipant(secondParticipantId, ParticipantRole.ATTENDEE);
+        firstParticipant = new RoomParticipant(firstParticipantId);
+        secondParticipant = new RoomParticipant(secondParticipantId);
         thirdParticipant = new RoomParticipant(thirdParticipantId, ParticipantRole.CONSUMER);
+
+
+        firstParticipant2 = new RoomParticipant(firstParticipantId, null);
+
+        secondParticipant2 = new RoomParticipant(secondParticipantId, null);
 
         thirdParticipantWithDefaultRole = new RoomParticipant(thirdParticipantId, ParticipantRole.ATTENDEE);
 
         firstChangeParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.CONSUMER);
-        secondChangeParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.CONSUMER);
+        secondChangeParticipant = new RoomParticipant(secondParticipantId, ParticipantRole.CONSUMER);
 
         validateParticipant1 = new RoomParticipant(firstParticipantId, ParticipantRole.ATTENDEE);
         validateParticipant2 = new RoomParticipant(secondParticipantId, ParticipantRole.ATTENDEE);
@@ -191,6 +198,8 @@ public class RoomsTestBase extends TestBase {
         participants3 = Arrays.asList(secondParticipant);
         participants4 = Arrays.asList(firstParticipant, secondParticipant);
         participants5 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
+        participants6 = Arrays.asList(firstParticipant2, secondParticipant2);
+        communicationIdentifiersForParticipants2 = getCommunicationIdentifiers(participants2);
         communicationIdentifiersForParticipants5 = getCommunicationIdentifiers(participants5);
 
         participants6 = Arrays.asList(secondParticipant, thirdParticipant);
