@@ -8,6 +8,7 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.webpubsub.client.implementation.WebPubSubConnection;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClientNettyImpl;
@@ -50,8 +51,6 @@ import reactor.util.concurrent.Queues;
 import reactor.util.retry.Retry;
 
 import java.io.Closeable;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
@@ -88,8 +87,7 @@ class WebPubSubAsyncClient implements Closeable {
     private final WebSocketClient webSocketClient;
     private WebSocketSession webSocketSession;
 
-    private String connectionId;
-    private String reconnectionToken;
+    private WebPubSubConnection webPubSubConnection;
 
     private static final AtomicLong ACK_ID = new AtomicLong(0);
 
@@ -116,7 +114,6 @@ class WebPubSubAsyncClient implements Closeable {
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     // sequence ack
-    private final SequenceAckId sequenceAckId = new SequenceAckId();
     private final AtomicReference<Disposable> sequenceAckTask = new AtomicReference<>();
 
     // client state
@@ -190,7 +187,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the connection ID.
      */
     public String getConnectionId() {
-        return connectionId;
+        return webPubSubConnection == null ? null : webPubSubConnection.getConnectionId();
     }
 
     /**
@@ -224,8 +221,6 @@ class WebPubSubAsyncClient implements Closeable {
                     postStartTask.run();
                 }
 
-                // reset
-                sequenceAckId.clear();
                 return Mono.empty();
             }
         }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() -> {
@@ -688,9 +683,19 @@ class WebPubSubAsyncClient implements Closeable {
             if (webPubSubProtocol.isReliable()) {
                 Flux<Void> sequenceAckFlux = Flux.interval(SEQUENCE_ACK_DELAY).concatMap(ignored -> {
                     if (clientState.get() == WebPubSubClientState.CONNECTED && session != null && session.isOpen()) {
-                        Long id = sequenceAckId.getUpdated();
-                        if (id != null) {
-                            return sendMessage(new SequenceAckMessage().setSequenceId(id));
+                        WebPubSubConnection connection = this.webPubSubConnection;
+                        if (connection != null) {
+                            Long id = connection.getSequenceAckId().getUpdated();
+                            if (id != null) {
+                                return sendMessage(new SequenceAckMessage().setSequenceId(id))
+                                    .doOnError(error -> {
+                                        // ignore error, wait for next chance
+                                        connection.getSequenceAckId().setUpdated();
+                                    })
+                                    .onErrorComplete();
+                            } else {
+                                return Mono.empty();
+                            }
                         } else {
                             return Mono.empty();
                         }
@@ -737,40 +742,48 @@ class WebPubSubAsyncClient implements Closeable {
             return;
         }
 
+        final String connectionId = this.getConnectionId();
+
         if (isStoppedByUser.compareAndSet(true, false)
             || clientState.get() == WebPubSubClientState.STOPPING) {
-            // send DisconnectedEvent
-            tryEmitNext(disconnectedEventSink, new DisconnectedEvent(connectionId, null));
+            // connection close, send DisconnectedEvent
+            handleConnectionClose();
 
             // stopped by user
             handleClientStop();
         } else if (closeReason.getCloseCode() == violatedPolicyStatusCode) {
-            // do not send DisconnectedEvent
-            // server likely send the DisconnectedMessage before close on VIOLATED_POLICY
             clientState.changeState(WebPubSubClientState.DISCONNECTED);
+            // connection close, send DisconnectedEvent
+            handleConnectionClose();
 
+            // reconnect
             handleNoRecovery().subscribe(null, thr -> {
                 logger.atWarning()
                     .log("Failed to auto reconnect session: " + thr.getMessage());
             });
         } else {
+            final WebPubSubConnection connection = this.webPubSubConnection;
+            final String reconnectionToken = connection == null ? null : connection.getReconnectionToken();
             if (!webPubSubProtocol.isReliable() || reconnectionToken == null || connectionId == null) {
                 clientState.changeState(WebPubSubClientState.DISCONNECTED);
-                // send DisconnectedEvent
-                tryEmitNext(disconnectedEventSink, new DisconnectedEvent(connectionId, null));
+                // connection close, send DisconnectedEvent
+                handleConnectionClose();
 
+                // reconnect
                 handleNoRecovery().subscribe(null, thr -> {
                     logger.atWarning()
                         .log("Failed to auto reconnect session: " + thr.getMessage());
                 });
             } else {
-                handleRecovery().timeout(RECOVER_TIMEOUT, Mono.defer(() -> {
+                // connection not close, attempt recover
+                handleRecovery(connectionId, reconnectionToken).timeout(RECOVER_TIMEOUT, Mono.defer(() -> {
+                    // fallback to reconnect
+
                     // client should be RECOVERING, after timeout
                     clientState.changeState(WebPubSubClientState.DISCONNECTED);
-                    // send DisconnectedEvent
-                    tryEmitNext(disconnectedEventSink, new DisconnectedEvent(connectionId, null));
+                    // connection close, send DisconnectedEvent
+                    handleConnectionClose();
 
-                    // fallback
                     return handleNoRecovery();
                 })).subscribe(null, thr -> {
                     logger.atWarning()
@@ -793,7 +806,7 @@ class WebPubSubAsyncClient implements Closeable {
 //        }
 
         if (webPubSubMessage instanceof GroupDataMessage) {
-            GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
+            final GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
             tryEmitNext(groupMessageEventSink, new GroupMessageEvent(
                 groupDataMessage.getGroup(),
                 groupDataMessage.getData(),
@@ -802,36 +815,69 @@ class WebPubSubAsyncClient implements Closeable {
                 groupDataMessage.getSequenceId()));
 
             if (groupDataMessage.getSequenceId() != null) {
-                sequenceAckId.update(groupDataMessage.getSequenceId());
+                updateSequenceAckId(groupDataMessage.getSequenceId());
             }
         } else if (webPubSubMessage instanceof ServerDataMessage) {
-            ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
+            final ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
             tryEmitNext(serverMessageEventSink, new ServerMessageEvent(
                 serverDataMessage.getData(),
                 serverDataMessage.getDataType(),
                 serverDataMessage.getSequenceId()));
 
             if (serverDataMessage.getSequenceId() != null) {
-                sequenceAckId.update(serverDataMessage.getSequenceId());
+                updateSequenceAckId(serverDataMessage.getSequenceId());
             }
         } else if (webPubSubMessage instanceof AckMessage) {
-            ackMessageSink.emitNext((AckMessage) webPubSubMessage,
-                emitFailureHandler("Unable to emit GroupMessageEvent"));
+            tryEmitNext(ackMessageSink, (AckMessage) webPubSubMessage);
         } else if (webPubSubMessage instanceof ConnectedMessage) {
-            ConnectedMessage connectedMessage = (ConnectedMessage) webPubSubMessage;
-            connectionId = connectedMessage.getConnectionId();
-            reconnectionToken = connectedMessage.getReconnectionToken();
+            final ConnectedMessage connectedMessage = (ConnectedMessage) webPubSubMessage;
+            final String connectionId = connectedMessage.getConnectionId();
+
+            // Create new WebPubSubConnection if absent.
+            // ConnectedMessage could be sent by server on recover, when WebPubSubConnection exists in client.
+            // In this case, reconnectionToken would be updated, but ConnectedEvent won't be sent.
+            if (this.webPubSubConnection == null) {
+                this.webPubSubConnection = new WebPubSubConnection();
+            }
+            this.webPubSubConnection.connect(
+                connectedMessage.getConnectionId(), connectedMessage.getReconnectionToken(),
+                () -> tryEmitNext(connectedEventSink, new ConnectedEvent(
+                    connectionId,
+                    connectedMessage.getUserId())));
 
             updateLogger(applicationId, connectionId);
-
-            tryEmitNext(connectedEventSink, new ConnectedEvent(
-                connectionId,
-                connectedMessage.getUserId()));
         } else if (webPubSubMessage instanceof DisconnectedMessage) {
-            DisconnectedMessage disconnectedMessage = (DisconnectedMessage) webPubSubMessage;
-            tryEmitNext(disconnectedEventSink, new DisconnectedEvent(
-                connectionId,
+            final DisconnectedMessage disconnectedMessage = (DisconnectedMessage) webPubSubMessage;
+            // send DisconnectedEvent, but connection close will be handled in handleSessionClose
+            handleConnectionClose(new DisconnectedEvent(
+                this.getConnectionId(),
                 disconnectedMessage.getReason()));
+        }
+    }
+
+    private void updateSequenceAckId(long id) {
+        WebPubSubConnection connection = this.webPubSubConnection;
+        if (connection != null) {
+            connection.getSequenceAckId().update(id);
+        }
+    }
+
+    private void handleConnectionClose() {
+        handleConnectionClose(null);
+    }
+
+    private void handleConnectionClose(DisconnectedEvent disconnectedEvent) {
+        final DisconnectedEvent event = disconnectedEvent == null
+            ? new DisconnectedEvent(this.getConnectionId(), null)
+            : disconnectedEvent;
+
+        WebPubSubConnection connection = this.webPubSubConnection;
+        connection.disconnect(() -> tryEmitNext(disconnectedEventSink, event));
+
+        if (disconnectedEvent == null) {
+            // Called from handleSessionClose, clear WebPubSubConnection.
+            // It means client now forget this WebPubSubConnection, include connectionId and sequenceId.
+            this.webPubSubConnection = null;
         }
     }
 
@@ -873,7 +919,7 @@ class WebPubSubAsyncClient implements Closeable {
         });
     }
 
-    private Mono<Void> handleRecovery() {
+    private Mono<Void> handleRecovery(String connectionId, String reconnectionToken) {
         return Mono.defer(() -> {
             if (isStoppedByUser.compareAndSet(true, false)) {
                 // stopped by user
@@ -921,9 +967,7 @@ class WebPubSubAsyncClient implements Closeable {
         clientState.changeState(WebPubSubClientState.STOPPED);
 
         webSocketSession = null;
-
-        connectionId = null;
-        reconnectionToken = null;
+        webPubSubConnection = null;
 
         tryCompleteOnStoppedByUserSink();
 
@@ -977,33 +1021,6 @@ class WebPubSubAsyncClient implements Closeable {
     private static final class StopReconnectException extends RuntimeException {
         private StopReconnectException(String message) {
             super(message);
-        }
-    }
-
-    private static final class SequenceAckId {
-
-        private final AtomicLong sequenceId = new AtomicLong(0);
-        private final AtomicBoolean updated = new AtomicBoolean(false);
-
-        private void clear() {
-            sequenceId.set(0);
-            updated.set(false);
-        }
-
-        private Long getUpdated() {
-            if (updated.compareAndSet(true, false)) {
-                return sequenceId.get();
-            } else {
-                return null;
-            }
-        }
-
-        private void update(long id) {
-            long previousId = sequenceId.getAndUpdate(existId -> Math.max(id, existId));
-
-            if (previousId < id) {
-                updated.set(true);
-            }
         }
     }
 

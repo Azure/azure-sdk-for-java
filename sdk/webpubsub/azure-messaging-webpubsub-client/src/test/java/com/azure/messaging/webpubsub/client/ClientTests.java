@@ -118,8 +118,12 @@ public class ClientTests extends TestBase {
         client.joinGroup(groupName);
         client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
 
+        Assertions.assertNotNull(client.getConnectionId());
+
         boolean success = latch2.await(10, TimeUnit.SECONDS);
         client.stop();
+
+        Assertions.assertNull(client.getConnectionId());
 
         Assertions.assertTrue(success);
         Assertions.assertEquals(0, latch1.getCount());
@@ -133,6 +137,8 @@ public class ClientTests extends TestBase {
 
         Assertions.assertTrue(success);
         Assertions.assertEquals(0, latch2.getCount());
+
+        Assertions.assertNull(client.getConnectionId());
     }
 
     @Test
@@ -373,7 +379,7 @@ public class ClientTests extends TestBase {
             // NOOP
         });
         // server send Disconnected message
-        // server send CloseFrame (code=1000) <-- this likely a bug that can be improved by service
+        // server send CloseFrame (code=1000) <-- this likely a bug that can be improved by service, it should be 1008
         // client try recover
         // connection open
         // server send CloseFrame (code=1008)
