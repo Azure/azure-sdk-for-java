@@ -45,6 +45,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders add(String name, String value) {
         nettyHeaders.add(name, value);
         return this;
@@ -56,6 +57,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders set(String name, String value) {
         nettyHeaders.set(name, value);
         return this;
@@ -67,6 +69,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders set(String name, List<String> values) {
         nettyHeaders.set(name, values);
         return this;
@@ -78,6 +81,19 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeaders setAll(Map<String, List<String>> headers) {
+        headers.forEach(this::set);
+        return this;
+    }
+
+    @Override
+    public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
+        headers.forEach(header -> set(header.getName(), header.getValuesList()));
+        return this;
+    }
+
+    @Override
+    @Deprecated
     public HttpHeader get(String name) {
         // Be careful here: Netty's HttpHeaders 'get' method will return only the first value, which is obviously not
         // what we want to call! We call 'getAll' instead, but unfortunately there is a representation mismatch:
@@ -93,6 +109,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeader remove(String name) {
         HttpHeader header = get(name);
         if (header != null) {
@@ -108,6 +125,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public String getValue(String name) {
         List<String> values = nettyHeaders.getAll(name);
         return CoreUtils.isNullOrEmpty(values) ? null : CoreUtils.stringJoin(",", values);
@@ -119,6 +137,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public String[] getValues(String name) {
         List<String> values = nettyHeaders.getAll(name);
         return CoreUtils.isNullOrEmpty(values) ? null : values.toArray(new String[0]);

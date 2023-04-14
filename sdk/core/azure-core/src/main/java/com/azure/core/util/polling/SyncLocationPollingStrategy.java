@@ -23,12 +23,11 @@ import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import static com.azure.core.util.polling.PollingUtil.locationCanPoll;
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 import static com.azure.core.util.polling.implementation.PollingUtils.serializeResponseSync;
 
@@ -117,17 +116,7 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
 
     @Override
     public boolean canPoll(Response<?> initialResponse) {
-        HttpHeader locationHeader = initialResponse.getHeaders().get(HttpHeaderName.LOCATION);
-        if (locationHeader != null) {
-            try {
-                new URL(getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
-                return true;
-            } catch (MalformedURLException e) {
-                LOGGER.info("Failed to parse Location header into a URL.", e);
-                return false;
-            }
-        }
-        return false;
+        return locationCanPoll(initialResponse, endpoint, LOGGER);
     }
 
     @Override

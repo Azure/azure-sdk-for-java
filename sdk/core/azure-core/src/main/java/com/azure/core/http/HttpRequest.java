@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
@@ -141,7 +142,7 @@ public class HttpRequest {
      */
     public HttpRequest setUrl(String url) {
         try {
-            this.url = new URL(url);
+            this.url = UrlBuilder.parse(url).toUrl();
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
@@ -175,7 +176,9 @@ public class HttpRequest {
      * @param name the header name
      * @param value the header value
      * @return this HttpRequest
+     * @deprecated Use {@link #setHeader(HttpHeaderName, String)} instead as is offers better performance.
      */
+    @Deprecated
     public HttpRequest setHeader(String name, String value) {
         headers.set(name, value);
         return this;

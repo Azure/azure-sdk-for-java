@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
@@ -70,7 +71,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
-            xRecordingId = response.getHeaderValue("x-recording-id");
+            xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -100,7 +101,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void stopPlayback() {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl.toString()))
-            .setHeader("x-recording-id", xRecordingId);
+            .setHeader(X_RECORDING_ID, xRecordingId);
         client.sendSync(request, Context.NONE);
     }
 
@@ -145,7 +146,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         if (isPlayingBack()) {
             getSanitizerRequests(sanitizers, proxyUrl)
                 .forEach(request -> {
-                    request.setHeader("x-recording-id", xRecordingId);
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
         } else {
@@ -161,7 +162,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         if (isPlayingBack()) {
             getMatcherRequests(matchers, proxyUrl)
                 .forEach(request -> {
-                    request.setHeader("x-recording-id", xRecordingId);
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
         } else {

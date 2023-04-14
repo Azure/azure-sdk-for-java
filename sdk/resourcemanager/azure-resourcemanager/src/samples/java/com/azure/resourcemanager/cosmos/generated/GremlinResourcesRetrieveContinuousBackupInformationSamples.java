@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 /** Samples for GremlinResources RetrieveContinuousBackupInformation. */
 public final class GremlinResourcesRetrieveContinuousBackupInformationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinGraphBackupInformation.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBGremlinGraphBackupInformation.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphBackupInformation.

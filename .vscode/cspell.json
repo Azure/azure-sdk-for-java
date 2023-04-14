@@ -248,6 +248,8 @@
     "Deserialization",
     "destfile",
     "Dgenerate",
+    "Dincludes",
+    "Dverbose",
     "dicom",
     "doclint",
     "doclinting",
