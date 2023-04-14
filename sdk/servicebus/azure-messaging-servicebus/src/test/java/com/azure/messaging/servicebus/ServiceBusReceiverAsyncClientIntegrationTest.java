@@ -1001,48 +1001,41 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
-        sendMessage(message).block(TIMEOUT);
+        StepVerifier.create(sendMessage(message)).verifyComplete();
 
-        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages()
-            .flatMap(m -> receiver.defer(m).thenReturn(m))
-            .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received and deferred"))
-            .blockFirst(TIMEOUT);
+        StepVerifier.create(
+            receiver.receiveMessages()
+                .flatMap(m -> receiver.defer(m).thenReturn(m))
+                .flatMap(received -> {
+                    logMessage(received, receiver.getEntityPath(), "received and deferred");
+                    return receiver
+                        .receiveDeferredMessage(received.getSequenceNumber())
+                        .flatMap(deferred -> {
+                            logMessage(deferred, receiver.getEntityPath(), "received deferred");
 
-        assertNotNull(receivedMessage);
+                            assertNotNull(deferred);
+                            assertEquals(received.getSequenceNumber(), deferred.getSequenceNumber());
 
-        logMessage(receivedMessage, receiver.getEntityPath(), "going to call receiveDeferredMessage");
-        // Assert & Act
-        final ServiceBusReceivedMessage receivedDeferredMessage = receiver
-            .receiveDeferredMessage(receivedMessage.getSequenceNumber())
-            .flatMap(m -> {
-                logMessage(m, receiver.getEntityPath(), "received deferred");
-                final Mono<Void> operation;
-                switch (dispositionStatus) {
-                    case ABANDONED:
-                        operation = receiver.abandon(m);
-                        logMessage(m, receiver.getEntityPath(), "abandon");
-                        break;
-                    case SUSPENDED:
-                        operation = receiver.deadLetter(m);
-                        logMessage(m, receiver.getEntityPath(), "deadLetter");
-                        break;
-                    case COMPLETED:
-                        operation = receiver.complete(m);
-                        logMessage(m, receiver.getEntityPath(), "complete");
-                        break;
-                    default:
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                            "Disposition status not recognized for this test case: " + dispositionStatus));
-                }
-                return operation.thenReturn(m);
-
-            })
-            .timeout(Duration.ofSeconds(TIMEOUT.getSeconds() / 5))
-            .retry(5)
-            .block(TIMEOUT);
-
-        assertNotNull(receivedDeferredMessage);
-        assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
+                            switch (dispositionStatus) {
+                                case ABANDONED:
+                                    logMessage(deferred, receiver.getEntityPath(), "abandon");
+                                    return receiver.abandon(deferred).thenReturn(deferred);
+                                case SUSPENDED:
+                                    logMessage(deferred, receiver.getEntityPath(), "deadLetter");
+                                    return receiver.deadLetter(deferred).thenReturn(deferred);
+                                case COMPLETED:
+                                    logMessage(deferred, receiver.getEntityPath(), "complete");
+                                    return receiver.complete(deferred).thenReturn(deferred);
+                                default:
+                                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                                        "Disposition status not recognized for this test case: " + dispositionStatus));
+                            }
+                        });
+                })
+                .take(1))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
