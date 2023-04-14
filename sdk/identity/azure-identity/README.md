@@ -41,12 +41,12 @@ Then include the direct dependency in the `dependencies` section without the ver
 
 To take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows:
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.1</version>
+    <version>1.8.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

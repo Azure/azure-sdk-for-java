@@ -275,6 +275,7 @@ public class ProxyOptions {
         return null;
     }
 
+    @SuppressWarnings("deprecation")
     private static ProxyOptions attemptToLoadSystemProxy(Configuration configuration, boolean createUnresolved,
         String proxyProperty) {
         String proxyConfiguration = configuration.get(proxyProperty);
@@ -285,6 +286,8 @@ public class ProxyOptions {
         }
 
         try {
+            // TODO (alzimmer): UrlBuilder needs to add support for userinfo
+            //  https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1
             URL proxyUrl = new URL(proxyConfiguration);
             int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
 
