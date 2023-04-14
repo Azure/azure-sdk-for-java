@@ -49,8 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueueApiTests extends QueueTestBase {
-    private static final Map<String, String> TEST_METADATA = Collections.singletonMap("metadata", "value");
-    private static final Map<String, String> CREATE_METADATA = Collections.singletonMap("metadata1", "value");
+    static final Map<String, String> TEST_METADATA = Collections.singletonMap("metadata", "value");
+    static final Map<String, String> CREATE_METADATA = Collections.singletonMap("metadata1", "value");
 
     private String queueName;
     private QueueClient queueClient;
@@ -187,7 +187,7 @@ public class QueueApiTests extends QueueTestBase {
         assertEquals(expectedSet, response.getValue().getMetadata());
     }
 
-    private static Stream<Arguments> setAndClearMetadataSupplier() {
+    public static Stream<Arguments> setAndClearMetadataSupplier() {
         return Stream.of(
             Arguments.of(null, TEST_METADATA, Collections.emptyMap(), TEST_METADATA),
             Arguments.of(CREATE_METADATA, TEST_METADATA, CREATE_METADATA, TEST_METADATA),
@@ -213,7 +213,7 @@ public class QueueApiTests extends QueueTestBase {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMessage);
     }
 
-    private static Stream<Arguments> setInvalidMetadataSupplier() {
+    public static Stream<Arguments> setInvalidMetadataSupplier() {
         return Stream.of(
             Arguments.of("invalid-meta", 400, QueueErrorCode.INVALID_METADATA),
             Arguments.of("12345", 400, QueueErrorCode.INVALID_METADATA),
@@ -784,7 +784,7 @@ public class QueueApiTests extends QueueTestBase {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMsg);
     }
 
-    private static Stream<Arguments> invalidArgsSupplier() {
+    public static Stream<Arguments> invalidArgsSupplier() {
         return Stream.of(
             Arguments.of(true, false, 400, QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE),
             Arguments.of(false, true, 404, QueueErrorCode.MESSAGE_NOT_FOUND),

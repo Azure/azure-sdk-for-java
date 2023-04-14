@@ -21,8 +21,6 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -72,16 +70,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
 
-        T client;
-        try {
-            client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.error("Could not create an configuration client credentials.", e);
-            fail();
-            client = null;
-        }
-
-        return Objects.requireNonNull(client);
+        return Objects.requireNonNull(clientBuilder.apply(new ConfigurationClientCredentials(connectionString)));
     }
 
     String getKey() {

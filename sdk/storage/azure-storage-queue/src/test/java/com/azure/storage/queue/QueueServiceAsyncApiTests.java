@@ -11,12 +11,23 @@ import com.azure.storage.queue.models.QueueRetentionPolicy;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Map;
+
+import static com.azure.storage.queue.QueueTestHelper.assertAsyncResponseStatusCode;
+import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
+import static com.azure.storage.queue.QueueTestHelper.assertQueueServicePropertiesAreEqual;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QueueServiceAsyncApiTests extends QueueTestBase {
     @BeforeEach
@@ -24,181 +35,123 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper().buildAsyncClient();
     }
 
-    def "Get queue client"() {
-        given:
-        def queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(namer.getRandomName(60))
-        expect:
-        queueAsyncClient instanceof QueueAsyncClient
+    @Test
+    public void getQueueClient() {
+        assertInstanceOf(QueueAsyncClient.class, primaryQueueServiceAsyncClient.getQueueAsyncClient(getRandomName(60)));
     }
 
-    def "Create queue"() {
-        given:
-        def queueName = namer.getRandomName(60)
-        expect:
-        StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, null)).assertNext {
-            assert QueueTestHelper.assertResponseStatusCode(it, 201)
-        }.verifyComplete()
-        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).sendMessageWithResponse("Testing service client creating a queue", null, null))
-            .assertNext {
-            assert QueueTestHelper.assertResponseStatusCode(it, 201)
-        }.verifyComplete()
+    @Test
+    public void createQueue() {
+        String queueName = getRandomName(60);
+
+        assertAsyncResponseStatusCode(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, null), 201);
+        assertAsyncResponseStatusCode(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
+            .sendMessageWithResponse("Testing service client creating a queue", null, null), 201);
     }
 
-    @Unroll
-    def "Create queue with invalid name"() {
-        when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName))
-        then:
-        createQueueVerifier.verifyErrorSatisfies {
-            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMesage)
-        }
-        where:
-        queueName      | statusCode | errMesage
-        "a_b"          | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
-        "-ab"          | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
-        "a--b"         | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
-        "Abc"          | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
-        "ab"           | 400        | QueueErrorCode.OUT_OF_RANGE_INPUT
-        "verylong" * 8 | 400        | QueueErrorCode.OUT_OF_RANGE_INPUT
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.queue.QueueServiceApiTests#createQueueWithInvalidNameSupplier")
+    public void createQueueWithInvalidName(String queueName, int statusCode, QueueErrorCode errMessage) {
+        StepVerifier.create(primaryQueueServiceAsyncClient.createQueue(queueName))
+            .verifyErrorSatisfies(ex -> assertExceptionStatusCodeAndMessage(ex, statusCode, errMessage));
     }
 
-    def "Create null"() {
-        when:
-        primaryQueueServiceAsyncClient.createQueue(null).block()
-        then:
-        thrown(NullPointerException)
+    @Test
+    public void createNull() {
+        assertThrows(NullPointerException.class, () -> primaryQueueServiceAsyncClient.createQueue(null).block());
     }
 
-    @Unroll
-    def "Create queue maxOverload"() {
-        given:
-        def queueName = namer.getRandomName(60)
-        when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, metadata))
-        def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
-            .sendMessageWithResponse("Testing service client creating a queue", null, null))
-        then:
-        createQueueVerifier.assertNext {
-            assert QueueTestHelper.assertResponseStatusCode(it, 201)
-        }.verifyComplete()
-        enqueueMessageVerifier.assertNext {
-            assert QueueTestHelper.assertResponseStatusCode(it, 201)
-        }.verifyComplete()
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.queue.QueueServiceApiTests#createQueueMaxOverloadSupplier")
+    public void createQueueMaxOverload(Map<String, String> metadata) {
+        String queueName = getRandomName(60);
 
-
-        where:
-        metadata                                       | _
-        null                                           | _
-        Collections.singletonMap("metadata", "value")  | _
-        Collections.singletonMap("metadata", "va@lue") | _
+        assertAsyncResponseStatusCode(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, metadata), 201);
+        assertAsyncResponseStatusCode(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
+            .sendMessageWithResponse("Testing service client creating a queue", null, null), 201);
     }
 
-    def "Create queue with invalid metadata"() {
-        given:
-        def queueName = namer.getRandomName(60)
-        when:
-        def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value")))
-        then:
-        createQueueVerifier.verifyErrorSatisfies {
-            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, QueueErrorCode.INVALID_METADATA)
-        }
+    @Test
+    public void createQueueWithInvalidMetadata() {
+        StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(getRandomName(60),
+            Collections.singletonMap("metadata!", "value")))
+            .verifyErrorSatisfies(ex -> assertExceptionStatusCodeAndMessage(ex, 400, QueueErrorCode.INVALID_METADATA));
     }
 
-    def "Delete queue"() {
-        given:
-        def queueName = namer.getRandomName(60)
-        primaryQueueServiceAsyncClient.createQueue(queueName).block()
-        when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(queueName))
-        def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
+    @Test
+    public void deleteQueue() {
+        String queueName = getRandomName(60);
+        primaryQueueServiceAsyncClient.createQueue(queueName).block();
+
+        assertAsyncResponseStatusCode(primaryQueueServiceAsyncClient.deleteQueueWithResponse(queueName), 204);
+        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
             .sendMessageWithResponse("Expecting exception as queue has been deleted.", null, null))
-        then:
-        deleteQueueVerifier.assertNext {
-            assert QueueTestHelper.assertResponseStatusCode(it, 204)
-        }.verifyComplete()
-        enqueueMessageVerifier.verifyErrorSatisfies {
-            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
-        }
+            .verifyErrorSatisfies(ex -> assertExceptionStatusCodeAndMessage(ex, 404, QueueErrorCode.QUEUE_NOT_FOUND));
     }
 
-    def "Delete queue error"() {
-        when:
-        def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(namer.getRandomName(16)))
-        then:
-        deleteQueueVerifier.verifyErrorSatisfies {
-            assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
-        }
+    @Test
+    public void deleteQueueError() {
+        StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(getRandomName(16)))
+            .verifyErrorSatisfies(ex -> assertExceptionStatusCodeAndMessage(ex, 404, QueueErrorCode.QUEUE_NOT_FOUND));
     }
 
-    @Unroll
-    def "List queues"() {
-        given:
-        def queueName = namer.getRandomName(60)
-        LinkedList<QueueItem> testQueues = new LinkedList<>()
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.queue.QueueServiceApiTests#listQueuesSupplier")
+    public void listQueues(QueuesSegmentOptions options) {
+        String queueName = getRandomName(60);
+        LinkedList<QueueItem> testQueues = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
-            String version = Integer.toString(i)
-            QueueItem queue = new QueueItem().setName(queueName + version)
-                .setMetadata(Collections.singletonMap("metadata" + version, "value" + version))
-            testQueues.add(queue)
-            primaryQueueServiceAsyncClient.createQueueWithResponse(queue.getName(), queue.getMetadata()).block()
+            QueueItem queue = new QueueItem().setName(queueName + i)
+                .setMetadata(Collections.singletonMap("metadata" + i, "value" + i));
+            testQueues.add(queue);
+            primaryQueueServiceAsyncClient.createQueueWithResponse(queue.getName(), queue.getMetadata()).block();
         }
-        when:
-        def queueListVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options.setPrefix(namer.getResourcePrefix())))
-        then:
-        queueListVerifier.assertNext {
-            assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
-        }.assertNext {
-            assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
-        }.assertNext {
-            assert QueueTestHelper.assertQueuesAreEqual(it, testQueues.pop())
-        }.verifyComplete()
-        where:
-        options                                             | _
-        new QueuesSegmentOptions()                          | _
-        new QueuesSegmentOptions().setMaxResultsPerPage(2)  | _
-        new QueuesSegmentOptions().setIncludeMetadata(true) | _
+
+        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(options.setPrefix(prefix)))
+            .thenConsumeWhile(queueItem -> {
+                QueueTestHelper.assertQueuesAreEqual(testQueues.pop(), queueItem);
+                return true;
+            }).verifyComplete();
+        assertEquals(0, testQueues.size());
     }
 
-    def "List empty queues"() {
-        expect:
+    @Test
+    public void listEmptyQueues() {
         // Queue was never made with the prefix, should expect no queues to be listed.
-        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix())))
+        StepVerifier.create(primaryQueueServiceAsyncClient.listQueues(new QueuesSegmentOptions().setPrefix(prefix)))
             .expectNextCount(0)
-            .verifyComplete()
+            .verifyComplete();
     }
 
     @ResourceLock("ServiceProperties")
-    def "Get and set properties"() {
-        given:
-        def originalProperties = primaryQueueServiceAsyncClient.getProperties().block()
-        def retentionPolicy = new QueueRetentionPolicy().setEnabled(true)
-            .setDays(3)
-        def logging = new QueueAnalyticsLogging().setVersion("1.0")
+    @Test
+    public void getAndSetProperties() {
+        QueueServiceProperties originalProperties = primaryQueueServiceAsyncClient.getProperties().block();
+        QueueRetentionPolicy retentionPolicy = new QueueRetentionPolicy().setEnabled(true).setDays(3);
+        QueueAnalyticsLogging logging = new QueueAnalyticsLogging().setVersion("1.0")
             .setDelete(true)
             .setWrite(true)
-            .setRetentionPolicy(retentionPolicy)
-        def metrics = new QueueMetrics().setEnabled(true)
+            .setRetentionPolicy(retentionPolicy);
+        QueueMetrics metrics = new QueueMetrics().setEnabled(true)
             .setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy)
-            .setVersion("1.0")
-        def updatedProperties = new QueueServiceProperties().setAnalyticsLogging(logging)
+            .setVersion("1.0");
+        QueueServiceProperties updatedProperties = new QueueServiceProperties().setAnalyticsLogging(logging)
             .setHourMetrics(metrics)
             .setMinuteMetrics(metrics)
-            .setCors(new ArrayList<>())
-        when:
-        def getPropertiesBeforeVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
-        def setPropertiesVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.setPropertiesWithResponse(updatedProperties))
-        def getPropertiesAfterVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
-        then:
-        getPropertiesBeforeVerifier.assertNext {
-            assert QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties, it)
-        }.verifyComplete()
-        setPropertiesVerifier.assertNext {
-            assert QueueTestHelper.assertResponseStatusCode(it, 202)
-        }.verifyComplete()
+            .setCors(new ArrayList<>());
 
-        getPropertiesAfterVerifier.assertNext {
-            assert QueueTestHelper.assertQueueServicePropertiesAreEqual(updatedProperties, it)
-        }.verifyComplete()
+        StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
+            .assertNext(properties -> assertQueueServicePropertiesAreEqual(originalProperties, properties))
+            .verifyComplete();
+
+        assertAsyncResponseStatusCode(primaryQueueServiceAsyncClient.setPropertiesWithResponse(updatedProperties), 202);
+
+        StepVerifier.create(primaryQueueServiceAsyncClient.getProperties())
+            .assertNext(properties -> assertQueueServicePropertiesAreEqual(updatedProperties, properties))
+            .verifyComplete();
+
+        primaryQueueServiceAsyncClient.setProperties(originalProperties).block();
     }
 }

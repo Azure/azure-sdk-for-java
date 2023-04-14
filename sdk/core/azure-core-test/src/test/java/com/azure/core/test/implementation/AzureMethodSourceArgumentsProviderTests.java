@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.convertToArguments;
@@ -39,9 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link AzureMethodSourceArgumentsProvider}.
@@ -302,16 +298,7 @@ public class AzureMethodSourceArgumentsProviderTests {
     }
 
     private static ExtensionContext getMockExtensionContext(Class<?> testClass) {
-        // Falls back to calling the real methods if a mock isn't configured.
-        ExtensionContext mockExtensionContext = mock(ExtensionContext.class, CALLS_REAL_METHODS);
-
-        if (testClass == null) {
-            when(mockExtensionContext.getTestClass()).thenReturn(Optional.empty());
-        } else {
-            when(mockExtensionContext.getTestClass()).thenReturn(Optional.of(testClass));
-        }
-
-        return mockExtensionContext;
+        return new MockExtensionContext(testClass);
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -323,13 +310,11 @@ public class AzureMethodSourceArgumentsProviderTests {
     }
 
     private static Stream<Arguments> convertToArgumentsTestSupplier() {
-        Arguments emptyArgumentsMock = mock(Arguments.class);
-        when(emptyArgumentsMock.get()).thenReturn(null);
-
+        Arguments emptyArguments = () -> null;
         Arguments nonEmptyArguments = Arguments.of("1", 1, null, new byte[0]);
 
         return Stream.of(
-            Arguments.of(emptyArgumentsMock, emptyArgumentsMock),
+            Arguments.of(emptyArguments, emptyArguments),
             Arguments.of(nonEmptyArguments, nonEmptyArguments)
         );
     }

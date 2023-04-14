@@ -64,7 +64,7 @@ public class QueueServiceApiTests extends QueueTestBase {
         QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMessage);
     }
 
-    private static Stream<Arguments> createQueueWithInvalidNameSupplier() {
+    public static Stream<Arguments> createQueueWithInvalidNameSupplier() {
         String veryLong = "verylong";
         for (int i = 0; i < 3; i++) {
             veryLong += veryLong;
@@ -94,7 +94,7 @@ public class QueueServiceApiTests extends QueueTestBase {
             null, null, null).getStatusCode());
     }
 
-    private static Stream<Map<String, String>> createQueueMaxOverloadSupplier() {
+    public static Stream<Map<String, String>> createQueueMaxOverloadSupplier() {
         return Stream.of(null, Collections.singletonMap("metadata", "value"),
             Collections.singletonMap("metadata", "va@lue"));
     }
@@ -150,7 +150,7 @@ public class QueueServiceApiTests extends QueueTestBase {
         assertEquals(0, testQueues.size());
     }
 
-    private static Stream<QueuesSegmentOptions> listQueuesSupplier() {
+    public static Stream<QueuesSegmentOptions> listQueuesSupplier() {
         return Stream.of(new QueuesSegmentOptions(), new QueuesSegmentOptions().setMaxResultsPerPage(2),
             new QueuesSegmentOptions().setIncludeMetadata(true));
     }
@@ -176,7 +176,6 @@ public class QueueServiceApiTests extends QueueTestBase {
         // Queue was never made with the prefix, should expect no queues to be listed.
         assertFalse(primaryQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(prefix), null, null)
             .iterator().hasNext());
-        ;
     }
 
     @ResourceLock("ServiceProperties")

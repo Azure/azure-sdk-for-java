@@ -16,6 +16,8 @@ import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.function.Executable;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +31,12 @@ public class QueueTestHelper {
     static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
+    }
+
+    static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(expectedStatusCode, r.getStatusCode()))
+            .verifyComplete();
     }
 
     static QueueStorageException throwsStorageException(Executable executable) {

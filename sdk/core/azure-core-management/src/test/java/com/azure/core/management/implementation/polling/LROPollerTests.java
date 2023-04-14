@@ -50,6 +50,8 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -1076,8 +1078,9 @@ public class LROPollerTests {
 
             private URL updatePort(URL url, int port) {
                 try {
-                    return new URL(url.getProtocol(), url.getHost(), port, url.getFile());
-                } catch (MalformedURLException mue) {
+                    return new URI(url.getProtocol(), null, url.getHost(), port, url.getPath(), url.getQuery(), null)
+                        .toURL();
+                } catch (URISyntaxException | MalformedURLException mue) {
                     throw new RuntimeException(mue);
                 }
             }
