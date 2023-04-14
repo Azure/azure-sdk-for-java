@@ -31,7 +31,8 @@ public class WebPubSubConnection {
         return sequenceAckId;
     }
 
-    public void connect(String connectionId, String reconnectionToken, Runnable action) {
+    // ConnectedMessage from server
+    public void updateForConnected(String connectionId, String reconnectionToken, Runnable action) {
         boolean newConnectionId = this.connectionId == null;
 
         this.connectionId = connectionId;
@@ -42,9 +43,12 @@ public class WebPubSubConnection {
         }
     }
 
-    public void disconnect(Runnable action) {
+    // Either DisconnectedMessage from server,
+    // or client find session closed and then regard the connection as closed (when not a reliable protocol)
+    public void updateForDisconnected(Runnable action) {
         if (!this.disconnected.getAndSet(true)) {
             action.run();
         }
+        // consider to let client remove the instance, if connection is closed
     }
 }

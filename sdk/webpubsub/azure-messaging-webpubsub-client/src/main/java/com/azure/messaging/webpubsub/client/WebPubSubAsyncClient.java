@@ -855,7 +855,7 @@ class WebPubSubAsyncClient implements Closeable {
             if (this.webPubSubConnection == null) {
                 this.webPubSubConnection = new WebPubSubConnection();
             }
-            this.webPubSubConnection.connect(
+            this.webPubSubConnection.updateForConnected(
                 connectedMessage.getConnectionId(), connectedMessage.getReconnectionToken(),
                 () -> tryEmitNext(connectedEventSink, new ConnectedEvent(
                     connectionId,
@@ -1023,7 +1023,7 @@ class WebPubSubAsyncClient implements Closeable {
 
         WebPubSubConnection connection = this.webPubSubConnection;
         if (connection != null) {
-            connection.disconnect(() -> tryEmitNext(disconnectedEventSink, event));
+            connection.updateForDisconnected(() -> tryEmitNext(disconnectedEventSink, event));
         }
 
         if (disconnectedEvent == null) {
