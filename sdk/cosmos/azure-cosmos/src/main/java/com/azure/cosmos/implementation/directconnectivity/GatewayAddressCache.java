@@ -881,7 +881,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
         }
 
-        if (addressesNeedToValidation.size() > 0) {
+        if (addressesNeedToValidation.size() > 0 && this.proactiveOpenConnectionsProcessor != null) {
             for (Uri addressToBeValidated : addressesNeedToValidation) {
                 this.proactiveOpenConnectionsProcessor
                         .submitOpenConnectionTask(
@@ -890,9 +890,8 @@ public class GatewayAddressCache implements IAddressCache {
                                 addressToBeValidated,
                                 Configs.getMinConnectionPoolSizePerEndpoint());
             }
+            this.proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().subscribe();
         }
-
-        this.proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().subscribe();
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {
