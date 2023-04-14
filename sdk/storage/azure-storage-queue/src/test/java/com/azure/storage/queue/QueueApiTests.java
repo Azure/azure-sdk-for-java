@@ -6,22 +6,23 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
+import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
-import spock.lang.Retry;
-import spock.lang.Unroll;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -31,12 +32,19 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -119,7 +127,7 @@ public class QueueApiTests extends QueueTestBase {
 
     @Test
     public void deleteExistingQueue() {
-        queueClient.create();;
+        queueClient.create();
         QueueTestHelper.assertResponseStatusCode(queueClient.deleteWithResponse(null, null), 204);
     }
 
@@ -144,777 +152,675 @@ public class QueueApiTests extends QueueTestBase {
 
     @Test
     public void deleteIfExistsWithResponseOnAQueueClientThatDoesNotExist() {
+        String queueName = getRandomName(60);
+        QueueClient client = primaryQueueServiceClient.getQueueClient(queueName);
 
+        Response<Boolean> response = client.deleteIfExistsWithResponse(null, null);
+        assertEquals(404, response.getStatusCode());
+        assertFalse(response.getValue());
     }
 
+    @Test
+    public void getProperties() {
+        queueClient.createWithResponse(TEST_METADATA, null, null);
+        Response<QueueProperties> response = queueClient.getPropertiesWithResponse(null, null);
 
-
-
-
-    def "Delete if exists with response on a queue client that does not exist"() {
-        setup:
-        queueName = namer.getRandomName(60)
-        def client = primaryQueueServiceClient.getQueueClient(queueName)
-
-        when:
-        def response = client.deleteIfExistsWithResponse(null, null)
-        client.getProperties()
-
-        then:
-        thrown(QueueStorageException)
-        response.getStatusCode() == 404
-        !response.getValue()
+        QueueTestHelper.assertResponseStatusCode(response, 200);
+        assertEquals(0, response.getValue().getApproximateMessagesCount());
+        assertEquals(TEST_METADATA, response.getValue().getMetadata());
     }
 
-    def "Get properties"() {
-        given:
-        queueClient.createWithResponse(testMetadata, null, null)
-        when:
-        def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.getValue().getApproximateMessagesCount() == 0
-        testMetadata == getPropertiesResponse.getValue().getMetadata()
+    @ParameterizedTest
+    @MethodSource("setAndClearMetadataSupplier")
+    public void setAndClearMetadata(Map<String, String> create, Map<String, String> set,
+        Map<String, String> expectedCreate, Map<String, String> expectedSet) {
+        queueClient.createWithResponse(create, null, null);
+
+        Response<QueueProperties> response = queueClient.getPropertiesWithResponse(null, null);
+        assertEquals(200, response.getStatusCode());
+        assertEquals(expectedCreate, response.getValue().getMetadata());
+
+        assertEquals(204, queueClient.setMetadataWithResponse(set, null, null).getStatusCode());
+
+        response = queueClient.getPropertiesWithResponse(null, null);
+        assertEquals(200, response.getStatusCode());
+        assertEquals(expectedSet, response.getValue().getMetadata());
     }
 
-    def "Get properties error"() {
-        when:
-        queueClient.getProperties()
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    private static Stream<Arguments> setAndClearMetadataSupplier() {
+        return Stream.of(
+            Arguments.of(null, TEST_METADATA, Collections.emptyMap(), TEST_METADATA),
+            Arguments.of(CREATE_METADATA, TEST_METADATA, CREATE_METADATA, TEST_METADATA),
+            Arguments.of(CREATE_METADATA, null, CREATE_METADATA, Collections.emptyMap()),
+            Arguments.of(TEST_METADATA, TEST_METADATA, TEST_METADATA, TEST_METADATA),
+            Arguments.of(null, null, Collections.emptyMap(), Collections.emptyMap())
+        );
     }
 
-    @Unroll
-    def "Set and clear metadata"() {
-        given:
-        queueClient.createWithResponse(matadataInCreate, null, null)
-        when:
-        def getPropertiesResponseBefore = queueClient.getPropertiesWithResponse(null, null)
-        def setMetadataResponse = queueClient.setMetadataWithResponse(metadataInSet, null, null)
-        def getPropertiesResponseAfter = queueClient.getPropertiesWithResponse(null, null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(getPropertiesResponseBefore, 200)
-        expectMetadataInCreate == getPropertiesResponseBefore.getValue().getMetadata()
-        QueueTestHelper.assertResponseStatusCode(setMetadataResponse, 204)
-        QueueTestHelper.assertResponseStatusCode(getPropertiesResponseAfter, 200)
-        expectMetadataInSet == getPropertiesResponseAfter.getValue().getMetadata()
-        where:
-        matadataInCreate | metadataInSet | expectMetadataInCreate | expectMetadataInSet
-        null             | testMetadata  | Collections.emptyMap() | testMetadata
-        createMetadata   | testMetadata  | createMetadata         | testMetadata
-        createMetadata   | null          | createMetadata         | Collections.emptyMap()
-        testMetadata     | testMetadata  | testMetadata           | testMetadata
-        null             | null          | Collections.emptyMap() | Collections.emptyMap()
+    @Test
+    public void setMetadataQueueError() {
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.setMetadata(TEST_METADATA));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.QUEUE_NOT_FOUND);
     }
 
-    def "Set metadata queue error"() {
-        when:
-        queueClient.setMetadata(testMetadata)
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    @ParameterizedTest
+    @MethodSource("setInvalidMetadataSupplier")
+    public void setInvalidMetadata(String invalidKey, int statusCode, QueueErrorCode errMessage) {
+        queueClient.create();
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.setMetadata(Collections.singletonMap(invalidKey, "value")));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMessage);
     }
 
-    @Unroll
-    def "Set invalid meta"() {
-        given:
-        def invalidMetadata = Collections.singletonMap(invalidKey, "value")
-        queueClient.create()
-        when:
-        queueClient.setMetadata(invalidMetadata)
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
-        where:
-        invalidKey     | statusCode | errMessage
-        "invalid-meta" | 400        | QueueErrorCode.INVALID_METADATA
-        "12345"        | 400        | QueueErrorCode.INVALID_METADATA
-        ""             | 400        | QueueErrorCode.EMPTY_METADATA_KEY
+    private static Stream<Arguments> setInvalidMetadataSupplier() {
+        return Stream.of(
+            Arguments.of("invalid-meta", 400, QueueErrorCode.INVALID_METADATA),
+            Arguments.of("12345", 400, QueueErrorCode.INVALID_METADATA),
+            Arguments.of("", 400, QueueErrorCode.EMPTY_METADATA_KEY)
+        );
     }
 
-    def "Get access policy"() {
-        given:
-        queueClient.create()
-        when:
-        def accessPolicies = queueClient.getAccessPolicy()
-        then:
-        !accessPolicies.iterator().hasNext()
+    @Test
+    public void getAccessPolicy() {
+        queueClient.create();
+        assertFalse(queueClient.getAccessPolicy().iterator().hasNext());
     }
 
-    def "Get access policy error"() {
-        when:
-        queueClient.getAccessPolicy().iterator().next()
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    @Test
+    public void getAccessPolicyError() {
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.getAccessPolicy().iterator().next());
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.QUEUE_NOT_FOUND);
     }
 
-    def "Set access policy"() {
-        given:
-        queueClient.create()
-        def accessPolicy = new QueueAccessPolicy()
+    @Test
+    public void setAccessPolicy() {
+        queueClient.create();
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy()
             .setPermissions("raup")
             .setStartsOn(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
-        def permission = new QueueSignedIdentifier()
+            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC));
+        QueueSignedIdentifier permission = new QueueSignedIdentifier()
             .setId("testpermission")
-            .setAccessPolicy(accessPolicy)
-        when:
-        def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(Collections.singletonList(permission), null, null)
-        def nextAccessPolicy = queueClient.getAccessPolicy().iterator().next()
-        then:
-        QueueTestHelper.assertResponseStatusCode(setAccessPolicyResponse, 204)
-        QueueTestHelper.assertPermissionsAreEqual(permission, nextAccessPolicy)
+            .setAccessPolicy(accessPolicy);
+
+        QueueTestHelper.assertResponseStatusCode(
+            queueClient.setAccessPolicyWithResponse(Collections.singletonList(permission), null, null), 204);
+        QueueTestHelper.assertPermissionsAreEqual(permission, queueClient.getAccessPolicy().iterator().next());
     }
 
-    def "Set invalid access policy"() {
-        given:
-        def accessPolicy = new QueueAccessPolicy()
+    @Test
+    public void setInvalidAccessPolicy() {
+        queueClient.create();
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy()
             .setPermissions("r")
             .setStartsOn(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
-
-        def permission = new QueueSignedIdentifier()
+            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC));
+        QueueSignedIdentifier permission = new QueueSignedIdentifier()
             .setId("theidofthispermissionislongerthanwhatisallowedbytheserviceandshouldfail")
-            .setAccessPolicy(accessPolicy)
-        queueClient.create()
-        when:
-        queueClient.setAccessPolicy(Collections.singletonList(permission))
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.INVALID_XML_DOCUMENT)
+            .setAccessPolicy(accessPolicy);
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.setAccessPolicy(Collections.singletonList(permission)));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.INVALID_XML_DOCUMENT);
     }
 
-    def "Set multiple access policies"() {
-        given:
-        def accessPolicy = new QueueAccessPolicy()
+    @Test
+    public void setMultipleAccessPolicies() {
+        queueClient.create();
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy()
             .setPermissions("r")
             .setStartsOn(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
-
-        def permissions = new ArrayList<QueueSignedIdentifier>()
+            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC));
+        List<QueueSignedIdentifier> permissions = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
-            permissions.add(new QueueSignedIdentifier()
-                .setId("policy" + i)
-                .setAccessPolicy(accessPolicy))
+            permissions.add(new QueueSignedIdentifier().setId("policy" + i).setAccessPolicy(accessPolicy));
         }
-        queueClient.create()
-        when:
-        def setAccessPolicyResponse = queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE)
-        def nextAccessPolicy = queueClient.getAccessPolicy().iterator()
-        then:
-        QueueTestHelper.assertResponseStatusCode(setAccessPolicyResponse, 204)
-        QueueTestHelper.assertPermissionsAreEqual(permissions[0], nextAccessPolicy.next())
-        QueueTestHelper.assertPermissionsAreEqual(permissions[1], nextAccessPolicy.next())
-        QueueTestHelper.assertPermissionsAreEqual(permissions[2], nextAccessPolicy.next())
-        !nextAccessPolicy.hasNext()
+
+        assertEquals(204, queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE).getStatusCode());
+        Iterator<QueueSignedIdentifier> nextAccessPolicy = queueClient.getAccessPolicy().iterator();
+        QueueTestHelper.assertPermissionsAreEqual(permissions.get(0), nextAccessPolicy.next());
+        QueueTestHelper.assertPermissionsAreEqual(permissions.get(1), nextAccessPolicy.next());
+        QueueTestHelper.assertPermissionsAreEqual(permissions.get(2), nextAccessPolicy.next());
+        assertFalse(nextAccessPolicy.hasNext());
     }
 
-    def "Set too many access policies"() {
-        given:
-        def accessPolicy = new QueueAccessPolicy()
+    @Test
+    public void setTooManyAccessPolicies() {
+        queueClient.create();
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy()
             .setPermissions("r")
             .setStartsOn(OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 0, 0), ZoneOffset.UTC))
-            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC))
-
-        def permissions = new ArrayList<QueueSignedIdentifier>()
+            .setExpiresOn(OffsetDateTime.of(LocalDateTime.of(2020, 1, 1, 0, 0), ZoneOffset.UTC));
+        List<QueueSignedIdentifier> permissions = new ArrayList<>(6);
         for (int i = 0; i < 6; i++) {
-            permissions.add(new QueueSignedIdentifier()
-                .setId("policy" + i)
-                .setAccessPolicy(accessPolicy))
+            permissions.add(new QueueSignedIdentifier().setId("policy" + i).setAccessPolicy(accessPolicy));
         }
-        queueClient.create()
-        when:
-        queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE)
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.INVALID_XML_DOCUMENT)
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 400, QueueErrorCode.INVALID_XML_DOCUMENT);
     }
 
-    def "Enqueue message"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        when:
-        def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekedMessage = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        expectMsg == peekedMessage.getMessageText()
+    @Test
+    public void enqueueMessage() {
+        queueClient.create();
+        String expectMsg = "test message";
+
+        assertEquals(201, queueClient.sendMessageWithResponse(expectMsg, null, null, null, null).getStatusCode());
+        assertEquals(expectMsg, queueClient.peekMessage().getMessageText());
     }
 
-    def "Enqueue message binary data"() {
-        given:
-        queueClient.create()
-        def expectMsg = BinaryData.fromString("test message")
-        when:
-        def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekedMessage = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        expectMsg.toBytes() == peekedMessage.getBody().toBytes()
+    @Test
+    public void enqueueMessageBinaryData() {
+        queueClient.create();
+        BinaryData expectMsg = BinaryData.fromString("test message");
+
+        assertEquals(201, queueClient.sendMessageWithResponse(expectMsg, null, null, null, null).getStatusCode());
+        assertArraysEqual(expectMsg.toBytes(), queueClient.peekMessage().getBody().toBytes());
     }
 
-    def "Enqueue empty message"() {
-        given:
-        queueClient.create()
-        def expectMsg = ""
-        when:
-        def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekedMessage = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        peekedMessage.getMessageText() == null
+    @Test
+    public void enqueueEmptyMessage() {
+        queueClient.create();
+        String expectMsg = "";
+
+        assertEquals(201, queueClient.sendMessageWithResponse(expectMsg, null, null, null, null).getStatusCode());
+        assertNull(queueClient.peekMessage().getMessageText());
     }
 
-    def "Enqueue time to live"() {
-        given:
-        queueClient.create()
-        when:
-        def enqueueMsgResponse = queueClient.sendMessageWithResponse("test message",
-            Duration.ofSeconds(0), Duration.ofSeconds(2), Duration.ofSeconds(5), null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
+    @Test
+    public void enqueueTimeToLive() {
+        queueClient.create();
+
+        assertEquals(201, queueClient.sendMessageWithResponse("test message", Duration.ofSeconds(0),
+            Duration.ofSeconds(2), Duration.ofSeconds(5), null).getStatusCode());
     }
 
-    def "Enqueue message encoded message"() {
-        given:
-        queueClient.create()
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        def expectMsg = BinaryData.fromString("test message")
-        when:
-        def enqueueMsgResponse = encodingQueueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
-        def peekedMessage = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
-        Base64.getEncoder().encodeToString(expectMsg.toBytes()) == peekedMessage.getBody().toString()
+    @Test
+    public void enqueueMessageEncodedMessage() {
+        queueClient.create();
+        QueueClient encodingClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64)
+            .buildClient().getQueueClient(queueName);
+        BinaryData expectMsg = BinaryData.fromString("test message");
+
+        assertEquals(201, encodingClient.sendMessageWithResponse(expectMsg, null, null, null, null).getStatusCode());
+        assertEquals(Base64.getEncoder().encodeToString(expectMsg.toBytes()),
+            queueClient.peekMessage().getBody().toString());
     }
 
-    def "Dequeue message"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        queueClient.sendMessage(expectMsg)
-        when:
-        def messageItem = queueClient.receiveMessage()
-        then:
-        expectMsg == messageItem.getMessageText()
+    @Test
+    public void dequeueMessage() {
+        queueClient.create();
+        String expectMsg = "test message";
+        queueClient.sendMessage(expectMsg);
+
+        assertEquals(expectMsg, queueClient.receiveMessage().getMessageText());
     }
 
-    def "Dequeue encoded message"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(encodedMsg)
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        when:
-        def messageItem = encodingQueueClient.receiveMessage()
-        then:
-        expectMsg == messageItem.getBody().toString()
+    @Test
+    public void dequeueEncodedMessage() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(encodedMsg);
+        QueueClient encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64)
+            .buildClient().getQueueClient(queueName);
+
+        assertEquals(expectMsg, encodingQueueClient.receiveMessage().getBody().toString());
     }
 
-    def "Dequeue fails without handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        queueClient.sendMessage(expectMsg)
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        when:
-        encodingQueueClient.receiveMessage()
-        then:
-        thrown(IllegalArgumentException.class)
+    @Test
+    public void dequeueFailsWithoutHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        queueClient.sendMessage(expectMsg);
+        QueueClient encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64)
+            .buildClient().getQueueClient(queueName);
+
+        assertThrows(IllegalArgumentException.class, encodingQueueClient::receiveMessage);
     }
 
-    def "Dequeue with handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(encodedMsg)
-        queueClient.sendMessage(expectMsg)
-        QueueMessageItem badMessage = null
-        String queueUrl = null
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void dequeueWithHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(encodedMsg);
+        queueClient.sendMessage(expectMsg);
+        AtomicReference<QueueMessageItem> badMessage = new AtomicReference<>();
+        AtomicReference<String> queueUrl = new AtomicReference<>();
+
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingErrorAsync({ failure ->
-                badMessage = failure.getQueueMessageItem()
-                queueUrl = failure.getQueueAsyncClient().getQueueUrl()
-        return Mono.empty()
+            .processMessageDecodingErrorAsync(failure -> {
+                badMessage.set(failure.getQueueMessageItem());
+                queueUrl.set(failure.getQueueAsyncClient().getQueueUrl());
+                return Mono.empty();
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        def messageItems = encodingQueueClient.receiveMessages(10).toList()
-        then:
-        messageItems.size() == 1
-        messageItems[0].getBody().toString() == expectMsg
-        badMessage != null
-        badMessage.getBody().toString() == expectMsg
-        queueUrl == queueClient.getQueueUrl()
+            .buildClient().getQueueClient(queueName);
+
+        List<QueueMessageItem> messageItems = encodingQueueClient.receiveMessages(10).stream()
+            .collect(Collectors.toList());
+
+        assertEquals(1, messageItems.size());
+        assertEquals(expectMsg, messageItems.get(0).getBody().toString());
+        assertNotNull(badMessage.get());
+        assertEquals(expectMsg, badMessage.get().getBody().toString());
+        assertEquals(queueClient.getQueueUrl(), queueUrl.get());
     }
 
-    def "Dequeue and delete with handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(encodedMsg)
-        queueClient.sendMessage(expectMsg)
-        QueueMessageItem badMessage = null
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void dequeueAndDeleteWithHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(encodedMsg);
+        queueClient.sendMessage(expectMsg);
+        AtomicReference<QueueMessageItem> badMessage = new AtomicReference<>();
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingErrorAsync({ failure ->
-                badMessage = failure.getQueueMessageItem()
-        return failure.getQueueAsyncClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            .processMessageDecodingErrorAsync(failure -> {
+                QueueMessageItem item = failure.getQueueMessageItem();
+                badMessage.set(item);
+                return failure.getQueueAsyncClient().deleteMessage(item.getMessageId(), item.getPopReceipt());
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        def messageItems = encodingQueueClient.receiveMessages(10).toList()
-        then:
-        messageItems.size() == 1
-        messageItems[0].getBody().toString() == expectMsg
-        badMessage != null
-        badMessage.getBody().toString() == expectMsg
+            .buildClient().getQueueClient(queueName);
+
+        List<QueueMessageItem> messageItems = encodingQueueClient.receiveMessages(10).stream()
+            .collect(Collectors.toList());
+
+        assertEquals(1, messageItems.size());
+        assertEquals(expectMsg, messageItems.get(0).getBody().toString());
+        assertNotNull(badMessage.get());
+        assertEquals(expectMsg, badMessage.get().getBody().toString());
     }
 
-    def "Dequeue and delete with sync handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(encodedMsg)
-        queueClient.sendMessage(expectMsg)
-        QueueMessageItem badMessage = null
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void dequeueAndDeleteWithSyncHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(encodedMsg);
+        queueClient.sendMessage(expectMsg);
+        AtomicReference<QueueMessageItem> badMessage = new AtomicReference<>();
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingError({ failure ->
-                badMessage = failure.getQueueMessageItem()
-                failure.getQueueClient().deleteMessage(badMessage.getMessageId(), badMessage.getPopReceipt())
+            .processMessageDecodingError(failure -> {
+                QueueMessageItem item = failure.getQueueMessageItem();
+                badMessage.set(item);
+                failure.getQueueClient().deleteMessage(item.getMessageId(), item.getPopReceipt());
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        def messageItems = encodingQueueClient.receiveMessages(10).toList()
-        then:
-        messageItems.size() == 1
-        messageItems[0].getBody().toString() == expectMsg
-        badMessage != null
-        badMessage.getBody().toString() == expectMsg
+            .buildClient().getQueueClient(queueName);
+
+        List<QueueMessageItem> messageItems = encodingQueueClient.receiveMessages(10).stream()
+            .collect(Collectors.toList());
+        assertEquals(1, messageItems.size());
+        assertEquals(expectMsg, messageItems.get(0).getBody().toString());
+        assertNotNull(badMessage.get());
+        assertEquals(expectMsg, badMessage.get().getBody().toString());
     }
 
-    def "Dequeue with handler error"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(encodedMsg)
-        queueClient.sendMessage(expectMsg)
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void dequeueWithHandlerError() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(encodedMsg);
+        queueClient.sendMessage(expectMsg);
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingErrorAsync({ message ->
-        throw new IllegalStateException("KABOOM")
+            .processMessageDecodingErrorAsync(message -> {
+                throw new IllegalStateException("KABOOM");
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        encodingQueueClient.receiveMessages(10).toList()
-        then:
-        thrown(IllegalStateException.class)
+            .buildClient().getQueueClient(queueName);
+
+        assertThrows(IllegalStateException.class, () -> encodingQueueClient.receiveMessages(10).iterator().next());
     }
 
-    def "Dequeue multiple messages"() {
-        given:
-        queueClient.create()
-        def expectMsg1 = "test message 1"
-        def expectMsg2 = "test message 2"
-        queueClient.sendMessage(expectMsg1)
-        queueClient.sendMessage(expectMsg2)
-        when:
-        def dequeueMsgIter = queueClient.receiveMessages(2).iterator()
-        then:
-        expectMsg1 == dequeueMsgIter.next().getMessageText()
-        expectMsg2 == dequeueMsgIter.next().getMessageText()
+    @Test
+    public void dequeueMultipleMessages() {
+        queueClient.create();
+        String expectMsg1 = "test message 1";
+        String expectMsg2 = "test message 2";
+        queueClient.sendMessage(expectMsg1);
+        queueClient.sendMessage(expectMsg2);
+
+        Iterator<QueueMessageItem> dequeueMsgIter = queueClient.receiveMessages(2).iterator();
+        assertEquals(expectMsg1, dequeueMsgIter.next().getMessageText());
+        assertEquals(expectMsg2, dequeueMsgIter.next().getMessageText());
     }
 
-    def "Dequeue too many message"() {
-        given:
-        queueClient.create()
-        when:
-        queueClient.receiveMessages(33).iterator().next()
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
+    @Test
+    public void dequeueTooManyMessages() {
+        queueClient.create();
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.receiveMessages(33).iterator().next());
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 400,
+            QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE);
     }
 
-    def "Enqueue Dequeue non-UTF message"() {
-        given:
-        queueClient.create()
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
-        encodingQueueClient.sendMessage(BinaryData.fromBytes(content))
+    @Test
+    public void enqueueDequeueNonUtfMessage() {
+        queueClient.create();
+        QueueClient encodingQueueClient = getBase64Client();
+        byte[] content = new byte[]{(byte) 0xFF, 0x00}; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content));
 
-        when:
-        def messageItem = encodingQueueClient.receiveMessage()
-        then:
-        content == messageItem.getBody().toBytes()
+        assertArraysEqual(content, encodingQueueClient.receiveMessage().getBody().toBytes());
     }
 
-    def "Enqueue Peek non-UTF message"() {
-        given:
-        queueClient.create()
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        byte[] content = [ 0xFF, 0x00 ]; // Not a valid UTF-8 byte sequence.
-        encodingQueueClient.sendMessage(BinaryData.fromBytes(content))
+    @Test
+    public void enqueuePeekNonUtfMessage() {
+        queueClient.create();
+        QueueClient encodingQueueClient = getBase64Client();
+        byte[] content = new byte[]{(byte) 0xFF, 0x00}; // Not a valid UTF-8 byte sequence.
+        encodingQueueClient.sendMessage(BinaryData.fromBytes(content));
 
-        when:
-        def messageItem = encodingQueueClient.peekMessage()
-        then:
-        content == messageItem.getBody().toBytes()
+        assertArraysEqual(content, encodingQueueClient.peekMessage().getBody().toBytes());
     }
 
-    def "Peek message"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        queueClient.sendMessage(expectMsg)
-        when:
-        def peekedMessage = queueClient.peekMessage()
-        then:
-        expectMsg == peekedMessage.getMessageText()
+    @Test
+    public void peekMessage() {
+        queueClient.create();
+        String expectMsg = "test message";
+        queueClient.sendMessage(expectMsg);
+
+        assertEquals(expectMsg, queueClient.peekMessage().getMessageText());
     }
 
-    def "Peek encoded message"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(encodedMsg)
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        when:
-        def peekedMessage = encodingQueueClient.peekMessage()
-        then:
-        expectMsg == peekedMessage.getBody().toString()
+    @Test
+    public void peekEncodedMessage() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(encodedMsg);
+        QueueClient encodingQueueClient = getBase64Client();
+
+        assertEquals(expectMsg, encodingQueueClient.peekMessage().getBody().toString());
     }
 
-    def "Peek fails without handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        queueClient.sendMessage(expectMsg)
-        def encodingQueueClient = queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient().getQueueClient(queueName)
-        when:
-        encodingQueueClient.peekMessage()
-        then:
-        thrown(IllegalArgumentException.class)
+    @Test
+    public void peekFailsWithoutHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        queueClient.sendMessage(expectMsg);
+        QueueClient encodingQueueClient = getBase64Client();
+
+        assertThrows(IllegalArgumentException.class, encodingQueueClient::peekMessage);
     }
 
-    def "Peek with handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(expectMsg)
-        queueClient.sendMessage(encodedMsg)
-        PeekedMessageItem badMessage = null
-        String queueUrl = null
-        Exception cause = null
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void peekWithHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(expectMsg);
+        queueClient.sendMessage(encodedMsg);
+        AtomicReference<PeekedMessageItem> badMessage = new AtomicReference<>();
+        AtomicReference<String> queueUrl = new AtomicReference<>();
+        AtomicReference<Exception> cause = new AtomicReference<>();
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingErrorAsync({ failure ->
-                badMessage = failure.getPeekedMessageItem()
-                queueUrl = failure.getQueueAsyncClient().getQueueUrl()
-                cause = failure.getCause()
-        return Mono.empty()
+            .processMessageDecodingErrorAsync(failure -> {
+                badMessage.set(failure.getPeekedMessageItem());
+                queueUrl.set(failure.getQueueAsyncClient().getQueueUrl());
+                cause.set(failure.getCause());
+                return Mono.empty();
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        def peekedMessages = encodingQueueClient.peekMessages(10, null, null).toList()
-        then:
-        peekedMessages.size() == 1
-        peekedMessages[0].getBody().toString() == expectMsg
-        badMessage != null
-        badMessage.getBody().toString() == expectMsg
-        queueUrl == queueClient.getQueueUrl()
-        cause != null
+            .buildClient().getQueueClient(queueName);
+
+        List<PeekedMessageItem> peekedMessages = encodingQueueClient.peekMessages(10, null, null).stream()
+            .collect(Collectors.toList());
+
+        assertEquals(1, peekedMessages.size());
+        assertEquals(expectMsg, peekedMessages.get(0).getBody().toString());
+        assertNotNull(badMessage.get());
+        assertEquals(expectMsg, badMessage.get().getBody().toString());
+        assertEquals(queueClient.getQueueUrl(), queueUrl.get());
+        assertNotNull(cause.get());
     }
 
-    def "Peek with sync handler"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(expectMsg)
-        queueClient.sendMessage(encodedMsg)
-        PeekedMessageItem badMessage = null
-        Exception cause = null
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void peekWithSyncHandler() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(expectMsg);
+        queueClient.sendMessage(encodedMsg);
+        AtomicReference<PeekedMessageItem> badMessage = new AtomicReference<>();
+        AtomicReference<Exception> cause = new AtomicReference<>();
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingError({ failure ->
-                badMessage = failure.getPeekedMessageItem()
-                cause = failure.getCause()
+            .processMessageDecodingError(failure -> {
+                badMessage.set(failure.getPeekedMessageItem());
+                cause.set(failure.getCause());
                 // call some sync API here
-                failure.getQueueClient().getProperties()
+                failure.getQueueClient().getProperties();
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        def peekedMessages = encodingQueueClient.peekMessages(10, null, null).toList()
-        then:
-        peekedMessages.size() == 1
-        peekedMessages[0].getBody().toString() == expectMsg
-        badMessage != null
-        badMessage.getBody().toString() == expectMsg
-        cause != null
+            .buildClient().getQueueClient(queueName);
+
+        List<PeekedMessageItem> peekedMessages = encodingQueueClient.peekMessages(10, null, null).stream()
+            .collect(Collectors.toList());
+
+        assertEquals(1, peekedMessages.size());
+        assertEquals(expectMsg, peekedMessages.get(0).getBody().toString());
+        assertNotNull(badMessage.get());
+        assertEquals(expectMsg, badMessage.get().getBody().toString());
+        assertNotNull(cause.get());
     }
 
-    def "Peek with handler exception"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        def encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8))
-        queueClient.sendMessage(expectMsg)
-        queueClient.sendMessage(encodedMsg)
-        def encodingQueueClient = queueServiceBuilderHelper()
+    @Test
+    public void peekWithHandlerException() {
+        queueClient.create();
+        String expectMsg = "test message";
+        String encodedMsg = Base64.getEncoder().encodeToString(expectMsg.getBytes(StandardCharsets.UTF_8));
+        queueClient.sendMessage(expectMsg);
+        queueClient.sendMessage(encodedMsg);
+        QueueClient encodingQueueClient = queueServiceBuilderHelper()
             .messageEncoding(QueueMessageEncoding.BASE64)
-            .processMessageDecodingErrorAsync({ message ->
-        throw new IllegalStateException("KABOOM")
+            .processMessageDecodingErrorAsync(message -> {
+                throw new IllegalStateException("KABOOM");
             })
-            .buildClient().getQueueClient(queueName)
-        when:
-        encodingQueueClient.peekMessages(10, null, null).toList()
-        then:
-        thrown(IllegalStateException.class)
+            .buildClient().getQueueClient(queueName);
+
+        assertThrows(IllegalStateException.class,
+            () -> encodingQueueClient.peekMessages(10, null, null).iterator().next());
     }
 
-    def "Peek multiple messages"() {
-        given:
-        queueClient.create()
-        def expectMsg1 = "test message 1"
-        def expectMsg2 = "test message 2"
-        queueClient.sendMessage(expectMsg1)
-        queueClient.sendMessage(expectMsg2)
-        when:
-        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(10), null).iterator()
-        then:
-        expectMsg1 == peekMsgIter.next().getMessageText()
-        expectMsg2 == peekMsgIter.next().getMessageText()
-        !peekMsgIter.hasNext()
+    @Test
+    public void peekMultipleMessages() {
+        queueClient.create();
+        String expectMsg1 = "test message 1";
+        String expectMsg2 = "test message 2";
+        queueClient.sendMessage(expectMsg1);
+        queueClient.sendMessage(expectMsg2);
+
+        Iterator<PeekedMessageItem> peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(10), null).iterator();
+        assertEquals(expectMsg1, peekMsgIter.next().getMessageText());
+        assertEquals(expectMsg2, peekMsgIter.next().getMessageText());
+        assertFalse(peekMsgIter.hasNext());
     }
 
-    def "Peek too many message"() {
-        given:
-        queueClient.create()
-        when:
-        queueClient.peekMessages(33, null, null).iterator().next()
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
+    @Test
+    public void peekTooManyMessages() {
+        queueClient.create();
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.peekMessages(33, null, null).iterator().next());
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 400,
+            QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE);
     }
 
-    def "Peek messages error"() {
-        when:
-        queueClient.peekMessage()
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    @Test
+    public void peekMessageError() {
+        QueueStorageException exception = assertThrows(QueueStorageException.class, queueClient::peekMessage);
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.QUEUE_NOT_FOUND);
     }
 
-    def "Clear messages"() {
-        given:
-        queueClient.create()
-        queueClient.sendMessage("test message 1")
-        queueClient.sendMessage("test message 2")
-        queueClient.sendMessage("test message 3")
-        when:
-        def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
-        def clearMsgResponse = queueClient.clearMessagesWithResponse(null, null)
-        def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.getValue().getApproximateMessagesCount() == 3
-        QueueTestHelper.assertResponseStatusCode(clearMsgResponse, 204)
-        QueueTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        getPropertiesAfterResponse.getValue().getApproximateMessagesCount() == 0
+    @Test
+    public void clearMessages() {
+        queueClient.create();
+        queueClient.sendMessage("test message 1");
+        queueClient.sendMessage("test message 2");
+        queueClient.sendMessage("test message 3");
+
+        Response<QueueProperties> propertiesResponse = queueClient.getPropertiesWithResponse(null, null);
+        assertEquals(200, propertiesResponse.getStatusCode());
+        assertEquals(3, propertiesResponse.getValue().getApproximateMessagesCount());
+
+        assertEquals(204, queueClient.clearMessagesWithResponse(null, null).getStatusCode());
+
+        propertiesResponse = queueClient.getPropertiesWithResponse(null, null);
+        assertEquals(200, propertiesResponse.getStatusCode());
+        assertEquals(0, propertiesResponse.getValue().getApproximateMessagesCount());
     }
 
-    def "Clear messages error"() {
-        when:
-        queueClient.clearMessagesWithResponse(null, null)
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    @Test
+    public void clearMessagesError() {
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.clearMessagesWithResponse(null, null));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.QUEUE_NOT_FOUND);
     }
 
-    def "Delete message"() {
-        given:
-        queueClient.create()
-        queueClient.sendMessage("test message 1")
-        queueClient.sendMessage("test message 2")
-        queueClient.sendMessage("test message 3")
-        def dequeueMsg = queueClient.receiveMessage()
-        when:
-        def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
-        def deleteMsgResponse = queueClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
-            null, null)
-        def getPropertiesAfterResponse = queueClient.getPropertiesWithResponse(null, null)
-        then:
-        QueueTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
-        getPropertiesResponse.getValue().getApproximateMessagesCount() == 3
-        QueueTestHelper.assertResponseStatusCode(deleteMsgResponse, 204)
-        QueueTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
-        getPropertiesAfterResponse.getValue().getApproximateMessagesCount() == 2
+    @Test
+    public void deleteMessage() {
+        queueClient.create();
+        queueClient.sendMessage("test message 1");
+        queueClient.sendMessage("test message 2");
+        queueClient.sendMessage("test message 3");
+        QueueMessageItem dequeueMsg = queueClient.receiveMessage();
+
+        Response<QueueProperties> propertiesResponse = queueClient.getPropertiesWithResponse(null, null);
+        assertEquals(200, propertiesResponse.getStatusCode());
+        assertEquals(3, propertiesResponse.getValue().getApproximateMessagesCount());
+
+        assertEquals(204, queueClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
+            null, null).getStatusCode());
+
+        propertiesResponse = queueClient.getPropertiesWithResponse(null, null);
+        assertEquals(200, propertiesResponse.getStatusCode());
+        assertEquals(2, propertiesResponse.getValue().getApproximateMessagesCount());
     }
 
-    @Unroll
-    def "Delete message invalid args"() {
-        given:
-        queueClient.create()
-        def expectMsg = "test message"
-        queueClient.sendMessage(expectMsg)
-        QueueMessageItem queueMessageItem = queueClient.receiveMessage()
-        when:
-        def deleteMessageId = messageId ? queueMessageItem.getMessageId() : queueMessageItem.getMessageId() + "Random"
-        def deletePopReceipt = popReceipt ? queueMessageItem.getPopReceipt() : queueMessageItem.getPopReceipt() + "Random"
-        queueClient.deleteMessage(deleteMessageId, deletePopReceipt)
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
-        where:
-        messageId | popReceipt | statusCode | errMsg
-        true      | false      | 400        | QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE
-        false     | true       | 404        | QueueErrorCode.MESSAGE_NOT_FOUND
-        false     | false      | 400        | QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE
+    @ParameterizedTest
+    @MethodSource("invalidArgsSupplier")
+    public void deleteMessageInvalidArgs(boolean messageId, boolean popReceipt, int statusCode, QueueErrorCode errMsg) {
+        queueClient.create();
+        String expectMsg = "test message";
+        queueClient.sendMessage(expectMsg);
+        QueueMessageItem messageItem = queueClient.receiveMessage();
+        String deleteMessageId = messageId ? messageItem.getMessageId() : messageItem.getMessageId() + "Random";
+        String deletePopReceipt = popReceipt ? messageItem.getPopReceipt() : messageItem.getPopReceipt() + "Random";
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.deleteMessage(deleteMessageId, deletePopReceipt));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMsg);
     }
 
-    def "Update message"() {
-        given:
-        def updateMsg = "Updated test message"
-        queueClient.create()
-        queueClient.sendMessage("test message before update")
+    @Test
+    public void updateMessage() {
+        String updateMsg = "Updated test message";
+        queueClient.create();
+        queueClient.sendMessage("test message before update");
 
-        def dequeueMsg = queueClient.receiveMessage()
-        when:
-        def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
-            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null,  null)
-        sleepIfLive(2000)
-        def peekMsgIter = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
-        updateMsg == peekMsgIter.getMessageText()
+        QueueMessageItem dequeueMsg = queueClient.receiveMessage();
+
+        assertEquals(204, queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
+            updateMsg, Duration.ofSeconds(1), null, null).getStatusCode());
+
+        sleepIfRunningAgainstService(2000);
+
+        assertEquals(updateMsg, queueClient.peekMessage().getMessageText());
     }
 
-    def "Update message no body"() {
-        given:
-        def messageText = "test message before update"
-        queueClient.create()
-        queueClient.sendMessage(messageText)
+    @Test
+    public void updateMessageNoBody() {
+        String messageText = "test message before update";
+        queueClient.create();
+        queueClient.sendMessage(messageText);
 
-        def dequeueMsg = queueClient.receiveMessage()
-        when:
-        def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
-            dequeueMsg.getPopReceipt(), null, Duration.ofSeconds(1), null,  null)
-        sleepIfLive(2000)
-        def peekMsgIter = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
-        messageText == peekMsgIter.getMessageText()
+        QueueMessageItem dequeueMsg = queueClient.receiveMessage();
+
+        assertEquals(204, queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
+            null, Duration.ofSeconds(1), null, null).getStatusCode());
+
+        sleepIfRunningAgainstService(2000);
+
+        assertEquals(messageText, queueClient.peekMessage().getMessageText());
     }
 
-    def "Update message null duration"() {
-        given:
-        def messageText = "test message before update"
-        queueClient.create()
-        queueClient.sendMessage(messageText)
+    @Test
+    public void updateMessageNullDuration() {
+        String messageText = "test message before update";
+        queueClient.create();
+        queueClient.sendMessage(messageText);
 
-        def dequeueMsg = queueClient.receiveMessage()
-        when:
-        def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
-            dequeueMsg.getPopReceipt(), null, null, null,  null)
-        sleepIfLive(2000)
-        def peekMsgIter = queueClient.peekMessage()
-        then:
-        QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
-        messageText == peekMsgIter.getMessageText()
+        QueueMessageItem dequeueMsg = queueClient.receiveMessage();
+
+        assertEquals(204, queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
+            null, null, null, null).getStatusCode());
+
+        sleepIfRunningAgainstService(2000);
+
+        assertEquals(messageText, queueClient.peekMessage().getMessageText());
     }
 
-    @Unroll
-    def "Update message invalid args"() {
-        given:
-        queueClient.create()
-        def updateMsg = "Updated test message"
-        queueClient.sendMessage("test message before update")
-        def dequeueMessageIter = queueClient.receiveMessage()
-        when:
-        def updateMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
-        def updatePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
-        queueClient.updateMessage(updateMessageId, updatePopReceipt, updateMsg, Duration.ofSeconds(1))
-        then:
-        def e = thrown(QueueStorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
-        where:
-        messageId | popReceipt | statusCode | errMsg
-        true      | false      | 400        | QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE
-        false     | true       | 404        | QueueErrorCode.MESSAGE_NOT_FOUND
-        false     | false      | 400        | QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE
+    @ParameterizedTest
+    @MethodSource("invalidArgsSupplier")
+    public void updateMessageInvalidArgs(boolean messageId, boolean popReceipt, int statusCode, QueueErrorCode errMsg) {
+        queueClient.create();
+        String updateMsg = "Updated test message";
+        queueClient.sendMessage("test message before update");
+        QueueMessageItem messageItem = queueClient.receiveMessage();
+
+        String updateMessageId = messageId ? messageItem.getMessageId() : messageItem.getMessageId() + "Random";
+        String updatePopReceipt = popReceipt ? messageItem.getPopReceipt() : messageItem.getPopReceipt() + "Random";
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class,
+            () -> queueClient.updateMessage(updateMessageId, updatePopReceipt, updateMsg, Duration.ofSeconds(1)));
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, statusCode, errMsg);
     }
 
-    def "Get Queue Name"() {
-        expect:
-        queueName == queueClient.getQueueName()
+    private static Stream<Arguments> invalidArgsSupplier() {
+        return Stream.of(
+            Arguments.of(true, false, 400, QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE),
+            Arguments.of(false, true, 404, QueueErrorCode.MESSAGE_NOT_FOUND),
+            Arguments.of(false, false, 400, QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE)
+        );
     }
 
-    def "Builder bearer token validation"() {
-        setup:
-        URL url = new URL(queueClient.getQueueUrl())
-        String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString()
-        def builder = new QueueClientBuilder()
+    @Test
+    public void getQueueName() {
+        assertEquals(queueName, queueClient.getQueueName());
+    }
+
+    @Test
+    public void builderBearerTokenValidation() throws MalformedURLException {
+        URL url = new URL(queueClient.getQueueUrl());
+        String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString();
+
+        assertThrows(IllegalArgumentException.class, () -> new QueueClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-
-        when:
-        builder.buildClient()
-
-        then:
-        thrown(IllegalArgumentException)
+            .buildClient());
     }
 
-    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
-    def "Per call policy"() {
-        given:
-        def queueClient = queueBuilderHelper()
-            .addPolicy(getPerCallVersionPolicy()).buildClient()
-        queueClient.create()
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    @Test
+    public void perCallPolicy() {
+        QueueClient queueClient = queueBuilderHelper().addPolicy(getPerCallVersionPolicy()).buildClient();
+        queueClient.create();
 
-        when:
-        def response = queueClient.getPropertiesWithResponse(null, null)
-
-        then:
-        notThrown(QueueStorageException)
-        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+        assertEquals("2017-11-09", queueClient.getPropertiesWithResponse(null, null).getHeaders()
+            .getValue("x-ms-version"));
     }
 
-    @Retry(count = 5, delay = 1000)
-    def "create queue with small timeouts fail for service client"() {
-        setup:
-        def clientOptions = new HttpClientOptions()
-            .setApplicationId("client-options-id")
-            .setResponseTimeout(Duration.ofNanos(1))
-            .setReadTimeout(Duration.ofNanos(1))
-            .setWriteTimeout(Duration.ofNanos(1))
-            .setConnectTimeout(Duration.ofNanos(1))
-
-        def clientBuilder = new QueueServiceClientBuilder()
-            .endpoint(environment.primaryAccount.blobEndpoint)
-            .credential(environment.primaryAccount.credential)
-            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
-            .clientOptions(clientOptions)
-
-        def serviceClient = clientBuilder.buildClient()
-
-        when:
-        serviceClient.createQueueWithResponse(namer.getRandomName(60), null, Duration.ofSeconds(10), null)
-
-        then:
-        // test whether failure occurs due to small timeout intervals set on the service client
-        thrown(RuntimeException)
+    private QueueClient getBase64Client() {
+        return queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64).buildClient()
+            .getQueueClient(queueName);
     }
-
 }

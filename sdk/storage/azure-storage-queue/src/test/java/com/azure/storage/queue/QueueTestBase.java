@@ -41,13 +41,13 @@ import java.util.zip.CRC32;
  * Base class for Azure Storage Queue tests.
  */
 public class QueueTestBase extends TestProxyTestBase {
-    private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
+    protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
         .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
         .build();
 
-    private String prefix;
+    protected String prefix;
 
     protected TestDataFactory getData() {
         return TestDataFactory.getInstance();
@@ -87,6 +87,10 @@ public class QueueTestBase extends TestProxyTestBase {
     }
 
     protected String getRandomName(int length) {
+        return getRandomName(prefix, length);
+    }
+
+    protected String getRandomName(String prefix, int length) {
         return testResourceNamer.randomName(prefix, length);
     }
 
