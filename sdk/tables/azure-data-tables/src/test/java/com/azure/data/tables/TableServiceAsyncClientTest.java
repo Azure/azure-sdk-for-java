@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -10,6 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
+import com.azure.data.tables.TestUtils.MockCredential;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceCorsRule;
@@ -24,7 +26,6 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -106,15 +107,19 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("tableName", 20);
 
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockCredential();
+        } else if (interceptorManager.isRecordMode()) {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
-        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
-            .tenantId(testResourceNamer.randomUuid())
-            .additionallyAllowedTenants("*")
-            .build();
-
+            credential = new ClientSecretCredentialBuilder()
+                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+                .tenantId(testResourceNamer.randomUuid())
+                .additionallyAllowedTenants("*")
+                .build();
+        }
         final TableServiceAsyncClient tableServiceAsyncClient =
             getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();

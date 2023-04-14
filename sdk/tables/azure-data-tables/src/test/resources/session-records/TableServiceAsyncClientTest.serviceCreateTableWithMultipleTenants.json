@@ -8,28 +8,28 @@
         "Content-Length": "33",
         "Content-Type": "application/json;odata=nometadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 11 Apr 2023 21:18:23 GMT",
+        "Date": "Fri, 14 Apr 2023 20:23:47 GMT",
         "Prefer": "return-no-content",
         "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
-        "x-ms-client-request-id": "54aec390-9728-44b6-82c5-d44bf1d387cd",
+        "x-ms-client-request-id": "f5b28272-5a4f-45b7-a9fb-b4ae0a87b233",
         "x-ms-version": "2020-12-06"
       },
       "RequestBody": {
-        "TableName": "tablename79396de5"
+        "TableName": "tablename1110735a"
       },
       "StatusCode": 401,
       "ResponseHeaders": {
         "Content-Length": "281",
         "Content-Type": "application/json",
-        "Date": "Tue, 11 Apr 2023 21:18:23 GMT",
+        "Date": "Fri, 14 Apr 2023 20:23:47 GMT",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "WWW-Authenticate": "Bearer authorization_uri=https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize resource_id=https://storage.azure.com",
-        "x-ms-client-request-id": "54aec390-9728-44b6-82c5-d44bf1d387cd",
+        "x-ms-client-request-id": "f5b28272-5a4f-45b7-a9fb-b4ae0a87b233",
         "x-ms-error-code": "NoAuthenticationInformation",
-        "x-ms-request-id": "a73374d4-9002-0036-3ebb-6c7333000000",
+        "x-ms-request-id": "871758a8-9002-0036-030f-6f7333000000",
         "x-ms-version": "2020-12-06"
       },
       "ResponseBody": {
@@ -37,7 +37,7 @@
           "code": "NoAuthenticationInformation",
           "message": {
             "lang": "en-US",
-            "value": "Server failed to authenticate the request. Please refer to the information in the www-authenticate header.\nRequestId:a73374d4-9002-0036-3ebb-6c7333000000\nTime:2023-04-11T21:18:23.7870072Z"
+            "value": "Server failed to authenticate the request. Please refer to the information in the www-authenticate header.\nRequestId:871758a8-9002-0036-030f-6f7333000000\nTime:2023-04-14T20:23:47.8453547Z"
           }
         }
       }
@@ -51,30 +51,30 @@
         "Content-Length": "33",
         "Content-Type": "application/json;odata=nometadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 11 Apr 2023 21:18:23 GMT",
+        "Date": "Fri, 14 Apr 2023 20:23:47 GMT",
         "Prefer": "return-no-content",
         "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
-        "x-ms-client-request-id": "54aec390-9728-44b6-82c5-d44bf1d387cd",
+        "x-ms-client-request-id": "f5b28272-5a4f-45b7-a9fb-b4ae0a87b233",
         "x-ms-version": "2020-12-06"
       },
       "RequestBody": {
-        "TableName": "tablename79396de5"
+        "TableName": "tablename1110735a"
       },
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://tb914c4cd1614894eprim.table.core.windows.net/Tables(\u0027tablename79396de5\u0027)",
-        "Date": "Tue, 11 Apr 2023 21:18:23 GMT",
-        "Location": "https://tb914c4cd1614894eprim.table.core.windows.net/Tables(\u0027tablename79396de5\u0027)",
+        "DataServiceId": "https://REDACTED/Tables(\u0027tablename1110735a\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:23:48 GMT",
+        "Location": "https://REDACTED/Tables(\u0027tablename1110735a\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "54aec390-9728-44b6-82c5-d44bf1d387cd",
-        "x-ms-request-id": "a7337514-9002-0036-78bb-6c7333000000",
+        "x-ms-client-request-id": "f5b28272-5a4f-45b7-a9fb-b4ae0a87b233",
+        "x-ms-request-id": "87175925-9002-0036-710f-6f7333000000",
         "x-ms-version": "2020-12-06"
       },
       "ResponseBody": null
@@ -88,38 +88,38 @@
         "Content-Length": "33",
         "Content-Type": "application/json;odata=nometadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 11 Apr 2023 21:18:24 GMT",
+        "Date": "Fri, 14 Apr 2023 20:23:48 GMT",
         "Prefer": "return-no-content",
         "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
-        "x-ms-client-request-id": "237a5a2d-9e80-4749-8e42-2672078e5430",
+        "x-ms-client-request-id": "e65db654-66c9-4433-a728-8deb03863dfd",
         "x-ms-version": "2020-12-06"
       },
       "RequestBody": {
-        "TableName": "tablename8715612c"
+        "TableName": "tablename797072de"
       },
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://tb914c4cd1614894eprim.table.core.windows.net/Tables(\u0027tablename8715612c\u0027)",
-        "Date": "Tue, 11 Apr 2023 21:18:23 GMT",
-        "Location": "https://tb914c4cd1614894eprim.table.core.windows.net/Tables(\u0027tablename8715612c\u0027)",
+        "DataServiceId": "https://REDACTED/Tables(\u0027tablename797072de\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:23:48 GMT",
+        "Location": "https://REDACTED/Tables(\u0027tablename797072de\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "237a5a2d-9e80-4749-8e42-2672078e5430",
-        "x-ms-request-id": "a7337531-9002-0036-0fbb-6c7333000000",
+        "x-ms-client-request-id": "e65db654-66c9-4433-a728-8deb03863dfd",
+        "x-ms-request-id": "871759f1-9002-0036-350f-6f7333000000",
         "x-ms-version": "2020-12-06"
       },
       "ResponseBody": null
     }
   ],
   "Variables": {
-    "0": "tablename79396de5",
-    "1": "7c607f44-8467-4fe7-8874-aa75ed386af3",
-    "2": "tablename8715612c"
+    "0": "tablename1110735a",
+    "1": "fdbeb765-56c0-4a37-8d4c-be92a0251b41",
+    "2": "tablename797072de"
   }
 }

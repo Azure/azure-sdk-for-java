@@ -9,30 +9,30 @@
         "Content-Length": "30",
         "Content-Type": "application/json;odata=nometadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 11 Apr 2023 21:17:14 GMT",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
         "Prefer": "return-no-content",
         "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
-        "x-ms-client-request-id": "05c8cada-f250-47d8-aa1a-a84aec950fd2",
+        "x-ms-client-request-id": "68c74ece-d155-47d1-9baf-0fa074947bd6",
         "x-ms-version": "2020-12-06"
       },
       "RequestBody": {
-        "TableName": "test15072553bf"
+        "TableName": "test776524d869"
       },
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Length": "0",
-        "DataServiceId": "https://tb914c4cd1614894eprim.table.core.windows.net/Tables(\u0027test15072553bf\u0027)",
-        "Date": "Tue, 11 Apr 2023 21:17:13 GMT",
-        "Location": "https://tb914c4cd1614894eprim.table.core.windows.net/Tables(\u0027test15072553bf\u0027)",
+        "DataServiceId": "https://REDACTED/Tables(\u0027test776524d869\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:22:54 GMT",
+        "Location": "https://REDACTED/Tables(\u0027test776524d869\u0027)",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "05c8cada-f250-47d8-aa1a-a84aec950fd2",
-        "x-ms-request-id": "a7332315-9002-0036-0dba-6c7333000000",
+        "x-ms-client-request-id": "68c74ece-d155-47d1-9baf-0fa074947bd6",
+        "x-ms-request-id": "8717151e-9002-0036-6a0e-6f7333000000",
         "x-ms-version": "2020-12-06"
       },
       "ResponseBody": null
@@ -46,20 +46,20 @@
         "Content-Length": "30",
         "Content-Type": "application/json;odata=nometadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 11 Apr 2023 21:17:14 GMT",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
         "Prefer": "return-no-content",
         "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
-        "x-ms-client-request-id": "7e62a6c5-295b-451d-b448-0e78bed728a1",
+        "x-ms-client-request-id": "8bea47eb-b62d-4a3e-8b7b-3d0a47c4cdef",
         "x-ms-version": "2020-12-06"
       },
       "RequestBody": {
-        "TableName": "test15072553bf"
+        "TableName": "test776524d869"
       },
       "StatusCode": 409,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
-        "Date": "Tue, 11 Apr 2023 21:17:13 GMT",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
         "Preference-Applied": "return-no-content",
         "Server": [
           "Windows-Azure-Table/1.0",
@@ -67,8 +67,8 @@
         ],
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-client-request-id": "7e62a6c5-295b-451d-b448-0e78bed728a1",
-        "x-ms-request-id": "a7332320-9002-0036-17ba-6c7333000000",
+        "x-ms-client-request-id": "8bea47eb-b62d-4a3e-8b7b-3d0a47c4cdef",
+        "x-ms-request-id": "8717152d-9002-0036-780e-6f7333000000",
         "x-ms-version": "2020-12-06"
       },
       "ResponseBody": {
@@ -76,13 +76,13 @@
           "code": "TableAlreadyExists",
           "message": {
             "lang": "en-US",
-            "value": "The table specified already exists.\nRequestId:a7332320-9002-0036-17ba-6c7333000000\nTime:2023-04-11T21:17:14.1433209Z"
+            "value": "The table specified already exists.\nRequestId:8717152d-9002-0036-780e-6f7333000000\nTime:2023-04-14T20:22:55.3905875Z"
           }
         }
       }
     }
   ],
   "Variables": {
-    "0": "test15072553bf"
+    "0": "test776524d869"
   }
 }

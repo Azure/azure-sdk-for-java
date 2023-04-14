@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,6 +13,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
+import com.azure.data.tables.TestUtils.MockCredential;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
@@ -28,7 +30,6 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -97,15 +98,19 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         String tableName = testResourceNamer.randomName("tableName", 20);
         String secondTableName = testResourceNamer.randomName("secondTableName", 20);
 
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockCredential();
+        } else if (interceptorManager.isRecordMode()) {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
-        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
-            .tenantId(testResourceNamer.randomUuid())
-            .additionallyAllowedTenants("*")
-            .build();
-
+            credential = new ClientSecretCredentialBuilder()
+                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+                .tenantId(testResourceNamer.randomUuid())
+                .additionallyAllowedTenants("*")
+                .build();
+        }
         final TableServiceClient tableServiceClient =
             getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildClient();
