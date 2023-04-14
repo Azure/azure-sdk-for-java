@@ -4,13 +4,15 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.test.annotation.DoNotRecord;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+@Disabled("Require manual verification")
 public class SequenceAckTests extends TestBase {
 
-    // at present, these tests required env variable AZURE_LOG_LEVEL=VERBOSE, and manual observation on the logs
+    // at present, these tests required env variable AZURE_LOG_LEVEL=VERBOSE, and manual verification on the logs
     // we may want to add a message interceptor to client to inspect the wire messages
 
     @Test

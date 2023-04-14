@@ -3,7 +3,6 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonGetter;
 
 public final class SendEventMessage extends WebPubSubMessageAck {

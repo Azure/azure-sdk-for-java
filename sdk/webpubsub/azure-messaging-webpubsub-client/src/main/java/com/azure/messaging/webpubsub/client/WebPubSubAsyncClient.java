@@ -802,25 +802,31 @@ class WebPubSubAsyncClient implements Closeable {
 
         if (webPubSubMessage instanceof GroupDataMessage) {
             final GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
-            tryEmitNext(groupMessageEventSink, new GroupMessageEvent(
-                groupDataMessage.getGroup(),
-                groupDataMessage.getData(),
-                groupDataMessage.getDataType(),
-                groupDataMessage.getFromUserId(),
-                groupDataMessage.getSequenceId()));
 
+            boolean emitMessage = true;
             if (groupDataMessage.getSequenceId() != null) {
-                updateSequenceAckId(groupDataMessage.getSequenceId());
+                emitMessage = updateSequenceAckId(groupDataMessage.getSequenceId());
+            }
+            if (emitMessage) {
+                tryEmitNext(groupMessageEventSink, new GroupMessageEvent(
+                    groupDataMessage.getGroup(),
+                    groupDataMessage.getData(),
+                    groupDataMessage.getDataType(),
+                    groupDataMessage.getFromUserId(),
+                    groupDataMessage.getSequenceId()));
             }
         } else if (webPubSubMessage instanceof ServerDataMessage) {
             final ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
-            tryEmitNext(serverMessageEventSink, new ServerMessageEvent(
-                serverDataMessage.getData(),
-                serverDataMessage.getDataType(),
-                serverDataMessage.getSequenceId()));
 
+            boolean emitMessage = true;
             if (serverDataMessage.getSequenceId() != null) {
-                updateSequenceAckId(serverDataMessage.getSequenceId());
+                emitMessage = updateSequenceAckId(serverDataMessage.getSequenceId());
+            }
+            if (emitMessage) {
+                tryEmitNext(serverMessageEventSink, new ServerMessageEvent(
+                    serverDataMessage.getData(),
+                    serverDataMessage.getDataType(),
+                    serverDataMessage.getSequenceId()));
             }
         } else if (webPubSubMessage instanceof AckMessage) {
             tryEmitNext(ackMessageSink, (AckMessage) webPubSubMessage);
@@ -850,10 +856,13 @@ class WebPubSubAsyncClient implements Closeable {
         }
     }
 
-    private void updateSequenceAckId(long id) {
+    private boolean updateSequenceAckId(long id) {
         WebPubSubConnection connection = this.webPubSubConnection;
         if (connection != null) {
-            connection.getSequenceAckId().update(id);
+            return connection.getSequenceAckId().update(id);
+        } else {
+            // this should not happen
+            return false;
         }
     }
 

@@ -37,13 +37,16 @@ public final class SequenceAckId {
      * Sets updated to true.
      *
      * @param id the sequenceId.
+     * @return whether it is a new message.
      */
-    public void update(long id) {
-        sequenceId.getAndUpdate(existId -> Math.max(id, existId));
+    public boolean update(long id) {
+        long previousId = sequenceId.getAndUpdate(existId -> Math.max(id, existId));
 
         // Every time we got a message with sequence-id, we need to response a sequence ack after a period.
         // Consider we receive 1,2,3 and connection drops. After recovery, we may get id 2. We need to also
         // response 3 to tell the service what we've got.
         updated.set(true);
+
+        return id > previousId;
     }
 }
