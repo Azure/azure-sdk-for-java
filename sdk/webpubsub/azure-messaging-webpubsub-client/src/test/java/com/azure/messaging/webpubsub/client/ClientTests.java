@@ -476,6 +476,43 @@ public class ClientTests extends TestBase {
         Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(3));
     }
 
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testClientStopOnSocketClose() throws InterruptedException {
+        String groupName = "testClientStopOnSocketClose";
+        CountDownLatch latch = new CountDownLatch(1);
+        List<String> eventReceived = new ArrayList<>();
+
+        AtomicReference<String> connectionId = new AtomicReference<>();
+
+        WebPubSubClient client = getClientBuilder()
+            .protocol(new WebPubSubJsonProtocol())
+            .autoReconnect(false)
+            .buildClient();
+
+        client.addOnConnectedEventHandler(event -> {
+            connectionId.compareAndSet(null, event.getConnectionId());
+            eventReceived.add(event.getClass().getSimpleName());
+        });
+        client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
+        client.addOnStoppedEventHandler(event -> latch.countDown());
+
+        client.start();
+
+        // use internal API to close the socket
+        client.getWebsocketSession().closeSocket();
+
+        // wait for client to stop, as autoReconnect = false
+
+        latch.await(1, TimeUnit.SECONDS);
+        Assertions.assertEquals(0, latch.getCount());
+
+        Assertions.assertEquals(2, eventReceived.size());
+        Assertions.assertEquals(ConnectedEvent.class.getSimpleName(), eventReceived.get(0));
+        Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(1));
+    }
+
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testStartInStoppedEvent() throws InterruptedException {
