@@ -19,6 +19,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -47,6 +49,7 @@ import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -93,7 +96,8 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
                 Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
             interceptorManager.addMatchers(customMatchers);
         }
 

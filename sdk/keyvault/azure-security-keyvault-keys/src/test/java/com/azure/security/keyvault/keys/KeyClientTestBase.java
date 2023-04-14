@@ -23,6 +23,8 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -123,7 +125,8 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
                 Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
             interceptorManager.addMatchers(customMatchers);
         }
 
