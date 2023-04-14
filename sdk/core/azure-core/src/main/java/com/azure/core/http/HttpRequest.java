@@ -3,10 +3,10 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
@@ -142,7 +142,7 @@ public class HttpRequest {
      */
     public HttpRequest setUrl(String url) {
         try {
-            this.url = UrlBuilder.parse(url).toUrl();
+            this.url = ImplUtils.createUrl(url);
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }

@@ -5,6 +5,7 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
@@ -13,7 +14,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.Header;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -423,7 +423,7 @@ public class JacksonAdapter implements SerializerAdapter {
             return new DateTimeRfc1123(value);
         } else if (type == URL.class) {
             try {
-                return UrlBuilder.parse(value).toUrl();
+                return ImplUtils.createUrl(value);
             } catch (MalformedURLException ex) {
                 throw new IOException(ex);
             }
