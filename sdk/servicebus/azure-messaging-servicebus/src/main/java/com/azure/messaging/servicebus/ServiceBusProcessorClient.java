@@ -163,6 +163,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final String subscriptionName;
     private final ServiceBusTracer tracer;
     private Disposable monitorDisposable;
+    private boolean wasStopped = false;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -237,13 +238,16 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * </p>
      */
     public synchronized void start() {
-        LOGGER.info("Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
-            + "Please close this processor instance and create a new one to restart processing. "
-            + "Refer the git-ticket https://github.com/Azure/azure-sdk-for-java/issues/34464.");
-
         if (isRunning.getAndSet(true)) {
             LOGGER.info("Processor is already running");
             return;
+        }
+
+        if (wasStopped) {
+            wasStopped = false;
+            LOGGER.warning("Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
+                + "Please close this processor instance and create a new one to restart processing. "
+                + "Refer the git-ticket https://github.com/Azure/azure-sdk-for-java/issues/34464.");
         }
 
         if (asyncClient.get() == null) {
@@ -273,9 +277,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * processor can resume processing messages by calling {@link #start()} again.
      */
     public synchronized void stop() {
-        LOGGER.info("Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
-            + "Please close this processor instance and create a new one to restart processing. "
-            + "Refer the git-ticket https://github.com/Azure/azure-sdk-for-java/issues/34464.");
+        wasStopped = true;
         isRunning.set(false);
     }
 
