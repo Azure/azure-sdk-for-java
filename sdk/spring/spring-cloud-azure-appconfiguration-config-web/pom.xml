@@ -107,7 +107,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.cloud.starter.appconfiguration</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.appconfiguration.config.web</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>

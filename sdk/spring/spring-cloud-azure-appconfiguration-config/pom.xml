@@ -150,6 +150,9 @@
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.cloud.appconfiguration.config</Automatic-Module-Name>
+            </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
