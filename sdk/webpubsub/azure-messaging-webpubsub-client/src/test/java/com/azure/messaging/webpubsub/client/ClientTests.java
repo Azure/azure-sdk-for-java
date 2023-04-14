@@ -430,6 +430,7 @@ public class ClientTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testClientReconnectOnSocketClose() throws InterruptedException {
+        String groupName = "testClientReconnectOnSocketClose";
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
 
@@ -446,13 +447,16 @@ public class ClientTests extends TestBase {
         });
         client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
         client.addOnStoppedEventHandler(event -> latch.countDown());
+        // RejoinGroupFailedEvent should not happen
+        client.addOnRejoinGroupFailedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
 
         client.start();
+        client.joinGroup(groupName);
 
         disconnect(client, false);
 
         // make sure connection indeed works
-        WebPubSubResult result = client.sendToGroup("testClientReconnectOnSocketClose", "message");
+        WebPubSubResult result = client.sendToGroup(groupName, "message");
         Assertions.assertNotNull(result.getAckId());
 
         // validate that connectionId changed after RECONNECT

@@ -86,10 +86,6 @@ class WebPubSubAsyncClient implements Closeable {
     private final WebSocketClient webSocketClient;
     private WebSocketSession webSocketSession;
 
-    private WebPubSubConnection webPubSubConnection;
-
-    private static final AtomicLong ACK_ID = new AtomicLong(0);
-
     // Reactor messages
     private Sinks.Many<GroupMessageEvent> groupMessageEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
@@ -112,7 +108,13 @@ class WebPubSubAsyncClient implements Closeable {
     private Sinks.Many<RejoinGroupFailedEvent> rejoinGroupFailedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    // sequence ack
+    // incremental ackId
+    private final AtomicLong ackId = new AtomicLong(0);
+
+    // connection (logic, one to one map to the connectionId)
+    private WebPubSubConnection webPubSubConnection;
+
+    // sequence ack task
     private final AtomicReference<Disposable> sequenceAckTask = new AtomicReference<>();
 
     // client state
@@ -137,7 +139,7 @@ class WebPubSubAsyncClient implements Closeable {
             .filter(thr -> !(thr instanceof StopReconnectException));
 
     // delay
-    private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofSeconds(1);
+    private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofMillis(100);
     private static final Duration SEQUENCE_ACK_DELAY = Duration.ofSeconds(5);
 
     WebPubSubAsyncClient(WebSocketClient webSocketClient,
@@ -152,16 +154,16 @@ class WebPubSubAsyncClient implements Closeable {
 
         this.applicationId = applicationId;
 
-        this.clientEndpointConfiguration = new ClientEndpointConfiguration(webPubSubProtocol.getName(), userAgent);
-
+        // options
         this.clientAccessUrlProvider = Objects.requireNonNull(clientAccessUrlProvider);
         this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
 
+        // websocket configuration and client
+        this.clientEndpointConfiguration = new ClientEndpointConfiguration(webPubSubProtocol.getName(), userAgent);
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
 
-        Objects.requireNonNull(retryStrategy);
         this.sendMessageRetrySpec = Retry.from(signals -> {
             AtomicInteger retryCount = new AtomicInteger(0);
             return signals.concatMap(s -> {
@@ -223,10 +225,12 @@ class WebPubSubAsyncClient implements Closeable {
                 return Mono.empty();
             }
         }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() -> {
+            // open connection from client
             this.webSocketSession = webSocketClient.connectToServer(
                 clientEndpointConfiguration, url, loggerReference,
                 this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
         }).subscribeOn(Schedulers.boundedElastic()))).doOnError(error -> {
+            // stop if error, do not send StoppedEvent when it fails at start(), which would have exception thrown
             handleClientStop(false);
         });
     }
@@ -317,6 +321,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> joinGroup(String group, Long ackId) {
+        Objects.requireNonNull(group);
         if (ackId == null) {
             ackId = nextAckId();
         }
@@ -352,6 +357,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> leaveGroup(String group, Long ackId) {
+        Objects.requireNonNull(group);
         if (ackId == null) {
             ackId = nextAckId();
         }
@@ -534,7 +540,7 @@ class WebPubSubAsyncClient implements Closeable {
     }
 
     private long nextAckId() {
-        return ACK_ID.getAndUpdate(value -> {
+        return ackId.getAndUpdate(value -> {
             // keep positive
             if (++value < 0) {
                 value = 0;
@@ -583,7 +589,8 @@ class WebPubSubAsyncClient implements Closeable {
                     null,
                     state == WebPubSubClientState.RECOVERING
                         || state == WebPubSubClientState.CONNECTING
-                        || state == WebPubSubClientState.RECONNECTING,
+                        || state == WebPubSubClientState.RECONNECTING
+                        || state == WebPubSubClientState.DISCONNECTED,
                     (Long) null));
             }
             if (webSocketSession == null || !webSocketSession.isOpen()) {
@@ -656,7 +663,7 @@ class WebPubSubAsyncClient implements Closeable {
         clientState.changeState(WebPubSubClientState.CONNECTED);
 
         if (isStoppedByUser.compareAndSet(true, false)) {
-            // user intended to stop, but issued when session is not OPEN or STOPPED,
+            // user intended to stop, but issued when session is not CONNECTED or STOPPED,
             // e.g. CONNECTING, RECOVERING, RECONNECTING
 
             // delay a bit, as handleSessionOpen is in websocket callback
@@ -665,16 +672,20 @@ class WebPubSubAsyncClient implements Closeable {
 
                 if (session != null && session.isOpen()) {
                     session.close();
+                } else {
+                    logger.atError()
+                        .log("Failed to close session after session open");
+                    handleClientStop();
                 }
                 return (Void) null;
             }).subscribeOn(Schedulers.boundedElastic())).subscribe(null, thr -> {
                 logger.atError()
-                    .log("Failed to close session: " + thr.getMessage());
+                    .log("Failed to close session after session open: " + thr.getMessage());
                 // force a stopped state
                 handleClientStop();
             });
         } else {
-            // sequenceAck task
+            // sequence ack task, for reliable protocol
             if (webPubSubProtocol.isReliable()) {
                 Flux<Void> sequenceAckFlux = Flux.interval(SEQUENCE_ACK_DELAY).concatMap(ignored -> {
                     if (clientState.get() == WebPubSubClientState.CONNECTED && session != null && session.isOpen()) {
@@ -683,11 +694,11 @@ class WebPubSubAsyncClient implements Closeable {
                             Long id = connection.getSequenceAckId().getUpdated();
                             if (id != null) {
                                 return sendMessage(new SequenceAckMessage().setSequenceId(id))
-                                    .doOnError(error -> {
+                                    .onErrorResume(error -> {
                                         // ignore error, wait for next chance
                                         connection.getSequenceAckId().setUpdated();
-                                    })
-                                    .onErrorComplete();
+                                        return Mono.empty();
+                                    });
                             } else {
                                 return Mono.empty();
                             }
@@ -718,9 +729,11 @@ class WebPubSubAsyncClient implements Closeable {
                     }))
                     .collect(Collectors.toList());
 
-                Flux.mergeSequentialDelayError(restoreGroupMonoList,
-                    Schedulers.DEFAULT_POOL_SIZE, Schedulers.DEFAULT_POOL_SIZE)
-                    .subscribeOn(Schedulers.boundedElastic()).subscribe(null, thr -> {
+                // delay a bit, as handleSessionOpen is in websocket callback
+                Mono.delay(CLOSE_AFTER_SESSION_OPEN_DELAY)
+                    .thenMany(Flux.mergeSequentialDelayError(restoreGroupMonoList,
+                        Schedulers.DEFAULT_POOL_SIZE, Schedulers.DEFAULT_POOL_SIZE))
+                    .subscribe(null, thr -> {
                         logger.atWarning()
                             .log("Failed to auto restore group: " + thr.getMessage());
                     });
@@ -866,25 +879,6 @@ class WebPubSubAsyncClient implements Closeable {
         }
     }
 
-    private void handleConnectionClose() {
-        handleConnectionClose(null);
-    }
-
-    private void handleConnectionClose(DisconnectedEvent disconnectedEvent) {
-        final DisconnectedEvent event = disconnectedEvent == null
-            ? new DisconnectedEvent(this.getConnectionId(), null)
-            : disconnectedEvent;
-
-        WebPubSubConnection connection = this.webPubSubConnection;
-        connection.disconnect(() -> tryEmitNext(disconnectedEventSink, event));
-
-        if (disconnectedEvent == null) {
-            // Called from handleSessionClose, clear WebPubSubConnection.
-            // It means client now forget this WebPubSubConnection, include connectionId and sequenceId.
-            this.webPubSubConnection = null;
-        }
-    }
-
     private Mono<Void> handleNoRecovery() {
         return Mono.defer(() -> {
             if (isStoppedByUser.compareAndSet(true, false)) {
@@ -970,12 +964,14 @@ class WebPubSubAsyncClient implements Closeable {
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(WebPubSubClientState.STOPPED);
 
-        webSocketSession = null;
-        webPubSubConnection = null;
+        // session
+        this.webSocketSession = null;
+        // logic connection
+        this.webPubSubConnection = null;
 
         tryCompleteOnStoppedByUserSink();
 
-        // stop sequenceAckTask
+        // stop sequence ack task
         Disposable task = sequenceAckTask.getAndSet(null);
         if (task != null) {
             task.dispose();
@@ -1016,6 +1012,27 @@ class WebPubSubAsyncClient implements Closeable {
         updateLogger(applicationId, null);
     }
 
+    private void handleConnectionClose() {
+        handleConnectionClose(null);
+    }
+
+    private void handleConnectionClose(DisconnectedEvent disconnectedEvent) {
+        final DisconnectedEvent event = disconnectedEvent == null
+            ? new DisconnectedEvent(this.getConnectionId(), null)
+            : disconnectedEvent;
+
+        WebPubSubConnection connection = this.webPubSubConnection;
+        if (connection != null) {
+            connection.disconnect(() -> tryEmitNext(disconnectedEventSink, event));
+        }
+
+        if (disconnectedEvent == null) {
+            // Called from handleSessionClose, clear WebPubSubConnection.
+            // It means client now forget this WebPubSubConnection, include connectionId and sequenceId.
+            this.webPubSubConnection = null;
+        }
+    }
+
     private void updateLogger(String applicationId, String connectionId) {
         logger = new ClientLogger(WebPubSubAsyncClient.class,
             LoggingUtils.createContextWithConnectionId(applicationId, connectionId));
@@ -1028,7 +1045,7 @@ class WebPubSubAsyncClient implements Closeable {
         }
     }
 
-    final class ClientState {
+    private final class ClientState {
 
         private final AtomicReference<WebPubSubClientState> clientState =
             new AtomicReference<>(WebPubSubClientState.STOPPED);

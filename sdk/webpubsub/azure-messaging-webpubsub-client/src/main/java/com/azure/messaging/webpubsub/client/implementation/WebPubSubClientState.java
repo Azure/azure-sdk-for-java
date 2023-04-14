@@ -5,16 +5,17 @@ package com.azure.messaging.webpubsub.client.implementation;
 
 public enum WebPubSubClientState {
 
-    // session disconnected, either change to STOPPED, or to RECOVERING (if reliable), or to CONNECTING (when autoReconnect=true)
+    // connection close
+    // either change to STOPPED, or to RECOVERING (if reliable), or to RECONNECTING (when autoReconnect=true)
     DISCONNECTED,
 
-    // connectToServer called but not completed, either change to STOPPED if error, or to CONNECTED
+    // on start(), connectToServer called but not completed, either change to STOPPED if error, or to CONNECTED
     CONNECTING,
 
-    // session connected
+    // connection open
     CONNECTED,
 
-    // recovering (reliable)
+    // recovering (reliable) the connection, still deemed as in the same connection
     RECOVERING,
 
     // client stopped
