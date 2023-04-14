@@ -19,6 +19,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
@@ -57,10 +58,6 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
     HttpPipeline getPipeline(HttpClient httpClient, boolean forCleanup) {
         TokenCredential credential;
 
-        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-        interceptorManager.addSanitizers(customSanitizers);
-
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
@@ -76,9 +73,19 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+
+            if (interceptorManager.isRecordMode()) {
+                List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+                customSanitizers.add(new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+                interceptorManager.addSanitizers(customSanitizers);
+            }
         } else {
             credential = tokenRequestContext ->
                 Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(customMatchers);
         }
 
         // Closest to API goes first, closest to wire goes last.

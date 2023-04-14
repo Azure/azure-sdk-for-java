@@ -20,6 +20,7 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -96,6 +97,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         } else {
             credential = tokenRequestContext ->
                 Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(customMatchers);
         }
 
         // Closest to API goes first, closest to wire goes last.
