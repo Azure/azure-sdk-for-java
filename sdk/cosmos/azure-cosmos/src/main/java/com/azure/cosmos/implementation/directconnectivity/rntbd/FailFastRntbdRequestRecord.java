@@ -59,7 +59,7 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
             reason,
             headers,
             remoteAddress,
-            HttpConstants.SubStatusCodes.UNKNOWN);
+            HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         BridgeInternal.setRequestHeaders(admissionControlBlocksRequestException, args.serviceRequest().getHeaders());
 
         failFastRecord.whenComplete((response, error) -> {

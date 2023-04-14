@@ -62,7 +62,7 @@ public class AddressSelector {
             // Primary endpoint (of the desired protocol) was not found.
             throw new GoneException(String.format("The requested resource is no longer available at the server. Returned addresses are {%s}",
                                                   String.join(",", replicaAddresses.stream()
-                                                      .map(address -> address.getPhysicalUri().getURIAsString()).collect(Collectors.toList()))), null, HttpConstants.SubStatusCodes.UNKNOWN);
+                                                      .map(address -> address.getPhysicalUri().getURIAsString()).collect(Collectors.toList()))));
         }
 
         return primaryAddress.getPhysicalUri();

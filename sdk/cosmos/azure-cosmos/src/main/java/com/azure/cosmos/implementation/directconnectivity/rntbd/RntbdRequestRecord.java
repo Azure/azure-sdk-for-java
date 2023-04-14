@@ -261,7 +261,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
             // 1. RequestOnly request
             // 2. Write request but not sent yet
-            error = new GoneException(this.toString(), null, this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.UNKNOWN);
+            error = new GoneException(this.toString(), null, this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         } else {
             // For sent write request, converting to requestTimeout, will not be retried.
             error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI());

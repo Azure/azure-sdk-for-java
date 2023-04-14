@@ -412,15 +412,12 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
-      
+
         public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
 
         //SDK Codes(Client)
         public static final int TRANSPORT_GENERATED_410 = 20001;
         public static final int TIMEOUT_GENERATED_410 = 20002;
-        public static final int TRANSPORT_GENERATED_503 = 20003;
-        public static final int CPU_OVERLOAD = 20004;
-        public static final int THREAD_STARVATION = 20005;
 
         //SDK Codes (Server)
         public static final int NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT = 21001;

@@ -653,9 +653,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createServiceUnavailableException(Exception innerException) {
+    public static CosmosException createServiceUnavailableException(Exception innerException, int subStatusCode) {
         return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null,
-            HttpConstants.SubStatusCodes.UNKNOWN);
+            subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

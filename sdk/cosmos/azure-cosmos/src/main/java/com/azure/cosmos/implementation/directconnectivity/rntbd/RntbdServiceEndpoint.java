@@ -570,7 +570,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 cause instanceof Exception ? (Exception) cause : new IOException(reason, cause),
                 ImmutableMap.of(HttpHeaders.ACTIVITY_ID, activityId.toString()),
                 requestArgs.replicaPath(),
-                HttpConstants.SubStatusCodes.UNKNOWN
+                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
             );
 
             BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());
