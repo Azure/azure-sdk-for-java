@@ -10,6 +10,7 @@ import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -49,7 +50,24 @@ public class GroupMessageTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testSendJsonMessage() throws Exception {
+    public void testSendMessageFireAndForget() {
+        String groupName = "testSendMessageFireAndForget";
+        WebPubSubClient client = getClient();
+        try {
+            client.start();
+
+            WebPubSubResult result = client.sendToGroup(groupName, HELLO,
+                new SendToGroupOptions().setAckId(1L).setFireAndForget(true));
+            // no ackId in SendToGroupMessage or in WebPubSubResult
+            Assertions.assertNull(result.getAckId());
+        } finally {
+            client.stop();
+        }
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testSendJsonMessage() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         BinaryData[] data = new BinaryData[1];
 
@@ -82,7 +100,7 @@ public class GroupMessageTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testSendBinaryMessage() throws Exception {
+    public void testSendBinaryMessage() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         BinaryData[] data = new BinaryData[1];
 
@@ -130,9 +148,10 @@ public class GroupMessageTests extends TestBase {
         }
     }
 
+    @Disabled("Performance test")
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testSendMessagePerformance() throws Exception {
+    public void testSendMessagePerformance() throws InterruptedException {
         final int count = 1000;
         CountDownLatch latch = new CountDownLatch(count);
 

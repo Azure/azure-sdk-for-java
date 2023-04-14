@@ -374,28 +374,7 @@ public class ClientTests extends TestBase {
 
         client.start();
 
-        // use internal API to send an invalid frame, it would cause server to Disconnect
-        client.getWebsocketSession().sendTextAsync("invalid", result -> {
-            // NOOP
-        });
-        // server send Disconnected message
-        // server send CloseFrame (code=1000) <-- this likely a bug that can be improved by service, it should be 1008
-        // client try recover
-        // connection open
-        // server send CloseFrame (code=1008)
-        // client try reconnect
-        Thread.sleep(Duration.ofSeconds(1).toMillis());
-
-        // client would reconnect after some time
-        int maxCount = 100;
-        for (int i = 0; i < maxCount; ++i) {
-            Thread.sleep(100);
-            WebPubSubClientState state = client.getClientState();
-            if (state == WebPubSubClientState.CONNECTED) {
-                break;
-            }
-        }
-        Assertions.assertEquals(WebPubSubClientState.CONNECTED, client.getClientState());
+        disconnect(client, true);
 
         client.stop();
 
@@ -429,19 +408,7 @@ public class ClientTests extends TestBase {
 
         client.start();
 
-        // use internal API to close the socket, it would cause client to RECOVER, as it is WebPubSubJsonReliableProtocol
-        client.getWebsocketSession().closeSocket();
-
-        // client would recover after some time
-        int maxCount = 100;
-        for (int i = 0; i < maxCount; ++i) {
-            Thread.sleep(100);
-            WebPubSubClientState state = client.getClientState();
-            if (state == WebPubSubClientState.CONNECTED) {
-                break;
-            }
-        }
-        Assertions.assertEquals(WebPubSubClientState.CONNECTED, client.getClientState());
+        disconnect(client, false);
 
         // make sure connection indeed works
         WebPubSubResult result = client.sendToGroup("testClientRecoveryOnSocketClose", "message");
@@ -482,22 +449,10 @@ public class ClientTests extends TestBase {
 
         client.start();
 
-        // use internal API to close the socket, it would cause client to RECONNECT, as it is WebPubSubJsonProtocol
-        client.getWebsocketSession().closeSocket();
-
-        // client would recover after some time
-        int maxCount = 100;
-        for (int i = 0; i < maxCount; ++i) {
-            Thread.sleep(100);
-            WebPubSubClientState state = client.getClientState();
-            if (state == WebPubSubClientState.CONNECTED) {
-                break;
-            }
-        }
-        Assertions.assertEquals(WebPubSubClientState.CONNECTED, client.getClientState());
+        disconnect(client, false);
 
         // make sure connection indeed works
-        WebPubSubResult result = client.sendToGroup("testClientRecoveryOnSocketClose", "message");
+        WebPubSubResult result = client.sendToGroup("testClientReconnectOnSocketClose", "message");
         Assertions.assertNotNull(result.getAckId());
 
         // validate that connectionId changed after RECONNECT

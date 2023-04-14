@@ -833,6 +833,8 @@ class WebPubSubAsyncClient implements Closeable {
             final ConnectedMessage connectedMessage = (ConnectedMessage) webPubSubMessage;
             final String connectionId = connectedMessage.getConnectionId();
 
+            updateLogger(applicationId, connectionId);
+
             // Create new WebPubSubConnection if absent.
             // ConnectedMessage could be sent by server on recover, when WebPubSubConnection exists in client.
             // In this case, reconnectionToken would be updated, but ConnectedEvent won't be sent.
@@ -844,8 +846,6 @@ class WebPubSubAsyncClient implements Closeable {
                 () -> tryEmitNext(connectedEventSink, new ConnectedEvent(
                     connectionId,
                     connectedMessage.getUserId())));
-
-            updateLogger(applicationId, connectionId);
         } else if (webPubSubMessage instanceof DisconnectedMessage) {
             final DisconnectedMessage disconnectedMessage = (DisconnectedMessage) webPubSubMessage;
             // send DisconnectedEvent, but connection close will be handled in handleSessionClose
