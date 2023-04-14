@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -60,6 +61,7 @@ import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1213,27 +1215,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
             final Duration maximumDuration = Duration.ofSeconds(35);
-            final Duration sleepDuration = maximumDuration.plusMillis(500);
             final String messageId = UUID.randomUUID().toString();
             final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
             StepVerifier.create(sendMessage(message)).verifyComplete();
 
-            final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().blockFirst(OPERATION_TIMEOUT);
-            assertNotNull(receivedMessage);
+            AtomicBoolean alreadyReceived = new AtomicBoolean();
+            Flux<Object> receiveAndRenew = receiver.receiveMessages()
+                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
+                .filter(m -> messageId.equals(m.getMessageId()))
+                .flatMap(receivedMessage -> {
+                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message");
+                    // not expecting to receive the same message because lock is being renewed
+                    assertFalse(alreadyReceived.getAndSet(true));
+                    assertNotNull(receivedMessage.getLockedUntil());
 
-            final OffsetDateTime lockedUntil = receivedMessage.getLockedUntil();
-            assertNotNull(lockedUntil);
+                    return receiver.renewMessageLock(receivedMessage, maximumDuration);
+                });
 
-            // Assert & Act
-            StepVerifier.create(receiver.renewMessageLock(receivedMessage, maximumDuration))
-                .thenAwait(sleepDuration)
-                .then(() -> toClose(receiver.receiveMessages()
-                    .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
-                    .filter(m -> messageId.equals(m.getMessageId()))
-                    .subscribe()))
-                .expectComplete()
-                .verify(TIMEOUT);
+            Duration noMessageTimeout = Duration.ofMinutes(3);
+            StepVerifier.create(receiveAndRenew
+                .timeout(noMessageTimeout))
+                .verifyTimeout(noMessageTimeout.plusSeconds(2));
         }
     }
 
@@ -1446,6 +1449,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
         ClientCreationOptions options) {
+        this.receiver = createReceiver(entityType, entityIndex, isSessionEnabled, options);
+    }
+
+    private ServiceBusReceiverAsyncClient createReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
+                                                         ClientCreationOptions options) {
         final boolean shareConnection = false;
         final boolean useCredentials = false;
         if (isSessionEnabled) {
@@ -1455,14 +1463,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .disableAutoComplete()
                 .buildAsyncClient());
 
-            this.receiver = toClose(sessionReceiver.acceptSession(sessionId).block());
-
-        } else {
-            this.receiver = toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
-                .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
-                .disableAutoComplete()
-                .buildAsyncClient());
+            return toClose(sessionReceiver.acceptSession(sessionId).block());
         }
+        return toClose(getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+            .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
+            .disableAutoComplete()
+            .buildAsyncClient());
     }
 
     private void setSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
