@@ -3,14 +3,23 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.fasterxml.jackson.databind.cfg.PackageVersion;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class XmlMapperFactoryTests {
     @Test
     public void instantiate() {
-        // This should be true for running with Core only as we use Jackson 2.12+.
-        assertTrue(XmlMapperFactory.INSTANCE.useReflectionToSetCoercion);
+        // Since we have a Jackson version test matrix this test will need to check the version of Jackson Databind
+        // being used.
+        if (PackageVersion.VERSION.getMinorVersion() >= 12) {
+            // This should be true when running with Jackson Databind 2.12+.
+            assertTrue(XmlMapperFactory.INSTANCE.useReflectionToSetCoercion);
+        } else {
+            // This should be false when running with Jackson Databind 2.11-.
+            assertFalse(XmlMapperFactory.INSTANCE.useReflectionToSetCoercion);
+        }
     }
 }
