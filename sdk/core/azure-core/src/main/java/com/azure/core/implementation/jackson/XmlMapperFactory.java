@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 
 public final class XmlMapperFactory {
@@ -34,12 +33,13 @@ public final class XmlMapperFactory {
     private final MethodHandle setCoercion;
     private final Object coercionInputShapeEmptyString;
     private final Object coercionActionAsNull;
-    private final boolean useReflectionToSetCoercion;
+    final boolean useReflectionToSetCoercion;
 
     public static final XmlMapperFactory INSTANCE = new XmlMapperFactory();
 
     private XmlMapperFactory() {
         MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+        ClassLoader thisClassLoader = XmlMapperFactory.class.getClassLoader();
 
         MethodHandle createXmlMapperBuilder;
         MethodHandle defaultUseWrapper;
@@ -48,10 +48,10 @@ public final class XmlMapperFactory {
         MethodHandle enableEmptyElementAsNull;
         Object emptyElementAsNull;
         try {
-            Class<?> xmlMapper = Class.forName(XML_MAPPER);
-            Class<?> xmlMapperBuilder = Class.forName(XML_MAPPER_BUILDER);
-            Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER);
-            Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR);
+            Class<?> xmlMapper = Class.forName(XML_MAPPER, true, thisClassLoader);
+            Class<?> xmlMapperBuilder = Class.forName(XML_MAPPER_BUILDER, true, thisClassLoader);
+            Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER, true, thisClassLoader);
+            Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR, true, thisClassLoader);
 
             createXmlMapperBuilder = publicLookup.unreflect(xmlMapper.getDeclaredMethod("builder"));
             defaultUseWrapper = publicLookup.unreflect(xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper",
@@ -89,18 +89,17 @@ public final class XmlMapperFactory {
         Object coercionActionAsNull = null;
         boolean useReflectionToSetCoercion = false;
         try {
-            Class<?> mutableCoercionConfig = Class.forName(MUTABLE_COERCION_CONFIG);
-            Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
-            Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
+            Class<?> mutableCoercionConfig = Class.forName(MUTABLE_COERCION_CONFIG, true, thisClassLoader);
+            Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE, true, thisClassLoader);
+            Class<?> coercionActionClass = Class.forName(COERCION_ACTION, true, thisClassLoader);
 
-            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
-                MethodType.methodType(mutableCoercionConfig));
-            setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
-                MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
-            coercionInputShapeEmptyString = publicLookup.findStaticGetter(coercionInputShapeClass, "EmptyString",
-                coercionInputShapeClass).invoke();
-            coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
-                .invoke();
+            coercionConfigDefaults = publicLookup.unreflect(ObjectMapper.class
+                .getDeclaredMethod("coercionConfigDefaults"));
+            setCoercion = publicLookup.unreflect(mutableCoercionConfig
+                .getDeclaredMethod("setCoercion", coercionInputShapeClass, coercionActionClass));
+            coercionInputShapeEmptyString = publicLookup.unreflectGetter(coercionInputShapeClass
+                .getDeclaredField("EmptyString"));
+            coercionActionAsNull = publicLookup.unreflectGetter(coercionActionClass.getDeclaredField("AsNull"));
             useReflectionToSetCoercion = true;
         } catch (Throwable ex) {
             // Throw the Error only if it isn't a LinkageError.
