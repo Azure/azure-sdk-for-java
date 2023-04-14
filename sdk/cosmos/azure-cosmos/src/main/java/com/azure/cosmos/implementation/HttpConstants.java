@@ -429,6 +429,7 @@ public class HttpConstants {
         public static final int READ_QUORUM_NOT_MET = 21007;
         public static final int SERVER_GENERATED_503 = 21008;
         public static final int NO_VALID_STORE_RESPONSE = 21009;
+        public static final int SERVER_GENERATED_408 = 21010;
 
     }
 

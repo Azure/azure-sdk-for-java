@@ -1091,7 +1091,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
                     cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner,
-                        SubStatusCodes.UNKNOWN);
+                        SubStatusCodes.SERVER_GENERATED_408);
                     break;
 
                 case StatusCodes.RETRY_WITH:
