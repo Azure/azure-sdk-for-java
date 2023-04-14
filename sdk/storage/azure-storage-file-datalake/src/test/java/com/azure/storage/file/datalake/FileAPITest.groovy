@@ -4003,6 +4003,20 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_04_10")
+    def "Upload encryption context"() {
+        setup:
+        def encryptionContext = "encryptionContext"
+        def options = new FileParallelUploadOptions(data.defaultInputStream).setEncryptionContext(encryptionContext)
+
+        when:
+        fc.uploadWithResponse(options, null, Context.NONE)
+        def response = fc.getProperties()
+
+        then:
+        response.getEncryptionContext() == encryptionContext
+    }
+
     /* Quick Query Tests. */
 
     // Generates and uploads a CSV file
