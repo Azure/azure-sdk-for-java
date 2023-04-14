@@ -247,7 +247,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             wasStopped = false;
             LOGGER.warning("Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
                 + "Please close this processor instance and create a new one to restart processing. "
-                + "Refer the git-ticket https://github.com/Azure/azure-sdk-for-java/issues/34464.");
+                + "Refer to the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/34464 for more details");
         }
 
         if (asyncClient.get() == null) {
