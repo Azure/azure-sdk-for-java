@@ -1,5 +1,11 @@
 # Release History
 
+## 1.16.1 (2023-04-14)
+
+### Bugs Fixed
+
+- Updated timeout values for waiting for test proxy initialization.
+
 ## 1.16.0 (2023-04-07)
 
 ### Features Added
