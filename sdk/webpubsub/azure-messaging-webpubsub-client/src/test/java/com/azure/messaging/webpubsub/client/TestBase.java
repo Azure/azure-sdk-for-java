@@ -65,7 +65,7 @@ public class TestBase extends com.azure.core.test.TestBase {
 
         try {
             // client would recover after some time
-            int maxCount = 300;
+            int maxCount = 100;
             for (int i = 0; i < maxCount; ++i) {
                 Thread.sleep(100);
                 WebPubSubClientState state = client.getClientState();

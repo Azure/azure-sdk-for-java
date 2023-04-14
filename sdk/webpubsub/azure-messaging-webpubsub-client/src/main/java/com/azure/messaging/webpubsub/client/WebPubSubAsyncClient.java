@@ -52,7 +52,6 @@ import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.time.Duration;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -318,6 +317,9 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> joinGroup(String group, Long ackId) {
+        if (ackId == null) {
+            ackId = nextAckId();
+        }
         return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
             .map(result -> {
@@ -350,6 +352,9 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> leaveGroup(String group, Long ackId) {
+        if (ackId == null) {
+            ackId = nextAckId();
+        }
         return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
             .then(waitForAckMessage(ackId)).retryWhen(sendMessageRetrySpec)
             .map(result -> {
@@ -419,24 +424,15 @@ class WebPubSubAsyncClient implements Closeable {
             ? null
             : (options.getAckId() != null ? options.getAckId() : nextAckId());
 
-        Object data = content;
-        if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
-            data = Base64.getEncoder().encodeToString(content.toBytes());
-        } else if (dataType == WebPubSubDataType.TEXT) {
-            data = content.toString();
-        }
-
         SendToGroupMessage message = new SendToGroupMessage()
             .setGroup(group)
-            .setData(data)
+            .setData(content)
             .setDataType(dataType.toString())
             .setAckId(ackId)
             .setNoEcho(options.isNoEcho());
 
         Mono<Void> sendMessageMono = sendMessage(message);
-        Mono<WebPubSubResult> responseMono = options.isFireAndForget()
-            ? sendMessageMono.then(Mono.just(new WebPubSubResult(null, false)))
-            : sendMessageMono.then(waitForAckMessage(ackId));
+        Mono<WebPubSubResult> responseMono = sendMessageMono.then(waitForAckMessage(ackId));
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
@@ -468,23 +464,18 @@ class WebPubSubAsyncClient implements Closeable {
         Objects.requireNonNull(dataType);
         Objects.requireNonNull(options);
 
-        long ackId = options.getAckId() != null ? options.getAckId() : nextAckId();
-
-        BinaryData data = content;
-        if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
-            data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
-        }
+        Long ackId = options.isFireAndForget()
+            ? null
+            : (options.getAckId() != null ? options.getAckId() : nextAckId());
 
         SendEventMessage message = new SendEventMessage()
             .setEvent(eventName)
-            .setData(data)
+            .setData(content)
             .setDataType(dataType.toString())
             .setAckId(ackId);
 
         Mono<Void> sendMessageMono = sendMessage(message);
-        Mono<WebPubSubResult> responseMono = options.isFireAndForget()
-            ? sendMessageMono.then(Mono.just(new WebPubSubResult(null, false)))
-            : sendMessageMono.then(waitForAckMessage(ackId));
+        Mono<WebPubSubResult> responseMono = sendMessageMono.then(waitForAckMessage(ackId));
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
@@ -630,7 +621,11 @@ class WebPubSubAsyncClient implements Closeable {
             emitFailureHandler("Unable to emit " + event.getClass().getSimpleName()));
     }
 
-    private Mono<WebPubSubResult> waitForAckMessage(long ackId) {
+    private Mono<WebPubSubResult> waitForAckMessage(Long ackId) {
+        if (ackId == null) {
+            // fireAndForget
+            return Mono.just(new WebPubSubResult(null, false));
+        }
         return receiveAckMessages()
             .filter(m -> ackId == m.getAckId())
             // single AckMessage

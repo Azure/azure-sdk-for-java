@@ -14,7 +14,7 @@ public final class SendEventMessage extends WebPubSubMessageAck {
 
     private String dataType;
 
-    private BinaryData data;
+    private Object data;
 
     @JsonGetter
     public String getType() {
@@ -48,11 +48,11 @@ public final class SendEventMessage extends WebPubSubMessageAck {
     }
 
     @JsonGetter
-    public BinaryData getData() {
+    public Object getData() {
         return data;
     }
 
-    public SendEventMessage setData(BinaryData data) {
+    public SendEventMessage setData(Object data) {
         this.data = data;
         return this;
     }
