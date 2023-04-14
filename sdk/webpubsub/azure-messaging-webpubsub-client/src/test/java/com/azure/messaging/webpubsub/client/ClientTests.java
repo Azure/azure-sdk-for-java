@@ -372,15 +372,35 @@ public class ClientTests extends TestBase {
         client.getWebsocketSession().sendTextAsync("invalid", result -> {
             // NOOP
         });
+        // server send Disconnected message
+        // server send CloseFrame (code=1000) <-- this likely a bug that can be improved by service
+        // client try recover
+        // connection open
+        // server send CloseFrame (code=1008)
+        // client try reconnect
+        Thread.sleep(Duration.ofSeconds(1).toMillis());
 
-        // wait for 1008
+        // client would reconnect after some time
+        int maxCount = 100;
+        for (int i = 0; i < maxCount; ++i) {
+            Thread.sleep(100);
+            WebPubSubClientState state = client.getClientState();
+            if (state == WebPubSubClientState.CONNECTED) {
+                break;
+            }
+        }
+        Assertions.assertEquals(WebPubSubClientState.CONNECTED, client.getClientState());
 
-        latch.await(5, TimeUnit.SECONDS);
+        client.stop();
+
+        latch.await(1, TimeUnit.SECONDS);
         Assertions.assertEquals(0, latch.getCount());
 
-        Assertions.assertEquals(2, eventReceived.size());
+        Assertions.assertEquals(4, eventReceived.size());
         Assertions.assertEquals(ConnectedEvent.class.getSimpleName(), eventReceived.get(0));
         Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(1));
+        Assertions.assertEquals(ConnectedEvent.class.getSimpleName(), eventReceived.get(2));
+        Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(3));
     }
 
     @Test

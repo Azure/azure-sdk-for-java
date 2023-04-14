@@ -8,9 +8,6 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClientNettyImpl;
@@ -566,15 +563,15 @@ class WebPubSubAsyncClient implements Closeable {
 
     private Mono<Void> sendMessage(WebPubSubMessage message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
-            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                try {
-                    String json = JacksonAdapter.createDefaultSerializerAdapter()
-                        .serialize(message, SerializerEncoding.JSON);
-                    logger.atVerbose().addKeyValue("message", json).log("Send message");
-                } catch (IOException e) {
-                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
-                }
-            }
+//            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+//                try {
+//                    String json = JacksonAdapter.createDefaultSerializerAdapter()
+//                        .serialize(message, SerializerEncoding.JSON);
+//                    logger.atVerbose().addKeyValue("message", json).log("Send message");
+//                } catch (IOException e) {
+//                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
+//                }
+//            }
 
             webSocketSession.sendObjectAsync(message, sendResult -> {
                 if (sendResult.isOK()) {
@@ -734,6 +731,8 @@ class WebPubSubAsyncClient implements Closeable {
     private void handleSessionClose(CloseReason closeReason) {
         logger.atVerbose().addKeyValue("code", closeReason.getCloseCode()).log("Session closed");
 
+        final int violatedPolicyStatusCode = 1008;
+
         if (clientState.get() == WebPubSubClientState.STOPPED) {
             return;
         }
@@ -745,12 +744,15 @@ class WebPubSubAsyncClient implements Closeable {
 
             // stopped by user
             handleClientStop();
-        } else if (closeReason.getCloseCode() == 1008) {
+        } else if (closeReason.getCloseCode() == violatedPolicyStatusCode) {
             // do not send DisconnectedEvent
-            // server likely send the DisconnectedMessage before close
+            // server likely send the DisconnectedMessage before close on VIOLATED_POLICY
+            clientState.changeState(WebPubSubClientState.DISCONNECTED);
 
-            // VIOLATED_POLICY
-            handleClientStop();
+            handleNoRecovery().subscribe(null, thr -> {
+                logger.atWarning()
+                    .log("Failed to auto reconnect session: " + thr.getMessage());
+            });
         } else {
             if (!webPubSubProtocol.isReliable() || reconnectionToken == null || connectionId == null) {
                 clientState.changeState(WebPubSubClientState.DISCONNECTED);
@@ -779,16 +781,16 @@ class WebPubSubAsyncClient implements Closeable {
     }
 
     private void handleMessage(Object webPubSubMessage) {
-        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-            try {
-                String json = JacksonAdapter.createDefaultSerializerAdapter()
-                    .serialize(webPubSubMessage, SerializerEncoding.JSON);
-                logger.atVerbose().addKeyValue("message", json).log("Received message");
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(
-                    new UncheckedIOException("Failed to serialize received message for VERBOSE logging", e));
-            }
-        }
+//        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+//            try {
+//                String json = JacksonAdapter.createDefaultSerializerAdapter()
+//                    .serialize(webPubSubMessage, SerializerEncoding.JSON);
+//                logger.atVerbose().addKeyValue("message", json).log("Received message");
+//            } catch (IOException e) {
+//                throw logger.logExceptionAsError(
+//                    new UncheckedIOException("Failed to serialize received message for VERBOSE logging", e));
+//            }
+//        }
 
         if (webPubSubMessage instanceof GroupDataMessage) {
             GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
