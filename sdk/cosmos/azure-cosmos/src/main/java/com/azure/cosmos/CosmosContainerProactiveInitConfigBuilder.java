@@ -23,6 +23,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private int numProactiveConnectionRegions;
     private Duration aggressiveProactiveConnectionEstablishmentDuration = Duration.ZERO;
+
     /**
      * Instantiates {@link CosmosContainerProactiveInitConfigBuilder}
      *
