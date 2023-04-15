@@ -17,9 +17,13 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -33,6 +37,7 @@ import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
+import com.azure.storage.file.datalake.models.DataLakeFileOutputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -46,6 +51,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -1102,6 +1108,36 @@ public class DataLakeFileClient extends DataLakePathClient {
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
+    }
+
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
+     * to the file.
+     * @throws {@link DataLakeStorageException} If a storage service error occurred.
+     */
+    public DataLakeFileOutputStreamResult getOutputStream() {
+        return getOutputStream(null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     *
+     * @param options {@link DataLakeFileOutputStreamOptions}
+     * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
+     * to the file.
+     * @throws {@link DataLakeStorageException} If a storage service error occurred.
+     */
+    public DataLakeFileOutputStreamResult getOutputStream(DataLakeFileOutputStreamOptions options) {
+        BlockBlobOutputStreamOptions convertedOptions = Transforms.toBlockBlobOutputStreamOptions(options);
+        return new DataLakeFileOutputStreamResult(blockBlobClient.getBlobOutputStream(convertedOptions));
     }
 
     /**
