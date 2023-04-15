@@ -890,7 +890,6 @@ public class GatewayAddressCache implements IAddressCache {
                                 addressToBeValidated,
                                 Configs.getMinConnectionPoolSizePerEndpoint());
             }
-            this.proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().subscribe();
         }
     }
 

@@ -191,7 +191,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 directCosmosContainer.createItem(TestObject.create());
             }
         }
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")

@@ -144,6 +144,7 @@ public class RntbdTransportClient extends TransportClient {
         this.globalEndpointManager = null;
         this.metricConfig = null;
         this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
+        this.proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().subscribe();
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -163,6 +164,7 @@ public class RntbdTransportClient extends TransportClient {
             clientTelemetry,
             this.serverErrorInjector);
         this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
+        this.proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().subscribe();
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;

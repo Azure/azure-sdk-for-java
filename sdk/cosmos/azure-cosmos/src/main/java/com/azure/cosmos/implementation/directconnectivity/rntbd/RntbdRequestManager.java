@@ -331,7 +331,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             if (logger.isDebugEnabled()) {
                 logger.debug("{} closing due to:", context, cause);
             }
-            context.flush().close();
+            context.flush().close().addListener(future -> {
+                if (future.isDone()) {
+                    this.rntbdConnectionStateListener.openConnectionIfNeeded(cause);
+                }
+            });
         }
     }
 
@@ -450,7 +454,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     ((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
 
                 context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
-                context.close();
+                context.close().addListener(future -> {
+                    if (future.isDone()) {
+                        this.rntbdConnectionStateListener.openConnectionIfNeeded(new ClosedChannelException());
+                    }
+                });
                 return;
             }
 

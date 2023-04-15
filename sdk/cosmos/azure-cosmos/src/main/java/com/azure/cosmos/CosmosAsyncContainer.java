@@ -728,8 +728,7 @@ public class CosmosAsyncContainer {
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
-                    proactiveContainerInitConfig,
-                    AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
+                    proactiveContainerInitConfig
             )
                     .flatMap(openResult -> {
                         logger.info("OpenConnectionsAndInitCaches: {}", openResult);
@@ -791,8 +790,7 @@ public class CosmosAsyncContainer {
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
-                    proactiveContainerInitConfig,
-                    AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
+                    proactiveContainerInitConfig
             )
                     .flatMap(
                         openResult -> {
@@ -815,10 +813,7 @@ public class CosmosAsyncContainer {
      * @return a {@link String} type which represents the total no. of successful and failed
      * connection attempts for an endpoint
      */
-    private Mono<String> openConnectionsAndInitCachesInternal(
-        CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-        AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
+    private Mono<String> openConnectionsAndInitCachesInternal(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         final Duration idleSinkTimeout = Duration.ofSeconds(1);
 
         this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)

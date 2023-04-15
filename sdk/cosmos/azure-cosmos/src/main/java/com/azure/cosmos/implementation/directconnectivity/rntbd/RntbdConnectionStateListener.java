@@ -68,15 +68,13 @@ public class RntbdConnectionStateListener {
                 logger.debug("Will not raise the connection state change event for error", exception);
             }
         }
-
-        openConnectionIfNeeded(exception);
     }
 
     public RntbdConnectionStateListenerMetrics getMetrics() {
         return this.metrics;
     }
 
-    private void openConnectionIfNeeded(Throwable exception) {
+    public void openConnectionIfNeeded(Throwable exception) {
 
         if (this.endpoint.isClosed()) {
             return;
@@ -97,7 +95,7 @@ public class RntbdConnectionStateListener {
         // close / reset
         // connections will be opened proactively on this endpoint only in the
         // openConnectionsAndInitCaches flow
-        if (Configs.getMinConnectionPoolSizePerEndpoint() > 0 && Configs.isOpenConnectionsForConnectionExceptionsEnabled()) {
+        if (Configs.getMinConnectionPoolSizePerEndpoint() > 0 && (exception instanceof IOException)) {
 
             logger.warn("Exception occurred {}, trying to proactively open a connection.", exception.getMessage());
 
@@ -107,10 +105,6 @@ public class RntbdConnectionStateListener {
                     this.addressUris.stream().findFirst().get(),
                     this.endpoint.getMinChannelsRequired());
         }
-
-        this.proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
-                .subscribe();
     }
     // endregion
 

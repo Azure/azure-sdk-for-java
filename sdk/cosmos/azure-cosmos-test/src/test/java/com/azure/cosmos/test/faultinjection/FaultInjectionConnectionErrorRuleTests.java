@@ -37,20 +37,17 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = TIMEOUT)
-    public void beforeClass() {
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .buildAsyncClient();
-
-        System.setProperty("COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED", "false");
-    }
-
     @Test(groups = {"simple"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionConnectionErrorRuleTests(FaultInjectionConnectionErrorType errorType) throws InterruptedException {
+
+        client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildAsyncClient();
+
+
         // using single partition here so that all write operations will be on the same physical partitions
         CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
 
@@ -88,8 +85,10 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
 
         CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
         Thread.sleep(Duration.ofSeconds(2).toMillis());
-        // validate the connection is closed
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(0));
+        // validate that a connection is closed by fault injection
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().totalChannelsClosedMetric()).isEqualTo(1));
+        // validate that a min required no. of connections is opened back by proactive connection management
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().getEndpoint().channelsMetrics()).isEqualTo(1));
         long ruleHitCount = connectionErrorRule.getHitCount();
         assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
 
@@ -103,11 +102,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         assertThat(ruleHitCount).isEqualTo(ruleHitCount);
 
         connectionErrorRule.disable();
-    }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {
-        System.clearProperty("COSMOS.OPEN_CONNECTIONS_FOR_CONNECTION_EXCEPTIONS_ENABLED");
         safeClose(client);
     }
 }

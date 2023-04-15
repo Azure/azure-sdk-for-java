@@ -60,7 +60,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private synchronized void submitOpenConnectionTask(OpenConnectionTask openConnectionTask) {
-
         String addressUriAsString = openConnectionTask.addressUri.getURIAsString();
         boolean isEndpointTaskInSink = endpointToMinConnections.putIfAbsent(addressUriAsString,
                 openConnectionTask.minConnectionsRequiredForEndpoint) != null;
@@ -86,7 +85,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
-        return Flux.from(openConnectionsTaskSink.asFlux())
+        return openConnectionsTaskSink.asFlux()
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)

@@ -590,7 +590,7 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(5);
+        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(1);
         final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
@@ -611,10 +611,6 @@ public final class CosmosAsyncClient implements Closeable {
 
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
                 .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
-
-        proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
                 .subscribe();
 
         Flux
