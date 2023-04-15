@@ -4,8 +4,8 @@
 
 ### Features Added
 
-- Added new function `listRooms` to list all created rooms by returning `PagedFlux<CommunicationRoom>`,
-- Added pagination support for `listParticipants` by returning `PagedFlux<RoomParticipant>`.
+- Added new function `listRooms` to list all created rooms by returning `PagedIterable<CommunicationRoom>`,
+- Added pagination support for `listParticipants` by returning `PagedIterable<RoomParticipant>`.
 
 ### Breaking Changes
 
@@ -16,7 +16,7 @@
 - Renamed `RoleType` to `ParticipantRole`
 - Renamed `getParticipants` to `listParticipants`
 - Renamed `CreatedOn` to `CreatedAt` in `CommunicationRoom`
-- `removeParticipants` now takes in a `List<CommunicationIdentifier>` instead of `List<RoomParticipant>`
+- `removeParticipants` now takes in a `Iterable<CommunicationIdentifier>` instead of `Iterable<RoomParticipant>`
 
 ### Bugs Fixed
 
