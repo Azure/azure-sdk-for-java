@@ -5,9 +5,6 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -15,11 +12,10 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
@@ -83,12 +79,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new TokenCredential() {
-                    @Override
-                    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                        return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
-                    }
-                });
+                builder.credential(new MockTokenCredential());
                 interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
             } else if (interceptorManager.isRecordMode()) {
                 builder
