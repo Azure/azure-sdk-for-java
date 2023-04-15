@@ -59,7 +59,7 @@
     "namespaceName": "[concat('sb-java-', parameters('baseName'))]",
     "queueName": "queue",
     "queueSessionName": "queue-session",
-    "numberOfInstances": 25,
+    "numberOfInstances": 26,
     "subscriptionName": "subscription",
     "subscriptionSessionName": "subscription-session",
     "serviceBusDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419')]",

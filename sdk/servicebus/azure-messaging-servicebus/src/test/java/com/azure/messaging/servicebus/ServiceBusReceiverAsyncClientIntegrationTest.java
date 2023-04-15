@@ -544,36 +544,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         // Assert & Act
-        try {
-            CountDownLatch latchAll = new CountDownLatch(messages.size());
-            toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
-            toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
-            toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
+        CountDownLatch latchAll = new CountDownLatch(messages.size());
+        toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
+        toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
+        toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
 
-            assertTrue(latchAll.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
+        assertTrue(latchAll.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
 
-            final AtomicInteger messageCount = new AtomicInteger();
-            // messages are received in the same order as they were sent
-            receivedMessages.stream()
-                .forEach(actualMessage -> {
-                    final Object position = actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
-                    assertTrue(position instanceof Integer, "Did not contain correct position number: " + position);
-                    assertEquals(messageCount.getAndIncrement(), position);
-                });
-        } finally {
-            // receive and complete all we can to avoid collision with other tests
-            CountDownLatch latch = new CountDownLatch(messages.size());
-            toClose(receiver.receiveMessages()
-                .flatMap(message -> receiver.complete(message).doOnSuccess(s -> {
-                    logMessage(message, receiver.getEntityPath(), "received and completed message");
-                    if (message.getMessageId().equals(messageId)) {
-                        latch.countDown();
-                    }
-                }))
-                .subscribe());
-
-            assertTrue(latch.await(60, TimeUnit.SECONDS));
-        }
+        final AtomicInteger messageCount = new AtomicInteger();
+        // messages are received in the same order as they were sent
+        receivedMessages.stream()
+            .forEach(actualMessage -> {
+                final Object position = actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
+                assertTrue(position instanceof Integer, "Did not contain correct position number: " + position);
+                assertEquals(messageCount.getAndIncrement(), position);
+            });
     }
 
     private Flux<ServiceBusReceivedMessage> peekMessages(int count, CountDownLatch latch, String messageIdFilter, Set<Integer> receivedPositions) {
@@ -584,13 +569,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Integer position = (Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
                 boolean filtered = messageIdFilter.equals(receivedMessage.getMessageId()) && receivedPositions.add(position);
                 if (filtered) {
-                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message");
                     latch.countDown();
+                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message, a few more to go " + latch.getCount());
                 }
                 return filtered;
-            })
-            .repeat(() -> latch.getCount() < count)
-            .delaySequence(Duration.ofMillis(1000));
+            });
     }
 
     /**
@@ -1202,35 +1185,42 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void renewMessageLock(MessagingEntityType entityType) {
-        synchronized (USE_CASE_DEFAULT_LOCK) {
-            // Arrange
-            final boolean isSessionEnabled = false;
-            setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        // Arrange
+        final boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RENEW_LOCK, isSessionEnabled);
 
-            final Duration maximumDuration = Duration.ofSeconds(35);
-            final String messageId = UUID.randomUUID().toString();
-            final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final Duration maximumDuration = Duration.ofSeconds(35);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-            StepVerifier.create(sendMessage(message)).verifyComplete();
+        StepVerifier.create(sendMessage(message)).verifyComplete();
 
-            AtomicBoolean alreadyReceived = new AtomicBoolean();
-            Flux<Object> receiveAndRenew = receiver.receiveMessages()
-                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
-                .filter(m -> messageId.equals(m.getMessageId()))
-                .flatMap(receivedMessage -> {
-                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message");
-                    // not expecting to receive the same message because lock is being renewed
-                    assertFalse(alreadyReceived.getAndSet(true));
-                    assertNotNull(receivedMessage.getLockedUntil());
+        AtomicBoolean alreadyReceived = new AtomicBoolean();
+        Flux<Object> receiveAndRenew = receiver.receiveMessages()
+            .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
+            .filter(m -> messageId.equals(m.getMessageId()))
+            .flatMap(receivedMessage -> {
+                logMessage(receivedMessage, receiver.getEntityPath(), "filtered message");
+                LOGGER.atInfo()
+                    .addKeyValue("traceparent", receivedMessage.getApplicationProperties().get("traceparent"))
+                    .addKeyValue("seqNo", receivedMessage.getSequenceNumber())
+                    .addKeyValue("deliveryCount", receivedMessage.getDeliveryCount())
+                    .addKeyValue("lockToken", receivedMessage.getLockToken())
+                    .addKeyValue("lockedUntil", receivedMessage.getLockedUntil())
+                    .log("message properties");
 
-                    return receiver.renewMessageLock(receivedMessage, maximumDuration);
-                });
 
-            Duration noMessageTimeout = Duration.ofMinutes(3);
-            StepVerifier.create(receiveAndRenew
-                .timeout(noMessageTimeout))
-                .verifyTimeout(noMessageTimeout.plusSeconds(2));
-        }
+                // not expecting to receive the same message because lock is being renewed
+                assertFalse(alreadyReceived.getAndSet(true), "message received again");
+                assertNotNull(receivedMessage.getLockedUntil());
+
+                return receiver.renewMessageLock(receivedMessage, maximumDuration);
+            });
+
+        Duration noMessageTimeout = Duration.ofMinutes(3);
+        StepVerifier.create(receiveAndRenew
+            .timeout(noMessageTimeout))
+            .verifyTimeout(noMessageTimeout.plusSeconds(2));
     }
 
     /**

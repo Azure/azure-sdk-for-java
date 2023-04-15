@@ -87,23 +87,20 @@ class LockRenewalOperation implements AutoCloseable {
             .takeUntilOther(cancellationProcessor)
             .cache(Duration.ofMinutes(2));
 
-        this.completionMono = renewLockOperation
-            .doOnCancel(() -> logger.warning("Operation was cancelled."))
-            .then();
-        this.subscription = renewLockOperation
-            .subscribe(until -> this.lockedUntil.set(until),
-                error -> {
-                    logger.error("Error occurred while renewing lock token.", error);
-                    status.set(LockRenewalStatus.FAILED);
-                    throwable.set(error);
-                    cancellationProcessor.onComplete();
-                }, () -> {
-                    if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                        logger.verbose("Renewing session lock task completed.");
-                    }
+        this.completionMono = renewLockOperation.then();
+        this.subscription = renewLockOperation.subscribe(until -> this.lockedUntil.set(until),
+            error -> {
+                logger.error("Error occurred while renewing lock token.", error);
+                status.set(LockRenewalStatus.FAILED);
+                throwable.set(error);
+                cancellationProcessor.onComplete();
+            }, () -> {
+                if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
+                    logger.verbose("Renewing session lock task completed.");
+                }
 
-                    cancellationProcessor.onComplete();
-                });
+                cancellationProcessor.onComplete();
+            });
     }
 
     /**
@@ -170,7 +167,7 @@ class LockRenewalOperation implements AutoCloseable {
         }
 
         if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.CANCELLED)) {
-            logger.info("Cancelled operation.");
+            logger.verbose("Cancelled operation.");
         }
 
         cancellationProcessor.onComplete();

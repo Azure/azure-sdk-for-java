@@ -80,6 +80,7 @@ public class TestUtils {
     static final int USE_CASE_PROXY = 22;
     static final int USE_CASE_PROCESSOR_RECEIVE = 23;
     static final int USE_CASE_AMQP_TYPES = 24;
+    static final int USE_CASE_RENEW_LOCK = 25;
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.

@@ -272,7 +272,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
         String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
-        String queueName = getQueueName(0);
+        String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
 
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
 
@@ -294,7 +294,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
         ConnectionStringProperties properties = getConnectionStringProperties(true);
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
         String sharedAccessSignature = properties.getSharedAccessSignature();
-        String queueName = getQueueName(0);
+        String queueName = getQueueName(TestUtils.USE_CASE_DEFAULT);
 
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_MESSAGE.getBytes(UTF_8));
 

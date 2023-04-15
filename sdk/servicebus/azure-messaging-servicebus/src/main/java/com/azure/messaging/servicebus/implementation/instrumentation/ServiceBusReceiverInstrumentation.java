@@ -64,12 +64,11 @@ public class ServiceBusReceiverInstrumentation {
                     message, messageContext, messageContext);
                 return publisher
                     .doOnEach(signal -> {
-                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), span);
+                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), false, span);
                         tracer.endSpan(signal.getThrowable(), span, null);
                     })
                     .doOnCancel(() -> {
-                        // TODO
-                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, null, span);
+                        meter.reportSettlement(startTime, message.getSequenceNumber(), status, null, true, span);
                         tracer.cancelSpan(span);
 
                     });

@@ -42,17 +42,18 @@ class ServiceBusSenderInstrumentation {
                     ServiceBusMessage::getContext, Context.NONE);
                 return publisher
                     .doOnEach(signal -> {
-                        // TODO
-                        meter.reportBatchSend(batch.size(), signal.getThrowable(), span);
+                        meter.reportBatchSend(batch.size(), signal.getThrowable(), false, span);
                         tracer.endSpan(signal.getThrowable(), span, null);
                     })
-                    .doOnCancel(() -> tracer.cancelSpan(span));
+                    .doOnCancel(() -> {
+                        meter.reportBatchSend(batch.size(), null, true, span);
+                        tracer.cancelSpan(span);
+                    });
             });
         } else {
             return publisher
-                .doOnEach(signal -> meter.reportBatchSend(batch.size(), signal.getThrowable(), Context.NONE));
-                // TODO
-                //.doOnCancel()
+                .doOnEach(signal -> meter.reportBatchSend(batch.size(), signal.getThrowable(), false, Context.NONE))
+                .doOnCancel(() -> meter.reportBatchSend(batch.size(), null, true, Context.NONE));
         }
     }
 }
