@@ -328,12 +328,7 @@ public final class RoomsAsyncClient {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            String updateRequest = "";
-            try {
-                updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             return this.participantsClient
                     .updateAsync(roomId, updateRequest, context)
@@ -341,6 +336,9 @@ public final class RoomsAsyncClient {
                         return Mono.just(new UpsertParticipantsResult());
                     });
 
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -367,22 +365,18 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForUpsert(participants);
-            // UpdateParticipantsRequest updateRequest = new
-            // UpdateParticipantsRequest().setParticipants(participantMap);
 
             ObjectMapper mapper = new ObjectMapper();
 
-            String updateRequest = "";
-            try {
-                updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             return this.participantsClient
                     .updateWithResponseAsync(roomId, updateRequest, context)
                     .map(result -> new SimpleResponse<UpsertParticipantsResult>(
                             result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -413,26 +407,16 @@ public final class RoomsAsyncClient {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            String updateRequest = "";
-            try {
-                updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-            // for (RoomParticipant part : listParticipants(roomId).toIterable()) {
-            //     System.out.println(part.getCommunicationIdentifier().getRawId());
-            // }
-
-            // for (Map.Entry<String, ParticipantProperties> entry : participantMap.entrySet()) {
-            //     System.out.println(entry.getKey() + ": " + entry.getValue());
-            // }
+            String updateRequest =  mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             return this.participantsClient
                     .updateAsync(roomId, updateRequest, context)
                     .flatMap((response) -> {
                         return Mono.just(new RemoveParticipantsResult());
                     });
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -460,22 +444,18 @@ public final class RoomsAsyncClient {
 
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                     communicationIdentifiers);
-            // UpdateParticipantsRequest updateRequest = new
-            // UpdateParticipantsRequest().setParticipants(participantMap);
 
             ObjectMapper mapper = new ObjectMapper();
 
-            String updateRequest = "";
-            try {
-                updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
             return this.participantsClient
                     .updateWithResponseAsync(roomId, updateRequest, context)
                     .map(result -> new SimpleResponse<RemoveParticipantsResult>(
                             result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
