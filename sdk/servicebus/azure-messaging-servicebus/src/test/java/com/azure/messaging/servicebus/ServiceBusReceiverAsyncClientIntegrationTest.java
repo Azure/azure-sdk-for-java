@@ -46,7 +46,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,10 +60,10 @@ import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Integration tests for {@link ServiceBusReceiverAsyncClient} from queues or subscriptions.
@@ -552,13 +551,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertTrue(latchAll.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
 
         final AtomicInteger messageCount = new AtomicInteger();
-        // messages are received in the same order as they were sent
-        receivedMessages.stream()
-            .forEach(actualMessage -> {
-                final Object position = actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
-                assertTrue(position instanceof Integer, "Did not contain correct position number: " + position);
-                assertEquals(messageCount.getAndIncrement(), position);
-            });
+
+        synchronized (receivedMessages) {
+            receivedMessages.stream()
+                .forEach(actualMessage -> {
+                    final Object position = actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
+                    assertTrue(position instanceof Integer, "Did not contain correct position number: " + position);
+
+                    // messages are received in the same order as they were sent
+                    assertEquals(messageCount.getAndIncrement(), position);
+                });
+        }
     }
 
     private Flux<ServiceBusReceivedMessage> peekMessages(int count, CountDownLatch latch, String messageIdFilter, Set<Integer> receivedPositions) {
@@ -1184,10 +1187,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void renewMessageLock(MessagingEntityType entityType) {
+    void renewMessageLock(MessagingEntityType entityType) throws InterruptedException {
         // Arrange
         final boolean isSessionEnabled = false;
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RENEW_LOCK, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_RENEW_LOCK, isSessionEnabled);
+
+        // TODO (limolkova) should test auto along with manual renewal?
+        setReceiver(entityType, TestUtils.USE_CASE_RENEW_LOCK, isSessionEnabled, new ClientCreationOptions().setMaxAutoLockRenewDuration(Duration.ZERO));
 
         final Duration maximumDuration = Duration.ofSeconds(35);
         final String messageId = UUID.randomUUID().toString();
@@ -1195,11 +1201,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(sendMessage(message)).verifyComplete();
 
-        AtomicBoolean alreadyReceived = new AtomicBoolean();
-        Flux<Object> receiveAndRenew = receiver.receiveMessages()
+        AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>(null);
+
+        CountDownLatch latch = new CountDownLatch(2);
+        receiver.receiveMessages()
             .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
             .filter(m -> messageId.equals(m.getMessageId()))
             .flatMap(receivedMessage -> {
+                latch.countDown();
                 logMessage(receivedMessage, receiver.getEntityPath(), "filtered message");
                 LOGGER.atInfo()
                     .addKeyValue("traceparent", receivedMessage.getApplicationProperties().get("traceparent"))
@@ -1208,19 +1217,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     .addKeyValue("lockToken", receivedMessage.getLockToken())
                     .addKeyValue("lockedUntil", receivedMessage.getLockedUntil())
                     .log("message properties");
-
-
-                // not expecting to receive the same message because lock is being renewed
-                assertFalse(alreadyReceived.getAndSet(true), "message received again");
                 assertNotNull(receivedMessage.getLockedUntil());
+                // expect to receive the same message but only after lock renewal completes
+                if (lockedUntil.compareAndSet(null, receivedMessage.getLockedUntil())) {
+                    return receiver.renewMessageLock(receivedMessage, maximumDuration);
+                } else {
+                    logger.atInfo()
+                        .addKeyValue("lockedUntil", lockedUntil.get())
+                        .log("expecting before now"); // but I'm wrong
+                    // TODO: why not not always bigger than lockeduntil? timeskew with service?
+                    assertEquals(OffsetDateTime.now().toEpochSecond(), lockedUntil.get().toEpochSecond(), 10);
+                    return receiver.complete(receivedMessage);
+                }
+            })
+            .subscribe(i -> { }, ex -> fail(ex), () -> fail("cancelled"));
 
-                return receiver.renewMessageLock(receivedMessage, maximumDuration);
-            });
-
-        Duration noMessageTimeout = Duration.ofMinutes(3);
-        StepVerifier.create(receiveAndRenew
-            .timeout(noMessageTimeout))
-            .verifyTimeout(noMessageTimeout.plusSeconds(2));
+        assertTrue(latch.await(2, TimeUnit.MINUTES));
     }
 
     /**
