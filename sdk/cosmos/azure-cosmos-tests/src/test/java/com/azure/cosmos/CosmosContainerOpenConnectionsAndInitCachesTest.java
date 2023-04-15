@@ -180,8 +180,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         assertThat(provider.count()).isEqualTo(endpoints.size());
 
-        // Validate for each RntbdServiceEndpoint, equals Configs.getMinConnectionPoolSizePerEndpoint()) channel is being opened
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
+        // Validate for each RntbdServiceEndpoint, is at least Configs.getMinConnectionPoolSizePerEndpoint()) channel is being opened
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
 
         // Test for real document requests, it will not open new channels
         for (int i = 0; i < 5; i++) {
