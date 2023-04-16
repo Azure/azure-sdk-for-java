@@ -4,6 +4,7 @@
 package com.azure.core.experimental.http;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -134,7 +135,7 @@ import java.util.stream.Collectors;
  * <pre>
  * DynamicResponse response = dynamicRequest
  *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41; &#47;&#47; may already be set if request is created from a client
- *     .addHeader&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;
+ *     .addHeader&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;
  *     .setBody&#40;requestBodyStr&#41;
  *     .send&#40;&#41;; &#47;&#47; makes the service call
  * </pre>
@@ -214,8 +215,22 @@ public final class DynamicRequest {
      * @param value the header value
      *
      * @return the modified DynamicRequest object
+     * @deprecated Use {@link #addHeader(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public DynamicRequest addHeader(String header, String value) {
+        headers.set(header, value);
+        return this;
+    }
+
+    /**
+     * Adds a header to the HTTP request.
+     * @param header the header key
+     * @param value the header value
+     *
+     * @return the modified DynamicRequest object
+     */
+    public DynamicRequest addHeader(HttpHeaderName header, String value) {
         headers.set(header, value);
         return this;
     }
@@ -227,6 +242,7 @@ public final class DynamicRequest {
      * @return the modified DynamicRequest object
      * @throws NullPointerException if the httpHeader is null
      */
+    @SuppressWarnings("deprecation")
     public DynamicRequest addHeader(HttpHeader httpHeader) {
         if (httpHeader == null) {
             throw logger.logExceptionAsError(new NullPointerException("httpHeader cannot be null"));

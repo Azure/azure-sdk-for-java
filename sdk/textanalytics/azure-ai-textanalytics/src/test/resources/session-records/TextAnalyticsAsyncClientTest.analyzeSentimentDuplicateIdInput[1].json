@@ -1,25 +1,63 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "539b89a2-f05e-4484-8ad6-2066b38c1ae2",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "7",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c827824f-c9f6-418f-ba88-01404f6db11d",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Request contains duplicated Ids. Make sure each document has a unique Id.\"}}}",
-      "Date" : "Tue, 11 Oct 2022 19:06:45 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "348",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:54:41 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f5f1ccf6-cd49-47e0-a6cd-bc315e191c3a"
+      },
+      "RequestBody": {
+        "kind": "SentimentAnalysis",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "opinionMining": false,
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "1914eb69-93db-4bca-88dd-6c44c3217763",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:54:40 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "5",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "message": "Invalid Document in request.",
+          "innererror": {
+            "code": "InvalidDocument",
+            "message": "Request contains duplicated Ids. Make sure each document has a unique Id."
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

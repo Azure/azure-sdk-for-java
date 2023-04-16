@@ -13,6 +13,8 @@ import com.azure.core.util.UrlBuilder;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -316,6 +318,21 @@ public final class ImplUtils {
                 return new String(bytes, offset, count, StandardCharsets.UTF_8);
             }
         }
+    }
+
+    /**
+     * Creates a new {@link URL} from the given {@code urlString}.
+     * <p>
+     * This is a temporary method that will be removed once all usages of {@link URL#URL(String)} are migrated to
+     * {@link URI}-based methods given the deprecation of the URL methods in Java 20.
+     *
+     * @param urlString The string to convert to a {@link URL}.
+     * @return The {@link URL} representing the {@code urlString}.
+     * @throws MalformedURLException If the {@code urlString} isn't a valid {@link URL}.
+     */
+    @SuppressWarnings("deprecation")
+    public static URL createUrl(String urlString) throws MalformedURLException {
+        return new URL(urlString);
     }
 
     private ImplUtils() {

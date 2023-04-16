@@ -5,6 +5,7 @@ package com.azure.core.test.http;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -35,12 +36,12 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MockHttpClient extends NoOpHttpClient {
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
-        .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-        .set("Via", "1.1 vegur")
-        .set("Connection", "keep-alive")
-        .set("X-Processed-Time", "1.0")
-        .set("Access-Control-Allow-Credentials", "true")
-        .set("Content-Type", "application/json");
+        .set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT")
+        .set(HttpHeaderName.VIA, "1.1 vegur")
+        .set(HttpHeaderName.CONNECTION, "keep-alive")
+        .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
+        .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+        .set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -49,7 +50,7 @@ public class MockHttpClient extends NoOpHttpClient {
         try {
             final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
-            final String contentType = request.getHeaders().getValue("Content-Type");
+            final String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             if ("localhost".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
@@ -66,13 +67,13 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                        .set("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
-                        .set("Content-Length", Integer.toString(byteCount));
+                        .set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM)
+                        .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
                     byte[] content;
                     if (byteCount > 0) {
                         content = new byte[byteCount];
                         ThreadLocalRandom.current().nextBytes(content);
-                        newHeaders = newHeaders.set("ETag", MessageDigestUtils.md5(content));
+                        newHeaders = newHeaders.set(HttpHeaderName.ETAG, MessageDigestUtils.md5(content));
                     } else {
                         content = null;
                     }

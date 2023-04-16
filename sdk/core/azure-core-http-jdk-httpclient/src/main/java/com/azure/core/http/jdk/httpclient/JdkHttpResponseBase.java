@@ -3,6 +3,7 @@
 
 package com.azure.core.http.jdk.httpclient;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -31,8 +32,14 @@ abstract class JdkHttpResponseBase extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public final String getHeaderValue(String name) {
         return this.headers.getValue(name);
+    }
+
+    @Override
+    public final String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override
@@ -42,7 +49,8 @@ abstract class JdkHttpResponseBase extends HttpResponse {
 
     @Override
     public final Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes, getHeaderValue("Content-Type")));
+        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
+            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

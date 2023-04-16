@@ -495,7 +495,8 @@ public class StoreReader {
             // once we switch to RxJava2 we can move to Observable.map(.)
             // https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#functional-interfaces
             if (readQuorumResult.responses.size() == 0) {
-                return Mono.error(new GoneException(RMResources.Gone));
+                return Mono.error(new GoneException(RMResources.Gone,
+                    HttpConstants.SubStatusCodes.NO_VALID_STORE_RESPONSE));
             }
 
             return Mono.just(readQuorumResult.responses.get(0));

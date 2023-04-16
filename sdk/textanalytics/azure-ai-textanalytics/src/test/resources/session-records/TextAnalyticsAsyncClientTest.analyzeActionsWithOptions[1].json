@@ -1,64 +1,766 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8b472474-7dfd-40c6-9eaf-44530870973a",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "706",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:55:45 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "3bfb3a5f-c8cd-4caa-8db6-53a9cb51f0c8"
+      },
+      "RequestBody": {
+        "displayName": "Test1",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "1",
+              "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "EntityRecognition",
+            "parameters": {
+              "loggingOptOut": false,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          },
+          {
+            "kind": "PiiEntityRecognition",
+            "parameters": {
+              "loggingOptOut": true,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          },
+          {
+            "kind": "KeyPhraseExtraction",
+            "parameters": {
+              "loggingOptOut": false
+            }
+          },
+          {
+            "kind": "EntityLinking",
+            "parameters": {
+              "loggingOptOut": false,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          },
+          {
+            "kind": "SentimentAnalysis",
+            "parameters": {
+              "loggingOptOut": false,
+              "opinionMining": false,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "d5990bad-ddd3-4983-b022-547f6029cd6c",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:55:45 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/2c871e50-1e72-47ed-aac3-e6bd02d83fe9?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "1212",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "431",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://language-dogfood.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/877705c1-73e9-4620-98d0-459a8f7fdd03?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "adc8fc2d-0e11-4ee5-8b35-0460547a3400",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Tue, 11 Oct 2022 19:07:22 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/2c871e50-1e72-47ed-aac3-e6bd02d83fe9?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:56:16 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "fcf86ebf-462b-45ea-bbfd-132358cd6d97"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "27e8f26f-8693-4a0b-822b-ae0e77e9c83d",
+        "Content-Length": "4319",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:56:16 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "341",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "2c871e50-1e72-47ed-aac3-e6bd02d83fe9",
+        "lastUpdatedDateTime": "2023-04-05T18:55:49Z",
+        "createdDateTime": "2023-04-05T18:55:44Z",
+        "expirationDateTime": "2023-04-06T18:55:44Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 5,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 5,
+          "items": [
+            {
+              "kind": "EntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:48.7219745Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "trip",
+                        "category": "Event",
+                        "offset": 18,
+                        "length": 4,
+                        "confidenceScore": 0.74
+                      },
+                      {
+                        "text": "Seattle",
+                        "category": "Location",
+                        "subcategory": "GPE",
+                        "offset": 26,
+                        "length": 7,
+                        "confidenceScore": 1.0
+                      },
+                      {
+                        "text": "last week",
+                        "category": "DateTime",
+                        "subcategory": "DateRange",
+                        "offset": 34,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.98
+                      },
+                      {
+                        "text": "employee",
+                        "category": "PersonType",
+                        "offset": 10,
+                        "length": 8,
+                        "confidenceScore": 0.96
+                      },
+                      {
+                        "text": "859",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 28,
+                        "length": 3,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "98",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 32,
+                        "length": 2,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "0987",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 35,
+                        "length": 4,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "API\u0027s",
+                        "category": "Skill",
+                        "offset": 61,
+                        "length": 5,
+                        "confidenceScore": 0.71
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            },
+            {
+              "kind": "PiiEntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:49.3878539Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "redactedText": "I had a wonderful trip to Seattle *********.",
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "last week",
+                        "category": "DateTime",
+                        "subcategory": "DateRange",
+                        "offset": 34,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "redactedText": "********* ******** with ssn *********** is using our awesome API\u0027s.",
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.94
+                      },
+                      {
+                        "text": "employee",
+                        "category": "PersonType",
+                        "offset": 10,
+                        "length": 8,
+                        "confidenceScore": 0.95
+                      },
+                      {
+                        "text": "859-98-0987",
+                        "category": "USSocialSecurityNumber",
+                        "offset": 28,
+                        "length": 11,
+                        "confidenceScore": 0.65
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-01-15"
+              }
+            },
+            {
+              "kind": "KeyPhraseExtractionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:48.0505661Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "keyPhrases": [
+                      "wonderful trip",
+                      "Seattle"
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "keyPhrases": [
+                      "Microsoft employee",
+                      "awesome API",
+                      "ssn"
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-10-01"
+              }
+            },
+            {
+              "kind": "EntityLinkingLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:49.014873Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "bingId": "5fbba6b8-85e1-4d41-9444-d9055436e473",
+                        "name": "Seattle",
+                        "matches": [
+                          {
+                            "text": "Seattle",
+                            "offset": 26,
+                            "length": 7,
+                            "confidenceScore": 0.19
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Seattle",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "bingId": "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85",
+                        "name": "Microsoft",
+                        "matches": [
+                          {
+                            "text": "Microsoft",
+                            "offset": 0,
+                            "length": 9,
+                            "confidenceScore": 0.28
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Microsoft",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      },
+                      {
+                        "bingId": "e8c1a257-7315-a482-c81d-202a0260e4ed",
+                        "name": "Application programming interface",
+                        "matches": [
+                          {
+                            "text": "API\u0027s",
+                            "offset": 61,
+                            "length": 5,
+                            "confidenceScore": 0.85
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Application programming interface",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            },
+            {
+              "kind": "SentimentAnalysisLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:47.9151601Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "sentiment": "positive",
+                    "confidenceScores": {
+                      "positive": 1.0,
+                      "neutral": 0.0,
+                      "negative": 0.0
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 1.0,
+                          "neutral": 0.0,
+                          "negative": 0.0
+                        },
+                        "offset": 0,
+                        "length": 44,
+                        "text": "I had a wonderful trip to Seattle last week."
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "sentiment": "positive",
+                    "confidenceScores": {
+                      "positive": 0.97,
+                      "neutral": 0.03,
+                      "negative": 0.0
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 0.97,
+                          "neutral": 0.03,
+                          "negative": 0.0
+                        },
+                        "offset": 0,
+                        "length": 67,
+                        "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-11-01"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/877705c1-73e9-4620-98d0-459a8f7fdd03?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4d08e5de-78bf-4875-b192-4e82283acdf0"
-    },
-    "Response" : {
-      "content-length" : "4434",
-      "x-envoy-upstream-service-time" : "192",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b8fda3bb-2f29-4d99-ab78-f30f833529b9",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"877705c1-73e9-4620-98d0-459a8f7fdd03\",\"lastUpdateDateTime\":\"2022-10-11T19:07:26Z\",\"createdDateTime\":\"2022-10-11T19:07:22Z\",\"expirationDateTime\":\"2022-10-12T19:07:22Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":5,\"failed\":0,\"inProgress\":0,\"total\":5,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:26.5483012Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.98},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.96},{\"text\":\"859\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":28,\"length\":3,\"confidenceScore\":0.8},{\"text\":\"98\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":32,\"length\":2,\"confidenceScore\":0.8},{\"text\":\"0987\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":35,\"length\":4,\"confidenceScore\":0.8},{\"text\":\"API's\",\"category\":\"Skill\",\"offset\":61,\"length\":5,\"confidenceScore\":0.71}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"PiiEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:26.3388775Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle *********.\",\"id\":\"0\",\"entities\":[{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"redactedText\":\"********* ******** with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.94},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.95},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}},{\"kind\":\"KeyPhraseExtractionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:25.2971021Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"awesome API\",\"ssn\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}},{\"kind\":\"EntityLinkingLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:24.9451008Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":0,\"length\":9,\"confidenceScore\":0.28}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"},{\"bingId\":\"e8c1a257-7315-a482-c81d-202a0260e4ed\",\"name\":\"Application programming interface\",\"matches\":[{\"text\":\"API's\",\"offset\":61,\"length\":5,\"confidenceScore\":0.85}],\"language\":\"en\",\"id\":\"Application programming interface\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"SentimentAnalysisLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:25.1136999Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":44,\"text\":\"I had a wonderful trip to Seattle last week.\"}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.97,\"neutral\":0.03,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.97,\"neutral\":0.03,\"negative\":0.0},\"offset\":0,\"length\":67,\"text\":\"Microsoft employee with ssn 859-98-0987 is using our awesome API's.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 19:07:53 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/877705c1-73e9-4620-98d0-459a8f7fdd03?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "faa4ba4c-0290-4efc-8676-b96b84b3decc"
-    },
-    "Response" : {
-      "content-length" : "4434",
-      "x-envoy-upstream-service-time" : "216",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5a973800-925b-4a93-b8c1-658b13d2f654",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"877705c1-73e9-4620-98d0-459a8f7fdd03\",\"lastUpdateDateTime\":\"2022-10-11T19:07:26Z\",\"createdDateTime\":\"2022-10-11T19:07:22Z\",\"expirationDateTime\":\"2022-10-12T19:07:22Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":5,\"failed\":0,\"inProgress\":0,\"total\":5,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:26.5483012Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.98},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.96},{\"text\":\"859\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":28,\"length\":3,\"confidenceScore\":0.8},{\"text\":\"98\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":32,\"length\":2,\"confidenceScore\":0.8},{\"text\":\"0987\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":35,\"length\":4,\"confidenceScore\":0.8},{\"text\":\"API's\",\"category\":\"Skill\",\"offset\":61,\"length\":5,\"confidenceScore\":0.71}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"PiiEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:26.3388775Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"I had a wonderful trip to Seattle *********.\",\"id\":\"0\",\"entities\":[{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"redactedText\":\"********* ******** with ssn *********** is using our awesome API's.\",\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.94},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.95},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}},{\"kind\":\"KeyPhraseExtractionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:25.2971021Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"awesome API\",\"ssn\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}},{\"kind\":\"EntityLinkingLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:24.9451008Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":0,\"length\":9,\"confidenceScore\":0.28}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"},{\"bingId\":\"e8c1a257-7315-a482-c81d-202a0260e4ed\",\"name\":\"Application programming interface\",\"matches\":[{\"text\":\"API's\",\"offset\":61,\"length\":5,\"confidenceScore\":0.85}],\"language\":\"en\",\"id\":\"Application programming interface\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}},{\"kind\":\"SentimentAnalysisLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:07:25.1136999Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":0,\"length\":44,\"text\":\"I had a wonderful trip to Seattle last week.\"}],\"warnings\":[]},{\"id\":\"1\",\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.97,\"neutral\":0.03,\"negative\":0.0},\"sentences\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":0.97,\"neutral\":0.03,\"negative\":0.0},\"offset\":0,\"length\":67,\"text\":\"Microsoft employee with ssn 859-98-0987 is using our awesome API's.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 19:07:53 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/2c871e50-1e72-47ed-aac3-e6bd02d83fe9?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:56:17 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "a5f949c3-416b-409a-b0a3-21c8da9b62f3"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "def0e28d-f596-49bf-9350-ea78b3f15a20",
+        "Content-Length": "4319",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:56:16 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "246",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "2c871e50-1e72-47ed-aac3-e6bd02d83fe9",
+        "lastUpdatedDateTime": "2023-04-05T18:55:49Z",
+        "createdDateTime": "2023-04-05T18:55:44Z",
+        "expirationDateTime": "2023-04-06T18:55:44Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 5,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 5,
+          "items": [
+            {
+              "kind": "EntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:48.7219745Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "trip",
+                        "category": "Event",
+                        "offset": 18,
+                        "length": 4,
+                        "confidenceScore": 0.74
+                      },
+                      {
+                        "text": "Seattle",
+                        "category": "Location",
+                        "subcategory": "GPE",
+                        "offset": 26,
+                        "length": 7,
+                        "confidenceScore": 1.0
+                      },
+                      {
+                        "text": "last week",
+                        "category": "DateTime",
+                        "subcategory": "DateRange",
+                        "offset": 34,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.98
+                      },
+                      {
+                        "text": "employee",
+                        "category": "PersonType",
+                        "offset": 10,
+                        "length": 8,
+                        "confidenceScore": 0.96
+                      },
+                      {
+                        "text": "859",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 28,
+                        "length": 3,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "98",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 32,
+                        "length": 2,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "0987",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 35,
+                        "length": 4,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "API\u0027s",
+                        "category": "Skill",
+                        "offset": 61,
+                        "length": 5,
+                        "confidenceScore": 0.71
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            },
+            {
+              "kind": "PiiEntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:49.3878539Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "redactedText": "I had a wonderful trip to Seattle *********.",
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "last week",
+                        "category": "DateTime",
+                        "subcategory": "DateRange",
+                        "offset": 34,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "redactedText": "********* ******** with ssn *********** is using our awesome API\u0027s.",
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.94
+                      },
+                      {
+                        "text": "employee",
+                        "category": "PersonType",
+                        "offset": 10,
+                        "length": 8,
+                        "confidenceScore": 0.95
+                      },
+                      {
+                        "text": "859-98-0987",
+                        "category": "USSocialSecurityNumber",
+                        "offset": 28,
+                        "length": 11,
+                        "confidenceScore": 0.65
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-01-15"
+              }
+            },
+            {
+              "kind": "KeyPhraseExtractionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:48.0505661Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "keyPhrases": [
+                      "wonderful trip",
+                      "Seattle"
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "keyPhrases": [
+                      "Microsoft employee",
+                      "awesome API",
+                      "ssn"
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-10-01"
+              }
+            },
+            {
+              "kind": "EntityLinkingLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:49.014873Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "bingId": "5fbba6b8-85e1-4d41-9444-d9055436e473",
+                        "name": "Seattle",
+                        "matches": [
+                          {
+                            "text": "Seattle",
+                            "offset": 26,
+                            "length": 7,
+                            "confidenceScore": 0.19
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Seattle",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "bingId": "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85",
+                        "name": "Microsoft",
+                        "matches": [
+                          {
+                            "text": "Microsoft",
+                            "offset": 0,
+                            "length": 9,
+                            "confidenceScore": 0.28
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Microsoft",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      },
+                      {
+                        "bingId": "e8c1a257-7315-a482-c81d-202a0260e4ed",
+                        "name": "Application programming interface",
+                        "matches": [
+                          {
+                            "text": "API\u0027s",
+                            "offset": 61,
+                            "length": 5,
+                            "confidenceScore": 0.85
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Application programming interface",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            },
+            {
+              "kind": "SentimentAnalysisLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:55:47.9151601Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "sentiment": "positive",
+                    "confidenceScores": {
+                      "positive": 1.0,
+                      "neutral": 0.0,
+                      "negative": 0.0
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 1.0,
+                          "neutral": 0.0,
+                          "negative": 0.0
+                        },
+                        "offset": 0,
+                        "length": 44,
+                        "text": "I had a wonderful trip to Seattle last week."
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "sentiment": "positive",
+                    "confidenceScores": {
+                      "positive": 0.97,
+                      "neutral": 0.03,
+                      "negative": 0.0
+                    },
+                    "sentences": [
+                      {
+                        "sentiment": "positive",
+                        "confidenceScores": {
+                          "positive": 0.97,
+                          "neutral": 0.03,
+                          "negative": 0.0
+                        },
+                        "offset": 0,
+                        "length": 67,
+                        "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-11-01"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

@@ -23,6 +23,8 @@ import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -92,7 +94,7 @@ public final class RestProxyTestsWireMockServer {
         public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition,
             FileSource fileSource, Parameters parameters) {
             try {
-                URL url = new URL(request.getAbsoluteUrl());
+                URL url = new URI(request.getAbsoluteUrl()).toURL();
 
                 String urlPath = url.getPath();
                 if (urlPath.startsWith("/bytes")) {
@@ -111,7 +113,7 @@ public final class RestProxyTestsWireMockServer {
                 }  else {
                     return responseDefinition;
                 }
-            } catch (IOException e) {
+            } catch (URISyntaxException | IOException e) {
                 throw new RuntimeException(e);
             }
         }
