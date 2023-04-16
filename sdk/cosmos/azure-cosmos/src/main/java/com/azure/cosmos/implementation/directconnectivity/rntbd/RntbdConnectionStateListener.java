@@ -3,16 +3,18 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -25,6 +27,7 @@ public class RntbdConnectionStateListener {
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
     private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
 
     // endregion
 
@@ -97,20 +100,19 @@ public class RntbdConnectionStateListener {
         // close / reset
         // connections will be opened proactively on this endpoint only in the
         // openConnectionsAndInitCaches flow
-        if (Configs.getMinConnectionPoolSizePerEndpoint() > 0 && Configs.isOpenConnectionsForConnectionExceptionsEnabled()) {
-
-            logger.warn("Exception occurred {}, trying to proactively open a connection.", exception.getMessage());
-
-            this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
-                    "",
-                    this.endpoint.serviceEndpoint(),
-                    this.addressUris.stream().findFirst().get(),
-                    this.endpoint.getMinChannelsRequired());
+        if (this.endpointValidationInProgress.compareAndSet(false, true)) {
+            Mono.fromFuture(this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
+                "",
+                this.endpoint.serviceEndpoint(),
+                this.addressUris.stream().findFirst().get(),
+                this.endpoint.getMinChannelsRequired()
+            ))
+            .doFinally(signalType -> {
+                this.endpointValidationInProgress.compareAndSet(true, false);
+            })
+            .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            .subscribe();
         }
-
-        this.proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
-                .subscribe();
     }
     // endregion
 

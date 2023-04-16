@@ -47,13 +47,14 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -74,6 +75,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     builder = CosmosClientBuilder.class,
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
+    private static final Logger logger = LoggerFactory.getLogger(CosmosAsyncClient.class);
+
     private static final CosmosClientTelemetryConfig DEFAULT_TELEMETRY_CONFIG = new CosmosClientTelemetryConfig();
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
@@ -590,38 +593,22 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(5);
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
-
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
-
-        wrapSourceFluxWithSoftTimeoutAndFallback(
-                proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().sequential(),
-                Flux.empty(),
-                lastSuccessResponseTimeout,
-                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC
-        ).blockLast();
+            .doOnComplete(() -> {
+                logger.info("Getting complete signal");
+            })
+            .blockLast();
     }
-
 
     void openConnectionsAndInitCaches(Duration aggressiveProactiveConnectionEstablishmentDuration) {
         final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
-
-        proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
-                .subscribe();
-
-        Flux
-                .just(1)
-                .delayElements(aggressiveProactiveConnectionEstablishmentDuration)
-                .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiateOpenConnectionsPublisherAndSubscribe)
-                .blockLast();
+            .timeout(aggressiveProactiveConnectionEstablishmentDuration)
+            .doOnCancel(() -> logger.info("Aggressive proactive connection establishment duration reached"))
+            .doOnTerminate(() -> proactiveOpenConnectionsProcessor.reInstantiateOpenConnectionsPublisherAndSubscribe())
+            .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            .subscribe();
     }
 
     private <T> Flux<T> wrapSourceFluxWithSoftTimeoutAndFallback(Flux<T> source, Flux<T> fallback, Duration timeout, Scheduler executionContext) {

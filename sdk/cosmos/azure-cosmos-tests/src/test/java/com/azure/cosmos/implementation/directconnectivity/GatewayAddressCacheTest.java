@@ -240,7 +240,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         boolean forceRefreshPartitionAddresses = false;
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         ArrayList<AddressInformation> addressInfosFromCache =
             Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
@@ -358,7 +358,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         cache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList).blockLast();
 
@@ -424,7 +424,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         List<PartitionKeyRangeIdentity> pkriList = allPartitionKeyRangeIds.stream().map(
                 pkri -> new PartitionKeyRangeIdentity(collectionRid, pkri)).collect(Collectors.toList());
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         origCache.resolveAddressesAndInitCaches(collectionLink, createdCollection, pkriList).blockLast();
 
@@ -919,7 +919,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
         boolean forceRefreshPartitionAddresses = true;
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
@@ -939,17 +939,17 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 // If submitOpenConnectionTasksAndInitCaches is called, then replica validation will also include for unknown status
                 Mockito
                     .verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
-                    .submitOpenConnectionTask(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
                 assertThat(openConnectionArguments.getAllValues()).hasSize(addressInfosFromCache.size());
             } else {
                 // Open connection will only be called for unhealthyPending status address
                 Mockito
                     .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
-                    .submitOpenConnectionTask(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
             }
         } else {
             Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.never())
-                    .submitOpenConnectionTask(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
         }
 
         httpClientWrapper.capturedRequests.clear();
@@ -1000,7 +1000,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
             Mockito
                 .verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
-                .submitOpenConnectionTask(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
             if (submitOpenConnectionTasksAndInitCaches) {
                 assertThat(openConnectionArguments.getAllValues()).containsExactlyElementsOf(Arrays.asList(unhealthyAddressUri, unknownAddressUri));
             } else {
@@ -1009,7 +1009,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         } else {
             Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.never())
-                    .submitOpenConnectionTask(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
+                    .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
         }
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
@@ -1050,7 +1050,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         ArrayList<AddressInformation> addressInfosFromCache =
                 Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
@@ -1113,7 +1113,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         ArrayList<AddressInformation> addressInfosFromCache =
                 Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
@@ -1169,7 +1169,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock);
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         Method validateReplicaAddressesMethod =
             GatewayAddressCache.class.getDeclaredMethod("validateReplicaAddresses", new Class[] { String.class, AddressInformation[].class });
@@ -1206,7 +1206,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArgumentCaptor<URI> serviceEndpointArguments = ArgumentCaptor.forClass(URI.class);
         Mockito
             .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
-            .submitOpenConnectionTask(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
+            .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
 
         assertThat(openConnectionArguments.getAllValues()).containsExactlyElementsOf(
                 Arrays.asList(address4, address2)

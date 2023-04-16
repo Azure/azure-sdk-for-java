@@ -741,11 +741,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public RntbdEndpoint createIfAbsent(final URI serviceEndpoint, final URI physicalAddress, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minChannelsRequiredCount) {
+        public RntbdEndpoint createIfAbsent(
+            final URI serviceEndpoint,
+            final URI physicalAddress,
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minChannelsRequiredCount) {
             return endpoints.computeIfAbsent(
                 physicalAddress.getAuthority(),
                 authority -> {
-
                     RntbdDurableEndpointMetrics durableEndpointMetrics = durableMetrics.computeIfAbsent(
                         authority,
                         ignoreMe -> new RntbdDurableEndpointMetrics()

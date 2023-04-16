@@ -6,28 +6,27 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
-import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.ShouldRetryResult;
-import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 import reactor.core.publisher.Sinks;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
@@ -35,10 +34,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
-    private final ConcurrentHashMap<String, Integer> endpointToMinConnections;
+    private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
     private final AtomicReference<AsyncDocumentClient.OpenConnectionAggressivenessHint> aggressivenessHint;
     private static final Map<AsyncDocumentClient.OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
+    private final RntbdEndpoint.Provider endpointProvider;
+    private Disposable openConnectionBackgroundTask;
 
     static {
         concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsDefensiveConcurrency(), Configs.getOpenConnectionsDefensiveConcurrency()));
@@ -49,31 +50,59 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
         this.aggressivenessHint = new AtomicReference<>(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
-        this.endpointToMinConnections = new ConcurrentHashMap<>();
+        this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
+        this.endpointProvider = endpointProvider;
+
+        // start as a background task
+        openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
     }
 
-    public synchronized void submitOpenConnectionTask(
-            String collectionRid, URI serviceEndpoint, Uri addressUri, int minConnectionsRequiredForEndpoint) {
+    public synchronized OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
+        String collectionRid,
+        URI serviceEndpoint,
+        Uri addressUri,
+        int minConnectionsRequiredForEndpoint) {
+
         OpenConnectionTask openConnectionTask = new OpenConnectionTask(collectionRid, serviceEndpoint, addressUri, minConnectionsRequiredForEndpoint);
-        this.submitOpenConnectionTask(openConnectionTask);
+        this.submitOpenConnectionTaskOutsideLoopInternal(openConnectionTask);
+
+        return openConnectionTask;
     }
 
-    private synchronized void submitOpenConnectionTask(OpenConnectionTask openConnectionTask) {
+    private synchronized void submitOpenConnectionTaskOutsideLoopInternal(OpenConnectionTask openConnectionTask) {
+        String addressUriAsString = openConnectionTask.getAddressUri().getURIAsString();
 
-        String addressUriAsString = openConnectionTask.addressUri.getURIAsString();
-        boolean isEndpointTaskInSink = endpointToMinConnections.putIfAbsent(addressUriAsString,
-                openConnectionTask.minConnectionsRequiredForEndpoint) != null;
+        this.endpointsUnderMonitorMap.compute(addressUriAsString, (key, taskList) -> {
+            if (taskList == null) {
+                taskList = new ArrayList<>();
+            }
 
-        endpointToMinConnections.computeIfPresent(addressUriAsString, (s, min) -> {
-            openConnectionTask.minConnectionsRequiredForEndpoint = Math.max(openConnectionTask.minConnectionsRequiredForEndpoint, min);
-            return openConnectionTask.minConnectionsRequiredForEndpoint;
+            taskList.add(openConnectionTask);
+            if (taskList.size() == 1) {
+                openConnectionsTaskSink.tryEmitNext(openConnectionTask);
+                openConnectionsTaskSinkBackUp.tryEmitNext(openConnectionTask);
+            }
+
+            return taskList;
         });
 
-        if (!isEndpointTaskInSink) {
-            openConnectionsTaskSink.tryEmitNext(openConnectionTask);
-            openConnectionsTaskSinkBackUp.tryEmitNext(openConnectionTask);
-        }
+        RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
+            openConnectionTask.getServiceEndpoint(),
+            openConnectionTask.getAddressUri().getURI(),
+            this,
+            openConnectionTask.getMinConnectionsRequiredForEndpoint());
+
+        endpoint.setMinChannelsRequired(Math.max(openConnectionTask.getMinConnectionsRequiredForEndpoint(), endpoint.getMinChannelsRequired()));
+    }
+
+    // There are two major kind tasks will be submitted
+    // 1. Tasks from up caller -> in this case, before we enqueue a task we would want to check whether the endpoint has already in the map
+    // 2. Tasks from existing flow -> for each endpoint, each time we will only 1 connection, if the connection count < the mini connection requirements,then re-queue.
+    // for this case, then there is no need to validate whether the endpoint exists
+    private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
+        openConnectionsTaskSink.tryEmitNext(openConnectionTask);
+        openConnectionsTaskSinkBackUp.tryEmitNext(openConnectionTask);
     }
 
     @Override
@@ -82,74 +111,88 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         completeSink(openConnectionsTaskSinkBackUp);
     }
 
-    public synchronized ParallelFlux<OpenConnectionResponse> getOpenConnectionsPublisher() {
+    public Disposable getOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
         return Flux.from(openConnectionsTaskSink.asFlux())
-                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
-                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .flatMap(openConnectionTask -> {
-                    endpointToMinConnections.remove(openConnectionTask.addressUri.getURIAsString());
+            .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
+            .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            .flatMap(openConnectionTask -> {
+                Uri addressUri = openConnectionTask.getAddressUri();
+                URI serviceEndpoint = openConnectionTask.getServiceEndpoint();
+                int minConnectionsForEndpoint = openConnectionTask.getMinConnectionsRequiredForEndpoint();
+                String collectionRid = openConnectionTask.getCollectionRid();
 
-                    Uri addressUri = openConnectionTask.addressUri;
-                    URI serviceEndpoint = openConnectionTask.serviceEndpoint;
-                    int minConnectionsForEndpoint = openConnectionTask.minConnectionsRequiredForEndpoint;
-                    String collectionRid = openConnectionTask.collectionRid;
+                return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
+                        collectionRid,
+                        serviceEndpoint,
+                        Arrays.asList(addressUri),
+                        this,
+                        minConnectionsForEndpoint));
+            }, false, concurrencyConfiguration.openConnectionExecutionConcurrency)
+            .flatMap(openConnectionTaskToResponse -> {
+                OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
+                OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
 
-                    return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
-                            collectionRid,
-                            serviceEndpoint,
-                            Arrays.asList(addressUri),
-                            this,
-                            minConnectionsForEndpoint));
-                }, false, concurrencyConfiguration.openConnectionExecutionConcurrency)
-                .flatMap(openConnectionTaskToResponse -> {
-                    OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
-                    OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
+                if (openConnectionResponse.isConnected() && openConnectionResponse.isOpenConnectionAttempted()) {
+                    this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
+                    return Mono.just(openConnectionResponse);
+                }
 
-                    if (openConnectionResponse.isConnected() && openConnectionResponse.isOpenConnectionAttempted()) {
-                        this.submitOpenConnectionTask(openConnectionTask);
-                        return Mono.just(openConnectionResponse);
-                    }
+                // open connections handler has created the min. required connections for the endpoint
+                if (openConnectionResponse.isConnected() && !openConnectionResponse.isOpenConnectionAttempted()) {
+                    // for the specific service endpoint, it has met the mini pool size requirements, so remove from the map
+                    // TODO: response should reflect all previous opened connection
+                    this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
+                    return Mono.just(openConnectionResponse);
+                }
 
-                    // open connections handler has created the min. required connections for the endpoint
-                    if (openConnectionResponse.isConnected() && !openConnectionResponse.isOpenConnectionAttempted()) {
-                        return Mono.just(openConnectionResponse);
-                    }
+                return openConnectionTask
+                        .getRetryPolicy()
+                        .shouldRetry((Exception) openConnectionResponse.getException())
+                        .flatMap(shouldRetryResult -> {
+                            if (shouldRetryResult.shouldRetry) {
+                                return enqueueOpenConnectionOpsForRetry(openConnectionTask, shouldRetryResult);
+                            }
 
-                    return openConnectionTask
-                            .retryPolicy
-                            .shouldRetry((Exception) openConnectionResponse.getException())
-                            .flatMap(shouldRetryResult -> {
-                                if (shouldRetryResult.shouldRetry) {
-                                    return enqueueOpenConnectionOpsForRetry(openConnectionTask, shouldRetryResult);
-                                }
-                                return Mono.just(openConnectionResponse);
-                            });
-                });
+                            // TODO: response should reflect all previous opened connection
+                            this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
+                            return Mono.just(openConnectionResponse);
+                        });
+            })
+            .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            .subscribe();
     }
 
-    public void reinstantiateOpenConnectionsPublisherAndSubscribe() {
+    private void removeEndpointFromMonitor(String addressUriString, OpenConnectionResponse openConnectionResponse) {
+        List<OpenConnectionTask> openConnectionTasks = this.endpointsUnderMonitorMap.remove(addressUriString);
+
+        for (OpenConnectionTask connectionTask : openConnectionTasks) {
+            connectionTask.complete(openConnectionResponse);
+        }
+    }
+
+    public void reInstantiateOpenConnectionsPublisherAndSubscribe() {
         logger.debug("In open connections task sink and concurrency reduction flow");
         this.forceDefensiveOpenConnections();
         this.instantiateOpenConnectionsPublisher();
-        this.getOpenConnectionsPublisher().runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC).subscribe();
+        this.openConnectionBackgroundTask.dispose();
+        this.openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
     }
 
     private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(
             OpenConnectionTask op,
-            ShouldRetryResult retryResult
-    ) {
+            ShouldRetryResult retryResult) {
         if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {
-            this.submitOpenConnectionTask(op);
+            this.submitOpenConnectionWithinLoopInternal(op);
             return Mono.empty();
         } else {
             return Mono
                     .delay(retryResult.backOffTime)
                     .flatMap(ignore -> {
-                        this.submitOpenConnectionTask(op);
+                        this.submitOpenConnectionWithinLoopInternal(op);
                         return Mono.empty();
                     });
         }
@@ -159,7 +202,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // this method provides for a way to resume emitting pushed tasks to
     // the sink
     private synchronized void instantiateOpenConnectionsPublisher() {
-        logger.debug("Reinstantiate open connections task sink");
+        logger.debug("Re-instantiate open connections task sink");
         openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
         openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
     }
@@ -190,74 +233,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         public ConcurrencyConfiguration(int openConnectionOperationEmissionConcurrency, int openConnectionExecutionConcurrency) {
             this.openConnectionOperationEmissionConcurrency = openConnectionOperationEmissionConcurrency;
             this.openConnectionExecutionConcurrency = openConnectionExecutionConcurrency;
-        }
-    }
-
-    private static final class OpenConnectionTask {
-        private final String collectionRid;
-        private final URI serviceEndpoint;
-        private final Uri addressUri;
-        private int minConnectionsRequiredForEndpoint;
-        private final IRetryPolicy retryPolicy;
-
-        OpenConnectionTask(
-                String collectionRid,
-                URI serviceEndpoint,
-                Uri addressUri,
-                int minConnectionsRequiredForEndpoint) {
-            this.collectionRid = collectionRid;
-            this.serviceEndpoint = serviceEndpoint;
-            this.addressUri = addressUri;
-            this.minConnectionsRequiredForEndpoint = minConnectionsRequiredForEndpoint;
-            this.retryPolicy = new ProactiveOpenConnectionsRetryPolicy();
-        }
-
-        private static class ProactiveOpenConnectionsRetryPolicy implements IRetryPolicy {
-
-            private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsRetryPolicy.class);
-            private static final int MaxRetryAttempts = 2;
-            private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(1_000);
-            private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(10_000);
-            private static final int BackoffMultiplier = 4;
-            private Duration currentBackoff;
-            private final TimeoutHelper waitTimeTimeoutHelper;
-            private final AtomicInteger retryCount;
-
-            private ProactiveOpenConnectionsRetryPolicy() {
-                this.waitTimeTimeoutHelper = new TimeoutHelper(MaxFailedOpenConnectionRetryWindowInMs);
-                this.retryCount = new AtomicInteger(0);
-                this.currentBackoff = InitialOpenConnectionReattemptBackOffInMs;
-            }
-
-            @Override
-            public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-
-                if (this.retryCount.get() >= MaxRetryAttempts || this.waitTimeTimeoutHelper.isElapsed() || e == null) {
-                    return Mono.just(ShouldRetryResult.noRetry());
-                }
-
-                logger.warn("In retry policy: ProactiveOpenConnectionsRetryPolicy, retry attempt: {}, exception :{}", this.retryCount.get(), e.getMessage());
-
-                this.retryCount.incrementAndGet();
-
-                Duration effectiveBackoff = getEffectiveBackoff(this.currentBackoff, this.waitTimeTimeoutHelper.getRemainingTime());
-                this.currentBackoff = getEffectiveBackoff(Duration.ofMillis(this.currentBackoff.toMillis() * BackoffMultiplier), MaxFailedOpenConnectionRetryWindowInMs);
-
-                return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
-            }
-
-            @Override
-            public RetryContext getRetryContext() {
-                return null;
-            }
-
-            private static Duration getEffectiveBackoff(Duration backoff, Duration remainingTime) {
-                if (backoff.compareTo(remainingTime) > 0) {
-                    return remainingTime;
-                }
-
-                return backoff;
-            }
         }
     }
 }

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosSchedulers;
@@ -13,8 +12,8 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
@@ -171,7 +170,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                 return this.submitOpenConnectionInternal(
                                                         addressInformation,
                                                         containerLinkToCollection.getRight(),
-                                                        connectionsPerEndpointCountForContainer);
+                                                        connectionsPerEndpointCountForContainer)
+                                                    .then(); //  TODO: change to return response
                                             });
                                 }), Configs.getCPUCnt(), Configs.getCPUCnt());
     }
@@ -200,7 +200,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         return Flux.empty();
     }
 
-    private Flux<Void> submitOpenConnectionInternal(
+    private Mono<OpenConnectionResponse> submitOpenConnectionInternal(
             AddressInformation address,
             DocumentCollection documentCollection,
             int connectionPerEndpointCount) {

@@ -27,7 +27,6 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -728,13 +727,13 @@ public class CosmosAsyncContainer {
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
-                    proactiveContainerInitConfig,
-                    AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
+                    proactiveContainerInitConfig
             )
-                    .flatMap(openResult -> {
-                        logger.info("OpenConnectionsAndInitCaches: {}", openResult);
-                        return Mono.empty();
-                    }));
+            .collectList() // TODO: need a way to get the open result
+            .flatMap(openResult -> {
+                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                return Mono.empty();
+            }));
         } else {
             logger.warn("OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
             return Mono.empty();
@@ -791,14 +790,14 @@ public class CosmosAsyncContainer {
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(
-                    proactiveContainerInitConfig,
-                    AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE
+                    proactiveContainerInitConfig
             )
-                    .flatMap(
-                        openResult -> {
-                            logger.info("OpenConnectionsAndInitCaches: {}", openResult);
-                            return Mono.empty();
-                        }));
+                .collectList() // TODO: need a way to get open result
+                .flatMap(
+                    openResult -> {
+                        logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                        return Mono.empty();
+                    }));
         } else {
             logger.warn(
                 "OpenConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call",
@@ -815,35 +814,10 @@ public class CosmosAsyncContainer {
      * @return a {@link String} type which represents the total no. of successful and failed
      * connection attempts for an endpoint
      */
-    private Mono<String> openConnectionsAndInitCachesInternal(
-        CosmosContainerProactiveInitConfig proactiveContainerInitConfig,
-        AsyncDocumentClient.OpenConnectionAggressivenessHint hint
-    ) {
-        final Duration idleSinkTimeout = Duration.ofSeconds(1);
+    private Flux<Void> openConnectionsAndInitCachesInternal(
+        CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
 
-        this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
-
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = database
-                .getClient()
-                .getContextClient()
-                .getProactiveOpenConnectionsProcessor();
-
-        if (proactiveOpenConnectionsProcessor == null) {
-            logger.warn("proactiveOpenConnectionsProcessor cannot be null, no connections will be opened ...");
-            return Mono.just("");
-        }
-
-        Flux<OpenConnectionResponse> openConnectionResponseFlux = proactiveOpenConnectionsProcessor
-                .getOpenConnectionsPublisher()
-                .sequential();
-
-        return wrapOpenConnectionResponseFluxAndAggregateResults(
-                openConnectionResponseFlux,
-                idleSinkTimeout,
-                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC
-        );
+        return this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     private Mono<String> wrapOpenConnectionResponseFluxAndAggregateResults(
