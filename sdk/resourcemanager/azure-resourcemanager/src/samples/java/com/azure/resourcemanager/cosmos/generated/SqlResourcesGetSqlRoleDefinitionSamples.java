@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for SqlResources GetSqlRoleDefinition. */
 public final class SqlResourcesGetSqlRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlRoleDefinitionGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBSqlRoleDefinitionGet.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionGet.

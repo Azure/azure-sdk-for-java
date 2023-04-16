@@ -1,64 +1,719 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2a10de53-0f6e-43d6-93eb-b100e2347cc0",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "331",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:41:46 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "7bb969b2-cfe6-4e85-838d-bd8c71257e61"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "All female participants that are premenopausal will be required to have a pregnancy test; any participant who is pregnant or breastfeeding will not be included",
+              "language": "en"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "Healthcare",
+            "parameters": {
+              "loggingOptOut": true,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "1ba99204-e4dc-412f-8d92-a29b52c9a01b",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:41:45 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/18066082-b04f-403e-a695-689725876872?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "262",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "137",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://language-dogfood.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/1c334210-5939-4857-ba4e-0315056ed7dc?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "cc481c37-f6a6-4870-8563-d2968f61c1d5",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Tue, 11 Oct 2022 20:01:04 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/18066082-b04f-403e-a695-689725876872?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:41:47 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f1bc1aa4-41f2-4fc3-82d4-d466cb27b2fb"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "0f40aebf-db8a-47cc-961f-589da61349ff",
+        "Content-Length": "283",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:41:45 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "12",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "18066082-b04f-403e-a695-689725876872",
+        "lastUpdatedDateTime": "2023-04-05T18:41:46Z",
+        "createdDateTime": "2023-04-05T18:41:46Z",
+        "expirationDateTime": "2023-04-06T18:41:46Z",
+        "status": "notStarted",
+        "errors": [],
+        "tasks": {
+          "completed": 0,
+          "failed": 0,
+          "inProgress": 1,
+          "total": 1,
+          "items": []
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/1c334210-5939-4857-ba4e-0315056ed7dc?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "321a625f-8fca-4985-9480-51c5170914dc"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/18066082-b04f-403e-a695-689725876872?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:42:17 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "22e3d946-f454-4125-a872-053f5fec49bd"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "99083a0b-f235-4dab-afa8-e4c0628710dc",
+        "Content-Length": "3171",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:42:16 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "59",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "18066082-b04f-403e-a695-689725876872",
+        "lastUpdatedDateTime": "2023-04-05T18:41:48Z",
+        "createdDateTime": "2023-04-05T18:41:46Z",
+        "expirationDateTime": "2023-04-06T18:41:46Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "HealthcareLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:41:48.7818099Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "offset": 4,
+                        "length": 6,
+                        "text": "female",
+                        "category": "Gender",
+                        "confidenceScore": 1.0,
+                        "name": "Woman",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0043210"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000014451"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "0018392"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000013181"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U005036"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85147274"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "4"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D014930"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "23450"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "Ua0Wg"
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "E-4957"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "L-85B00"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "224526002"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 33,
+                        "length": 13,
+                        "text": "premenopausal",
+                        "category": "Diagnosis",
+                        "confidenceScore": 0.96,
+                        "assertion": {
+                          "conditionality": "hypothetical"
+                        },
+                        "name": "Premenopausal - menopausal status",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0279752"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000027286"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LP140231-4"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C15491"
+                          },
+                          {
+                            "dataSource": "NCI_CPTAC",
+                            "id": "C15491"
+                          },
+                          {
+                            "dataSource": "NCI_GDC",
+                            "id": "C15491"
+                          },
+                          {
+                            "dataSource": "NCI_NCI-GLOSS",
+                            "id": "CDR0000045268"
+                          },
+                          {
+                            "dataSource": "PDQ",
+                            "id": "CDR0000040049"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 74,
+                        "length": 14,
+                        "text": "pregnancy test",
+                        "category": "ExaminationName",
+                        "confidenceScore": 1.0,
+                        "name": "Pregnancy Tests",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0032976"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000007532"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000010058"
+                          },
+                          {
+                            "dataSource": "CSP",
+                            "id": "2403-5273"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "W33002"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LP105252-3"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10036572"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "13078"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D011258"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C92949"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "X77WY"
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "P-9501"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "P2-87010"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "74036000"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 113,
+                        "length": 8,
+                        "text": "pregnant",
+                        "category": "Diagnosis",
+                        "confidenceScore": 1.0,
+                        "name": "Patient currently pregnant",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0549206"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000023061"
+                          },
+                          {
+                            "dataSource": "HL7V2.5",
+                            "id": "B6"
+                          },
+                          {
+                            "dataSource": "HL7V3.0",
+                            "id": "PGNT"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LA15173-0"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10018707"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "621"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C124295"
+                          },
+                          {
+                            "dataSource": "NCI_CDISC",
+                            "id": "C124295"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "621.."
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "F-31220"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "F-84000"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "77386006"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 125,
+                        "length": 13,
+                        "text": "breastfeeding",
+                        "category": "Diagnosis",
+                        "confidenceScore": 1.0,
+                        "name": "Breastfeeding (mother)",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C1623040"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LP114922-0"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "413712001"
+                          }
+                        ]
+                      }
+                    ],
+                    "relations": [],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-03-01"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Response" : {
-      "content-length" : "3169",
-      "x-envoy-upstream-service-time" : "42",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "da3aa33d-5488-4de8-b152-c7fe05d5c4f3",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"1c334210-5939-4857-ba4e-0315056ed7dc\",\"lastUpdateDateTime\":\"2022-10-11T20:01:06Z\",\"createdDateTime\":\"2022-10-11T20:01:04Z\",\"expirationDateTime\":\"2022-10-12T20:01:04Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-10-11T20:01:06.707294Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":4,\"length\":6,\"text\":\"female\",\"category\":\"Gender\",\"confidenceScore\":1.0,\"name\":\"Woman\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0043210\"},{\"dataSource\":\"AOD\",\"id\":\"0000014451\"},{\"dataSource\":\"CCPSS\",\"id\":\"0018392\"},{\"dataSource\":\"CHV\",\"id\":\"0000013181\"},{\"dataSource\":\"LCH\",\"id\":\"U005036\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85147274\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"4\"},{\"dataSource\":\"MSH\",\"id\":\"D014930\"},{\"dataSource\":\"PSY\",\"id\":\"23450\"},{\"dataSource\":\"RCD\",\"id\":\"Ua0Wg\"},{\"dataSource\":\"SNM\",\"id\":\"E-4957\"},{\"dataSource\":\"SNMI\",\"id\":\"L-85B00\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"224526002\"}]},{\"offset\":33,\"length\":13,\"text\":\"premenopausal\",\"category\":\"Diagnosis\",\"confidenceScore\":0.96,\"assertion\":{\"conditionality\":\"hypothetical\"},\"name\":\"Premenopausal - menopausal status\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0279752\"},{\"dataSource\":\"CHV\",\"id\":\"0000027286\"},{\"dataSource\":\"LNC\",\"id\":\"LP140231-4\"},{\"dataSource\":\"NCI\",\"id\":\"C15491\"},{\"dataSource\":\"NCI_CPTAC\",\"id\":\"C15491\"},{\"dataSource\":\"NCI_GDC\",\"id\":\"C15491\"},{\"dataSource\":\"NCI_NCI-GLOSS\",\"id\":\"CDR0000045268\"},{\"dataSource\":\"PDQ\",\"id\":\"CDR0000040049\"}]},{\"offset\":74,\"length\":14,\"text\":\"pregnancy test\",\"category\":\"ExaminationName\",\"confidenceScore\":1.0,\"name\":\"Pregnancy Tests\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0032976\"},{\"dataSource\":\"AOD\",\"id\":\"0000007532\"},{\"dataSource\":\"CHV\",\"id\":\"0000010058\"},{\"dataSource\":\"CSP\",\"id\":\"2403-5273\"},{\"dataSource\":\"ICPC2P\",\"id\":\"W33002\"},{\"dataSource\":\"LNC\",\"id\":\"LP105252-3\"},{\"dataSource\":\"MDR\",\"id\":\"10036572\"},{\"dataSource\":\"MEDCIN\",\"id\":\"13078\"},{\"dataSource\":\"MSH\",\"id\":\"D011258\"},{\"dataSource\":\"NCI\",\"id\":\"C92949\"},{\"dataSource\":\"RCD\",\"id\":\"X77WY\"},{\"dataSource\":\"SNM\",\"id\":\"P-9501\"},{\"dataSource\":\"SNMI\",\"id\":\"P2-87010\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"74036000\"}]},{\"offset\":113,\"length\":8,\"text\":\"pregnant\",\"category\":\"Diagnosis\",\"confidenceScore\":1.0,\"name\":\"Patient currently pregnant\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0549206\"},{\"dataSource\":\"CHV\",\"id\":\"0000023061\"},{\"dataSource\":\"HL7V2.5\",\"id\":\"B6\"},{\"dataSource\":\"HL7V3.0\",\"id\":\"PGNT\"},{\"dataSource\":\"LNC\",\"id\":\"LA15173-0\"},{\"dataSource\":\"MDR\",\"id\":\"10018707\"},{\"dataSource\":\"MEDCIN\",\"id\":\"621\"},{\"dataSource\":\"NCI\",\"id\":\"C124295\"},{\"dataSource\":\"NCI_CDISC\",\"id\":\"C124295\"},{\"dataSource\":\"RCD\",\"id\":\"621..\"},{\"dataSource\":\"SNM\",\"id\":\"F-31220\"},{\"dataSource\":\"SNMI\",\"id\":\"F-84000\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"77386006\"}]},{\"offset\":125,\"length\":13,\"text\":\"breastfeeding\",\"category\":\"Diagnosis\",\"confidenceScore\":1.0,\"name\":\"Breastfeeding (mother)\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C1623040\"},{\"dataSource\":\"LNC\",\"id\":\"LP114922-0\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"413712001\"}]}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 20:01:35 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/1c334210-5939-4857-ba4e-0315056ed7dc?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "300b1870-9b40-43ae-ac9e-c3c56f3bd49b"
-    },
-    "Response" : {
-      "content-length" : "3169",
-      "x-envoy-upstream-service-time" : "50",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9ee890ad-25f9-4fd9-8f87-0d100b51cff3",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"1c334210-5939-4857-ba4e-0315056ed7dc\",\"lastUpdateDateTime\":\"2022-10-11T20:01:06Z\",\"createdDateTime\":\"2022-10-11T20:01:04Z\",\"expirationDateTime\":\"2022-10-12T20:01:04Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-10-11T20:01:06.707294Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":4,\"length\":6,\"text\":\"female\",\"category\":\"Gender\",\"confidenceScore\":1.0,\"name\":\"Woman\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0043210\"},{\"dataSource\":\"AOD\",\"id\":\"0000014451\"},{\"dataSource\":\"CCPSS\",\"id\":\"0018392\"},{\"dataSource\":\"CHV\",\"id\":\"0000013181\"},{\"dataSource\":\"LCH\",\"id\":\"U005036\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85147274\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"4\"},{\"dataSource\":\"MSH\",\"id\":\"D014930\"},{\"dataSource\":\"PSY\",\"id\":\"23450\"},{\"dataSource\":\"RCD\",\"id\":\"Ua0Wg\"},{\"dataSource\":\"SNM\",\"id\":\"E-4957\"},{\"dataSource\":\"SNMI\",\"id\":\"L-85B00\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"224526002\"}]},{\"offset\":33,\"length\":13,\"text\":\"premenopausal\",\"category\":\"Diagnosis\",\"confidenceScore\":0.96,\"assertion\":{\"conditionality\":\"hypothetical\"},\"name\":\"Premenopausal - menopausal status\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0279752\"},{\"dataSource\":\"CHV\",\"id\":\"0000027286\"},{\"dataSource\":\"LNC\",\"id\":\"LP140231-4\"},{\"dataSource\":\"NCI\",\"id\":\"C15491\"},{\"dataSource\":\"NCI_CPTAC\",\"id\":\"C15491\"},{\"dataSource\":\"NCI_GDC\",\"id\":\"C15491\"},{\"dataSource\":\"NCI_NCI-GLOSS\",\"id\":\"CDR0000045268\"},{\"dataSource\":\"PDQ\",\"id\":\"CDR0000040049\"}]},{\"offset\":74,\"length\":14,\"text\":\"pregnancy test\",\"category\":\"ExaminationName\",\"confidenceScore\":1.0,\"name\":\"Pregnancy Tests\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0032976\"},{\"dataSource\":\"AOD\",\"id\":\"0000007532\"},{\"dataSource\":\"CHV\",\"id\":\"0000010058\"},{\"dataSource\":\"CSP\",\"id\":\"2403-5273\"},{\"dataSource\":\"ICPC2P\",\"id\":\"W33002\"},{\"dataSource\":\"LNC\",\"id\":\"LP105252-3\"},{\"dataSource\":\"MDR\",\"id\":\"10036572\"},{\"dataSource\":\"MEDCIN\",\"id\":\"13078\"},{\"dataSource\":\"MSH\",\"id\":\"D011258\"},{\"dataSource\":\"NCI\",\"id\":\"C92949\"},{\"dataSource\":\"RCD\",\"id\":\"X77WY\"},{\"dataSource\":\"SNM\",\"id\":\"P-9501\"},{\"dataSource\":\"SNMI\",\"id\":\"P2-87010\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"74036000\"}]},{\"offset\":113,\"length\":8,\"text\":\"pregnant\",\"category\":\"Diagnosis\",\"confidenceScore\":1.0,\"name\":\"Patient currently pregnant\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0549206\"},{\"dataSource\":\"CHV\",\"id\":\"0000023061\"},{\"dataSource\":\"HL7V2.5\",\"id\":\"B6\"},{\"dataSource\":\"HL7V3.0\",\"id\":\"PGNT\"},{\"dataSource\":\"LNC\",\"id\":\"LA15173-0\"},{\"dataSource\":\"MDR\",\"id\":\"10018707\"},{\"dataSource\":\"MEDCIN\",\"id\":\"621\"},{\"dataSource\":\"NCI\",\"id\":\"C124295\"},{\"dataSource\":\"NCI_CDISC\",\"id\":\"C124295\"},{\"dataSource\":\"RCD\",\"id\":\"621..\"},{\"dataSource\":\"SNM\",\"id\":\"F-31220\"},{\"dataSource\":\"SNMI\",\"id\":\"F-84000\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"77386006\"}]},{\"offset\":125,\"length\":13,\"text\":\"breastfeeding\",\"category\":\"Diagnosis\",\"confidenceScore\":1.0,\"name\":\"Breastfeeding (mother)\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C1623040\"},{\"dataSource\":\"LNC\",\"id\":\"LP114922-0\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"413712001\"}]}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 20:01:35 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/18066082-b04f-403e-a695-689725876872?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:42:17 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "392e7fa6-4a22-4d77-8b4b-b92e76545361"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "4a1cc345-e084-4228-9f4a-17ab1fabcf46",
+        "Content-Length": "3171",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:42:16 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "41",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "18066082-b04f-403e-a695-689725876872",
+        "lastUpdatedDateTime": "2023-04-05T18:41:48Z",
+        "createdDateTime": "2023-04-05T18:41:46Z",
+        "expirationDateTime": "2023-04-06T18:41:46Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "HealthcareLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:41:48.7818099Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "offset": 4,
+                        "length": 6,
+                        "text": "female",
+                        "category": "Gender",
+                        "confidenceScore": 1.0,
+                        "name": "Woman",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0043210"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000014451"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "0018392"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000013181"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U005036"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85147274"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "4"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D014930"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "23450"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "Ua0Wg"
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "E-4957"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "L-85B00"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "224526002"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 33,
+                        "length": 13,
+                        "text": "premenopausal",
+                        "category": "Diagnosis",
+                        "confidenceScore": 0.96,
+                        "assertion": {
+                          "conditionality": "hypothetical"
+                        },
+                        "name": "Premenopausal - menopausal status",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0279752"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000027286"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LP140231-4"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C15491"
+                          },
+                          {
+                            "dataSource": "NCI_CPTAC",
+                            "id": "C15491"
+                          },
+                          {
+                            "dataSource": "NCI_GDC",
+                            "id": "C15491"
+                          },
+                          {
+                            "dataSource": "NCI_NCI-GLOSS",
+                            "id": "CDR0000045268"
+                          },
+                          {
+                            "dataSource": "PDQ",
+                            "id": "CDR0000040049"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 74,
+                        "length": 14,
+                        "text": "pregnancy test",
+                        "category": "ExaminationName",
+                        "confidenceScore": 1.0,
+                        "name": "Pregnancy Tests",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0032976"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000007532"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000010058"
+                          },
+                          {
+                            "dataSource": "CSP",
+                            "id": "2403-5273"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "W33002"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LP105252-3"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10036572"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "13078"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D011258"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C92949"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "X77WY"
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "P-9501"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "P2-87010"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "74036000"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 113,
+                        "length": 8,
+                        "text": "pregnant",
+                        "category": "Diagnosis",
+                        "confidenceScore": 1.0,
+                        "name": "Patient currently pregnant",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0549206"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000023061"
+                          },
+                          {
+                            "dataSource": "HL7V2.5",
+                            "id": "B6"
+                          },
+                          {
+                            "dataSource": "HL7V3.0",
+                            "id": "PGNT"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LA15173-0"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10018707"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "621"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C124295"
+                          },
+                          {
+                            "dataSource": "NCI_CDISC",
+                            "id": "C124295"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "621.."
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "F-31220"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "F-84000"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "77386006"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 125,
+                        "length": 13,
+                        "text": "breastfeeding",
+                        "category": "Diagnosis",
+                        "confidenceScore": 1.0,
+                        "name": "Breastfeeding (mother)",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C1623040"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LP114922-0"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "413712001"
+                          }
+                        ]
+                      }
+                    ],
+                    "relations": [],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-03-01"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

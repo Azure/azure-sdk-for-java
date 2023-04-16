@@ -174,7 +174,8 @@ public class HttpTransportClient extends TransportClient {
                                             RMResources.Gone),
                                     exception,
                                     null,
-                                    physicalAddress);
+                                    physicalAddress,
+                                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
 
                             return Mono.error(goneException);
                         } else if (request.isReadOnlyRequest()) {
@@ -191,7 +192,8 @@ public class HttpTransportClient extends TransportClient {
                                             RMResources.Gone),
                                     exception,
                                     null,
-                                    physicalAddress);
+                                    physicalAddress,
+                                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
 
                             return Mono.error(goneException);
                         } else {
@@ -204,7 +206,8 @@ public class HttpTransportClient extends TransportClient {
                                 exception.getMessage(),
                                 exception,
                                 null,
-                                physicalAddress.toString());
+                                physicalAddress.toString(),
+                                HttpConstants.SubStatusCodes.UNKNOWN);
                             serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
                             serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
                             return Mono.error(serviceUnavailableException);
@@ -803,7 +806,8 @@ public class HttpTransportClient extends TransportClient {
                                         String.format(
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
-                                        request.uri().toString());
+                                        request.uri().toString(),
+                                        HttpConstants.SubStatusCodes.UNKNOWN);
                                 exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
                                         activityId);
 
@@ -843,19 +847,7 @@ public class HttpTransportClient extends TransportClient {
                             // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/258624
                             ErrorUtils.logGoneException(request.uri(), activityId);
 
-                            Integer nSubStatus = 0;
-                            String valueSubStatus = response.headers().value(WFConstants.BackendHeaders.SUB_STATUS);
-                            if (!Strings.isNullOrEmpty(valueSubStatus)) {
-                                if ((nSubStatus = Integers.tryParse(valueSubStatus)) == null) {
-                                    exception = new InternalServerErrorException(
-                                            String.format(
-                                                    RMResources.ExceptionMessage,
-                                                    RMResources.InvalidBackendResponse),
-                                            response.headers(),
-                                            request.uri());
-                                    break;
-                                }
-                            }
+                            Integer nSubStatus = getSubStatusCodeFromHeader(response);
 
                             if (nSubStatus == HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE) {
                                 exception = new InvalidPartitionException(
@@ -896,7 +888,9 @@ public class HttpTransportClient extends TransportClient {
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         response.headers(),
-                                        request.uri());
+                                        request.uri(),
+                                        (nSubStatus == 0) ? HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
+                                            : HttpConstants.SubStatusCodes.UNKNOWN);
                                 goneExceptionFromService.setIsBasedOn410ResponseFromService();
 
                                 goneExceptionFromService.getResponseHeaders().put(
@@ -947,7 +941,10 @@ public class HttpTransportClient extends TransportClient {
                             break;
 
                         case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE:
-                            exception = new ServiceUnavailableException(errorMessage, response.headers(), request.uri());
+                            int subStatusCode = getSubStatusCodeFromHeader(response);
+                            exception = new ServiceUnavailableException(errorMessage, response.headers(), request.uri(),
+                                (subStatusCode == 0) ? HttpConstants.SubStatusCodes.SERVER_GENERATED_503
+                                    : HttpConstants.SubStatusCodes.UNKNOWN);
                             break;
 
                         case HttpConstants.StatusCodes.REQUEST_TIMEOUT:
@@ -1020,5 +1017,21 @@ public class HttpTransportClient extends TransportClient {
                     return Mono.error(exception);
                 }
         );
+    }
+
+    private int getSubStatusCodeFromHeader(HttpResponse response) {
+        Integer nSubStatus = 0;
+        String valueSubStatus = response.headers().value(WFConstants.BackendHeaders.SUB_STATUS);
+        if (!Strings.isNullOrEmpty(valueSubStatus)) {
+            if ((nSubStatus = Integers.tryParse(valueSubStatus)) == null) {
+                throw new InternalServerErrorException(
+                    String.format(
+                        RMResources.ExceptionMessage,
+                        RMResources.InvalidBackendResponse),
+                    response.headers(),
+                    response.request().uri());
+            }
+        }
+        return nSubStatus;
     }
 }

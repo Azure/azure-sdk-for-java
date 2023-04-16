@@ -1,27 +1,68 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e690296a-e5f6-4ee9-adfa-3f5a65bb0515",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "232",
-      "x-envoy-upstream-service-time" : "77",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "49a23250-090d-401b-9769-0a56ff655073",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":22,\"length\":9,\"confidenceScore\":0.99}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:16:05 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "230",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 19:02:59 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "d1d3c51d-0079-4596-9be6-1c16a2320e37"
+      },
+      "RequestBody": {
+        "kind": "EntityRecognition",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "\uD83D\uDC69\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC67 I work at Microsoft."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "31e13107-e117-476f-82de-1818012d6ed8",
+        "Content-Length": "232",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.NER=1,CognitiveServices.TextAnalytics.TextRecords=1",
+        "Date": "Wed, 05 Apr 2023 19:02:59 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "26",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "EntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "id": "0",
+              "entities": [
+                {
+                  "text": "Microsoft",
+                  "category": "Organization",
+                  "offset": 22,
+                  "length": 9,
+                  "confidenceScore": 0.99
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2021-06-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

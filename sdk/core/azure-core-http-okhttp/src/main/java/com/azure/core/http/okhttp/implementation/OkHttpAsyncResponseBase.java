@@ -3,6 +3,7 @@
 
 package com.azure.core.http.okhttp.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -34,8 +35,13 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public final String getHeaderValue(String name) {
         return this.headers.getValue(name);
+    }
+
+    public final String getHeaderValue(HttpHeaderName headerName) {
+        return this.headers.getValue(headerName);
     }
 
     @Override
@@ -59,6 +65,7 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
      * @param okHttpHeaders okhttp headers
      * @return azure-core HttpHeaders
      */
+    @SuppressWarnings("deprecation")
     static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,

@@ -22,6 +22,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpPipelinePolicyTests {
@@ -30,7 +31,7 @@ public class HttpPipelinePolicyTests {
     public void verifySend() throws Exception {
         SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
         SyncAsyncPolicy policy2 = new SyncAsyncPolicy();
-        URL url = new URL("http://localhost/");
+        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
@@ -48,7 +49,7 @@ public class HttpPipelinePolicyTests {
     public void verifySendSync() throws Exception {
         SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
         SyncAsyncPolicy policy2 = new SyncAsyncPolicy();
-        URL url = new URL("http://localhost/");
+        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
@@ -66,7 +67,7 @@ public class HttpPipelinePolicyTests {
     @Test
     public void defaultImplementationShouldCallRightStack() throws Exception {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
-        URL url = new URL("http://localhost/");
+        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
@@ -93,7 +94,7 @@ public class HttpPipelinePolicyTests {
         HttpPipelinePolicy badPolicy2 = (context, next) -> Mono.delay(Duration.ofMillis(10))
             .flatMap(l -> next.process());
         HttpClient badClient = request -> Mono.delay(Duration.ofMillis(10)).flatMap(i -> Mono.empty());
-        URL url = new URL("http://localhost/");
+        URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(badClient)
