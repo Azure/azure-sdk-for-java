@@ -123,7 +123,7 @@ public class CallConnectionAsync {
      * @param isForEveryone determine if the call is handed up for all participants.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful hangup request.
+     * @return Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangUp(boolean isForEveryone) {
@@ -137,7 +137,7 @@ public class CallConnectionAsync {
      * @param hangUpOptions options to hang up
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful hangup request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangUpWithResponse(HangUpOptions hangUpOptions) {
@@ -162,7 +162,7 @@ public class CallConnectionAsync {
      * @param participantMri MRI of the participants to retrieve.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Result of getting a desired participant in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallParticipant> getParticipant(String participantMri) {
@@ -175,7 +175,7 @@ public class CallConnectionAsync {
      * @param participantMri MRI of the participants to retrieve.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Response with the result of getting a desired participant in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallParticipant>> getParticipantWithResponse(String participantMri) {
@@ -200,7 +200,7 @@ public class CallConnectionAsync {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Result of getting all participants in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListParticipantsResult> listParticipants() {
@@ -212,7 +212,7 @@ public class CallConnectionAsync {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Response with result of getting all participants in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListParticipantsResult>> listParticipantsWithResponse() {
@@ -238,7 +238,7 @@ public class CallConnectionAsync {
      * @param targetCallInvite A {@link CallInvite} representing the target participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful call termination request.
+     * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransferCallResult> transferToParticipantCall(CallInvite targetCallInvite) {
@@ -251,7 +251,7 @@ public class CallConnectionAsync {
      * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
+     * @return Response with result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransferCallResult>> transferToParticipantCallWithResponse(
@@ -292,7 +292,7 @@ public class CallConnectionAsync {
      * @param participant participant to invite.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Result of adding a participant to the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResult> addParticipant(CallInvite participant) {
@@ -305,7 +305,7 @@ public class CallConnectionAsync {
      * @param addParticipantOptions Options bag for addParticipant
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response with result of adding a participant to the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResult>> addParticipantWithResponse(AddParticipantOptions addParticipantOptions) {
@@ -349,7 +349,7 @@ public class CallConnectionAsync {
      * @param participantToRemove participant to remove.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Result of removing a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantResult> removeParticipant(CommunicationIdentifier participantToRemove) {
@@ -362,7 +362,7 @@ public class CallConnectionAsync {
      * @param removeParticipantOptions Options bag for removeParticipant
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response with result of removing a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantResult>> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions) {

@@ -57,7 +57,7 @@ public final class CallAutomationClient {
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A CallConnectionDelete object.
+     * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateCallResult createCall(CallInvite callInvite,
@@ -72,7 +72,7 @@ public final class CallAutomationClient {
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A CallConnectionDelete object.
+     * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateCallResult createGroupCall(List<CommunicationIdentifier> targets,
@@ -87,7 +87,7 @@ public final class CallAutomationClient {
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateCallResult> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
@@ -101,7 +101,7 @@ public final class CallAutomationClient {
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
@@ -115,7 +115,7 @@ public final class CallAutomationClient {
      * @param callbackUrl The call back uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Result of answering the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnswerCallResult answerCall(String incomingCallContext, String callbackUrl) {
@@ -129,7 +129,7 @@ public final class CallAutomationClient {
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of answering the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnswerCallResult> answerCallWithResponse(AnswerCallOptions answerCallOptions, Context context) {
@@ -143,11 +143,10 @@ public final class CallAutomationClient {
      * @param targetCallInvite {@link CallInvite} represent redirect target
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
-        return callAutomationAsyncClient.redirectCall(incomingCallContext, targetCallInvite).block();
+    public void redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
+        callAutomationAsyncClient.redirectCall(incomingCallContext, targetCallInvite).block();
     }
 
     /**
@@ -157,7 +156,7 @@ public final class CallAutomationClient {
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redirectCallWithResponse(RedirectCallOptions redirectCallOptions, Context context) {
@@ -170,11 +169,10 @@ public final class CallAutomationClient {
      * @param incomingCallContext The incoming call context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void rejectCall(String incomingCallContext) {
-        return callAutomationAsyncClient.rejectCall(incomingCallContext).block();
+    public void rejectCall(String incomingCallContext) {
+        callAutomationAsyncClient.rejectCall(incomingCallContext).block();
     }
 
     /**
@@ -184,7 +182,7 @@ public final class CallAutomationClient {
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
