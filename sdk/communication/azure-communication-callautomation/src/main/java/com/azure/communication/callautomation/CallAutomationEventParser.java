@@ -35,8 +35,8 @@ import java.util.Objects;
 /**
  * Event handler for taking care of event related tasks.
  */
-public final class EventHandler {
-    private static final ClientLogger LOGGER = new ClientLogger(EventHandler.class);
+public final class CallAutomationEventParser {
+    private static final ClientLogger LOGGER = new ClientLogger(CallAutomationEventParser.class);
 
     /***
      * Returns a list of events from request's body.
@@ -45,7 +45,7 @@ public final class EventHandler {
      * @throws RuntimeException Any exceptions occurs at runtime.
      * @return a list of CallAutomationEventData
      */
-    public static List<CallAutomationEventData> parseEventList(String requestBody) {
+    public static List<CallAutomationEventData> parseEvents(String requestBody) {
         List<CallAutomationEventData> callAutomationBaseEvents;
         callAutomationBaseEvents = parseCloudEventList(requestBody);
 
@@ -60,7 +60,7 @@ public final class EventHandler {
      * @return the first(or the only) event if request is not empty, otherwise null is returned.
      */
     public static CallAutomationEventData parseEvent(String requestBody) {
-        List<CallAutomationEventData> callAutomationBaseEvents = parseEventList(requestBody);
+        List<CallAutomationEventData> callAutomationBaseEvents = parseEvents(requestBody);
         return callAutomationBaseEvents.isEmpty() ? null : callAutomationBaseEvents.get(0);
     }
 
