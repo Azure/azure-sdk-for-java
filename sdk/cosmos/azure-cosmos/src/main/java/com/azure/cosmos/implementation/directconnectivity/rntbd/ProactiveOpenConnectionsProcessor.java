@@ -41,7 +41,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final IOpenConnectionsHandler openConnectionsHandler;
 
     static {
-        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsDefensiveConcurrency(), Configs.getOpenConnectionsDefensiveConcurrency()));
+        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getCPUCnt(), Configs.getOpenConnectionsDefensiveConcurrency()));
         concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsAggressiveConcurrency(), Configs.getOpenConnectionsAggressiveConcurrency()));
     }
 
