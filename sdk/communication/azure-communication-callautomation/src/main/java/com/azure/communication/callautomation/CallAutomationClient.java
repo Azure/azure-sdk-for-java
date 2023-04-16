@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation;
 
 
+import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -14,6 +15,7 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -41,18 +43,11 @@ public final class CallAutomationClient {
 
     //region Pre-call Actions
     /**
-     * Create a call connection request from a source identity to a list of target identity.
-     *
-     * @param targets The list of targets.
-     * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A CallConnectionDelete object.
+     * Get Source Identity that is used for create and answer call
+     * @return {@link CommunicationUserIdentifier} represent source
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(List<CommunicationIdentifier> targets,
-                                       String callbackUrl) {
-        return callAutomationAsyncClient.createCall(targets, callbackUrl).block();
+    public CommunicationUserIdentifier getSourceIdentity() {
+        return callAutomationAsyncClient.getSourceIdentity();
     }
 
     /**
@@ -71,17 +66,18 @@ public final class CallAutomationClient {
     }
 
     /**
-     * Create a group call connection request from a source identity to multiple identities.
+     * Create a call connection request from a source identity to a list of target identity.
      *
-     * @param createGroupCallOptions Options bag for creating a new group call.
-     * @param context The context to associate with this operation.
+     * @param targets The list of targets.
+     * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResult> createCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
-        return callAutomationAsyncClient.createCallWithResponseInternal(createGroupCallOptions, context).block();
+    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targets,
+                                            String callbackUrl) {
+        return callAutomationAsyncClient.createGroupCall(targets, callbackUrl).block();
     }
 
     /**
@@ -96,6 +92,20 @@ public final class CallAutomationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateCallResult> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
         return callAutomationAsyncClient.createCallWithResponseInternal(createCallOptions, context).block();
+    }
+
+    /**
+     * Create a group call connection request from a source identity to multiple identities.
+     *
+     * @param createGroupCallOptions Options bag for creating a new group call.
+     * @param context The context to associate with this operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
+        return callAutomationAsyncClient.createGroupCallWithResponseInternal(createGroupCallOptions, context).block();
     }
 
     /**
@@ -195,7 +205,7 @@ public final class CallAutomationClient {
     }
     //endregion
 
-    //region Recording Management actions
+    //region Content Management actions
     /***
      * Returns an object of CallRecording
      *
