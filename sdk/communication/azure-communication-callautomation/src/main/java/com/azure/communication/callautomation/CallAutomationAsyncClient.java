@@ -103,7 +103,7 @@ public final class CallAutomationAsyncClient {
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateCallResult> createCall(CallInvite callInvite,
@@ -119,7 +119,7 @@ public final class CallAutomationAsyncClient {
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateCallResult> createGroupCall(List<CommunicationIdentifier> targets,
@@ -134,7 +134,7 @@ public final class CallAutomationAsyncClient {
      * @param createCallOptions Options for creating a new call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateCallResult>> createCallWithResponse(CreateCallOptions createCallOptions) {
@@ -147,7 +147,7 @@ public final class CallAutomationAsyncClient {
      * @param createGroupCallOptions Options for creating a new group call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateCallResult>> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions) {
@@ -289,7 +289,7 @@ public final class CallAutomationAsyncClient {
      * @param callbackUrl The call back url.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Result of answering the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUrl) {
@@ -303,7 +303,7 @@ public final class CallAutomationAsyncClient {
      * @param answerCallOptions The options of answering the call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with result of answering the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnswerCallResult>> answerCallWithResponse(AnswerCallOptions answerCallOptions) {
@@ -355,7 +355,7 @@ public final class CallAutomationAsyncClient {
      * @param targetCallInvite {@link CallInvite} represent redirect target
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
@@ -369,7 +369,7 @@ public final class CallAutomationAsyncClient {
      * @param redirectCallOptions Options for redirecting a call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponse(RedirectCallOptions redirectCallOptions) {
@@ -406,7 +406,7 @@ public final class CallAutomationAsyncClient {
      * @param incomingCallContext The incoming call context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCall(String incomingCallContext) {
@@ -420,7 +420,7 @@ public final class CallAutomationAsyncClient {
      * @param rejectCallOptions the options of rejecting the call
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponse(RejectCallOptions rejectCallOptions) {
