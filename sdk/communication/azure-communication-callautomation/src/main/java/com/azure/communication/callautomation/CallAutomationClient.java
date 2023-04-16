@@ -140,13 +140,13 @@ public final class CallAutomationClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param targetCallInvite {@link CallInvite} represent redirect target
+     * @param target {@link CallInvite} represent redirect target
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
-        callAutomationAsyncClient.redirectCall(incomingCallContext, targetCallInvite).block();
+    public void redirectCall(String incomingCallContext, CallInvite target) {
+        callAutomationAsyncClient.redirectCall(incomingCallContext, target).block();
     }
 
     /**

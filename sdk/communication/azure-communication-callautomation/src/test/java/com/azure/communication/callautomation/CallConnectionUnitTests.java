@@ -182,7 +182,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
-        TransferCallResult transferCallResult = callConnection.transferToParticipantCall(callInvite);
+        TransferCallResult transferCallResult = callConnection.transferCallToParticipant(callInvite);
 
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
@@ -198,7 +198,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
-        Response<TransferCallResult> transferCallResultResponse = callConnection.transferToParticipantCallWithResponse(
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
             new TransferToParticipantCallOptions(callInvite)
                 .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
 

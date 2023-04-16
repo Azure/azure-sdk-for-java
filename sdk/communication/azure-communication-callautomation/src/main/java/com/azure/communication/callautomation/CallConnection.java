@@ -141,14 +141,14 @@ public class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetCallInvite A {@link CallInvite} representing the target participant of this transfer.
+     * @param target A {@link CallInvite} representing the target participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferToParticipantCall(CallInvite targetCallInvite) {
-        return callConnectionAsync.transferToParticipantCall(targetCallInvite).block();
+    public TransferCallResult transferCallToParticipant(CallInvite target) {
+        return callConnectionAsync.transferCallToParticipant(target).block();
     }
 
     /**
@@ -161,9 +161,9 @@ public class CallConnection {
      * @return Response with result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResult> transferToParticipantCallWithResponse(
+    public Response<TransferCallResult> transferCallToParticipantWithResponse(
         TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
-        return callConnectionAsync.transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context).block();
+        return callConnectionAsync.transferCallToParticipantWithResponseInternal(transferToParticipantCallOptions, context).block();
     }
 
     /**

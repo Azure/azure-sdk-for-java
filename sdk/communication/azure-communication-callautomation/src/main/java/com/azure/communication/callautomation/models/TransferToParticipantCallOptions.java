@@ -10,11 +10,11 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class TransferToParticipantCallOptions {
-    
+
     /**
      * Iformation for TranferTarget
      */
-    private final CallInvite targetCallInvite;
+    private final CallInvite target;
 
     /**
      * The operational context
@@ -25,10 +25,10 @@ public class TransferToParticipantCallOptions {
     /**
      * Constructor
      *
-     * @param targetCallInvite {@link CallInvite}contains information for TranferTarget.
+     * @param target {@link CallInvite}contains information for TranferTarget.
      */
-    public TransferToParticipantCallOptions(CallInvite targetCallInvite) {
-        this.targetCallInvite = targetCallInvite;
+    public TransferToParticipantCallOptions(CallInvite target) {
+        this.target = target;
     }
 
 
@@ -51,13 +51,13 @@ public class TransferToParticipantCallOptions {
         this.operationContext = operationContext;
         return this;
     }
-    
+
     /**
      * Get the call information to transfer target
      * @return a {@link CallInvite} with information to transfer target
      */
-    public CallInvite getTargetCallInvite() {
-        return targetCallInvite;
+    public CallInvite getTarget() {
+        return target;
     }
-    
+
 }
