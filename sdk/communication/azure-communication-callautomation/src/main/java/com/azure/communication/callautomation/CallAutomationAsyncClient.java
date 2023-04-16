@@ -352,14 +352,14 @@ public final class CallAutomationAsyncClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param targetCallInvite {@link CallInvite} represent redirect target
+     * @param target {@link CallInvite} represent redirect target
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, CallInvite targetCallInvite) {
-        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, targetCallInvite);
+    public Mono<Void> redirectCall(String incomingCallContext, CallInvite target) {
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, target);
         return redirectCallWithResponse(redirectCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -382,13 +382,13 @@ public final class CallAutomationAsyncClient {
 
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
-                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallInvite().getTarget()));
+                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget().getTarget()));
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (redirectCallOptions.getTargetCallInvite().getSipHeaders() != null || redirectCallOptions.getTargetCallInvite().getVoipHeaders() != null) {
+            if (redirectCallOptions.getTarget().getSipHeaders() != null || redirectCallOptions.getTarget().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(redirectCallOptions.getTargetCallInvite().getSipHeaders());
-                customContext.setVoipHeaders(redirectCallOptions.getTargetCallInvite().getVoipHeaders());
+                customContext.setSipHeaders(redirectCallOptions.getTarget().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTarget().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 
