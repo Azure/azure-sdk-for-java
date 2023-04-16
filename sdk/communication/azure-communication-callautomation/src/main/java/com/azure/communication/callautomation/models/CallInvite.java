@@ -25,11 +25,11 @@ public class CallInvite {
 
     /**
      *  Create a CallInvite object with PhoneNumberIdentifierr
-     * @param targetPhoneNumberIdentity Target's PhoneNumberIdentifier
+     * @param targetIdentity Target's PhoneNumberIdentifier
      * @param callerIdNumber Caller's phone number identifier
      */
-    public CallInvite(PhoneNumberIdentifier targetPhoneNumberIdentity, PhoneNumberIdentifier callerIdNumber) {
-        target = targetPhoneNumberIdentity;
+    public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber) {
+        target = targetIdentity;
         sourceCallerIdNumber = callerIdNumber;
         sipHeaders = new HashMap<String, String>();
         voipHeaders = null;
@@ -37,12 +37,12 @@ public class CallInvite {
 
     /**
      *  Create a CallInvite object with PhoneNumberIdentifierr
-     * @param targetPhoneNumberIdentity Target's PhoneNumberIdentifier
+     * @param targetIdentity Target's PhoneNumberIdentifier
      * @param callerIdNumber Caller's phone number identifier
      * @param sipHeaders custom context for pstn
      */
-    public CallInvite(PhoneNumberIdentifier targetPhoneNumberIdentity, PhoneNumberIdentifier callerIdNumber, Map<String, String> sipHeaders) {
-        this.target = targetPhoneNumberIdentity;
+    public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber, Map<String, String> sipHeaders) {
+        this.target = targetIdentity;
         this.sourceCallerIdNumber = callerIdNumber;
         this.sipHeaders = sipHeaders;
         this.voipHeaders = null;
