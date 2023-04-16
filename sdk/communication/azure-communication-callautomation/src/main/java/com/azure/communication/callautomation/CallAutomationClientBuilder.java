@@ -398,6 +398,7 @@ public final class CallAutomationClientBuilder implements
      * @param clientOptions object to be applied.
      * @return Updated {@link CallAutomationClientBuilder} object.
      */
+    @Override
     public CallAutomationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
