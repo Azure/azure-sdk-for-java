@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class EventHandlerUnitTests {
+public class CallAutomationEventParserUnitTests {
     static final String EVENT_PARTICIPANT_UPDATED = "{\"id\":\"61069ef9-5ca9-457f-ac36-e2bb5e8400ca\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\",\"type\":\"Microsoft.Communication.ParticipantsUpdated\",\"data\":{\"participants\":[{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\"}}, \"isMuted\": false},{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\"}}, \"isMuted\": false}],\"type\":\"participantsUpdated\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.9129474+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\"}";
     static final String EVENT_CALL_CONNECTED = "{\"id\":\"46116fb7-27e0-4a99-9478-a659c8fd4815\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\",\"type\":\"Microsoft.Communication.CallConnected\",\"data\":{\"type\":\"callConnected\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.8174402+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\"}";
     static final String EVENT_RECOGNIZE_DTMF = "[{\"id\":\"ac2cb537-2d62-48bf-909e-cc93534c4258\",\"source\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"type\":\"Microsoft.Communication.RecognizeCompleted\",\"data\":{\"eventSource\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"operationContext\":\"OperationalContextValue-1118-1049\",\"resultInformation\":{\"code\":200,\"subCode\":8533,\"message\":\"Action completed, DTMF option matched.\"},\"recognitionType\":\"dtmf\",\"collectTonesResult\":{\"tones\":[\"five\", \"six\", \"pound\"]},\"choiceResult\":{\"label\":\"Marketing\"},\"callConnectionId\":\"401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"serverCallId\":\"serverCallId\",\"correlationId\":\"d4f4c1be-59d8-4850-b9bf-ee564c15839d\"},\"time\":\"2022-11-22T01:41:44.5582769+00:00\",\"specversion\":\"1.0\",\"subject\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\"}]";
@@ -39,7 +39,7 @@ public class EventHandlerUnitTests {
 
     @Test
     public void parseEvent() {
-        CallAutomationEventData callAutomationEventData = EventHandler.parseEvent(EVENT_PARTICIPANT_UPDATED);
+        CallAutomationEventData callAutomationEventData = CallAutomationEventParser.parseEvent(EVENT_PARTICIPANT_UPDATED);
 
         assertNotNull(callAutomationEventData);
         assertEquals(callAutomationEventData.getClass(), ParticipantsUpdatedEventData.class);
@@ -54,7 +54,7 @@ public class EventHandlerUnitTests {
 
     @Test
     public void parseEventList() {
-        List<CallAutomationEventData> callAutomationEventDataList = EventHandler.parseEventList("["
+        List<CallAutomationEventData> callAutomationEventDataList = CallAutomationEventParser.parseEvents("["
             + EVENT_CALL_CONNECTED + "," + EVENT_PARTICIPANT_UPDATED + "]");
 
         assertNotNull(callAutomationEventDataList);
@@ -85,7 +85,7 @@ public class EventHandlerUnitTests {
             + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
             + "    }\n"
             + "]";
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
         assertNotNull(event);
         RecordingStateChangedEventData recordingEvent = (RecordingStateChangedEventData) event;
         assertNotNull(recordingEvent);
@@ -116,7 +116,7 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
         assertNotNull(event);
         PlayCompletedEventData playCompletedEventData = (PlayCompletedEventData) event;
         assertNotNull(playCompletedEventData);
@@ -147,7 +147,7 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
         assertNotNull(event);
         PlayFailedEventData playFailedEventData = (PlayFailedEventData) event;
         assertNotNull(playFailedEventData);
@@ -173,7 +173,7 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
         assertNotNull(event);
         PlayCanceledEventData playCanceledEventData = (PlayCanceledEventData) event;
         assertNotNull(playCanceledEventData);
@@ -181,7 +181,7 @@ public class EventHandlerUnitTests {
     }
     @Test
     public void parseRecognizeCompletedWithChoiceEvent() {
-        CallAutomationEventData event = EventHandler.parseEvent(EVENT_RECOGNIZE_CHOICE);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(EVENT_RECOGNIZE_CHOICE);
         assertNotNull(event);
         RecognizeCompletedEventData recognizeCompletedEventData = (RecognizeCompletedEventData) event;
         assertNotNull(recognizeCompletedEventData);
@@ -194,7 +194,7 @@ public class EventHandlerUnitTests {
 
     @Test
     public void parseRecognizeCompletedWithDtmfEvent() {
-        CallAutomationEventData event = EventHandler.parseEvent(EVENT_RECOGNIZE_DTMF);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(EVENT_RECOGNIZE_DTMF);
         assertNotNull(event);
         RecognizeCompletedEventData recognizeCompletedEventData = (RecognizeCompletedEventData) event;
         Optional<RecognizeResult> dtmfResult = recognizeCompletedEventData.getRecognizeResult();
@@ -230,7 +230,7 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
         assertNotNull(event);
         RecognizeFailedEventData recognizeFailedEventData = (RecognizeFailedEventData) event;
         assertNotNull(recognizeFailedEventData);
@@ -256,7 +256,7 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
         assertNotNull(event);
         RecognizeCanceledEventData recognizeCanceledEventData = (RecognizeCanceledEventData) event;
         assertNotNull(recognizeCanceledEventData);
@@ -287,7 +287,7 @@ public class EventHandlerUnitTests {
                 + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
                 + "}]";
 
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
 
         assertNotNull(event);
 
@@ -323,7 +323,7 @@ public class EventHandlerUnitTests {
                 + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
                 + "}]";
 
-        CallAutomationEventData event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
 
         assertNotNull(event);
 
