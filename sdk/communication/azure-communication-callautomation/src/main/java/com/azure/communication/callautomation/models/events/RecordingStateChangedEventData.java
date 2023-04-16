@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-/** The RecordingStateChanged model. */
+/** The RecordingStateChangedEventData model. */
 @Immutable
-public final class RecordingStateChanged extends CallAutomationEventBase {
+public final class RecordingStateChangedEventData extends CallAutomationEventData {
 
     /**
      * Recording Id.
@@ -35,7 +35,7 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
     private final OffsetDateTime startDateTime;
 
     @JsonCreator
-    private RecordingStateChanged(@JsonProperty("startDateTime") String startDateTime) {
+    private RecordingStateChangedEventData(@JsonProperty("startDateTime") String startDateTime) {
         this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         this.recordingId = null;
         this.recordingState = null;

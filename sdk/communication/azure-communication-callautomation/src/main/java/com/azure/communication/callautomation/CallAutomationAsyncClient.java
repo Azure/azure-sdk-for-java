@@ -189,7 +189,7 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
-        
+
         if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
             customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
@@ -239,13 +239,13 @@ public final class CallAutomationAsyncClient {
         targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTarget()));
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallIdNumber()))
+            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSourceIdentity(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
-        
+
         // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
         if (createCallOptions.getCallInvite().getSipHeaders() != null || createCallOptions.getCallInvite().getVoipHeaders() != null) {
             CustomContext customContext = new CustomContext();
@@ -383,7 +383,7 @@ public final class CallAutomationAsyncClient {
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetCallInvite().getTarget()));
-            
+
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
             if (redirectCallOptions.getTargetCallInvite().getSipHeaders() != null || redirectCallOptions.getTargetCallInvite().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();

@@ -13,7 +13,7 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
-import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallConnectedEventData;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -96,8 +96,8 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callConnectedEvent);
+            CallConnectedEventData callConnectedEventData = waitForEvent(CallConnectedEventData.class, receiverConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnectedEventData);
 
             // add another receiver to the call
             targets.clear();
@@ -121,8 +121,8 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(anotherAnswerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnected anotherCallConnectedEvent = waitForEvent(CallConnected.class, anotherReceiverConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callConnectedEvent);
+            CallConnectedEventData anotherCallConnectedEventData = waitForEvent(CallConnectedEventData.class, anotherReceiverConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnectedEventData);
 
             // check participant number in the call
             ListParticipantsResult listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().block();
