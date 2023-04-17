@@ -16,10 +16,10 @@ public class XmlMapperFactoryTests {
         // being used.
         if (PackageVersion.VERSION.getMinorVersion() >= 12) {
             // This should be true when running with Jackson Databind 2.12+.
-            assertTrue(XmlMapperFactory.INSTANCE.useReflectionToSetCoercion);
+            assertTrue(XmlMapperFactory.INSTANCE.useJackson212);
         } else {
             // This should be false when running with Jackson Databind 2.11-.
-            assertFalse(XmlMapperFactory.INSTANCE.useReflectionToSetCoercion);
+            assertFalse(XmlMapperFactory.INSTANCE.useJackson212);
         }
     }
 }
