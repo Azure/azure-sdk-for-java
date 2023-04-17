@@ -108,7 +108,7 @@ public class IOUtilsTest {
         MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(64, data.length - currentOffset);
+            int size = Math.min(128, data.length - currentOffset);
             if (size > 0) {
                 sink.next(ByteBuffer.wrap(data, currentOffset, size));
             } else {

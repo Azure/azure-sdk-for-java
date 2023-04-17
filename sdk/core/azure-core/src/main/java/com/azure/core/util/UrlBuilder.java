@@ -273,12 +273,7 @@ public final class UrlBuilder {
                 builder.append('&');
             }
 
-            builder.append(key);
-
-            if (!CoreUtils.isNullOrEmpty(value)) {
-                builder.append('=').append(value);
-            }
-
+            builder.append(key).append('=').append(value);
             first = false;
         }
 
@@ -329,11 +324,10 @@ public final class UrlBuilder {
      * @return The URL that is being built.
      * @throws MalformedURLException if the URL is not fully formed.
      */
-    @SuppressWarnings("deprecation")
     public URL toUrl() throws MalformedURLException {
         // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
         // escapes '/', depending on the API used to create the URI.
-        return new URL(toString());
+        return ImplUtils.createUrl(toString());
     }
 
     /**
