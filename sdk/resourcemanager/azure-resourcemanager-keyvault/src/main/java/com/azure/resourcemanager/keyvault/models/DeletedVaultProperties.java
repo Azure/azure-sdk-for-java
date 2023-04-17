@@ -50,6 +50,10 @@ public final class DeletedVaultProperties {
     @JsonProperty(value = "purgeProtectionEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean purgeProtectionEnabled;
 
+    /** Creates an instance of DeletedVaultProperties class. */
+    public DeletedVaultProperties() {
+    }
+
     /**
      * Get the vaultId property: The resource id of the original vault.
      *

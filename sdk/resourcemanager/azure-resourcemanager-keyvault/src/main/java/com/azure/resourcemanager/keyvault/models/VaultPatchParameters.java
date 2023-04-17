@@ -25,6 +25,10 @@ public final class VaultPatchParameters {
     @JsonProperty(value = "properties")
     private VaultPatchProperties properties;
 
+    /** Creates an instance of VaultPatchParameters class. */
+    public VaultPatchParameters() {
+    }
+
     /**
      * Get the tags property: The tags that will be assigned to the key vault.
      *

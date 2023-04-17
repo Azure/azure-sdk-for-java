@@ -14,6 +14,15 @@ public final class ManagedHsmSkuFamily extends ExpandableStringEnum<ManagedHsmSk
     public static final ManagedHsmSkuFamily B = fromString("B");
 
     /**
+     * Creates a new instance of ManagedHsmSkuFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedHsmSkuFamily() {
+    }
+
+    /**
      * Creates or finds a ManagedHsmSkuFamily from its string representation.
      *
      * @param name a name to look for.
