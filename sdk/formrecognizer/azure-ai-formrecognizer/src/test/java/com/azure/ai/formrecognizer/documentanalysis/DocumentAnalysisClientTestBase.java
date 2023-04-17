@@ -25,6 +25,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -96,12 +97,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new TokenCredential() {
-                    @Override
-                    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                        return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
-                    }
-                });
+                builder.credential(new MockTokenCredential());
                 setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));

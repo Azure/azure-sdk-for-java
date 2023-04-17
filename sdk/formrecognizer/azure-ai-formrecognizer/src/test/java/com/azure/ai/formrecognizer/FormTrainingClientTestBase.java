@@ -10,26 +10,22 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -97,12 +93,7 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
             .serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new TokenCredential() {
-                @Override
-                public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                    return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
-                }
-            });
+            builder.credential(new MockTokenCredential());
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
