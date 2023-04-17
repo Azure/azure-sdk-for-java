@@ -52,18 +52,6 @@ public final class CallAutomationEventParser {
         return callAutomationBaseEvents;
     }
 
-    /***
-     * Returns the first(or the only) event of request's body.
-     *
-     * @param requestBody Body of the event request.
-     * @throws RuntimeException Any exceptions occurs at runtime.
-     * @return the first(or the only) event if request is not empty, otherwise null is returned.
-     */
-    public static CallAutomationEventData parseEvent(String requestBody) {
-        List<CallAutomationEventData> callAutomationBaseEvents = parseEvents(requestBody);
-        return callAutomationBaseEvents.isEmpty() ? null : callAutomationBaseEvents.get(0);
-    }
-
     private static List<CallAutomationEventData> parseCloudEventList(String requestBody) {
         try {
             List<CloudEvent> cloudEvents;

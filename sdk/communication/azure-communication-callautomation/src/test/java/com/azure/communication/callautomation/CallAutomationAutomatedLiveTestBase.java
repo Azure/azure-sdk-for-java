@@ -167,7 +167,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
             incomingCallContextStore.put(uniqueId, incomingCallContext);
         } else {
-            CallAutomationEventData event = CallAutomationEventParser.parseEvent(body);
+            CallAutomationEventData event = CallAutomationEventParser.parseEvents(body).get(0);
             assert event != null : "Event cannot be null";
             String callConnectionId = event.getCallConnectionId();
             if (!eventStore.containsKey(callConnectionId)) {

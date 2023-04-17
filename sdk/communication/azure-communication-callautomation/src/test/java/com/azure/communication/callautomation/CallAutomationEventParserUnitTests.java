@@ -39,7 +39,7 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseEvent() {
-        CallAutomationEventData callAutomationEventData = CallAutomationEventParser.parseEvent(EVENT_PARTICIPANT_UPDATED);
+        CallAutomationEventData callAutomationEventData = CallAutomationEventParser.parseEvents(EVENT_PARTICIPANT_UPDATED).get(0);
 
         assertNotNull(callAutomationEventData);
         assertEquals(callAutomationEventData.getClass(), ParticipantsUpdatedEventData.class);
@@ -85,7 +85,7 @@ public class CallAutomationEventParserUnitTests {
             + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
             + "    }\n"
             + "]";
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         RecordingStateChangedEventData recordingEvent = (RecordingStateChangedEventData) event;
         assertNotNull(recordingEvent);
@@ -116,7 +116,7 @@ public class CallAutomationEventParserUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         PlayCompletedEventData playCompletedEventData = (PlayCompletedEventData) event;
         assertNotNull(playCompletedEventData);
@@ -147,7 +147,7 @@ public class CallAutomationEventParserUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         PlayFailedEventData playFailedEventData = (PlayFailedEventData) event;
         assertNotNull(playFailedEventData);
@@ -173,7 +173,7 @@ public class CallAutomationEventParserUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         PlayCanceledEventData playCanceledEventData = (PlayCanceledEventData) event;
         assertNotNull(playCanceledEventData);
@@ -181,7 +181,7 @@ public class CallAutomationEventParserUnitTests {
     }
     @Test
     public void parseRecognizeCompletedWithChoiceEvent() {
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(EVENT_RECOGNIZE_CHOICE);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_CHOICE).get(0);
         assertNotNull(event);
         RecognizeCompletedEventData recognizeCompletedEventData = (RecognizeCompletedEventData) event;
         assertNotNull(recognizeCompletedEventData);
@@ -194,7 +194,7 @@ public class CallAutomationEventParserUnitTests {
 
     @Test
     public void parseRecognizeCompletedWithDtmfEvent() {
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(EVENT_RECOGNIZE_DTMF);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_DTMF).get(0);
         assertNotNull(event);
         RecognizeCompletedEventData recognizeCompletedEventData = (RecognizeCompletedEventData) event;
         Optional<RecognizeResult> dtmfResult = recognizeCompletedEventData.getRecognizeResult();
@@ -230,7 +230,7 @@ public class CallAutomationEventParserUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         RecognizeFailedEventData recognizeFailedEventData = (RecognizeFailedEventData) event;
         assertNotNull(recognizeFailedEventData);
@@ -256,7 +256,7 @@ public class CallAutomationEventParserUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         RecognizeCanceledEventData recognizeCanceledEventData = (RecognizeCanceledEventData) event;
         assertNotNull(recognizeCanceledEventData);
@@ -287,8 +287,7 @@ public class CallAutomationEventParserUnitTests {
                 + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
                 + "}]";
 
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
-
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
 
         RemoveParticipantSucceededEventData removeParticipantSucceededEventData = (RemoveParticipantSucceededEventData) event;
@@ -323,7 +322,7 @@ public class CallAutomationEventParserUnitTests {
                 + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
                 + "}]";
 
-        CallAutomationEventData event = CallAutomationEventParser.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
