@@ -60,7 +60,11 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         if (!this.isValid()) {
             requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
                 requestArgs.transportRequestId(),
-                this.id + "[Disable or Duration reached]"
+                String.format(
+                    "%s[Disable or Duration reached. StartTime: %s, ExpireTime: %s]",
+                    this.id,
+                    this.startTime,
+                    this.expireTime)
             );
 
             return false;
