@@ -295,7 +295,7 @@ public class CallMediaAsync {
     }
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
-        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUri());
+        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUrl());
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)

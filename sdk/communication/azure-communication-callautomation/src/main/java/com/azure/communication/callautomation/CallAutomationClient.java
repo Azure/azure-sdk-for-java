@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation;
 
 
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -112,7 +111,7 @@ public final class CallAutomationClient {
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back uri.
+     * @param callbackUrl The call back url.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of answering the call.
