@@ -18,8 +18,7 @@ public final class VolumeMount {
     private String name;
 
     /*
-     * The path within the container where the volume should be mounted. Must
-     * not contain colon (:).
+     * The path within the container where the volume should be mounted. Must not contain colon (:).
      */
     @JsonProperty(value = "mountPath", required = true)
     private String mountPath;
@@ -29,6 +28,10 @@ public final class VolumeMount {
      */
     @JsonProperty(value = "readOnly")
     private Boolean readOnly;
+
+    /** Creates an instance of VolumeMount class. */
+    public VolumeMount() {
+    }
 
     /**
      * Get the name property: The name of the volume mount.

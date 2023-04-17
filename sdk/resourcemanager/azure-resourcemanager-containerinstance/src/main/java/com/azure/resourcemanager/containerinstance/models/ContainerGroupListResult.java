@@ -24,6 +24,10 @@ public final class ContainerGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ContainerGroupListResult class. */
+    public ContainerGroupListResult() {
+    }
+
     /**
      * Get the value property: The list of container groups.
      *

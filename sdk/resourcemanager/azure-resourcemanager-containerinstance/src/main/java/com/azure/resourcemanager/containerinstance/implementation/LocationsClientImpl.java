@@ -59,7 +59,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
-    private interface LocationsService {
+    public interface LocationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/usages")
         @ExpectedResponses({200})
@@ -264,7 +264,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +317,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -364,7 +368,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -380,7 +386,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -398,7 +406,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +423,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of cached images on specific OS type for a subscription in a region.
+     * Get the list of cached images.
+     *
+     * <p>Get the list of cached images on specific OS type for a subscription in a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -429,7 +441,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,7 +494,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -529,7 +545,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -544,7 +562,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -561,7 +581,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -575,7 +597,9 @@ public final class LocationsClientImpl implements LocationsClient {
     }
 
     /**
-     * Get the list of CPU/memory/GPU capabilities of a region.
+     * Get the list of capabilities of the location.
+     *
+     * <p>Get the list of CPU/memory/GPU capabilities of a region.
      *
      * @param location The identifier for the physical azure location.
      * @param context The context to associate with this operation.
@@ -592,7 +616,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -628,7 +653,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -665,7 +691,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -701,7 +728,8 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

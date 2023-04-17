@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Location ListCachedImages. */
 public final class LocationListCachedImagesSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/CachedImagesList.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/CachedImagesList.json
      */
     /**
      * Sample code: CachedImages.
@@ -22,6 +20,6 @@ public final class LocationListCachedImagesSamples {
             .manager()
             .serviceClient()
             .getLocations()
-            .listCachedImages("westcentralus", Context.NONE);
+            .listCachedImages("westcentralus", com.azure.core.util.Context.NONE);
     }
 }

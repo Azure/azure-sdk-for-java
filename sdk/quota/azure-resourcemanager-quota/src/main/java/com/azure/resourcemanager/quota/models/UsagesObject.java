@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource usages value. */
 @Fluent
 public final class UsagesObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesObject.class);
-
     /*
      * The usages value.
      */
@@ -25,6 +21,10 @@ public final class UsagesObject {
      */
     @JsonProperty(value = "usagesType")
     private UsagesTypes usagesType;
+
+    /** Creates an instance of UsagesObject class. */
+    public UsagesObject() {
+    }
 
     /**
      * Get the value property: The usages value.

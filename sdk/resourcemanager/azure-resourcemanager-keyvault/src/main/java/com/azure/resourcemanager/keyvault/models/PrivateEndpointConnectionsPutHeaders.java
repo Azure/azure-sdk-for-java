@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,6 +24,8 @@ public final class PrivateEndpointConnectionsPutHeaders {
     @JsonProperty(value = "Azure-AsyncOperation")
     private String azureAsyncOperation;
 
+    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PrivateEndpointConnectionsPutHeaders class.
@@ -30,8 +33,11 @@ public final class PrivateEndpointConnectionsPutHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PrivateEndpointConnectionsPutHeaders(HttpHeaders rawHeaders) {
-        this.retryAfter = Integer.parseInt(rawHeaders.getValue("Retry-After"));
-        this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
     }
 
     /**
