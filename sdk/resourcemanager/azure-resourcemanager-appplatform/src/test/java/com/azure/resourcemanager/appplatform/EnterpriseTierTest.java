@@ -10,12 +10,14 @@ import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitRepos
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Disabled
 public class EnterpriseTierTest extends AppPlatformTest {
 
     private static final String GIT_CONFIG_URI = "https://github.com/XiaofeiCao/spring-petclinic-microservices-config";

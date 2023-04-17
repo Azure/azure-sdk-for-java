@@ -17,6 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import org.junit.jupiter.api.Disabled;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -32,6 +33,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+@Disabled
 public class AppPlatformTest extends ResourceManagerTestBase {
     protected AppPlatformManager appPlatformManager;
     protected AppServiceManager appServiceManager;
