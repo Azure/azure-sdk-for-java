@@ -58,11 +58,11 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
 
     /**
      * Specifies a {@link Duration} timeout for calling the Azure CLI.
-     * @param duration The {@link Duration} to wait.
+     * @param processTimeout The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public AzureCliCredentialBuilder processTimeout(Duration duration) {
-        this.identityClientOptions.setProcessTimeout(duration);
+    public AzureCliCredentialBuilder processTimeout(Duration processTimeout) {
+        this.identityClientOptions.setProcessTimeout(processTimeout);
         return this;
     }
 

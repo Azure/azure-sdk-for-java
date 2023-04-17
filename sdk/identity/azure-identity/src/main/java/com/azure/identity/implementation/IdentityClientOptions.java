@@ -701,10 +701,10 @@ public final class IdentityClientOptions implements Cloneable {
 
     /**
      * Sets the timeout for developer credential operations.
-     * @param credentialtimeout The timeout value for developer credential operations.
+     * @param processTimeout The timeout value for developer credential operations.
      */
-    public void setProcessTimeout(Duration credentialtimeout) {
-        this.processTimeout = credentialtimeout;
+    public void setProcessTimeout(Duration processTimeout) {
+        this.processTimeout = processTimeout;
     }
 
     public IdentityClientOptions clone() {
