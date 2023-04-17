@@ -8,7 +8,7 @@
 
 - Upgrade api-version to `2023-03-01-preview`.
 
-## 2.25.0 (Unreleased)
+## 2.25.0 (2023-03-24)
 
 ### Other Changes
 
