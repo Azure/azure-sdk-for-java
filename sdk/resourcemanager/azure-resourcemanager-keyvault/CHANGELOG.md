@@ -6,7 +6,7 @@
 
 - Supported `ManagedHsm` for Azure Key Vault Managed HSM.
 
-## 2.25.0 (2023-03-24)
+## 2.25.0 (Unreleased)
 
 ### Other Changes
 
