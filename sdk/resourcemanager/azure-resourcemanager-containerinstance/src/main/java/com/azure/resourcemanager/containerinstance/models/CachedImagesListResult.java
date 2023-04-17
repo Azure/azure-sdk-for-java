@@ -23,6 +23,10 @@ public final class CachedImagesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CachedImagesListResult class. */
+    public CachedImagesListResult() {
+    }
+
     /**
      * Get the value property: The list of cached images.
      *
