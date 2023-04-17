@@ -7,16 +7,16 @@
         "Accept": "application/json",
         "Content-Length": "324",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 22:01:24 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:02 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-api-key": "5c9110a5-f5f6-4b78-ab6f-c30291c4c623",
-        "x-ms-client-request-id": "df27ee58-3843-47c7-856f-7a91b376116b",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "1a03b4d0-0c0f-4995-8326-52e59e2ae734",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
         "hookType": "Webhook",
-        "hookName": "363456f6-bedd-42a3-9a9c-57b7308cf4b5",
+        "hookName": "d44b90e5-beb5-4612-9066-bc11e01a00a6",
         "description": "alert_us!",
         "externalLink": "https://github.com/Azure/azure-sdk-for-java/wiki",
         "hookParameter": {
@@ -31,52 +31,52 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "apim-request-id": "811ef35a-6c60-4121-b5fa-3e86648fae08",
+        "apim-request-id": "c678b5af-320f-475c-80d6-094c403d72cb",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:01:25 GMT",
-        "Location": "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/hooks/ba01a97b-2a88-487f-a53e-9a3350c59988",
+        "Date": "Mon, 17 Apr 2023 23:00:02 GMT",
+        "Location": "https://REDACTED/metricsadvisor/v1.0/hooks/daf2c4f8-3296-4909-a6e6-26e1bc5d18c9",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "536",
+        "x-envoy-upstream-service-time": "1101",
         "x-ms-region": "West US 2",
-        "X-Request-ID": "811ef35a-6c60-4121-b5fa-3e86648fae08"
+        "X-Request-ID": "c678b5af-320f-475c-80d6-094c403d72cb"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/hooks/ba01a97b-2a88-487f-a53e-9a3350c59988",
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/hooks/daf2c4f8-3296-4909-a6e6-26e1bc5d18c9",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:01:25 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:03 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-api-key": "5c9110a5-f5f6-4b78-ab6f-c30291c4c623",
-        "x-ms-client-request-id": "7996f970-5b56-4b01-adfb-f0758282f4a1",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "ed3c9882-3f67-406b-9e40-f4300d1b7803",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "66f8401f-e51d-421f-8d7b-44f7dc299720",
+        "apim-request-id": "b3615b6c-06c7-4af1-9bac-23c0c820fa80",
         "Content-Length": "408",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:01:25 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:02 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "186",
+        "x-envoy-upstream-service-time": "185",
         "x-ms-region": "West US 2",
-        "X-Request-ID": "66f8401f-e51d-421f-8d7b-44f7dc299720"
+        "X-Request-ID": "b3615b6c-06c7-4af1-9bac-23c0c820fa80"
       },
       "ResponseBody": {
-        "hookId": "ba01a97b-2a88-487f-a53e-9a3350c59988",
-        "hookName": "363456f6-bedd-42a3-9a9c-57b7308cf4b5",
+        "hookId": "daf2c4f8-3296-4909-a6e6-26e1bc5d18c9",
+        "hookName": "d44b90e5-beb5-4612-9066-bc11e01a00a6",
         "hookType": "Webhook",
         "externalLink": "https://github.com/Azure/azure-sdk-for-java/wiki",
         "description": "alert_us!",
         "admins": [
-          "xiangyan@microsoft.com"
+          "REDACTED.microsoft.com"
         ],
         "hookParameter": {
           "endpoint": "https://httpbin.org/post",
@@ -90,29 +90,29 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/hooks/ba01a97b-2a88-487f-a53e-9a3350c59988",
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/hooks/daf2c4f8-3296-4909-a6e6-26e1bc5d18c9",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:01:26 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:04 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-api-key": "5c9110a5-f5f6-4b78-ab6f-c30291c4c623",
-        "x-ms-client-request-id": "d6911bd9-8de1-4a52-8225-1b09f5b263aa",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "1042bbb7-3afa-4c0c-9650-4e6163796231",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "apim-request-id": "2a6afe03-eddf-4442-acd3-1ffa2eb2fb11",
+        "apim-request-id": "c0c2bab2-4801-45a2-b5e1-e41d221e338b",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:01:26 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:04 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "274",
+        "x-envoy-upstream-service-time": "431",
         "x-ms-region": "West US 2",
-        "X-Request-ID": "2a6afe03-eddf-4442-acd3-1ffa2eb2fb11"
+        "X-Request-ID": "c0c2bab2-4801-45a2-b5e1-e41d221e338b"
       },
       "ResponseBody": null
     }

@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
+import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 
 public abstract class MetricsAdvisorAdministrationClientTestBase extends TestProxyTestBase {
 
@@ -64,6 +65,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
             .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
+        interceptorManager.addSanitizers(getEmailSanitizers());
 
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {

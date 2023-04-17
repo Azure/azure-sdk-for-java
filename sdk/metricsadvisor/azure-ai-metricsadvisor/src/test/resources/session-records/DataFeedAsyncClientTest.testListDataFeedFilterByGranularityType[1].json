@@ -6,40 +6,40 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Content-Length": "0",
-        "Date": "Wed, 12 Apr 2023 22:01:50 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:23 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-api-key": "5c9110a5-f5f6-4b78-ab6f-c30291c4c623",
-        "x-ms-client-request-id": "62f3c443-c2a0-4661-9874-fa200aeb6999",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "d12e3aaf-41a1-4f13-9994-895548b2d5ae",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "78fe7185-b149-4ac9-82c4-e9c1b12a8559",
-        "Content-Length": "8485",
+        "apim-request-id": "b36fda09-cff9-4545-9e64-789ff3dacc15",
+        "Content-Length": "9467",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:01:50 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:23 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "161",
+        "x-envoy-upstream-service-time": "176",
         "x-ms-region": "West US 2",
-        "X-Request-ID": "78fe7185-b149-4ac9-82c4-e9c1b12a8559"
+        "X-Request-ID": "b36fda09-cff9-4545-9e64-789ff3dacc15"
       },
       "ResponseBody": {
         "value": [
           {
-            "dataFeedId": "5906d94d-378f-4816-9166-7f28f495f2b1",
-            "dataFeedName": "java_create_data_feed_test_samplef57e05d9-2eed-411c-9947-f146515b6ac2",
+            "dataFeedId": "a2e6e630-1894-4236-b8fb-5604b710fd0b",
+            "dataFeedName": "java_SQL_create_data_feed_test_sample16e1e952-8e01-471e-913e-dad29b03ccf3",
             "metrics": [
               {
-                "metricId": "9c3b61d0-071f-4367-8f5b-688266fc3c06",
+                "metricId": "a1674f0f-64d4-4588-9e33-8a8aaf8d6ed6",
                 "metricName": "cost",
                 "metricDisplayName": "cost",
                 "metricDescription": ""
               },
               {
-                "metricId": "b2ac8aaf-5be7-4d07-8ec9-5ae2195733ae",
+                "metricId": "ddb52e1e-62b4-4e36-a4dd-1a89fa4a0a9a",
                 "metricName": "revenue",
                 "metricDisplayName": "revenue",
                 "metricDescription": ""
@@ -56,7 +56,7 @@
               }
             ],
             "dataStartFrom": "2019-10-01T00:00:00Z",
-            "dataSourceType": "AzureApplicationInsights",
+            "dataSourceType": "SqlServer",
             "timestampColumn": "",
             "startOffsetInSeconds": 0,
             "maxQueryPerMinute": 30.0,
@@ -71,33 +71,31 @@
             "maxConcurrency": 0,
             "viewMode": "Private",
             "admins": [
-              "xiangyan@microsoft.com"
+              "REDACTED.microsoft.com"
             ],
             "viewers": [],
-            "creator": "xiangyan@microsoft.com",
+            "creator": "REDACTED",
             "status": "Active",
-            "createdTime": "2023-04-12T22:01:50Z",
+            "createdTime": "2023-04-17T23:00:22Z",
             "isAdmin": true,
             "actionLinkTemplate": "",
             "dataSourceParameter": {
-              "query": "let gran=60m; let starttime=datetime(@StartTime); let endtime=starttime \u002B gran; requests | where timestamp \u003E= starttime and timestamp \u003C endtime | summarize request_count = count(), duration_avg_ms = avg(duration), duration_95th_ms = percentile(duration, 95), duration_max_ms = max(duration) by resultCode",
-              "azureCloud": "Azure Global",
-              "applicationId": "REDACTED"
+              "query": "select * from adsample2 where Timestamp = @StartTime"
             },
             "authenticationType": "Basic"
           },
           {
-            "dataFeedId": "c52c93e7-6823-41ef-a44f-f5c489d34393",
-            "dataFeedName": "java_create_data_feed_test_sample2397debb-5734-4ca6-b7b1-c770a43c9d0b",
+            "dataFeedId": "0f7e172b-d0f7-4c99-accb-066b5b5a40af",
+            "dataFeedName": "java_BLOB_create_data_feed_test_sample6b92b342-7a98-4903-b2b7-fdc99d5f6669",
             "metrics": [
               {
-                "metricId": "26e9522f-f47f-4238-a941-302f4dae3177",
+                "metricId": "09066a52-03c7-49ee-84d4-3cc99fae6e2d",
                 "metricName": "cost",
                 "metricDisplayName": "cost",
                 "metricDescription": ""
               },
               {
-                "metricId": "14ec52de-82e1-4024-88ec-6730a92b892d",
+                "metricId": "41e0dcab-ac58-4120-a5e9-1df4a5164378",
                 "metricName": "revenue",
                 "metricDisplayName": "revenue",
                 "metricDescription": ""
@@ -114,7 +112,7 @@
               }
             ],
             "dataStartFrom": "2019-10-01T00:00:00Z",
-            "dataSourceType": "PostgreSql",
+            "dataSourceType": "AzureBlob",
             "timestampColumn": "",
             "startOffsetInSeconds": 0,
             "maxQueryPerMinute": 30.0,
@@ -128,28 +126,33 @@
             "minRetryIntervalInSeconds": -1,
             "maxConcurrency": 0,
             "viewMode": "Private",
-            "admins": [],
+            "admins": [
+              "REDACTED.microsoft.com"
+            ],
             "viewers": [],
-            "creator": "xiangyan@microsoft.com",
+            "creator": "REDACTED",
             "status": "Active",
-            "createdTime": "2023-04-12T22:01:49Z",
-            "isAdmin": false,
+            "createdTime": "2023-04-17T23:00:21Z",
+            "isAdmin": true,
             "actionLinkTemplate": "",
-            "dataSourceParameter": {},
+            "dataSourceParameter": {
+              "container": "BLOB_CONTAINER",
+              "blobTemplate": "BLOB_TEMPLATE_NAME"
+            },
             "authenticationType": "Basic"
           },
           {
-            "dataFeedId": "3efe8c44-5ec8-40bd-8c24-063760dda297",
-            "dataFeedName": "java_create_data_feed_test_samplec83de302-0b65-4dce-8a62-116b32655e3f",
+            "dataFeedId": "48a8ba18-6093-4c7e-b98c-5060c199b26b",
+            "dataFeedName": "java_create_data_feed_test_samplecf95c52e-e964-4279-b276-f508fbca2dfa",
             "metrics": [
               {
-                "metricId": "55c30d05-c9d7-4113-8f53-0a431ce05b54",
+                "metricId": "1d664d0d-6016-48a8-a309-618eec266450",
                 "metricName": "cost",
                 "metricDisplayName": "cost",
                 "metricDescription": ""
               },
               {
-                "metricId": "3a81738d-a39b-4e51-8ccc-a4e9cc22136a",
+                "metricId": "bd8b677f-c7a5-4c95-ac2f-9779c47f1b2c",
                 "metricName": "revenue",
                 "metricDisplayName": "revenue",
                 "metricDescription": ""
@@ -181,19 +184,76 @@
             "maxConcurrency": 0,
             "viewMode": "Private",
             "admins": [
-              "xiangyan@microsoft.com"
+              "REDACTED.microsoft.com"
             ],
             "viewers": [],
-            "creator": "xiangyan@microsoft.com",
+            "creator": "REDACTED",
             "status": "Active",
-            "createdTime": "2023-04-12T22:01:46Z",
+            "createdTime": "2023-04-17T23:00:19Z",
             "isAdmin": true,
             "actionLinkTemplate": "",
             "dataSourceParameter": {
               "query": "let StartDateTime = datetime(@StartTime);let EndDateTime = StartDateTime \u002B 1d;adsample| where Timestamp \u003E= StartDateTime and Timestamp \u003C EndDateTime"
             },
-            "authenticationType": "ServicePrincipalInKV",
-            "credentialId": "391d81eb-fd08-4fcc-9269-bbf5873b0c30"
+            "authenticationType": "ServicePrincipal",
+            "credentialId": "8651e3a2-fe0a-4310-9c5a-5c5e6b726129"
+          },
+          {
+            "dataFeedId": "72503f89-bb59-4cb5-a2fb-4f7e89c923d9",
+            "dataFeedName": "java_create_data_feed_test_sample865f575d-98b7-4245-b2e2-3184523b763c",
+            "metrics": [
+              {
+                "metricId": "2a5a5e60-93b1-46f6-898c-b6c68bcca52b",
+                "metricName": "cost",
+                "metricDisplayName": "cost",
+                "metricDescription": ""
+              },
+              {
+                "metricId": "1f3c6e7b-eabf-447b-b4d8-18baff395b9b",
+                "metricName": "revenue",
+                "metricDisplayName": "revenue",
+                "metricDescription": ""
+              }
+            ],
+            "dimension": [
+              {
+                "dimensionName": "category",
+                "dimensionDisplayName": "category"
+              },
+              {
+                "dimensionName": "region",
+                "dimensionDisplayName": "region"
+              }
+            ],
+            "dataStartFrom": "2019-10-01T00:00:00Z",
+            "dataSourceType": "SqlServer",
+            "timestampColumn": "",
+            "startOffsetInSeconds": 0,
+            "maxQueryPerMinute": 30.0,
+            "granularityName": "Daily",
+            "needRollup": "NoRollup",
+            "fillMissingPointType": "PreviousValue",
+            "fillMissingPointValue": 0.0,
+            "rollUpMethod": "None",
+            "dataFeedDescription": "",
+            "stopRetryAfterInSeconds": -1,
+            "minRetryIntervalInSeconds": -1,
+            "maxConcurrency": 0,
+            "viewMode": "Private",
+            "admins": [
+              "REDACTED.microsoft.com"
+            ],
+            "viewers": [],
+            "creator": "REDACTED",
+            "status": "Active",
+            "createdTime": "2023-04-17T23:00:18Z",
+            "isAdmin": true,
+            "actionLinkTemplate": "",
+            "dataSourceParameter": {
+              "query": "select * from adsample2 where Timestamp = @StartTime"
+            },
+            "authenticationType": "AzureSQLConnectionString",
+            "credentialId": "614f38b9-7a84-4915-a300-1cb18a66f552"
           },
           {
             "dataFeedId": "6e48e476-33e6-4113-a299-a5740bc0db47",
@@ -239,19 +299,19 @@
             "maxConcurrency": -1,
             "viewMode": "Private",
             "admins": [
-              "yutongzhai@microsoft.com",
-              "krpratic@microsoft.com",
-              "anuchan@microsoft.com",
-              "camaiaor@microsoft.com",
-              "kaghiya@microsoft.com",
-              "xiangyan@microsoft.com",
-              "elraikhm@microsoft.com",
-              "yumeng@microsoft.com",
-              "chriss@microsoft.com",
-              "savaity@microsoft.com"
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com"
             ],
             "viewers": [],
-            "creator": "savaity@microsoft.com",
+            "creator": "REDACTED",
             "status": "Active",
             "createdTime": "2022-04-05T17:10:58Z",
             "isAdmin": true,
@@ -305,10 +365,10 @@
             "maxConcurrency": -1,
             "viewMode": "Private",
             "admins": [
-              "xiangyan@microsoft.com"
+              "REDACTED.microsoft.com"
             ],
             "viewers": [],
-            "creator": "xiangyan@microsoft.com",
+            "creator": "REDACTED",
             "status": "Paused",
             "createdTime": "2021-11-15T22:00:37Z",
             "isAdmin": true,
@@ -366,18 +426,18 @@
             "maxConcurrency": -1,
             "viewMode": "Private",
             "admins": [
-              "chriss@microsoft.com",
-              "yumeng@microsoft.com",
-              "xiangyan@microsoft.com",
-              "elraikhm@microsoft.com",
-              "kaghiya@microsoft.com",
-              "camaiaor@microsoft.com",
-              "krpratic@microsoft.com",
-              "anuchan@microsoft.com",
-              "savaity@microsoft.com"
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com",
+              "REDACTED.microsoft.com"
             ],
             "viewers": [],
-            "creator": "savaity@microsoft.com",
+            "creator": "REDACTED",
             "status": "Paused",
             "createdTime": "2021-09-02T22:04:59Z",
             "isAdmin": true,

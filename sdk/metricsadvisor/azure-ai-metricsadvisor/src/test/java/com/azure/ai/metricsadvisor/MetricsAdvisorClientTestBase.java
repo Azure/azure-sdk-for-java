@@ -18,6 +18,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
+import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 
 public abstract class MetricsAdvisorClientTestBase extends TestProxyTestBase {
 
@@ -57,6 +58,7 @@ public abstract class MetricsAdvisorClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
 
+        interceptorManager.addSanitizers(getEmailSanitizers());
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));

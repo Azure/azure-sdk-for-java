@@ -7,11 +7,11 @@
         "Accept": "application/json",
         "Content-Length": "73",
         "Content-Type": "application/json",
-        "Date": "Wed, 12 Apr 2023 22:01:32 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:10 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-api-key": "5c9110a5-f5f6-4b78-ab6f-c30291c4c623",
-        "x-ms-client-request-id": "cffe3d24-7fd5-47c0-921d-0f8355467c9f",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "ee3513f4-7092-45ab-b447-7eb77bf583ee",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
@@ -24,15 +24,15 @@
       },
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "851a3c5f-f73f-4b25-b42e-41e83b695886",
+        "apim-request-id": "f638cc49-cc3a-4364-afca-44281022377d",
         "Content-Length": "198",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 12 Apr 2023 22:01:31 GMT",
+        "Date": "Mon, 17 Apr 2023 23:00:09 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "187",
+        "x-envoy-upstream-service-time": "159",
         "x-ms-region": "West US 2",
-        "X-Request-ID": "851a3c5f-f73f-4b25-b42e-41e83b695886"
+        "X-Request-ID": "f638cc49-cc3a-4364-afca-44281022377d"
       },
       "ResponseBody": {
         "value": [
