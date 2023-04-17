@@ -36,8 +36,8 @@ parameters:
   displayName: 'azure-messaging-webpubsub'
   type: boolean
   default: true
-- name: release_azureresourcemanagerwebpubsubclient
-  displayName: 'azure-resourcemanager-webpubsub-client'
+- name: release_azuremessagingwebpubsubclient
+  displayName: 'azure-messaging-webpubsub-client'
   type: boolean
   default: false
 - name: release_azureresourcemanagerwebpubsub
@@ -58,7 +58,7 @@ extends:
       - name: azure-messaging-webpubsub-client
         groupId: com.azure
         safeName: azuremessagingwebpubsubclient
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerwebpubsubclient }}
+        releaseInBatch: ${{ parameters.release_azuremessagingwebpubsubclient }}
       - name: azure-resourcemanager-webpubsub
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerwebpubsub
