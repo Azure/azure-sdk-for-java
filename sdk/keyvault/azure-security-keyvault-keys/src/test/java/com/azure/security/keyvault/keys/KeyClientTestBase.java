@@ -26,6 +26,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -121,8 +122,7 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
                 .additionallyAllowedTenants("*")
                 .build();
         } else {
-            credential = tokenRequestContext ->
-                Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+            credential = new MockTokenCredential();
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());

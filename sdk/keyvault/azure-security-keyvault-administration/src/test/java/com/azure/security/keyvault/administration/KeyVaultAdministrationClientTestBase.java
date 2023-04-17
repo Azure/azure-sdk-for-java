@@ -24,6 +24,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
@@ -83,8 +84,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
                 interceptorManager.addSanitizers(customSanitizers);
             }
         } else {
-            credential = tokenRequestContext ->
-                Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+            credential = new MockTokenCredential();
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
