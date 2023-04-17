@@ -676,8 +676,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             // in the open channel flow, force a new channel
             // to be opened
-            if ((!(promise instanceof OpenChannelPromise) ||
-                    durableEndpointMetrics.getEndpoint().getMinChannelsRequired() == this.channels(false))) {
+            if ((!(promise instanceof OpenChannelPromise))) {
                 candidate = this.pollChannel(channelAcquisitionTimeline);
 
                 if (candidate != null) {
@@ -688,6 +687,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     doAcquireChannel(promise, candidate);
                     return;
                 }
+            }
+
+            if (promise instanceof OpenChannelPromise && this.durableEndpointMetrics.getEndpoint().getMinChannelsRequired()
+                    == this.channels(false)) {
+                candidate = this.pollChannel(channelAcquisitionTimeline);
             }
 
             if (this.allowedToOpenNewChannel(this.maxChannels)) {

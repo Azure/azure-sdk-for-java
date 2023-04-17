@@ -50,7 +50,6 @@ public final class ConnectionPolicy {
     private int minConnectionsPerEndpoint;
     private int openConnectionsDefensiveConcurrency;
     private int openConnectionsAggressiveConcurrency;
-    private boolean isProactiveConnectionManagementEnabledForConnectionExceptions;
 
     /**
      * Constructor.
@@ -111,7 +110,6 @@ public final class ConnectionPolicy {
         this.minConnectionsPerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsDefensiveConcurrency = Configs.getOpenConnectionsDefensiveConcurrency();
         this.openConnectionsAggressiveConcurrency = Configs.getOpenConnectionsAggressiveConcurrency();
-        this.isProactiveConnectionManagementEnabledForConnectionExceptions = Configs.isOpenConnectionsForConnectionExceptionsEnabled();
     }
 
     /**
@@ -618,7 +616,6 @@ public final class ConnectionPolicy {
             ", minConnectionsPerEndpoint=" + minConnectionsPerEndpoint +
             ", openConnectionsDefensiveConcurrency=" + openConnectionsDefensiveConcurrency +
             ", openConnectionsAggressiveConcurrency=" + openConnectionsAggressiveConcurrency +
-            ", isProactiveConnectionManagementEnabledForConnectionExceptions=" + isProactiveConnectionManagementEnabledForConnectionExceptions +
             '}';
     }
 }

@@ -4,8 +4,8 @@
 
 #### Features Added
 * Added configurability for minimum connection pool size for all containers through a system property - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
-* Added `CosmosClientBuilder:openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig, Duration connectionWarmUpTimeout)` public API to switch between aggressively opening connections
-in a blocking manner to defensively opening connections in a non-blocking manner after `connectionWarmUpTimeout` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
+* Added `CosmosContainerProactiveInitConfigBuilder:setAggressiveProactiveConnectionEstablishmentDuration(Duration aggressiveProactiveConnectionEstablishmentDuration)` public API to switch between aggressively opening connections
+in a blocking manner to defensively opening connections in a non-blocking manner after `aggressiveProactiveConnectionEstablishmentDuration` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
 
 #### Breaking Changes
 
