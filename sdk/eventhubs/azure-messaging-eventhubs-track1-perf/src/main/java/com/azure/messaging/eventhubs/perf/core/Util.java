@@ -31,7 +31,7 @@ public class Util {
                 }).then();
         } else {
             partitionMono = Mono.fromFuture(client.getPartitionRuntimeInformation(partitionId))
-                .map(partitionProperties -> {
+                .flatMap(partitionProperties -> {
                     totalEvents.addAndGet(partitionProperties.getLastEnqueuedSequenceNumber()
                         - partitionProperties.getBeginSequenceNumber());
                     return Mono.empty();
@@ -64,12 +64,12 @@ public class Util {
                                     eventsToSend.getAndDecrement();
                                 }
                             } catch (PayloadSizeExceededException e) {
-                                throw new RuntimeException("Event was too large for a single batch.", e);
+                                return Mono.error(new RuntimeException("Event was too large for a single batch.", e));
                             }
                             try {
                                 sender.sendSync(currentBatch);
                             } catch (EventHubException e) {
-                                throw new RuntimeException("Could not send batch. Error: " + e);
+                                return Mono.error(new RuntimeException("Could not send batch. Error: " + e));
                             }
                         }
                         System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend);

@@ -66,7 +66,7 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfStressOpti
                             options.getCount(), options.getSize()));
                     }
                 }
-                return Mono.empty();
+                return 1;
             }))
             .then();
     }

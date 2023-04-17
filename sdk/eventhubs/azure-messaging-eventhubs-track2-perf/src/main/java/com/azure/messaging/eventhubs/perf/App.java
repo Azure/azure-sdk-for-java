@@ -26,13 +26,13 @@ public class App {
             ReceiveEventsBatchTest.class,
             EventProcessorStorageTest.class,
             EventProcessorBatchStorageTest.class,
-//            ReceiveEventsTest.class,
-//            SendEventDataTest.class,
-//            SendEventDataBatchTest.class,
-//            EventProcessorTest.class,
-//            GetPartitionInformationTest.class,
-//            ReactorReceiveEventsTest.class,
-//            EventProcessorJedisTest.class
+            ReceiveEventsTest.class,
+            SendEventDataTest.class,
+            SendEventDataBatchTest.class,
+            EventProcessorTest.class,
+            GetPartitionInformationTest.class,
+            ReactorReceiveEventsTest.class,
+            EventProcessorJedisTest.class
         };
         PerfStressProgram.run(testClasses, args);
     }
