@@ -45,7 +45,7 @@ public class CallMediaAsyncUnitTests {
 
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playFileSourceId");
-        playFileSource.setUri("filePath");
+        playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
         playTextSource.setPlaySourceId("playTextSourceId");
@@ -120,7 +120,7 @@ public class CallMediaAsyncUnitTests {
         stopDtmfTones.add(DtmfTone.TWO);
         recognizeOptions.setStopTones(stopDtmfTones);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
-        recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
+        recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
@@ -173,7 +173,7 @@ public class CallMediaAsyncUnitTests {
         CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
-        recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
+        recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");

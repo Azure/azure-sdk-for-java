@@ -28,7 +28,7 @@ public class CreateGroupCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String azureCognitiveServicesUrl;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -100,8 +100,8 @@ public class CreateGroupCallOptions {
      *
      * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getAzureCognitiveServicesUrl() {
+        return this.azureCognitiveServicesUrl;
     }
 
     /**
@@ -180,11 +180,11 @@ public class CreateGroupCallOptions {
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public CreateGroupCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public CreateGroupCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
+        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
 

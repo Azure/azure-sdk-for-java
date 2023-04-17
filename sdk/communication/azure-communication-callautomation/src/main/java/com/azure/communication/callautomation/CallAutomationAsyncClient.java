@@ -72,7 +72,7 @@ public final class CallAutomationAsyncClient {
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
-    private final String resourceEndpoint;
+    private final String resourceUrl;
     private final CommunicationIdentifierModel sourceIdentity;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
@@ -83,7 +83,7 @@ public final class CallAutomationAsyncClient {
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceEndpoint = callServiceClient.getEndpoint();
+        this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationIdentifierConverter.convert(sourceIdentity);
     }
 
@@ -228,8 +228,8 @@ public final class CallAutomationAsyncClient {
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
 
-        if (createCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
-            request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesEndpointUrl());
+        if (createCallOptions.getAzureCognitiveServicesUrl() != null && !createCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
+            request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesUrl());
         }
 
         return request;
@@ -260,8 +260,8 @@ public final class CallAutomationAsyncClient {
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
 
-        if (createCallGroupOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallGroupOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
-            request.setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesEndpointUrl());
+        if (createCallGroupOptions.getAzureCognitiveServicesUrl() != null && !createCallGroupOptions.getAzureCognitiveServicesUrl().isEmpty()) {
+            request.setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesUrl());
         }
 
         return request;
@@ -327,8 +327,8 @@ public final class CallAutomationAsyncClient {
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
-            if (answerCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !answerCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
-                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
+            if (answerCallOptions.getAzureCognitiveServicesUrl() != null && !answerCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
+                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesUrl());
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
@@ -465,7 +465,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallRecordingAsync.
      */
     public CallRecordingAsync getCallRecordingAsync() {
-        return new CallRecordingAsync(callRecordingsInternal, contentDownloader, httpPipelineInternal, resourceEndpoint);
+        return new CallRecordingAsync(callRecordingsInternal, contentDownloader, httpPipelineInternal, resourceUrl);
     }
     //endregion
 }

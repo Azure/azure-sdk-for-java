@@ -16,7 +16,7 @@ public class AnswerCallOptions {
     private final String incomingCallContext;
 
     /**
-     * The call back URI.
+     * The call back URl.
      */
     private final String callbackUrl;
 
@@ -28,13 +28,13 @@ public class AnswerCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String azureCognitiveServicesUrl;
 
     /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back URI.
+     * @param callbackUrl The call back URl.
      */
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
@@ -51,9 +51,9 @@ public class AnswerCallOptions {
     }
 
     /**
-     * Get the call back uri.
+     * Get the call back url.
      *
-     * @return the call back uri.
+     * @return the call back url.
      */
     public String getCallbackUrl() {
         return callbackUrl;
@@ -65,8 +65,8 @@ public class AnswerCallOptions {
      *
      * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getAzureCognitiveServicesUrl() {
+        return this.azureCognitiveServicesUrl;
     }
 
     /**
@@ -93,11 +93,11 @@ public class AnswerCallOptions {
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
+        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
 }

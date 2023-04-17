@@ -100,7 +100,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // play media to all participants
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
-            callMediaAsync.playToAll(new FileSource().setUri(MEDIA_SOURCE)).block();
+            callMediaAsync.playToAll(new FileSource().setUrl(MEDIA_SOURCE)).block();
             PlayCompletedEventData playCompletedEventData = waitForEvent(PlayCompletedEventData.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playCompletedEventData);
         } catch (Exception ex) {
