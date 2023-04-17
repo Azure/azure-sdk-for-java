@@ -195,7 +195,6 @@ public class QueueSasTests extends QueueTestBase {
 
         // Wait 30 seconds as it may take time for the access policy to take effect.
         sleepIfRunningAgainstService(30000);
-        ;
 
         StorageSharedKeyCredential credential =
             StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
@@ -350,7 +349,7 @@ public class QueueSasTests extends QueueTestBase {
         String queueName = getRandomName(60);
 
         assertDoesNotThrow(() -> sc.createQueue(queueName));
-        assertDoesNotThrow(() ->sc.deleteQueue(queueName));
+        assertDoesNotThrow(() -> sc.deleteQueue(queueName));
     }
 
     @Test

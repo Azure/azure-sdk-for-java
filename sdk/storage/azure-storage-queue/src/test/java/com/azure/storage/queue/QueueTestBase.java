@@ -14,27 +14,24 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
-import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import okhttp3.ConnectionPool;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
 /**
@@ -49,17 +46,16 @@ public class QueueTestBase extends TestProxyTestBase {
 
     protected String prefix;
 
-    protected TestDataFactory getData() {
-        return TestDataFactory.getInstance();
-    }
-
     // Clients for API tests
     protected QueueServiceClient primaryQueueServiceClient;
     protected QueueServiceAsyncClient primaryQueueServiceAsyncClient;
 
-    @BeforeEach
-    public void setup(TestInfo testInfo) {
-        prefix = getCrc32(testInfo.getDisplayName());
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
+        interceptorManager.addSanitizers(
+            Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
     }
 
     private static String getCrc32(String input) {
@@ -68,15 +64,16 @@ public class QueueTestBase extends TestProxyTestBase {
         return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
     }
 
+
     /**
      * Clean up the test queues and messages for the account.
      */
-    @AfterEach
-    public void cleanup() {
+    @Override
+    protected void afterTest() {
+        super.afterTest();
         if (getTestMode() == TestMode.PLAYBACK) {
             return;
         }
-
 
         QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
             .connectionString(getPrimaryConnectionString())
@@ -126,7 +123,7 @@ public class QueueTestBase extends TestProxyTestBase {
         return instrument(new QueueClientBuilder()).endpoint(endpoint);
     }
 
-     protected Duration getMessageUpdateDelay(long liveMillis) {
+    protected Duration getMessageUpdateDelay(long liveMillis) {
         return (getTestMode() == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveMillis);
     }
 
@@ -156,8 +153,13 @@ public class QueueTestBase extends TestProxyTestBase {
 
         if (ENVIRONMENT.getServiceVersion() != null) {
             try {
-                Method serviceVersionMethod = builder.getClass()
-                    .getDeclaredMethod("serviceVersion", ServiceVersion.class);
+                Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
+                    .filter(method -> "serviceVersion".equals(method.getName())
+                        && method.getParameterCount() == 1
+                        && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
+                        + builder.getClass()));
                 Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
                 ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
                     ENVIRONMENT.getServiceVersion());
@@ -171,14 +173,6 @@ public class QueueTestBase extends TestProxyTestBase {
         builder.httpLogOptions(QueueServiceClientBuilder.getDefaultHttpLogOptions());
 
         return builder;
-    }
-
-    protected HttpPipelinePolicy getRecordPolicy() {
-        if (interceptorManager.isRecordMode()) {
-            return interceptorManager.getRecordPolicy();
-        } else {
-            return NoOpHttpPipelinePolicy.INSTANCE;
-        }
     }
 
     protected HttpClient getHttpClient() {
@@ -198,25 +192,5 @@ public class QueueTestBase extends TestProxyTestBase {
 
     protected String getPrimaryConnectionString() {
         return ENVIRONMENT.getPrimaryAccount().getConnectionString();
-    }
-
-    protected <T> T retry(Supplier<T> action, Predicate<Exception> retryPredicate, Integer times,
-        Duration delay) throws Exception {
-        int actualTimes = (times == null) ? 6 : times;
-        long actualDelayMillis = (delay == null) ? Duration.ofSeconds(10).toMillis() : delay.toMillis();
-
-        for (int i = 0; i < actualTimes; i++) {
-            try {
-                return action.get();
-            } catch (Exception e) {
-                if (!retryPredicate.test(e)) {
-                    throw e;
-                } else {
-                    sleepIfRunningAgainstService(actualDelayMillis);
-                }
-            }
-        }
-
-        throw new Exception("Exhausted all retry attempts.");
     }
 }

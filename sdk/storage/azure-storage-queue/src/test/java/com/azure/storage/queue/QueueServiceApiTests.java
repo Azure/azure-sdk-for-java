@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.storage.queue.QueueTestHelper.assertQueueServicePropertiesAreEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -196,11 +197,10 @@ public class QueueServiceApiTests extends QueueTestBase {
             .setMinuteMetrics(metrics)
             .setCors(new ArrayList<>());
 
-        QueueTestHelper.assertQueueServicePropertiesAreEqual(originalProperties,
-            primaryQueueServiceClient.getProperties());
+        assertQueueServicePropertiesAreEqual(originalProperties, primaryQueueServiceClient.getProperties());
         assertEquals(202, primaryQueueServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
             .getStatusCode());
-        assertEquals(updatedProperties, primaryQueueServiceClient.getProperties());
+        assertQueueServicePropertiesAreEqual(updatedProperties, primaryQueueServiceClient.getProperties());
         primaryQueueServiceClient.setProperties(originalProperties);
     }
 

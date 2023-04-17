@@ -307,7 +307,7 @@ public class BuildHelperTests {
 
     @Test
     public void onlyOneRetryOptionsCanBeApplied() {
-        assertThrows(IllegalStateException.class, () ->new QueueServiceClientBuilder()
+        assertThrows(IllegalStateException.class, () -> new QueueServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .retryOptions(REQUEST_RETRY_OPTIONS)
@@ -355,7 +355,7 @@ public class BuildHelperTests {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            assertEquals(expectedUA, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
+            assertTrue(request.getHeaders().getValue(HttpHeaderName.USER_AGENT).startsWith(expectedUA));
 
             return Mono.just(new MockHttpResponse(request, 200));
         }

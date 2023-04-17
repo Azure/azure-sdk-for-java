@@ -263,7 +263,7 @@ public class QueueApiTests extends QueueTestBase {
 
         QueueStorageException exception = assertThrows(QueueStorageException.class,
             () -> queueClient.setAccessPolicy(Collections.singletonList(permission)));
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 404, QueueErrorCode.INVALID_XML_DOCUMENT);
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(exception, 400, QueueErrorCode.INVALID_XML_DOCUMENT);
     }
 
     @Test
