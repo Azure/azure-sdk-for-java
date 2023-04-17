@@ -3,19 +3,26 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 
 /**
  * Utility class for Polling APIs.
@@ -123,6 +130,60 @@ class PollingUtil {
         if (statusToWaitFor == currentPollResponse.getStatus()) {
             return true;
         }
+        return false;
+    }
+
+    /**
+     * Determines if the location can poll.
+     * <p>
+     * Shared functionality for {@link LocationPollingStrategy} and {@link SyncLocationPollingStrategy}.
+     *
+     * @param initialResponse The initial response.
+     * @param endpoint The endpoint.
+     * @param logger The logger.
+     * @return Whether the location can poll.
+     */
+    static boolean locationCanPoll(Response<?> initialResponse, String endpoint, ClientLogger logger) {
+        HttpHeader locationHeader = initialResponse.getHeaders().get(HttpHeaderName.LOCATION);
+
+        if (locationHeader != null) {
+            try {
+                ImplUtils.createUrl(getAbsolutePath(locationHeader.getValue(), endpoint, logger));
+                return true;
+            } catch (MalformedURLException e) {
+                logger.info("Failed to parse Location header into a URL.", e);
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines if the operation resource can poll.
+     * <p>
+     * Shared functionality for {@link OperationResourcePollingStrategy} and
+     * {@link SyncOperationResourcePollingStrategy}.
+     *
+     * @param initialResponse The initial response.
+     * @param operationLocationHeader The operation location header.
+     * @param endpoint The endpoint.
+     * @param logger The logger.
+     * @return Whether the operation resource can poll.
+     */
+    static boolean operationResourceCanPoll(Response<?> initialResponse, HttpHeaderName operationLocationHeader,
+        String endpoint, ClientLogger logger) {
+        HttpHeader header = initialResponse.getHeaders().get(operationLocationHeader);
+
+        if (header != null) {
+            try {
+                ImplUtils.createUrl(getAbsolutePath(header.getValue(), endpoint, logger));
+                return true;
+            } catch (MalformedURLException e) {
+                return false;
+            }
+        }
+
         return false;
     }
 }

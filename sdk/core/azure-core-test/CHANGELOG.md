@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.16.1 (2023-04-13)
+
+### Bugs Fixed
+
+- Updated timeout values for waiting for test proxy initialization.
+
+## 1.16.0 (2023-04-07)
+
+### Features Added
+
+- Added `InterceptorManager.isRecordMode` to determine if the testing mode is `RECORD`.
+- Added support for generic regex `TestProxySanitizer`.
+
+### Bugs Fixed
+
+- Fixed a bug where the URL would remain the Test Proxy URL instead of the service URL being called through the proxy.
+- Fixed a bug where Test Proxy headers could be added multiple times to only be set once.
+- Fixed a bug where multiple thread could try to download and start the test proxy resulting in random failures.
+
+### Other Changes
+
+- Added `Operation-Location` and `api-key` as default headers to redact when using Test Proxy.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
 
 ## 1.15.0 (2023-03-02)
 

@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.3.1 (2023-04-07)
+
+### Other Changes
+
+- Added dependency on `azure-json` and added support for `JsonSeriliazable` in `JacksonAdapter`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
+
 ## 1.3.0 (2023-03-02)
 
 ### Features Added

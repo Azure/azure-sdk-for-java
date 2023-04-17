@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for DatabaseAccounts FailoverPriorityChange. */
 public final class DatabaseAccountsFailoverPriorityChangeSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBDatabaseAccountFailoverPriorityChange.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountFailoverPriorityChange.

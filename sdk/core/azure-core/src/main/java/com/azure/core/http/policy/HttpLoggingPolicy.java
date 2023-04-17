@@ -16,6 +16,7 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -256,7 +257,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
-                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                     return Mono.just(new LoggingHttpResponse(response, logBuilder, logger,
@@ -285,7 +286,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void logContentLength(HttpResponse response, LoggingEventBuilder logBuilder) {
-            String contentLengthString = response.getHeaderValue("Content-Length");
+            String contentLengthString = response.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
                 logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
@@ -308,7 +309,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
-                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                     return new LoggingHttpResponse(response, logBuilder, logger,
@@ -501,8 +502,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
             return actualResponse.getHeaderValue(name);
+        }
+
+        @Override
+        public String getHeaderValue(HttpHeaderName headerName) {
+            return actualResponse.getHeaderValue(headerName);
         }
 
         @Override
@@ -522,10 +529,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
                 })
-                .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
-                        prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            stream.toString(StandardCharsets.UTF_8)))
-                    .log(RESPONSE_LOG_MESSAGE));
+                .doFinally(ignored -> doLog(stream.toString(StandardCharsets.UTF_8)));
         }
 
         @Override
@@ -541,6 +545,19 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
             return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+        }
+
+        @Override
+        public BinaryData getBodyAsBinaryData() {
+            BinaryData content = actualResponse.getBodyAsBinaryData();
+            doLog(content.toString());
+            return content;
+        }
+
+        private void doLog(String body) {
+            logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                    prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader, body))
+                .log(RESPONSE_LOG_MESSAGE);
         }
     }
 }

@@ -5,6 +5,7 @@ package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim;
@@ -16,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,7 +110,7 @@ public final class JacksonAdapter implements SerializerAdapter {
             return object.toString();
         } else {
             return ReflectionSerializable.supportsJsonSerializable(object.getClass())
-                ? ReflectionSerializable.serializeJsonSerializableToString(object)
+                ? ReflectionSerializable.serializeJsonSerializableToString((JsonSerializable<?>) object)
                 : mapper.writeValueAsString(object);
         }
     }
@@ -127,7 +129,7 @@ public final class JacksonAdapter implements SerializerAdapter {
             return object.toString().getBytes(StandardCharsets.UTF_8);
         } else {
             return ReflectionSerializable.supportsJsonSerializable(object.getClass())
-                ? ReflectionSerializable.serializeJsonSerializableToBytes(object)
+                ? ReflectionSerializable.serializeJsonSerializableToBytes((JsonSerializable<?>) object)
                 : mapper.writeValueAsBytes(object);
         }
     }
@@ -148,7 +150,8 @@ public final class JacksonAdapter implements SerializerAdapter {
             outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
         } else {
             if (ReflectionSerializable.supportsJsonSerializable(object.getClass())) {
-                ReflectionSerializable.serializeJsonSerializableIntoOutputStream(object, outputStream);
+                ReflectionSerializable.serializeJsonSerializableIntoOutputStream((JsonSerializable<?>) object,
+                    outputStream);
             } else {
                 mapper.writeValue(outputStream, object);
             }
@@ -322,7 +325,7 @@ public final class JacksonAdapter implements SerializerAdapter {
             return new DateTimeRfc1123(value);
         } else if (type == URL.class) {
             try {
-                return new URL(value);
+                return ImplUtils.createUrl(value);
             } catch (MalformedURLException ex) {
                 throw new IOException(ex);
             }

@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-formrecognizer</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+  <version>4.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
 
   <name>Microsoft Azure client library for Form Recognizer</name>
   <description>This package contains the Microsoft Azure Cognitive Services Form Recognizer SDK.</description>
@@ -36,36 +36,36 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis.administration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <graalvm.disable>false</graalvm.disable>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test Dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

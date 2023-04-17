@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
@@ -11,6 +12,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
+import com.azure.spring.data.cosmos.domain.IndexPolicyOverwriteEntity;
 import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -46,16 +48,19 @@ public class IndexPolicyUpdateIT {
 
     CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
 
+    CosmosEntityInformation<IndexPolicyOverwriteEntity, String> indexPolicyOverwriteEntityInformation = new CosmosEntityInformation<>(IndexPolicyOverwriteEntity.class);
+
     CosmosEntityInformation<Address, String> addressEntityInformation = new CosmosEntityInformation<>(Address.class);
 
     @Before
     public void setup() {
-        collectionManager.ensureContainersCreatedAndEmpty(template, IndexPolicyEntity.class, ComplexIndexPolicyEntity.class, Address.class);
+        collectionManager.ensureContainersCreatedAndEmpty(template, IndexPolicyEntity.class, ComplexIndexPolicyEntity.class, IndexPolicyOverwriteEntity.class, Address.class);
     }
 
     @Test
-    public void testIndexPolicyUpdatesOnRepoInitialization() {
+    public void testIndexPolicyDoesntUpdateOnRepoInitialization() {
         // set index policy from entity annotation
+        collectionManager.deleteContainer(defaultIndexPolicyEntityInformation);
         new SimpleCosmosRepository<>(defaultIndexPolicyEntityInformation, template);
 
         // get original index policy
@@ -77,6 +82,7 @@ public class IndexPolicyUpdateIT {
         // apply new index policy
         CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation = Mockito.spy(defaultIndexPolicyEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
+        Mockito.doReturn(false).when(spyEntityInformation).isOverwriteIndexingPolicy();
         new SimpleCosmosRepository<>(spyEntityInformation, template);
 
         // retrieve updated index policy
@@ -84,12 +90,47 @@ public class IndexPolicyUpdateIT {
 
         // assert
         assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
-        assertThat(properties.getIndexingPolicy().getIncludedPaths().get(0).getPath()).isEqualTo("/field/?");
-        assertThat(properties.getIndexingPolicy().getExcludedPaths().size()).isEqualTo(2);
-        assertThat(properties.getIndexingPolicy().getExcludedPaths().get(0).getPath()).isEqualTo("/*");
-        assertThat(properties.getIndexingPolicy().getExcludedPaths().get(1).getPath()).isEqualTo("/\"_etag\"/?");
+        assertThat(properties.getIndexingPolicy().getIncludedPaths().get(0).getPath()).isEqualTo("/*");
+        assertThat(properties.getIndexingPolicy().getExcludedPaths().size()).isEqualTo(1);
+        assertThat(properties.getIndexingPolicy().getExcludedPaths().get(0).getPath()).isEqualTo("/\"_etag\"/?");
         assertThat(properties.getIndexingPolicy().isAutomatic()).isEqualTo(true);
         assertThat(properties.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
+    }
+
+    @Test
+    public void testIndexPolicyUpdatesOnRepoInitialization() {
+        // set index policy from entity annotation
+        collectionManager.deleteContainer(indexPolicyOverwriteEntityInformation);
+        new SimpleCosmosRepository<>(indexPolicyOverwriteEntityInformation, template);
+
+        // get original index policy
+        CosmosContainerProperties properties = template.getContainerProperties(indexPolicyOverwriteEntityInformation.getContainerName());
+
+        // assert
+        assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
+        assertThat(properties.getIndexingPolicy().getIncludedPaths().get(0).getPath()).isEqualTo("/\"_etag\"/?");
+        assertThat(properties.getIndexingPolicy().getExcludedPaths().size()).isEqualTo(1);
+        assertThat(properties.getIndexingPolicy().getExcludedPaths().get(0).getPath()).isEqualTo("/*");
+
+        // set new index policy
+        IndexingPolicy newIndexPolicy = new IndexingPolicy();
+        newIndexPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
+        newIndexPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/\"_etag\"/?")));
+
+        // apply new index policy
+        CosmosEntityInformation<IndexPolicyOverwriteEntity, String> spyEntityInformation = Mockito.spy(indexPolicyOverwriteEntityInformation);
+        Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
+        Mockito.doReturn(true).when(spyEntityInformation).isOverwriteIndexingPolicy();
+        new SimpleCosmosRepository<>(spyEntityInformation, template);
+
+        // retrieve updated index policy
+        properties = template.getContainerProperties(indexPolicyOverwriteEntityInformation.getContainerName());
+
+        // assert
+        assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
+        assertThat(properties.getIndexingPolicy().getIncludedPaths().get(0).getPath()).isEqualTo("/*");
+        assertThat(properties.getIndexingPolicy().getExcludedPaths().size()).isEqualTo(1);
+        assertThat(properties.getIndexingPolicy().getExcludedPaths().get(0).getPath()).isEqualTo("/\"_etag\"/?");
     }
 
     @Test

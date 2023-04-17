@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Elevation client library</name>
-  <description>This package contains the Microsoft Azure SDK for Elevation SDK. For documentation on how to use this package, please see https://docs.microsoft.com/en-us/rest/api/maps/elevation. The Azure Maps Elevation API provides an HTTP interface to query elevation data on the surface of the Earth. Elevation data can be retrieved at specific locations by sending lat/lon coordinates, by defining an ordered set of vertices that form a Polyline and a number of sample points along the length of a Polyline, or by defining a bounding box that consists of equally spaced vertices as rows and columns. The vertical datum is EPSG:3855. This datum uses the EGM2008 geoid model applied to the WGS84 ellipsoid as its zero height reference surface. The vertical unit is measured in meters, the spatial resolution of the elevation data is 0.8 arc-second for global coverage (~24 meters). Package tag 1.0-preview.</description>
+  <description>This package is deprecated will have no further updates. Dependency on this library is no longer required with Azure SDK for Java. For more details, please refer to https://azure.microsoft.com/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -51,29 +51,29 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

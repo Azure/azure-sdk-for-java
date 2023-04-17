@@ -136,11 +136,11 @@ public final class LengthTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        LengthTokenFilter deserializedValue = new LengthTokenFilter(name);
-                        deserializedValue.minLength = minLength;
-                        deserializedValue.maxLength = maxLength;
+                        LengthTokenFilter deserializedLengthTokenFilter = new LengthTokenFilter(name);
+                        deserializedLengthTokenFilter.minLength = minLength;
+                        deserializedLengthTokenFilter.maxLength = maxLength;
 
-                        return deserializedValue;
+                        return deserializedLengthTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

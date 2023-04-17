@@ -1,54 +1,2084 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "eca305b0-fbeb-418d-8f51-698d3a2b87cc",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "7220",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:08:02 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "445b8ad1-6b22-4b92-baa1-b8527d37345b"
+      },
+      "RequestBody": {
+        "name": "hotelcanuseallanalyzernamesinindexdefinitionasync66d13924819",
+        "fields": [
+          {
+            "name": "field0",
+            "type": "Edm.String",
+            "analyzer": "ar.lucene"
+          },
+          {
+            "name": "field1",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ar.microsoft"
+          },
+          {
+            "name": "field2",
+            "type": "Edm.String",
+            "analyzer": "bg.lucene"
+          },
+          {
+            "name": "field3",
+            "type": "Collection(Edm.String)",
+            "analyzer": "bg.microsoft"
+          },
+          {
+            "name": "field4",
+            "type": "Edm.String",
+            "analyzer": "bn.microsoft"
+          },
+          {
+            "name": "field5",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ca.lucene"
+          },
+          {
+            "name": "field6",
+            "type": "Edm.String",
+            "analyzer": "ca.microsoft"
+          },
+          {
+            "name": "field7",
+            "type": "Collection(Edm.String)",
+            "analyzer": "cs.lucene"
+          },
+          {
+            "name": "field8",
+            "type": "Edm.String",
+            "analyzer": "cs.microsoft"
+          },
+          {
+            "name": "field9",
+            "type": "Collection(Edm.String)",
+            "analyzer": "da.lucene"
+          },
+          {
+            "name": "field10",
+            "type": "Edm.String",
+            "analyzer": "da.microsoft"
+          },
+          {
+            "name": "field11",
+            "type": "Collection(Edm.String)",
+            "analyzer": "de.lucene"
+          },
+          {
+            "name": "field12",
+            "type": "Edm.String",
+            "analyzer": "de.microsoft"
+          },
+          {
+            "name": "field13",
+            "type": "Collection(Edm.String)",
+            "analyzer": "el.lucene"
+          },
+          {
+            "name": "field14",
+            "type": "Edm.String",
+            "analyzer": "el.microsoft"
+          },
+          {
+            "name": "field15",
+            "type": "Collection(Edm.String)",
+            "analyzer": "en.lucene"
+          },
+          {
+            "name": "field16",
+            "type": "Edm.String",
+            "analyzer": "en.microsoft"
+          },
+          {
+            "name": "field17",
+            "type": "Collection(Edm.String)",
+            "analyzer": "es.lucene"
+          },
+          {
+            "name": "field18",
+            "type": "Edm.String",
+            "analyzer": "es.microsoft"
+          },
+          {
+            "name": "field19",
+            "type": "Collection(Edm.String)",
+            "analyzer": "et.microsoft"
+          },
+          {
+            "name": "field20",
+            "type": "Edm.String",
+            "analyzer": "eu.lucene"
+          },
+          {
+            "name": "field21",
+            "type": "Collection(Edm.String)",
+            "analyzer": "fa.lucene"
+          },
+          {
+            "name": "field22",
+            "type": "Edm.String",
+            "analyzer": "fi.lucene"
+          },
+          {
+            "name": "field23",
+            "type": "Collection(Edm.String)",
+            "analyzer": "fi.microsoft"
+          },
+          {
+            "name": "field24",
+            "type": "Edm.String",
+            "analyzer": "fr.lucene"
+          },
+          {
+            "name": "field25",
+            "type": "Collection(Edm.String)",
+            "analyzer": "fr.microsoft"
+          },
+          {
+            "name": "field26",
+            "type": "Edm.String",
+            "analyzer": "ga.lucene"
+          },
+          {
+            "name": "field27",
+            "type": "Collection(Edm.String)",
+            "analyzer": "gl.lucene"
+          },
+          {
+            "name": "field28",
+            "type": "Edm.String",
+            "analyzer": "gu.microsoft"
+          },
+          {
+            "name": "field29",
+            "type": "Collection(Edm.String)",
+            "analyzer": "he.microsoft"
+          },
+          {
+            "name": "field30",
+            "type": "Edm.String",
+            "analyzer": "hi.lucene"
+          },
+          {
+            "name": "field31",
+            "type": "Collection(Edm.String)",
+            "analyzer": "hi.microsoft"
+          },
+          {
+            "name": "field32",
+            "type": "Edm.String",
+            "analyzer": "hr.microsoft"
+          },
+          {
+            "name": "field33",
+            "type": "Collection(Edm.String)",
+            "analyzer": "hu.lucene"
+          },
+          {
+            "name": "field34",
+            "type": "Edm.String",
+            "analyzer": "hu.microsoft"
+          },
+          {
+            "name": "field35",
+            "type": "Collection(Edm.String)",
+            "analyzer": "hy.lucene"
+          },
+          {
+            "name": "field36",
+            "type": "Edm.String",
+            "analyzer": "id.lucene"
+          },
+          {
+            "name": "field37",
+            "type": "Collection(Edm.String)",
+            "analyzer": "id.microsoft"
+          },
+          {
+            "name": "field38",
+            "type": "Edm.String",
+            "analyzer": "is.microsoft"
+          },
+          {
+            "name": "field39",
+            "type": "Collection(Edm.String)",
+            "analyzer": "it.lucene"
+          },
+          {
+            "name": "field40",
+            "type": "Edm.String",
+            "analyzer": "it.microsoft"
+          },
+          {
+            "name": "field41",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ja.lucene"
+          },
+          {
+            "name": "field42",
+            "type": "Edm.String",
+            "analyzer": "ja.microsoft"
+          },
+          {
+            "name": "field43",
+            "type": "Collection(Edm.String)",
+            "analyzer": "keyword"
+          },
+          {
+            "name": "field44",
+            "type": "Edm.String",
+            "analyzer": "kn.microsoft"
+          },
+          {
+            "name": "field45",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ko.lucene"
+          },
+          {
+            "name": "field46",
+            "type": "Edm.String",
+            "analyzer": "ko.microsoft"
+          },
+          {
+            "name": "field47",
+            "type": "Collection(Edm.String)",
+            "analyzer": "lt.microsoft"
+          },
+          {
+            "name": "field48",
+            "type": "Edm.String",
+            "analyzer": "lv.lucene"
+          },
+          {
+            "name": "field49",
+            "type": "Collection(Edm.String)",
+            "analyzer": "lv.microsoft"
+          },
+          {
+            "name": "field50",
+            "type": "Edm.String",
+            "analyzer": "ml.microsoft"
+          },
+          {
+            "name": "field51",
+            "type": "Collection(Edm.String)",
+            "analyzer": "mr.microsoft"
+          },
+          {
+            "name": "field52",
+            "type": "Edm.String",
+            "analyzer": "ms.microsoft"
+          },
+          {
+            "name": "field53",
+            "type": "Collection(Edm.String)",
+            "analyzer": "nb.microsoft"
+          },
+          {
+            "name": "field54",
+            "type": "Edm.String",
+            "analyzer": "nl.lucene"
+          },
+          {
+            "name": "field55",
+            "type": "Collection(Edm.String)",
+            "analyzer": "nl.microsoft"
+          },
+          {
+            "name": "field56",
+            "type": "Edm.String",
+            "analyzer": "no.lucene"
+          },
+          {
+            "name": "field57",
+            "type": "Collection(Edm.String)",
+            "analyzer": "pa.microsoft"
+          },
+          {
+            "name": "field58",
+            "type": "Edm.String",
+            "analyzer": "pattern"
+          },
+          {
+            "name": "field59",
+            "type": "Collection(Edm.String)",
+            "analyzer": "pl.lucene"
+          },
+          {
+            "name": "field60",
+            "type": "Edm.String",
+            "analyzer": "pl.microsoft"
+          },
+          {
+            "name": "field61",
+            "type": "Collection(Edm.String)",
+            "analyzer": "pt-BR.lucene"
+          },
+          {
+            "name": "field62",
+            "type": "Edm.String",
+            "analyzer": "pt-BR.microsoft"
+          },
+          {
+            "name": "field63",
+            "type": "Collection(Edm.String)",
+            "analyzer": "pt-PT.lucene"
+          },
+          {
+            "name": "field64",
+            "type": "Edm.String",
+            "analyzer": "pt-PT.microsoft"
+          },
+          {
+            "name": "field65",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ro.lucene"
+          },
+          {
+            "name": "field66",
+            "type": "Edm.String",
+            "analyzer": "ro.microsoft"
+          },
+          {
+            "name": "field67",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ru.lucene"
+          },
+          {
+            "name": "field68",
+            "type": "Edm.String",
+            "analyzer": "ru.microsoft"
+          },
+          {
+            "name": "field69",
+            "type": "Collection(Edm.String)",
+            "analyzer": "simple"
+          },
+          {
+            "name": "field70",
+            "type": "Edm.String",
+            "analyzer": "sk.microsoft"
+          },
+          {
+            "name": "field71",
+            "type": "Collection(Edm.String)",
+            "analyzer": "sl.microsoft"
+          },
+          {
+            "name": "field72",
+            "type": "Edm.String",
+            "analyzer": "sr-cyrillic.microsoft"
+          },
+          {
+            "name": "field73",
+            "type": "Collection(Edm.String)",
+            "analyzer": "sr-latin.microsoft"
+          },
+          {
+            "name": "field74",
+            "type": "Edm.String",
+            "analyzer": "standard.lucene"
+          },
+          {
+            "name": "field75",
+            "type": "Collection(Edm.String)",
+            "analyzer": "standardasciifolding.lucene"
+          },
+          {
+            "name": "field76",
+            "type": "Edm.String",
+            "analyzer": "stop"
+          },
+          {
+            "name": "field77",
+            "type": "Collection(Edm.String)",
+            "analyzer": "sv.lucene"
+          },
+          {
+            "name": "field78",
+            "type": "Edm.String",
+            "analyzer": "sv.microsoft"
+          },
+          {
+            "name": "field79",
+            "type": "Collection(Edm.String)",
+            "analyzer": "ta.microsoft"
+          },
+          {
+            "name": "field80",
+            "type": "Edm.String",
+            "analyzer": "te.microsoft"
+          },
+          {
+            "name": "field81",
+            "type": "Collection(Edm.String)",
+            "analyzer": "th.lucene"
+          },
+          {
+            "name": "field82",
+            "type": "Edm.String",
+            "analyzer": "th.microsoft"
+          },
+          {
+            "name": "field83",
+            "type": "Collection(Edm.String)",
+            "analyzer": "tr.lucene"
+          },
+          {
+            "name": "field84",
+            "type": "Edm.String",
+            "analyzer": "tr.microsoft"
+          },
+          {
+            "name": "field85",
+            "type": "Collection(Edm.String)",
+            "analyzer": "uk.microsoft"
+          },
+          {
+            "name": "field86",
+            "type": "Edm.String",
+            "analyzer": "ur.microsoft"
+          },
+          {
+            "name": "field87",
+            "type": "Collection(Edm.String)",
+            "analyzer": "vi.microsoft"
+          },
+          {
+            "name": "field88",
+            "type": "Edm.String",
+            "analyzer": "whitespace"
+          },
+          {
+            "name": "field89",
+            "type": "Collection(Edm.String)",
+            "analyzer": "zh-Hans.lucene"
+          },
+          {
+            "name": "field90",
+            "type": "Edm.String",
+            "analyzer": "zh-Hans.microsoft"
+          },
+          {
+            "name": "field91",
+            "type": "Collection(Edm.String)",
+            "analyzer": "zh-Hant.lucene"
+          },
+          {
+            "name": "field92",
+            "type": "Edm.String",
+            "analyzer": "zh-Hant.microsoft"
+          },
+          {
+            "name": "field93",
+            "type": "Edm.String",
+            "searchable": true,
+            "searchAnalyzer": "keyword",
+            "indexAnalyzer": "keyword"
+          },
+          {
+            "name": "field94",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "searchAnalyzer": "pattern",
+            "indexAnalyzer": "pattern"
+          },
+          {
+            "name": "field95",
+            "type": "Edm.String",
+            "searchable": true,
+            "searchAnalyzer": "simple",
+            "indexAnalyzer": "simple"
+          },
+          {
+            "name": "field96",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "searchAnalyzer": "stop",
+            "indexAnalyzer": "stop"
+          },
+          {
+            "name": "field97",
+            "type": "Edm.String",
+            "searchable": true,
+            "searchAnalyzer": "whitespace",
+            "indexAnalyzer": "whitespace"
+          },
+          {
+            "name": "id",
+            "type": "Edm.String",
+            "key": true
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "445b8ad1-6b22-4b92-baa1-b8527d37345b",
+        "Content-Length": "25100",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:08:03 GMT",
+        "elapsed-time": "1284",
+        "ETag": "W/\u00220x8DB20D9FD6F90A5\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/indexes(\u0027hotelcanuseallanalyzernamesinindexdefinitionasync66d13924819\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "445b8ad1-6b22-4b92-baa1-b8527d37345b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "445b8ad1-6b22-4b92-baa1-b8527d37345b"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\u00220x8DB20D9FD6F90A5\u0022",
+        "name": "hotelcanuseallanalyzernamesinindexdefinitionasync66d13924819",
+        "defaultScoringProfile": null,
+        "fields": [
+          {
+            "name": "field0",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ar.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field1",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ar.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field2",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "bg.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field3",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "bg.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field4",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "bn.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field5",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ca.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field6",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ca.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field7",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "cs.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field8",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "cs.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field9",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "da.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field10",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "da.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field11",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "de.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field12",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "de.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field13",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "el.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field14",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "el.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field15",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "en.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field16",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "en.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field17",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "es.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field18",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "es.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field19",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "et.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field20",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "eu.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field21",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fa.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field22",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fi.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field23",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fi.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field24",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fr.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field25",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fr.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field26",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ga.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field27",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "gl.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field28",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "gu.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field29",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "he.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field30",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "hi.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field31",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "hi.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field32",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "hr.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field33",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "hu.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field34",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "hu.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field35",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "hy.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field36",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "id.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field37",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "id.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field38",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "is.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field39",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "it.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field40",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "it.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field41",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ja.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field42",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ja.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field43",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "keyword",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field44",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "kn.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field45",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ko.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field46",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ko.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field47",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "lt.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field48",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "lv.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field49",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "lv.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field50",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ml.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field51",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "mr.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field52",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ms.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field53",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "nb.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field54",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "nl.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field55",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "nl.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field56",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "no.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field57",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pa.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field58",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pattern",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field59",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pl.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field60",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pl.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field61",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pt-BR.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field62",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pt-BR.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field63",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pt-PT.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field64",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "pt-PT.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field65",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ro.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field66",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ro.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field67",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ru.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field68",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ru.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field69",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "simple",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field70",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "sk.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field71",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "sl.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field72",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "sr-cyrillic.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field73",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "sr-latin.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field74",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "standard.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field75",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "standardasciifolding.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field76",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "stop",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field77",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "sv.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field78",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "sv.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field79",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ta.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field80",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "te.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field81",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "th.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field82",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "th.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field83",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "tr.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field84",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "tr.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field85",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "uk.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field86",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "ur.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field87",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "vi.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field88",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "whitespace",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field89",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "zh-Hans.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field90",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "zh-Hans.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field91",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "zh-Hant.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field92",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "zh-Hant.microsoft",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field93",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "keyword",
+            "searchAnalyzer": "keyword",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field94",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "pattern",
+            "searchAnalyzer": "pattern",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field95",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "simple",
+            "searchAnalyzer": "simple",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field96",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "stop",
+            "searchAnalyzer": "stop",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "field97",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "whitespace",
+            "searchAnalyzer": "whitespace",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "id",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": true,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [],
+        "corsOptions": null,
+        "suggesters": [],
+        "analyzers": [],
+        "normalizers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "encryptionKey": null,
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+          "k1": null,
+          "b": null
+        },
+        "semantic": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "eca305b0-fbeb-418d-8f51-698d3a2b87cc",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:35:03 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "eca305b0-fbeb-418d-8f51-698d3a2b87cc",
-      "ETag" : "W/\"0x8DAF8CA4FE3C8C0\"",
-      "elapsed-time" : "857",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "25088",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CA4FE3C8C0\\\"\",\"name\":\"hotelcanuseallanalyzernamesinindexdefinitionasync9e6489904a8\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"field0\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ar.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field1\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ar.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field2\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"bg.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field3\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"bg.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field4\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"bn.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field5\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ca.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field6\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ca.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field7\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"cs.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field8\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"cs.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field9\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"da.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field10\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"da.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field11\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"de.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field12\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"de.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field13\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"el.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field14\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"el.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field15\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field16\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field17\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"es.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field18\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"es.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field19\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"et.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field20\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"eu.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field21\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fa.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field22\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fi.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field23\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fi.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field24\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field25\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field26\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ga.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field27\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"gl.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field28\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"gu.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field29\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"he.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field30\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"hi.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field31\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"hi.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field32\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"hr.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field33\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"hu.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field34\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"hu.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field35\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"hy.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field36\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"id.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field37\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"id.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field38\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"is.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field39\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"it.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field40\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"it.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field41\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ja.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field42\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ja.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field43\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"keyword\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field44\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"kn.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field45\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ko.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field46\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ko.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field47\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"lt.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field48\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"lv.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field49\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"lv.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field50\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ml.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field51\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"mr.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field52\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ms.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field53\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"nb.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field54\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"nl.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field55\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"nl.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field56\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"no.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field57\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pa.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field58\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pattern\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field59\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pl.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field60\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pl.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field61\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pt-BR.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field62\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pt-BR.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field63\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pt-PT.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field64\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"pt-PT.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field65\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ro.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field66\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ro.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field67\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ru.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field68\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ru.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field69\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"simple\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field70\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"sk.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field71\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"sl.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field72\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"sr-cyrillic.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field73\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"sr-latin.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field74\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"standard.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field75\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"standardasciifolding.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field76\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"stop\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field77\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"sv.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field78\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"sv.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field79\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ta.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field80\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"te.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field81\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"th.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field82\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"th.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field83\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"tr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field84\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"tr.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field85\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"uk.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field86\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"ur.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field87\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"vi.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field88\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"whitespace\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field89\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"zh-Hans.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field90\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"zh-Hans.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field91\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"zh-Hant.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field92\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"zh-Hant.microsoft\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field93\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"keyword\",\"searchAnalyzer\":\"keyword\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field94\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"pattern\",\"searchAnalyzer\":\"pattern\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field95\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"simple\",\"searchAnalyzer\":\"simple\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field96\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"stop\",\"searchAnalyzer\":\"stop\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"field97\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"whitespace\",\"searchAnalyzer\":\"whitespace\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"id\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "eca305b0-fbeb-418d-8f51-698d3a2b87cc",
-      "Location" : "https://alzimmer-basic.search.windows.net/indexes('hotelcanuseallanalyzernamesinindexdefinitionasync9e6489904a8')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelcanuseallanalyzernamesinindexdefinitionasync9e6489904a8')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f097b5ad-7f3a-4dfb-96c2-dddcc0b17282"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "f097b5ad-7f3a-4dfb-96c2-dddcc0b17282",
-      "elapsed-time" : "226",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "f097b5ad-7f3a-4dfb-96c2-dddcc0b17282",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:35:03 GMT",
-      "x-ms-client-request-id" : "f097b5ad-7f3a-4dfb-96c2-dddcc0b17282"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "hotelcanuseallanalyzernamesinindexdefinitionasync9e6489904a8" ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027hotelcanuseallanalyzernamesinindexdefinitionasync66d13924819\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:08:04 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8efa8762-54f2-44ae-b67a-a018636ad45b"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "8efa8762-54f2-44ae-b67a-a018636ad45b",
+        "Date": "Thu, 09 Mar 2023 20:08:03 GMT",
+        "elapsed-time": "259",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "8efa8762-54f2-44ae-b67a-a018636ad45b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "8efa8762-54f2-44ae-b67a-a018636ad45b"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "hotelcanuseallanalyzernamesinindexdefinitionasync66d13924819"
+  }
 }

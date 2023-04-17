@@ -110,10 +110,10 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
                         }
                     }
                     if (allowedOriginsFound) {
-                        CorsOptions deserializedValue = new CorsOptions(allowedOrigins);
-                        deserializedValue.maxAgeInSeconds = maxAgeInSeconds;
+                        CorsOptions deserializedCorsOptions = new CorsOptions(allowedOrigins);
+                        deserializedCorsOptions.maxAgeInSeconds = maxAgeInSeconds;
 
-                        return deserializedValue;
+                        return deserializedCorsOptions;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!allowedOriginsFound) {

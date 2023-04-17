@@ -83,7 +83,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2022-11"
+    "args": "--tag=package-2023-03"
   },
   "dns": {
     "dir": "azure-resourcemanager-dns",
@@ -139,7 +139,7 @@
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
     "args": "--tag=package-2021-10",
-    "note": "use local azure-rest-api-specs and remove keys.json, secrets.json in README.md tag"
+    "note": "use local azure-rest-api-specs and remove keys.json, secrets.json and keysManagedHsm.json in README.md tag"
   },
   "keyvault-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-keyvault",

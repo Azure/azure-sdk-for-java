@@ -10,7 +10,7 @@ import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 /** Samples for CommunicationServices RegenerateKey. */
 public final class CommunicationServicesRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-03-01-preview/examples/communicationServices/regenerateKey.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/communicationServices/regenerateKey.json
      */
     /**
      * Sample code: Regenerate key.

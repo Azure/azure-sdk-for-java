@@ -11,10 +11,10 @@ import java.util.Collection;
 
 /** A value indicating which split mode to perform. */
 public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
-    /** Static value pages for TextSplitMode. */
+    /** Split the text into individual pages. */
     public static final TextSplitMode PAGES = fromString("pages");
 
-    /** Static value sentences for TextSplitMode. */
+    /** Split the text into individual sentences. */
     public static final TextSplitMode SENTENCES = fromString("sentences");
 
     /**

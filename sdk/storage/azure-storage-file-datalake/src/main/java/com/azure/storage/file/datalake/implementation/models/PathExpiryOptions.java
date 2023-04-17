@@ -23,6 +23,14 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
     public static final PathExpiryOptions ABSOLUTE = fromString("Absolute");
 
     /**
+     * Creates a new instance of PathExpiryOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PathExpiryOptions() {}
+
+    /**
      * Creates or finds a PathExpiryOptions from its string representation.
      *
      * @param name a name to look for.

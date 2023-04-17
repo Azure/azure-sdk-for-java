@@ -13,6 +13,8 @@ import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -112,7 +114,7 @@ public class HttpClientTestsWireMockServer {
         public ResponseDefinition transform(
             Request request, ResponseDefinition responseDefinition, FileSource fileSource, Parameters parameters) {
             try {
-                URL requestUrl = new URL(request.getAbsoluteUrl());
+                URL requestUrl = new URI(request.getAbsoluteUrl()).toURL();
                 String path = requestUrl.getPath();
                 if (ECHO_RESPONSE.equals(path)) {
                     return aResponse()
@@ -121,7 +123,7 @@ public class HttpClientTestsWireMockServer {
                 } else {
                     return responseDefinition;
                 }
-            } catch (MalformedURLException e) {
+            } catch (URISyntaxException | MalformedURLException e) {
                 throw new RuntimeException(e);
             }
         }

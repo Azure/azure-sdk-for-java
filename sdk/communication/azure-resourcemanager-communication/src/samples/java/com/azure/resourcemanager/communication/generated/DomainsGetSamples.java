@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for Domains Get. */
 public final class DomainsGetSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-03-01-preview/examples/domains/get.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/domains/get.json
      */
     /**
      * Sample code: Get Domains resource.

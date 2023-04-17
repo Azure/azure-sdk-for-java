@@ -62,16 +62,15 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 public class CertificateClientImpl {
     private final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
@@ -937,8 +936,7 @@ public class CertificateClientImpl {
             try {
                 return withContext(context ->
                     service.getCertificateOperationAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                        CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                            KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                        CONTENT_TYPE_HEADER_VALUE, context))
                     .flatMap(this::processCertificateOperationResponse);
             } catch (HttpResponseException e) {
                 logger.logExceptionAsError(e);
@@ -981,8 +979,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.updateCertificateOperationAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                parameter, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                parameter, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Cancelling certificate operation - {}", certificateName))
             .doOnSuccess(response ->
                 logger.verbose("Cancelled the certificate operation - {}", response.getValue().getStatus()))
@@ -998,7 +995,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.updateCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, parameter,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     private Mono<Response<CertificateOperation>> createCertificateWithResponseAsync(String certificateName,
@@ -1012,8 +1009,7 @@ public class CertificateClientImpl {
             .tags(tags);
 
         return service.createCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Starting creation of certificate - {}", certificateName))
             .doOnSuccess(response -> logger.verbose("Started creation of certificate - {}", certificateName))
             .doOnError(error -> logger.warning("Failed to create the certificate - {}", certificateName, error));
@@ -1033,7 +1029,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.getCertificateWithPolicyAsync(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Retrieving certificate - {}", certificateName))
             .doOnSuccess(response ->
                 logger.verbose("Retrieved the certificate - {}", response.getValue().getProperties().getName()))
@@ -1047,7 +1043,7 @@ public class CertificateClientImpl {
 
         return service.getCertificateWithPolicy(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            context);
     }
 
     public Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponseAsync(String certificateName,
@@ -1083,7 +1079,7 @@ public class CertificateClientImpl {
 
         return service.updateCertificateAsync(vaultUrl, properties.getName(), properties.getVersion(), apiVersion,
                 ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnRequest(ignored -> logger.verbose("Updating certificate - {}", properties.getName()))
             .doOnSuccess(response -> logger.verbose("Updated the certificate - {}", properties.getName()))
             .doOnError(error -> logger.warning("Failed to update the certificate - {}", properties.getName(), error));
@@ -1100,8 +1096,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.updateCertificate(vaultUrl, properties.getName(), properties.getVersion(), apiVersion,
-            ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
+            ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -1125,8 +1120,7 @@ public class CertificateClientImpl {
     private Function<PollingContext<DeletedCertificate>, Mono<PollResponse<DeletedCertificate>>> createDeletePollOperation(String keyName) {
         return pollingContext ->
             withContext(context -> service.getDeletedCertificatePollerAsync(vaultUrl, keyName, apiVersion,
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(deletedCertificateResponse -> {
                     if (deletedCertificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() ->
@@ -1154,7 +1148,7 @@ public class CertificateClientImpl {
     private Mono<Response<DeletedCertificate>> deleteCertificateWithResponseAsync(String certificateName,
                                                                                   Context context) {
         return service.deleteCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Deleting certificate - {}", certificateName))
             .doOnSuccess(response -> logger.verbose("Deleted the certificate - {}", response.getValue().getProperties().getName()))
             .doOnError(error -> logger.warning("Failed to delete the certificate - {}", certificateName, error));
@@ -1164,7 +1158,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.getDeletedCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnRequest(ignored -> logger.verbose("Retrieving deleted certificate - {}", certificateName))
             .doOnSuccess(response -> logger.verbose("Retrieved the deleted certificate - {}", response.getValue().getProperties().getName()))
             .doOnError(error -> logger.warning("Failed to Retrieve the deleted certificate - {}", certificateName, error));
@@ -1174,7 +1168,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
         return service.getDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -1182,7 +1176,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.purgeDeletedCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Purging certificate - {}", certificateName))
             .doOnSuccess(response -> logger.verbose("Purged the certificate - {}", response.getStatusCode()))
             .doOnError(error -> logger.warning("Failed to purge the certificate - {}", certificateName, error));
@@ -1192,7 +1186,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
         return service.purgeDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -1216,8 +1210,7 @@ public class CertificateClientImpl {
     private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<PollResponse<KeyVaultCertificateWithPolicy>>> createRecoverPollOperation(String keyName) {
         return pollingContext ->
             withContext(context -> service.getCertificatePollerAsync(vaultUrl, keyName, "", apiVersion,
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context))
                 .flatMap(certificateResponse -> {
                     if (certificateResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() ->
@@ -1245,7 +1238,7 @@ public class CertificateClientImpl {
     private Mono<Response<KeyVaultCertificateWithPolicy>> recoverDeletedCertificateWithResponseAsync(String certificateName,
                                                                                                      Context context) {
         return service.recoverDeletedCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Recovering deleted certificate - {}", certificateName))
             .doOnSuccess(response ->
                 logger.verbose("Recovered the deleted certificate - {}", response.getValue().getProperties().getName()))
@@ -1256,7 +1249,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.backupCertificateAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Backing up certificate - {}", certificateName))
             .doOnSuccess(response -> logger.verbose("Backed up the certificate - {}", response.getStatusCode()))
             .doOnError(error -> logger.warning("Failed to back up the certificate - {}", certificateName, error))
@@ -1271,8 +1264,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         Response<CertificateBackup> certificateBackupResponse = service.backupCertificate(vaultUrl, certificateName,
-            apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
+            apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
 
         return new SimpleResponse<>(certificateBackupResponse.getRequest(), certificateBackupResponse.getStatusCode(),
             certificateBackupResponse.getHeaders(), certificateBackupResponse.getValue().getValue());
@@ -1283,7 +1275,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.restoreCertificateAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Restoring the certificate"))
             .doOnSuccess(response ->
                 logger.verbose("Restored the certificate - {}", response.getValue().getProperties().getName()))
@@ -1297,7 +1289,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.restoreCertificate(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            context);
     }
 
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
@@ -1339,7 +1331,7 @@ public class CertificateClientImpl {
                                                                                 Context context) {
         try {
             return service.getCertificatesAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Listing next certificates page - Page {} ", continuationToken))
                 .doOnSuccess(response -> logger.verbose("Listed next certificates page - Page {} ", continuationToken))
                 .doOnError(error ->
@@ -1358,8 +1350,7 @@ public class CertificateClientImpl {
         try {
             return service
                 .getCertificatesAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion, ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.verbose("Listing certificates"))
                 .doOnSuccess(response -> logger.verbose("Listed certificates"))
                 .doOnError(error -> logger.warning("Failed to list certificates", error));
@@ -1397,8 +1388,7 @@ public class CertificateClientImpl {
                                                                                     Context context) {
         try {
             return service.getDeletedCertificatesAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored ->
                     logger.verbose("Listing next deleted certificates page - Page {} ", continuationToken))
                 .doOnSuccess(response ->
@@ -1419,8 +1409,7 @@ public class CertificateClientImpl {
                                                                                      Context context) {
         try {
             return service.getDeletedCertificatesAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, includePending, apiVersion,
-                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.verbose("Listing deleted certificates"))
                 .doOnSuccess(response -> logger.verbose("Listed deleted certificates"))
                 .doOnError(error -> logger.warning("Failed to list deleted certificates", error));
@@ -1462,8 +1451,7 @@ public class CertificateClientImpl {
                                                                                         Context context) {
         try {
             return service.getCertificateVersionsAsync(vaultUrl, certificateName, DEFAULT_MAX_PAGE_RESULTS, apiVersion,
-                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.verbose("Listing certificate versions - {}", certificateName))
                 .doOnSuccess(response -> logger.verbose("Listed certificate versions - {}", certificateName))
                 .doOnError(error -> logger.warning("Failed to list certificate versions - {}", certificateName, error));
@@ -1479,7 +1467,7 @@ public class CertificateClientImpl {
                                                                                        Context context) {
         try {
             return service.getCertificatesAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored ->
                     logger.verbose("Listing next certificate versions page - Page {} ", continuationToken))
                 .doOnSuccess(response ->
@@ -1502,8 +1490,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.mergeCertificateAsync(vaultUrl, mergeCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE,
-            mergeParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE))
+            mergeParameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Merging certificate - {}",  mergeCertificateOptions.getName()))
             .doOnSuccess(response ->
                 logger.verbose("Merged certificate  - {}", response.getValue().getProperties().getName()))
@@ -1522,8 +1509,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.mergeCertificate(vaultUrl, mergeCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE,
-            mergeParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
+            mergeParameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponseAsync(String certificateName,
@@ -1531,7 +1517,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.getCertificatePolicyAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Retrieving certificate policy - {}",  certificateName))
             .doOnSuccess(response -> logger.verbose("Retrieved certificate policy - {}", certificateName))
             .doOnError(error -> logger.warning("Failed to retrieve certificate policy - {}", certificateName, error));
@@ -1542,7 +1528,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.getCertificatePolicy(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponseAsync(String certificateName,
@@ -1552,8 +1538,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.updateCertificatePolicyAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName,
-                policyRequest, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                policyRequest, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Updating certificate policy - {}", certificateName))
             .doOnSuccess(response ->
                 logger.verbose("Updated the certificate policy - {}", response.getValue().getUpdatedOn()))
@@ -1566,7 +1551,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.updateCertificatePolicy(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName, policyRequest,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -1584,7 +1569,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.setCertificateIssuerAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Creating certificate issuer - {}", issuer.getName()))
             .doOnSuccess(response ->
                 logger.verbose("Created the certificate issuer - {}", response.getValue().getName()))
@@ -1607,14 +1592,14 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.setCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Mono<Response<CertificateIssuer>> getIssuerWithResponseAsync(String issuerName, Context context) {
         context = context == null ? Context.NONE : context;
 
         return service.getCertificateIssuerAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Retrieving certificate issuer - {}", issuerName))
             .doOnSuccess(response ->
                 logger.verbose("Retrieved the certificate issuer - {}", response.getValue().getName()))
@@ -1627,7 +1612,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -1635,7 +1620,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.deleteCertificateIssuerAsync(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Deleting certificate issuer - {}",  issuerName))
             .doOnSuccess(response ->
                 logger.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
@@ -1647,7 +1632,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public PagedFlux<IssuerProperties> listPropertiesOfIssuers() {
@@ -1670,8 +1655,7 @@ public class CertificateClientImpl {
     private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersFirstPage(Context context) {
         try {
             return service.getCertificateIssuersAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.verbose("Listing certificate issuers - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate issuers - {}"))
                 .doOnError(error -> logger.warning("Failed to list certificate issuers - {}", error));
@@ -1693,8 +1677,7 @@ public class CertificateClientImpl {
                                                                                   Context context) {
         try {
             return service.getCertificateIssuersAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored ->
                     logger.verbose("Listing next certificate issuers page - Page {} ", continuationToken))
                 .doOnSuccess(response ->
@@ -1721,8 +1704,7 @@ public class CertificateClientImpl {
         context = context == null ? Context.NONE : context;
 
         return service.updateCertificateIssuerAsync(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE,
-                updateParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+                updateParameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Updating certificate issuer - {}", issuer.getName()))
             .doOnSuccess(response ->
                 logger.verbose("Updated up the certificate issuer - {}", response.getValue().getName()))
@@ -1745,8 +1727,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.updateCertificateIssuer(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE,
-            updateParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
+            updateParameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
@@ -1765,7 +1746,7 @@ public class CertificateClientImpl {
         Contacts contactsParams = new Contacts().contactList(contacts);
 
         return service.setCertificateContactsAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, contactsParams,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
             .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
             .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
@@ -1786,7 +1767,7 @@ public class CertificateClientImpl {
     private Mono<PagedResponse<CertificateContact>> listCertificateContactsFirstPage(Context context) {
         try {
             return service.getCertificateContactsAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    context)
                 .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
                 .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
@@ -1809,7 +1790,7 @@ public class CertificateClientImpl {
 
     private Mono<PagedResponse<CertificateContact>> deleteCertificateContactsWithResponse(Context context) {
         return service.deleteCertificateContactsAsync(vaultUrl, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                context)
             .doOnRequest(ignored -> logger.verbose("Deleting certificate contacts - {}"))
             .doOnSuccess(response -> logger.verbose("Deleted certificate contacts - {}"))
             .doOnError(error -> logger.warning("Failed to delete certificate contacts - {}", error));
@@ -1818,7 +1799,7 @@ public class CertificateClientImpl {
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponseAsync(String certificateName,
                                                                                             Context context) {
         return service.deleteCertificateOperationAsync(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.verbose("Deleting certificate operation - {}", certificateName))
             .doOnSuccess(response -> logger.verbose("Deleted the certificate operation - {}", response.getStatusCode()))
             .doOnError(error ->
@@ -1830,7 +1811,7 @@ public class CertificateClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.deleteCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context);
     }
 
 
@@ -1848,8 +1829,7 @@ public class CertificateClientImpl {
         }
 
         return service.importCertificateAsync(vaultUrl, importCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE,
-            parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
+            parameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions,
@@ -1867,8 +1847,7 @@ public class CertificateClientImpl {
         }
 
         return service.importCertificate(vaultUrl, importCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE,
-            parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
+            parameters, CONTENT_TYPE_HEADER_VALUE, context);
     }
 
     private String transformCertificateForImport(ImportCertificateOptions options) {

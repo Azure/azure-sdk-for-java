@@ -75,7 +75,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>
@@ -115,7 +115,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+                <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

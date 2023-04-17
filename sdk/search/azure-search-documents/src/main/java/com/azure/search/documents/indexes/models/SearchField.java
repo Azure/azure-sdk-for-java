@@ -582,21 +582,21 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         }
                     }
                     if (nameFound && typeFound) {
-                        SearchField deserializedValue = new SearchField(name, type);
-                        deserializedValue.key = key;
-                        deserializedValue.hidden = hidden;
-                        deserializedValue.searchable = searchable;
-                        deserializedValue.filterable = filterable;
-                        deserializedValue.sortable = sortable;
-                        deserializedValue.facetable = facetable;
-                        deserializedValue.analyzerName = analyzerName;
-                        deserializedValue.searchAnalyzerName = searchAnalyzerName;
-                        deserializedValue.indexAnalyzerName = indexAnalyzerName;
-                        deserializedValue.normalizerName = normalizerName;
-                        deserializedValue.synonymMapNames = synonymMapNames;
-                        deserializedValue.fields = fields;
+                        SearchField deserializedSearchField = new SearchField(name, type);
+                        deserializedSearchField.key = key;
+                        deserializedSearchField.hidden = hidden;
+                        deserializedSearchField.searchable = searchable;
+                        deserializedSearchField.filterable = filterable;
+                        deserializedSearchField.sortable = sortable;
+                        deserializedSearchField.facetable = facetable;
+                        deserializedSearchField.analyzerName = analyzerName;
+                        deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
+                        deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
+                        deserializedSearchField.normalizerName = normalizerName;
+                        deserializedSearchField.synonymMapNames = synonymMapNames;
+                        deserializedSearchField.fields = fields;
 
-                        return deserializedValue;
+                        return deserializedSearchField;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

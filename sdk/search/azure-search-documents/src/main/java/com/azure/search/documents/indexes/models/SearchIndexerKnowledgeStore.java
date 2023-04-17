@@ -100,10 +100,10 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
                         }
                     }
                     if (storageConnectionStringFound && projectionsFound) {
-                        SearchIndexerKnowledgeStore deserializedValue =
+                        SearchIndexerKnowledgeStore deserializedSearchIndexerKnowledgeStore =
                                 new SearchIndexerKnowledgeStore(storageConnectionString, projections);
 
-                        return deserializedValue;
+                        return deserializedSearchIndexerKnowledgeStore;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!storageConnectionStringFound) {
