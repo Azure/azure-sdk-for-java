@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -224,6 +225,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return An updated instance of this builder with the timeout specified.
      */
     public DefaultAzureCredentialBuilder developerCredentialTimeout(Duration developerCredentialTimout) {
+        Objects.requireNonNull(developerCredentialTimout);
         this.identityClientOptions.setProcessTimeout(developerCredentialTimout);
         return this;
     }
