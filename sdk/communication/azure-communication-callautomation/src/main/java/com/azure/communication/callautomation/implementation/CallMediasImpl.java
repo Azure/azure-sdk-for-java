@@ -5,10 +5,10 @@
 package com.azure.communication.callautomation.implementation;
 
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequest;
+import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequest;
+import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -92,7 +92,8 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+                @BodyParam("application/json")
+                        ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -103,7 +104,8 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+                @BodyParam("application/json")
+                        ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -114,7 +116,7 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendDtmfRequest sendDtmfRequest,
+                @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -441,7 +443,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseAsync(
-            String callConnectionId, ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest) {
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -468,7 +470,7 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseAsync(
             String callConnectionId,
-            ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+            ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             Context context) {
         final String accept = "application/json";
         return service.startContinuousDtmfRecognition(
@@ -492,7 +494,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startContinuousDtmfRecognitionAsync(
-            String callConnectionId, ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest) {
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         return startContinuousDtmfRecognitionWithResponseAsync(callConnectionId, continuousDtmfRecognitionRequest)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -511,7 +513,7 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startContinuousDtmfRecognitionAsync(
             String callConnectionId,
-            ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+            ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             Context context) {
         return startContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
@@ -529,7 +531,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void startContinuousDtmfRecognition(
-            String callConnectionId, ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest) {
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         startContinuousDtmfRecognitionAsync(callConnectionId, continuousDtmfRecognitionRequest).block();
     }
 
@@ -547,7 +549,7 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startContinuousDtmfRecognitionWithResponse(
             String callConnectionId,
-            ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+            ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             Context context) {
         return startContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
@@ -566,7 +568,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseAsync(
-            String callConnectionId, ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest) {
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -593,7 +595,7 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseAsync(
             String callConnectionId,
-            ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+            ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             Context context) {
         final String accept = "application/json";
         return service.stopContinuousDtmfRecognition(
@@ -617,7 +619,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopContinuousDtmfRecognitionAsync(
-            String callConnectionId, ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest) {
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         return stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, continuousDtmfRecognitionRequest)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -636,7 +638,7 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopContinuousDtmfRecognitionAsync(
             String callConnectionId,
-            ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+            ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             Context context) {
         return stopContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
@@ -654,7 +656,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopContinuousDtmfRecognition(
-            String callConnectionId, ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest) {
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         stopContinuousDtmfRecognitionAsync(callConnectionId, continuousDtmfRecognitionRequest).block();
     }
 
@@ -672,7 +674,7 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopContinuousDtmfRecognitionWithResponse(
             String callConnectionId,
-            ContinuousDtmfRecognitionRequest continuousDtmfRecognitionRequest,
+            ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest,
             Context context) {
         return stopContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
@@ -680,17 +682,18 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Send DTMF tones.
+     * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The sendDTMF request body.
+     * @param sendDtmfRequest The send dtmf request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendDtmfWithResponseAsync(String callConnectionId, SendDtmfRequest sendDtmfRequest) {
+    public Mono<Response<Void>> sendDtmfWithResponseAsync(
+            String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -704,10 +707,10 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Send DTMF tones.
+     * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The sendDTMF request body.
+     * @param sendDtmfRequest The send dtmf request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -716,7 +719,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendDtmfWithResponseAsync(
-            String callConnectionId, SendDtmfRequest sendDtmfRequest, Context context) {
+            String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
         final String accept = "application/json";
         return service.sendDtmf(
                 this.client.getEndpoint(),
@@ -728,25 +731,25 @@ public final class CallMediasImpl {
     }
 
     /**
-     * Send DTMF tones.
+     * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The sendDTMF request body.
+     * @param sendDtmfRequest The send dtmf request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequest sendDtmfRequest) {
+    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Send DTMF tones.
+     * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The sendDTMF request body.
+     * @param sendDtmfRequest The send dtmf request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -754,29 +757,29 @@ public final class CallMediasImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequest sendDtmfRequest, Context context) {
+    public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Send DTMF tones.
+     * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The sendDTMF request body.
+     * @param sendDtmfRequest The send dtmf request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(String callConnectionId, SendDtmfRequest sendDtmfRequest) {
+    public void sendDtmf(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
         sendDtmfAsync(callConnectionId, sendDtmfRequest).block();
     }
 
     /**
-     * Send DTMF tones.
+     * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The sendDTMF request body.
+     * @param sendDtmfRequest The send dtmf request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -785,7 +788,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendDtmfWithResponse(
-            String callConnectionId, SendDtmfRequest sendDtmfRequest, Context context) {
+            String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context).block();
     }
 }
