@@ -53,7 +53,7 @@
     "dir": "azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
-    "args": "--tag=package-2021-10 --remove-inner=Container,Operation,CachedImages,Capabilities"
+    "args": "--tag=package-2023-05 --remove-inner=Container,Operation,CachedImages,Capabilities --rename-model=ContainerGroupPropertiesProperties:ContainerGroupProperties"
   },
   "containerregistry": {
     "dir": "azure-resourcemanager-containerregistry",
