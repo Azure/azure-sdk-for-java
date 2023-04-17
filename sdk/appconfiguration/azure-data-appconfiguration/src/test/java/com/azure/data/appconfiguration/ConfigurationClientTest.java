@@ -3,6 +3,8 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -12,8 +14,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -28,7 +30,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -71,31 +72,16 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
+                .httpClient(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-            setHttpClient(httpClient, builder);
-
-            if (interceptorManager.isRecordMode()) {
+            if (getTestMode() != TestMode.PLAYBACK) {
                 builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
-            } else if (interceptorManager.isPlaybackMode()) {
-                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildClient();
         });
-    }
-
-    private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
-        if (interceptorManager.isRecordMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(httpClient));
-        } else if (interceptorManager.isPlaybackMode()) {
-            return builder
-                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
-        }
-        return builder;
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -193,7 +179,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         addExistingSettingRunner((expected) -> {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue();
             assertRestException(() -> client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue(),
-                HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+                ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
         });
     }
 
@@ -250,14 +236,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"),
-                true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"), true, Context.NONE).getValue(), ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addConfigurationSettingWithResponse(initial, Context.NONE).getValue().getETag();
 
             assertConfigurationEquals(update, client.setConfigurationSettingWithResponse(update.setETag(etag), true, Context.NONE));
-            assertRestException(() -> client.setConfigurationSettingWithResponse(initial, true, Context.NONE)
-                                          .getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setConfigurationSettingWithResponse(initial, true, Context.NONE).getValue(), ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.getConfigurationSetting(update.getKey(), update.getLabel()));
         });
     }
@@ -357,8 +341,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverRetrievedConfiguration, client.addConfigurationSettingWithResponse(neverRetrievedConfiguration, Context.NONE).getValue());
 
-        assertRestException(() -> client.getConfigurationSetting("myNonExistentKey", null, null), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
-        assertRestException(() -> client.getConfigurationSetting(nonExistentLabel.getKey(), nonExistentLabel.getLabel()), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getConfigurationSetting("myNonExistentKey", null, null), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getConfigurationSetting(nonExistentLabel.getKey(), nonExistentLabel.getLabel()), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -375,7 +359,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(expected, client.getConfigurationSetting(expected.getKey(), expected.getLabel()));
 
             assertConfigurationEquals(expected, client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE).getValue());
-            assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -390,7 +374,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             assertConfigurationEquals(expected, client.deleteConfigurationSetting(expected));
             assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
-                HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+                ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -407,7 +391,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertFeatureFlagConfigurationSettingEquals(expected,
                 (FeatureFlagConfigurationSetting) client.deleteConfigurationSetting(expected));
             assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
-                HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+                ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -424,7 +408,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertSecretReferenceConfigurationSettingEquals(expected,
                 (SecretReferenceConfigurationSetting) client.deleteConfigurationSetting(expected));
             assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
-                HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+                ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -462,7 +446,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(update, client.getConfigurationSetting(initial.getKey(), initial.getLabel()));
             assertRestException(() -> client.deleteConfigurationSettingWithResponse(initiallyAddedConfig, true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.deleteConfigurationSettingWithResponse(updatedConfig, true, Context.NONE).getValue());
-            assertRestException(() -> client.getConfigurationSetting(initial.getKey(), initial.getLabel()), HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            assertRestException(() -> client.getConfigurationSetting(initial.getKey(), initial.getLabel()), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -654,7 +638,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
 
             final PagedIterable<ConfigurationSetting> configurationSettingIterable =
-                client.listConfigurationSettings(null);
+                client.listConfigurationSettings(new SettingSelector().setKeyFilter(key + "," + key2));
             assertEquals(2, configurationSettingIterable.stream().count());
             return configurationSettingIterable;
         });

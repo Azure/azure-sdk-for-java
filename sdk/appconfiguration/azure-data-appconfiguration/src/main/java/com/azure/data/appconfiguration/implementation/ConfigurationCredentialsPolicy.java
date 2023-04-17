@@ -9,8 +9,10 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -49,9 +51,14 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        credentials.setAuthorizationHeaders(context.getHttpRequest());
-
-        return next.process();
+        return Mono.defer(() -> Mono.just(credentials.getAuthorizationHeaders(
+                context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(),
+                context.getHttpRequest().getBodyAsBinaryData()))
+            .flatMapMany(headers -> Flux.fromIterable(headers.entrySet()))
+            .map(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()))
+            .last()
+            .flatMap(request -> next.process()));
     }
 
     /**
@@ -64,7 +71,15 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      */
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        credentials.setAuthorizationHeaders(context.getHttpRequest());
+        Map<String, String> headers = credentials
+            .getAuthorizationHeaders(
+                context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(),
+                context.getHttpRequest().getBodyAsBinaryData());
+
+        headers.entrySet()
+            .stream()
+            .forEach(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()));
 
         return next.processSync();
     }
