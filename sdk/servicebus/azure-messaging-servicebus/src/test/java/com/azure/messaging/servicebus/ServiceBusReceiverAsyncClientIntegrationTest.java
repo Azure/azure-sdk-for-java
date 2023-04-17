@@ -1184,7 +1184,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
     }
-
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void renewMessageLock(MessagingEntityType entityType) throws InterruptedException {
@@ -1234,6 +1233,34 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         assertTrue(latch.await(2, TimeUnit.MINUTES));
     }
+
+
+    @Test
+    void receiveSubscribeReceive() throws InterruptedException {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_RENEW_LOCK, false);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, false);
+
+        StepVerifier.create(sendMessage(message)).verifyComplete();
+
+        CountDownLatch receivedFirst = new CountDownLatch(1);
+        Disposable subscription = toClose(receiver.receiveMessages()
+            .subscribe(m -> {
+                receivedFirst.countDown();
+            }));
+        assertTrue(receivedFirst.await(30, TimeUnit.SECONDS));
+        subscription.dispose();
+
+        CountDownLatch receivedSecond = new CountDownLatch(1);
+        StepVerifier.create(sendMessage(message)).verifyComplete();
+        toClose(receiver.receiveMessages()
+             .subscribe(m -> {
+                receivedSecond.countDown();
+            }));
+        assertTrue(receivedSecond.await(30, TimeUnit.SECONDS));
+    }
+
 
     /**
      * Verifies that we can receive a message which have different section set (i.e header, footer, annotations,
