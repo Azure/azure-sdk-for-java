@@ -157,13 +157,15 @@ public class SpringAppDeploymentImpl
             .map(LogFileUrlResponseInner::url);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> configFilePatterns() {
-        Map<String, Map<String, Object>> addonConfigs = this.innerModel().properties().deploymentSettings().addonConfigs();
+        Map<String, Object> addonConfigs = this.innerModel().properties().deploymentSettings().addonConfigs();
         if (addonConfigs == null) {
             return Collections.emptyList();
         }
-        Map<String, Object> configurationConfigs = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
+        Map<String, Object> configurationConfigs
+            = (Map<String, Object>) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
         if (configurationConfigs == null) {
             return Collections.emptyList();
         }
@@ -531,7 +533,7 @@ public class SpringAppDeploymentImpl
     @Override
     public SpringAppDeploymentImpl withConfigFilePatterns(List<String> configFilePatterns) {
         ensureAddonConfigs();
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
         addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, s -> {
             Map<String, Object> config = new HashMap<>();
             config.put(
