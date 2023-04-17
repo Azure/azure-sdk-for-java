@@ -1,5 +1,13 @@
 # Release History
 
+## 2.26.0-beta.1 (2023-04-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgrade api-version to `2023-03-01-preview`.
+
 ## 2.25.0 (2023-03-24)
 
 ### Other Changes
