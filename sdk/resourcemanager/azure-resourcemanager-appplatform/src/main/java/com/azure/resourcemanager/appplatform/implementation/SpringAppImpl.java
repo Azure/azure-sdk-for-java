@@ -149,9 +149,10 @@ public class SpringAppImpl
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean hasConfigurationServiceBinding() {
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().addonConfigs();
         if (addonConfigs == null) {
             return false;
         }
@@ -160,12 +161,13 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY) != null
-            && configurationService.id().equalsIgnoreCase((String) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY).get(Constants.BINDING_RESOURCE_ID));
+            && configurationService.id().equalsIgnoreCase((String) ((Map<String, Object>)addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY)).get(Constants.BINDING_RESOURCE_ID));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean hasServiceRegistryBinding() {
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().addonConfigs();
         if (addonConfigs == null) {
             return false;
         }
@@ -174,7 +176,7 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.SERVICE_REGISTRY_KEY) != null
-            && serviceRegistry.id().equalsIgnoreCase((String) addonConfigs.get(Constants.SERVICE_REGISTRY_KEY).get(Constants.BINDING_RESOURCE_ID));
+            && serviceRegistry.id().equalsIgnoreCase((String) ((Map<String, Object>) addonConfigs.get(Constants.SERVICE_REGISTRY_KEY)).get(Constants.BINDING_RESOURCE_ID));
     }
 
     @Override
@@ -340,32 +342,34 @@ public class SpringAppImpl
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public SpringAppImpl withConfigurationServiceBinding() {
         ensureProperty();
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().addonConfigs();
         if (addonConfigs == null) {
             addonConfigs = new HashMap<>();
             innerModel().properties().withAddonConfigs(addonConfigs);
         }
         SpringConfigurationService configurationService = parent().getDefaultConfigurationService();
         if (configurationService != null) {
-            Map<String, Object> configurationServiceConfigs = addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, k -> new HashMap<>());
+            Map<String, Object> configurationServiceConfigs = (Map<String, Object>) addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, k -> new HashMap<>());
             configurationServiceConfigs.put(Constants.BINDING_RESOURCE_ID, configurationService.id());
         }
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public SpringAppImpl withoutConfigurationServiceBinding() {
         if (innerModel().properties() == null) {
             return this;
         }
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().addonConfigs();
         if (addonConfigs == null) {
             return this;
         }
-        Map<String, Object> configurationServiceConfigs = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
+        Map<String, Object> configurationServiceConfigs = (Map<String, Object>) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
         if (configurationServiceConfigs == null) {
             return this;
         }
@@ -373,32 +377,34 @@ public class SpringAppImpl
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public SpringAppImpl withServiceRegistryBinding() {
         ensureProperty();
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().addonConfigs();
         if (addonConfigs == null) {
             addonConfigs = new HashMap<>();
             innerModel().properties().withAddonConfigs(addonConfigs);
         }
         SpringServiceRegistry serviceRegistry = parent().getDefaultServiceRegistry();
         if (serviceRegistry != null) {
-            Map<String, Object> serviceRegistryConfigs = addonConfigs.computeIfAbsent(Constants.SERVICE_REGISTRY_KEY, k -> new HashMap<>());
+            Map<String, Object> serviceRegistryConfigs = (Map<String, Object>) addonConfigs.computeIfAbsent(Constants.SERVICE_REGISTRY_KEY, k -> new HashMap<>());
             serviceRegistryConfigs.put(Constants.BINDING_RESOURCE_ID, serviceRegistry.id());
         }
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public SpringAppImpl withoutServiceRegistryBinding() {
         if (innerModel().properties() == null) {
             return this;
         }
-        Map<String, Map<String, Object>> addonConfigs = innerModel().properties().addonConfigs();
+        Map<String, Object> addonConfigs = innerModel().properties().addonConfigs();
         if (addonConfigs == null) {
             return this;
         }
-        Map<String, Object> configurationServiceConfigs = addonConfigs.get(Constants.SERVICE_REGISTRY_KEY);
+        Map<String, Object> configurationServiceConfigs = (Map<String, Object>) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
         if (configurationServiceConfigs == null) {
             return this;
         }
