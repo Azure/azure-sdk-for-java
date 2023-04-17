@@ -1,6 +1,6 @@
 # Release History
 
-## 12.3.10 (2023-05-09)
+## 12.3.10 (2023-04-21)
 
 ### Bugs Fixed
 - Fixed bug that disallowed empty strings as partition and row keys
