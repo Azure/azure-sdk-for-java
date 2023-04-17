@@ -812,7 +812,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    @Disabled("This was failing even before re-record with Test Proxy")
     public void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
