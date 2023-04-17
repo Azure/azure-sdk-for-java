@@ -161,7 +161,7 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY) != null
-            && configurationService.id().equalsIgnoreCase((String) ((Map<String, Object>)addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY)).get(Constants.BINDING_RESOURCE_ID));
+            && configurationService.id().equalsIgnoreCase((String) ((Map<String, Object>) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY)).get(Constants.BINDING_RESOURCE_ID));
     }
 
     @SuppressWarnings("unchecked")
